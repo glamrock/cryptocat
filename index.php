@@ -13,10 +13,10 @@
 <?php
 	function gen($size) {
 		for ($i=0; $i<$size; $i++) {
-			$c=mt_rand(1,3);
-			if ($c==1) { $gen .= chr(mt_rand(65,90)); }
-			else if ($c==2) { $gen .= chr(mt_rand(48,57)); }
-			else if ($c==3) { $gen .= chr(mt_rand(97,122)); }
+			$c=mt_rand(0,51);
+			if ($c<26) { $gen .= chr(mt_rand(65,90)); }
+			else if ($c<36) { $gen .= chr(mt_rand(48,57)); }
+			else { $gen .= chr(mt_rand(97,122)); }
 		}
 		return $gen;
 	}
