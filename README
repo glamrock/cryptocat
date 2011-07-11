@@ -1,2 +1,5 @@
 cryptocat 0.2
 Beta software - code review highly appreciated.
+
+Current limitations:
+-While always theoretically possible, there is no *convenient* way to verify the integrity of the cryptographic functions being sent by the server every time. This means that the paranoid cryptocat user will have to check the code by hand every chat.
