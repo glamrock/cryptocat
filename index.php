@@ -408,7 +408,7 @@ else {
 					</tr>
 					<tr>
 						<td class="img"><img src="img/3.png" alt="" /></td>
-						<td id="td3">cryptocat is fully compatible with <a target="_blank" href="http://torproject.org">Tor</a> for anonymous chatting. couple cryptocat with Tor anonymization for maximum confidentiality.</td>
+						<td id="td3">cryptocat is fully compatible with <a target="_blank" href="https://torproject.org">Tor</a> for anonymous chatting. couple cryptocat with Tor anonymization for maximum confidentiality.</td>
 					</tr>
 				</table>
 				<p class="bottom" id="bottom">
@@ -437,7 +437,7 @@ else {
 					if (curlang == "english") {
 						document.getElementById("td1").innerHTML = "<strong>cryptocat</strong> li permet establir xats encriptada, privada de improvisada converses segures. Fes una ullada a aquest <a href=\"info\">vídeo</a> per obtenir consells sobre com començar!";
 						document.getElementById("td2").innerHTML = "els seus missatges són encriptades abans de sortir del seu ordinador usant un algoritme AES-256 i es verifiquen la integritat. totes les converses estan ben esborrat després de 30 minuts d\'inactivitat.";
-						document.getElementById("td3").innerHTML = \'cryptocat és totalment compatible amb <a target="_blank" href="http://torproject.org">Tor</a> per anònima al xat. utilitzeu cryptocat amb Tor de forma anònima la màxima confidencialitat.\';
+						document.getElementById("td3").innerHTML = \'cryptocat és totalment compatible amb <a target="_blank" href="https://torproject.org">Tor</a> per anònima al xat. utilitzeu cryptocat amb Tor de forma anònima la màxima confidencialitat.\';
 						document.getElementById("bottom").innerHTML = \'<a href="#" id="translate" onclick="translate()">english</a> | <a href="about">sobre</a> | cryptocat és el programari beta en el desenvolupament actiu | <a target="_blank" href="http://twitter.com/cryptocatapp">twitter</a> | <a target="_blank" href="https://github.com/kaepora/cryptocat/">github</a>\';
 						document.getElementById("name").value = "escrigui el seu nom de xat";
 						document.getElementById("create").value = "entrar";
