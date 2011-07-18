@@ -1,6 +1,7 @@
 ﻿<?php
-	/* cryptocat 0.2 */
+	/* cryptocat 0.3 */
 	$install = 'https://crypto.cat/';
+	$domain = "crypto.cat";
 	$data = '/srv/data/';
 	$timelimit = 1800;
 	$update = 2000;
@@ -8,7 +9,8 @@
 	$maxusers = count($nicks);
 	$maxinput = 256;
 	$usednicks = array();
-	$usedips = array();
+	$usedsessions = array();
+	session_set_cookie_params(0, '/', $domain, TRUE, TRUE); 
 ?>
 <?php
 	function gen($size) {
@@ -21,23 +23,24 @@
 		return $gen;
 	}
 	function getpeople($chat) {
-		global $nick, $myip, $mypos, $usednicks, $usedips;
-		preg_match_all('/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\w+\+\d+-/', $chat[1], $people);
+		global $nick, $mysession, $mypos, $usednicks, $usedsessions, $_SESSION;
+		preg_match_all('/.{32}:\w+\+\d+-/', $chat[1], $people);
 		$people = $people[0];
 		for ($i = 0; $i < count($people); $i++) {
-			preg_match('/.+:/', $people[$i], $ip);
-			$ip = substr($ip[0], 0, -1);
+			preg_match('/.{32}:/', $people[$i], $session);
+			$session = substr($session[0], 0, -1);
 			preg_match('/:.+\+/', $people[$i], $existingnick);
 			$existingnick = substr($existingnick[0], 1, -1);
 			preg_match('/\+.+\-/', $people[$i], $pos);
 			$pos = substr($pos[0], 1, -1);
-			if ($ip == $_SERVER['REMOTE_ADDR']) {
+			if ($session == $_SESSION['id']) {
+				//print('<script>alert("'.$session.':'.$existingnick.'-'.$pos.'");</script>');
 				$nick = $existingnick;
-				$myip = $ip;
+				$mysession = $session;
 				$mypos = $pos;
 			}
 			else {
-				array_push($usedips, $ip);
+				array_push($usedsessions, $session);
 				array_push($usednicks, $existingnick);
 			}
 		}
@@ -46,6 +49,8 @@
 		header('Location: '.$_GET['redirect']);
 	}
 	else if (isset($_GET['chat']) && $_SERVER['HTTP_REFERER'] == $install."?c=".$_GET['chat'] && preg_match('/^([a-z]|_|[0-9])+$/', $_GET['chat'])) {
+		session_name($_GET['chat']);
+		session_start();
 		$chat = file($data.$_GET['chat']);
 		getpeople($chat);
 		if (!$chat) {
@@ -61,10 +66,13 @@
 		exit;
 	}
 	else if (isset($_POST['name']) && preg_match('/^([a-z]|_|[0-9])+$/', $_POST['name']) && isset($_POST['input']) && $_POST['input'] != '' && strlen($_POST['input']) <= $maxinput*2.5 + 68) {
+		session_name($_POST['name']);
+		session_start();
 		$chat = file($data.$_POST['name']);
 		getpeople($chat);
 		preg_match('/^[a-z]+:/', $_POST['input'], $thisnick);
 		$thisnick = substr($thisnick[0], 0, -1);
+		print('<script>alert('.$nick.' '.$thisnick.');</script>');
 		$_POST['input'] = trim($_POST['input']);
 		if ($_POST['input'] != "" && $nick == $thisnick) {
 			$chat = "\n".$_POST['input'];
@@ -73,6 +81,8 @@
 		exit;
 	}
 	else if (isset($_GET['chatters']) && $_SERVER['HTTP_REFERER'] == $install."?c=".$_GET['chatters'] && preg_match('/^([a-z]|_|[0-9])+$/', $_GET['chatters'])) {
+		session_name($_GET['chatters']);
+		session_start();
 		$chat = file($data.$_GET['chatters']);
 		getpeople($chat);
 		$total = count($usednicks) + 1;
@@ -101,284 +111,7 @@
 			document.getElementById(id).select();
 		}
 	</script>
-	<style type="text/css">
-		body {
-			background-color: #c7e5f5;
-			margin: 0 auto;
-			font-family: "Arial", "Helvetica", "Courier New", "Courier";
-			font-size: 11px;
-			color: #FFF;
-			padding: 0 12px 5px 12px;
-			background-image: url("img/bg.png");
-		}
-		div.main {
-			border: 10px solid #000;
-			background-color: #FFF;
-			padding: 10px 10px 50px 10px;
-			width: 600px;
-			height: 420px;
-			color: #000;
-			box-shadow: 5px 5px #76BDE5;
-			margin: 4.5% auto 0 auto;
-		}
-		p.bottom {
-			margin: 58px 0px 50px -10px;
-			width: 610px;
-			background-color: #000;
-			padding: 3px 5px 0px 5px;
-			text-align: center;
-			color: #fff;
-			font-weight: bold;
-		}
-		input.name, input.create {
-			width: 330px;
-			margin: 0 auto;
-			background-color: #000;
-			border: none;
-			display: block;
-			padding: 7px;
-			color: #fff;
-			outline: none;
-			text-align: center;
-			resize: none;
-			font-size: 24px;
-			box-shadow: 2px 2px #90CAEA;
-		}
-		input.create {
-			width: 344px;
-			margin-top: 10px;
-			padding: 0px 7px;
-		}
-		input.talk {
-			background-color: #000;
-			padding: 7px 11px 5px 10px;
-			border: none;
-			margin: -14px 0px 0px 2px;
-			float: left;
-			padding: 3px;
-			width: 67px;
-			color: #97CEEC;
-			height: 51px;
-			font-size: 22px;
-			box-shadow: 2px 2px #90CAEA;
-		}
-		input.create:hover, input.talk:hover {
-			background-color: #97CEEC;
-			box-shadow: 2px 2px #000;
-			color: #FFF;
-		}
-		input.create:active, input.talk:active {
-			box-shadow: 2px 2px #97CEEC;
-		}
-		div.chat {
-			padding: 5px 5px 20px 0px;
-			width: 567px;
-			height: 295px;
-			border: 3px solid #97CEEC;
-			margin: 0 auto;
-			overflow-x: hidden;
-			overflow-y: scroll;
-			word-wrap: break-word;
-			font-family: 'Courier New', 'Courier';
-			line-height: 17px;
-			font-size: 12px;
-			margin-top: 20px;
-		}
-		#chatters {
-			background-color: rgba(151, 206, 236, 0.65);
-			font-size: 10px;
-			padding: 3px 3px 3px 0px;
-			width: 555px;
-			margin: -20px 0px 0px 11px;
-			word-spacing: 5px;
-		}
-		span.chatters {
-			padding: 3px 2px;
-			background-color: #000;
-			color: #FFF;
-		}
-		div.info {
-			font-family: 'Verdana', 'Arial';
-			font-size: 10px;
-			color: #FFF;
-			background-color: #000;
-			padding: 2px 10px;
-			width: 560px;
-			margin: 0 auto;
-			margin-top: 10px;
-		}
-		a {
-			text-decoration: none;
-			color: #97CEEC;
-		}
-		a:hover {
-			text-decoration: underline;
-		}
-		a.logout {
-			float: right;
-			margin: 1px 2px 0 0;
-		}
-		div.chat a {
-			color: #000;
-			border-bottom: 1px dashed #000;
-		}
-		div.chat a:hover {
-			border-bottom: 1px solid #000;
-			text-decoration: none;
-		}
-		input.logout:hover {
-			text-decoration: underline;
-		}
-		a.logout:hover, input.create:hover, input.talk:hover {
-			cursor: pointer;
-		}
-		input.input {
-			margin: 0px 0px 0px 10px;
-			background-color: #000;
-			color: #FFF;
-			padding: 5px 10px;
-			width: 490px;
-			border: none;
-			float: left;
-			height: 28px;
-			outline: none;
-			resize: none;
-			word-wrap: break-word;
-			font-family: 'Courier New', 'Courier';
-			line-height: 17px;
-			font-size: 12px;
-		}
-		input.input:active {
-			border: none;
-		}
-		input.invisible, div.invisible, img.invisible {
-			display: none;
-		}
-		#url {
-			font-size: 10px;
-			background-color: #000;
-			border: none;
-			width: 260px;
-			color: #97CEEC;
-		}
-		input.key {
-			background-color: #97CEEC;
-			color: #000;
-			font-family: 'Verdana', 'Arial';
-			font-size: 10px;
-			padding: 2px 10px;
-			width: 490px;
-			margin-left: 10px;
-			outline: none;
-			resize: none;
-			border: none;
-		}
-		div.msg, div.gsm, div.emsg, div.egsm, div.cmsg, div.cgsm, div.umsg, div.ugsm {
-			padding: 10px 10px 10px 5px;
-			background-color: #D8EDF8;
-			width: 540px;
-			word-wrap: break-word;
-			background-repeat: no-repeat;
-			background-image: url("img/unlock.png");
-			background-position: 98%;
-		}
-		div.gsm {
-			background-color: #FFF;
-		}
-		div.emsg {
-			background-image: url("img/lock.png");
-		}
-		div.egsm {
-			background-color: #FFF;
-			background-image: url("img/lock.png");
-		}
-		div.cmsg {
-			background-image: url("img/corrupt.png");
-		}
-		div.cgsm {
-			background-image: url("img/corrupt.png");
-			background-color: #FFF;
-		}
-		div.umsg {
-			background-image: url("img/user.png");
-		}
-		div.ugsm {
-			background-image: url("img/user.png");
-			background-color: #FFF;
-		}
-		span.nick {
-			background-color: #000;
-			color: #FFF;
-			padding: 2px;
-			box-shadow: 2px 2px #90CAEA;
-		}
-		img.cryptocat {
-			margin-bottom: 90px;
-		}
-		span.diffkey {
-			border-bottom: 1px dashed #000;
-		}
-		div.text {
-			max-width: 520px;
-			margin: 0px 0px 0px 0px;
-			padding: 0px 0px 0px 0px;
-			word-wrap: break-word;
-		}
-		table {
-			margin: 0 auto;
-			display: block;
-			margin-top: 50px;
-			width: 550px;
-		}
-		td.img {
-			padding-top: 2px;
-			width: 40px;
-		}
-		td {
-			border-bottom: 8px solid #FFF;
-		}
-		#seed {
-			width: 100%;
-			height: 100%;
-			background-color: rgba(0, 0, 0, 0.6);
-			position: absolute;
-			top: 0;
-			left: 0;
-		}
-		#seedinfo {
-			font-family: Neuton, Georgia;
-			font-style: italic;
-			font-size: 22px;
-			text-align: center;
-			
-		}
-		#seedinfo2 {
-			text-align: center;
-			font-style: italic;
-			font-size: 11px;
-			font-family: Neuton, Georgia;
-		}
-		#mousebox {
-			width: 620px;
-			height: 480px;
-			margin: 4.5% auto 0 auto;
-			background-color: #000;
-			border: 5px solid #c7e5f5;
-			
-		}
-		#progress {
-			font-size: 96px;
-			text-align: center;
-			color: #444;
-			margin-top: 100px;
-		}
-		span.red {
-			color: #DF93D6;
-		}
-		span.green {
-			color: #93D8B9;
-		}
-	</style>
+	<link rel="stylesheet" href="css/style.css" type="text/css" /> 
 </head>
 <?php
 if (isset($_GET['c']) && preg_match('/^([a-z]|_|[0-9])+$/', $_GET['c'])) {
@@ -456,21 +189,31 @@ else {
 			</script>');
 		}
 		function createchat($name) {
-			global $data, $nicks;
+			global $data, $nicks, $_SESSION;
+			session_name($name);
+			session_start();
+			if (!isset($_SESSION['id'])) {
+				$_SESSION['id'] = gen(32);
+			}
 			$name = strtolower($name);
 			$nick = $nicks[mt_rand(0, count($nicks) - 1)];
-			$chat = array(0 => gen(18), 1 => $_SERVER['REMOTE_ADDR'].':'.$nick.'+2-');
+			$chat = array(0 => gen(18), 1 => $_SESSION['id'].':'.$nick.'+2-');
 			array_push($chat, '> '.$nick.' has entered cryptocat');
 			file_put_contents($data.$name, implode("\n", $chat), LOCK_EX);
 			return 1;
 		}
 		function joinchat($name) {
-			global $data, $nicks, $maxusers, $nick, $myip, $mypos, $usednicks, $usedips;
+			global $data, $nicks, $maxusers, $nick, $mysession, $mypos, $usednicks, $usedsessions, $_SESSION;
+			session_name($name);
+			session_start();
+			if (!isset($_SESSION['id'])) {
+				$_SESSION['id'] = gen(32);
+			}
 			$name = strtolower($name);
 			$chat = file($data.$name);
 			$pos = count($chat);
 			getpeople($chat);
-			if (count($usedips) >= $maxusers) {
+			if (count($usedsessions) >= $maxusers) {
 				welcome('chat is full');
 			}
 			else {
@@ -479,7 +222,7 @@ else {
 					while (in_array($nick, $usednicks)) {
 						$nick = $nicks[mt_rand(0, count($nicks) - 1)];
 					}
-					$chat[1] = trim($chat[1]).$_SERVER['REMOTE_ADDR'].':'.$nick.'+'.$pos.'-'."\n";
+					$chat[1] = trim($chat[1]).$_SESSION['id'].':'.$nick.'+'.$pos.'-'."\n";
 					$chat[count($chat)+1] = "\n".'> '.$nick.' has entered cryptocat';
 					file_put_contents($data.$name, implode('', $chat), LOCK_EX);
 				}
@@ -487,10 +230,10 @@ else {
 			}
 		}
 		function chat($name, $nick) {
-			global $data, $timelimit, $maxinput, $install, $update;
+			global $data, $timelimit, $maxinput, $install, $update, $_SESSION, $mysession, $usedsessions;
 			$name = strtolower($name);
 			$chat = file($data.$name);
-			print('<div id="seed"><div id="mousebox"><p id="seedinfo">Please move your mouse around in this box for a bit.</p><p id="seedinfo2">(This will make your chat more secure.)</p><div id="progress">0%</div></div></div>
+			print('<!--<div id="seed"><div id="mousebox"><p id="seedinfo">Please move your mouse around in this box for a bit.</p><p id="seedinfo2">(This will make your chat more secure.)</p><div id="progress">0%</div></div></div>-->
 			<div class="main">
 			<img src="img/cryptocat.png" alt="cryptocat" />
 			<input type="text" value="'.$name.'" name="name" id="name" class="invisible" />
@@ -500,7 +243,7 @@ else {
 			print('<div class="info">chatting as <a href="#" id="nick">'.$nick.'</a> on 
 			<input readonly type="text" id="url" onclick="StuffSelect(\'url\');" value="'.$install.'?c='.$name.'" />
 			<span id="strength"></span>
-			<a class="logout" href="'.$install.'?logout='.$name.'">log out</a></div>
+			<a class="logout" onclick="logout();" href="#">log out</a></div>
 			<input type="text" id="key" value="type a key here for encrypted chat. all chatters must use the same key." class="key" maxlength="192" onclick="StuffSelect(\'key\');" onkeyup="keytime();" autocomplete="off" />
 			<form name="chatform" id="chatform" method="post" action="'.$install.'">
 			<input type="text" class="input" name="input" id="input" maxlength="'.$maxinput.'" 
@@ -508,7 +251,7 @@ else {
 			onkeyup="textcounter(document.chatform.input,document.chatform.talk,'.$maxinput.')" autocomplete="off" />
 			<input type="submit" name="talk" class="talk" id="talk" onmouseover="curcount = this.value; this.value=\'send\';" onmouseout="this.value=curcount;" value="'.$maxinput.'" />
 			</form></div>');
-			print('<script type="text/javascript">
+			print('<!--<script type="text/javascript">
 				var seed = 1;
 				var ultimate = Math.floor(Math.random() * 10);
 				jQuery(document).ready(function(){
@@ -531,8 +274,9 @@ else {
 					}
 				}); 
 			})
-			</script>');
+			</script>-->');
 			print('<script type="text/javascript">
+				Math.seedrandom();
 				var salt;
 				var key;
 				var curcount;
@@ -815,9 +559,10 @@ else {
 				
 				function logout() {
 					$.ajax( { url : "index.php",
-						type : "GET",
+						type : "POST",
 						data : "logout='.$name.'",
 					});
+					window.location = "'.$install.'"
 				}
 				
 				updatechat("#loader");
@@ -851,13 +596,17 @@ else {
 				welcome('letters and numbers only');
 			}
 		}
-		else if (isset($_GET['logout'])) {
-				$chat = file($data.$_GET['logout']);
+		else if (isset($_POST['logout'])) {
+				session_name($_POST['logout']);
+				session_start();
+				$chat = file($data.$_POST['logout']);
 				getpeople($chat);
-				if ($nick && $myip) {
-					$chat[1] = preg_replace('/'.$myip.'\:'.$nick.'\+\d+\-/', '', $chat[1]);
+				if ($nick && $mysession) {
+					$chat[1] = preg_replace('/'.$mysession.'\:'.$nick.'\+\d+\-/', '', $chat[1]);
 					$chat[count($chat)+1] = "\n".'< '.$nick.' has left cryptocat';
-					file_put_contents($data.$_GET['logout'], implode('', $chat), LOCK_EX);
+					file_put_contents($data.$_POST['logout'], implode('', $chat), LOCK_EX);
+					session_unset();
+					session_destroy();
 				}
 				welcome('type in your chatroom name');
 		}
