@@ -4,7 +4,7 @@
 	$domain = "crypto.cat";
 	$data = '/srv/data/';
 	$timelimit = 1800;
-	$update = 2000;
+	$update = 1500;
 	$nicks = array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'kiwi', 'fox', 'owl', 'raccoon', 'mongoose', 'koala', 'teddy', 'mouse', 'turtle', 'seal', 'dolphin', 'hedgehog', 'echidna', 'panther', 'cub');
 	$maxusers = count($nicks);
 	$maxinput = 256;
