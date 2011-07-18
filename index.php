@@ -233,8 +233,7 @@ else {
 			global $data, $timelimit, $maxinput, $install, $update, $_SESSION, $mysession, $usedsessions;
 			$name = strtolower($name);
 			$chat = file($data.$name);
-			print('<!--<div id="seed"><div id="mousebox"><p id="seedinfo">Please move your mouse around in this box for a bit.</p><p id="seedinfo2">(This will make your chat more secure.)</p><div id="progress">0%</div></div></div>-->
-			<div class="main">
+			print('<div class="main">
 			<img src="img/cryptocat.png" alt="cryptocat" />
 			<input type="text" value="'.$name.'" name="name" id="name" class="invisible" />
 			<div class="invisible" id="loader"></div>
@@ -251,30 +250,6 @@ else {
 			onkeyup="textcounter(document.chatform.input,document.chatform.talk,'.$maxinput.')" autocomplete="off" />
 			<input type="submit" name="talk" class="talk" id="talk" onmouseover="curcount = this.value; this.value=\'send\';" onmouseout="this.value=curcount;" value="'.$maxinput.'" />
 			</form></div>');
-			print('<!--<script type="text/javascript">
-				var seed = 1;
-				var ultimate = Math.floor(Math.random() * 10);
-				jQuery(document).ready(function(){
-					$("#mousebox").mousemove(function(e){
-					seed += e.pageX * e.pageY;
-					if (seed.toString(10).length >= 7) {
-						ultimate += seed.toString(36);
-						seed = 1;
-						var progress = Math.floor((ultimate.length * 100) / 64);
-						if (progress <= 100) {
-							$("#progress").html(progress + "%");
-						}
-						else {
-							$("#progress").html("100%");
-						}
-					}
-					if (ultimate.length >= 64) {
-						Math.seedrandom(ultimate);
-						$("#seed").fadeOut("slow");
-					}
-				}); 
-			})
-			</script>-->');
 			print('<script type="text/javascript">
 				Math.seedrandom();
 				var salt;

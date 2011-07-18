@@ -233,41 +233,6 @@ td.img {
 td {
 	border-bottom: 8px solid #FFF;
 }
-#seed {
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.6);
-	position: absolute;
-	top: 0;
-	left: 0;
-}
-#seedinfo {
-	font-family: Neuton, Georgia;
-	font-style: italic;
-	font-size: 22px;
-	text-align: center;
-	
-}
-#seedinfo2 {
-	text-align: center;
-	font-style: italic;
-	font-size: 11px;
-	font-family: Neuton, Georgia;
-}
-#mousebox {
-	width: 620px;
-	height: 480px;
-	margin: 4.5% auto 0 auto;
-	background-color: #000;
-	border: 5px solid #c7e5f5;
-	
-}
-#progress {
-	font-size: 96px;
-	text-align: center;
-	color: #444;
-	margin-top: 100px;
-}
 span.red {
 	color: #DF93D6;
 }
