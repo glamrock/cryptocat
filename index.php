@@ -34,7 +34,6 @@
 			preg_match('/\+.+\-/', $people[$i], $pos);
 			$pos = substr($pos[0], 1, -1);
 			if ($session == $_SESSION['id']) {
-				//print('<script>alert("'.$session.':'.$existingnick.'-'.$pos.'");</script>');
 				$nick = $existingnick;
 				$mysession = $session;
 				$mypos = $pos;
