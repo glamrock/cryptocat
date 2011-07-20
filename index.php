@@ -191,6 +191,24 @@ else {
 				}
 			</script>');
 		}
+		function is_bot(){
+			$botlist = array("Teoma", "alexa", "froogle", "Gigabot", "inktomi",
+			"looksmart", "URL_Spider_SQL", "Firefly", "NationalDirectory",
+			"Ask Jeeves", "TECNOSEEK", "InfoSeek", "WebFindBot", "girafabot",
+			"crawler", "www.galaxy.com", "Google", "Scooter", "Slurp",
+			"msnbot", "appie", "FAST", "WebBug", "Spade", "ZyBorg", "rabaz",
+			"Baiduspider", "Feedfetcher-Google", "TechnoratiSnoop", "Rankivabot",
+			"Mediapartners-Google", "Sogou web spider", "WebAlta Crawler","TweetmemeBot",
+			"Butterfly","Twitturls","Me.dium","Twiceler","Scribd", "Facebook", "Twitter", 
+			"facebook", "twitter", "LinkedIn", "bot", "Bot", "BOT", "LinkedIn", "StatusNet",
+			"Summify", "LongURL", "Java" );
+			foreach($botlist as $bot){
+				if(strpos($_SERVER['HTTP_USER_AGENT'],$bot)!==false)
+				return true;
+			}
+		 
+			return false;
+		}
 		function createchat($name) {
 			global $data, $nicks, $_SESSION;
 			session_name($name);
@@ -540,7 +558,6 @@ else {
 
 				$("#maximize").click(function(){
 					if (maximized) {
-						maximized = 0;
 						$("#main").animate({
 							"margin-top": "4.5%",
 							width: "600px",
@@ -571,6 +588,8 @@ else {
 							width: "67px"
 						}, 500 );
 						document.getElementById("maximize").src = "img/maximize.png";
+						maximized = 0;
+						setTimeout("document.getElementById(\'chat\').scrollTop = document.getElementById(\'chat\').scrollHeight;", 520);
 					}
 					else {
 						$("#main").animate({
@@ -606,6 +625,7 @@ else {
 						}, 500 );
 						document.getElementById("maximize").src = "img/minimize.png";
 						maximized = 1;
+						setTimeout("document.getElementById(\'chat\').scrollTop = document.getElementById(\'chat\').scrollHeight;", 520);
 					}
 				});
 
@@ -625,7 +645,7 @@ else {
 	?>
 	<?php
 		if (isset($_GET['c'])) {
-			if (preg_match('/^([a-z]|_|[0-9])+$/', $_GET['c'])) {
+			if (preg_match('/^([a-z]|_|[0-9])+$/', $_GET['c']) && !is_bot()) {
 				if (strlen($_GET['c']) <= 32) {
 					if (file_exists($data.$name)) {
 						if (time() - filemtime($data.$_GET['c']) > $timelimit) {
