@@ -23,7 +23,7 @@ body {
 	margin: 4.5% auto 0 auto;
 }
 p.bottom {
-	margin: 57px 0px 50px -10px;
+	margin: 40px 0px 50px -10px;
 	width: 610px;
 	background-color: #000;
 	padding: 3px 5px 0px 5px;
@@ -49,10 +49,10 @@ input.create {
 	width: 344px;
 	margin-top: 10px;
 	padding: 0px 7px;
+	margin-bottom: 4px;
 }
 #talk {
 	background-color: #000;
-	padding: 7px 11px 5px 10px;
 	border: none;
 	margin: -14px 0px 0px 2px;
 	float: left;

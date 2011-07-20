@@ -5,7 +5,7 @@
 	$data = '/srv/data/';
 	$timelimit = 1800;
 	$update = 1500;
-	$nicks = array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'kiwi', 'fox', 'owl', 'raccoon', 'mongoose', 'koala', 'teddy', 'mouse', 'turtle', 'seal', 'dolphin', 'hedgehog', 'echidna', 'panther', 'cub');
+	$nicks = array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'kiwi', 'fox', 'owl', 'raccoon', 'mongoose', 'koala', 'teddy', 'mouse', 'turtle', 'seal', 'dolphin', 'hedgehog', 'echidna', 'panther', 'cub', 'duck');
 	$maxusers = count($nicks);
 	$maxinput = 256;
 	$usednicks = array();
@@ -132,6 +132,7 @@ else {
 				<form action="'.$install.'" method="post" class="create" id="welcome">
 					<input type="text" class="name" name="name" id="name" onclick="StuffSelect(\'name\');" value="'.$name.'" maxlength="32" autocomplete="off" />
 					<input type="submit" name="create" class="create" value="enter" id="create" onclick="updateaction();" />
+					<center><i>(first time? check out this <a href="info">awesome video!</a>)</i></center>
 				</form>
 				<table>
 					<tr>
@@ -593,6 +594,7 @@ else {
 						document.getElementById("maximize").src = "img/maximize.png";
 						maximized = 0;
 						setTimeout("document.getElementById(\'chat\').scrollTop = document.getElementById(\'chat\').scrollHeight;", 520);
+						document.getElementById(\'input\').focus();
 					}
 					else {
 						$("#main").animate({
@@ -615,23 +617,24 @@ else {
 							"margin-top": "-22px"
 						}, 500 );
 						$("#info").animate({
-							width: "97%",
+							width: "98%",
 							"margin-left": "3px"
 						}, 500 );
 						$("#key").animate({
-							width: "91%",
+							width: "92%",
 							"margin-left": "3px"
 						}, 500 );
 						$("#input").animate({
-							width: "91%",
+							width: "92%",
 							"margin-left": "3px"
 						}, 500 );
 						$("#talk").animate({
-							width: "6%"
+							width: "5.3%"
 						}, 500 );
 						document.getElementById("maximize").src = "img/minimize.png";
 						maximized = 1;
 						setTimeout("document.getElementById(\'chat\').scrollTop = document.getElementById(\'chat\').scrollHeight;", 520);
+						document.getElementById(\'input\').focus();
 					}
 				});
 
