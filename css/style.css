@@ -221,7 +221,7 @@ span.diffkey {
 	border-bottom: 1px dashed #000;
 }
 div.text {
-	max-width: 520px;
+	max-width: 97%;
 	margin: 0px 0px 0px 0px;
 	padding: 0px 0px 0px 0px;
 	word-wrap: break-word;
