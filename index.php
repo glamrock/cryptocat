@@ -560,11 +560,14 @@ else {
 					if (maximized) {
 						$("#main").animate({
 							"margin-top": "4.5%",
+							"min-width": "600px",
+							"min-height": "420px",
 							width: "600px",
 							height: "420px"
 						}, 500 );
 						$("#chat").animate({
 							"margin-top": "20px",
+							"min-height": "295px",
 							width: "585px",
 							height: "295px"
 						}, 500 );
@@ -594,14 +597,17 @@ else {
 					else {
 						$("#main").animate({
 							"margin-top": "2%",
+							"min-width": "900px",
+							"min-height": "480px",
 							width: "75%",
 							height: "82%"
 						}, 500 );
 						$("#chat").animate({
 							margin: "2px",
 							"margin-top": "10px",
+							"min-height": "360px",
 							width: "99%",
-							height: "82%"
+							height: "80%"
 						}, 500 );
 						$("#chatters").animate({
 							width: "98.3%",
@@ -609,15 +615,15 @@ else {
 							"margin-top": "-22px"
 						}, 500 );
 						$("#info").animate({
-							width: "96%",
+							width: "97%",
 							"margin-left": "3px"
 						}, 500 );
 						$("#key").animate({
-							width: "90%",
+							width: "91%",
 							"margin-left": "3px"
 						}, 500 );
 						$("#input").animate({
-							width: "90%",
+							width: "91%",
 							"margin-left": "3px"
 						}, 500 );
 						$("#talk").animate({
