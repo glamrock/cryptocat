@@ -1,4 +1,9 @@
+html {
+	height: 90%;
+}
+
 body {
+	height: 100%;
 	background-color: #c7e5f5;
 	margin: 0 auto;
 	font-family: "Arial", "Helvetica", "Courier New", "Courier";
@@ -7,10 +12,10 @@ body {
 	padding: 0 12px 5px 12px;
 	background-image: url("../img/bg.png");
 }
-div.main {
+#main {
 	border: 10px solid #000;
 	background-color: #FFF;
-	padding: 10px 10px 50px 10px;
+	padding: 10px 8px 50px 8px;
 	width: 600px;
 	height: 420px;
 	color: #000;
@@ -18,7 +23,7 @@ div.main {
 	margin: 4.5% auto 0 auto;
 }
 p.bottom {
-	margin: 58px 0px 50px -10px;
+	margin: 57px 0px 50px -10px;
 	width: 610px;
 	background-color: #000;
 	padding: 3px 5px 0px 5px;
@@ -45,12 +50,13 @@ input.create {
 	margin-top: 10px;
 	padding: 0px 7px;
 }
-input.talk {
+#talk {
 	background-color: #000;
 	padding: 7px 11px 5px 10px;
 	border: none;
 	margin: -14px 0px 0px 2px;
 	float: left;
+	display: inline;
 	padding: 3px;
 	width: 67px;
 	color: #97CEEC;
@@ -58,17 +64,17 @@ input.talk {
 	font-size: 22px;
 	box-shadow: 2px 2px #90CAEA;
 }
-input.create:hover, input.talk:hover {
+input.create:hover, #talk:hover {
 	background-color: #97CEEC;
 	box-shadow: 2px 2px #000;
 	color: #FFF;
 }
-input.create:active, input.talk:active {
+input.create:active, #talk:active {
 	box-shadow: 2px 2px #97CEEC;
 }
-div.chat {
+#chat {
 	padding: 5px 5px 20px 0px;
-	width: 567px;
+	width: 585px;
 	height: 295px;
 	border: 3px solid #97CEEC;
 	margin: 0 auto;
@@ -84,8 +90,8 @@ div.chat {
 	background-color: rgba(151, 206, 236, 0.65);
 	font-size: 10px;
 	padding: 3px 3px 3px 0px;
-	width: 555px;
-	margin: -20px 0px 0px 11px;
+	width: 575px;
+	margin: -19px 0px 0px 2px;
 	word-spacing: 5px;
 }
 span.chatters {
@@ -93,13 +99,13 @@ span.chatters {
 	background-color: #000;
 	color: #FFF;
 }
-div.info {
+#info {
 	font-family: 'Verdana', 'Arial';
 	font-size: 10px;
 	color: #FFF;
 	background-color: #000;
 	padding: 2px 10px;
-	width: 560px;
+	width: 578px;
 	margin: 0 auto;
 	margin-top: 10px;
 }
@@ -114,26 +120,26 @@ a.logout {
 	float: right;
 	margin: 1px 2px 0 0;
 }
-div.chat a {
+#chat a {
 	color: #000;
 	border-bottom: 1px dashed #000;
 }
-div.chat a:hover {
+#chat a:hover {
 	border-bottom: 1px solid #000;
 	text-decoration: none;
 }
 input.logout:hover {
 	text-decoration: underline;
 }
-a.logout:hover, input.create:hover, input.talk:hover {
+a.logout:hover, input.create:hover, #talk:hover, #maximize {
 	cursor: pointer;
 }
-input.input {
-	margin: 0px 0px 0px 10px;
+#input {
+	margin: 0px 0px 0px 1px;
 	background-color: #000;
 	color: #FFF;
 	padding: 5px 10px;
-	width: 490px;
+	width: 508px;
 	border: none;
 	float: left;
 	height: 28px;
@@ -144,7 +150,7 @@ input.input {
 	line-height: 17px;
 	font-size: 12px;
 }
-input.input:active {
+#input:active {
 	border: none;
 }
 input.invisible, div.invisible, img.invisible {
@@ -157,14 +163,14 @@ input.invisible, div.invisible, img.invisible {
 	width: 260px;
 	color: #97CEEC;
 }
-input.key {
+#key {
 	background-color: #97CEEC;
 	color: #000;
 	font-family: 'Verdana', 'Arial';
 	font-size: 10px;
 	padding: 2px 10px;
-	width: 490px;
-	margin-left: 10px;
+	width: 508px;
+	margin-left: 1px;
 	outline: none;
 	resize: none;
 	border: none;
@@ -172,7 +178,7 @@ input.key {
 div.msg, div.gsm, div.emsg, div.egsm, div.cmsg, div.cgsm, div.umsg, div.ugsm {
 	padding: 10px 10px 10px 5px;
 	background-color: #D8EDF8;
-	width: 540px;
+	width: 99.5%;
 	word-wrap: break-word;
 	background-repeat: no-repeat;
 	background-image: url("../img/unlock.png");
@@ -238,4 +244,8 @@ span.red {
 }
 span.green {
 	color: #93D8B9;
+}
+
+#maximize {
+	float: right;
 }

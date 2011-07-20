@@ -56,9 +56,11 @@
 			print('chat no longer exists');
 		}
 		else if (isset($_GET['pos']) && (($_GET['pos'] < (count($chat) - $mypos)) || ($_GET['pos'] == "chat")) && $_GET['pos'] >= 0) {
-			for ($i = $mypos; $i < count($chat); $i++) {
-				if (preg_match('/CRYPTOCAT/i', $chat[$i])) {
-					print(htmlspecialchars($chat[$i]));
+			if ($mysession == $_SESSION['id'] && !is_null($_SESSION['id'])) {
+				for ($i = $mypos; $i < count($chat); $i++) {
+					if (preg_match('/CRYPTOCAT/i', $chat[$i])) {
+						print(htmlspecialchars($chat[$i]));
+					}
 				}
 			}
 		}
@@ -85,7 +87,9 @@
 		$chat = file($data.$_GET['chatters']);
 		getpeople($chat);
 		$total = count($usednicks) + 1;
-		print('<span class="chatters">'.$total.'</span> '.htmlspecialchars($nick.' '.implode(' ', $usednicks)));
+		if ($mysession == $_SESSION['id'] && !is_null($_SESSION['id'])) {
+			print('<span class="chatters">'.$total.'</span> '.htmlspecialchars($nick.' '.implode(' ', $usednicks)));
+		}
 		exit;
 	}
 ?>
@@ -123,7 +127,7 @@ else {
 	<?php
 		function welcome($name) {
 			global $install;
-			print('<div class="main">
+			print('<div id="main">
 				<img src="img/cryptocat.png" alt="cryptocat" class="cryptocat" />
 				<form action="'.$install.'" method="post" class="create" id="welcome">
 					<input type="text" class="name" name="name" id="name" onclick="StuffSelect(\'name\');" value="'.$name.'" maxlength="32" autocomplete="off" />
@@ -232,22 +236,23 @@ else {
 			global $data, $timelimit, $maxinput, $install, $update, $_SESSION, $mysession, $usedsessions;
 			$name = strtolower($name);
 			$chat = file($data.$name);
-			print('<div class="main">
+			print('<div id="main">
 			<img src="img/cryptocat.png" alt="cryptocat" />
+			<img src="img/maximize.png" alt="maximize" id="maximize" />
 			<input type="text" value="'.$name.'" name="name" id="name" class="invisible" />
 			<div class="invisible" id="loader"></div>
-			<div class="chat" id="chat"></div>
+			<div id="chat"></div>
 			<div id="chatters"></div>');
-			print('<div class="info">chatting as <a href="#" id="nick">'.$nick.'</a> on 
+			print('<div id="info">chatting as <a href="#" id="nick">'.$nick.'</a> on 
 			<input readonly type="text" id="url" onclick="StuffSelect(\'url\');" value="'.$install.'?c='.$name.'" />
 			<span id="strength"></span>
 			<a class="logout" onclick="logout();" href="#">log out</a></div>
 			<input type="text" id="key" value="type a key here for encrypted chat. all chatters must use the same key." class="key" maxlength="192" onclick="StuffSelect(\'key\');" onkeyup="keytime();" autocomplete="off" />
 			<form name="chatform" id="chatform" method="post" action="'.$install.'">
-			<input type="text" class="input" name="input" id="input" maxlength="'.$maxinput.'" 
+			<input type="text" name="input" id="input" maxlength="'.$maxinput.'" 
 			onkeydown="textcounter(document.chatform.input,document.chatform.talk,'.$maxinput.')" 
 			onkeyup="textcounter(document.chatform.input,document.chatform.talk,'.$maxinput.')" autocomplete="off" />
-			<input type="submit" name="talk" class="talk" id="talk" onmouseover="curcount = this.value; this.value=\'send\';" onmouseout="this.value=curcount;" value="'.$maxinput.'" />
+			<input type="submit" name="talk" id="talk" onmouseover="curcount = this.value; this.value=\'send\';" onmouseout="this.value=curcount;" value="'.$maxinput.'" />
 			</form></div>');
 			print('<script type="text/javascript">
 				Math.seedrandom();
@@ -260,6 +265,7 @@ else {
 				var focus = true;
 				var num = 0;
 				var pos = 0;
+				var maximized = 0;
 				var install = "'.$install.'"
 				var match;
 				var defaultsalt = getkey("'.trim($chat[0]).'" + document.getElementById("url").value, 5);
@@ -398,6 +404,7 @@ else {
 									}
 								}
 								if ((success) && (hmac != Crypto.HMAC(Crypto.SHA1, ciphertext + success, getkey(ciphertext  + success, 4)))) {
+									chat[i] = chat[i].replace(/\[MSG](.+?)\[\/MSG]/, "<span class=\"diffkey\">corrupted!</span>");
 									corrupted = 1;
 								}
 								else if (success) {
@@ -530,6 +537,78 @@ else {
 					});
 					return false;    
 				});
+
+				$("#maximize").click(function(){
+					if (maximized) {
+						maximized = 0;
+						$("#main").animate({
+							"margin-top": "4.5%",
+							width: "600px",
+							height: "420px"
+						}, 500 );
+						$("#chat").animate({
+							"margin-top": "20px",
+							width: "585px",
+							height: "295px"
+						}, 500 );
+						$("#chatters").animate({
+							width: "575px",
+							"margin-left": "2px",
+						}, 500 );
+						$("#info").animate({
+							width: "578px",
+							"margin-left": "1px"
+						}, 500 );
+						$("#key").animate({
+							width: "508px",
+							"margin-left": "1px"
+						}, 500 );
+						$("#input").animate({
+							width: "508px",
+							"margin-left": "1px"
+						}, 500 );
+						$("#talk").animate({
+							width: "67px"
+						}, 500 );
+						document.getElementById("maximize").src = "img/maximize.png";
+					}
+					else {
+						$("#main").animate({
+							"margin-top": "2%",
+							width: "75%",
+							height: "82%"
+						}, 500 );
+						$("#chat").animate({
+							margin: "2px",
+							"margin-top": "10px",
+							width: "99%",
+							height: "82%"
+						}, 500 );
+						$("#chatters").animate({
+							width: "98.3%",
+							"margin-left": "5px",
+							"margin-top": "-22px"
+						}, 500 );
+						$("#info").animate({
+							width: "96%",
+							"margin-left": "3px"
+						}, 500 );
+						$("#key").animate({
+							width: "90%",
+							"margin-left": "3px"
+						}, 500 );
+						$("#input").animate({
+							width: "90%",
+							"margin-left": "3px"
+						}, 500 );
+						$("#talk").animate({
+							width: "6%"
+						}, 500 );
+						document.getElementById("maximize").src = "img/minimize.png";
+						maximized = 1;
+					}
+				});
+
 				
 				function logout() {
 					$.ajax( { url : "index.php",
