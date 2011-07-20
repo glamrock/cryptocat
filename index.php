@@ -200,8 +200,8 @@ else {
 			"Baiduspider", "Feedfetcher-Google", "TechnoratiSnoop", "Rankivabot",
 			"Mediapartners-Google", "Sogou web spider", "WebAlta Crawler","TweetmemeBot",
 			"Butterfly","Twitturls","Me.dium","Twiceler","Scribd", "Facebook", "Twitter", 
-			"facebook", "twitter", "LinkedIn", "bot", "Bot", "BOT", "LinkedIn", "StatusNet",
-			"Summify", "LongURL", "Java" );
+			"facebook", "twitter", "LinkedIn", "bot", "Bot", "BOT", "StatusNet",
+			"Summify", "LongURL", "Java");
 			foreach($botlist as $bot){
 				if(strpos($_SERVER['HTTP_USER_AGENT'],$bot)!==false)
 				return true;
