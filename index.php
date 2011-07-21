@@ -53,7 +53,7 @@
 		$chat = file($data.$_GET['chat']);
 		getpeople($chat);
 		if (!$chat) {
-			print('chat no longer exists');
+			print('NOEXIST');
 		}
 		else if (isset($_GET['pos']) && (($_GET['pos'] < (count($chat) - $mypos)) || ($_GET['pos'] == "chat")) && $_GET['pos'] >= 0) {
 			if ($mysession == $_SESSION['id'] && !is_null($_SESSION['id'])) {
@@ -62,6 +62,9 @@
 						print(htmlspecialchars($chat[$i]));
 					}
 				}
+			}
+			else {
+				print('NOLOGIN');
 			}
 		}
 		exit;
@@ -104,6 +107,7 @@
 	<title>cryptocat</title>
 	<link rel="icon" type="image/png" href="img/favicon.gif" />
 	<script  type="text/javascript" src="js/jquery.js"></script>
+	<script  type="text/javascript" src="js/color.js"></script>
 	<!-- cryptocat uses the crypto-js library, included below, and available in its entirety at http://code.google.com/p/crypto-js/ -->
 	<!-- exact file being used: http://crypto-js.googlecode.com/files/2.2.0-crypto-sha1-hmac-pbkdf2-ofb-aes.js -->
 	<script type="text/javascript" src="js/crypto.js"></script>
@@ -285,6 +289,7 @@ else {
 				var num = 0;
 				var pos = 0;
 				var maximized = 0;
+				var errored = 0;
 				var install = "'.$install.'"
 				var match;
 				var defaultsalt = getkey("'.trim($chat[0]).'" + document.getElementById("url").value, 5);
@@ -493,6 +498,24 @@ else {
 					chat = chat.join("\n");
 					return chat;
 				}
+
+				function errordisplay(error) {
+					$("#chatters").animate({
+						"word-spacing": "2px",
+						"padding-left": "5px",
+						backgroundColor: "#DF93D6",
+						width: "-=5px",
+						"font-weight": "bold"
+					}, 500 );
+					$("#chat").animate({
+						borderTopColor: "#DF93D6",
+						borderRightColor: "#DF93D6",
+						borderBottomColor: "#DF93D6",
+						borderLeftColor: "#DF93D6"
+					}, 500 );
+					document.getElementById("chatters").innerHTML = error;
+					errored++;
+				}
 				
 				function updatechat(div){
 					var divold = 0;
@@ -507,7 +530,17 @@ else {
 						div = "#loader";
 					}
 					$(div).load("index.php?chat='.$name.'&pos=" + pos, function() {
-						if (((document.getElementById("loader").innerHTML != changemon) && (document.getElementById("loader").innerHTML != "")) || (divold == "#chat")) {
+						if (document.getElementById("loader").innerHTML == "NOEXIST") {
+							if (!errored) {
+								errordisplay("your chat no longer exists. refresh to restart it.");
+							}
+						}
+						else if (document.getElementById("loader").innerHTML == "NOLOGIN") {
+							if (!errored) {
+								errordisplay("you have logged out from this chat. refresh to rejoin it.");
+							}
+						}
+						else if (((document.getElementById("loader").innerHTML != changemon) && (document.getElementById("loader").innerHTML != "")) || (divold == "#chat")) {
 							pos = document.getElementById("loader").innerHTML.split("\n").length;
 							document.getElementById("chat").innerHTML = processline(document.getElementById("loader").innerHTML, 1);
 							document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
@@ -612,7 +645,7 @@ else {
 							height: "80%"
 						}, 500 );
 						$("#chatters").animate({
-							width: "98.3%",
+							width: "98.1%",
 							"margin-left": "5px",
 							"margin-top": "-22px"
 						}, 500 );
@@ -647,6 +680,12 @@ else {
 					window.location = "'.$install.'"
 				}
 				
+				$(document).ajaxError(function(){
+					if (!errored) {
+						errordisplay("connection error. please close this chat and try again.");
+					}
+				});
+
 				updatechat("#loader");
 				setInterval("updatechat(\"#loader\")", '.$update.');
 			</script>');
