@@ -1,5 +1,5 @@
 html {
-	height: 90%;
+	height: 85%;
 }
 
 body {
@@ -249,4 +249,10 @@ span.green {
 
 #maximize {
 	float: right;
+}
+
+#video {
+	text-align: center;
+	font-style: italic;
+	margin-top: 0px;
 }

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	/* cryptocat 0.3 */
 	$install = 'https://crypto.cat/';
 	$domain = "crypto.cat";
@@ -136,7 +136,7 @@ else {
 				<form action="'.$install.'" method="post" class="create" id="welcome">
 					<input type="text" class="name" name="name" id="name" onclick="StuffSelect(\'name\');" value="'.$name.'" maxlength="32" autocomplete="off" />
 					<input type="submit" name="create" class="create" value="enter" id="create" onclick="updateaction();" />
-					<center><i>(first time? check out this <a href="info">awesome video!</a>)</i></center>
+					<p id="video">(first time? check out this <a href="info">awesome video!</a>)</p>
 				</form>
 				<table>
 					<tr>
@@ -164,6 +164,7 @@ else {
 				var td1 = document.getElementById("td1").innerHTML;
 				var td2 = document.getElementById("td2").innerHTML;
 				var td3 = document.getElementById("td3").innerHTML;
+				var video = document.getElementById("video").innerHTML;
 				var bottom = document.getElementById("bottom").innerHTML;
 				var name = document.getElementById("name").value;
 				var create = document.getElementById("create").value;
@@ -179,6 +180,7 @@ else {
 						document.getElementById("td1").innerHTML = "<strong>cryptocat</strong> li permet establir xats encriptada, privada de improvisada converses segures. Fes una ullada a aquest <a href=\"info\">vídeo</a> per obtenir consells sobre com començar!";
 						document.getElementById("td2").innerHTML = "els seus missatges són encriptades abans de sortir del seu ordinador usant un algoritme AES-256 i es verifiquen la integritat. totes les converses estan ben esborrat després de 30 minuts d\'inactivitat.";
 						document.getElementById("td3").innerHTML = \'cryptocat és totalment compatible amb <a target="_blank" href="https://torproject.org">Tor</a> per anònima al xat. utilitzeu cryptocat amb Tor de forma anònima la màxima confidencialitat.\';
+						document.getElementById("video").innerHTML = "(per primera vegada? fes un cop d\'ull a aquest <a href=\"info\">vídeo impressionant!</a>)";
 						document.getElementById("bottom").innerHTML = \'<a href="#" id="translate" onclick="translate()">english</a> | <a href="about">sobre</a> | cryptocat és el programari beta en el desenvolupament actiu | <a target="_blank" href="https://twitter.com/cryptocatapp">twitter</a> | <a target="_blank" href="https://github.com/kaepora/cryptocat/">github</a>\';
 						document.getElementById("name").value = "escrigui el seu nom de xat";
 						document.getElementById("create").value = "entrar";
@@ -188,6 +190,7 @@ else {
 						document.getElementById("td1").innerHTML = td1;
 						document.getElementById("td2").innerHTML = td2;
 						document.getElementById("td3").innerHTML = td3;
+						document.getElementById("video").innerHTML = video;
 						document.getElementById("bottom").innerHTML = bottom;
 						document.getElementById("name").value = name;
 						document.getElementById("create").value = create;
@@ -232,13 +235,16 @@ else {
 			global $data, $nicks, $maxusers, $nick, $mysession, $mypos, $usednicks, $usedsessions, $_SESSION;
 			session_name($name);
 			session_start();
+			getpeople($chat);
 			if (!isset($_SESSION['id'])) {
 				$_SESSION['id'] = gen(32);
+				while (in_array($_SESSION['id'], $usedsessions)) {
+					$_SESSION['id'] = gen(32);
+				}
 			}
 			$name = strtolower($name);
 			$chat = file($data.$name);
 			$pos = count($chat);
-			getpeople($chat);
 			if (count($usedsessions) >= $maxusers) {
 				welcome('chat is full');
 			}
@@ -532,12 +538,12 @@ else {
 					$(div).load("index.php?chat='.$name.'&pos=" + pos, function() {
 						if (document.getElementById("loader").innerHTML == "NOEXIST") {
 							if (!errored) {
-								errordisplay("your chat no longer exists. refresh to restart it.");
+								errordisplay("your chat no longer exists.");
 							}
 						}
 						else if (document.getElementById("loader").innerHTML == "NOLOGIN") {
 							if (!errored) {
-								errordisplay("you have logged out from this chat. refresh to rejoin it.");
+								errordisplay("you have been logged out.");
 							}
 						}
 						else if (((document.getElementById("loader").innerHTML != changemon) && (document.getElementById("loader").innerHTML != "")) || (divold == "#chat")) {
@@ -600,6 +606,7 @@ else {
 							height: "420px"
 						}, 500 );
 						$("#chat").animate({
+							margin: "0 auto",
 							"margin-top": "20px",
 							"min-height": "295px",
 							width: "585px",
@@ -634,15 +641,15 @@ else {
 							"margin-top": "2%",
 							"min-width": "900px",
 							"min-height": "480px",
-							width: "75%",
-							height: "82%"
+							width: "85%",
+							height: "90%"
 						}, 500 );
 						$("#chat").animate({
 							margin: "2px",
 							"margin-top": "10px",
 							"min-height": "360px",
 							width: "99%",
-							height: "80%"
+							height: "82%"
 						}, 500 );
 						$("#chatters").animate({
 							width: "98.1%",
@@ -682,7 +689,7 @@ else {
 				
 				$(document).ajaxError(function(){
 					if (!errored) {
-						errordisplay("connection error. please close this chat and try again.");
+						errordisplay("you have been disconnected.");
 					}
 				});
 
@@ -703,8 +710,7 @@ else {
 						joinchat($_GET['c']);
 					}
 					else {
-						$create = createchat($_GET['c']);
-						if ($create) {
+						if (createchat($_GET['c'])) {
 							joinchat($_GET['c']);
 						}
 					}
