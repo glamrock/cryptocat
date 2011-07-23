@@ -507,10 +507,7 @@ else {
 
 				function errordisplay(error) {
 					$("#chatters").animate({
-						"word-spacing": "2px",
-						"padding-left": "5px",
 						backgroundColor: "#DF93D6",
-						width: "-=5px",
 						"font-weight": "bold"
 					}, 500 );
 					$("#chat").animate({
@@ -519,7 +516,7 @@ else {
 						borderBottomColor: "#DF93D6",
 						borderLeftColor: "#DF93D6"
 					}, 500 );
-					document.getElementById("chatters").innerHTML = error;
+					document.getElementById("chatters").innerHTML = "<span class=\"chatters\">x</span>&nbsp&nbsp" + error;
 					errored++;
 				}
 				
@@ -556,6 +553,16 @@ else {
 							}
 							changemon = document.getElementById("loader").innerHTML;
 							$("#chatters").load("index.php?chatters='.$name.'", function() {
+								$("#chatters").animate({
+									backgroundColor: "#97CEEC",
+									"font-weight": "normal"
+								}, 500 );
+								$("#chat").animate({
+									borderTopColor: "#97CEEC",
+									borderRightColor: "#97CEEC",
+									borderBottomColor: "#97CEEC",
+									borderLeftColor: "#97CEEC"
+								}, 500 );
 							});
 						}
 					});
@@ -649,10 +656,10 @@ else {
 							"margin-top": "10px",
 							"min-height": "360px",
 							width: "99%",
-							height: "82%"
+							height: "80%"
 						}, 500 );
 						$("#chatters").animate({
-							width: "98.1%",
+							width: "98%",
 							"margin-left": "5px",
 							"margin-top": "-22px"
 						}, 500 );
