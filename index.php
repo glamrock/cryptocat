@@ -552,23 +552,34 @@ else {
 								document.title = "[" + num + "] cryptocat";
 							}
 							changemon = document.getElementById("loader").innerHTML;
-							$("#chatters").load("index.php?chatters='.$name.'", function() {
-								$("#chatters").animate({
-									backgroundColor: "#97CEEC",
-									"font-weight": "normal"
-								}, 500 );
-								$("#chat").animate({
-									borderTopColor: "#97CEEC",
-									borderRightColor: "#97CEEC",
-									borderBottomColor: "#97CEEC",
-									borderLeftColor: "#97CEEC"
-								}, 500 );
-							});
+							updatechatters();
+						}
+						else if (errored) {
+							updatechatters();
 						}
 					});
 					if (divold == "#chat") {
 						pos = posold;
 					}
+				}
+
+				function updatechatters() {
+					error = document.getElementById("chatters").innerHTML;
+					$("#chatters").load("index.php?chatters='.$name.'", function() {
+						if (document.getElementById("chatters").innerHTML != error) {
+							$("#chatters").animate({
+								backgroundColor: "#97CEEC",
+								"font-weight": "normal"
+							}, 500 );
+							$("#chat").animate({
+								borderTopColor: "#97CEEC",
+								borderRightColor: "#97CEEC",
+								borderBottomColor: "#97CEEC",
+								borderLeftColor: "#97CEEC"
+							}, 500 );
+							errored = 0;
+						}
+					});
 				}
 				
 				$("#chatform").submit( function() {
