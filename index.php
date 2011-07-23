@@ -235,16 +235,16 @@ else {
 			global $data, $nicks, $maxusers, $nick, $mysession, $mypos, $usednicks, $usedsessions, $_SESSION;
 			session_name($name);
 			session_start();
+			$name = strtolower($name);
+			$chat = file($data.$name);
 			getpeople($chat);
+			$pos = count($chat);
 			if (!isset($_SESSION['id'])) {
 				$_SESSION['id'] = gen(32);
 				while (in_array($_SESSION['id'], $usedsessions)) {
 					$_SESSION['id'] = gen(32);
 				}
 			}
-			$name = strtolower($name);
-			$chat = file($data.$name);
-			$pos = count($chat);
 			if (count($usedsessions) >= $maxusers) {
 				welcome('chat is full');
 			}
