@@ -1,6 +1,6 @@
 <?php
 	/* cryptocat 0.3 */
-	$install = 'https://crypto.cat/new/';
+	$install = 'https://crypto.cat/';
 	$domain = "crypto.cat";
 	$data = '/srv/data/';
 	$timelimit = 1800;
