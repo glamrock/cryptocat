@@ -309,19 +309,19 @@ else {
 
 				function soundPlay(which) {
 					if (!soundEmbed) {
-						soundEmbed = document.createElement("embed");
+						soundEmbed = document.createElement("audio");
 						soundEmbed.setAttribute("src", which);
-						soundEmbed.setAttribute("hidden", true);
-						soundEmbed.setAttribute("autostart", true);
+						soundEmbed.setAttribute("style", "display: none;");
+						soundEmbed.setAttribute("autoplay", true);
 					}
 					else {
 						document.body.removeChild(soundEmbed);
 						soundEmbed.removed = true;
 						soundEmbed = null;
-						soundEmbed = document.createElement("embed");
+						soundEmbed = document.createElement("audio");
 						soundEmbed.setAttribute("src", which);
-						soundEmbed.setAttribute("hidden", true);
-						soundEmbed.setAttribute("autostart", true);
+						soundEmbed.setAttribute("style", "display: none;");
+						soundEmbed.setAttribute("autoplay", true);
 					}
 					soundEmbed.removed = false;
 					document.body.appendChild(soundEmbed);
@@ -575,7 +575,7 @@ else {
 								num++;
 								document.title = "[" + num + "] cryptocat";
 								if (sound) {
-									soundPlay("snd/msg.mp3");
+									soundPlay("snd/msg.ogg");
 								}
 							}
 							updatechatters();
