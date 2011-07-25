@@ -158,39 +158,39 @@ else {
 				</p>
 			</div>
 			<script type="text/javascript">
-				var td1 = document.getElementById("td1").innerHTML;
-				var td2 = document.getElementById("td2").innerHTML;
-				var td3 = document.getElementById("td3").innerHTML;
-				var video = document.getElementById("video").innerHTML;
-				var bottom = document.getElementById("bottom").innerHTML;
-				var name = document.getElementById("name").value;
-				var create = document.getElementById("create").value;
+				var td1 = $("#td1").html();
+				var td2 = $("#td2").html()
+				var td3 = $("#td3").html()
+				var video = $("#video").html()
+				var bottom = $("#bottom").html()
+				var name = $("#name").val()
+				var create = $("#create").val()
 				var curlang = "english";
 						
 				function updateaction() {
-					document.getElementById("name").value = document.getElementById("name").value.toLowerCase();
-					document.getElementById("welcome").action = \''.$install.'\'+\'?c=\'+document.getElementById("name").value.toLowerCase();
+					$("#name").val(document.getElementById("name").value.toLowerCase());
+					document.getElementById("welcome").action = \''.$install.'\'+\'?c=\'+$("#name").val().toLowerCase();
 				}
 						
 				function translate() {
 					if (curlang == "english") {
-						document.getElementById("td1").innerHTML = "<strong>cryptocat</strong> li permet establir xats encriptada, privada de improvisada converses segures. Fes una ullada a aquest <a href=\"info\">vídeo</a> per obtenir consells sobre com començar!";
-						document.getElementById("td2").innerHTML = "els seus missatges són encriptades abans de sortir del seu ordinador usant un algoritme AES-256 i es verifiquen la integritat. totes les converses estan ben esborrat després de 30 minuts d\'inactivitat.";
-						document.getElementById("td3").innerHTML = \'cryptocat és totalment compatible amb <a target="_blank" href="https://torproject.org">Tor</a> per anònima al xat. utilitzeu cryptocat amb Tor de forma anònima la màxima confidencialitat.\';
-						document.getElementById("video").innerHTML = "(per primera vegada? fes un cop d\'ull a aquest <a href=\"info\">vídeo impressionant!</a>)";
-						document.getElementById("bottom").innerHTML = \'<a href="#" id="translate" onclick="translate()">english</a> | <a href="about">sobre</a> | cryptocat és el programari beta en el desenvolupament actiu | <a target="_blank" href="https://twitter.com/cryptocatapp">twitter</a> | <a target="_blank" href="https://github.com/kaepora/cryptocat/">github</a>\';
-						document.getElementById("name").value = "escrigui el seu nom de xat";
-						document.getElementById("create").value = "entrar";
+						$("#td1").html("<strong>cryptocat</strong> li permet establir xats encriptada, privada de improvisada converses segures. Fes una ullada a aquest <a href=\"info\">vídeo</a> per obtenir consells sobre com començar!");
+						$("#td2").html("els seus missatges són encriptades abans de sortir del seu ordinador usant un algoritme AES-256 i es verifiquen la integritat. totes les converses estan ben esborrat després de 30 minuts d\'inactivitat.");
+						$("#td3").html(\'cryptocat és totalment compatible amb <a target="_blank" href="https://torproject.org">Tor</a> per anònima al xat. utilitzeu cryptocat amb Tor de forma anònima la màxima confidencialitat.\');
+						$("#video").html("(per primera vegada? fes un cop d\'ull a aquest <a href=\"info\">vídeo impressionant!</a>)");
+						$("#bottom").html(\'<a href="#" id="translate" onclick="translate()">english</a> | <a href="about">sobre</a> | cryptocat és el programari beta en el desenvolupament actiu | <a target="_blank" href="https://twitter.com/cryptocatapp">twitter</a> | <a target="_blank" href="https://github.com/kaepora/cryptocat/">github</a>\');
+						$("#name").val("escrigui el seu nom de xat");
+						$("#create").val("entrar");
 						curlang = "catalan";
 					}
 					else if (curlang == "catalan") {
-						document.getElementById("td1").innerHTML = td1;
-						document.getElementById("td2").innerHTML = td2;
-						document.getElementById("td3").innerHTML = td3;
-						document.getElementById("video").innerHTML = video;
-						document.getElementById("bottom").innerHTML = bottom;
-						document.getElementById("name").value = name;
-						document.getElementById("create").value = create;
+						$("#td1").html(td1);
+						$("#td2").html(td2);
+						$("#td3").html(td3);
+						$("#video").html(video);
+						$("#bottom").html(bottom);
+						$("#name").val(name);
+						$("#create").val(create);
 						curlang = "english";
 					}
 				}
@@ -266,7 +266,8 @@ else {
 			$chat = file($data.$name);
 			print('<div id="main">
 			<img src="img/cryptocat.png" alt="cryptocat" />
-			<img src="img/maximize.png" alt="maximize" id="maximize" />
+			<img src="img/maximize.png" alt="maximize" id="maximize" title="expand" />
+			<img src="img/nosound.png" alt="sound" id="sound" title="enable message notifications" />
 			<input type="text" value="'.$name.'" name="name" id="name" class="invisible" />
 			<div class="invisible" id="loader"></div>
 			<div id="chat"></div>
@@ -288,21 +289,43 @@ else {
 				var key;
 				var curcount;
 				var t = setTimeout("updatekey()", 1000);
-				var nick = document.getElementById("nick").innerHTML;
+				var nick = $("#nick").html();
 				var focus = true;
 				var num = 0;
 				var pos = 0;
 				var maximized = 0;
+				var sound = 0;
+				var soundEmbed = null;
 				var errored = 0;
 				var install = "'.$install.'"
 				var match;
-				var defaultsalt = getkey("'.trim($chat[0]).'" + document.getElementById("url").value, 5);
-				var defaultkey = Crypto.PBKDF2(getkey(document.getElementById("url").value, 4), defaultsalt, 64, { iterations: 1000 });
-				var defaultkeytext = document.getElementById("key").value;
+				var defaultsalt = getkey("'.trim($chat[0]).'" + $("#url").val(), 5);
+				var defaultkey = Crypto.PBKDF2(getkey($("#url").val(), 4), defaultsalt, 64, { iterations: 1000 });
+				var defaultkeytext = $("#key").val();
 				window.onblur = function() { focus = false; }
 				window.onfocus = function() { focus = true; }
 				document.onblur = window.onblur;
 				document.focus = window.focus;
+
+				function soundPlay(which) {
+					if (!soundEmbed) {
+						soundEmbed = document.createElement("embed");
+						soundEmbed.setAttribute("src", which);
+						soundEmbed.setAttribute("hidden", true);
+						soundEmbed.setAttribute("autostart", true);
+					}
+					else {
+						document.body.removeChild(soundEmbed);
+						soundEmbed.removed = true;
+						soundEmbed = null;
+						soundEmbed = document.createElement("embed");
+						soundEmbed.setAttribute("src", which);
+						soundEmbed.setAttribute("hidden", true);
+						soundEmbed.setAttribute("autostart", true);
+					}
+					soundEmbed.removed = false;
+					document.body.appendChild(soundEmbed);
+				}
 				
 				function getkey(id, n) {
 					gk = Crypto.SHA1(id);
@@ -329,41 +352,41 @@ else {
 				}
 				
 				function updatekey() {
-					if ((document.getElementById("key").value == "") || (document.getElementById("key").value == defaultkeytext)) {
+					if (($("#key").val() == "") || ($("#key").val() == defaultkeytext)) {
 						salt = defaultsalt;
 						key = defaultkey;
-						document.getElementById("strength").innerHTML = "";
+						$("#strength").html = "";
 					}
 					else {
-						salt = getkey("'.trim($chat[0]).'" + document.getElementById("key").value, 5);
-						key = Crypto.PBKDF2(getkey(document.getElementById("key").value, 4), salt, 64, { iterations: 1000 });
+						salt = getkey("'.trim($chat[0]).'" + $("#key").val(), 5);
+						key = Crypto.PBKDF2(getkey($("#key").val(), 4), salt, 64, { iterations: 1000 });
 						var strength = 0;
-						if (document.getElementById("key").value.length >= 10) {
+						if ($("#key").val().length >= 10) {
 							strength = 10;
 						}
-						if (document.getElementById("key").value.length >= 16) {
+						if ($("#key").val().length >= 16) {
 							strength++;
 						}
-						if (document.getElementById("key").value.match(/[a-z]/)) {
+						if ($("#key").val().match(/[a-z]/)) {
 							strength++;
 						}
-						if (document.getElementById("key").value.match(/[A-Z]/)) {
+						if ($("#key").val().match(/[A-Z]/)) {
 							strength++;
 						}
-						if (document.getElementById("key").value.match(/[0-9]/)) {
+						if ($("#key").val().match(/[0-9]/)) {
 							strength++;
 						}
-						if (document.getElementById("key").value.match(/[^\d\w\s]/)) {
+						if ($("#key").val().match(/[^\d\w\s]/)) {
 							strength++;
 						}
 						if (strength < 12) {
-							document.getElementById("strength").innerHTML = "key strength: <span class=\"red\">weak</span>";
+							$("#strength").html("key strength: <span class=\"red\">weak</span>");
 						}
 						if (strength == 12) {
-							document.getElementById("strength").innerHTML = "key strength: okay";
+							$("#strength").html("key strength: okay");
 						}
 						if (strength > 12) {
-							document.getElementById("strength").innerHTML = "key strength: <span class=\"green\">good</span>";
+							$("#strength").html("key strength: <span class=\"green\">good</span>");
 						}
 					}
 					updatechat("#chat");
@@ -488,7 +511,7 @@ else {
 							else {
 								tag = "";
 							}
-							if ((!flip) && (document.getElementById("chat").innerHTML.split("\n").length % 2)) {
+							if ((!flip) && ($("#chat").html().split("\n").length % 2)) {
 								tag += "msg";
 							}
 							else {
@@ -517,7 +540,7 @@ else {
 						borderBottomColor: "#DF93D6",
 						borderLeftColor: "#DF93D6"
 					}, 500 );
-					document.getElementById("chatters").innerHTML = "<span class=\"chatters\">x</span>&nbsp " + error;
+					$("#chatters").html("<span class=\"chatters\">x</span>&nbsp " + error);
 					errored++;
 				}
 				
@@ -534,23 +557,26 @@ else {
 						div = "#loader";
 					}
 					$(div).load("index.php?chat='.$name.'&pos=" + pos, function() {
-						if (document.getElementById("loader").innerHTML == "NOEXIST") {
+						if ($("#loader").html() == "NOEXIST") {
 							if (!errored) {
 								errordisplay("your chat no longer exists.");
 							}
 						}
-						else if (document.getElementById("loader").innerHTML == "NOLOGIN") {
+						else if ($("#loader").html() == "NOLOGIN") {
 							if (!errored) {
 								errordisplay("you have been logged out.");
 							}
 						}
-						else if ((document.getElementById("loader").innerHTML != "") || (divold == "#chat")) {
-							pos = document.getElementById("loader").innerHTML.split("\n").length;
-							document.getElementById("chat").innerHTML = processline(document.getElementById("loader").innerHTML, 1);
+						else if (($("#loader").html() != "") || (divold == "#chat")) {
+							pos = $("#loader").html().split("\n").length;
+							$("#chat").html(processline($("#loader").html(), 1));
 							document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
 							if (focus == false) {
 								num++;
 								document.title = "[" + num + "] cryptocat";
+								if (sound) {
+									soundPlay("snd/msg.mp3");
+								}
 							}
 							updatechatters();
 						}
@@ -564,9 +590,9 @@ else {
 				}
 
 				function updatechatters() {
-					error = document.getElementById("chatters").innerHTML;
+					error = $("#chatters").html();
 					$("#chatters").load("index.php?chatters='.$name.'", function() {
-						if (document.getElementById("chatters").innerHTML != error) {
+						if ($("#chatters").html() != error) {
 							$("#chatters").animate({
 								backgroundColor: "#97CEEC",
 								"font-weight": "normal"
@@ -583,8 +609,8 @@ else {
 				}
 				
 				$("#chatform").submit( function() {
-					var orig = document.getElementById("input").value;
-					var msg = $.trim(document.getElementById("input").value);
+					var orig = $("#input").val();
+					var msg = $.trim($("#input").val());
 					if (msg != "") {
 						var msg = "[B-M]" + msg + "[E-M]";
 						msg = msg.replace(/\$/g,"&#36;");
@@ -592,27 +618,42 @@ else {
 						var hmac = Crypto.HMAC(Crypto.SHA1, encoded + msg, getkey(encoded + msg, 4));
 						encoded = nick + ": " + "[B-C]" + encoded + "[E-C][B-H]" + hmac + "[E-H]";
 						document.getElementById("chat").innerHTML += processline(encoded, 0);
-						document.getElementById("input").value = "";
+						$("#input").val("");
 						document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
 					}
 					else {
 						encoded = "";
 					}
-					document.getElementById("input").value = "";
+					$("#input").val("");
 					document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
 					$.ajax( { url: "index.php",
 						type: "POST",
 						data: "input=" + encodeURIComponent(encoded) + "&name=" + $("#name").val() + "&talk=send",
 						success: function(data) {
 							document.getElementById("input").focus();
-							document.getElementById("talk").value = "'.$maxinput.'";
+							$("#talk").val("'.$maxinput.'");
 							updatechat("#loader");
 						},
 						error: function(data) {
-							document.getElementById("input").value = orig;
+							$("#input").val(orig);
 						}
 					});
 					return false;    
+				});
+
+				$("#sound").click(function(){
+					if (sound) {
+						$("#sound").attr("src", "img/nosound.png");
+						$("#sound").attr("title", "enable message notifications");
+						sound = 0;
+						document.getElementById(\'input\').focus();
+					}
+					else {
+						$("#sound").attr("src", "img/sound.png");
+						$("#sound").attr("title", "disable message notifications");
+						sound = 1;
+						document.getElementById(\'input\').focus();
+					}
 				});
 
 				$("#maximize").click(function(){
@@ -650,7 +691,8 @@ else {
 						$("#talk").animate({
 							width: "67px"
 						}, 500 );
-						document.getElementById("maximize").src = "img/maximize.png";
+						$("#maximize").attr("src", "img/maximize.png");
+						$("#maximize").attr("title", "expand");
 						maximized = 0;
 						setTimeout("document.getElementById(\'chat\').scrollTop = document.getElementById(\'chat\').scrollHeight;", 520);
 						setTimeout("updatechat(\"#chat\")", 520);
@@ -691,7 +733,8 @@ else {
 						$("#talk").animate({
 							width: "5.3%"
 						}, 500 );
-						document.getElementById("maximize").src = "img/minimize.png";
+						$("#maximize").attr("src", "img/minimize.png");
+						$("#maximize").attr("title", "contract");
 						maximized = 1;
 						setTimeout("document.getElementById(\'chat\').scrollTop = document.getElementById(\'chat\').scrollHeight;", 520);
 						document.getElementById(\'input\').focus();

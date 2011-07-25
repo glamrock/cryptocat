@@ -132,7 +132,7 @@ a.logout {
 input.logout:hover {
 	text-decoration: underline;
 }
-a.logout:hover, input.create:hover, #talk:hover, #maximize {
+a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound {
 	cursor: pointer;
 }
 #input {
@@ -247,8 +247,12 @@ span.green {
 	color: #93D8B9;
 }
 
-#maximize {
+#maximize, #sound {
 	float: right;
+}
+
+#sound {
+	margin-right: 10px;
 }
 
 #video {
