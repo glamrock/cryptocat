@@ -1,6 +1,6 @@
 <?php
 	/* cryptocat 0.3 */
-	$install = 'https://crypto.cat/';
+	$install = 'https://crypto.cat/new/';
 	$domain = "crypto.cat";
 	$data = '/srv/data/';
 	$timelimit = 1800;
@@ -58,9 +58,7 @@
 		else if (isset($_GET['pos']) && (($_GET['pos'] < (count($chat) - $mypos)) || ($_GET['pos'] == "chat")) && $_GET['pos'] >= 0) {
 			if ($mysession == $_SESSION['id'] && !is_null($_SESSION['id'])) {
 				for ($i = $mypos; $i < count($chat); $i++) {
-					if (preg_match('/CRYPTOCAT/i', $chat[$i])) {
-						print(htmlspecialchars($chat[$i]));
-					}
+					print(htmlspecialchars($chat[$i]));
 				}
 			}
 			else {
@@ -76,7 +74,6 @@
 		getpeople($chat);
 		preg_match('/^[a-z]+:/', $_POST['input'], $thisnick);
 		$thisnick = substr($thisnick[0], 0, -1);
-		print('<script>alert('.$nick.' '.$thisnick.');</script>');
 		$_POST['input'] = trim($_POST['input']);
 		if ($_POST['input'] != "" && $nick == $thisnick) {
 			$chat = "\n".$_POST['input'];
@@ -105,11 +102,12 @@
 	<meta http-equiv="Content-Type" content="application/xhtml+xml" />
 	<meta name="keywords" content="cryptocat, encrypted chat, minichat, online chat" />
 	<title>cryptocat</title>
+	<link rel="stylesheet" href="css/style.css" type="text/css" /> 
 	<link rel="icon" type="image/png" href="img/favicon.gif" />
 	<script  type="text/javascript" src="js/jquery.js"></script>
 	<script  type="text/javascript" src="js/color.js"></script>
-	<!-- cryptocat uses the crypto-js library, included below, and available in its entirety at http://code.google.com/p/crypto-js/ -->
-	<!-- exact file being used: http://crypto-js.googlecode.com/files/2.2.0-crypto-sha1-hmac-pbkdf2-ofb-aes.js -->
+	<!-- cryptocat uses the crypto-js library - http://code.google.com/p/crypto-js/ -->
+	<!-- http://crypto-js.googlecode.com/files/2.3.0-crypto-sha1-hmac-pbkdf2-blockmodes-aes.js -->
 	<script type="text/javascript" src="js/crypto.js"></script>
 	<script type="text/javascript" src="js/seedrandom.js"></script>
 	<script type="text/javascript">
@@ -118,7 +116,6 @@
 			document.getElementById(id).select();
 		}
 	</script>
-	<link rel="stylesheet" href="css/style.css" type="text/css" /> 
 </head>
 <?php
 if (isset($_GET['c']) && preg_match('/^([a-z]|_|[0-9])+$/', $_GET['c'])) {
@@ -141,7 +138,7 @@ else {
 				<table>
 					<tr>
 						<td class="img"><img src="img/1.png" alt="" /></td>
-						<td id="td1"><strong>cryptocat</strong> lets you set up encrypted, private chats for impromptu secure conversations. Check out this <a href="info">video</a> for tips on how to get started!</td>
+						<td id="td1"><strong>cryptocat</strong> lets you set up encrypted, private chats for impromptu secure conversations. check out this <a href="info">video</a> for tips on how to get started!</td>
 					</tr>
 					<tr>
 						<td class="img"><img src="img/2.png" alt="" /></td>
@@ -214,7 +211,6 @@ else {
 				if(strpos($_SERVER['HTTP_USER_AGENT'],$bot)!==false)
 				return true;
 			}
-		 
 			return false;
 		}
 		function createchat($name) {
@@ -227,7 +223,7 @@ else {
 			$name = strtolower($name);
 			$nick = $nicks[mt_rand(0, count($nicks) - 1)];
 			$chat = array(0 => gen(18), 1 => $_SESSION['id'].':'.$nick.'+2-');
-			array_push($chat, '> '.$nick.' has entered cryptocat');
+			array_push($chat, '> '.$nick.' has entered '.$name);
 			file_put_contents($data.$name, implode("\n", $chat), LOCK_EX);
 			return 1;
 		}
@@ -254,8 +250,11 @@ else {
 					while (in_array($nick, $usednicks)) {
 						$nick = $nicks[mt_rand(0, count($nicks) - 1)];
 					}
+					if ($chat[0] == "\n") {
+						$chat[0] = gen(18)."\n";
+					}
 					$chat[1] = trim($chat[1]).$_SESSION['id'].':'.$nick.'+'.$pos.'-'."\n";
-					$chat[count($chat)+1] = "\n".'> '.$nick.' has entered cryptocat';
+					$chat[count($chat)+1] = "\n".'> '.$nick.' has entered '.$name;
 					file_put_contents($data.$name, implode('', $chat), LOCK_EX);
 				}
 				chat($name, $nick);
@@ -289,7 +288,6 @@ else {
 				var key;
 				var curcount;
 				var t = setTimeout("updatekey()", 1000);
-				var changemon = document.getElementById("loader").innerHTML;
 				var nick = document.getElementById("nick").innerHTML;
 				var focus = true;
 				var num = 0;
@@ -382,36 +380,39 @@ else {
 				function processline(chat, flip) {
 					chat = chat.split("\n");
 					for (i=0; i <= chat.length-1; i++) {
-						var already = 0;
 						var encrypted = 0;
 						var success = 0;
 						var corrupted = 0;
 						var user = 0;
 						
 						if (chat[i]) {
-							if (match = chat[i].match(/\\[BEGIN\-HMAC\-:3\](.+?)\[END-HMAC-:3\]$/)) {
+							if (match = chat[i].match(/\[B-H\](.*)\[E-H\]$/)) {
 								for (o=0; o <= chat.length-1; o++) {
 									if (chat[o]) {
-										if (omatch = chat[o].match(/\\[BEGIN\-HMAC\-:3\](.+?)\[END-HMAC-:3\]$/)) {
+										if (omatch = chat[o].match(/\[B-H\](.*)\[E-H\]$/)) {
 											if ((match[0] == omatch[0]) && (o != i)) {
+												if (o > i) {
 													delete chat[o];
+												}
+												if (i > o) {
+													delete chat[i];
+												}
 											}
 										}
 									}
 								}
 							}
-							
-							if (match = chat[i].match(/\\[BEGIN\-HMAC\-:3\](.+?)\[END-HMAC-:3\]$/)) {
-								var hmac = match[0].substring(15, match[0].length-13);
-								chat[i] = chat[i].replace(/\[BEGIN-HMAC-:3](.+?)\[END-HMAC-:3]$/, "");
+							if (match = chat[i].match(/\[B-H\](.*)\[E-H\]$/)) {
+								var hmac = match[0].substring(5, match[0].length-5);
+								chat[i] = chat[i].replace(/\[B-H\](.*)\[E-H\]$/, "");
 							}
-							if (match = chat[i].match(/\[BEGIN-CRYPTOCAT-:3](.+?)\[END-CRYPTOCAT-:3]/)) {
-								match = match[0].substring(20, match[0].length-18);
+							if (match = chat[i].match(/\[B-C\](.*)\[E-C\]/)) {
+								match = match[0].substring(5, match[0].length-5);
 								ciphertext = match;
 								try {
 									match = Crypto.AES.decrypt(match, defaultkey);
-									chat[i] = chat[i].replace(/\[BEGIN-CRYPTOCAT-:3](.+?)\[END-CRYPTOCAT-:3]/, match);
-									if (match = chat[i].match(/\[MSG](.*)\[\/MSG]/)) {
+									chat[i] = chat[i].replace(/\[B-C\](.*)\[E-C\]/, match);
+									if (match = chat[i].match(/\[B-M\](.*)\[E-M\]/)) {
 										success = match[0];
 									}
 								}
@@ -420,32 +421,34 @@ else {
 								if (!success) {
 									try {
 										match = Crypto.AES.decrypt(match, key);
-										chat[i] = chat[i].replace(/\[BEGIN-CRYPTOCAT-:3](.+?)\[END-CRYPTOCAT-:3]/, match);
+										chat[i] = chat[i].replace(/\[B-C\](.*)\[E-C\]/, match);
 										if (key != defaultkey) {
 											encrypted = 1;
 										}
-										if (match = chat[i].match(/\[MSG](.*)\[\/MSG]/)) {
+										if (match = chat[i].match(/\[B-M](.*)\[E-M]/)) {
 											success = match[0];
 										}
 									}
 									catch (INVALID_CHARACTER_ERR) {
-										chat[i] = chat[i].replace(/\[BEGIN-CRYPTOCAT-:3](.+?)\[END-CRYPTOCAT-:3]/, "<span class=\"diffkey\">encrypted</span>");
+										chat[i] = chat[i].replace(/\[B-C\](.*)\[E-C\]/, "<span class=\"diffkey\">encrypted</span>");
 										encrypted = 1;
 									}
 								}
 								if ((success) && (hmac != Crypto.HMAC(Crypto.SHA1, ciphertext + success, getkey(ciphertext  + success, 4)))) {
-									chat[i] = chat[i].replace(/\[MSG](.+?)\[\/MSG]/, "<span class=\"diffkey\">corrupted!</span>");
+									alert(chat[i]);
+									chat[i] = chat[i].replace(/\[B-M\](.*)*\[E-M\]/, "<span class=\"diffkey\">corrupted!</span>");
 									corrupted = 1;
+									alert(hmac);
 								}
 								else if (success) {
-									chat[i] = chat[i].replace(/\[MSG](.*)\[\/MSG]/, success.substring(5, success.length - 6));
+									chat[i] = chat[i].replace(/\[B-M\](.*)\[E-M\]/, success.substring(5, success.length - 5));
 									chat[i] = scrubtags(chat[i]);
 								}
 								if (match = chat[i].match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi)) {
 									for (mc = 0; mc <= match.length - 1; mc++) {
 										var sanitize = match[mc].split("");
 										for (ii = 0; ii <= sanitize.length-1; ii++) {
-											if (!sanitize[ii].match(/\w|\d|\:|\/|\?|\=|\#|\+|\,|\.|\&|\;/)) {
+											if (!sanitize[ii].match(/\w|\d|\:|\/|\?|\=|\#|\+|\,|\.|\&|\;|\%/)) {
 												sanitize[ii] = encodeURIComponent(sanitize[ii]);
 											}
 										}
@@ -461,16 +464,14 @@ else {
 									chat[i] = chat[i].replace(/^[a-z]+:\s\/me\s/, "<span class=\"nick\">* " + thisnick + " ") + " :3 *</span>";
 								}
 								else if (match = chat[i].match(/^[a-z]+:/)) {
-									if (!already) {
-										match = match[0];
-										chat[i] = chat[i].replace(/^[a-z]+:/, "<span class=\"nick\">" + match + "</span>");
-									}
+									match = match[0];
+									chat[i] = chat[i].replace(/^[a-z]+:/, "<span class=\"nick\">" + match + "</span>");
 								}
 							}
 							else {
-								if (match = chat[i].match(/^(\&gt\;|\&lt\;).+cryptocat$/)) {
+								if (match = chat[i].match(/^(\&gt\;|\&lt\;).+'.$name.'$/)) {
 									match = match[0];
-									chat[i] = chat[i].replace(/^(\&gt\;|\&lt\;).+cryptocat$/, "<span class=\"nick\">" + match + "</span>");
+									chat[i] = chat[i].replace(/^(\&gt\;|\&lt\;).+'.$name.'$/, "<span class=\"nick\">" + match + "</span>");
 									user = 1;
 								}
 							}
@@ -516,7 +517,7 @@ else {
 						borderBottomColor: "#DF93D6",
 						borderLeftColor: "#DF93D6"
 					}, 500 );
-					document.getElementById("chatters").innerHTML = "<span class=\"chatters\">x</span>&nbsp&nbsp" + error;
+					document.getElementById("chatters").innerHTML = "<span class=\"chatters\">x</span>&nbsp " + error;
 					errored++;
 				}
 				
@@ -543,7 +544,7 @@ else {
 								errordisplay("you have been logged out.");
 							}
 						}
-						else if (((document.getElementById("loader").innerHTML != changemon) && (document.getElementById("loader").innerHTML != "")) || (divold == "#chat")) {
+						else if ((document.getElementById("loader").innerHTML != "") || (divold == "#chat")) {
 							pos = document.getElementById("loader").innerHTML.split("\n").length;
 							document.getElementById("chat").innerHTML = processline(document.getElementById("loader").innerHTML, 1);
 							document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
@@ -551,7 +552,6 @@ else {
 								num++;
 								document.title = "[" + num + "] cryptocat";
 							}
-							changemon = document.getElementById("loader").innerHTML;
 							updatechatters();
 						}
 						else if (errored) {
@@ -586,10 +586,11 @@ else {
 					var orig = document.getElementById("input").value;
 					var msg = $.trim(document.getElementById("input").value);
 					if (msg != "") {
-						var msg = "[MSG]" + msg + "[/MSG]";
+						var msg = "[B-M]" + msg + "[E-M]";
+						msg = msg.replace(/\$/g,"&#36;");
 						var encoded = Crypto.AES.encrypt(msg, key);
 						var hmac = Crypto.HMAC(Crypto.SHA1, encoded + msg, getkey(encoded + msg, 4));
-						encoded = nick + ": " + "[BEGIN-CRYPTOCAT-:3]" + encoded + "[END-CRYPTOCAT-:3][BEGIN-HMAC-:3]" + hmac + "[END-HMAC-:3]";
+						encoded = nick + ": " + "[B-C]" + encoded + "[E-C][B-H]" + hmac + "[E-H]";
 						document.getElementById("chat").innerHTML += processline(encoded, 0);
 						document.getElementById("input").value = "";
 						document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
@@ -599,15 +600,15 @@ else {
 					}
 					document.getElementById("input").value = "";
 					document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
-					$.ajax( { url : "index.php",
-						type : "POST",
-						data : "input=" + encodeURIComponent(encoded) + "&name=" + $("#name").val() + "&talk=send",
-						success : function(data) {
+					$.ajax( { url: "index.php",
+						type: "POST",
+						data: "input=" + encodeURIComponent(encoded) + "&name=" + $("#name").val() + "&talk=send",
+						success: function(data) {
 							document.getElementById("input").focus();
 							document.getElementById("talk").value = "'.$maxinput.'";
 							updatechat("#loader");
 						},
-						error : function(data) {
+						error: function(data) {
 							document.getElementById("input").value = orig;
 						}
 					});
@@ -652,6 +653,7 @@ else {
 						document.getElementById("maximize").src = "img/maximize.png";
 						maximized = 0;
 						setTimeout("document.getElementById(\'chat\').scrollTop = document.getElementById(\'chat\').scrollHeight;", 520);
+						setTimeout("updatechat(\"#chat\")", 520);
 						document.getElementById(\'input\').focus();
 					}
 					else {
@@ -695,12 +697,12 @@ else {
 						document.getElementById(\'input\').focus();
 					}
 				});
-
 				
 				function logout() {
 					$.ajax( { url : "index.php",
-						type : "POST",
-						data : "logout='.$name.'",
+						type: "POST",
+						async: false,
+						data: "logout='.$name.'",
 					});
 					window.location = "'.$install.'"
 				}
@@ -741,22 +743,25 @@ else {
 				welcome('letters and numbers only');
 			}
 		}
-		else if (isset($_POST['logout'])) {
+		else if (isset($_POST['logout']) && preg_match('/^([a-z]|_|[0-9])+$/', $_POST['logout'])) {
 				session_name($_POST['logout']);
 				session_start();
 				$chat = file($data.$_POST['logout']);
 				getpeople($chat);
 				if ($nick && $mysession) {
 					$chat[1] = preg_replace('/'.$mysession.'\:'.$nick.'\+\d+\-/', '', $chat[1]);
-					$chat[count($chat)+1] = "\n".'< '.$nick.' has left cryptocat';
+					$chat[count($chat)+1] = "\n".'< '.$nick.' has left '.$_POST['logout'];
+					if ($chat[1] == "\n") {
+						$chat[0] = "\n";
+					}
 					file_put_contents($data.$_POST['logout'], implode('', $chat), LOCK_EX);
 					session_unset();
 					session_destroy();
 				}
-				welcome('type in your chatroom name');
+				welcome('type your chatroom name');
 		}
 		else {
-				welcome('type in your chatroom name');
+				welcome('type your chatroom name');
 		}
 	?>
 </body> 
