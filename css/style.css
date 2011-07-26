@@ -31,7 +31,10 @@ p.bottom {
 	color: #fff;
 	font-weight: bold;
 }
-input.name, input.create {
+p.small {
+	font-size: 11px;
+}
+input.name, input.create, input.nicksubmit {
 	width: 330px;
 	margin: 0 auto;
 	background-color: #000;
@@ -51,6 +54,20 @@ input.create {
 	padding: 0px 7px;
 	margin-bottom: 4px;
 }
+input.nicksubmit {
+	width: 150px;
+	padding: 3px;
+	font-size: 16px;
+	margin-top: 5px;
+}
+#nickinput {
+	background-color: #000;
+	border: 1px solid #333;
+	color: #97CEEC;
+	width: 150px;
+	padding: 3px;
+	font-size: 16px;
+}
 #talk {
 	background-color: #000;
 	border: none;
@@ -64,12 +81,12 @@ input.create {
 	font-size: 22px;
 	box-shadow: 2px 2px #90CAEA;
 }
-input.create:hover, #talk:hover {
+input.create:hover, #talk:hover, input.nicksubmit:hover {
 	background-color: #97CEEC;
 	box-shadow: 2px 2px #000;
 	color: #FFF;
 }
-input.create:active, #talk:active {
+input.create:active, #talk:active, input.nicksubmit:active {
 	box-shadow: 2px 2px #97CEEC;
 }
 #chat {
@@ -132,7 +149,7 @@ a.logout {
 input.logout:hover {
 	text-decoration: underline;
 }
-a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound {
+a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #nickicon {
 	cursor: pointer;
 }
 #input {
@@ -246,17 +263,32 @@ span.red {
 span.green {
 	color: #93D8B9;
 }
-
-#maximize, #sound {
+#maximize, #sound, #nickicon {
 	float: right;
 }
-
-#sound {
+#sound, #nickicon {
 	margin-right: 10px;
 }
-
 #video {
 	text-align: center;
 	font-style: italic;
 	margin-top: 0px;
+}
+#strength {
+	margin-left: 5px;
+}
+#changenick {
+	display: none;
+	min-width: 230px;
+	width: 20%;
+	padding: 10px;
+	background-color: #222;
+	color: #FFF;
+	box-shadow: 4px 4px #97CEEC;
+	text-align: center;
+	position: fixed;
+	top: 20%;
+	left: 39%;
+	right: 40%;
+	font-size: 16px;
 }

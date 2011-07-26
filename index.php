@@ -92,6 +92,19 @@
 		}
 		exit;
 	}
+	else if (isset($_POST['nick']) && preg_match('/^([a-z]|_|[0-9])+$/', $_POST['nick']) && strlen($_POST['nick']) <= 12 && isset($_POST['name']) && preg_match('/^([a-z]|_|[0-9])+$/', $_POST['name'])) {
+		session_name($_POST['name']);
+		session_start();
+		$chat = file($data.$_POST['name']);
+		getpeople($chat);
+		if ($nick && !in_array($_POST['nick'], $usednicks) && $_POST['nick'] != $nick) {
+			$chat[1] = preg_replace('/\:'.$nick.'\+/', ':'.$_POST['nick'].'+', $chat[1]);
+			$chat[count($chat)] = "\n".'# '.$nick.' is now known as '.$_POST['nick'];
+			file_put_contents($data.$_POST['name'], $chat, LOCK_EX);
+			print('OK');
+		}
+		exit;
+	}
 ?>
 <?php print('<?xml version="1.0" encoding="UTF-8"?>'); ?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -119,10 +132,10 @@
 </head>
 <?php
 if (isset($_GET['c']) && preg_match('/^([a-z]|_|[0-9])+$/', $_GET['c'])) {
-	print('<body onload="document.getElementById(\'input\').focus();" onbeforeunload="logout();">');
+	print('<body onload="document.getElementById(\'input\').focus();" onbeforeunload="logout();">'."\n");
 }
 else {
-	print('<body onload="document.getElementById(\'name\').focus();">');
+	print('<body onload="document.getElementById(\'name\').focus();">'."\n");
 }
 ?>
 	<?php
@@ -223,7 +236,7 @@ else {
 			$name = strtolower($name);
 			$nick = $nicks[mt_rand(0, count($nicks) - 1)];
 			$chat = array(0 => gen(18), 1 => $_SESSION['id'].':'.$nick.'+2-');
-			array_push($chat, '> '.$nick.' has entered '.$name);
+			array_push($chat, '> '.$nick.' enters '.$name);
 			file_put_contents($data.$name, implode("\n", $chat), LOCK_EX);
 			return 1;
 		}
@@ -254,7 +267,7 @@ else {
 						$chat[0] = gen(18)."\n";
 					}
 					$chat[1] = trim($chat[1]).$_SESSION['id'].':'.$nick.'+'.$pos.'-'."\n";
-					$chat[count($chat)+1] = "\n".'> '.$nick.' has entered '.$name;
+					$chat[count($chat)+1] = "\n".'> '.$nick.' enters '.$name;
 					file_put_contents($data.$name, implode('', $chat), LOCK_EX);
 				}
 				chat($name, $nick);
@@ -264,10 +277,19 @@ else {
 			global $data, $timelimit, $maxinput, $install, $update, $_SESSION, $mysession, $usedsessions;
 			$name = strtolower($name);
 			$chat = file($data.$name);
+			print('<div id="changenick">
+				<p>enter your new nickname</p>
+				<form name="nickform" id="nickform" method="post" action="'.$install.'">
+					<input type="text" name="nickinput" id="nickinput" value="'.$nick.'" maxlength="12" />
+					<input type="submit" class="nicksubmit" value="change" />
+				</form>
+				<p class="small">(letters and numbers only, 12 characters max)</p>
+			</div>');
 			print('<div id="main">
 			<img src="img/cryptocat.png" alt="cryptocat" />
 			<img src="img/maximize.png" alt="maximize" id="maximize" title="expand" />
 			<img src="img/nosound.png" alt="sound" id="sound" title="enable message notifications" />
+			<img src="img/user.png" alt="change nick" id="nickicon" title="change nickname" />
 			<input type="text" value="'.$name.'" name="name" id="name" class="invisible" />
 			<div class="invisible" id="loader"></div>
 			<div id="chat"></div>
@@ -278,11 +300,12 @@ else {
 			<a class="logout" onclick="logout();" href="#">log out</a></div>
 			<input type="text" id="key" value="type a key here for encrypted chat. all chatters must use the same key." class="key" maxlength="192" onclick="StuffSelect(\'key\');" onkeyup="keytime();" autocomplete="off" />
 			<form name="chatform" id="chatform" method="post" action="'.$install.'">
-			<input type="text" name="input" id="input" maxlength="'.$maxinput.'" 
-			onkeydown="textcounter(document.chatform.input,document.chatform.talk,'.$maxinput.')" 
-			onkeyup="textcounter(document.chatform.input,document.chatform.talk,'.$maxinput.')" autocomplete="off" />
-			<input type="submit" name="talk" id="talk" onmouseover="curcount = this.value; this.value=\'send\';" onmouseout="this.value=curcount;" value="'.$maxinput.'" />
-			</form></div>');
+				<input type="text" name="input" id="input" maxlength="'.$maxinput.'" 
+				onkeydown="textcounter(document.chatform.input,document.chatform.talk,'.$maxinput.')" 
+				onkeyup="textcounter(document.chatform.input,document.chatform.talk,'.$maxinput.')" autocomplete="off" />
+				<input type="submit" name="talk" id="talk" onmouseover="curcount = this.value; this.value=\'send\';" onmouseout="this.value=curcount;" value="'.$maxinput.'" />
+			</form>
+			</div>');
 			print('<script type="text/javascript">
 				Math.seedrandom();
 				var salt;
@@ -292,6 +315,7 @@ else {
 				var nick = $("#nick").html();
 				var focus = true;
 				var num = 0;
+				var maintime = 0;
 				var pos = 0;
 				var maximized = 0;
 				var sound = 0;
@@ -304,12 +328,13 @@ else {
 				var defaultkeytext = $("#key").val();
 
 				window.onfocus = function() {
+					clearTimeout(blur);
 					focus = true;
 					num = 0;
 					document.title = "[" + num + "] cryptocat";
 				}
 				window.onblur = function() {
-					setTimeout("focus = false", '.$update.'); 
+					blur = setTimeout("focus = false", '.$update.'); 
 				}
 				document.onblur = window.onblur;
 				document.focus = window.focus;
@@ -499,9 +524,9 @@ else {
 								}
 							}
 							else {
-								if (match = chat[i].match(/^(\&gt\;|\&lt\;).+'.$name.'$/)) {
+								if (match = chat[i].match(/^(\&gt\;|\&lt\;|\#).+$/)) {
 									match = match[0];
-									chat[i] = chat[i].replace(/^(\&gt\;|\&lt\;).+'.$name.'$/, "<span class=\"nick\">" + match + "</span>");
+									chat[i] = chat[i].replace(/^(\&gt\;|\&lt\;|\#).+$/, "<span class=\"nick\">" + match + "</span>");
 									user = 1;
 								}
 							}
@@ -643,6 +668,27 @@ else {
 					return false;    
 				});
 
+				$("#nickform").submit( function() {
+					$.ajax( { url: "index.php",
+						type: "POST",
+						async: false,
+						data: "nick=" + $("#nickinput").val() + "&name=" + $("#name").val(),
+						success: function(data) {
+							if (data == "OK") {
+								$("#nick").html($("#nickinput").val());
+								nick = $("#nick").html();
+								$("#changenick").fadeOut();
+								maintime = 0;
+								document.getElementById("input").focus();
+							}
+							else {
+								$("#nickinput").val("error!");
+							}
+						}
+					});
+					return false;
+				});
+
 				$("#sound").click(function(){
 					if (sound) {
 						$("#sound").attr("src", "img/nosound.png");
@@ -693,6 +739,9 @@ else {
 						$("#talk").animate({
 							width: "67px"
 						}, 500 );
+						$("#strength").animate({
+							"margin-left": "5px"
+						}, 500 );
 						$("#maximize").attr("src", "img/maximize.png");
 						$("#maximize").attr("title", "expand");
 						maximized = 0;
@@ -735,6 +784,10 @@ else {
 						$("#talk").animate({
 							width: "5.3%"
 						}, 500 );
+						$("#strength").animate({
+							"margin-left": "60%"
+
+						}, 500 );
 						$("#maximize").attr("src", "img/minimize.png");
 						$("#maximize").attr("title", "contract");
 						maximized = 1;
@@ -742,7 +795,28 @@ else {
 						document.getElementById(\'input\').focus();
 					}
 				});
-				
+
+				$("#nick").click(function(){
+					changenick();
+				});
+
+				$("#nickicon").click(function(){
+					changenick();
+				});
+
+				function changenick() {
+					$("#changenick").fadeIn();
+					StuffSelect("nickinput");
+					setTimeout("maintime = 1", 600);
+					$("#main").click(function(){
+						if (maintime) {
+							$("#changenick").fadeOut();
+							document.getElementById(\'input\').focus();
+							maintime = 0;
+						}
+					});
+				}			
+
 				function logout() {
 					$.ajax( { url : "index.php",
 						type: "POST",
@@ -795,7 +869,7 @@ else {
 				getpeople($chat);
 				if ($nick && $mysession) {
 					$chat[1] = preg_replace('/'.$mysession.'\:'.$nick.'\+\d+\-/', '', $chat[1]);
-					$chat[count($chat)+1] = "\n".'< '.$nick.' has left '.$_POST['logout'];
+					$chat[count($chat)+1] = "\n".'< '.$nick.' leaves '.$_POST['logout'];
 					if ($chat[1] == "\n") {
 						$chat[0] = "\n";
 					}
