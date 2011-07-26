@@ -5,7 +5,7 @@
 	$data = '/srv/data/';
 	$timelimit = 1800;
 	$update = 1500;
-	$nicks = array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'kiwi', 'fox', 'owl', 'raccoon', 'mongoose', 'koala', 'teddy', 'mouse', 'turtle', 'seal', 'dolphin', 'hedgehog', 'echidna', 'panther', 'cub', 'duck');
+	$nicks = array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'kiwi', 'fox', 'owl', 'raccoon', 'mongoose', 'koala', 'teddy', 'mouse', 'turtle', 'seal', 'dolphin', 'hedgehog', 'echidna', 'panther', 'lemur', 'duck');
 	$maxusers = count($nicks);
 	$maxinput = 256;
 	$usednicks = array();
@@ -92,20 +92,52 @@
 		}
 		exit;
 	}
-	else if (isset($_POST['nick']) && preg_match('/^([a-z]|_|[0-9])+$/', $_POST['nick']) && strlen($_POST['nick']) <= 12 && isset($_POST['name']) && preg_match('/^([a-z]|_|[0-9])+$/', $_POST['name'])) {
+	else if (isset($_POST['nick']) && preg_match('/^([a-z]|[0-9])+$/', $_POST['nick']) && strlen($_POST['nick']) <= 12 && isset($_POST['name']) && preg_match('/^([a-z]|_|[0-9])+$/', $_POST['name'])) {
 		session_name($_POST['name']);
 		session_start();
 		$chat = file($data.$_POST['name']);
 		getpeople($chat);
+		if (file_exists($data.$_POST['name'])) {
+			if (time() - filemtime($data.$_POST['name']) > $timelimit) {
+				unlink($data.$_POST['name']);
+				createchat($_POST['name'], $_POST['nick']);
+				joinchat($_POST['name'], $_POST['nick']);
+				print(trim($chat[0]));
+				exit;
+			}
+		}
 		if ($_POST['nick'] == $nick) {
-			print('OK');
+			print(trim($chat[0]));
 		}
 		else if ($nick && !in_array($_POST['nick'], $usednicks)) {
 			$chat[1] = preg_replace('/\:'.$nick.'\+/', ':'.$_POST['nick'].'+', $chat[1]);
 			$chat[count($chat)] = "\n".'# '.$nick.' is now known as '.$_POST['nick'];
 			file_put_contents($data.$_POST['name'], $chat, LOCK_EX);
-			print('OK');
+			print(trim($chat[0]));
 		}
+		else if (!$nick) {
+			if (file_exists($data.$_POST['name'])) {
+				joinchat($_POST['name'], $_POST['nick']);
+				if (!$used) {
+					print(trim($chat[0]));
+				}
+				else {
+					print('error');
+				}
+			}
+			else if (createchat($_POST['name'], $_POST['nick'])) {
+				joinchat($_POST['name'], $_POST['nick']);
+				$chat = file($data.$_POST['name']);
+				print(trim($chat[0]));
+			}
+		}
+		else {
+			print('error');
+		}
+		exit;
+	}
+	else if (isset($_POST['nick'])) {
+		print('error');
 		exit;
 	}
 ?>
@@ -212,22 +244,22 @@ else {
 				}
 			</script>');
 		}
-		function createchat($name) {
-			global $data, $nicks, $_SESSION;
+		function createchat($name, $setnick) {
+			global $data, $_SESSION;
 			session_name($name);
 			session_start();
 			if (!isset($_SESSION['id'])) {
 				$_SESSION['id'] = gen(32);
 			}
 			$name = strtolower($name);
-			$nick = $nicks[mt_rand(0, count($nicks) - 1)];
-			$chat = array(0 => gen(18), 1 => $_SESSION['id'].':'.$nick.'+2-');
-			array_push($chat, '> '.$nick.' enters '.$name);
+			$chat = array(0 => gen(18), 1 => $_SESSION['id'].':'.$setnick.'+2-');
+			array_push($chat, '> '.$setnick.' enters '.$name);
 			file_put_contents($data.$name, implode("\n", $chat), LOCK_EX);
 			return 1;
 		}
-		function joinchat($name) {
-			global $data, $nicks, $maxusers, $nick, $mysession, $mypos, $usednicks, $usedsessions, $_SESSION;
+		function joinchat($name, $setnick) {
+			global $data, $maxusers, $nick, $mysession, $mypos, $usednicks, $usedsessions, $_SESSION, $used;
+			$used = 0;
 			session_name($name);
 			session_start();
 			$name = strtolower($name);
@@ -245,9 +277,12 @@ else {
 			}
 			else {
 				if (!isset($nick)) {
-					$nick = $nicks[mt_rand(0, count($nicks) - 1)];
-					while (in_array($nick, $usednicks)) {
-						$nick = $nicks[mt_rand(0, count($nicks) - 1)];
+					if (in_array($setnick, $usednicks)) {
+						$used = 1;
+						exit;
+					}
+					else {
+						$nick = $setnick;
 					}
 					if ($chat[0] == "\n") {
 						$chat[0] = gen(18)."\n";
@@ -256,18 +291,22 @@ else {
 					$chat[count($chat)+1] = "\n".'> '.$nick.' enters '.$name;
 					file_put_contents($data.$name, implode('', $chat), LOCK_EX);
 				}
-				chat($name, $nick);
 			}
 		}
 		function chat($name, $nick) {
-			global $data, $timelimit, $maxinput, $install, $update, $_SESSION, $mysession, $usedsessions;
+			global $data, $nicks, $timelimit, $maxinput, $install, $update, $_SESSION, $mysession, $usedsessions, $usednicks;
 			$name = strtolower($name);
 			$chat = file($data.$name);
+			getpeople($chat);
+			$nick = $nicks[mt_rand(0, count($nicks) - 1)];
+			while (in_array($nick, $usednicks)) {
+				$nick = $nicks[mt_rand(0, count($nicks) - 1)];
+			}
 			print('<div id="changenick">
 				<p>enter your nickname</p>
 				<form name="nickform" id="nickform" method="post" action="'.$install.'">
 					<input type="text" name="nickinput" id="nickinput" value="'.$nick.'" maxlength="12" />
-					<input type="submit" class="nicksubmit" value="change" />
+					<input type="submit" class="nicksubmit" value="chat" />
 				</form>
 				<p class="small">(letters and numbers only, 12 characters max)</p>
 			</div>');
@@ -303,15 +342,17 @@ else {
 				var num = 0;
 				var interval = 0;
 				var maintime = 0;
+				var nickset = 0;
 				var pos = 0;
 				var maximized = 0;
 				var sound = 0;
 				var soundEmbed = null;
 				var errored = 0;
+				var gotsalt = 0;
 				var install = "'.$install.'"
 				var match;
-				var defaultsalt = getkey("'.trim($chat[0]).'" + $("#url").val(), 5);
-				var defaultkey = Crypto.PBKDF2(getkey($("#url").val(), 4), defaultsalt, 64, { iterations: 1000 });
+				var defaultsalt = 0;
+				var defaultkey = 0;
 				var defaultkeytext = $("#key").val();
 
 				window.onfocus = function() {
@@ -371,13 +412,17 @@ else {
 				}
 				
 				function updatekey() {
+					if (!defaultkey) {
+						defaultsalt = getkey(gotsalt + $("#url").val(), 5);
+						defaultkey = Crypto.PBKDF2(getkey($("#url").val(), 4), defaultsalt, 64, { iterations: 1000 });
+					}
 					if (($("#key").val() == "") || ($("#key").val() == defaultkeytext)) {
 						salt = defaultsalt;
 						key = defaultkey;
 						$("#strength").html = "";
 					}
 					else {
-						salt = getkey("'.trim($chat[0]).'" + $("#key").val(), 5);
+						salt = getkey(gotsalt + $("#key").val(), 5);
 						key = Crypto.PBKDF2(getkey($("#key").val(), 4), salt, 64, { iterations: 1000 });
 						var strength = 0;
 						if ($("#key").val().length >= 10) {
@@ -661,17 +706,20 @@ else {
 						async: false,
 						data: "nick=" + $("#nickinput").val() + "&name=" + $("#name").val(),
 						success: function(data) {
-							if (data == "OK") {
+							if (data != "error") {
 								$("#nick").html($("#nickinput").val());
 								nick = $("#nick").html();
 								$("#changenick").fadeOut();
+								gotsalt = data;
 								maintime = 0;
+								nickset = 1;
 								document.getElementById("input").focus();
-								t = setTimeout("updatekey()", 1000);
+								updatekey();
 								interval = setInterval("updatechat(\"#loader\")", '.$update.');
 							}
 							else {
 								$("#nickinput").val("bad nickname");
+								StuffSelect("nickinput");
 							}
 						}
 					});
@@ -798,7 +846,7 @@ else {
 					StuffSelect("nickinput");
 					setTimeout("maintime = 1", 600);
 					$("#main").click(function(){
-						if (maintime) {
+						if (maintime && nickset) {
 							$("#changenick").fadeOut();
 							document.getElementById(\'input\').focus();
 							maintime = 0;
@@ -829,18 +877,7 @@ else {
 		if (isset($_GET['c'])) {
 			if (preg_match('/^([a-z]|_|[0-9])+$/', $_GET['c'])) {
 				if (strlen($_GET['c']) <= 32) {
-					if (file_exists($data.$name)) {
-						if (time() - filemtime($data.$_GET['c']) > $timelimit) {
-							unlink($data.$_GET['c']);
-							createchat($_GET['c']);
-						}
-						joinchat($_GET['c']);
-					}
-					else {
-						if (createchat($_GET['c'])) {
-							joinchat($_GET['c']);
-						}
-					}
+					chat($_GET['c']);
 				}
 				else {
 					welcome('chat name too large');
