@@ -97,7 +97,10 @@
 		session_start();
 		$chat = file($data.$_POST['name']);
 		getpeople($chat);
-		if ($nick && !in_array($_POST['nick'], $usednicks) && $_POST['nick'] != $nick) {
+		if ($_POST['nick'] == $nick) {
+			print('OK');
+		}
+		else if ($nick && !in_array($_POST['nick'], $usednicks)) {
 			$chat[1] = preg_replace('/\:'.$nick.'\+/', ':'.$_POST['nick'].'+', $chat[1]);
 			$chat[count($chat)] = "\n".'# '.$nick.' is now known as '.$_POST['nick'];
 			file_put_contents($data.$_POST['name'], $chat, LOCK_EX);
@@ -132,7 +135,7 @@
 </head>
 <?php
 if (isset($_GET['c']) && preg_match('/^([a-z]|_|[0-9])+$/', $_GET['c'])) {
-	print('<body onload="document.getElementById(\'input\').focus();" onbeforeunload="logout();">'."\n");
+	print('<body onbeforeunload="logout();">'."\n");
 }
 else {
 	print('<body onload="document.getElementById(\'name\').focus();">'."\n");
@@ -209,23 +212,6 @@ else {
 				}
 			</script>');
 		}
-		function is_bot(){
-			$botlist = array("Teoma", "alexa", "froogle", "Gigabot", "inktomi",
-			"looksmart", "URL_Spider_SQL", "Firefly", "NationalDirectory",
-			"Ask Jeeves", "TECNOSEEK", "InfoSeek", "WebFindBot", "girafabot",
-			"crawler", "www.galaxy.com", "Google", "Scooter", "Slurp",
-			"msnbot", "appie", "FAST", "WebBug", "Spade", "ZyBorg", "rabaz",
-			"Baiduspider", "Feedfetcher-Google", "TechnoratiSnoop", "Rankivabot",
-			"Mediapartners-Google", "Sogou web spider", "WebAlta Crawler","TweetmemeBot",
-			"Butterfly","Twitturls","Me.dium","Twiceler","Scribd", "Facebook", "Twitter", 
-			"facebook", "twitter", "LinkedIn", "bot", "Bot", "BOT", "StatusNet",
-			"Summify", "LongURL", "Java");
-			foreach($botlist as $bot){
-				if(strpos($_SERVER['HTTP_USER_AGENT'],$bot)!==false)
-				return true;
-			}
-			return false;
-		}
 		function createchat($name) {
 			global $data, $nicks, $_SESSION;
 			session_name($name);
@@ -278,7 +264,7 @@ else {
 			$name = strtolower($name);
 			$chat = file($data.$name);
 			print('<div id="changenick">
-				<p>enter your new nickname</p>
+				<p>enter your nickname</p>
 				<form name="nickform" id="nickform" method="post" action="'.$install.'">
 					<input type="text" name="nickinput" id="nickinput" value="'.$nick.'" maxlength="12" />
 					<input type="submit" class="nicksubmit" value="change" />
@@ -311,10 +297,11 @@ else {
 				var salt;
 				var key;
 				var curcount;
-				var t = setTimeout("updatekey()", 1000);
+				var t = 0;
 				var nick = $("#nick").html();
 				var focus = true;
 				var num = 0;
+				var interval = 0;
 				var maintime = 0;
 				var pos = 0;
 				var maximized = 0;
@@ -680,9 +667,11 @@ else {
 								$("#changenick").fadeOut();
 								maintime = 0;
 								document.getElementById("input").focus();
+								t = setTimeout("updatekey()", 1000);
+								interval = setInterval("updatechat(\"#loader\")", '.$update.');
 							}
 							else {
-								$("#nickinput").val("error!");
+								$("#nickinput").val("bad nickname");
 							}
 						}
 					});
@@ -832,14 +821,13 @@ else {
 					}
 				});
 
-				updatechat("#loader");
-				setInterval("updatechat(\"#loader\")", '.$update.');
+				changenick();
 			</script>');
 		}
 	?>
 	<?php
 		if (isset($_GET['c'])) {
-			if (preg_match('/^([a-z]|_|[0-9])+$/', $_GET['c']) && !is_bot()) {
+			if (preg_match('/^([a-z]|_|[0-9])+$/', $_GET['c'])) {
 				if (strlen($_GET['c']) <= 32) {
 					if (file_exists($data.$name)) {
 						if (time() - filemtime($data.$_GET['c']) > $timelimit) {

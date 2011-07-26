@@ -62,11 +62,12 @@ input.nicksubmit {
 }
 #nickinput {
 	background-color: #000;
-	border: 1px solid #333;
+	border: 1px solid #97CEEC;
 	color: #97CEEC;
 	width: 150px;
 	padding: 3px;
 	font-size: 16px;
+	text-align: center;
 }
 #talk {
 	background-color: #000;
@@ -111,6 +112,7 @@ input.create:active, #talk:active, input.nicksubmit:active {
 	margin: -19px 0px 0px 2px;
 	word-spacing: 5px;
 	opacity: 0.9;
+	height: 11px;
 }
 span.chatters {
 	padding: 3px 2px;
