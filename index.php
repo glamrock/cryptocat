@@ -302,26 +302,33 @@ else {
 				var defaultsalt = getkey("'.trim($chat[0]).'" + $("#url").val(), 5);
 				var defaultkey = Crypto.PBKDF2(getkey($("#url").val(), 4), defaultsalt, 64, { iterations: 1000 });
 				var defaultkeytext = $("#key").val();
-				window.onblur = function() { focus = false; }
-				window.onfocus = function() { focus = true; }
+
+				window.onfocus = function() {
+					focus = true;
+					num = 0;
+					document.title = "[" + num + "] cryptocat";
+				}
+				window.onblur = function() {
+					setTimeout("focus = false", '.$update.'); 
+				}
 				document.onblur = window.onblur;
 				document.focus = window.focus;
 
 				function soundPlay(which) {
 					if (!soundEmbed) {
-						soundEmbed = document.createElement("embed");
+						soundEmbed = document.createElement("audio");
 						soundEmbed.setAttribute("src", which);
-						soundEmbed.setAttribute("hidden", true);
-						soundEmbed.setAttribute("autostart", true);
+						soundEmbed.setAttribute("style", "display: none;");
+						soundEmbed.setAttribute("autoplay", true);
 					}
 					else {
 						document.body.removeChild(soundEmbed);
 						soundEmbed.removed = true;
 						soundEmbed = null;
-						soundEmbed = document.createElement("embed");
+						soundEmbed = document.createElement("audio");
 						soundEmbed.setAttribute("src", which);
-						soundEmbed.setAttribute("hidden", true);
-						soundEmbed.setAttribute("autostart", true);
+						soundEmbed.setAttribute("style", "display: none;");
+						soundEmbed.setAttribute("autoplay", true);
 					}
 					soundEmbed.removed = false;
 					document.body.appendChild(soundEmbed);
@@ -546,10 +553,6 @@ else {
 				
 				function updatechat(div){
 					var divold = 0;
-					if (focus) {
-						num = 0;
-						document.title = "[" + num + "] cryptocat";
-					}
 					if (div == "#chat") {
 						posold = pos;
 						pos = "chat";
@@ -571,11 +574,11 @@ else {
 							pos = $("#loader").html().split("\n").length;
 							$("#chat").html(processline($("#loader").html(), 1));
 							document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
-							if (focus == false) {
+							if (!focus) {
 								num++;
 								document.title = "[" + num + "] cryptocat";
 								if (sound) {
-									soundPlay("snd/msg.mp3");
+									soundPlay("snd/msg.ogg");
 								}
 							}
 							updatechatters();
@@ -632,7 +635,6 @@ else {
 						success: function(data) {
 							document.getElementById("input").focus();
 							$("#talk").val("'.$maxinput.'");
-							updatechat("#loader");
 						},
 						error: function(data) {
 							$("#input").val(orig);
