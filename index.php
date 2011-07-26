@@ -305,7 +305,7 @@ else {
 			print('<div id="changenick">
 				<p>enter your nickname</p>
 				<form name="nickform" id="nickform" method="post" action="'.$install.'">
-					<input type="text" name="nickinput" id="nickinput" value="'.$nick.'" maxlength="12" />
+					<input type="text" name="nickinput" id="nickinput" value="'.$nick.'" autocomplete="off" maxlength="12" />
 					<input type="submit" class="nicksubmit" value="chat" />
 				</form>
 				<p class="small">(letters and numbers only, 12 characters max)</p>
@@ -701,6 +701,7 @@ else {
 				});
 
 				$("#nickform").submit( function() {
+					$("#nickinput").val(document.getElementById("nickinput").value.toLowerCase());
 					$.ajax( { url: "index.php",
 						type: "POST",
 						async: false,
