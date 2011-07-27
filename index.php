@@ -92,7 +92,7 @@
 		}
 		exit;
 	}
-	else if (isset($_POST['nick']) && preg_match('/^([a-z]|[0-9])+$/', $_POST['nick']) && strlen($_POST['nick']) <= 12 && isset($_POST['name']) && preg_match('/^([a-z]|_|[0-9])+$/', $_POST['name'])) {
+	else if (isset($_POST['nick']) && preg_match('/^([a-z])+$/', $_POST['nick']) && strlen($_POST['nick']) <= 12 && isset($_POST['name']) && preg_match('/^([a-z]|_|[0-9])+$/', $_POST['name'])) {
 		session_name($_POST['name']);
 		session_start();
 		$chat = file($data.$_POST['name']);
@@ -308,7 +308,7 @@ else {
 					<input type="text" name="nickinput" id="nickinput" value="'.$nick.'" autocomplete="off" maxlength="12" />
 					<input type="submit" class="nicksubmit" value="chat" />
 				</form>
-				<p class="small">(letters and numbers only, 12 characters max)</p>
+				<p class="small">(letters only, 12 characters max)</p>
 			</div>');
 			print('<div id="main">
 			<img src="img/cryptocat.png" alt="cryptocat" />
@@ -419,7 +419,7 @@ else {
 					if (($("#key").val() == "") || ($("#key").val() == defaultkeytext)) {
 						salt = defaultsalt;
 						key = defaultkey;
-						$("#strength").html = "";
+						$("#strength").html("");
 					}
 					else {
 						salt = getkey(gotsalt + $("#key").val(), 5);
@@ -823,7 +823,7 @@ else {
 							width: "5.3%"
 						}, 500 );
 						$("#strength").animate({
-							"margin-left": "60%"
+							"margin-left": "50%"
 
 						}, 500 );
 						$("#maximize").attr("src", "img/minimize.png");
