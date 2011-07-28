@@ -823,7 +823,7 @@ else {
 							width: "5.3%"
 						}, 500 );
 						$("#strength").animate({
-							"margin-left": "50%"
+							"margin-left": "36%"
 
 						}, 500 );
 						$("#maximize").attr("src", "img/minimize.png");
