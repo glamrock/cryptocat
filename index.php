@@ -43,8 +43,11 @@
 				array_push($usednicks, $existingnick);
 			}
 		}
-	}	
-	if (isset($_GET['redirect'])) {
+	}
+	if ($_GET['c'] == "nyan") {
+		header('Location: http://nyan.cat');
+	}
+	else if (isset($_GET['redirect'])) {
 		header('Location: '.$_GET['redirect']);
 	}
 	else if (isset($_GET['chat']) && $_SERVER['HTTP_REFERER'] == $install."?c=".$_GET['chat'] && preg_match('/^([a-z]|_|[0-9])+$/', $_GET['chat'])) {
@@ -675,7 +678,11 @@ else {
 				$("#chatform").submit( function() {
 					$("#input").animate({
 						color: "#000"
-					}, 700 );
+					}, 	200, function() {
+						if (!errored) {
+							$("#input").val("");
+						}
+					});
 					var msg = $.trim($("#input").val());
 					if (msg != "") {
 						var msg = "[B-M]" + msg + "[E-M]";
@@ -695,7 +702,6 @@ else {
 						success: function(data) {
 							document.getElementById("input").focus();
 							$("#talk").val("'.$maxinput.'");
-							$("#input").val("");
 							$("#input").animate({
 								color: "#FFF"
 							}, 10 );
