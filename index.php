@@ -366,6 +366,10 @@ else {
 				}
 				document.onblur = window.onblur;
 				document.focus = window.focus;
+				
+				function scrolldown() {
+					$("#chat").animate({ scrollTop: document.getElementById("chat").scrollHeight-20}, 500 );
+				}
 
 				function soundPlay(which) {
 					if (!soundEmbed) {
@@ -618,19 +622,19 @@ else {
 					}
 					$(div).load("index.php?chat='.$name.'&pos=" + pos, function() {
 						if ($("#loader").html() == "NOEXIST") {
-							if (!errored) {
+							if (!errored && nickset) {
 								errordisplay("your chat no longer exists.");
 							}
 						}
 						else if ($("#loader").html() == "NOLOGIN") {
-							if (!errored) {
+							if (!errored && nickset) {
 								errordisplay("you have been logged out.");
 							}
 						}
 						else if (($("#loader").html() != "") || (divold == "#chat")) {
 							pos = $("#loader").html().split("\n").length;
 							$("#chat").html(processline($("#loader").html(), 1));
-							document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
+							scrolldown();
 							if (!focus) {
 								num++;
 								document.title = "[" + num + "] cryptocat";
@@ -669,7 +673,9 @@ else {
 				}
 				
 				$("#chatform").submit( function() {
-					var orig = $("#input").val();
+					$("#input").animate({
+						color: "#000"
+					}, 700 );
 					var msg = $.trim($("#input").val());
 					if (msg != "") {
 						var msg = "[B-M]" + msg + "[E-M]";
@@ -678,23 +684,23 @@ else {
 						var hmac = Crypto.HMAC(Crypto.SHA1, encoded + msg, getkey(encoded + msg, 4));
 						encoded = nick + ": " + "[B-C]" + encoded + "[E-C][B-H]" + hmac + "[E-H]";
 						document.getElementById("chat").innerHTML += processline(encoded, 0);
-						$("#input").val("");
-						document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
+						scrolldown();
 					}
 					else {
 						encoded = "";
 					}
-					$("#input").val("");
-					document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
 					$.ajax( { url: "index.php",
 						type: "POST",
 						data: "input=" + encodeURIComponent(encoded) + "&name=" + $("#name").val() + "&talk=send",
 						success: function(data) {
 							document.getElementById("input").focus();
 							$("#talk").val("'.$maxinput.'");
+							$("#input").val("");
+							$("#input").animate({
+								color: "#FFF"
+							}, 10 );
 						},
 						error: function(data) {
-							$("#input").val(orig);
 						}
 					});
 					return false;    
@@ -702,12 +708,17 @@ else {
 
 				$("#nickform").submit( function() {
 					$("#nickinput").val(document.getElementById("nickinput").value.toLowerCase());
+					$("#nickinput").animate({
+						color: "#000"
+					}, 500 );
 					$.ajax( { url: "index.php",
 						type: "POST",
-						async: false,
 						data: "nick=" + $("#nickinput").val() + "&name=" + $("#name").val(),
 						success: function(data) {
 							if (data != "error") {
+								$("#nickinput").animate({
+									color: "#97CEEC"
+								}, 500 );
 								$("#nick").html($("#nickinput").val());
 								nick = $("#nick").html();
 								$("#changenick").fadeOut();
@@ -719,6 +730,9 @@ else {
 								interval = setInterval("updatechat(\"#loader\")", '.$update.');
 							}
 							else {
+								$("#nickinput").animate({
+									color: "#97CEEC"
+								}, 500 );
 								$("#nickinput").val("bad nickname");
 								StuffSelect("nickinput");
 							}
@@ -757,7 +771,9 @@ else {
 							"min-height": "295px",
 							width: "585px",
 							height: "295px"
-						}, 500 );
+						}, 500, function() {
+						    updatechat("#chat");
+						});
 						$("#chatters").animate({
 							width: "575px",
 							"margin-left": "2px",
@@ -783,8 +799,6 @@ else {
 						$("#maximize").attr("src", "img/maximize.png");
 						$("#maximize").attr("title", "expand");
 						maximized = 0;
-						setTimeout("document.getElementById(\'chat\').scrollTop = document.getElementById(\'chat\').scrollHeight;", 520);
-						setTimeout("updatechat(\"#chat\")", 520);
 						document.getElementById(\'input\').focus();
 					}
 					else {
@@ -801,9 +815,11 @@ else {
 							"min-height": "360px",
 							width: "99%",
 							height: "80%"
-						}, 500 );
+						}, 500, function() {
+							scrolldown();
+						});
 						$("#chatters").animate({
-							width: "98%",
+							width: "98.2%",
 							"margin-left": "5px",
 							"margin-top": "-22px"
 						}, 500 );
@@ -824,21 +840,15 @@ else {
 						}, 500 );
 						$("#strength").animate({
 							"margin-left": "36%"
-
 						}, 500 );
 						$("#maximize").attr("src", "img/minimize.png");
 						$("#maximize").attr("title", "contract");
 						maximized = 1;
-						setTimeout("document.getElementById(\'chat\').scrollTop = document.getElementById(\'chat\').scrollHeight;", 520);
 						document.getElementById(\'input\').focus();
 					}
 				});
 
-				$("#nick").click(function(){
-					changenick();
-				});
-
-				$("#nickicon").click(function(){
+				$("#nickicon,#nick").click(function(){
 					changenick();
 				});
 
