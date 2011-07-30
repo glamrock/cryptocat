@@ -44,9 +44,7 @@
 			}
 		}
 	}
-	if ($_GET['c'] == "nyan") {
-		header('Location: http://nyan.cat');
-	}
+	if ($_GET['c'] == "nyan") { header('Location: http://nyan.cat'); }
 	else if (isset($_GET['redirect'])) {
 		header('Location: '.$_GET['redirect']);
 	}
@@ -256,7 +254,7 @@ else {
 			}
 			$name = strtolower($name);
 			$chat = array(0 => gen(18), 1 => $_SESSION['id'].':'.$setnick.'+2-');
-			array_push($chat, '> '.$setnick.' enters '.$name);
+			array_push($chat, '> '.$setnick.' has arrived');
 			file_put_contents($data.$name, implode("\n", $chat), LOCK_EX);
 			return 1;
 		}
@@ -291,7 +289,7 @@ else {
 						$chat[0] = gen(18)."\n";
 					}
 					$chat[1] = trim($chat[1]).$_SESSION['id'].':'.$nick.'+'.$pos.'-'."\n";
-					$chat[count($chat)+1] = "\n".'> '.$nick.' enters '.$name;
+					$chat[count($chat)+1] = "\n".'> '.$nick.' has arrived';
 					file_put_contents($data.$name, implode('', $chat), LOCK_EX);
 				}
 			}
@@ -375,20 +373,20 @@ else {
 				}
 
 				function soundPlay(which) {
-					if (!soundEmbed) {
+					function createSound(which) {
 						soundEmbed = document.createElement("audio");
 						soundEmbed.setAttribute("src", which);
 						soundEmbed.setAttribute("style", "display: none;");
 						soundEmbed.setAttribute("autoplay", true);
 					}
+					if (!soundEmbed) {
+						createSound(which);
+					}
 					else {
 						document.body.removeChild(soundEmbed);
 						soundEmbed.removed = true;
 						soundEmbed = null;
-						soundEmbed = document.createElement("audio");
-						soundEmbed.setAttribute("src", which);
-						soundEmbed.setAttribute("style", "display: none;");
-						soundEmbed.setAttribute("autoplay", true);
+						createSound(which);
 					}
 					soundEmbed.removed = false;
 					document.body.appendChild(soundEmbed);
@@ -716,7 +714,7 @@ else {
 					$("#nickinput").val(document.getElementById("nickinput").value.toLowerCase());
 					$("#nickinput").animate({
 						color: "#000"
-					}, 500 );
+					}, 200 );
 					$.ajax( { url: "index.php",
 						type: "POST",
 						data: "nick=" + $("#nickinput").val() + "&name=" + $("#name").val(),
@@ -724,7 +722,7 @@ else {
 							if (data != "error") {
 								$("#nickinput").animate({
 									color: "#97CEEC"
-								}, 500 );
+								}, 200 );
 								$("#nick").html($("#nickinput").val());
 								nick = $("#nick").html();
 								$("#changenick").fadeOut();
@@ -738,7 +736,7 @@ else {
 							else {
 								$("#nickinput").animate({
 									color: "#97CEEC"
-								}, 500 );
+								}, 200 );
 								$("#nickinput").val("bad nickname");
 								StuffSelect("nickinput");
 							}
@@ -911,7 +909,7 @@ else {
 				getpeople($chat);
 				if ($nick && $mysession) {
 					$chat[1] = preg_replace('/'.$mysession.'\:'.$nick.'\+\d+\-/', '', $chat[1]);
-					$chat[count($chat)+1] = "\n".'< '.$nick.' leaves '.$_POST['logout'];
+					$chat[count($chat)+1] = "\n".'< '.$nick.' has left';
 					if ($chat[1] == "\n") {
 						$chat[0] = "\n";
 					}
