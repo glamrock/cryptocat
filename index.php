@@ -484,10 +484,10 @@ else {
 										if (omatch = chat[o].match(/\[B-H\](.*)\[E-H\]$/)) {
 											if ((match[0] == omatch[0]) && (o != i)) {
 												if (o > i) {
-													delete chat[o];
+													chat[o] = chat[o].replace(/\[B-H\](.*)\[E-H\]$/, "[B-H]CORRUPT[E-H]");
 												}
 												if (i > o) {
-													delete chat[i];
+													chat[i] = chat[i].replace(/\[B-H\](.*)\[E-H\]$/, "[B-H]CORRUPT[E-H]");
 												}
 											}
 										}
@@ -526,11 +526,9 @@ else {
 										encrypted = 1;
 									}
 								}
-								if ((success) && (hmac != Crypto.HMAC(Crypto.SHA1, ciphertext + success, getkey(ciphertext  + success, 4)))) {
-									alert(chat[i]);
-									chat[i] = chat[i].replace(/\[B-M\](.*)*\[E-M\]/, "<span class=\"diffkey\">corrupted!</span>");
+								if (((success) && (hmac != Crypto.HMAC(Crypto.SHA1, ciphertext + success, getkey(ciphertext  + success, 4)))) || (!hmac)) {
+									chat[i] = chat[i].replace(/\[B-M\](.*)*\[E-M\]/, "<span class=\"diffkey\">corrupted</span>");
 									corrupted = 1;
-									alert(hmac);
 								}
 								else if (success) {
 									chat[i] = chat[i].replace(/\[B-M\](.*)\[E-M\]/, success.substring(5, success.length - 5));
@@ -674,14 +672,8 @@ else {
 				}
 				
 				$("#chatform").submit( function() {
-					$("#input").animate({
-						color: "#000"
-					}, 	200, function() {
-						if (!errored) {
-							$("#input").val("");
-						}
-					});
 					var msg = $.trim($("#input").val());
+					$("#input").val("");
 					if (msg != "") {
 						var msg = "[B-M]" + msg + "[E-M]";
 						msg = msg.replace(/\$/g,"&#36;");
@@ -700,9 +692,6 @@ else {
 						success: function(data) {
 							document.getElementById("input").focus();
 							$("#talk").val("'.$maxinput.'");
-							$("#input").animate({
-								color: "#FFF"
-							}, 10 );
 						},
 						error: function(data) {
 						}
