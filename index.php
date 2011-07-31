@@ -285,7 +285,7 @@ else {
 					else {
 						$nick = $setnick;
 					}
-					if ($chat[0] == "\n") {
+					if ($chat[0] == "xxxxxxxxxxxxxxxxxx\n") {
 						$chat[0] = gen(18)."\n";
 					}
 					$chat[1] = trim($chat[1]).$_SESSION['id'].':'.$nick.'+'.$pos.'-'."\n";
@@ -310,8 +310,8 @@ else {
 					<input type="submit" class="nicksubmit" value="chat" />
 				</form>
 				<p class="small">(letters only, 12 characters max)</p>
-			</div>');
-			print('<div id="main">
+			</div>
+			<div id="main">
 			<img src="img/cryptocat.png" alt="cryptocat" />
 			<img src="img/maximize.png" alt="maximize" id="maximize" title="expand" />
 			<img src="img/nosound.png" alt="sound" id="sound" title="enable message notifications" />
@@ -319,8 +319,8 @@ else {
 			<input type="text" value="'.$name.'" name="name" id="name" class="invisible" />
 			<div class="invisible" id="loader"></div>
 			<div id="chat"></div>
-			<div id="chatters"></div>');
-			print('<div id="info">chatting as <a href="#" id="nick">'.$nick.'</a> on 
+			<div id="chatters"></div>
+			<div id="info">chatting as <a href="#" id="nick">'.$nick.'</a> on 
 			<input readonly type="text" id="url" onclick="StuffSelect(\'url\');" value="'.$install.'?c='.$name.'" />
 			<span id="strength"></span>
 			<a class="logout" onclick="logout();" href="#">log out</a></div>
@@ -331,8 +331,8 @@ else {
 				onkeyup="textcounter(document.chatform.input,document.chatform.talk,'.$maxinput.')" autocomplete="off" />
 				<input type="submit" name="talk" id="talk" onmouseover="curcount = this.value; this.value=\'send\';" onmouseout="this.value=curcount;" value="'.$maxinput.'" />
 			</form>
-			</div>');
-			print('<script type="text/javascript">
+			</div>
+			<script type="text/javascript">
 				Math.seedrandom();
 				var salt;
 				var key;
@@ -887,8 +887,7 @@ else {
 				changenick();
 			</script>');
 		}
-	?>
-	<?php
+		
 		if (isset($_GET['c'])) {
 			if (preg_match('/^([a-z]|_|[0-9])+$/', $_GET['c'])) {
 				if (strlen($_GET['c']) <= 32) {
@@ -911,7 +910,7 @@ else {
 					$chat[1] = preg_replace('/'.$mysession.'\:'.$nick.'\+\d+\-/', '', $chat[1]);
 					$chat[count($chat)+1] = "\n".'< '.$nick.' has left';
 					if ($chat[1] == "\n") {
-						$chat[0] = "\n";
+						$chat[0] = "xxxxxxxxxxxxxxxxxx\n";
 					}
 					file_put_contents($data.$_POST['logout'], implode('', $chat), LOCK_EX);
 					session_unset();
