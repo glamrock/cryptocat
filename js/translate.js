@@ -6,12 +6,7 @@ var bottom = $("#bottom").html()
 var name = $("#name").val()
 var create = $("#create").val()
 var curlang = "english";
-		
-function updateaction() {
-	$("#name").val(document.getElementById("name").value.toLowerCase());
-	document.getElementById("welcome").action = install + "?c=" + $("#name").val().toLowerCase();
-}
-		
+
 function translate() {
 	if (curlang == "english") {
 		$("#td1").html("<strong>cryptocat</strong> li permet establir xats encriptada, privada de improvisada converses segures. Fes una ullada a aquest <a href=\"info\">vídeo</a> per obtenir consells sobre com començar!");
