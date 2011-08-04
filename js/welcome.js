@@ -1,10 +1,14 @@
+$("#welcome").submit( function() {
+	$("#name").val($("#name").val().toLowerCase());
+});
+
 var td1 = $("#td1").html();
-var td2 = $("#td2").html()
-var td3 = $("#td3").html()
-var video = $("#video").html()
-var bottom = $("#bottom").html()
-var name = $("#name").val()
-var create = $("#create").val()
+var td2 = $("#td2").html();
+var td3 = $("#td3").html();
+var video = $("#video").html();
+var bottom = $("#bottom").html();
+var name = $("#name").val();
+var create = $("#create").val();
 var curlang = "english";
 
 function translate() {

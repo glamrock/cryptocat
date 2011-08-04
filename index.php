@@ -209,7 +209,7 @@ else {
 			<script type="text/javascript">
 				var install = "'.$install.'";
 				');
-				include('js/translate.js');
+				include('js/welcome.js');
 			print('</script>');
 		}
 		function createchat($name, $setnick) {
@@ -270,15 +270,17 @@ else {
 			while (in_array($nick, $usednicks)) {
 				$nick = $nicks[mt_rand(0, count($nicks) - 1)];
 			}
-			print('<div id="changenick">
-				<p>enter your nickname</p>
-				<form name="nickform" id="nickform" method="post" action="'.$install.'">
-					<input type="text" name="nickinput" id="nickinput" value="'.$nick.'" autocomplete="off" maxlength="12" />
-					<input type="submit" class="nicksubmit" value="chat" />
-				</form>
-				<p class="small">(letters only, 12 characters max)</p>
+			print('<div id="main">
+			<div id="front">
+				<div id="changenick">
+					<p>enter your nickname</p>
+					<form name="nickform" id="nickform" method="post" action="'.$install.'">
+						<input type="text" name="nickinput" id="nickinput" value="'.$nick.'" autocomplete="off" maxlength="12" />
+						<input type="submit" class="nicksubmit" value="chat" />
+					</form>
+					<p class="small">(letters only, 12 characters max)</p>
+				</div>
 			</div>
-			<div id="main">
 			<img src="img/cryptocat.png" alt="cryptocat" />
 			<img src="img/maximize.png" alt="maximize" id="maximize" title="expand" />
 			<img src="img/nosound.png" alt="sound" id="sound" title="enable message notifications" />

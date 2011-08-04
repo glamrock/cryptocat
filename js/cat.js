@@ -366,7 +366,7 @@ $("#nickform").submit( function() {
 				}, 200 );
 				$("#nick").html($("#nickinput").val());
 				nick = $("#nick").html();
-				$("#changenick").fadeOut();
+				$("#front").fadeOut();
 				gotsalt = data;
 				maintime = 0;
 				nickset = 1;
@@ -380,6 +380,7 @@ $("#nickform").submit( function() {
 					color: "#97CEEC"
 				}, 200 );
 				$("#nickinput").val("bad nickname");
+				$("#front").fadeIn();
 				StuffSelect("nickinput");
 			}
 		}
@@ -495,12 +496,12 @@ $("#maximize").click(function(){
 });
 
 function changenick() {
-	$("#changenick").fadeIn();
+	$("#front").fadeIn();
 	StuffSelect("nickinput");
 	setTimeout("maintime = 1", 600);
 	$("#main").click(function(){
 		if (maintime && nickset) {
-			$("#changenick").fadeOut();
+			$("#front").fadeOut();
 			document.getElementById("input").focus();
 			maintime = 0;
 		}
