@@ -252,9 +252,6 @@ else {
 					else {
 						$nick = $setnick;
 					}
-					if ($chat[0] == "xxxxxxxxxxxxxxxxxx\n") {
-						$chat[0] = gen(18)."\n";
-					}
 					$chat[1] = trim($chat[1]).$_SESSION['id'].':'.$nick.'+'.$pos.'-'."\n";
 					$chat[count($chat)+1] = "\n".'> '.$nick.' has arrived';
 					file_put_contents($data.$name, implode('', $chat), LOCK_EX);
@@ -332,7 +329,10 @@ else {
 					$chat[1] = preg_replace('/'.$mysession.'\:'.$nick.'\+\d+\-/', '', $chat[1]);
 					$chat[count($chat)+1] = "\n".'< '.$nick.' has left';
 					if ($chat[1] == "\n") {
-						$chat[0] = "xxxxxxxxxxxxxxxxxx\n";
+						for ($i=0; $i<8; $i++) {
+							$chat[0] = gen(18)."\n";
+							file_put_contents($data.$_POST['logout'], implode('', $chat), LOCK_EX);
+						}
 					}
 					file_put_contents($data.$_POST['logout'], implode('', $chat), LOCK_EX);
 					session_unset();

@@ -1,5 +1,9 @@
 $("#welcome").submit( function() {
 	$("#name").val($("#name").val().toLowerCase());
+	if (!$("#name").val().match(/^([a-z]|_|[0-9])+$/)) {
+		$("#name").val("letters and numbers only");
+		return false;
+	}
 });
 
 var td1 = $("#td1").html();
