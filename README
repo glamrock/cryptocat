@@ -1,11 +1,6 @@
-cryptocat 0.3
+cryptocat
+http://crypto.cat
 Beta software - code review highly appreciated.
-
-CHANGES IN 0.3:
--Now relies on sessions to separate chatters instead of IP addresses: possible to have multiple chatters using same IP
--Entropy generation now relies on other factors than mouse movement
--Updated jQuery to 1.6.2
--Small code optimizations
 
 CURRENT LIMITATIONS:
 -While always theoretically possible, there is no *convenient* way to verify the integrity of the cryptographic functions being sent by the server every time. This means that the paranoid cryptocat user will have to check the code by hand every chat.
