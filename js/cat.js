@@ -198,9 +198,12 @@ function processline(chat, flip) {
 					chat[i] = chat[i].replace(/^[a-z]+:/, "<span class=\"nick\">" + match + "</span>");
 				}
 			}
-			else if (match = chat[i].match(/^(\&gt\;|\&lt\;|\#).+$/)) {
-				match = match[0];
-				chat[i] = chat[i].replace(/^(\&gt\;|\&lt\;|\#).+$/, "<span class=\"nick\">" + match + "</span>");
+			else if (match = chat[i].match(/^(\&gt\;|\&lt\;) [a-z]{1,12} (has arrived|has left)$/)) {
+				chat[i] = chat[i].replace(/^(\&gt\;|\&lt\;) [a-z]{1,12} (has arrived|has left)$/, "<span class=\"nick\">" + match[0] + "</span>");
+				user = 1;
+			}
+			else if (match = chat[i].match(/^# [a-z]{1,12} is now known as [a-z]{1,12}$/)) {
+				chat[i] = chat[i].replace(/^# [a-z]{1,12} is now known as [a-z]{1,12}$/, "<span class=\"nick\">" + match[0] + "</span>");
 				user = 1;
 			}
 			else if (thisnick = chat[i].match(/^[a-z]+:/)) {
