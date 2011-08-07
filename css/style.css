@@ -288,8 +288,8 @@ span.green {
 #changenick {
 	min-width: 330px;
 	width: 20%;
-	padding: 10px;
-	background-color: rgba(0, 0, 0, 0.9);
+	padding: 5px;
+	background-color: rgba(0, 0, 0, 0.86);
 	color: #FFF;
 	box-shadow: 4px 4px #97CEEC;
 	text-align: center;

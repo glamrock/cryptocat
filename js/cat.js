@@ -7,7 +7,6 @@ var nick = $("#nick").html();
 var focus = true;
 var num = 0;
 var interval = 0;
-var maintime = 0;
 var nickset = 0;
 var pos = 0;
 var maximized = 0;
@@ -174,12 +173,14 @@ function processline(chat, flip) {
 						}
 					}
 					catch (INVALID_CHARACTER_ERR) {
-						chat[i] = chat[i].replace(/\[B-C\](.*)\[E-C\]/, "<span class=\"diffkey\">encrypted</span>");
+						thisnick = chat[i].match(/^[a-z]+:/);
+						chat[i] = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">encrypted</span>";
 						encrypted = 1;
 					}
 				}
 				if (((success) && (hmac != Crypto.HMAC(Crypto.SHA1, ciphertext + success, getkey(ciphertext  + success, 4)))) || (!hmac)) {
-					chat[i] = chat[i].replace(/\[B-M\](.*)*\[E-M\]/, "<span class=\"diffkey\">corrupted</span>");
+					thisnick = chat[i].match(/^[a-z]+:/);
+					chat[i] = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">corrupted</span>";
 					corrupted = 1;
 				}
 				else if (success) {
@@ -368,7 +369,6 @@ $("#nickform").submit( function() {
 				nick = $("#nick").html();
 				$("#front").fadeOut();
 				gotsalt = data;
-				maintime = 0;
 				nickset = 1;
 				document.getElementById("input").focus();
 				updatekey();
@@ -412,15 +412,6 @@ $("#maximize").click(function(){
 			width: "600px",
 			height: "420px"
 		}, 500 );
-		$("#chat").animate({
-			margin: "0 auto",
-			"margin-top": "20px",
-			"min-height": "295px",
-			width: "585px",
-			height: "295px"
-		}, 500, function() {
-		    updatechat("#chat");
-		});
 		$("#chatters").animate({
 			width: "575px",
 			"margin-left": "2px",
@@ -443,6 +434,15 @@ $("#maximize").click(function(){
 		$("#strength").animate({
 			"margin-left": "5px"
 		}, 500 );
+		$("#chat").animate({
+			margin: "0 auto",
+			"margin-top": "20px",
+			"min-height": "295px",
+			width: "585px",
+			height: "295px"
+		}, 500, function() {
+		    updatechat("#chat");
+		});
 		$("#maximize").attr("src", "img/maximize.png");
 		$("#maximize").attr("title", "expand");
 		maximized = 0;
@@ -456,15 +456,6 @@ $("#maximize").click(function(){
 			width: "85%",
 			height: "90%"
 		}, 500 );
-		$("#chat").animate({
-			margin: "2px",
-			"margin-top": "10px",
-			"min-height": "360px",
-			width: "99%",
-			height: "80%"
-		}, 500, function() {
-			scrolldown();
-		});
 		$("#chatters").animate({
 			width: "98.2%",
 			"margin-left": "5px",
@@ -488,6 +479,15 @@ $("#maximize").click(function(){
 		$("#strength").animate({
 			"margin-left": "36%"
 		}, 500 );
+		$("#chat").animate({
+			margin: "2px",
+			"margin-top": "10px",
+			"min-height": "360px",
+			width: "99%",
+			height: "80%"
+		}, 500, function() {
+			scrolldown();
+		});
 		$("#maximize").attr("src", "img/minimize.png");
 		$("#maximize").attr("title", "contract");
 		maximized = 1;
@@ -498,14 +498,6 @@ $("#maximize").click(function(){
 function changenick() {
 	$("#front").fadeIn();
 	StuffSelect("nickinput");
-	setTimeout("maintime = 1", 600);
-	$("#main").click(function(){
-		if (maintime && nickset) {
-			$("#front").fadeOut();
-			document.getElementById("input").focus();
-			maintime = 0;
-		}
-	});
 }
 
 window.onfocus = function() {
