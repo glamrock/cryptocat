@@ -1,23 +1,10 @@
 Math.seedrandom();
-var salt;
-var key;
-var curcount;
-var t = 0;
+var salt, key, curcount, match, t, num, interval, nickset, pos, maximized, sound, errored, gotsalt, defaultsalt, defaultkey;
+t = num = interval = nickset = pos = maximized = sound = errored = gotsalt = defaultsalt = defaultkey = 0;
 var nick = $("#nick").html();
-var focus = true;
-var num = 0;
-var interval = 0;
-var nickset = 0;
-var pos = 0;
-var maximized = 0;
-var sound = 0;
-var soundEmbed = null;
-var errored = 0;
-var gotsalt = 0;
-var match;
-var defaultsalt = 0;
-var defaultkey = 0;
 var defaultkeytext = $("#key").val();
+var focus = true;
+var soundEmbed = null;
 
 function scrolldown() {
 	$("#chat").animate({ scrollTop: document.getElementById("chat").scrollHeight-20}, 500 );

@@ -1,7 +1,8 @@
 <?php
-	/* cryptocat 0.3 */
+	/* cryptocat */
 	$install = 'https://crypto.cat/';
 	$domain = "crypto.cat";
+	$https = TRUE;
 	$data = '/srv/data/';
 	$timelimit = 1800;
 	$update = 1500;
@@ -10,7 +11,7 @@
 	$maxinput = 256;
 	$usednicks = array();
 	$usedsessions = array();
-	session_set_cookie_params(0, '/', $domain, TRUE, TRUE); 
+	session_set_cookie_params(0, '/', $domain, $https, TRUE); 
 ?>
 <?php
 	function gen($size) {
