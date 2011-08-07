@@ -198,12 +198,18 @@ function processline(chat, flip) {
 					chat[i] = chat[i].replace(/^[a-z]+:/, "<span class=\"nick\">" + match + "</span>");
 				}
 			}
+			else if (match = chat[i].match(/^(\&gt\;|\&lt\;|\#).+$/)) {
+				match = match[0];
+				chat[i] = chat[i].replace(/^(\&gt\;|\&lt\;|\#).+$/, "<span class=\"nick\">" + match + "</span>");
+				user = 1;
+			}
+			else if (thisnick = chat[i].match(/^[a-z]+:/)) {
+				chat[i] = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">corrupted</span>";
+				corrupted = 1;
+			}
 			else {
-				if (match = chat[i].match(/^(\&gt\;|\&lt\;|\#).+$/)) {
-					match = match[0];
-					chat[i] = chat[i].replace(/^(\&gt\;|\&lt\;|\#).+$/, "<span class=\"nick\">" + match + "</span>");
-					user = 1;
-				}
+				chat[i] = "<span class=\"diffkey\">very suspicious corruption detected! your chat may be compromised!</span>"
+				corrupted = 1;
 			}
 			chat[i] = nl2br(chat[i]);
 			if (user) {
