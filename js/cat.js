@@ -1,6 +1,6 @@
 Math.seedrandom();
-var salt, key, curcount, match, t, num, interval, nickset, pos, maximized, sound, errored, gotsalt, defaultsalt, defaultkey;
-t = num = interval = nickset = pos = maximized = sound = errored = gotsalt = defaultsalt = defaultkey = 0;
+var salt, key, curcount, match, t, num, interval, nickset, pos, maximized, sound, errored, gotsalt, defaultsalt, defaultkey, reconnect;
+t = num = interval = nickset = pos = maximized = sound = errored = gotsalt = defaultsalt = defaultkey = reconnect = 0;
 var nick = $("#nick").html();
 var defaultkeytext = $("#key").val();
 var focus = true;
@@ -110,11 +110,8 @@ function scrubtags(str) {
 function processline(chat, flip) {
 	chat = chat.split("\n");
 	for (i=0; i <= chat.length-1; i++) {
-		var encrypted = 0;
-		var success = 0;
-		var corrupted = 0;
-		var user = 0;
-	
+		var encrypted, success, corrupted, user;
+		encrypted = success = corrupted = user = 0;
 		if (chat[i]) {
 			if (match = chat[i].match(/\[B-H\](.*)\[E-H\]$/)) {
 				for (o=0; o <= chat.length-1; o++) {
@@ -292,7 +289,7 @@ function updatechat(div){
 			}
 			updatechatters();
 		}
-		else if (errored) {
+		else if (errored && reconnect) {
 			updatechatters();
 		}
 	});
@@ -524,6 +521,7 @@ $("#nickicon,#nick").click(function(){
 $(document).ajaxError(function(){
 	if (!errored) {
 		errordisplay("you have been disconnected. reconnecting...");
+		reconnect = 1;
 	}
 });
 

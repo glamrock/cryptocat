@@ -11,7 +11,8 @@
 	$maxinput = 256;
 	$usednicks = array();
 	$usedsessions = array();
-	session_set_cookie_params(0, '/', $domain, $https, TRUE); 
+	session_set_cookie_params(0, '/', $domain, $https, TRUE);
+	error_reporting(0);
 ?>
 <?php
 	function gen($size) {
@@ -34,7 +35,7 @@
 			$existingnick = substr($existingnick[0], 1, -1);
 			preg_match('/\+.+\-/', $people[$i], $pos);
 			$pos = substr($pos[0], 1, -1);
-			if ($session == $_SESSION['id']) {
+			if (isset($_SESSION['id']) && $session == $_SESSION['id']) {
 				$nick = $existingnick;
 				$mysession = $session;
 				$mypos = $pos;
@@ -45,7 +46,7 @@
 			}
 		}
 	}
-	if ($_GET['c'] == "nyan") { header('Location: http://nyan.cat'); }
+	if (isset($_GET['c']) && $_GET['c'] == "nyan") { header('Location: http://nyan.cat'); }
 	else if (isset($_GET['redirect'])) {
 		header('Location: '.$_GET['redirect']);
 	}
@@ -58,7 +59,7 @@
 			print('NOEXIST');
 		}
 		else if (isset($_GET['pos']) && (($_GET['pos'] < (count($chat) - $mypos)) || ($_GET['pos'] == "chat")) && $_GET['pos'] >= 0) {
-			if ($mysession == $_SESSION['id'] && !is_null($_SESSION['id'])) {
+			if (isset($_SESSION['id']) && $mysession == $_SESSION['id'] && !is_null($_SESSION['id'])) {
 				for ($i = $mypos; $i < count($chat); $i++) {
 					print(htmlspecialchars($chat[$i]));
 				}
@@ -89,7 +90,7 @@
 		$chat = file($data.$_GET['chatters']);
 		getpeople($chat);
 		$total = count($usednicks) + 1;
-		if ($mysession == $_SESSION['id'] && !is_null($_SESSION['id'])) {
+		if (isset($_SESSION['id']) && $mysession == $_SESSION['id'] && !is_null($_SESSION['id'])) {
 			print('<span class="chatters">'.$total.'</span> '.htmlspecialchars($nick.' '.implode(' ', $usednicks)));
 		}
 		exit;
@@ -259,7 +260,7 @@ else {
 				}
 			}
 		}
-		function chat($name, $nick) {
+		function chat($name) {
 			global $data, $nicks, $timelimit, $maxinput, $install, $update, $_SESSION, $mysession, $usedsessions, $usednicks;
 			$name = strtolower($name);
 			$chat = file($data.$name);
