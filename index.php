@@ -184,7 +184,7 @@ else {
 				<form action="'.$install.'" method="get" class="create" id="welcome">
 					<input type="text" class="name" name="c" id="name" onclick="StuffSelect(\'name\');" value="'.$name.'" maxlength="32" autocomplete="off" />
 					<input type="submit" class="create" value="enter" id="create" />
-					<p id="video">(first time? check out this <a href="https://crypto.cat/info">awesome video!</a>)</p>
+					<p id="video">(for a safer experience, check out <a href="https://chrome.google.com/webstore/detail/dlafegoljmjdfmhgoeojifolidmllaie">cryptocat verifier</a>.)</p>
 				</form>
 				<table>
 					<tr>
