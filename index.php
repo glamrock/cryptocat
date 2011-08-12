@@ -184,12 +184,12 @@ else {
 				<form action="'.$install.'" method="get" class="create" id="welcome">
 					<input type="text" class="name" name="c" id="name" onclick="StuffSelect(\'name\');" value="'.$name.'" maxlength="32" autocomplete="off" />
 					<input type="submit" class="create" value="enter" id="create" />
-					<p id="video">(first time? check out this <a href="info">awesome video!</a>)</p>
+					<p id="video">(first time? check out this <a href="https://crypto.cat/info">awesome video!</a>)</p>
 				</form>
 				<table>
 					<tr>
 						<td class="img"><img src="img/1.png" alt="" /></td>
-						<td id="td1"><strong>cryptocat</strong> lets you set up encrypted, private chats for impromptu secure conversations. check out this <a href="info">video</a> for tips on how to get started!</td>
+						<td id="td1"><strong>cryptocat</strong> lets you set up encrypted, private chats for impromptu secure conversations. check out this <a href="https://crypto.cat/info">video</a> for tips on how to get started!</td>
 					</tr>
 					<tr>
 						<td class="img"><img src="img/2.png" alt="" /></td>
@@ -202,7 +202,7 @@ else {
 				</table>
 				<p class="bottom" id="bottom">
 					<a href="#" id="translate" onclick="translate()">català</a> | 
-					<a href="about">about</a> | 
+					<a href="https://crypto.cat/about">about</a> | 
 					cryptocat is beta software under active development | 
 					<a target="_blank" href="https://twitter.com/cryptocatapp">twitter</a> | 
 					<a target="_blank" href="https://github.com/kaepora/cryptocat/">github</a>
