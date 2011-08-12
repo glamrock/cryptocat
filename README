@@ -3,4 +3,5 @@ http://crypto.cat
 Beta software - code review highly appreciated.
 
 CURRENT LIMITATIONS:
--While always theoretically possible, there is no *convenient* way to verify the integrity of the cryptographic functions being sent by the server every time. This means that the paranoid cryptocat user will have to check the code by hand every chat.
+-Paranoid users may want to install Cryptocat Verifier, a Chrome extension that verifies that your Cryptocat session is not serving you modified JavaScript code.
+Cryptocat verifier can be downloaded here: https://chrome.google.com/webstore/detail/dlafegoljmjdfmhgoeojifolidmllaie
