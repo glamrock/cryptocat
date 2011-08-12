@@ -47,8 +47,10 @@
 		}
 	}
 	if (isset($_GET['c']) && $_GET['c'] == "nyan") { header('Location: http://nyan.cat'); }
-	else if (isset($_GET['redirect'])) {
-		header('Location: '.$_GET['redirect']);
+	else if (isset($_GET['redirect']) && preg_match('/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/i', $_GET['redirect'])) {
+		print('<html><head><title>cryptocat</title><link rel="stylesheet" href="css/style.css" type="text/css" /></head>
+		<body><div class="redirect"><img src="img/cryptocat.png" alt="" />You are leaving cryptocat to visit: <p><a href="'.htmlspecialchars($_GET['redirect']).'">'.htmlspecialchars($_GET['redirect']).'</a></p>Click the link to continue.</div>');
+		exit;
 	}
 	else if (isset($_GET['chat']) && $_SERVER['HTTP_REFERER'] == $install."?c=".$_GET['chat'] && preg_match('/^([a-z]|_|[0-9])+$/', $_GET['chat'])) {
 		session_name($_GET['chat']);
@@ -210,9 +212,8 @@ else {
 			</div>
 			<script type="text/javascript">
 				var install = "'.$install.'";
-				');
-				include('js/welcome.js');
-			print('</script>');
+			</script>
+			<script type="text/javascript" src="js/welcome.js"></script>');
 		}
 		function createchat($name, $setnick) {
 			global $data, $_SESSION;
@@ -304,9 +305,9 @@ else {
 				var install = "'.$install.'";
 				var update = "'.$update.'";
 				var name = "'.$name.'";
-				var maxinput = "'.$maxinput.'";');
-			include('js/cat.js');
-			print('</script>');
+				var maxinput = "'.$maxinput.'";
+			</script>
+			<script type="text/javascript" src="js/cat.js"></script>"');
 		}
 		
 		if (isset($_GET['c'])) {

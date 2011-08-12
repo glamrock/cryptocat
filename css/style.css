@@ -296,3 +296,27 @@ span.green {
 	margin: 11.5% auto 0 auto;
 	font-size: 16px;
 }
+div.redirect {
+	background-color: #222;
+	box-shadow: 4px 4px #97CEEC;
+	width: 650px;
+	color: #FFF;
+	padding: 20px;
+	text-align: center;
+	display: block;
+	margin: 5% auto 0 auto;
+	font-size: 12px;
+}
+
+div.redirect img {
+	display: block;
+	text-align: left;
+	margin-bottom: 20px;
+}
+div.redirect p {
+	font-family: Neuton, Georgia;
+	font-size: 20px;
+	line-height: 1.7em;
+	
+	word-wrap: break;
+}
