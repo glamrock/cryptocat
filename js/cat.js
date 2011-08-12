@@ -6,6 +6,11 @@ var defaultkeytext = $("#key").val();
 var focus = true;
 var soundEmbed = null;
 
+function StuffSelect(id) {
+	document.getElementById(id).focus();
+	document.getElementById(id).select();
+}
+
 function scrolldown() {
 	$("#chat").animate({ scrollTop: document.getElementById("chat").scrollHeight-20}, 500 );
 }
