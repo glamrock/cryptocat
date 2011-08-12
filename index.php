@@ -157,12 +157,13 @@
 	<title>cryptocat</title>
 	<link rel="stylesheet" href="css/style.css" type="text/css" /> 
 	<link rel="icon" type="image/png" href="img/favicon.gif" />
-	<script  type="text/javascript" src="js/jquery.js"></script>
-	<script  type="text/javascript" src="js/color.js"></script>
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/color.js"></script>
 	<!-- cryptocat uses the crypto-js library - http://code.google.com/p/crypto-js/ -->
 	<!-- http://crypto-js.googlecode.com/files/2.3.0-crypto-sha1-hmac-pbkdf2-blockmodes-aes.js -->
 	<script type="text/javascript" src="js/crypto.js"></script>
 	<script type="text/javascript" src="js/seedrandom.js"></script>
+	<script type="text/javascript">function StuffSelect(id) {document.getElementById(id).focus();document.getElementById(id).select();}</script>
 </head>
 <?php
 if (isset($_GET['c']) && preg_match('/^([a-z]|_|[0-9])+$/', $_GET['c'])) {
@@ -204,9 +205,7 @@ else {
 					<a target="_blank" href="https://github.com/kaepora/cryptocat/">github</a>
 				</p>
 			</div>
-			<script type="text/javascript">
-				var install = "'.$install.'";
-			</script>
+			<script type="text/javascript">var install = "'.$install.'";</script>
 			<script type="text/javascript" src="js/welcome.js"></script>');
 		}
 		function createchat($name, $setnick) {
@@ -295,13 +294,8 @@ else {
 				<input type="submit" name="talk" id="talk" onmouseover="curcount = this.value; this.value=\'send\';" onmouseout="this.value=curcount;" value="'.$maxinput.'" />
 			</form>
 			</div>
-			<script type="text/javascript">
-				var install = "'.$install.'";
-				var update = "'.$update.'";
-				var name = "'.$name.'";
-				var maxinput = "'.$maxinput.'";
-			</script>
-			<script type="text/javascript" src="js/cat.js"></script>"');
+			<script type="text/javascript">var install = "'.$install.'";var update = "'.$update.'";var name = "'.$name.'";var maxinput = "'.$maxinput.'";</script>
+			<script type="text/javascript" src="js/cat.js"></script>');
 		}
 		
 		if (isset($_GET['c'])) {
