@@ -305,7 +305,7 @@ div.redirect {
 	text-align: center;
 	display: block;
 	margin: 5% auto 0 auto;
-	font-size: 12px;
+	font-size: 11px;
 }
 
 div.redirect img {
@@ -315,8 +315,8 @@ div.redirect img {
 }
 div.redirect p {
 	font-family: Neuton, Georgia;
-	font-size: 20px;
+	font-size: 25px;
 	line-height: 1.7em;
-	
-	word-wrap: break;
+	width: 550px;
+	word-wrap: break-word;
 }
