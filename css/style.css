@@ -299,22 +299,25 @@ span.green {
 div.redirect {
 	background-color: #222;
 	box-shadow: 4px 4px #97CEEC;
-	width: 650px;
+	width: 600px;
 	color: #FFF;
 	padding: 20px;
 	text-align: center;
 	display: block;
-	margin: 5% auto 0 auto;
+	margin: 4.5% auto 0 auto;
 	font-size: 12px;
+	min-height: 440px;
+	box-shadow: 5px 5px #76BDE5;
 }
 div.redirect img {
 	display: block;
 	text-align: left;
-	margin-bottom: 20px;
+	margin-bottom: 100px;
 }
 div.redirect p {
 	font-family: Neuton, Georgia;
 	font-size: 22px;
 	line-height: 1.7em;
 	word-wrap: break-word;
+	
 }
