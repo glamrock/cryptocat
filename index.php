@@ -157,7 +157,7 @@
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/color.js"></script>
 	<!-- cryptocat uses the crypto-js library - http://code.google.com/p/crypto-js/ -->
-	<!-- http://crypto-js.googlecode.com/files/2.3.0-crypto-sha1-hmac-pbkdf2-blockmodes-aes.js -->
+	<!-- http://crypto-js.googlecode.com/files/2.4.0-crypto-sha1-hmac-pbkdf2-blockmodes-aes.js -->
 	<script type="text/javascript" src="js/crypto.js"></script>
 	<script type="text/javascript" src="js/seedrandom.js"></script>
 	<script type="text/javascript">function StuffSelect(id) {document.getElementById(id).focus();document.getElementById(id).select();}</script>
