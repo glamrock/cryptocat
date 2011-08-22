@@ -18,10 +18,10 @@ var curlang = "english";
 function translate() {
 	if (curlang == "english") {
 		$("#td1").html("<strong>cryptocat</strong> li permet establir xats encriptada, privada de improvisada converses segures. Fes una ullada a aquest <a href=\"info\">vídeo</a> per obtenir consells sobre com començar!");
-		$("#td2").html("els seus missatges són encriptades abans de sortir del seu ordinador usant un algoritme AES-256 i es verifiquen la integritat. totes les converses estan ben esborrat després de 30 minuts d'inactivitat.");
+		$("#td2").html("seus missatges són encriptades abans de sortir del seu ordinador usant un algoritme AES-256. totes les converses estan ben esborrat després de 30 minuts d'inactivitat.");
 		$("#td3").html('cryptocat és totalment compatible amb <a target="_blank" href="https://torproject.org">Tor</a> per anònima al xat. utilitzeu cryptocat amb Tor de forma anònima la màxima confidencialitat.');
-		$("#video").html("(per primera vegada? fes un cop d\'ull a aquest <a href=\"info\">vídeo impressionant!</a>)");
-		$("#bottom").html('<a href="#" id="translate" onclick="translate()">english</a> | <a href="about">sobre</a> | cryptocat és el programari beta en el desenvolupament actiu | <a target="_blank" href="https://twitter.com/cryptocatapp">twitter</a> | <a target="_blank" href="https://github.com/kaepora/cryptocat/">github</a>');
+		$("#video").html("(per a una experiència més segura: <a href=\"https://chrome.google.com/webstore/detail/dlafegoljmjdfmhgoeojifolidmllaie\">verificador cryptocat.</a>)");
+		$("#bottom").html('<a href="#" id="translate" onclick="translate()">english</a> | <a href="about">sobre</a> | cryptocat és un programari beta en fase de desenvolupament | <a target="_blank" href="https://twitter.com/cryptocatapp">twitter</a> | <a target="_blank" href="https://github.com/kaepora/cryptocat/">github</a>');
 		$("#name").val("escrigui el seu nom de xat");
 		$("#create").val("entrar");
 		curlang = "catalan";
