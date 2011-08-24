@@ -146,11 +146,10 @@
 		exit;
 	}
 ?>
-<?php print('<?xml version="1.0" encoding="UTF-8"?>'); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xml:lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="application/xhtml+xml" />
+	<meta http-equiv="Content-Type" content="application/xhtml+xml" charset="utf-8" />
 	<title>cryptocat</title>
 	<link rel="stylesheet" href="css/style.css" type="text/css" />
 	<link rel="icon" type="image/png" href="img/favicon.gif" />
@@ -187,7 +186,7 @@ else {
 					</tr>
 					<tr>
 						<td class="img"><img src="img/2.png" alt="" /></td>
-						<td id="td2">your messages are encrypted before leaving your computer using AES-256 and are verified for integrity. all conversations are securely wiped after 30 minutes of inactivity.</td>
+						<td id="td2">messages are encrypted before leaving your computer using AES-256 and are verified for integrity. conversations are securely wiped after 30 minutes of inactivity.</td>
 					</tr>
 					<tr>
 						<td class="img"><img src="img/3.png" alt="" /></td>

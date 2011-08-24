@@ -25,13 +25,13 @@ function translate(language) {
 		$("#create").val("entrar");
 	}
 	else if (language == "arabic") {
-		$("#td1").html("!<strong>كريبتوكت</strong> يتيح لك إعداد محادثات دردشة أمينة و مشفرة. <a href=\"info\"> تحقق من هذا الفيديو</a>للحصول على نصائح حول كيفية إستعمال كريبتوكت");
+		$("#td1").html("!<strong>كريبتوكت</strong> يتيح لك إعداد محادثات دردشة أمينة و مشفرة.  <a href=\"info\"> تحقق من هذا الفيديو </a>للحصول على نصائح حول كيفية إستعمال كريبتوكت");
 		$("#td2").html(".يتم تشفير الرسائل قبل مغادرة الكمبيوتر ويتم التحقق من أجل النزاهة. يتم محو جميع المحادثات بعد ثلاثون دقيقة من الخمول");
 		$("#td3").html('.كريبتوكت متوافق تماما مع تور للدردشة لإخفاء الهوية وللسرية القصوى');
 		$("#video").html("(لتجربة أمينة بعد أكثر، سجل : <a target=\"_blank\" href=\"https://chrome.google.com/webstore/detail/dlafegoljmjdfmhgoeojifolidmllaie\">مدقق كريبتوكت.</a>)");
 		$("#bottom").html('<a href="#" id="translate" onclick="translate(\'catalan\')">català</a> | <a href="#" id="translate" onclick="translate(\'english\')">english</a> | <a href="https://crypto.cat/about">about</a> | <a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">license</a> | <a target="_blank" href="https://twitter.com/cryptocatapp">twitter</a> | <a target="_blank" href="https://github.com/kaepora/cryptocat/">github</a> | كريبتوكت حالياً تحت التطور');
 		$("#name").val("إدخل إسم المكالمة هنا");
-		$("#create").val("enter");
+		$("#create").val("تحدث");
 	}
 	else if (language == "english") {
 		$("#td1").html(td1);
