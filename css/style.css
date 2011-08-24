@@ -11,7 +11,7 @@ body {
 	color: #FFF;
 	padding: 0 12px 5px 12px;
 	background-image: url("../img/bg.png");
-	line-height: 1.35em;
+	line-height: 1.37em;
 }
 #main {
 	border: 10px solid #000;
@@ -256,6 +256,7 @@ td.img {
 }
 td {
 	border-bottom: 8px solid #FFF;
+	font-size: 12px;
 }
 span.red {
 	color: #DF93D6;

@@ -178,7 +178,7 @@ else {
 				<form action="'.$install.'" method="get" class="create" id="welcome">
 					<input type="text" class="name" name="c" id="name" onclick="StuffSelect(\'name\');" value="'.$name.'" maxlength="32" autocomplete="off" />
 					<input type="submit" class="create" value="enter" id="create" />
-					<p id="video">(for a safer experience, check out <a href="https://chrome.google.com/webstore/detail/dlafegoljmjdfmhgoeojifolidmllaie">cryptocat verifier</a>.)</p>
+					<p id="video">(for a safer experience, check out <a target=\"_blank\" href="https://chrome.google.com/webstore/detail/dlafegoljmjdfmhgoeojifolidmllaie">cryptocat verifier</a>.)</p>
 				</form>
 				<table>
 					<tr>
@@ -195,11 +195,13 @@ else {
 					</tr>
 				</table>
 				<p class="bottom" id="bottom">
-					<a href="#" id="translate" onclick="translate()">català</a> | 
+					<a href="#" id="translate" onclick="translate(\'catalan\')">català</a> | 
+					<a href="#" id="translate" onclick="translate(\'arabic\')">عربي</a> | 
 					<a href="https://crypto.cat/about">about</a> | 
-					cryptocat is beta software under active development | 
+					<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">license</a> | 
 					<a target="_blank" href="https://twitter.com/cryptocatapp">twitter</a> | 
-					<a target="_blank" href="https://github.com/kaepora/cryptocat/">github</a>
+					<a target="_blank" href="https://github.com/kaepora/cryptocat/">github</a> |
+					cryptocat is currently in beta
 				</p>
 			</div>
 			<script type="text/javascript">var install = "'.$install.'";</script>
