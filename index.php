@@ -149,7 +149,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xml:lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="application/xhtml+xml" charset="utf-8" />
+	<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
 	<title>cryptocat</title>
 	<link rel="stylesheet" href="css/style.css" type="text/css" />
 	<link rel="icon" type="image/png" href="img/favicon.gif" />
@@ -159,11 +159,11 @@
 	<!-- http://crypto-js.googlecode.com/files/2.4.0-crypto-sha1-hmac-pbkdf2-blockmodes-aes.js -->
 	<script type="text/javascript" src="js/crypto.js"></script>
 	<script type="text/javascript" src="js/seedrandom.js"></script>
-	<script type="text/javascript">function StuffSelect(id) {document.getElementById(id).focus();document.getElementById(id).select();}</script>
+	<script type="text/javascript">function StuffSelect(id) {document.getElementById(id).focus();document.getElementById(id).select();} $(document).ready(function() { $("#name,#nickinput,#key,#input").attr("autocomplete", "off"); });</script>
 </head>
 <?php
 if (isset($_GET['c']) && preg_match('/^([a-z]|_|[0-9])+$/', $_GET['c'])) {
-	print('<body onbeforeunload="logout();">'."\n");
+	print('<body onunload="logout();">'."\n");
 }
 else {
 	print('<body onload="document.getElementById(\'name\').focus();">'."\n");
@@ -175,9 +175,11 @@ else {
 			print('<div id="main">
 				<img src="img/cryptocat.png" alt="cryptocat" class="cryptocat" />
 				<form action="'.$install.'" method="get" class="create" id="welcome">
-					<input type="text" class="name" name="c" id="name" onclick="StuffSelect(\'name\');" value="'.$name.'" maxlength="32" autocomplete="off" />
-					<input type="submit" class="create" value="enter" id="create" />
-					<p id="video">(for a safer experience, check out <a target=\"_blank\" href="https://chrome.google.com/webstore/detail/dlafegoljmjdfmhgoeojifolidmllaie">cryptocat verifier</a>.)</p>
+					<div>
+						<input type="text" class="name" name="c" id="name" onclick="StuffSelect(\'name\');" value="'.$name.'" maxlength="32" />
+						<input type="submit" class="create" value="enter" id="create" />
+					</div>
+					<p id="video">(for a safer experience, check out <a onclick="window.open(this.href,\'_blank\');return false;" href="https://chrome.google.com/webstore/detail/dlafegoljmjdfmhgoeojifolidmllaie">cryptocat verifier</a>.)</p>
 				</form>
 				<table>
 					<tr>
@@ -190,16 +192,16 @@ else {
 					</tr>
 					<tr>
 						<td class="img"><img src="img/3.png" alt="" /></td>
-						<td id="td3">cryptocat is fully compatible with <a target="_blank" href="https://torproject.org">Tor</a> for anonymous chatting. couple cryptocat with Tor anonymization for maximum confidentiality.</td>
+						<td id="td3">cryptocat is fully compatible with <a onclick="window.open(this.href,\'_blank\');return false;" href="https://torproject.org">Tor</a> for anonymous chatting. couple cryptocat with Tor anonymization for maximum confidentiality.</td>
 					</tr>
 				</table>
 				<p class="bottom" id="bottom">
-					<a href="#" id="translate" onclick="translate(\'catalan\')">català</a> | 
-					<a href="#" id="translate" onclick="translate(\'arabic\')">عربي</a> | 
+					<a href="#" onclick="translate(\'catalan\')">català</a> | 
+					<a href="#" onclick="translate(\'arabic\')">عربي</a> | 
 					<a href="https://crypto.cat/about">about</a> | 
-					<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">license</a> | 
-					<a target="_blank" href="https://twitter.com/cryptocatapp">twitter</a> | 
-					<a target="_blank" href="https://github.com/kaepora/cryptocat/">github</a> |
+					<a onclick="window.open(this.href,\'_blank\');return false;" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">license</a> | 
+					<a onclick="window.open(this.href,\'_blank\');return false;" href="https://twitter.com/cryptocatapp">twitter</a> | 
+					<a onclick="window.open(this.href,\'_blank\');return false;" href="https://github.com/kaepora/cryptocat/">github</a> |
 					cryptocat is currently in beta
 				</p>
 			</div>
@@ -266,8 +268,10 @@ else {
 				<div id="changenick">
 					<p>enter your nickname</p>
 					<form name="nickform" id="nickform" method="post" action="'.$install.'">
-						<input type="text" name="nickinput" id="nickinput" value="'.$nick.'" autocomplete="off" maxlength="12" />
-						<input type="submit" class="nicksubmit" value="chat" />
+						<div>
+							<input type="text" name="nickinput" id="nickinput" value="'.$nick.'" maxlength="12" />
+							<input type="submit" class="nicksubmit" value="chat" />
+						</div>
 					</form>
 					<p class="small">(letters only, 12 characters max)</p>
 				</div>
@@ -281,12 +285,15 @@ else {
 			<div id="chat"></div>
 			<div id="chatters"></div>
 			<div id="info">chatting as <a href="#" id="nick">'.$nick.'</a> on 
-			<input readonly type="text" id="url" onclick="StuffSelect(\'url\');" value="'.$install.'?c='.$name.'" />
+			<input readonly="readonly" type="text" id="url" onclick="StuffSelect(\'url\');" value="'.$install.'?c='.$name.'" />
 			<span id="strength"></span>
 			<a class="logout" onclick="logout();" href="#">log out</a></div>
-			<input type="text" id="key" value="type your secret passkey for encrypted chat in this blue bar. everyone must use the same key." class="key" maxlength="192" onclick="StuffSelect(\'key\');" onkeyup="keytime();" autocomplete="off" />
+			<input type="text" id="key" value="type your secret passkey for encrypted chat in this blue bar. everyone must use the same key." class="key" maxlength="192" onclick="StuffSelect(\'key\');" onkeyup="keytime();" />
 			<form name="chatform" id="chatform" method="post" action="'.$install.'">
-				<input type="text" name="input" id="input" maxlength="'.$maxinput.'" onkeydown="textcounter(document.chatform.input,document.chatform.talk,'.$maxinput.')" onkeyup="textcounter(document.chatform.input,document.chatform.talk,'.$maxinput.')" autocomplete="off" /><input type="submit" name="talk" id="talk" onmouseover="curcount = this.value; this.value=\'send\';" onmouseout="this.value=curcount;" value="'.$maxinput.'" />
+				<div>
+					<input type="text" name="input" id="input" maxlength="'.$maxinput.'" onkeydown="textcounter(document.chatform.input,document.chatform.talk,'.$maxinput.')" onkeyup="textcounter(document.chatform.input,document.chatform.talk,'.$maxinput.')" />
+					<input type="submit" name="talk" id="talk" onmouseover="curcount = this.value; this.value=\'send\';" onmouseout="this.value=curcount;" value="'.$maxinput.'" />
+				</div>
 			</form>
 			</div>
 			<script type="text/javascript">var install = "'.$install.'";var update = "'.$update.'";var name = "'.$name.'";var maxinput = "'.$maxinput.'";</script>
