@@ -51,7 +51,7 @@ function textcounter(field,cntfield,maxlimit) {
 function keytime() {
 	document.getElementById("key").type = "password";
 	clearTimeout(t);
-	t = setTimeout("updatekey()", 500);
+	t = setTimeout("updatekey()", 800);
 }
 
 function updatekey() {
