@@ -259,11 +259,17 @@ td {
 	border-bottom: 8px solid #FFF;
 	font-size: 12px;
 }
+span.red, span.orange, span.green {
+	letter-spacing: 4px;
+}
 span.red {
-	color: #DF93D6;
+	color: #FF0000;
+}
+span.orange {
+	color: #FF7700;
 }
 span.green {
-	color: #93D8B9;
+	color: #00FF4C;
 }
 #maximize, #sound, #nickicon {
 	float: right;

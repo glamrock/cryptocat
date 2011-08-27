@@ -90,7 +90,7 @@ $("#key").blur(function(){
 function updatekey() {
 	if (!defaultkey) {
 		defaultsalt = getkey(gotsalt + $("#url").val(), 5);
-		defaultkey = Crypto.PBKDF2(getkey($("#url").val(), 4), defaultsalt, 64, { iterations: 1000 });
+		defaultkey = Crypto.PBKDF2(getkey($("#url").val(), 4), defaultsalt, 64, { iterations: 600 });
 	}
 	if (($("#key").val() == "") || ($("#key").val() == defaultkeytext)) {
 		salt = defaultsalt;
@@ -99,7 +99,7 @@ function updatekey() {
 	}
 	else {
 		salt = getkey(gotsalt + $("#key").val(), 5);
-		key = Crypto.PBKDF2(getkey($("#key").val(), 4), salt, 64, { iterations: 1000 });
+		key = Crypto.PBKDF2(getkey($("#key").val(), 4), salt, 64, { iterations: 600 });
 		var strength = 0;
 		if ($("#key").val().length >= 10) {
 			strength = 10;
@@ -119,17 +119,24 @@ function updatekey() {
 		if ($("#key").val().match(/[^\d\w\s]/)) {
 			strength++;
 		}
-		if (strength < 12) {
-			$("#strength").html("key strength: <span class=\"red\">weak</span>");
+		if ($("#key").val().match(/\s/)) {
+			strength++;
+		}
+		if (strength < 10) {
+			$("#strength").html("key strength: <span class=\"red\">+</span>");
+		}
+		if ((strength > 10) && (strength < 12)) {
+			$("#strength").html("key strength: <span class=\"red\">++</span>");
 		}
 		if (strength == 12) {
-			$("#strength").html("key strength: okay");
+			$("#strength").html("key strength: <span class=\"orange\">+++</span>");
 		}
 		if (strength > 12) {
-			$("#strength").html("key strength: <span class=\"green\">good</span>");
+			$("#strength").html("key strength: <span class=\"green\">++++</span>");
 		}
-		clearInterval(blink);
-		hidekey();
+		if (strength >= 15) {
+			$("#strength").html("key strength: <span class=\"green\">+++++</span>");
+		}
 	}
 	updatechat("#chat");
 }
