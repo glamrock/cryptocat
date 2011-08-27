@@ -1,5 +1,5 @@
 Math.seedrandom();
-var salt, key, curcount, match, t, num, interval, nickset, pos, maximized, sound, errored, gotsalt, defaultsalt, defaultkey, reconnect;
+var salt, key, curcount, match, t, num, interval, nickset, pos, maximized, sound, errored, gotsalt, defaultsalt, defaultkey, reconnect, blink;
 t = num = interval = nickset = pos = maximized = sound = errored = gotsalt = defaultsalt = defaultkey = reconnect = 0;
 var nick = $("#nick").html();
 var defaultkeytext = $("#key").val();
@@ -54,6 +54,39 @@ function keytime() {
 	t = setTimeout("updatekey()", 800);
 }
 
+function keyblink() {
+	$("#key").animate({
+		color: "#FFF"
+	}, 250 );
+	$("#key").animate({
+		color: "#000"
+	}, 250 );
+}
+
+function hidekey() {
+	$("#key").animate({
+		color: "#97CEEC"
+	}, 500 );
+}
+
+$("#key").focus(function(){
+	clearInterval(blink);
+	if ($("#key").val() != defaultkeytext) {
+		$("#key").animate({
+			color: "#000"
+		}, 500 );
+	}
+});
+
+$("#key").blur(function(){
+	if ($("#key").val() != defaultkeytext) {
+		hidekey();
+	}
+	else {
+		blink = self.setInterval("keyblink()", 5000);
+	}
+});
+
 function updatekey() {
 	if (!defaultkey) {
 		defaultsalt = getkey(gotsalt + $("#url").val(), 5);
@@ -100,21 +133,6 @@ function updatekey() {
 	}
 	updatechat("#chat");
 }
-
-function hidekey() {
-	$("#key").animate({
-		color: "#97CEEC"
-	}, 2000 );
-}
-
-$("#key").click(function(){
-	if ($("#key").val() != defaultkeytext) {
-		$("#key").animate({
-			color: "#000"
-		}, 500 );
-		setTimeout("hidekey()", 15000);
-	}
-});
 
 function nl2br(str) {
 	return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + "<br />" + '$2');
@@ -510,15 +528,6 @@ function changenick() {
 	StuffSelect("nickinput");
 }
 
-function keyblink() {
-	$("#key").animate({
-		color: "#FFF"
-	}, 500 );
-	$("#key").animate({
-		color: "#000"
-	}, 500 );
-}
-
 window.onfocus = function() {
 	clearTimeout(blur);
 	focus = true;
@@ -553,4 +562,4 @@ $(document).ajaxError(function(){
 
 changenick();
 
-var blink = self.setInterval("keyblink()", 4500);
+blink = self.setInterval("keyblink()", 5000);
