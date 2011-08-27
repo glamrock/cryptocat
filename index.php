@@ -288,7 +288,7 @@ else {
 			<input readonly="readonly" type="text" id="url" onclick="StuffSelect(\'url\');" value="'.$install.'?c='.$name.'" />
 			<span id="strength"></span>
 			<a class="logout" onclick="logout();" href="#">log out</a></div>
-			<input type="text" id="key" value="type your secret passkey for encrypted chat in this blue bar. everyone must use the same key." class="key" maxlength="192" onclick="StuffSelect(\'key\');" onkeyup="keytime();" />
+			<input type="text" id="key" value="type your secret passkey in this blue bar for encrypted chat. everyone must use the same key." class="key" maxlength="192" onclick="StuffSelect(\'key\');" onkeyup="keytime();" />
 			<form name="chatform" id="chatform" method="post" action="'.$install.'">
 				<div>
 					<input type="text" name="input" id="input" maxlength="'.$maxinput.'" onkeydown="textcounter(document.chatform.input,document.chatform.talk,'.$maxinput.')" onkeyup="textcounter(document.chatform.input,document.chatform.talk,'.$maxinput.')" />

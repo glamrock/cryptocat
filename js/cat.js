@@ -95,9 +95,26 @@ function updatekey() {
 		if (strength > 12) {
 			$("#strength").html("key strength: <span class=\"green\">good</span>");
 		}
+		clearInterval(blink);
+		hidekey();
 	}
 	updatechat("#chat");
 }
+
+function hidekey() {
+	$("#key").animate({
+		color: "#97CEEC"
+	}, 2000 );
+}
+
+$("#key").click(function(){
+	if ($("#key").val() != defaultkeytext) {
+		$("#key").animate({
+			color: "#000"
+		}, 500 );
+		setTimeout("hidekey()", 15000);
+	}
+});
 
 function nl2br(str) {
 	return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + "<br />" + '$2');
@@ -406,7 +423,7 @@ $("#maximize").click(function(){
 			height: "420px"
 		}, 500 );
 		$("#chatters").animate({
-			width: "575px",
+			width: "590px",
 			"margin-left": "2px",
 		}, 500 );
 		$("#info").animate({
@@ -445,12 +462,12 @@ $("#maximize").click(function(){
 		$("#main").animate({
 			"margin-top": "2%",
 			"min-width": "900px",
-			"min-height": "480px",
+			"min-height": "505px",
 			width: "85%",
 			height: "90%"
 		}, 500 );
 		$("#chatters").animate({
-			width: "98.2%",
+			width: "99.2%",
 			"margin-left": "5px",
 			"margin-top": "-22px"
 		}, 500 );
@@ -493,6 +510,15 @@ function changenick() {
 	StuffSelect("nickinput");
 }
 
+function keyblink() {
+	$("#key").animate({
+		color: "#FFF"
+	}, 500 );
+	$("#key").animate({
+		color: "#000"
+	}, 500 );
+}
+
 window.onfocus = function() {
 	clearTimeout(blur);
 	focus = true;
@@ -526,3 +552,5 @@ $(document).ajaxError(function(){
 });
 
 changenick();
+
+var blink = self.setInterval("keyblink()", 4500);
