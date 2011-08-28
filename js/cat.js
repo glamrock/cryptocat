@@ -394,6 +394,7 @@ $("#nickform").submit( function() {
 	}, 200 );
 	$.ajax( { url: "index.php",
 		type: "POST",
+		async: false,
 		data: "nick=" + $("#nickinput").val() + "&name=" + $("#name").val(),
 		success: function(data) {
 			if (data != "error") {
@@ -531,6 +532,7 @@ function changenick() {
 
 window.onfocus = function() {
 	clearTimeout(blur);
+	clearInterval(blink);
 	focus = true;
 	num = 0;
 	document.title = "[" + num + "] cryptocat";
@@ -539,8 +541,8 @@ window.onfocus = function() {
 	}
 }
 window.onblur = function() {
-	blur = setTimeout("focus = false", update);
 	clearInterval(blink);
+	blur = setTimeout("focus = false", update);
 }
 document.onblur = window.onblur;
 document.focus = window.focus;
