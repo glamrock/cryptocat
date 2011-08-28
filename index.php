@@ -331,10 +331,10 @@ else {
 					session_unset();
 					session_destroy();
 				}
-				welcome('type your chatroom name');
+				welcome('name your chat');
 		}
 		else {
-				welcome('type your chatroom name');
+				welcome('name your chat');
 		}
 	?>
 </body>

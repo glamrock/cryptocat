@@ -125,7 +125,7 @@ function updatekey() {
 		if (strength < 10) {
 			$("#strength").html("key strength: <span class=\"red\">+</span>");
 		}
-		if ((strength > 10) && (strength < 12)) {
+		if (strength == 11) {
 			$("#strength").html("key strength: <span class=\"red\">++</span>");
 		}
 		if (strength == 12) {
@@ -134,7 +134,7 @@ function updatekey() {
 		if (strength > 12) {
 			$("#strength").html("key strength: <span class=\"green\">++++</span>");
 		}
-		if (strength >= 15) {
+		if (strength > 14) {
 			$("#strength").html("key strength: <span class=\"green\">+++++</span>");
 		}
 	}
@@ -471,8 +471,8 @@ $("#maximize").click(function(){
 		}, 500 );
 		$("#chat").animate({
 			margin: "0 auto",
-			"margin-top": "20px",
-			"min-height": "295px",
+			"margin-top": "10px",
+			"min-height": "310px",
 			width: "585px",
 			height: "295px"
 		}, 500, function() {
@@ -540,9 +540,13 @@ window.onfocus = function() {
 	focus = true;
 	num = 0;
 	document.title = "[" + num + "] cryptocat";
+	if ($("#key").val() == defaultkeytext) {
+		blink = self.setInterval("keyblink()", 5000);
+	}
 }
 window.onblur = function() {
-	blur = setTimeout("focus = false", update); 
+	blur = setTimeout("focus = false", update);
+	clearInterval(blink);
 }
 document.onblur = window.onblur;
 document.focus = window.focus;
@@ -553,7 +557,7 @@ function logout() {
 		async: false,
 		data: "logout=" + name,
 	});
-	window.location = install
+	window.location = install;
 }
 
 $("#nickicon,#nick").click(function(){
@@ -568,5 +572,4 @@ $(document).ajaxError(function(){
 });
 
 changenick();
-
 blink = self.setInterval("keyblink()", 5000);
