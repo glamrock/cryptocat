@@ -95,7 +95,7 @@ input.create:active, #talk:active, input.nicksubmit:active {
 #chat {
 	padding: 5px 5px 20px 0px;
 	width: 585px;
-	height: 295px;
+	height: 310px;
 	border: 3px solid #97CEEC;
 	margin: 0 auto;
 	overflow-x: hidden;
@@ -103,7 +103,7 @@ input.create:active, #talk:active, input.nicksubmit:active {
 	word-wrap: break-word;
 	line-height: 17px;
 	font-size: 12px;
-	margin-top: 20px;
+	margin-top: 10px;
 }
 #chatters {
 	background-color: #97CEEC;
@@ -129,16 +129,19 @@ span.chatters {
 	margin: 0 auto;
 	margin-top: 10px;
 }
+#strength {
+	float: right;
+	margin: 1px 2px 0 0;
+}
 a {
 	text-decoration: none;
 	color: #97CEEC;
 }
+a img {
+	border: none;
+}
 a:hover {
 	text-decoration: underline;
-}
-a.logout {
-	float: right;
-	margin: 1px 2px 0 0;
 }
 #chat a {
 	color: #000;
@@ -179,7 +182,7 @@ input.invisible, div.invisible, img.invisible {
 	font-size: 10px;
 	background-color: #000;
 	border: none;
-	width: 260px;
+	width: 200px;
 	color: #97CEEC;
 }
 #key {
@@ -259,7 +262,7 @@ td {
 	border-bottom: 8px solid #FFF;
 	font-size: 12px;
 }
-span.red, span.orange, span.green {
+span.red, span.orange, span.green, span.gray {
 	letter-spacing: 4px;
 }
 span.red {
@@ -271,6 +274,9 @@ span.orange {
 span.green {
 	color: #00FF4C;
 }
+span.gray {
+	color: #666;
+}
 #maximize, #sound, #nickicon {
 	float: right;
 }
@@ -281,9 +287,6 @@ span.green {
 	text-align: center;
 	font-style: italic;
 	margin-top: 0px;
-}
-#strength {
-	margin-left: 5px;
 }
 #front {
 	display: none;

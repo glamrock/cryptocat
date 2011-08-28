@@ -276,7 +276,7 @@ else {
 					<p class="small">(letters only, 12 characters max)</p>
 				</div>
 			</div>
-			<img src="img/cryptocat.png" alt="cryptocat" />
+			<a href="'.$install.'" onclick="logout();"><img src="img/cryptocat.png" alt="cryptocat" /></a>
 			<img src="img/maximize.png" alt="maximize" id="maximize" title="expand" />
 			<img src="img/nosound.png" alt="sound" id="sound" title="enable message notifications" />
 			<img src="img/user.png" alt="change nick" id="nickicon" title="change nickname" />
@@ -286,8 +286,7 @@ else {
 			<div id="chatters"></div>
 			<div id="info">chatting as <a href="#" id="nick">'.$nick.'</a> on 
 			<input readonly="readonly" type="text" id="url" onclick="StuffSelect(\'url\');" value="'.$install.'?c='.$name.'" />
-			<span id="strength"></span>
-			<a class="logout" onclick="logout();" href="#">log out</a></div>
+			<span id="strength">key strength: <span class="gray">+++++</span></span></div>
 			<input type="text" id="key" value="type your secret passkey in this blue bar for encrypted chat. everyone must use the same key." class="key" maxlength="192" onclick="StuffSelect(\'key\');" onkeyup="keytime();" />
 			<form name="chatform" id="chatform" method="post" action="'.$install.'">
 				<div>

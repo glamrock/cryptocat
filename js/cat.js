@@ -95,7 +95,7 @@ function updatekey() {
 	if (($("#key").val() == "") || ($("#key").val() == defaultkeytext)) {
 		salt = defaultsalt;
 		key = defaultkey;
-		$("#strength").html("");
+		$("#strength").html("key strength: <span class=\"gray\">+++++</span>");
 	}
 	else {
 		salt = getkey(gotsalt + $("#key").val(), 5);
@@ -123,18 +123,18 @@ function updatekey() {
 			strength++;
 		}
 		if (strength < 10) {
-			$("#strength").html("key strength: <span class=\"red\">+</span>");
+			$("#strength").html("key strength: <span class=\"red\">+</span><span class=\"gray\">++++</span>");
 		}
-		if (strength == 11) {
-			$("#strength").html("key strength: <span class=\"red\">++</span>");
+		if ((strength > 10) && (strength < 12)) {
+			$("#strength").html("key strength: <span class=\"red\">++</span><span class=\"gray\">+++</span>");
 		}
 		if (strength == 12) {
-			$("#strength").html("key strength: <span class=\"orange\">+++</span>");
+			$("#strength").html("key strength: <span class=\"orange\">+++</span><span class=\"gray\">++</span>");
 		}
 		if (strength > 12) {
-			$("#strength").html("key strength: <span class=\"green\">++++</span>");
+			$("#strength").html("key strength: <span class=\"green\">++++</span><span class=\"gray\">+</span>");
 		}
-		if (strength > 14) {
+		if (strength >= 15) {
 			$("#strength").html("key strength: <span class=\"green\">+++++</span>");
 		}
 	}
@@ -466,9 +466,6 @@ $("#maximize").click(function(){
 		$("#talk").animate({
 			width: "67px"
 		}, 500 );
-		$("#strength").animate({
-			"margin-left": "5px"
-		}, 500 );
 		$("#chat").animate({
 			margin: "0 auto",
 			"margin-top": "10px",
@@ -510,9 +507,6 @@ $("#maximize").click(function(){
 		}, 500 );
 		$("#talk").animate({
 			width: "5.3%"
-		}, 500 );
-		$("#strength").animate({
-			"margin-left": "36%"
 		}, 500 );
 		$("#chat").animate({
 			margin: "2px",
