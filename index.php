@@ -101,8 +101,8 @@
 		session_name($_POST['name']);
 		session_start();
 		$chat = file($data.$_POST['name']);
-		getpeople($chat);
 		if (file_exists($data.$_POST['name'])) {
+			getpeople($chat);
 			if (time() - filemtime($data.$_POST['name']) > $timelimit) {
 				unlink($data.$_POST['name']);
 				createchat($_POST['name'], $_POST['nick']);
@@ -114,7 +114,11 @@
 		if ($_POST['nick'] == $nick) {
 			print(trim($chat[0]));
 		}
-		else if ($nick && !in_array($_POST['nick'], $usednicks)) {
+		else if (in_array($_POST['nick'], $usednicks)) {
+			print('error');
+			exit;
+		}
+		else if ($nick) {
 			$chat[1] = preg_replace('/\:'.$nick.'\+/', ':'.$_POST['nick'].'+', $chat[1]);
 			$chat[count($chat)] = "\n".'# '.$nick.' is now known as '.$_POST['nick'];
 			file_put_contents($data.$_POST['name'], $chat, LOCK_EX);

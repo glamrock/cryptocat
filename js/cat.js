@@ -212,6 +212,16 @@ function processline(chat, flip) {
 				else if (success) {
 					chat[i] = chat[i].replace(/\[B-M\](.*)\[E-M\]/, success.substring(5, success.length - 5));
 					chat[i] = scrubtags(chat[i]);
+					if (match = chat[i].match(/\*((?!\*).)+\*/gi)) {
+						for (mc = 0; mc <= match.length - 1; mc++) {
+							chat[i] = chat[i].replace(match[mc], "<strong>" + match[mc].substring(1, match[mc].length - 1) + "</strong>");
+						}
+					}
+					if (match = chat[i].match(/_((?!_).)+_/gi)) {
+						for (mc = 0; mc <= match.length - 1; mc++) {
+							chat[i] = chat[i].replace(match[mc], "<span class=\"underline\">" + match[mc].substring(1, match[mc].length - 1) + "</span>");
+						}
+					}
 				}
 				if (match = chat[i].match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi)) {
 					for (mc = 0; mc <= match.length - 1; mc++) {
@@ -226,6 +236,7 @@ function processline(chat, flip) {
 					}
 				}
 				chat[i] = chat[i].replace(/\&lt\;3/g, "&#9829;");
+			
 				if (match = chat[i].match(/^[a-z]+:\s\/me\s/)) {
 					match = match[0];
 					thisnick = chat[i].match(/^[a-z]+:/);

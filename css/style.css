@@ -330,5 +330,7 @@ div.redirect p {
 	font-size: 22px;
 	line-height: 1.7em;
 	word-wrap: break-word;
-	
+}
+span.underline {
+	text-decoration: underline;
 }
