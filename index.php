@@ -173,6 +173,7 @@ else {
 	print('<body onload="document.getElementById(\'name\').focus();">'."\n");
 }
 ?>
+<div><a href="https://crypto.cat/fundraiser/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://crypto.cat/fundraiser/fundraiser.png" alt="Fundraiser!" /></a></div>
 	<?php
 		function welcome($name) {
 			global $install;
