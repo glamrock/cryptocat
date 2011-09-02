@@ -19,7 +19,7 @@ function showstamp(timestamp, nick) {
 	u = parseInt(timestamp.substring(0, 2));
 	h = u - offset;
 	var spaces = "";
-	for (i = 0; i < (nick.length - 4); i++) {
+	for (i = 0; i < (nick.length - 5); i++) {
 		spaces += "&nbsp";
 	}
 	return spaces + h + ":" + timestamp.substring(2);
