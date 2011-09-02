@@ -143,14 +143,6 @@ a img {
 a:hover {
 	text-decoration: underline;
 }
-#chat a {
-	color: #000;
-	border-bottom: 1px dashed #000;
-}
-#chat a:hover {
-	border-bottom: 1px solid #000;
-	text-decoration: none;
-}
 input.logout:hover {
 	text-decoration: underline;
 }
@@ -205,6 +197,14 @@ div.msg, div.gsm, div.emsg, div.egsm, div.cmsg, div.cgsm, div.umsg, div.ugsm {
 	background-image: url("../img/unlock.png");
 	background-position: 98%;
 }
+div.msg a, div.gsm a, div.emsg a, div.egsm a, div.cmsg a, div.cgsm a, div.umsg a, div.ugsm a {
+	color: #000;
+	border-bottom: 1px dashed #000;
+}
+div.msg a:hover, div.gsm a:hover, div.emsg a:hover, div.egsm a:hover, div.cmsg a:hover, div.cgsm a:hover, div.umsg a:hover, div.ugsm a:hover {
+	border-bottom: 1px solid #000;
+	text-decoration: none;
+}
 div.gsm {
 	background-color: #FFF;
 }
@@ -236,6 +236,13 @@ span.nick {
 	box-shadow: 2px 2px #90CAEA;
 	margin-right: 5px;
 	font-family: "Monaco", monospace;
+}
+span.nick a {
+	color: #FFF;
+	border-bottom: 1px dashed #FFF;
+}
+span.nick a:hover {
+	border-bottom: 1px solid #FFF;
 }
 img.cryptocat {
 	margin-bottom: 90px;
