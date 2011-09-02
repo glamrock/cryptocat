@@ -235,7 +235,7 @@ span.nick {
 	padding: 2px;
 	box-shadow: 2px 2px #90CAEA;
 	margin-right: 5px;
-	font-family: "Monaco", "Courier New", "Courier";
+	font-family: "Monaco", monospace;
 }
 img.cryptocat {
 	margin-bottom: 90px;
