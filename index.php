@@ -15,6 +15,7 @@
 	error_reporting(0);
 ?>
 <?php
+	date_default_timezone_set("UTC");
 	function gen($size) {
 		for ($i=0; $i<$size; $i++) {
 			$c=mt_rand(0,51);
@@ -79,7 +80,7 @@
 		getpeople($chat);
 		preg_match('/^[a-z]+:/', $_POST['input'], $thisnick);
 		$thisnick = substr($thisnick[0], 0, -1);
-		$_POST['input'] = trim($_POST['input']);
+		$_POST['input'] = date("Hi").trim($_POST['input']);
 		if ($_POST['input'] != "" && $nick == $thisnick) {
 			$chat = "\n".$_POST['input'];
 			file_put_contents($data.$_POST['name'], $chat, FILE_APPEND | LOCK_EX);

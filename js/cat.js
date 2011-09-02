@@ -10,6 +10,17 @@ function scrolldown() {
 	$("#chat").animate({ scrollTop: document.getElementById("chat").scrollHeight-20}, 500 );
 }
 
+function showstamp(timestamp) {
+	var time = new Date();
+	var h = time.getHours();
+	var u = time.getUTCHours();
+	var offset = u - h;
+	timestamp += '';
+	u = parseInt(timestamp.substring(0, 2));
+	h = u - offset;
+	return h + ":" + timestamp.substring(2);
+}
+
 function soundPlay(which) {
 	function createSound(which) {
 		soundEmbed = document.createElement("audio");
@@ -211,6 +222,10 @@ function processline(chat, flip) {
 				}
 				else if (success) {
 					chat[i] = chat[i].replace(/\[B-M\](.*)\[E-M\]/, success.substring(5, success.length - 5));
+					if (flip) {
+						var timestamp = chat[i].substring(0, 4);
+						chat[i] = chat[i].substring(4, chat[i].length);
+					}
 					chat[i] = scrubtags(chat[i]);
 					if (match = chat[i].match(/\*((?!\*).)+\*/gi)) {
 						for (mc = 0; mc <= match.length - 1; mc++) {
@@ -241,11 +256,11 @@ function processline(chat, flip) {
 					match = match[0];
 					thisnick = chat[i].match(/^[a-z]+:/);
 					thisnick = thisnick[0].substring(0, thisnick[0].length - 1);
-					chat[i] = chat[i].replace(/^[a-z]+:\s\/me\s/, "<span class=\"nick\">* " + thisnick + " ") + " :3 *</span>";
+					chat[i] = chat[i].replace(/^[a-z]+:\s\/me\s/, "<span class=\"nick\">* " + thisnick + " ") + " *</span>";
 				}
 				else if (match = chat[i].match(/^[a-z]+:/)) {
-					match = match[0];
-					chat[i] = chat[i].replace(/^[a-z]+:/, "<span class=\"nick\">" + match + "</span>");
+					match = match[0].substring(0, match[0].length - 1);
+					chat[i] = chat[i].replace(/^[a-z]+:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = showstamp(" + timestamp + ");\" onmouseout=\"this.innerHTML = \'" + match + "\';\">" + match + "</span>");
 				}
 			}
 			else if (match = chat[i].match(/^(\&gt\;|\&lt\;) [a-z]{1,12} (has arrived|has left)$/)) {
