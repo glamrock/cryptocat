@@ -243,20 +243,6 @@ function processline(chat, flip) {
 							chat[i] = chat[i].replace(sanitize, "<a target=\"_blank\" href=\"" + install + "?redirect=" + escape(sanitize) + "\">" + match[mc] + "</a>");
 						}
 					}
-					if (match = chat[i].match(/_((?!_).)+_/gi)) {
-						for (mc = 0; mc <= match.length - 1; mc++) {
-							if (!match[mc].match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi)) {
-								chat[i] = chat[i].replace(match[mc], "<span class=\"underline\">" + match[mc].substring(1, match[mc].length - 1) + "</span>");
-							}
-						}
-					}
-					if (match = chat[i].match(/\*((?!\*).)+\*/gi)) {
-						for (mc = 0; mc <= match.length - 1; mc++) {
-							if (!match[mc].match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi)) {
-								chat[i] = chat[i].replace(match[mc], "<strong>" + match[mc].substring(1, match[mc].length - 1) + "</strong>");
-							}
-						}
-					}
 				}
 				chat[i] = chat[i].replace(/\&lt\;3/g, "&#9829;");
 				if (match = chat[i].match(/^[a-z]+:\s\/me\s/)) {
