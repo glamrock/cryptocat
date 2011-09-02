@@ -10,7 +10,7 @@ function scrolldown() {
 	$("#chat").animate({ scrollTop: document.getElementById("chat").scrollHeight-20}, 500 );
 }
 
-function showstamp(timestamp) {
+function showstamp(timestamp, nick) {
 	var time = new Date();
 	var h = time.getHours();
 	var u = time.getUTCHours();
@@ -18,7 +18,11 @@ function showstamp(timestamp) {
 	timestamp += '';
 	u = parseInt(timestamp.substring(0, 2));
 	h = u - offset;
-	return h + ":" + timestamp.substring(2);
+	var spaces = "";
+	for (i = 0; i < (nick.length - 4); i++) {
+		spaces += "&nbsp";
+	}
+	return spaces + h + ":" + timestamp.substring(2);
 }
 
 function soundPlay(which) {
@@ -260,7 +264,7 @@ function processline(chat, flip) {
 				}
 				else if (match = chat[i].match(/^[a-z]+:/)) {
 					match = match[0].substring(0, match[0].length - 1);
-					chat[i] = chat[i].replace(/^[a-z]+:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = showstamp(" + timestamp + ");\" onmouseout=\"this.innerHTML = \'" + match + "\';\">" + match + "</span>");
+					chat[i] = chat[i].replace(/^[a-z]+:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = showstamp(" + timestamp + ",\'" + match + "\');\" onmouseout=\"this.innerHTML = \'" + match + "\';\">" + match + "</span>");
 				}
 			}
 			else if (match = chat[i].match(/^(\&gt\;|\&lt\;) [a-z]{1,12} (has arrived|has left)$/)) {
