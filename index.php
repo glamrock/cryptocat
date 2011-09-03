@@ -80,8 +80,8 @@
 		getpeople($chat);
 		preg_match('/^[a-z]+:/', $_POST['input'], $thisnick);
 		$thisnick = substr($thisnick[0], 0, -1);
-		$_POST['input'] = date("Hi").trim($_POST['input']);
 		if ($_POST['input'] != "" && $nick == $thisnick) {
+			$_POST['input'] = date("Hi").trim($_POST['input']);
 			$chat = "\n".$_POST['input'];
 			file_put_contents($data.$_POST['name'], $chat, FILE_APPEND | LOCK_EX);
 		}
