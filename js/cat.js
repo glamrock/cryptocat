@@ -1,8 +1,9 @@
 Math.seedrandom();
-var salt, key, curcount, match, t, num, interval, nickset, pos, maximized, sound, errored, gotsalt, defaultsalt, defaultkey, reconnect, blink;
-t = num = interval = nickset = pos = maximized = sound = errored = gotsalt = defaultsalt = defaultkey = reconnect = 0;
+var t, num, interval, pos, maximized, sound, errored, reconnect, mysecret, mypublic;
+t = num = interval = pos = maximized = sound = errored = reconnect = 0;
+var names = new Array();
+var keys = new Array();
 var nick = $("#nick").html();
-var defaultkeytext = $("#key").val();
 var focus = true;
 var soundEmbed = null;
 
@@ -19,7 +20,7 @@ function showstamp(timestamp, nick) {
 	u = parseInt(timestamp.substring(0, 2));
 	h = u - offset;
 	var spaces = "";
-	for (i = 0; i < (nick.length - 5); i++) {
+	for (si=0; si < (nick.length - 5); si++) {
 		spaces += "&nbsp";
 	}
 	return spaces + h + ":" + timestamp.substring(2);
@@ -45,13 +46,13 @@ function soundPlay(which) {
 	document.body.appendChild(soundEmbed);
 }
 
-function getkey(id, n) {
-	gk = Crypto.SHA1(id);
-	for (gki = 0; gki != n; gki++) {
-		gk = Crypto.SHA1(gk);
-		gk += Crypto.SHA1(gk);
+function gen(size) {
+	var str = "";
+	var charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	for (i=0; i < size; i++) {
+        str += charset.charAt(Math.floor(Math.random() * charset.length));
 	}
-	return gk.substring(10, 74);
+ 	return str;
 }
 
 function textcounter(field,cntfield,maxlimit) {
@@ -63,173 +64,35 @@ function textcounter(field,cntfield,maxlimit) {
 	}
 }
 
-function keytime() {
-	document.getElementById("key").type = "password";
-	clearTimeout(t);
-	t = setTimeout("updatekey()", 800);
-}
-
-function keyblink() {
-	$("#key").animate({
-		color: "#FFF"
-	}, 250 );
-	$("#key").animate({
-		color: "#000"
-	}, 250 );
-}
-
-function hidekey() {
-	$("#key").animate({
-		color: "#97CEEC"
-	}, 500 );
-}
-
-$("#key").focus(function(){
-	clearInterval(blink);
-	if ($("#key").val() != defaultkeytext) {
-		$("#key").animate({
-			color: "#000"
-		}, 500 );
-	}
-});
-
-$("#key").blur(function(){
-	if ($("#key").val() != defaultkeytext) {
-		hidekey();
-	}
-	else {
-		blink = self.setInterval("keyblink()", 5000);
-	}
-});
-
-function updatekey() {
-	if (!defaultkey) {
-		defaultsalt = getkey(gotsalt + $("#url").val(), 5);
-		defaultkey = Crypto.PBKDF2(getkey($("#url").val(), 4), defaultsalt, 64, { iterations: 600 });
-	}
-	if (($("#key").val() == "") || ($("#key").val() == defaultkeytext)) {
-		salt = defaultsalt;
-		key = defaultkey;
-		$("#strength").html("key strength: <span class=\"gray\">+++++</span>");
-	}
-	else {
-		salt = getkey(gotsalt + $("#key").val(), 5);
-		key = Crypto.PBKDF2(getkey($("#key").val(), 4), salt, 64, { iterations: 600 });
-		var strength = 0;
-		if ($("#key").val().length >= 10) {
-			strength = 10;
-		}
-		if ($("#key").val().length >= 16) {
-			strength++;
-		}
-		if ($("#key").val().match(/[a-z]/)) {
-			strength++;
-		}
-		if ($("#key").val().match(/[A-Z]/)) {
-			strength++;
-		}
-		if ($("#key").val().match(/[0-9]/)) {
-			strength++;
-		}
-		if ($("#key").val().match(/[^\d\w\s]/)) {
-			strength++;
-		}
-		if ($("#key").val().match(/\s/)) {
-			strength++;
-		}
-		if (strength < 10) {
-			$("#strength").html("key strength: <span class=\"red\">+</span><span class=\"gray\">++++</span>");
-		}
-		if ((strength > 10) && (strength < 12)) {
-			$("#strength").html("key strength: <span class=\"red\">++</span><span class=\"gray\">+++</span>");
-		}
-		if (strength == 12) {
-			$("#strength").html("key strength: <span class=\"orange\">+++</span><span class=\"gray\">++</span>");
-		}
-		if (strength > 12) {
-			$("#strength").html("key strength: <span class=\"green\">++++</span><span class=\"gray\">+</span>");
-		}
-		if (strength >= 15) {
-			$("#strength").html("key strength: <span class=\"green\">+++++</span>");
-		}
-	}
-	updatechat("#chat");
-}
-
-function nl2br(str) {
-	return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + "<br />" + '$2');
-}
-
 function scrubtags(str) {
 	return str.replace(/</g,"&lt;").replace(/>/g,"&gt;");
 }
 
 function processline(chat, flip) {
 	chat = chat.split("\n");
+	var i = 0;
 	for (i=0; i <= chat.length-1; i++) {
-		var encrypted, success, corrupted, user;
-		encrypted = success = corrupted = user = 0;
-		if (chat[i]) {
-			if (match = chat[i].match(/\[B-H\](.*)\[E-H\]$/)) {
-				for (o=0; o <= chat.length-1; o++) {
-					if (chat[o]) {
-						if (omatch = chat[o].match(/\[B-H\](.*)\[E-H\]$/)) {
-							if ((match[0] == omatch[0]) && (o != i)) {
-								if (o > i) {
-									chat[o] = chat[o].replace(/\[B-H\](.*)\[E-H\]$/, "[B-H]CORRUPT[E-H]");
-								}
-								if (i > o) {
-									chat[i] = chat[i].replace(/\[B-H\](.*)\[E-H\]$/, "[B-H]CORRUPT[E-H]");
-								}
-							}
-						}
-					}
-				}
+		var decrypted, corrupt, user;
+		decrypted = corrupt = user = 0;
+		if ((chat[i])) {
+			chat[i] = chat[i];
+			if ((!flip) && (match = chat[i].match(/^[a-z]{1,12}/))) {
+				chat[i] = chat[i].replace(/^[a-z]+:/, "<span class=\"nick\">" + match[0] + "</span>");
 			}
-			if (match = chat[i].match(/\[B-H\](.*)\[E-H\]$/)) {
-				var hmac = match[0].substring(5, match[0].length-5);
-				chat[i] = chat[i].replace(/\[B-H\](.*)\[E-H\]$/, "");
-			}
-			if (match = chat[i].match(/\[B-C\](.*)\[E-C\]/)) {
-				match = match[0].substring(5, match[0].length-5);
-				ciphertext = match;
-				try {
-					match = Crypto.AES.decrypt(match, defaultkey);
-					chat[i] = chat[i].replace(/\[B-C\](.*)\[E-C\]/, match);
-					if (match = chat[i].match(/\[B-M\](.*)\[E-M\]/)) {
-						success = match[0];
-					}
+			else if (match = chat[i].match(/[a-z]{1,12}:\s\[B-C\](.*)\[E-C\]$/)) {
+				thisnick = match[0].match(/^[a-z]{1,12}/);
+				if (flip) {
+					var timestamp = chat[i].substring(0, 4);
+					chat[i] = chat[i].substring(4, chat[i].length);
 				}
-				catch (INVALID_CHARACTER_ERR) {
+				match = chat[i].match(/\[B-C\](.*)\[E-C\]/);
+				decrypted = cryptico.decrypt(match[0].substring(5, match[0].length - 5), mysecret);
+				if (decrypted.signature != "verified") {
+					chat[i] = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">corrupt</span>";
+					corrupt = 1;
 				}
-				if (!success) {
-					try {
-						match = Crypto.AES.decrypt(match, key);
-						chat[i] = chat[i].replace(/\[B-C\](.*)\[E-C\]/, match);
-						if (key != defaultkey) {
-							encrypted = 1;
-						}
-						if (match = chat[i].match(/\[B-M](.*)\[E-M]/)) {
-							success = match[0];
-						}
-					}
-					catch (INVALID_CHARACTER_ERR) {
-						thisnick = chat[i].match(/^[a-z]+:/);
-						chat[i] = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">encrypted</span>";
-						encrypted = 1;
-					}
-				}
-				if (((success) && (hmac != Crypto.HMAC(Crypto.SHA1, ciphertext + success, getkey(ciphertext  + success, 4)))) || (!hmac)) {
-					thisnick = chat[i].match(/^[a-z]+:/);
-					chat[i] = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">corrupted</span>";
-					corrupted = 1;
-				}
-				else if (success) {
-					chat[i] = chat[i].replace(/\[B-M\](.*)\[E-M\]/, success.substring(5, success.length - 5));
-					if (flip) {
-						var timestamp = chat[i].substring(0, 4);
-						chat[i] = chat[i].substring(4, chat[i].length);
-					}
+				else if (decrypted.status == "success") {
+					chat[i] = chat[i].replace(/\[B-C\](.*)\[E-C\]/, decrypted.plaintext.replace(/(\r\n|\n\r|\r|\n)/gm, ""));
 					chat[i] = scrubtags(chat[i]);
 					if (match = chat[i].match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi)) {
 						for (mc = 0; mc <= match.length - 1; mc++) {
@@ -243,44 +106,38 @@ function processline(chat, flip) {
 							chat[i] = chat[i].replace(sanitize, "<a target=\"_blank\" href=\"" + install + "?redirect=" + escape(sanitize) + "\">" + match[mc] + "</a>");
 						}
 					}
+					chat[i] = chat[i].replace(/\&lt\;3/g, "&#9829;");
+					if (match = chat[i].match(/^[a-z]+:\s\/me\s/)) {
+						match = match[0];
+						chat[i] = chat[i].replace(/^[a-z]+:\s\/me\s/, "<span class=\"nick\">* " + thisnick[0] + " ") + " *</span>";
+					}
+					else if (match = chat[i].match(/^[a-z]{1,12}/)) {
+						chat[i] = chat[i].replace(/^[a-z]+:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = showstamp(" + timestamp + ",\'" + match[0] + "\');\" onmouseout=\"this.innerHTML = \'" + match[0] + "\';\">" + match[0] + "</span>");
+					}
 				}
-				chat[i] = chat[i].replace(/\&lt\;3/g, "&#9829;");
-				if (match = chat[i].match(/^[a-z]+:\s\/me\s/)) {
-					match = match[0];
-					thisnick = chat[i].match(/^[a-z]+:/);
-					thisnick = thisnick[0].substring(0, thisnick[0].length - 1);
-					chat[i] = chat[i].replace(/^[a-z]+:\s\/me\s/, "<span class=\"nick\">* " + thisnick + " ") + " *</span>";
-				}
-				else if (match = chat[i].match(/^[a-z]+:/)) {
-					match = match[0].substring(0, match[0].length - 1);
-					chat[i] = chat[i].replace(/^[a-z]+:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = showstamp(" + timestamp + ",\'" + match + "\');\" onmouseout=\"this.innerHTML = \'" + match + "\';\">" + match + "</span>");
+				else {
+					chat[i] = "<span class=\"diffkey\">decryption failure</span>";
+					corrupt = 1;
 				}
 			}
-			else if (match = chat[i].match(/^(\&gt\;|\&lt\;) [a-z]{1,12} (has arrived|has left)$/)) {
-				chat[i] = chat[i].replace(/^(\&gt\;|\&lt\;) [a-z]{1,12} (has arrived|has left)$/, "<span class=\"nick\">" + match[0] + "</span>");
+			else if ((match = chat[i].match(/^(\&gt\;|\&lt\;) [a-z]{1,12} (has arrived|has left)$/))) {
+				chat[i] = "<span class=\"nick\">" + match[0] + "</span>";
 				user = 1;
+				updatekeys();
 			}
-			else if (match = chat[i].match(/^# [a-z]{1,12} is now known as [a-z]{1,12}$/)) {
-				chat[i] = chat[i].replace(/^# [a-z]{1,12} is now known as [a-z]{1,12}$/, "<span class=\"nick\">" + match[0] + "</span>");
-				user = 1;
-			}
-			else if (thisnick = chat[i].match(/^[a-z]+:/)) {
-				chat[i] = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">corrupted</span>";
-				corrupted = 1;
+			else if (thisnick = chat[i].match(/^[a-z]{1,12}/)) {
+				chat[i] = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">corrupt</span>";
+				corrupt = 1;
 			}
 			else {
-				chat[i] = "<span class=\"diffkey\">very suspicious corruption detected! your chat may be compromised!</span>"
-				corrupted = 1;
+				chat[i] = "<span class=\"diffkey\">corrupt</span>"
+				corrupt = 1;
 			}
-			chat[i] = nl2br(chat[i]);
 			if (user) {
 				tag = "u";
 			}
-			else if (corrupted) {
+			else if (corrupt) {
 				tag = "c";
-			}
-			else if (encrypted) {
-				tag = "e";
 			}
 			else {
 				tag = "";
@@ -303,19 +160,21 @@ function processline(chat, flip) {
 	return chat;
 }
 
-function errordisplay(error) {
-	$("#chatters").animate({
-		backgroundColor: "#DF93D6",
-		"font-weight": "bold"
-	}, 500 );
-	$("#chat").animate({
-		borderTopColor: "#DF93D6",
-		borderRightColor: "#DF93D6",
-		borderBottomColor: "#DF93D6",
-		borderLeftColor: "#DF93D6"
-	}, 500 );
-	$("#chatters").html("<span class=\"chatters\">x</span>&nbsp " + error);
-	errored++;
+function updatekeys() {
+	$.ajax( { url: "index.php",
+		type: "POST",
+		async: false,
+		data: "nick=" + $("#nickinput").val() + "&name=" + $("#name").val() + "&public=get",
+		success: function(data) {
+			data = data.split('|');
+			for (i=0; i <= data.length - 1; i++) {
+				keymatch = data[i].match(/^[a-z]{1,12}:/);
+				names[i] = keymatch[0].substring(0, keymatch[0].length - 1);
+				keymatch = data[i].match(/:.+/);
+				keys[i] = decodeURIComponent(keymatch[0].substring(1));
+			}
+		}
+	});
 }
 
 function updatechat(div){
@@ -328,12 +187,12 @@ function updatechat(div){
 	}
 	$(div).load("index.php?chat=" + name + "&pos=" + pos, function() {
 		if ($("#loader").html() == "NOEXIST") {
-			if (!errored && nickset) {
+			if (!errored && mypublic) {
 				errordisplay("your chat no longer exists.");
 			}
 		}
 		else if ($("#loader").html() == "NOLOGIN") {
-			if (!errored && nickset) {
+			if (!errored && mypublic) {
 				errordisplay("you have been logged out.");
 			}
 		}
@@ -380,22 +239,25 @@ function updatechatters() {
 
 $("#chatform").submit( function() {
 	var msg = $.trim($("#input").val());
+	var msgc = nick + ": " + msg;
 	$("#input").val("");
 	if (msg != "") {
-		var msg = "[B-M]" + msg + "[E-M]";
-		msg = msg.replace(/\$/g,"&#36;");
-		var encoded = Crypto.AES.encrypt(msg, key);
-		var hmac = Crypto.HMAC(Crypto.SHA1, encoded + msg, getkey(encoded + msg, 4));
-		encoded = nick + ": " + "[B-C]" + encoded + "[E-C][B-H]" + hmac + "[E-H]";
-		document.getElementById("chat").innerHTML += processline(encoded, 0);
+		gsm = "";
+		var i = 0;
+		for (i=0; i <= keys.length - 1; i++) {
+			gsm += "(" + names[i] + ")" + cryptico.encrypt(msg, keys[i], mysecret).cipher;
+		}
+		msg = nick + ": " + "[B-C]" + gsm.replace(/(\r\n|\n\r|\r|\n)/gm, "") + "[E-C]";
+		document.getElementById("chat").innerHTML += processline(msgc, 0);
 		scrolldown();
 	}
 	else {
-		encoded = "";
+		msg = "";
 	}
 	$.ajax( { url: "index.php",
 		type: "POST",
-		data: "input=" + encodeURIComponent(encoded) + "&name=" + $("#name").val() + "&talk=send",
+		async: true,
+		data: "input=" + encodeURIComponent(msg) + "&name=" + $("#name").val() + "&talk=send",
 		success: function(data) {
 			document.getElementById("input").focus();
 			$("#talk").val(maxinput);
@@ -411,10 +273,29 @@ $("#nickform").submit( function() {
 	$("#nickinput").animate({
 		color: "#000"
 	}, 200 );
+	if (!mypublic) {
+		$('#nickentry').fadeOut('slow', function() {
+			$('#keygen').fadeIn('slow', function() {
+				mysecret = cryptico.generateRSAKey(gen(48), 768);
+				mypublic = cryptico.publicKeyString(mysecret);
+				$('#keygen').fadeOut('slow', function() {
+				    $("#front").fadeOut();
+					nickajax();
+				});
+			});
+		});
+	}
+	else {
+		nickajax();
+	}
+	return false;
+});
+
+function nickajax() {
 	$.ajax( { url: "index.php",
 		type: "POST",
-		async: false,
-		data: "nick=" + $("#nickinput").val() + "&name=" + $("#name").val(),
+		async: true,
+		data: "nick=" + $("#nickinput").val() + "&name=" + $("#name").val() + "&public=" + encodeURIComponent(mypublic),
 		success: function(data) {
 			if (data != "error") {
 				$("#nickinput").animate({
@@ -422,11 +303,10 @@ $("#nickform").submit( function() {
 				}, 200 );
 				$("#nick").html($("#nickinput").val());
 				nick = $("#nick").html();
-				$("#front").fadeOut();
-				gotsalt = data;
-				nickset = 1;
+				if (mypublic) {
+					$("#front").fadeOut('slow');
+				}
 				document.getElementById("input").focus();
-				updatekey();
 				document.title = "[" + num + "] cryptocat";
 				interval = setInterval("updatechat(\"#loader\")", update);
 			}
@@ -440,8 +320,7 @@ $("#nickform").submit( function() {
 			}
 		}
 	});
-	return false;
-});
+}
 
 $("#sound").click(function(){
 	if (sound) {
@@ -468,15 +347,11 @@ $("#maximize").click(function(){
 			height: "420px"
 		}, 500 );
 		$("#chatters").animate({
-			width: "590px",
-			"margin-left": "2px",
+			width: "525px",
+			"margin-left": "1px",
 		}, 500 );
 		$("#info").animate({
 			width: "578px",
-			"margin-left": "1px"
-		}, 500 );
-		$("#key").animate({
-			width: "508px",
 			"margin-left": "1px"
 		}, 500 );
 		$("#input").animate({
@@ -509,16 +384,11 @@ $("#maximize").click(function(){
 			height: "90%"
 		}, 500 );
 		$("#chatters").animate({
-			width: "99.2%",
-			"margin-left": "5px",
-			"margin-top": "-22px"
+			width: "93.25%",
+			"margin-left": "3px"
 		}, 500 );
 		$("#info").animate({
 			width: "98%",
-			"margin-left": "3px"
-		}, 500 );
-		$("#key").animate({
-			width: "92%",
 			"margin-left": "3px"
 		}, 500 );
 		$("#input").animate({
@@ -544,23 +414,28 @@ $("#maximize").click(function(){
 	}
 });
 
-function changenick() {
-	$("#front").fadeIn();
-	StuffSelect("nickinput");
+function errordisplay(error) {
+	$("#chatters").animate({
+		backgroundColor: "#DF93D6",
+		"font-weight": "bold"
+	}, 500 );
+	$("#chat").animate({
+		borderTopColor: "#DF93D6",
+		borderRightColor: "#DF93D6",
+		borderBottomColor: "#DF93D6",
+		borderLeftColor: "#DF93D6"
+	}, 500 );
+	$("#chatters").html("<span class=\"chatters\">x</span>&nbsp " + error);
+	errored++;
 }
 
 window.onfocus = function() {
 	clearTimeout(blur);
-	clearInterval(blink);
 	focus = true;
 	num = 0;
 	document.title = "[" + num + "] cryptocat";
-	if ($("#key").val() == defaultkeytext) {
-		blink = self.setInterval("keyblink()", 5000);
-	}
 }
 window.onblur = function() {
-	clearInterval(blink);
 	blur = setTimeout("focus = false", update);
 }
 document.onblur = window.onblur;
@@ -572,12 +447,7 @@ function logout() {
 		async: false,
 		data: "logout=" + name,
 	});
-	window.location = install;
 }
-
-$("#nickicon,#nick").click(function(){
-	changenick();
-});
 
 $(document).ajaxError(function(){
 	if (!errored) {
@@ -586,5 +456,6 @@ $(document).ajaxError(function(){
 	}
 });
 
-changenick();
-blink = self.setInterval("keyblink()", 5000);
+$("#nickentry").fadeIn();
+$("#front").fadeIn();
+StuffSelect("nickinput");
