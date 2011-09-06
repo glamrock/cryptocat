@@ -180,7 +180,7 @@ function updatechat(div){
 				errordisplay("you have been logged out.");
 			}
 		}
-		else if (($("#loader").html() != "")) {
+		else if ($("#loader").html() != "") {
 			chathtml = $("#chat").html();
 			pos++;
 			if ((pos) && (nickset)) {
@@ -189,9 +189,7 @@ function updatechat(div){
 				});
 				nickset = 0;
 			}
-			if ((match = $("#loader").html().match(/^[a-z]{1,12}/)) && (match[0] == nick)) {
-			}
-			else {
+			if ($("#loader").html() != "n") {
 				$("#chat").html(chathtml += processline($("#loader").html(), 1));
 			}
 			scrolldown();

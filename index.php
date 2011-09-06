@@ -66,6 +66,8 @@
 			if (isset($_SESSION['id']) && $mysession == $_SESSION['id'] && !is_null($_SESSION['id'])) {
 				if ($_GET['pos'] <= count($chat) - 1) {					
 					if (preg_match('/^[a-z]{1,12}:\s\[B-C\].+\[E-C\]$/', $chat[$_GET['pos']])) {
+						preg_match('/^[a-z]{1,12}:/', $chat[$_GET['pos']], $curnick);
+						$curnick = substr($curnick[0], 0, -1);
 						preg_match_all('/\([a-z]{1,12}\)[^\(|^\[]+/', $chat[$_GET['pos']], $match);
 						for ($ki=0; $ki <= count($match[0]); $ki++) {
 							if (substr($match[0][$ki], 1, strlen($nick)) == $nick) {
@@ -75,7 +77,12 @@
 						}
 						$chat[$_GET['pos']] = preg_replace('/\[B-C\](.*)\[E-C\]/', '[B-C]'.$match.'[E-C]', $chat[$_GET['pos']]);
 					}
-					print(htmlspecialchars($chat[$_GET['pos']]));
+					if ($curnick != $nick ) {
+						print(htmlspecialchars($chat[$_GET['pos']]));
+					}
+					else {
+						print("n");
+					}
 				}
 			}
 			else {
