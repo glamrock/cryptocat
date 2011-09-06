@@ -65,18 +65,18 @@
 		else if (isset($_GET['pos'])) {
 			$_GET['pos'] += $mypos;
 			if (isset($_SESSION['id']) && $mysession == $_SESSION['id'] && !is_null($_SESSION['id'])) {
-				for ($i = $_GET['pos']; $i <= count($chat); $i++) {
-					if (preg_match('/^[0-9]{1,4}[a-z]{1,12}:\s\[B-C\].+\[E-C\]$/', $chat[$i])) {
-						preg_match_all('/\([a-z]{1,12}\)[^\(|^\[]+/', $chat[$i], $match);
+				if ($_GET['pos'] <= count($chat)) {
+					if (preg_match('/^[0-9]{1,4}[a-z]{1,12}:\s\[B-C\].+\[E-C\]$/', $chat[$_GET['pos']])) {
+						preg_match_all('/\([a-z]{1,12}\)[^\(|^\[]+/', $chat[$_GET['pos']], $match);
 						for ($ki=0; $ki <= count($match[0]); $ki++) {
 							if (substr($match[0][$ki], 1, strlen($nick)) == $nick) {
 								$match = substr($match[0][$ki], strlen($nick) + 2);
 								$ki = 9001;
 							}
 						}
-						$chat[$i] = preg_replace('/\[B-C\](.*)\[E-C\]/', '[B-C]'.$match.'[E-C]', $chat[$i]);
+						$chat[$_GET['pos']] = preg_replace('/\[B-C\](.*)\[E-C\]/', '[B-C]'.$match.'[E-C]', $chat[$_GET['pos']]);
 					}
-					print(htmlspecialchars($chat[$i]));
+					print(htmlspecialchars($chat[$_GET['pos']]));
 				}
 			}
 			else {
