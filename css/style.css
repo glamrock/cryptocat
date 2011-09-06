@@ -35,7 +35,7 @@ p.bottom {
 p.small {
 	font-size: 11px;
 }
-input.name, input.create, input.nicksubmit {
+input.name, input.create {
 	width: 330px;
 	margin: 0 auto;
 	background-color: #000;
@@ -55,12 +55,6 @@ input.create {
 	padding: 0px 7px;
 	margin-bottom: 4px;
 	height: 30px;
-}
-input.nicksubmit {
-	width: 156px;
-	padding: 3px;
-	font-size: 16px;
-	margin-top: 5px;
 }
 #nickinput {
 	background-color: #000;
@@ -84,12 +78,12 @@ input.nicksubmit {
 	font-size: 22px;
 	box-shadow: 2px 2px #90CAEA;
 }
-input.create:hover, #talk:hover, input.nicksubmit:hover {
+input.create:hover, #talk:hover {
 	background-color: #97CEEC;
 	box-shadow: 2px 2px #000;
 	color: #FFF;
 }
-input.create:active, #talk:active, input.nicksubmit:active {
+input.create:active, #talk:active {
 	box-shadow: 2px 2px #97CEEC;
 }
 #chat {
@@ -167,14 +161,14 @@ a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound {
 #input:active {
 	border: none;
 }
-input.invisible, div.invisible, img.invisible {
+.invisible {
 	display: none;
 }
 #url {
 	font-size: 10px;
 	background-color: #000;
 	border: none;
-	width: 200px;
+	width: 400px;
 	color: #97CEEC;
 }
 div.msg, div.gsm, div.cmsg, div.cgsm, div.umsg, div.ugsm {
@@ -280,7 +274,6 @@ td {
 	box-shadow: 4px 4px #97CEEC;
 	text-align: center;
 	margin: 11.5% auto 0 auto;
-	font-size: 16px;
 	height: 150px;
 }
 div.redirect {
@@ -310,12 +303,15 @@ div.redirect p {
 span.underline {
 	text-decoration: underline;
 }
-#keygen {
+#keygen, #nickentry {
 	display: none;
 	padding-top: 50px;
 	font-size: 12px;
 	font-family: "Monaco", monospace;
 	line-height: 1.8em;
+}
+#nickentry {
+	padding-top: 25px;
 }
 #nick {
 	color: #97CEEC;

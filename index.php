@@ -129,7 +129,7 @@
 			}
 		}
 		if (in_array($_POST['nick'], $usednicks)) {
-			print('error');
+			print('inuse');
 			exit;
 		}
 		if ($_POST['public'] == 'get') {
@@ -282,14 +282,13 @@ else {
 						<img src="img/keygen.gif" alt="" />
 					</div>
 					<div id="nickentry">
-						<p>enter your nickname</p>
+						<p>Enter nickname</p>
 						<form name="nickform" id="nickform" method="post" action="'.$install.'">
 							<div>
 								<input type="text" name="nickinput" id="nickinput" value="'.$nick.'" maxlength="12" />
-								<input type="submit" class="nicksubmit" value="chat" />
+								<input type="submit" class="invisible" value="chat" />
 							</div>
 						</form>
-						<p class="small">(letters only, 12 characters max)</p>
 					</div>
 				</div>
 			</div>

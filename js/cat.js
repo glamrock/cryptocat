@@ -286,7 +286,7 @@ function nickajax() {
 		async: true,
 		data: "nick=" + $("#nickinput").val() + "&name=" + $("#name").val() + "&public=" + encodeURIComponent(mypublic),
 		success: function(data) {
-			if ((data != "error") && (data != "already")) {
+			if ((data != "error") && (data != "already") && (data != "inuse")) {
 				$("#nickinput").animate({
 					color: "#97CEEC"
 				}, 200 );
@@ -306,8 +306,11 @@ function nickajax() {
 					if (data == "already") {
 						$("#nickinput").val("already logged in");
 					}
-					else {
-						$("#nickinput").val("bad nickname");
+					else if (data == "inuse") {
+						$("#nickinput").val("nickname in use");
+					}
+					else if (data == "error") {
+						$("#nickinput").val("letters only");
 					}
 					$("#front").fadeIn();
 					StuffSelect("nickinput");
