@@ -62,7 +62,7 @@
 		if (!$chat) {
 			print('NOEXIST');
 		}
-		else if (isset($_GET['pos'])) {
+		else if (isset($_GET['pos']) && $_GET['pos'] >= 0) {
 			$_GET['pos'] += $mypos;
 			if (isset($_SESSION['id']) && $mysession == $_SESSION['id'] && !is_null($_SESSION['id'])) {
 				if ($_GET['pos'] <= count($chat)) {
