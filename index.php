@@ -62,9 +62,10 @@
 		if (!$chat) {
 			print('NOEXIST');
 		}
-		else if (isset($_GET['pos']) && (($_GET['pos'] < (count($chat) - $mypos)) || ($_GET['pos'] == "chat")) && $_GET['pos'] >= 0) {
+		else if (isset($_GET['pos'])) {
+			$_GET['pos'] += $mypos;
 			if (isset($_SESSION['id']) && $mysession == $_SESSION['id'] && !is_null($_SESSION['id'])) {
-				for ($i = $mypos; $i < count($chat); $i++) {
+				for ($i = $_GET['pos']; $i <= count($chat); $i++) {
 					if (preg_match('/^[0-9]{1,4}[a-z]{1,12}:\s\[B-C\].+\[E-C\]$/', $chat[$i])) {
 						preg_match_all('/\([a-z]{1,12}\)[^\(|^\[]+/', $chat[$i], $match);
 						for ($ki=0; $ki <= count($match[0]); $ki++) {
@@ -129,13 +130,9 @@
 		if ($_POST['public'] == 'get') {
 			print(trim($chat[0]));
 		}
-	 	if ($_POST['nick'] == $nick) {
-		}
-		else if ($nick) {
-			$chat[0] = preg_replace('/'.$nick.'\:/', $_POST['nick'].':', $chat[0]);
-			$chat[1] = preg_replace('/\:'.$nick.'\+/', ':'.$_POST['nick'].'+', $chat[1]);
-			$chat[count($chat)] = "\n".'# '.$nick.' is now known as '.$_POST['nick'];
-			file_put_contents($data.$_POST['name'], $chat, LOCK_EX);
+		else if ($_SESSION['id'] == $mysession && $nick) {
+			print('already');
+			exit;
 		}
 		else if (!$nick) {
 			if (file_exists($data.$_POST['name'])) {

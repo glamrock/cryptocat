@@ -1,6 +1,7 @@
 Math.seedrandom();
-var t, num, interval, pos, maximized, sound, errored, reconnect, mysecret, mypublic;
-t = num = interval = pos = maximized = sound = errored = reconnect = 0;
+var t, num, interval, maximized, sound, errored, reconnect, mysecret, mypublic, mtag;
+t = num = interval = maximized = sound = errored = reconnect = pos = 0;
+mtag = "msg";
 var names = new Array();
 var keys = new Array();
 var nick = $("#nick").html();
@@ -14,15 +15,22 @@ function scrolldown() {
 function showstamp(timestamp, nick) {
 	var time = new Date();
 	var h = time.getHours();
+	var m = time.getMinutes();
 	var u = time.getUTCHours();
-	var offset = u - h;
-	timestamp += '';
-	u = parseInt(timestamp.substring(0, 2));
-	h = u - offset;
 	var spaces = "";
 	for (si=0; si < (nick.length - 5); si++) {
 		spaces += "&nbsp";
 	}
+	if (!timestamp) {
+		if (String(m).length == 1) {
+			m = "0" + String(m);
+		}
+		return spaces + h + ":" + m;
+	}
+	var offset = u - h;
+	timestamp += '';
+	u = parseInt(timestamp.substring(0, 2));
+	h = u - offset;
 	return spaces + h + ":" + timestamp.substring(2);
 }
 
@@ -77,7 +85,7 @@ function processline(chat, flip) {
 		if ((chat[i])) {
 			chat[i] = chat[i];
 			if ((!flip) && (match = chat[i].match(/^[a-z]{1,12}/))) {
-				chat[i] = chat[i].replace(/^[a-z]+:/, "<span class=\"nick\">" + match[0] + "</span>");
+				chat[i] = chat[i].replace(/^[a-z]+:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = showstamp(" + 0 + ",\'" + match[0] + "\');\" onmouseout=\"this.innerHTML = \'" + match[0] + "\';\">" + match[0] + "</span>");
 			}
 			else if (match = chat[i].match(/[a-z]{1,12}:\s\[B-C\](.*)\[E-C\]$/)) {
 				thisnick = match[0].match(/^[a-z]{1,12}/);
@@ -112,7 +120,7 @@ function processline(chat, flip) {
 						chat[i] = chat[i].replace(/^[a-z]+:\s\/me\s/, "<span class=\"nick\">* " + thisnick[0] + " ") + " *</span>";
 					}
 					else if (match = chat[i].match(/^[a-z]{1,12}/)) {
-						chat[i] = chat[i].replace(/^[a-z]+:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = showstamp(" + timestamp + ",\'" + match[0] + "\');\" onmouseout=\"this.innerHTML = \'" + match[0] + "\';\">" + match[0] + "</span>");
+						chat[i] = chat[i].replace(/^[a-z]+:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = showstamp(" + 0 + ",\'" + match[0] + "\');\" onmouseout=\"this.innerHTML = \'" + match[0] + "\';\">" + match[0] + "</span>");
 					}
 				}
 				else {
@@ -142,16 +150,13 @@ function processline(chat, flip) {
 			else {
 				tag = "";
 			}
-			if ((!flip) && ($("#chat").html().split("\n").length % 2)) {
-				tag += "msg";
+			if (mtag == "msg") {
+				tag += mtag;
+				mtag = "gsm";
 			}
-			else {
-				if (i % 2) {
-					tag += "msg";
-				}
-				else {
-					tag += "gsm";
-				}
+			else if (mtag == "gsm") {
+				tag += mtag;
+				mtag = "msg";
 			}
 			chat[i] = "<div class=\"" + tag + "\"><div class=\"text\">" + chat[i] + "</div></div>";
 		}
@@ -178,13 +183,6 @@ function updatekeys() {
 }
 
 function updatechat(div){
-	var divold = 0;
-	if (div == "#chat") {
-		posold = pos;
-		pos = "chat";
-		divold = "#chat";
-		div = "#loader";
-	}
 	$(div).load("index.php?chat=" + name + "&pos=" + pos, function() {
 		if ($("#loader").html() == "NOEXIST") {
 			if (!errored && mypublic) {
@@ -196,9 +194,17 @@ function updatechat(div){
 				errordisplay("you have been logged out.");
 			}
 		}
-		else if (($("#loader").html() != "") || (divold == "#chat")) {
-			pos = $("#loader").html().split("\n").length;
-			$("#chat").html(processline($("#loader").html(), 1));
+		else if (($("#loader").html() != "")) {
+			chathtml = $("#chat").html();
+			split = $("#loader").html().split("\n");
+			pos += split.length;
+			for (li = 0; li < split.length; li++) {
+				if ((splitmatch = split[li].match(/^[0-9]{4}[a-z]{1,12}/)) && (splitmatch[0].substring(4) == nick)) {
+					split.splice(li, 1);
+				}
+			}
+			$("#loader").html(split.join("\n"));
+			$("#chat").html(chathtml += processline($("#loader").html(), 1));
 			scrolldown();
 			if (!focus) {
 				num++;
@@ -213,9 +219,6 @@ function updatechat(div){
 			updatechatters();
 		}
 	});
-	if (divold == "#chat") {
-		pos = posold;
-	}
 }
 
 function updatechatters() {
@@ -297,7 +300,7 @@ function nickajax() {
 		async: true,
 		data: "nick=" + $("#nickinput").val() + "&name=" + $("#name").val() + "&public=" + encodeURIComponent(mypublic),
 		success: function(data) {
-			if (data != "error") {
+			if ((data != "error") && (data != "already")) {
 				$("#nickinput").animate({
 					color: "#97CEEC"
 				}, 200 );
@@ -311,10 +314,16 @@ function nickajax() {
 				interval = setInterval("updatechat(\"#loader\")", update);
 			}
 			else {
+				$("#nickentry").fadeIn('slow');
 				$("#nickinput").animate({
 					color: "#97CEEC"
 				}, 200 );
-				$("#nickinput").val("bad nickname");
+				if (data == "already") {
+					$("#nickinput").val("already logged in");
+				}
+				else {
+					$("#nickinput").val("bad nickname");
+				}
 				$("#front").fadeIn();
 				StuffSelect("nickinput");
 			}
@@ -368,7 +377,6 @@ $("#maximize").click(function(){
 			width: "585px",
 			height: "295px"
 		}, 500, function() {
-		    updatechat("#chat");
 		});
 		$("#maximize").attr("src", "img/maximize.png");
 		$("#maximize").attr("title", "expand");
@@ -384,7 +392,7 @@ $("#maximize").click(function(){
 			height: "90%"
 		}, 500 );
 		$("#chatters").animate({
-			width: "93.25%",
+			width: "93.44%",
 			"margin-left": "3px"
 		}, 500 );
 		$("#info").animate({
