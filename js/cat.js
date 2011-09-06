@@ -123,8 +123,8 @@ function processline(chat, flip) {
 				chat[i] = chat[i].replace(/\&lt\;3/g, "&#9829;");
 				if (match = chat[i].match(/^[a-z]+:\s\/me\s/)) {
 					match = match[0];
-					thisnick = match[0].match(/^[a-z]{1,12}/);
-					chat[i] = chat[i].replace(/^[a-z]+:\s\/me\s/, "<span class=\"nick\">* " + thisnick[0] + " ") + " *</span>";
+					thisnick = match.match(/^[a-z]{1,12}/);
+					chat[i] = chat[i].replace(/^[a-z]+:\s\/me\s/, "<span class=\"nick\">* " + thisnick + " ") + " *</span>";
 				}
 				else if (match = chat[i].match(/^[a-z]{1,12}/)) {
 					chat[i] = chat[i].replace(/^[a-z]+:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = showstamp(" + 0 + ",\'" + match[0] + "\');\" onmouseout=\"this.innerHTML = \'" + match[0] + "\';\">" + match[0] + "</span>");
