@@ -237,7 +237,9 @@ $("#chatform").submit( function() {
 		gsm = "";
 		var i = 0;
 		for (i=0; i <= keys.length - 1; i++) {
-			gsm += "(" + names[i] + ")" + cryptico.encrypt(msg, keys[i], mysecret).cipher;
+			if (names[i] != nick) {
+				gsm += "(" + names[i] + ")" + cryptico.encrypt(msg, keys[i], mysecret).cipher;
+			}
 		}
 		msg = nick + ": " + "[B-C]" + gsm.replace(/(\r\n|\n\r|\r|\n)/gm, "") + "[E-C]";
 		document.getElementById("chat").innerHTML += processline(msgc, 0);
