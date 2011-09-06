@@ -13,7 +13,6 @@
 	$usednicks = array();
 	$usedsessions = array();
 	session_set_cookie_params(0, '/', $domain, $https, TRUE);
-	date_default_timezone_set("UTC");
 	error_reporting(0);
 	$maxinput = 256;
 	$maxusers = 8;
@@ -66,7 +65,7 @@
 			$_GET['pos'] += $mypos;
 			if (isset($_SESSION['id']) && $mysession == $_SESSION['id'] && !is_null($_SESSION['id'])) {
 				if ($_GET['pos'] <= count($chat) - 1) {					
-					if (preg_match('/^[0-9]{1,4}[a-z]{1,12}:\s\[B-C\].+\[E-C\]$/', $chat[$_GET['pos']])) {
+					if (preg_match('/^[a-z]{1,12}:\s\[B-C\].+\[E-C\]$/', $chat[$_GET['pos']])) {
 						preg_match_all('/\([a-z]{1,12}\)[^\(|^\[]+/', $chat[$_GET['pos']], $match);
 						for ($ki=0; $ki <= count($match[0]); $ki++) {
 							if (substr($match[0][$ki], 1, strlen($nick)) == $nick) {
@@ -93,7 +92,6 @@
 		preg_match('/^[a-z]{1,12}:/', $_POST['input'], $thisnick);
 		$thisnick = substr($thisnick[0], 0, -1);
 		if (preg_match('/^[a-z]{1,12}:\s\[B-C\].+\[E-C\]$/', $_POST['input']) && $nick == $thisnick) {
-			$_POST['input'] = date("Hi").trim($_POST['input']);
 			$chat = "\n".$_POST['input'];
 			file_put_contents($data.$_POST['name'], $chat, FILE_APPEND | LOCK_EX);
 		}

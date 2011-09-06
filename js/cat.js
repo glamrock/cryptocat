@@ -12,29 +12,21 @@ function scrolldown() {
 	$("#chat").animate({ scrollTop: document.getElementById("chat").scrollHeight-20}, 500 );
 }
 
-function showstamp(timestamp, nick) {
+function showstamp(nick) {
 	var time = new Date();
 	var h = time.getHours();
 	var m = time.getMinutes();
-	var u = time.getUTCHours();
 	var spaces = "";
 	for (si=0; si < (nick.length - 5); si++) {
 		spaces += "&nbsp";
 	}
-	if (!timestamp) {
-		if (String(h).length == 1) {
-			h = "0" + String(h);
-		}
-		if (String(m).length == 1) {
-			m = "0" + String(m);
-		}
-		return spaces + h + ":" + m;
+	if (String(h).length == 1) {
+		h = "0" + String(h);
 	}
-	var offset = u - h;
-	timestamp += '';
-	u = parseInt(timestamp.substring(0, 2));
-	h = u - offset;
-	return spaces + h + ":" + timestamp.substring(2);
+	if (String(m).length == 1) {
+		m = "0" + String(m);
+	}
+	return spaces + h + ":" + m;
 }
 
 function soundPlay(which) {
@@ -85,10 +77,6 @@ function processline(chat, flip) {
 	decrypted = corrupt = user = 0;
 	if (chat) {
 		if (match = chat.match(/[a-z]{1,12}:\s\[B-C\](.*)\[E-C\]$/)) {
-			if (flip) {
-				var timestamp = chat.substring(0, 4);
-				chat = chat.substring(4, chat.length);
-			}
 			match = chat.match(/\[B-C\](.*)\[E-C\]/);
 			decrypted = cryptico.decrypt(match[0].substring(5, match[0].length - 5), mysecret);
 			if (decrypted.signature != "verified") {
@@ -124,7 +112,7 @@ function processline(chat, flip) {
 				chat = chat.replace(/^[a-z]+:\s\/me\s/, "<span class=\"nick\">* " + thisnick + " ") + " *</span>";
 			}
 			else if (match = chat.match(/^[a-z]{1,12}/)) {
-				chat = chat.replace(/^[a-z]+:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = showstamp(" + 0 + ",\'" + match[0] + "\');\" onmouseout=\"this.innerHTML = \'" + match[0] + "\';\">" + match[0] + "</span>");
+				chat = chat.replace(/^[a-z]+:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = showstamp(\'" + match[0] + "\');\" onmouseout=\"this.innerHTML = \'" + match[0] + "\';\">" + match[0] + "</span>");
 			}
 		}
 		else if ((match = chat.match(/^(\&gt\;|\&lt\;) [a-z]{1,12} (has arrived|has left)$/))) {
@@ -201,7 +189,7 @@ function updatechat(div){
 				});
 				nickset = 0;
 			}
-			if ((match = $("#loader").html().match(/^[0-9]{4}[a-z]{1,12}/)) && (match[0].substring(4) == nick)) {
+			if ((match = $("#loader").html().match(/^[a-z]{1,12}/)) && (match[0] == nick)) {
 			}
 			else {
 				$("#chat").html(chathtml += processline($("#loader").html(), 1));
