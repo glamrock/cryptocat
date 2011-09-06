@@ -242,6 +242,7 @@ function updatechatters() {
 
 $("#chatform").submit( function() {
 	var msg = $.trim($("#input").val());
+	msg = msg.replace(/\$/g,"&#36;");
 	var msgc = nick + ": " + msg;
 	$("#input").val("");
 	if (msg != "") {
