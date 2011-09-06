@@ -77,7 +77,7 @@
 						}
 						$chat[$_GET['pos']] = preg_replace('/\[B-C\](.*)\[E-C\]/', '[B-C]'.$match.'[E-C]', $chat[$_GET['pos']]);
 					}
-					if ($curnick != $nick ) {
+					if ($curnick != $nick) {
 						print(htmlspecialchars($chat[$_GET['pos']]));
 					}
 					else {

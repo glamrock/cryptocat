@@ -1,7 +1,6 @@
 Math.seedrandom();
 var t, num, interval, maximized, sound, errored, reconnect, mysecret, mypublic, mtag, nickset;
 t = num = interval = maximized = sound = errored = reconnect = pos = 0;
-mtag = "msg";
 var names = new Array();
 var keys = new Array();
 var nick = $("#nick").html();
@@ -76,7 +75,8 @@ function processline(chat, flip) {
 	var decrypted, corrupt, user;
 	decrypted = corrupt = user = 0;
 	if (chat) {
-		if (match = chat.match(/[a-z]{1,12}:\s\[B-C\](.*)\[E-C\]$/)) {
+		chat = $.trim(chat);
+		if (match = chat.match(/^[a-z]{1,12}:\s\[B-C\](.*)\[E-C\]$/)) {
 			match = chat.match(/\[B-C\](.*)\[E-C\]/);
 			decrypted = cryptico.decrypt(match[0].substring(5, match[0].length - 5), mysecret);
 			if (decrypted.signature != "verified") {
@@ -138,13 +138,13 @@ function processline(chat, flip) {
 		else {
 			tag = "";
 		}
-		if (mtag == "msg") {
-			tag += mtag;
-			mtag = "gsm";
+		if (mtag) {
+			tag += "gsm";
+			mtag = 0;
 		}
-		else if (mtag == "gsm") {
-			tag += mtag;
-			mtag = "msg";
+		else {
+			tag += "msg";
+			mtag = 1;
 		}
 		chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
 	}
@@ -181,8 +181,8 @@ function updatechat(div){
 			}
 		}
 		else if ($("#loader").html() != "") {
-			chathtml = $("#chat").html();
 			pos++;
+			chathtml = $("#chat").html();
 			if ((pos) && (nickset)) {
 				$('#keygen').fadeOut('slow', function() {
 				    $("#front").fadeOut();
