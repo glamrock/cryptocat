@@ -108,7 +108,7 @@ input.create:active, #talk:active, input.nicksubmit:active {
 #chatters {
 	background-color: #97CEEC;
 	font-size: 10px;
-	padding: 2px 3px 5px 0px;
+	padding: 3px 3px 3px 0px;
 	width: 525px;
 	margin: 0px 0px 0px 1px;
 	word-spacing: 5px;
@@ -116,7 +116,7 @@ input.create:active, #talk:active, input.nicksubmit:active {
 	height: 11px;
 }
 span.chatters {
-	padding: 4px 2px 3px 2px;
+	padding: 4px 2px 1px 2px;
 	background-color: #000;
 	color: #FFF;
 }
@@ -146,7 +146,7 @@ a:hover {
 input.logout:hover {
 	text-decoration: underline;
 }
-a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound {
+a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #nickicon {
 	cursor: pointer;
 }
 #input {
@@ -177,7 +177,7 @@ input.invisible, div.invisible, img.invisible {
 	width: 200px;
 	color: #97CEEC;
 }
-div.msg, div.gsm, div.cmsg, div.cgsm, div.umsg, div.ugsm {
+div.msg, div.gsm, div.emsg, div.egsm, div.cmsg, div.cgsm, div.umsg, div.ugsm {
 	padding: 10px 10px 10px 5px;
 	background-color: #D8EDF8;
 	width: 99.5%;
@@ -186,11 +186,11 @@ div.msg, div.gsm, div.cmsg, div.cgsm, div.umsg, div.ugsm {
 	background-image: url("../img/chat.png");
 	background-position: 98%;
 }
-div.msg a, div.gsm a, div.cmsg a, div.cgsm a, div.umsg a, div.ugsm a {
+div.msg a, div.gsm a, div.emsg a, div.egsm a, div.cmsg a, div.cgsm a, div.umsg a, div.ugsm a {
 	color: #000;
 	border-bottom: 1px dashed #000;
 }
-div.msg a:hover, div.gsm a:hover, div.cmsg a:hover, div.cgsm a:hover, div.umsg a:hover, div.ugsm a:hover {
+div.msg a:hover, div.gsm a:hover, div.emsg a:hover, div.egsm a:hover, div.cmsg a:hover, div.cgsm a:hover, div.umsg a:hover, div.ugsm a:hover {
 	border-bottom: 1px solid #000;
 	text-decoration: none;
 }
@@ -252,10 +252,10 @@ td {
 	border-bottom: 8px solid #FFF;
 	font-size: 12px;
 }
-#maximize, #sound{
+#maximize, #sound, #nickicon {
 	float: right;
 }
-#sound {
+#sound, #nickicon {
 	margin-right: 10px;
 }
 #video {
@@ -316,7 +316,4 @@ span.underline {
 	font-size: 12px;
 	font-family: "Monaco", monospace;
 	line-height: 1.8em;
-}
-#nick {
-	color: #97CEEC;
 }
