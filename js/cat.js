@@ -22,6 +22,9 @@ function showstamp(timestamp, nick) {
 		spaces += "&nbsp";
 	}
 	if (!timestamp) {
+		if (String(h).length == 1) {
+			h = "0" + String(h);
+		}
 		if (String(m).length == 1) {
 			m = "0" + String(m);
 		}
@@ -84,11 +87,7 @@ function processline(chat, flip) {
 		decrypted = corrupt = user = 0;
 		if ((chat[i])) {
 			chat[i] = chat[i];
-			if ((!flip) && (match = chat[i].match(/^[a-z]{1,12}/))) {
-				chat[i] = chat[i].replace(/^[a-z]+:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = showstamp(" + 0 + ",\'" + match[0] + "\');\" onmouseout=\"this.innerHTML = \'" + match[0] + "\';\">" + match[0] + "</span>");
-			}
-			else if (match = chat[i].match(/[a-z]{1,12}:\s\[B-C\](.*)\[E-C\]$/)) {
-				thisnick = match[0].match(/^[a-z]{1,12}/);
+			if (match = chat[i].match(/[a-z]{1,12}:\s\[B-C\](.*)\[E-C\]$/)) {
 				if (flip) {
 					var timestamp = chat[i].substring(0, 4);
 					chat[i] = chat[i].substring(4, chat[i].length);
@@ -101,31 +100,34 @@ function processline(chat, flip) {
 				}
 				else if (decrypted.status == "success") {
 					chat[i] = chat[i].replace(/\[B-C\](.*)\[E-C\]/, decrypted.plaintext.replace(/(\r\n|\n\r|\r|\n)/gm, ""));
-					chat[i] = scrubtags(chat[i]);
-					if (match = chat[i].match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi)) {
-						for (mc = 0; mc <= match.length - 1; mc++) {
-							var sanitize = match[mc].split("");
-							for (ii = 0; ii <= sanitize.length-1; ii++) {
-								if (!sanitize[ii].match(/\w|\d|\:|\/|\?|\=|\#|\+|\,|\.|\&|\;|\%/)) {
-									sanitize[ii] = encodeURIComponent(sanitize[ii]);
-								}
-							}
-							sanitize = sanitize.join("");
-							chat[i] = chat[i].replace(sanitize, "<a target=\"_blank\" href=\"" + install + "?redirect=" + escape(sanitize) + "\">" + match[mc] + "</a>");
-						}
-					}
-					chat[i] = chat[i].replace(/\&lt\;3/g, "&#9829;");
-					if (match = chat[i].match(/^[a-z]+:\s\/me\s/)) {
-						match = match[0];
-						chat[i] = chat[i].replace(/^[a-z]+:\s\/me\s/, "<span class=\"nick\">* " + thisnick[0] + " ") + " *</span>";
-					}
-					else if (match = chat[i].match(/^[a-z]{1,12}/)) {
-						chat[i] = chat[i].replace(/^[a-z]+:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = showstamp(" + 0 + ",\'" + match[0] + "\');\" onmouseout=\"this.innerHTML = \'" + match[0] + "\';\">" + match[0] + "</span>");
-					}
 				}
 				else {
 					chat[i] = "<span class=\"diffkey\">decryption failure</span>";
 					corrupt = 1;
+				}
+			}
+			if ((!flip) || ((decrypted.status == "success") && (decrypted.signature == "verified"))) {
+				chat[i] = scrubtags(chat[i]);
+				if (match = chat[i].match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi)) {
+					for (mc = 0; mc <= match.length - 1; mc++) {
+						var sanitize = match[mc].split("");
+						for (ii = 0; ii <= sanitize.length-1; ii++) {
+							if (!sanitize[ii].match(/\w|\d|\:|\/|\?|\=|\#|\+|\,|\.|\&|\;|\%/)) {
+								sanitize[ii] = encodeURIComponent(sanitize[ii]);
+							}
+						}
+						sanitize = sanitize.join("");
+						chat[i] = chat[i].replace(sanitize, "<a target=\"_blank\" href=\"" + install + "?redirect=" + escape(sanitize) + "\">" + match[mc] + "</a>");
+					}
+				}
+				chat[i] = chat[i].replace(/\&lt\;3/g, "&#9829;");
+				if (match = chat[i].match(/^[a-z]+:\s\/me\s/)) {
+					match = match[0];
+					thisnick = match[0].match(/^[a-z]{1,12}/);
+					chat[i] = chat[i].replace(/^[a-z]+:\s\/me\s/, "<span class=\"nick\">* " + thisnick[0] + " ") + " *</span>";
+				}
+				else if (match = chat[i].match(/^[a-z]{1,12}/)) {
+					chat[i] = chat[i].replace(/^[a-z]+:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = showstamp(" + 0 + ",\'" + match[0] + "\');\" onmouseout=\"this.innerHTML = \'" + match[0] + "\';\">" + match[0] + "</span>");
 				}
 			}
 			else if ((match = chat[i].match(/^(\&gt\;|\&lt\;) [a-z]{1,12} (has arrived|has left)$/))) {
@@ -199,6 +201,11 @@ function updatechat(div){
 			split = $("#loader").html().split("\n");
 			pos += split.length;
 			for (li = 0; li < split.length; li++) {
+				for (lli = 0; lli < split.length; lli++) {
+					if ((split[li] == split[lli]) && (li != lli)) {
+						split.splice(lli, 1);
+					}
+				}
 				if ((splitmatch = split[li].match(/^[0-9]{4}[a-z]{1,12}/)) && (splitmatch[0].substring(4) == nick)) {
 					split.splice(li, 1);
 				}
