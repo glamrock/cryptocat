@@ -292,7 +292,7 @@ else {
 			<input type="text" value="'.$name.'" name="name" id="name" class="invisible" />
 			<div class="invisible" id="loader"></div>
 			<div id="chat"></div>
-			<div id="info">chatting as <a href="#" id="nick">'.$nick.'</a> on 
+			<div id="info">chatting as <span id="nick">'.$nick.'</span> on 
 			<input readonly="readonly" type="text" id="url" onclick="StuffSelect(\'url\');" value="'.$install.'?c='.$name.'" />
 			</div>
 			<form name="chatform" id="chatform" method="post" action="'.$install.'">
