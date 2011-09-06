@@ -194,7 +194,7 @@ else {
 					</tr>
 					<tr>
 						<td class="img"><img src="img/2.png" alt="" /></td>
-						<td id="td2">messages are encrypted locally using AES-256 and are verified for integrity. conversations are securely wiped after 30 minutes of inactivity.</td>
+						<td id="td2">messages are encrypted locally and are verified for integrity. conversations are securely wiped after 30 minutes of inactivity.</td>
 					</tr>
 					<tr>
 						<td class="img"><img src="img/3.png" alt="" /></td>
