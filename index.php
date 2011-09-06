@@ -65,7 +65,7 @@
 		else if (isset($_GET['pos']) && $_GET['pos'] >= 0) {
 			$_GET['pos'] += $mypos;
 			if (isset($_SESSION['id']) && $mysession == $_SESSION['id'] && !is_null($_SESSION['id'])) {
-				if ($_GET['pos'] <= count($chat)) {
+				if ($_GET['pos'] <= count($chat) - 1) {					
 					if (preg_match('/^[0-9]{1,4}[a-z]{1,12}:\s\[B-C\].+\[E-C\]$/', $chat[$_GET['pos']])) {
 						preg_match_all('/\([a-z]{1,12}\)[^\(|^\[]+/', $chat[$_GET['pos']], $match);
 						for ($ki=0; $ki <= count($match[0]); $ki++) {

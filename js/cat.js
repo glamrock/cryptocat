@@ -1,5 +1,5 @@
 Math.seedrandom();
-var t, num, interval, maximized, sound, errored, reconnect, mysecret, mypublic, mtag;
+var t, num, interval, maximized, sound, errored, reconnect, mysecret, mypublic, mtag, nickset;
 t = num = interval = maximized = sound = errored = reconnect = pos = 0;
 mtag = "msg";
 var names = new Array();
@@ -80,91 +80,86 @@ function scrubtags(str) {
 }
 
 function processline(chat, flip) {
-	chat = chat.split("\n");
 	var i = 0;
-	for (i=0; i <= chat.length-1; i++) {
-		var decrypted, corrupt, user;
-		decrypted = corrupt = user = 0;
-		if ((chat[i])) {
-			chat[i] = chat[i];
-			if (match = chat[i].match(/[a-z]{1,12}:\s\[B-C\](.*)\[E-C\]$/)) {
-				if (flip) {
-					var timestamp = chat[i].substring(0, 4);
-					chat[i] = chat[i].substring(4, chat[i].length);
-				}
-				match = chat[i].match(/\[B-C\](.*)\[E-C\]/);
-				decrypted = cryptico.decrypt(match[0].substring(5, match[0].length - 5), mysecret);
-				if (decrypted.signature != "verified") {
-					chat[i] = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">corrupt</span>";
-					corrupt = 1;
-				}
-				else if (decrypted.status == "success") {
-					chat[i] = chat[i].replace(/\[B-C\](.*)\[E-C\]/, decrypted.plaintext.replace(/(\r\n|\n\r|\r|\n)/gm, ""));
-				}
-				else {
-					chat[i] = "<span class=\"diffkey\">decryption failure</span>";
-					corrupt = 1;
-				}
+	var decrypted, corrupt, user;
+	decrypted = corrupt = user = 0;
+	if (chat) {
+		if (match = chat.match(/[a-z]{1,12}:\s\[B-C\](.*)\[E-C\]$/)) {
+			if (flip) {
+				var timestamp = chat.substring(0, 4);
+				chat = chat.substring(4, chat.length);
 			}
-			if ((!flip) || ((decrypted.status == "success") && (decrypted.signature == "verified"))) {
-				chat[i] = scrubtags(chat[i]);
-				if (match = chat[i].match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi)) {
-					for (mc = 0; mc <= match.length - 1; mc++) {
-						var sanitize = match[mc].split("");
-						for (ii = 0; ii <= sanitize.length-1; ii++) {
-							if (!sanitize[ii].match(/\w|\d|\:|\/|\?|\=|\#|\+|\,|\.|\&|\;|\%/)) {
-								sanitize[ii] = encodeURIComponent(sanitize[ii]);
-							}
-						}
-						sanitize = sanitize.join("");
-						chat[i] = chat[i].replace(sanitize, "<a target=\"_blank\" href=\"" + install + "?redirect=" + escape(sanitize) + "\">" + match[mc] + "</a>");
-					}
-				}
-				chat[i] = chat[i].replace(/\&lt\;3/g, "&#9829;");
-				if (match = chat[i].match(/^[a-z]+:\s\/me\s/)) {
-					match = match[0];
-					thisnick = match.match(/^[a-z]{1,12}/);
-					chat[i] = chat[i].replace(/^[a-z]+:\s\/me\s/, "<span class=\"nick\">* " + thisnick + " ") + " *</span>";
-				}
-				else if (match = chat[i].match(/^[a-z]{1,12}/)) {
-					chat[i] = chat[i].replace(/^[a-z]+:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = showstamp(" + 0 + ",\'" + match[0] + "\');\" onmouseout=\"this.innerHTML = \'" + match[0] + "\';\">" + match[0] + "</span>");
-				}
-			}
-			else if ((match = chat[i].match(/^(\&gt\;|\&lt\;) [a-z]{1,12} (has arrived|has left)$/))) {
-				chat[i] = "<span class=\"nick\">" + match[0] + "</span>";
-				user = 1;
-				updatekeys();
-				updatechatters();
-			}
-			else if (thisnick = chat[i].match(/^[a-z]{1,12}/)) {
-				chat[i] = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">corrupt</span>";
+			match = chat.match(/\[B-C\](.*)\[E-C\]/);
+			decrypted = cryptico.decrypt(match[0].substring(5, match[0].length - 5), mysecret);
+			if (decrypted.signature != "verified") {
+				chat = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">corrupt</span>";
 				corrupt = 1;
 			}
+			else if (decrypted.status == "success") {
+				chat = chat.replace(/\[B-C\](.*)\[E-C\]/, decrypted.plaintext.replace(/(\r\n|\n\r|\r|\n)/gm, ""));
+			}
 			else {
-				chat[i] = "<span class=\"diffkey\">corrupt</span>"
+				chat = "<span class=\"diffkey\">decryption failure</span>";
 				corrupt = 1;
 			}
-			if (user) {
-				tag = "u";
-			}
-			else if (corrupt) {
-				tag = "c";
-			}
-			else {
-				tag = "";
-			}
-			if (mtag == "msg") {
-				tag += mtag;
-				mtag = "gsm";
-			}
-			else if (mtag == "gsm") {
-				tag += mtag;
-				mtag = "msg";
-			}
-			chat[i] = "<div class=\"" + tag + "\"><div class=\"text\">" + chat[i] + "</div></div>";
 		}
+		if ((!flip) || ((decrypted.status == "success") && (decrypted.signature == "verified"))) {
+			chat = scrubtags(chat);
+			if (match = chat.match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi)) {
+				for (mc = 0; mc <= match.length - 1; mc++) {
+					var sanitize = match[mc].split("");
+					for (ii = 0; ii <= sanitize.length-1; ii++) {
+						if (!sanitize[ii].match(/\w|\d|\:|\/|\?|\=|\#|\+|\,|\.|\&|\;|\%/)) {
+							sanitize[ii] = encodeURIComponent(sanitize[ii]);
+						}
+					}
+					sanitize = sanitize.join("");
+					chat = chat.replace(sanitize, "<a target=\"_blank\" href=\"" + install + "?redirect=" + escape(sanitize) + "\">" + match[mc] + "</a>");
+				}
+			}
+			chat = chat.replace(/\&lt\;3/g, "&#9829;");
+			if (match = chat.match(/^[a-z]+:\s\/me\s/)) {
+				match = match[0];
+				thisnick = match.match(/^[a-z]{1,12}/);
+				chat = chat.replace(/^[a-z]+:\s\/me\s/, "<span class=\"nick\">* " + thisnick + " ") + " *</span>";
+			}
+			else if (match = chat.match(/^[a-z]{1,12}/)) {
+				chat = chat.replace(/^[a-z]+:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = showstamp(" + 0 + ",\'" + match[0] + "\');\" onmouseout=\"this.innerHTML = \'" + match[0] + "\';\">" + match[0] + "</span>");
+			}
+		}
+		else if ((match = chat.match(/^(\&gt\;|\&lt\;) [a-z]{1,12} (has arrived|has left)$/))) {
+			chat = "<span class=\"nick\">" + match[0] + "</span>";
+			user = 1;
+			updatekeys();
+			updatechatters();
+		}
+		else if (thisnick = chat.match(/^[a-z]{1,12}/)) {
+			chat = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">corrupt</span>";
+			corrupt = 1;
+		}
+		else {
+			chat = "<span class=\"diffkey\">corrupt</span>"
+			corrupt = 1;
+		}
+		if (user) {
+			tag = "u";
+		}
+		else if (corrupt) {
+			tag = "c";
+		}
+		else {
+			tag = "";
+		}
+		if (mtag == "msg") {
+			tag += mtag;
+			mtag = "gsm";
+		}
+		else if (mtag == "gsm") {
+			tag += mtag;
+			mtag = "msg";
+		}
+		chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
 	}
-	chat = chat.join("\n");
 	return chat;
 }
 
@@ -199,7 +194,13 @@ function updatechat(div){
 		}
 		else if (($("#loader").html() != "")) {
 			chathtml = $("#chat").html();
-			pos += 1;
+			pos++;
+			if ((pos) && (nickset)) {
+				$('#keygen').fadeOut('slow', function() {
+				    $("#front").fadeOut();
+				});
+				nickset = 0;
+			}
 			if ((match = $("#loader").html().match(/^[0-9]{4}[a-z]{1,12}/)) && (match[0].substring(4) == nick)) {
 			}
 			else {
@@ -278,12 +279,9 @@ $("#nickform").submit( function() {
 	if (!mypublic) {
 		$('#nickentry').fadeOut('slow', function() {
 			$('#keygen').fadeIn('slow', function() {
-				mysecret = cryptico.generateRSAKey(gen(48), 768);
+				mysecret = cryptico.generateRSAKey(gen(48), 512);
 				mypublic = cryptico.publicKeyString(mysecret);
-				$('#keygen').fadeOut('slow', function() {
-				    $("#front").fadeOut();
-					nickajax();
-				});
+				nickajax();
 			});
 		});
 	}
@@ -303,28 +301,28 @@ function nickajax() {
 				$("#nickinput").animate({
 					color: "#97CEEC"
 				}, 200 );
+				nickset = 1;
 				$("#nick").html($("#nickinput").val());
 				nick = $("#nick").html();
-				if (mypublic) {
-					$("#front").fadeOut('slow');
-				}
 				document.getElementById("input").focus();
 				document.title = "[" + num + "] cryptocat";
 				interval = setInterval("updatechat(\"#loader\")", update);
 			}
 			else {
-				$("#nickentry").fadeIn('slow');
-				$("#nickinput").animate({
-					color: "#97CEEC"
-				}, 200 );
-				if (data == "already") {
-					$("#nickinput").val("already logged in");
-				}
-				else {
-					$("#nickinput").val("bad nickname");
-				}
-				$("#front").fadeIn();
-				StuffSelect("nickinput");
+				$('#keygen').fadeOut('slow', function() {
+					$("#nickentry").fadeIn('slow');
+					$("#nickinput").animate({
+						color: "#97CEEC"
+					}, 200 );
+					if (data == "already") {
+						$("#nickinput").val("already logged in");
+					}
+					else {
+						$("#nickinput").val("bad nickname");
+					}
+					$("#front").fadeIn();
+					StuffSelect("nickinput");
+				});
 			}
 		}
 	});
