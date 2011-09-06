@@ -134,6 +134,7 @@ function processline(chat, flip) {
 				chat[i] = "<span class=\"nick\">" + match[0] + "</span>";
 				user = 1;
 				updatekeys();
+				updatechatters();
 			}
 			else if (thisnick = chat[i].match(/^[a-z]{1,12}/)) {
 				chat[i] = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">corrupt</span>";
@@ -198,20 +199,12 @@ function updatechat(div){
 		}
 		else if (($("#loader").html() != "")) {
 			chathtml = $("#chat").html();
-			split = $("#loader").html().split("\n");
-			pos += split.length;
-			for (li = 0; li < split.length; li++) {
-				for (lli = 0; lli < split.length; lli++) {
-					if ((split[li] == split[lli]) && (li != lli)) {
-						split.splice(lli, 1);
-					}
-				}
-				if ((splitmatch = split[li].match(/^[0-9]{4}[a-z]{1,12}/)) && (splitmatch[0].substring(4) == nick)) {
-					split.splice(li, 1);
-				}
+			pos += 1;
+			if ((match = $("#loader").html().match(/^[0-9]{4}[a-z]{1,12}/)) && (match[0].substring(4) == nick)) {
 			}
-			$("#loader").html(split.join("\n"));
-			$("#chat").html(chathtml += processline($("#loader").html(), 1));
+			else {
+				$("#chat").html(chathtml += processline($("#loader").html(), 1));
+			}
 			scrolldown();
 			if (!focus) {
 				num++;
@@ -220,7 +213,6 @@ function updatechat(div){
 					soundPlay("snd/msg.ogg");
 				}
 			}
-			updatechatters();
 		}
 		else if (errored && reconnect) {
 			updatechatters();
