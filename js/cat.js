@@ -286,7 +286,7 @@ function nickajax() {
 		async: true,
 		data: "nick=" + $("#nickinput").val() + "&name=" + $("#name").val() + "&public=" + encodeURIComponent(mypublic),
 		success: function(data) {
-			if ((data != "error") && (data != "already") && (data != "inuse")) {
+			if ((data != "error") && (data != "inuse")) {
 				$("#nickinput").animate({
 					color: "#97CEEC"
 				}, 200 );

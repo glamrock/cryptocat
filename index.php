@@ -128,16 +128,21 @@
 				exit;
 			}
 		}
+		if ($_POST['public'] == 'get') {
+			print(trim($chat[0]));
+			exit;
+		}
 		if (in_array($_POST['nick'], $usednicks)) {
 			print('inuse');
 			exit;
 		}
-		if ($_POST['public'] == 'get') {
-			print(trim($chat[0]));
-		}
-		else if ($_SESSION['id'] == $mysession && $nick) {
-			print('already');
-			exit;
+		else if (isset($mysession) && $_SESSION['id'] == $mysession && $nick) {
+			preg_match('/'.$nick.'\:[^\|]+\|/', $chat[0], $public);
+			$chat[count($chat)+1] = "\n".'< '.$nick.' has left';
+			$chat[0] = str_replace($public[0], $_POST['nick'].':'.$_POST['public'].'|', $chat[0]);
+			$chat[1] = preg_replace('/'.$mysession.'\:'.$nick.'\+\d+\-/', $mysession.':'.$_POST['nick'].'+'.count($chat).'-', $chat[1]);
+			$chat[count($chat)+1] = "\n".'> '.$_POST['nick'].' has arrived';
+			file_put_contents($data.$_POST['name'], implode('', $chat), LOCK_EX);
 		}
 		else if (!$nick) {
 			if (file_exists($data.$_POST['name'])) {

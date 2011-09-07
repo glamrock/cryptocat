@@ -68,13 +68,13 @@ input.create {
 #talk {
 	background-color: #000;
 	border: none;
-	margin: -15px 0px 0px 2px;
+	margin: -16px 0px 0px 2px;
 	float: left;
 	display: inline;
 	padding: 3px;
 	width: 67px;
 	color: #97CEEC;
-	height: 52px;
+	height: 53px;
 	font-size: 22px;
 	box-shadow: 2px 2px #90CAEA;
 }
