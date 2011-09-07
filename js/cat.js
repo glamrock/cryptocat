@@ -303,10 +303,7 @@ function nickajax() {
 					$("#nickinput").animate({
 						color: "#97CEEC"
 					}, 200 );
-					if (data == "already") {
-						$("#nickinput").val("already logged in");
-					}
-					else if (data == "inuse") {
+					if (data == "inuse") {
 						$("#nickinput").val("nickname in use");
 					}
 					else if (data == "error") {
@@ -346,6 +343,7 @@ $("#maximize").click(function(){
 		}, 500 );
 		$("#chatters").animate({
 			width: "525px",
+			"padding-right": "3px",
 			"margin-left": "1px",
 		}, 500 );
 		$("#info").animate({
@@ -381,7 +379,8 @@ $("#maximize").click(function(){
 			height: "90%"
 		}, 500 );
 		$("#chatters").animate({
-			width: "93.44%",
+			width: "92%",
+			"padding-right": "20px",
 			"margin-left": "3px"
 		}, 500 );
 		$("#info").animate({
