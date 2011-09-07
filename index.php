@@ -10,12 +10,12 @@
 	/* variables below this line are not safe to change */
 ?>
 <?php
+	$maxusers = 8;
+	$maxinput = 256;
+	error_reporting(0);
 	$usednicks = array();
 	$usedsessions = array();
 	session_set_cookie_params(0, '/', $domain, $https, TRUE);
-	error_reporting(0);
-	$maxinput = 256;
-	$maxusers = 8;
 	function gen($size) {
 		for ($i=0; $i<$size; $i++) {
 			$c=mt_rand(0,51);
@@ -29,6 +29,8 @@
 		global $nick, $mysession, $mypos, $usednicks, $usedsessions, $_SESSION;
 		preg_match_all('/.{32}:\w+\+\d+-/', $chat[1], $people);
 		$people = $people[0];
+		$usednicks = array();
+		$usedsessions = array();
 		for ($i = 0; $i < count($people); $i++) {
 			preg_match('/.{32}:/', $people[$i], $session);
 			$session = substr($session[0], 0, -1);
@@ -132,7 +134,11 @@
 			print(trim($chat[0]));
 			exit;
 		}
-		if (in_array($_POST['nick'], $usednicks)) {
+		if (count($usedsessions) >= $maxusers) {
+			print("full");
+			exit;
+		}
+		else if (in_array($_POST['nick'], $usednicks)) {
 			print('inuse');
 			exit;
 		}
@@ -240,7 +246,7 @@ else {
 			return 1;
 		}
 		function joinchat($name, $setnick, $public) {
-			global $data, $maxusers, $nick, $mysession, $mypos, $usednicks, $usedsessions, $_SESSION, $used;
+			global $data, $nick, $mysession, $mypos, $usednicks, $usedsessions, $_SESSION, $used;
 			$used = 0;
 			session_name($name);
 			session_start();
@@ -251,23 +257,18 @@ else {
 			while (!isset($_SESSION['id']) || in_array($_SESSION['id'], $usedsessions)) {
 				$_SESSION['id'] = gen(32);
 			}
-			if (count($usedsessions) >= $maxusers) {
-				welcome('chat is full');
-			}
-			else {
-				if (!isset($nick)) {
-					if (in_array($setnick, $usednicks)) {
-						$used = 1;
-						exit;
-					}
-					else {
-						$nick = $setnick;
-					}
-					$chat[0] = trim($chat[0]).$nick.':'.$public.'|'."\n";
-					$chat[1] = trim($chat[1]).$_SESSION['id'].':'.$nick.'+'.$pos.'-'."\n";
-					$chat[count($chat)+1] = "\n".'> '.$nick.' has arrived';
-					file_put_contents($data.$name, implode('', $chat), LOCK_EX);
+			if (!isset($nick)) {
+				if (in_array($setnick, $usednicks)) {
+					$used = 1;
+					exit;
 				}
+				else {
+					$nick = $setnick;
+				}
+				$chat[0] = trim($chat[0]).$nick.':'.$public.'|'."\n";
+				$chat[1] = trim($chat[1]).$_SESSION['id'].':'.$nick.'+'.$pos.'-'."\n";
+				$chat[count($chat)+1] = "\n".'> '.$nick.' has arrived';
+				file_put_contents($data.$name, implode('', $chat), LOCK_EX);
 			}
 		}
 		function chat($name) {
