@@ -260,16 +260,6 @@ td {
 	top: 0;
 	left: 0;
 }
-#changenick {
-	width: 350px;
-	padding: 5px 10px;
-	background-color: rgba(0, 0, 0, 0.86);
-	color: #FFF;
-	box-shadow: 4px 4px #97CEEC;
-	text-align: center;
-	margin: 11.5% auto 0 auto;
-	height: 150px;
-}
 div.redirect {
 	background-color: #222;
 	box-shadow: 4px 4px #97CEEC;
@@ -297,15 +287,28 @@ div.redirect p {
 span.underline {
 	text-decoration: underline;
 }
-#keygen, #nickentry {
-	display: none;
-	padding-top: 50px;
+#changenick, #fingerprints {
+	width: 420px;
+	padding: 45px 10px 10px 10px;
+	background-color: rgba(0, 0, 0, 0.86);
+	color: #FFF;
+	box-shadow: 4px 4px #97CEEC;
+	text-align: center;
+	margin: 11.5% auto 0 auto;
+	min-height: 135px;
 	font-size: 12px;
 	font-family: "Monaco", monospace;
 	line-height: 1.8em;
 }
-#nickentry {
-	padding-top: 25px;
+#fingerprints {
+	display: none;
+	font-size: 11px;
+}
+#keygen {
+	margin-top: 28px;
+}
+#keygen, #nickentry {
+	display: none;
 }
 #nick {
 	color: #97CEEC;
@@ -316,21 +319,7 @@ span.underline {
 #fingerlink:hover, #close:hover {
 	text-decoration: underline;
 }
-#fingerprints {
-	display: none;
-	width: 350px;
-	padding: 30px 10px 5px 10px;
-	background-color: rgba(0, 0, 0, 0.86);
-	color: #FFF;
-	box-shadow: 4px 4px #97CEEC;
-	text-align: center;
-	margin: 11.5% auto 0 auto;
-	min-height: 125px;
-}
 span.blue {
 	color: #97CEEC;
 	margin-right: 20px;
-}
-#close {
-	text-align: center;
 }

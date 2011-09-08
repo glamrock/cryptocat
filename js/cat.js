@@ -166,11 +166,12 @@ function updatekeys() {
 				keys[i] = decodeURIComponent(keymatch[0].substring(1));
 				if (keys[i].length != 100) {
 					fingerprints[i] = "invalid key - this person cannot be trusted.";
+					alert("Warning: " + names[i] + " is using an invalid encryption key. Be careful.");
 				}
 				else {
 					var shaObj = new jsSHA(keys[i], "ASCII");
 					fingerprints[i] = shaObj.getHash("SHA-512", "HEX");
-					fingerprints[i] = fingerprints[i].substring(0, 5) + ":" + fingerprints[i].substring(40, 45) + ":" + fingerprints[i].substring(70, 75) + ":" + fingerprints[i].substring(95, 100) + ":" + fingerprints[i].substring(123, 128);
+					fingerprints[i] = fingerprints[i].substring(0, 8).toUpperCase() + ":" + fingerprints[i].substring(40, 48).toUpperCase() + ":" + fingerprints[i].substring(70, 78).toUpperCase() + ":" + fingerprints[i].substring(95, 103).toUpperCase() + ":" + fingerprints[i].substring(120, 128).toUpperCase();
 				}
 			}
 		}
@@ -347,7 +348,7 @@ $("#sound").click(function(){
 });
 
 $("#fingerlink").click(function(){
-	var fingerhtml = "Verify the authenticity of chatters using their key fingerprint. <br />(You can verify fingerprints over the phone.)<br /><br />";
+	var fingerhtml = "Verify chatters using their key fingerprint. <br />(You can verify fingerprints over the phone.)<br /><br />";
 	for (fi=0; fi <= names.length - 1; fi++) {
 		fingerhtml += "<span class=\"blue\">" + names[fi] + "</span> " + fingerprints[fi] + "<br />";
 	}
