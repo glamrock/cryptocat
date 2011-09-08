@@ -310,10 +310,7 @@ span.underline {
 #keygen, #nickentry {
 	display: none;
 }
-#nick {
-	color: #97CEEC;
-}
-#fingerlink, #close {
+#nick, #fingerlink, #close {
 	color: #97CEEC;
 }
 #fingerlink:hover, #close:hover {
@@ -321,5 +318,7 @@ span.underline {
 }
 span.blue {
 	color: #97CEEC;
-	margin-right: 20px;
+}
+span.red {
+	color: #F00;
 }
