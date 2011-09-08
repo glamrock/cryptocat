@@ -94,7 +94,7 @@ function processline(chat, flip) {
 		}
 		if ((!flip) || ((decrypted.status == "success") && (decrypted.signature == "verified"))) {
 			chat = scrubtags(chat);
-			if (match = chat.match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi)) {
+			if ((match = chat.match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi)) && fancyurls) {
 				for (mc = 0; mc <= match.length - 1; mc++) {
 					var sanitize = match[mc].split("");
 					for (ii = 0; ii <= sanitize.length-1; ii++) {
@@ -164,9 +164,14 @@ function updatekeys() {
 				names[i] = keymatch[0].substring(0, keymatch[0].length - 1);
 				keymatch = data[i].match(/:.+/);
 				keys[i] = decodeURIComponent(keymatch[0].substring(1));
-				var shaObj = new jsSHA(keys[i], "ASCII");
-				fingerprints[i] = shaObj.getHash("SHA-512", "HEX");
-				fingerprints[i] = fingerprints[i].substring(0, 5) + ":" + fingerprints[i].substring(40, 45) + ":" + fingerprints[i].substring(70, 75) + ":" + fingerprints[i].substring(95, 100) + ":" + fingerprints[i].substring(123, 128);
+				if (keys[i].length != 100) {
+					fingerprints[i] = "invalid key - this person cannot be trusted.";
+				}
+				else {
+					var shaObj = new jsSHA(keys[i], "ASCII");
+					fingerprints[i] = shaObj.getHash("SHA-512", "HEX");
+					fingerprints[i] = fingerprints[i].substring(0, 5) + ":" + fingerprints[i].substring(40, 45) + ":" + fingerprints[i].substring(70, 75) + ":" + fingerprints[i].substring(95, 100) + ":" + fingerprints[i].substring(123, 128);
+				}
 			}
 		}
 	});
@@ -274,7 +279,7 @@ $("#nickform").submit( function() {
 	if (!mypublic) {
 		$('#nickentry').fadeOut('slow', function() {
 			$('#keygen').fadeIn('slow', function() {
-				mysecret = cryptico.generateRSAKey(gen(48), 512);
+				mysecret = cryptico.generateRSAKey(gen(48), 600);
 				mypublic = cryptico.publicKeyString(mysecret);
 				nickajax();
 			});

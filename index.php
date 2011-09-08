@@ -1,16 +1,25 @@
 <?php
 	/* cryptocat */
+	/* install directory and domain name */
 	$install = 'https://crypto.cat/';
 	$domain = "crypto.cat";
+	/* https is highly recommended */
 	$https = TRUE;
+	/* where to store chats */
 	$data = '/srv/data/';
+	/* time limit in seconds before deleting chat */
 	$timelimit = 1800;
+	/* interval in milliseconds to check for new messages */
 	$update = 1500;
+	/* set to 0 to disable automatic url linking */
+	$fancyurls = 1;
+	/* maximum users in a chat. not recommended to set above 8 */
+	$maxusers = 8;
+	/* default nicknames */
 	$nicks = array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther');
 	/* variables below this line are not safe to change */
 ?>
 <?php
-	$maxusers = 8;
 	$maxinput = 256;
 	error_reporting(0);
 	$usednicks = array();
@@ -273,7 +282,7 @@ else {
 			}
 		}
 		function chat($name) {
-			global $data, $nicks, $timelimit, $maxinput, $install, $update, $_SESSION, $mysession, $usedsessions, $usednicks;
+			global $data, $nicks, $timelimit, $maxinput, $install, $update, $_SESSION, $mysession, $usedsessions, $usednicks, $fancyurls;
 			$name = strtolower($name);
 			$chat = file($data.$name);
 			getpeople($chat);
@@ -317,7 +326,7 @@ else {
 				</div>
 			</form>
 			</div>
-			<script type="text/javascript">var install = "'.$install.'";var update = "'.$update.'";var name = "'.$name.'";var maxinput = "'.$maxinput.'";</script>
+			<script type="text/javascript">var install = "'.$install.'";var update = "'.$update.'";var name = "'.$name.'";var maxinput = "'.$maxinput.'";var fancyurls = '.$fancyurls.';</script>
 			<script type="text/javascript" src="js/cat.js"></script>');
 		}
 		
