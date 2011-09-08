@@ -187,6 +187,16 @@ function updatekeys() {
 			}
 		}
 	});
+	var fingerhtml = "Verify chatters using their key fingerprint. <br />(You can verify fingerprints over the phone.)<br /><br />";
+	for (fi=0; fi <= names.length - 1; fi++) {
+		var nbsp = "";
+		for (ni=0; ni + names[fi].length != 12; ni++) {
+			nbsp += "&nbsp";
+		}
+		fingerhtml += "<span class=\"blue\">" + names[fi] + "</span> " + nbsp + fingerprints[fi] + "<br />";
+	}
+	fingerhtml += "<br /><br /><span onclick=\"fingerclose();\" id=\"close\">close</span>"; 
+	$("#fingerprints").html(fingerhtml);
 }
 
 function updatechat(div){
@@ -359,16 +369,6 @@ $("#sound").click(function(){
 });
 
 $("#fingerlink").click(function(){
-	var fingerhtml = "Verify chatters using their key fingerprint. <br />(You can verify fingerprints over the phone.)<br /><br />";
-	for (fi=0; fi <= names.length - 1; fi++) {
-		var nbsp = "";
-		for (ni=0; ni + names[fi].length != 12; ni++) {
-			nbsp += "&nbsp";
-		}
-		fingerhtml += "<span class=\"blue\">" + names[fi] + "</span> " + nbsp + fingerprints[fi] + "<br />";
-	}
-	fingerhtml += "<br /><br /><span onclick=\"fingerclose();\" id=\"close\">close</span>"; 
-	$("#fingerprints").html(fingerhtml);
 	$('#front').fadeIn('fast');
 	$('#fingerprints').fadeIn('slow', function() {
 	});
