@@ -182,6 +182,7 @@
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/color.js"></script>
 	<script type="text/javascript" src="js/cryptico.js"></script>
+	<script type="text/javascript" src="js/sha512.js"></script>
 	<script type="text/javascript">function StuffSelect(id) {document.getElementById(id).focus();document.getElementById(id).select();} $(document).ready(function() { $("#name,#nickinput,#key,#input").attr("autocomplete", "off"); });</script>
 </head>
 <?php
@@ -297,6 +298,7 @@ else {
 						</form>
 					</div>
 				</div>
+				<div id="fingerprints"></div>
 			</div>
 			<a href="'.$install.'" onclick="logout();"><img src="img/cryptocat.png" alt="cryptocat" /></a>
 			<img src="img/maximize.png" alt="maximize" id="maximize" title="expand" />
@@ -305,7 +307,7 @@ else {
 			<div class="invisible" id="loader"></div>
 			<div id="chat"></div>
 			<div id="info">chatting as <span id="nick">'.$nick.'</span> on 
-			<input readonly="readonly" type="text" id="url" onclick="StuffSelect(\'url\');" value="'.$install.'?c='.$name.'" />
+			<span id="url" onclick="StuffSelect(\'url\');">'.$install.'?c='.$name.'</span> - <span id="fingerlink">fingerprints</span>
 			</div>
 			<form name="chatform" id="chatform" method="post" action="'.$install.'">
 				<div>

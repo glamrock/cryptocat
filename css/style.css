@@ -123,10 +123,6 @@ span.chatters {
 	margin: 0 auto;
 	margin-top: 10px;
 }
-#strength {
-	float: right;
-	margin: 1px 2px 0 0;
-}
 a {
 	text-decoration: none;
 	color: #97CEEC;
@@ -140,7 +136,7 @@ a:hover {
 input.logout:hover {
 	text-decoration: underline;
 }
-a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound {
+a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #fingerlink, #close {
 	cursor: pointer;
 }
 #input {
@@ -168,7 +164,6 @@ a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound {
 	font-size: 10px;
 	background-color: #000;
 	border: none;
-	width: 400px;
 	color: #97CEEC;
 }
 div.msg, div.gsm, div.cmsg, div.cgsm, div.umsg, div.ugsm {
@@ -315,4 +310,29 @@ span.underline {
 }
 #nick {
 	color: #97CEEC;
+}
+#fingerlink, #close {
+	color: #97CEEC;
+}
+#fingerlink:hover, #close:hover {
+	text-decoration: underline;
+}
+#fingerprints {
+	display: none;
+	min-width: 350px;
+	width: 35%;
+	padding: 30px 10px 5px 10px;
+	background-color: rgba(0, 0, 0, 0.86);
+	color: #FFF;
+	box-shadow: 4px 4px #97CEEC;
+	text-align: center;
+	margin: 11.5% auto 0 auto;
+	min-height: 150px;
+}
+span.blue {
+	color: #97CEEC;
+	margin-right: 20px;
+}
+#close {
+	text-align: center;
 }

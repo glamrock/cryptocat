@@ -3,6 +3,7 @@ var t, num, interval, maximized, sound, errored, reconnect, mysecret, mypublic, 
 t = num = interval = maximized = sound = errored = reconnect = pos = 0;
 var names = new Array();
 var keys = new Array();
+var fingerprints = new Array();
 var nick = $("#nick").html();
 var focus = true;
 var soundEmbed = null;
@@ -163,6 +164,9 @@ function updatekeys() {
 				names[i] = keymatch[0].substring(0, keymatch[0].length - 1);
 				keymatch = data[i].match(/:.+/);
 				keys[i] = decodeURIComponent(keymatch[0].substring(1));
+				var shaObj = new jsSHA(keys[i], "ASCII");
+				fingerprints[i] = shaObj.getHash("SHA-512", "HEX");
+				fingerprints[i] = fingerprints[i].substring(0, 5) + ":" + fingerprints[i].substring(40, 45) + ":" + fingerprints[i].substring(70, 75) + ":" + fingerprints[i].substring(95, 100) + ":" + fingerprints[i].substring(123, 128);
 			}
 		}
 	});
@@ -185,6 +189,8 @@ function updatechat(div){
 			chathtml = $("#chat").html();
 			if ((pos) && (nickset)) {
 				$('#keygen').fadeOut('slow', function() {
+					$("#changenick").fadeOut('fast');
+					$("#nickentry").fadeOut('fast');
 				    $("#front").fadeOut();
 				});
 				nickset = 0;
@@ -334,6 +340,24 @@ $("#sound").click(function(){
 		document.getElementById("input").focus();
 	}
 });
+
+$("#fingerlink").click(function(){
+	var fingerhtml = "Verify the authenticity of chatters using their key fingerprint. <br />(You can verify fingerprints over the phone.)<br /><br />";
+	for (fi=0; fi <= names.length - 1; fi++) {
+		fingerhtml += "<span class=\"blue\">" + names[fi] + "</span> " + fingerprints[fi] + "<br />";
+	}
+	fingerhtml += "<br /><br /><span onclick=\"fingerclose();\" id=\"close\">close</span>"; 
+	$("#fingerprints").html(fingerhtml);
+	$('#front').fadeIn('fast');
+	$('#fingerprints').fadeIn('slow', function() {
+	});
+});
+
+function fingerclose() {
+	$('#fingerprints').fadeOut('slow', function() {
+		$('#front').fadeOut('fast');
+	});
+}
 
 $("#maximize").click(function(){
 	if (maximized) {
