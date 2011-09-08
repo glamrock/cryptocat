@@ -62,7 +62,7 @@ input.create {
 	color: #97CEEC;
 	width: 150px;
 	padding: 3px;
-	font-size: 16px;
+	font-size: 14px;
 	text-align: center;
 }
 #talk {
@@ -261,9 +261,8 @@ td {
 	left: 0;
 }
 #changenick {
-	min-width: 330px;
-	width: 20%;
-	padding: 5px;
+	width: 350px;
+	padding: 5px 10px;
 	background-color: rgba(0, 0, 0, 0.86);
 	color: #FFF;
 	box-shadow: 4px 4px #97CEEC;
@@ -319,15 +318,14 @@ span.underline {
 }
 #fingerprints {
 	display: none;
-	min-width: 350px;
-	width: 35%;
+	width: 350px;
 	padding: 30px 10px 5px 10px;
 	background-color: rgba(0, 0, 0, 0.86);
 	color: #FFF;
 	box-shadow: 4px 4px #97CEEC;
 	text-align: center;
 	margin: 11.5% auto 0 auto;
-	min-height: 150px;
+	min-height: 125px;
 }
 span.blue {
 	color: #97CEEC;
