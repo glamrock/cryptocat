@@ -81,6 +81,7 @@ function processline(chat, flip) {
 			match = chat.match(/\[B-C\](.*)\[E-C\]/);
 			decrypted = cryptico.decrypt(match[0].substring(5, match[0].length - 5), mysecret);
 			if (decrypted.signature != "verified") {
+				thisnick = match.match(/^[a-z]{1,12}/);
 				chat = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">corrupt</span>";
 				corrupt = 1;
 			}
@@ -159,6 +160,11 @@ function updatekeys() {
 		data: "nick=" + $("#nickinput").val() + "&name=" + $("#name").val() + "&public=get",
 		success: function(data) {
 			data = data.split('|');
+			oldnames = names;
+			oldkeys = keys;
+			names = new Array();
+			keys = new Array();
+			fingerprints = new Array();
 			for (i=0; i <= data.length - 1; i++) {
 				keymatch = data[i].match(/^[a-z]{1,12}:/);
 				names[i] = keymatch[0].substring(0, keymatch[0].length - 1);
@@ -166,7 +172,14 @@ function updatekeys() {
 				keys[i] = decodeURIComponent(keymatch[0].substring(1));
 				if (keys[i].length != 100) {
 					fingerprints[i] = "invalid key - this person cannot be trusted.";
-					alert("Warning: " + names[i] + " is using an invalid encryption key. Be careful.");
+					if (names[i] != nick) {
+						alert("Warning: " + names[i] + " is using an invalid key. This person's key is not trusted!");
+					}
+				}
+				var loc = jQuery.inArray(names[i], oldnames);
+				if ((names[i] == oldnames[loc]) && (keys[i] != oldkeys[loc])) {
+					fingerprints[i] = "tampered key - this person cannot be trusted.";
+					alert("Warning: " + names[i] + "'s key has changed! This person's key is not trusted!");
 				}
 				else {
 					var shaObj = new jsSHA(keys[i], "ASCII");
