@@ -300,6 +300,11 @@ span.underline {
 	font-family: "Monaco", monospace;
 	line-height: 1.8em;
 }
+#changenick {
+	width: 300px;
+	padding-top: 25px;
+	min-height: 115px;
+}
 #fingerprints {
 	display: none;
 	font-size: 11px;
@@ -321,4 +326,7 @@ span.blue {
 }
 span.red {
 	color: #F00;
+}
+span.monospace {
+	font-family: "Monaco", monospace;
 }

@@ -107,7 +107,7 @@ function processline(chat, flip) {
 					chat = chat.replace(sanitize, "<a target=\"_blank\" href=\"" + install + "?redirect=" + escape(sanitize) + "\">" + match[mc] + "</a>");
 				}
 			}
-			chat = chat.replace(/\&lt\;3/g, "&#9829;");
+			chat = chat.replace(/\&lt\;3/g, "<span class=\"monospace\">&#9829;</span>");
 			if (match = chat.match(/^[a-z]+:\s\/me\s/)) {
 				match = match[0];
 				thisnick = match.match(/^[a-z]{1,12}/);
