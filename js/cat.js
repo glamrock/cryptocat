@@ -172,12 +172,20 @@ function updatekeys() {
 				keymatch = data[i].match(/:.+/);
 				keys[i] = decodeURIComponent(keymatch[0].substring(1));
 				if (keys[i].length != 100) {
-					fingerprints[i] = "<span class=\"red\">invalid key - do not trust.</span>";
+					var nbsp = "";
+					for (ni=0; ni != 17; ni++) {
+						nbsp += "&nbsp";
+					}
+					fingerprints[i] = nbsp + " <span class=\"red\">invalid key - do not trust.</span>";
 					$("#fingerlink").click();
 				}
 				var loc = jQuery.inArray(names[i], oldnames);
 				if ((names[i] == oldnames[loc]) && (keys[i] != oldkeys[loc])) {
-					fingerprints[i] = "<span class=\"red\">tampered key - do not trust.</span>";
+					var nbsp = "";
+					for (ni=0; ni != 16; ni++) {
+						nbsp += "&nbsp";
+					}
+					fingerprints[i] = nbsp + " <span class=\"red\">tampered key - do not trust.</span>";
 					$("#fingerlink").click();
 				}
 				else {
@@ -191,10 +199,10 @@ function updatekeys() {
 	var fingerhtml = "Verify chatters using their key fingerprint. <br />(You can verify fingerprints over the phone.)<br /><br />";
 	for (fi=0; fi <= names.length - 1; fi++) {
 		var nbsp = "";
-		for (ni=0; ni + names[fi].length != 12; ni++) {
+		for (ni=0; ni + names[fi].length != 13; ni++) {
 			nbsp += "&nbsp";
 		}
-		fingerhtml += "<span class=\"blue\">" + names[fi] + "</span> " + nbsp + fingerprints[fi] + "<br />";
+		fingerhtml += "<span class=\"blue\">" + names[fi] + "</span> " + nbsp + " " + fingerprints[fi] + "<br />";
 	}
 	fingerhtml += "<br /><br /><span onclick=\"fingerclose();\" id=\"close\">close</span>"; 
 	$("#fingerprints").html(fingerhtml);
