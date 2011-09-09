@@ -12,7 +12,7 @@ function scrolldown() {
 	$("#chat").animate({ scrollTop: document.getElementById("chat").scrollHeight-20}, 500 );
 }
 
-function showstamp(nick) {
+function getstamp(nick) {
 	var time = new Date();
 	var h = time.getHours();
 	var m = time.getMinutes();
@@ -114,7 +114,8 @@ function processline(chat, flip) {
 				chat = chat.replace(/^[a-z]+:\s\/me\s/, "<span class=\"nick\">* " + thisnick + " ") + " *</span>";
 			}
 			else if (match = chat.match(/^[a-z]{1,12}/)) {
-				chat = chat.replace(/^[a-z]+:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = showstamp(\'" + match[0] + "\');\" onmouseout=\"this.innerHTML = \'" + match[0] + "\';\">" + match[0] + "</span>");
+				var stamp = getstamp(match[0]);
+				chat = chat.replace(/^[a-z]+:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = \'" + stamp + "\';\" onmouseout=\"this.innerHTML = \'" + match[0] + "\';\">" + match[0] + "</span>");
 			}
 		}
 		else if ((match = chat.match(/^(\&gt\;|\&lt\;) [a-z]{1,12} (has arrived|has left)$/))) {
