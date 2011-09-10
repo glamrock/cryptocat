@@ -190,7 +190,6 @@
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/color.js"></script>
 	<script type="text/javascript" src="js/cryptico.js"></script>
-	<script type="text/javascript" src="js/sha512.js"></script>
 	<script type="text/javascript">function StuffSelect(id) {document.getElementById(id).focus();document.getElementById(id).select();} $(document).ready(function() { $("#name,#nickinput,#key,#input").attr("autocomplete", "off"); });</script>
 </head>
 <?php

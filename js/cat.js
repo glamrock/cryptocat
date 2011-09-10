@@ -189,9 +189,8 @@ function updatekeys() {
 					$("#fingerlink").click();
 				}
 				else {
-					var shaObj = new jsSHA(keys[i], "ASCII");
-					fingerprints[i] = shaObj.getHash("SHA-512", "HEX");
-					fingerprints[i] = fingerprints[i].substring(0, 8).toUpperCase() + ":" + fingerprints[i].substring(40, 48).toUpperCase() + ":" + fingerprints[i].substring(70, 78).toUpperCase() + ":" + fingerprints[i].substring(95, 103).toUpperCase() + ":" + fingerprints[i].substring(120, 128).toUpperCase();
+					fingerprints[i] = SHA256(keys[i]);
+					fingerprints[i] = fingerprints[i].substring(0, 8).toUpperCase() + ":" + fingerprints[i].substring(16, 24).toUpperCase() + ":" + fingerprints[i].substring(32, 40).toUpperCase() + ":" + fingerprints[i].substring(48, 56).toUpperCase() + ":" + fingerprints[i].substring(56, 64).toUpperCase();
 				}
 			}
 		}
