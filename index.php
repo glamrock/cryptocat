@@ -9,8 +9,6 @@
 	$data = '/srv/data/';
 	/* time limit in seconds before deleting chat */
 	$timelimit = 1800;
-	/* interval in milliseconds to check for new messages */
-	$update = 1500;
 	/* set to 0 to disable automatic url linking */
 	$fancyurls = 1;
 	/* maximum users in a chat. not recommended to set above 8 */
@@ -21,6 +19,7 @@
 ?>
 <?php
 	$maxinput = 256;
+	$update = 4000;
 	error_reporting(0);
 	$usednicks = array();
 	$usedsessions = array();
