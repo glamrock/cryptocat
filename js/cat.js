@@ -1,5 +1,5 @@
 Math.seedrandom();
-var t, num, interval, maximized, sound, errored, reconnect, mysecret, mypublic, mtag, nickset;
+var t, num, interval, maximized, sound, errored, reconnect, mysecret, mypublic, mtag, nickset, uchat, processed;
 t = num = interval = maximized = sound = errored = reconnect = pos = 0;
 var names = new Array();
 var keys = new Array();
@@ -7,6 +7,7 @@ var fingerprints = new Array();
 var nick = $("#nick").html();
 var focus = true;
 var soundEmbed = null;
+var worker = new Worker("js/rsagen.js");
 
 function scrolldown() {
 	$("#chat").animate({ scrollTop: document.getElementById("chat").scrollHeight-20}, 500 );
@@ -71,76 +72,38 @@ function scrubtags(str) {
 	return str.replace(/</g,"&lt;").replace(/>/g,"&gt;");
 }
 
-function processline(chat, flip) {
-	var i = 0;
-	var decrypted, corrupt, user;
-	decrypted = corrupt = user = 0;
-	if (chat) {
-		chat = $.trim(chat);
-		if (match = chat.match(/^[a-z]{1,12}:\s\[B-C\](.*)\[E-C\]$/)) {
-			match = chat.match(/\[B-C\](.*)\[E-C\]/);
-			decrypted = cryptico.decrypt(match[0].substring(5, match[0].length - 5), mysecret);
-			if (decrypted.signature != "verified") {
-				thisnick = match.match(/^[a-z]{1,12}/);
-				chat = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">corrupt</span>";
-				corrupt = 1;
-			}
-			else if (decrypted.status == "success") {
-				chat = chat.replace(/\[B-C\](.*)\[E-C\]/, decrypted.plaintext.replace(/(\r\n|\n\r|\r|\n)/gm, ""));
-			}
-			else {
-				chat = "<span class=\"diffkey\">decryption failure</span>";
-				corrupt = 1;
-			}
-		}
-		if ((!flip) || ((decrypted.status == "success") && (decrypted.signature == "verified"))) {
-			chat = scrubtags(chat);
-			if ((match = chat.match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi)) && fancyurls) {
-				for (mc = 0; mc <= match.length - 1; mc++) {
-					var sanitize = match[mc].split("");
-					for (ii = 0; ii <= sanitize.length-1; ii++) {
-						if (!sanitize[ii].match(/\w|\d|\:|\/|\?|\=|\#|\+|\,|\.|\&|\;|\%/)) {
-							sanitize[ii] = encodeURIComponent(sanitize[ii]);
-						}
-					}
-					sanitize = sanitize.join("");
-					chat = chat.replace(sanitize, "<a target=\"_blank\" href=\"" + install + "?redirect=" + escape(sanitize) + "\">" + match[mc] + "</a>");
+function tagify(chat) {
+	chat = scrubtags(chat);
+	if ((match = chat.match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi)) && fancyurls) {
+		for (mc = 0; mc <= match.length - 1; mc++) {
+			var sanitize = match[mc].split("");
+			for (ii = 0; ii <= sanitize.length-1; ii++) {
+				if (!sanitize[ii].match(/\w|\d|\:|\/|\?|\=|\#|\+|\,|\.|\&|\;|\%/)) {
+					sanitize[ii] = encodeURIComponent(sanitize[ii]);
 				}
 			}
-			chat = chat.replace(/\&lt\;3/g, "<span class=\"monospace\">&#9829;</span>");
-			if (match = chat.match(/^[a-z]+:\s\/me\s/)) {
-				match = match[0];
-				thisnick = match.match(/^[a-z]{1,12}/);
-				chat = chat.replace(/^[a-z]+:\s\/me\s/, "<span class=\"nick\">* " + thisnick + " ") + " *</span>";
-			}
-			else if (match = chat.match(/^[a-z]{1,12}/)) {
-				var stamp = getstamp(match[0]);
-				chat = chat.replace(/^[a-z]+:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = \'" + stamp + "\';\" onmouseout=\"this.innerHTML = \'" + match[0] + "\';\">" + match[0] + "</span>");
-			}
+			sanitize = sanitize.join("");
+			chat = chat.replace(sanitize, "<a target=\"_blank\" href=\"" + install + "?redirect=" + escape(sanitize) + "\">" + match[mc] + "</a>");
 		}
-		else if ((match = chat.match(/^(\&gt\;|\&lt\;) [a-z]{1,12} (has arrived|has left)$/))) {
-			chat = "<span class=\"nick\">" + match[0] + "</span>";
-			user = 1;
-			updatekeys();
-			updatechatters();
-		}
-		else if (thisnick = chat.match(/^[a-z]{1,12}/)) {
-			chat = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">corrupt</span>";
-			corrupt = 1;
-		}
-		else {
-			chat = "<span class=\"diffkey\">corrupt</span>"
-			corrupt = 1;
-		}
-		if (user) {
-			tag = "u";
-		}
-		else if (corrupt) {
-			tag = "c";
-		}
-		else {
-			tag = "";
-		}
+	}
+	chat = chat.replace(/\&lt\;3/g, "<span class=\"monospace\">&#9829;</span>");
+	if (match = chat.match(/^[a-z]+:\s\/me\s/)) {
+		match = match[0];
+		thisnick = match.match(/^[a-z]{1,12}/);
+		chat = chat.replace(/^[a-z]+:\s\/me\s/, "<span class=\"nick\">* " + thisnick + " ") + " *</span>";
+	}
+	else if (match = chat.match(/^[a-z]{1,12}/)) {
+		var stamp = getstamp(match[0]);
+		chat = chat.replace(/^[a-z]+:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = \'" + stamp + "\';\" onmouseout=\"this.innerHTML = \'" + match[0] + "\';\">" + match[0] + "</span>");
+	}
+	return chat;
+}
+
+function processline(chat, flip) {
+	tag = "";
+	uchat = "";
+	if (chat) {
+		chat = $.trim(chat);
 		if (mtag) {
 			tag += "gsm";
 			mtag = 0;
@@ -149,9 +112,50 @@ function processline(chat, flip) {
 			tag += "msg";
 			mtag = 1;
 		}
-		chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
+		if (!flip) {
+			chat = tagify(chat);
+			chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
+			return chat;
+		}
+		else if (match = chat.match(/^[a-z]{1,12}:\s\[B-C\](.*)\[E-C\]$/)) {
+			match = chat.match(/\[B-C\](.*)\[E-C\]/);
+			worker.postMessage("!" + match[0].substring(5, match[0].length - 5));
+			worker.onmessage = function(e) {
+				if (e.data == "corrupt") {
+					thisnick = match.match(/^[a-z]{1,12}/);
+					chat = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">corrupt</span>";
+					tag = "c" + tag;
+					uchat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
+				}
+				else {
+					chat = chat.replace(/\[B-C\](.*)\[E-C\]/, e.data.replace(/(\r\n|\n\r|\r|\n)/gm, ""));
+					chat = tagify(chat);
+					uchat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
+				}
+			}
+		}
+		else if ((match = chat.match(/^(\&gt\;|\&lt\;) [a-z]{1,12} (has arrived|has left)$/))) {
+			chat = "<span class=\"nick\">" + match[0] + "</span>";
+			tag = "u" + tag;
+			updatekeys();
+			updatechatters();
+			chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
+			return chat;
+		}
+		else if (thisnick = chat.match(/^[a-z]{1,12}/)) {
+			chat = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">corrupt</span>";
+			tag = "c" + tag;
+			chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
+			return chat;
+		}
+		else {
+			chat = "<span class=\"diffkey\">corrupt</span>"
+			tag = "c" + tag;
+			chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
+			return chat;
+		}
 	}
-	return chat;
+	return "";
 }
 
 function updatekeys() {
@@ -171,7 +175,8 @@ function updatekeys() {
 				names[i] = keymatch[0].substring(0, keymatch[0].length - 1);
 				keymatch = data[i].match(/:.+/);
 				keys[i] = decodeURIComponent(keymatch[0].substring(1));
-				if (keys[i].length != 100) {
+				var loc = jQuery.inArray(names[i], oldnames);
+				if (keys[i].length != 216) {
 					var nbsp = "";
 					for (ni=0; ni != 17; ni++) {
 						nbsp += "&nbsp";
@@ -179,8 +184,7 @@ function updatekeys() {
 					fingerprints[i] = nbsp + " <span class=\"red\">invalid key - do not trust.</span>";
 					$("#fingerlink").click();
 				}
-				var loc = jQuery.inArray(names[i], oldnames);
-				if ((names[i] == oldnames[loc]) && (keys[i] != oldkeys[loc])) {
+				else if ((names[i] == oldnames[loc]) && (keys[i] != oldkeys[loc])) {
 					var nbsp = "";
 					for (ni=0; ni != 16; ni++) {
 						nbsp += "&nbsp";
@@ -207,6 +211,16 @@ function updatekeys() {
 	$("#fingerprints").html(fingerhtml);
 }
 
+function checkU() {
+	chathtml = $("#chat").html();
+	if (uchat != "") {
+		$("#chat").html(chathtml += uchat);
+	}
+	else {
+		$("#chat").html(chathtml += processed);
+	}
+}
+
 function updatechat(div){
 	$(div).load("index.php?chat=" + name + "&pos=" + pos, function() {
 		if ($("#loader").html() == "NOEXIST") {
@@ -221,7 +235,6 @@ function updatechat(div){
 		}
 		else if ($("#loader").html() != "") {
 			pos++;
-			chathtml = $("#chat").html();
 			if ((pos) && (nickset)) {
 				$('#keygen').fadeOut('slow', function() {
 					$("#changenick").fadeOut('fast');
@@ -231,7 +244,8 @@ function updatechat(div){
 				nickset = 0;
 			}
 			if ($("#loader").html() != "n") {
-				$("#chat").html(chathtml += processline($("#loader").html(), 1));
+				processed = processline($("#loader").html(), 1);
+				setTimeout("checkU()", 150);
 			}
 			scrolldown();
 			if (!focus) {
@@ -273,31 +287,29 @@ $("#chatform").submit( function() {
 	var msgc = nick + ": " + msg;
 	$("#input").val("");
 	if (msg != "") {
-		gsm = "";
-		var i = 0;
-		for (i=0; i <= keys.length - 1; i++) {
-			if (names[i] != nick) {
-				gsm += "(" + names[i] + ")" + cryptico.encrypt(msg, keys[i], mysecret).cipher;
-			}
-		}
-		msg = nick + ": " + "[B-C]" + gsm.replace(/(\r\n|\n\r|\r|\n)/gm, "") + "[E-C]";
 		document.getElementById("chat").innerHTML += processline(msgc, 0);
 		scrolldown();
-	}
-	else {
-		msg = "";
-	}
-	$.ajax( { url: "index.php",
-		type: "POST",
-		async: true,
-		data: "input=" + encodeURIComponent(msg) + "&name=" + $("#name").val() + "&talk=send",
-		success: function(data) {
-			document.getElementById("input").focus();
-			$("#talk").val(maxinput);
-		},
-		error: function(data) {
+		gsm = "";
+		var i = 0;
+		worker.postMessage("|" + names + ":" + keys + "*" + nick);
+		worker.onmessage = function(e) {
+			worker.postMessage("?" + msg);
+			worker.onmessage = function(e) {
+				msg = nick + ": " + "[B-C]" + e.data.replace(/(\r\n|\n\r|\r|\n)/gm, "") + "[E-C]";
+				$.ajax( { url: "index.php",
+					type: "POST",
+					async: true,
+					data: "input=" + encodeURIComponent(msg) + "&name=" + $("#name").val() + "&talk=send",
+					success: function(data) {
+						document.getElementById("input").focus();
+						$("#talk").val(maxinput);
+					},
+					error: function(data) {
+					}
+				});
+			}
 		}
-	});
+	}
 	return false;    
 });
 
@@ -309,9 +321,11 @@ $("#nickform").submit( function() {
 	if (!mypublic) {
 		$('#nickentry').fadeOut('slow', function() {
 			$('#keygen').fadeIn('slow', function() {
-				mysecret = cryptico.generateRSAKey(gen(48), 600);
-				mypublic = cryptico.publicKeyString(mysecret);
-				nickajax();
+				worker.postMessage(gen(48));
+				worker.onmessage = function(e) {
+					mypublic = e.data;
+					nickajax();
+				}
 			});
 		});
 	}
@@ -508,6 +522,4 @@ $(document).ajaxError(function(){
 	}
 });
 
-$("#nickentry").fadeIn();
-$("#front").fadeIn();
-StuffSelect("nickinput");
+$("#nickentry").fadeIn(); $("#front").fadeIn(); StuffSelect("nickinput");
