@@ -102,6 +102,7 @@ function tagify(chat) {
 function processline(chat, flip) {
 	tag = "";
 	uchat = "";
+	chathtml = $("#chat").html();
 	if (chat) {
 		chat = $.trim(chat);
 		if (mtag) {
@@ -126,11 +127,13 @@ function processline(chat, flip) {
 					chat = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">corrupt</span>";
 					tag = "c" + tag;
 					uchat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
+					$("#chat").html(chathtml += uchat);
 				}
 				else {
 					chat = chat.replace(/\[B-C\](.*)\[E-C\]/, e.data.replace(/(\r\n|\n\r|\r|\n)/gm, ""));
 					chat = tagify(chat);
 					uchat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
+					$("#chat").html(chathtml += uchat);
 				}
 			}
 		}
@@ -140,19 +143,19 @@ function processline(chat, flip) {
 			updatekeys();
 			updatechatters();
 			chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
-			return chat;
+			$("#chat").html(chathtml += chat);
 		}
 		else if (thisnick = chat.match(/^[a-z]{1,12}/)) {
 			chat = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">corrupt</span>";
 			tag = "c" + tag;
 			chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
-			return chat;
+			$("#chat").html(chathtml += chat);
 		}
 		else {
 			chat = "<span class=\"diffkey\">corrupt</span>"
 			tag = "c" + tag;
 			chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
-			return chat;
+			$("#chat").html(chathtml += chat);
 		}
 	}
 	return "";
@@ -176,7 +179,7 @@ function updatekeys() {
 				keymatch = data[i].match(/:.+/);
 				keys[i] = decodeURIComponent(keymatch[0].substring(1));
 				var loc = jQuery.inArray(names[i], oldnames);
-				if (keys[i].length != 216) {
+				if (keys[i].length != 172) {
 					var nbsp = "";
 					for (ni=0; ni != 17; ni++) {
 						nbsp += "&nbsp";
@@ -211,16 +214,6 @@ function updatekeys() {
 	$("#fingerprints").html(fingerhtml);
 }
 
-function checkU() {
-	chathtml = $("#chat").html();
-	if (uchat != "") {
-		$("#chat").html(chathtml += uchat);
-	}
-	else {
-		$("#chat").html(chathtml += processed);
-	}
-}
-
 function updatechat(div){
 	$(div).load("index.php?chat=" + name + "&pos=" + pos, function() {
 		if ($("#loader").html() == "NOEXIST") {
@@ -244,8 +237,7 @@ function updatechat(div){
 				nickset = 0;
 			}
 			if ($("#loader").html() != "n") {
-				processed = processline($("#loader").html(), 1);
-				setTimeout("checkU()", 150);
+				processline($("#loader").html(), 1);
 			}
 			scrolldown();
 			if (!focus) {
