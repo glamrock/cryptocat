@@ -1,5 +1,5 @@
 Math.seedrandom();
-var t, num, interval, maximized, sound, errored, reconnect, mysecret, mypublic, mtag, nickset, uchat, processed;
+var t, num, interval, maximized, sound, errored, reconnect, mysecret, mypublic, mtag, nickset;
 t = num = interval = maximized = sound = errored = reconnect = pos = 0;
 var names = new Array();
 var keys = new Array();
@@ -101,7 +101,6 @@ function tagify(chat) {
 
 function processline(chat, flip) {
 	tag = "";
-	uchat = "";
 	chathtml = $("#chat").html();
 	if (chat) {
 		chat = $.trim(chat);
@@ -126,14 +125,14 @@ function processline(chat, flip) {
 					thisnick = match.match(/^[a-z]{1,12}/);
 					chat = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">corrupt</span>";
 					tag = "c" + tag;
-					uchat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
-					$("#chat").html(chathtml += uchat);
+					chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
+					$("#chat").html(chathtml + chat);
 				}
 				else {
 					chat = chat.replace(/\[B-C\](.*)\[E-C\]/, e.data.replace(/(\r\n|\n\r|\r|\n)/gm, ""));
 					chat = tagify(chat);
-					uchat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
-					$("#chat").html(chathtml += uchat);
+					chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
+					$("#chat").html(chathtml + chat);
 				}
 			}
 		}
@@ -143,22 +142,22 @@ function processline(chat, flip) {
 			updatekeys();
 			updatechatters();
 			chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
-			$("#chat").html(chathtml += chat);
+			$("#chat").html(chathtml + chat);
 		}
 		else if (thisnick = chat.match(/^[a-z]{1,12}/)) {
 			chat = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">corrupt</span>";
 			tag = "c" + tag;
 			chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
-			$("#chat").html(chathtml += chat);
+			$("#chat").html(chathtml + chat);
 		}
 		else {
 			chat = "<span class=\"diffkey\">corrupt</span>"
 			tag = "c" + tag;
 			chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
-			$("#chat").html(chathtml += chat);
+			$("#chat").html(chathtml + chat);
 		}
 	}
-	return "";
+	return chat;
 }
 
 function updatekeys() {

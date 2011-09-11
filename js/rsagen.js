@@ -7,12 +7,10 @@ self.onmessage = function(e) {
 		decrypted = cryptico.decrypt(e.data.substring(1), mysecret);
 		if (decrypted.signature != "verified") {
 			self.postMessage("corrupt");
-			
 		}
 		else if (decrypted.status == "success") {
 			self.postMessage(decrypted.plaintext);
 		}
-		
 	}
 	else if (e.data.substring(0, 1) == "|") {
 		names = keys = nick = gsm = "";
