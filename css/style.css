@@ -9,7 +9,6 @@ body {
 	font-family: Verdana, Arial, Helvetica;
 	font-size: 11px;
 	color: #FFF;
-	padding: 0 12px 5px 12px;
 	background-image: url("../img/bg.png");
 	line-height: 1.37em;
 }
@@ -62,7 +61,7 @@ input.create {
 	color: #97CEEC;
 	width: 150px;
 	padding: 3px;
-	font-size: 14px;
+	font-size: 12px;
 	text-align: center;
 }
 #talk {
@@ -290,27 +289,25 @@ span.underline {
 #changenick, #fingerprints {
 	width: 420px;
 	padding: 45px 10px 10px 10px;
-	background-color: rgba(0, 0, 0, 0.86);
+	background-color: rgba(0, 0, 0, 0.96);
 	color: #FFF;
 	box-shadow: 4px 4px #97CEEC;
 	text-align: center;
 	margin: 11.5% auto 0 auto;
 	min-height: 135px;
-	font-size: 12px;
+	font-size: 9px;
 	font-family: "Monaco", monospace;
 	line-height: 1.8em;
 }
 #changenick {
 	width: 300px;
-	padding-top: 25px;
 	min-height: 115px;
 }
 #fingerprints {
 	display: none;
-	font-size: 11px;
 }
 #keygen {
-	margin-top: 28px;
+	margin-top: 10px;
 }
 #keygen, #nickentry {
 	display: none;
