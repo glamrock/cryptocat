@@ -32,7 +32,7 @@ self.onmessage = function(e) {
 		self.postMessage(gsm);
 	}
 	else {
-		mysecret = cryptico.generateRSAKey(e.data, 1024);
+		mysecret = cryptico.generateRSAKey(e.data, 1048);
 		mypublic = cryptico.publicKeyString(mysecret);
 		self.postMessage(mypublic);
 	}

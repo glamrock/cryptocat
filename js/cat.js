@@ -178,7 +178,7 @@ function updatekeys() {
 				keymatch = data[i].match(/:.+/);
 				keys[i] = decodeURIComponent(keymatch[0].substring(1));
 				var loc = jQuery.inArray(names[i], oldnames);
-				if (keys[i].length != 172) {
+				if (keys[i].length != 176) {
 					var nbsp = "";
 					for (ni=0; ni != 17; ni++) {
 						nbsp += "&nbsp";
@@ -312,9 +312,11 @@ $("#nickform").submit( function() {
 	if (!mypublic) {
 		$('#nickentry').fadeOut('slow', function() {
 			$('#keygen').fadeIn('slow', function() {
+				$('#keytext').html("Generating keys");
 				worker.postMessage(gen(48));
 				worker.onmessage = function(e) {
 					mypublic = e.data;
+					$('#keytext').html("Communicating");
 					nickajax();
 				}
 			});
@@ -337,6 +339,7 @@ function nickajax() {
 					color: "#97CEEC"
 				}, 200 );
 				nickset = 1;
+				updatechat("#loader");
 				$("#nick").html($("#nickinput").val());
 				nick = $("#nick").html();
 				document.getElementById("input").focus();

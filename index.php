@@ -294,7 +294,7 @@ else {
 				<div id="changenick">
 					<div id="keygen">
 						<img src="img/keygen.gif" alt="" /><br />
-						Generating keys
+						<span id="keytext"></span>
 					</div>
 					<div id="nickentry">
 						<p>Enter nickname</p>
