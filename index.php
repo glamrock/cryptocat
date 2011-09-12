@@ -79,14 +79,12 @@
 						$curnick = substr($curnick[0], 0, -1);
 						preg_match_all('/\([a-z]{1,12}\)[^\(|^\[]+/', $chat[$_GET['pos']], $match);
 						$ki = 0;
+						$chat[$_GET['pos']] = preg_replace('/\[B-C\](.*)\[E-C\]/', '[B-C][E-C]', $chat[$_GET['pos']]);
 						for ($ki=0; $ki <= count($match[0]); $ki++) {
 							if (substr($match[0][$ki], 1, strlen($nick)) == $nick) {
 								$match = substr($match[0][$ki], strlen($nick) + 2);
-								$ki = 9001;
 								$chat[$_GET['pos']] = preg_replace('/\[B-C\](.*)\[E-C\]/', '[B-C]'.$match.'[E-C]', $chat[$_GET['pos']]);
-							}
-							else {
-								$chat[$_GET['pos']] = preg_replace('/\[B-C\](.*)\[E-C\]/', '[B-C][E-C]', $chat[$_GET['pos']]);
+								$ki = 9001;
 							}
 						}
 					}

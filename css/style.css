@@ -293,21 +293,24 @@ span.underline {
 	color: #FFF;
 	box-shadow: 4px 4px #97CEEC;
 	text-align: center;
-	margin: 11.5% auto 0 auto;
+	margin: 16.5% auto 0 auto;
 	min-height: 135px;
-	font-size: 9px;
+	font-size: 11px;
 	font-family: "Monaco", monospace;
 	line-height: 1.8em;
 }
 #changenick {
-	width: 300px;
-	min-height: 115px;
+	width: 250px;
+	min-height: 85px;
+	padding-top: 10px;
 }
 #fingerprints {
+	margin-top: 12.5%;
 	display: none;
 }
 #keygen {
 	margin-top: 10px;
+	font-size: 9px;
 }
 #keygen, #nickentry {
 	display: none;
