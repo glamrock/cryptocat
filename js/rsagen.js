@@ -24,7 +24,7 @@ self.onmessage = function(e) {
 	}
 	else if (e.data.substring(0, 1) == "?") {
 		var i = 0;
-		for (i=0; i <= names.length; i++) {
+		for (i=0; i <= 8; i++) {
 			if ((names[i]) && (names[i] != nick)) {
 				gsm += "(" + names[i] + ")" + cryptico.encrypt(e.data.substring(1), keys[i], mysecret).cipher;
 			}

@@ -129,7 +129,7 @@ function processline(chat, flip) {
 					$("#chat").html(chathtml + chat);
 				}
 				else {
-					chat = chat.replace(/\[B-C\](.*)\[E-C\]/, e.data.replace(/(\r\n|\n\r|\r|\n)/gm, ""));
+					chat = chat.replace(/\[B-C\](.*)\[E-C\]/, unescape(e.data).replace(/(\r\n|\n\r|\r|\n)/gm, ""));
 					chat = tagify(chat);
 					chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
 					$("#chat").html(chathtml + chat);
@@ -157,7 +157,7 @@ function processline(chat, flip) {
 			$("#chat").html(chathtml + chat);
 		}
 	}
-	return chat;
+	return "";
 }
 
 function updatekeys() {
@@ -284,7 +284,7 @@ $("#chatform").submit( function() {
 		var i = 0;
 		worker.postMessage("|" + names + ":" + keys + "*" + nick);
 		worker.onmessage = function(e) {
-			worker.postMessage("?" + msg);
+			worker.postMessage("?" + escape(msg));
 			worker.onmessage = function(e) {
 				msg = nick + ": " + "[B-C]" + e.data.replace(/(\r\n|\n\r|\r|\n)/gm, "") + "[E-C]";
 				$.ajax( { url: "index.php",
