@@ -1,8 +1,8 @@
 ## Cryptocat
 ### http://crypto.cat
-# Beta software - code review highly appreciated.
+#### Beta software - code review highly appreciated.
 
-# Cryptocat is a browser-based chatting webapp with encryption features.
+### Cryptocat is a browser-based chatting webapp with encryption features.
 
 ## Cool features
 * A client-side, multithreaded, OpenSSL cross-compatible RSA public key cryptography engine allows for instant 1048-bit encrypted chat.
