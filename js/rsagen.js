@@ -1,16 +1,20 @@
 importScripts("cryptico.js");
-var names, keys, nick, mysecret, mypublic, gsm;
-var gsm;
+var names, keys, nick, mysecret, mypublic, gsm, signkey;
 
 self.onmessage = function(e) {
 	if (e.data.substring(0, 1) == "!") {
 		decrypted = cryptico.decrypt(e.data.substring(1), mysecret);
+		signkey = decrypted.publicKeyString;
 		if (decrypted.signature != "verified") {
 			self.postMessage("corrupt");
 		}
 		else if (decrypted.status == "success") {
 			self.postMessage(decrypted.plaintext);
 		}
+	}
+	else if ((signkey) && (e.data == "@")) {
+		self.postMessage(signkey);
+		signkey = 0;
 	}
 	else if (e.data.substring(0, 1) == "|") {
 		names = keys = nick = gsm = "";
