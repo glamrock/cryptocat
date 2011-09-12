@@ -134,7 +134,7 @@ function processline(chat, flip) {
 						$("#chat").html(chathtml + chat);
 					}
 					else {
-						chat = chat.replace(/\[B-C\](.*)\[E-C\]/, unescape(cipher).replace(/(\r\n|\n\r|\r|\n)/gm, ""));
+						chat = chat.replace(/\[B-C\](.*)\[E-C\]/, unescape(cipher));
 						chat = tagify(chat);
 						chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
 						$("#chat").html(chathtml + chat);
@@ -288,7 +288,9 @@ $("#chatform").submit( function() {
 		scrolldown();
 		gsm = "";
 		var i = 0;
-		worker.postMessage("|" + names + ":" + keys + "*" + nick);
+		if (pos != 0) {
+			worker.postMessage("|" + names + ":" + keys + "*" + nick);
+		}
 		worker.onmessage = function(e) {
 			worker.postMessage("?" + escape(msg));
 			worker.onmessage = function(e) {
