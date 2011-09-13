@@ -120,24 +120,26 @@ function processline(chat, flip) {
 		else if (match = chat.match(/^[a-z]{1,12}:\s\[B-C\](.*)\[E-C\]$/)) {
 			thisnick = $.trim(match[0].match(/^[a-z]{1,12}/));
 			match = chat.match(/\[B-C\](.*)\[E-C\]/);
-			worker.postMessage("!" + match[0].substring(5, match[0].length - 5));
-			worker.onmessage = function(e) {
-				var cipher = e.data;
-				worker.postMessage("@");
+			if (pos > 0) {
+				worker.postMessage("!" + match[0].substring(5, match[0].length - 5));
 				worker.onmessage = function(e) {
-					var signkey = e.data;
-					var loc = jQuery.inArray(thisnick, names);
-					if ((cipher == "corrupt") || (signkey != keys[loc])) {
-						chat = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">error</span>";
-						tag = "c" + tag;
-						chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
-						$("#chat").html(chathtml + chat);
-					}
-					else {
-						chat = chat.replace(/\[B-C\](.*)\[E-C\]/, unescape(cipher));
-						chat = tagify(chat);
-						chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
-						$("#chat").html(chathtml + chat);
+					var cipher = e.data;
+					worker.postMessage("@");
+					worker.onmessage = function(e) {
+						var signkey = e.data;
+						var loc = jQuery.inArray(thisnick, names);
+						if ((cipher == "corrupt") || (signkey != keys[loc])) {
+							chat = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">error</span>";
+							tag = "c" + tag;
+							chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
+							$("#chat").html(chathtml + chat);
+						}
+						else {
+							chat = chat.replace(/\[B-C\](.*)\[E-C\]/, unescape(cipher));
+							chat = tagify(chat);
+							chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
+							$("#chat").html(chathtml + chat);
+						}
 					}
 				}
 			}
@@ -255,7 +257,7 @@ function updatechat(div){
 				});
 				nickset = 0;
 			}
-			if ($("#loader").html() != "n") {
+			if ($("#loader").html() != "*") {
 				processline($("#loader").html(), 1);
 			}
 			scrolldown();
@@ -283,24 +285,24 @@ $("#chatform").submit( function() {
 		scrolldown();
 		gsm = "";
 		var i = 0;
-		if (pos != 0) {
+		if (pos > 0) {
 			worker.postMessage("|" + names + ":" + keys + "*" + nick);
-		}
-		worker.onmessage = function(e) {
-			worker.postMessage("?" + escape(msg));
 			worker.onmessage = function(e) {
-				msg = nick + ": " + "[B-C]" + e.data.replace(/(\r\n|\n\r|\r|\n)/gm, "") + "[E-C]";
-				$.ajax( { url: "index.php",
-					type: "POST",
-					async: true,
-					data: "input=" + encodeURIComponent(msg) + "&name=" + $("#name").val() + "&talk=send",
-					success: function(data) {
-						document.getElementById("input").focus();
-						$("#talk").val(maxinput);
-					},
-					error: function(data) {
-					}
-				});
+				worker.postMessage("?" + escape(msg));
+				worker.onmessage = function(e) {
+					msg = nick + ": " + "[B-C]" + e.data.replace(/(\r\n|\n\r|\r|\n)/gm, "") + "[E-C]";
+					$.ajax( { url: "index.php",
+						type: "POST",
+						async: true,
+						data: "input=" + encodeURIComponent(msg) + "&name=" + $("#name").val() + "&talk=send",
+						success: function(data) {
+							document.getElementById("input").focus();
+							$("#talk").val(maxinput);
+						},
+						error: function(data) {
+						}
+					});
+				}
 			}
 		}
 	}

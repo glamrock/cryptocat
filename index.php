@@ -92,7 +92,7 @@
 						print(htmlspecialchars($chat[$_GET['pos']]));
 					}
 					else {
-						print("n");
+						print("*");
 					}
 				}
 			}
