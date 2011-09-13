@@ -115,17 +115,6 @@
 		}
 		exit;
 	}
-	else if (isset($_GET['chatters']) && $_SERVER['HTTP_REFERER'] == $install."?c=".$_GET['chatters'] && preg_match('/^([a-z]|_|[0-9])+$/', $_GET['chatters'])) {
-		session_name($_GET['chatters']);
-		session_start();
-		$chat = file($data.$_GET['chatters']);
-		getpeople($chat);
-		$total = count($usednicks) + 1;
-		if (isset($_SESSION['id']) && $mysession == $_SESSION['id'] && !is_null($_SESSION['id'])) {
-			print('<span class="chatters">'.$total.'</span> '.htmlspecialchars($nick.' '.implode(' ', $usednicks)));
-		}
-		exit;
-	}
 	else if (isset($_POST['nick']) && preg_match('/^([a-z])+$/', $_POST['nick']) && strlen($_POST['nick']) <= 12 && isset($_POST['name']) && preg_match('/^([a-z]|_|[0-9])+$/', $_POST['name']) && isset($_POST['public'])) {
 		session_name($_POST['name']);
 		session_start();

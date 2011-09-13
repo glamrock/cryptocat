@@ -10,7 +10,7 @@ var soundEmbed = null;
 var worker = new Worker("js/rsagen.js");
 
 function scrolldown() {
-	$("#chat").animate({ scrollTop: document.getElementById("chat").scrollHeight-20}, 500 );
+	$("#chat").animate({ scrollTop: document.getElementById("chat").scrollHeight-20}, 820 );
 }
 
 function getstamp(nick) {
@@ -146,7 +146,6 @@ function processline(chat, flip) {
 			chat = "<span class=\"nick\">" + match[0] + "</span>";
 			tag = "u" + tag;
 			updatekeys();
-			updatechatters();
 			chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
 			$("#chat").html(chathtml + chat);
 		}
@@ -207,6 +206,21 @@ function updatekeys() {
 			}
 		}
 	});
+	error = $("#chatters").html();
+	$("#chatters").html("<span class=\"chatters\">" + names.length + "</span> " + names.join(" "));
+	if ($("#chatters").html() != error) {
+		$("#chatters").animate({
+			backgroundColor: "#97CEEC",
+			"font-weight": "normal"
+		}, 500 );
+		$("#chat").animate({
+			borderTopColor: "#97CEEC",
+			borderRightColor: "#97CEEC",
+			borderBottomColor: "#97CEEC",
+			borderLeftColor: "#97CEEC"
+		}, 500 );
+		errored = 0;
+	}
 	var fingerhtml = "Verify chatters using their key fingerprint. <br />(You can verify fingerprints over the phone.)<br /><br />";
 	for (fi=0; fi <= names.length - 1; fi++) {
 		var nbsp = "";
@@ -254,26 +268,7 @@ function updatechat(div){
 			}
 		}
 		else if (errored && reconnect) {
-			updatechatters();
-		}
-	});
-}
-
-function updatechatters() {
-	error = $("#chatters").html();
-	$("#chatters").load("index.php?chatters=" + name, function() {
-		if ($("#chatters").html() != error) {
-			$("#chatters").animate({
-				backgroundColor: "#97CEEC",
-				"font-weight": "normal"
-			}, 500 );
-			$("#chat").animate({
-				borderTopColor: "#97CEEC",
-				borderRightColor: "#97CEEC",
-				borderBottomColor: "#97CEEC",
-				borderLeftColor: "#97CEEC"
-			}, 500 );
-			errored = 0;
+			updatekeys();
 		}
 	});
 }
@@ -494,7 +489,7 @@ function errordisplay(error) {
 		borderLeftColor: "#DF93D6"
 	}, 500 );
 	$("#chatters").html("<span class=\"chatters\">x</span>&nbsp " + error);
-	errored++;
+	errored = 1;
 }
 
 window.onfocus = function() {
