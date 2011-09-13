@@ -287,14 +287,14 @@ span.underline {
 	text-decoration: underline;
 }
 #changenick, #fingerprints {
-	width: 420px;
+	width: 430px;
 	padding: 45px 10px 10px 10px;
 	background-color: rgba(0, 0, 0, 0.96);
 	color: #FFF;
 	box-shadow: 4px 4px #97CEEC;
 	text-align: center;
-	margin: 16.5% auto 0 auto;
-	min-height: 135px;
+	margin: 200px auto 0 auto;
+	min-height: 145px;
 	font-size: 11px;
 	font-family: "Monaco", monospace;
 	line-height: 1.8em;
@@ -305,7 +305,6 @@ span.underline {
 	padding-top: 10px;
 }
 #fingerprints {
-	margin-top: 12.5%;
 	display: none;
 }
 #keygen {
