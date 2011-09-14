@@ -19,7 +19,7 @@
 ?>
 <?php
 	$maxinput = 256;
-	$update = 3000;
+	$update = 2750;
 	error_reporting(0);
 	$usednicks = array();
 	$usedsessions = array();

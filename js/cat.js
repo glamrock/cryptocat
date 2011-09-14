@@ -1,5 +1,5 @@
 Math.seedrandom();
-var t, num, interval, maximized, sound, errored, reconnect, mysecret, mypublic, mtag, nickset;
+var t, num, interval, maximized, sound, errored, reconnect, mysecret, mypublic, mtag, nickset, error;
 t = num = interval = maximized = sound = errored = reconnect = pos = 0;
 var names = new Array();
 var keys = new Array();
@@ -184,6 +184,7 @@ function updatekeys() {
 				names[i] = keymatch[0].substring(0, keymatch[0].length - 1);
 				keymatch = data[i].match(/:.+/);
 				keys[i] = decodeURIComponent(keymatch[0].substring(1));
+				$("#chatters").html('<span class="chatters">' + names.length + '</span> ' + names.join(' '));
 				var loc = jQuery.inArray(names[i], oldnames);
 				if (keys[i].length != 176) {
 					var nbsp = "";
@@ -208,21 +209,6 @@ function updatekeys() {
 			}
 		}
 	});
-	error = $("#chatters").html();
-	$("#chatters").html("<span class=\"chatters\">" + names.length + "</span> " + names.join(" "));
-	if ($("#chatters").html() != error) {
-		$("#chatters").animate({
-			backgroundColor: "#97CEEC",
-			"font-weight": "normal"
-		}, 500 );
-		$("#chat").animate({
-			borderTopColor: "#97CEEC",
-			borderRightColor: "#97CEEC",
-			borderBottomColor: "#97CEEC",
-			borderLeftColor: "#97CEEC"
-		}, 500 );
-		errored = 0;
-	}
 	var fingerhtml = "Verify chatters using their key fingerprint. <br />(You can verify fingerprints over the phone.)<br /><br />";
 	for (fi=0; fi <= names.length - 1; fi++) {
 		var nbsp = "";
@@ -269,10 +255,23 @@ function updatechat(div){
 				}
 			}
 		}
-		else if (errored && reconnect) {
-			updatekeys();
-		}
 	});
+	if (($("#chatters").html() != error) && (reconnect)) {
+		$("#chatters").animate({
+			backgroundColor: "#97CEEC",
+		}, 500 );
+		$("#chat").animate({
+			borderTopColor: "#97CEEC",
+			borderRightColor: "#97CEEC",
+			borderBottomColor: "#97CEEC",
+			borderLeftColor: "#97CEEC"
+		}, 500 );
+		errored = 0;
+		reconnect = 0;
+	}
+	else if (reconnect) {
+		updatekeys();
+	}
 }
 
 $("#chatform").submit( function() {
@@ -433,6 +432,7 @@ $("#maximize").click(function(){
 			width: "585px",
 			height: "295px"
 		}, 500, function() {
+			scrolldown();
 		});
 		$("#maximize").attr("src", "img/maximize.png");
 		$("#maximize").attr("title", "expand");
@@ -479,10 +479,9 @@ $("#maximize").click(function(){
 	}
 });
 
-function errordisplay(error) {
+function errordisplay(e) {
 	$("#chatters").animate({
 		backgroundColor: "#DF93D6",
-		"font-weight": "bold"
 	}, 500 );
 	$("#chat").animate({
 		borderTopColor: "#DF93D6",
@@ -490,7 +489,8 @@ function errordisplay(error) {
 		borderBottomColor: "#DF93D6",
 		borderLeftColor: "#DF93D6"
 	}, 500 );
-	$("#chatters").html("<span class=\"chatters\">x</span>&nbsp " + error);
+	$("#chatters").html("<span class=\"chatters\">x</span>&nbsp " + e);
+	error = $("#chatters").html();
 	errored = 1;
 }
 
