@@ -1,10 +1,23 @@
+var understood;
 $("#welcome").submit( function() {
 	$("#name").val($("#name").val().toLowerCase());
-	if (!$("#name").val().match(/^([a-z]|_|[0-9])+$/)) {
+	if (understood) {
+		return true;
+	}
+	else if (!$("#name").val().match(/^([a-z]|_|[0-9])+$/)) {
 		$("#name").val("letters and numbers only");
 		StuffSelect("name");
 		return false;
 	}
+	else {
+		$("#front").fadeIn();
+		return false;
+	}
+});
+
+$("#understand").click(function(){
+	understood = 1;
+	$("#welcome").submit();
 });
 
 var td1 = $("#td1").html();
@@ -44,3 +57,4 @@ function translate(language) {
 		$("#create").val(create);
 	}
 }
+

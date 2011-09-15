@@ -197,6 +197,12 @@ else {
 			print('<div id="main">
 				<img src="img/cryptocat.png" alt="cryptocat" class="cryptocat" />
 				<form action="'.$install.'" method="get" class="create" id="welcome">
+					<div id="front">
+						<div id="note">
+						<strong>Important note:</strong> Cryptocat is a new technology that relies on experimental techniques that need years of auditing before they can be declared completely reliable by cryptography academics. If you are trying to avoid surveillance by some intelligence agency or world government, consider decade-proof alternatives such as PGP.
+						<br /><br /><a id="understand" href="#">I understand. Let me chat!</a>
+						</div>
+					</div>
 					<div>
 						<input type="text" class="name" name="c" id="name" onclick="StuffSelect(\'name\');" value="'.$name.'" maxlength="32" />
 						<input type="submit" class="create" value="enter" id="create" />

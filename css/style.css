@@ -286,7 +286,7 @@ div.redirect p {
 span.underline {
 	text-decoration: underline;
 }
-#changenick, #fingerprints {
+#changenick, #fingerprints, #note {
 	width: 430px;
 	padding: 45px 10px 10px 10px;
 	background-color: rgba(0, 0, 0, 0.96);
@@ -306,6 +306,10 @@ span.underline {
 }
 #fingerprints {
 	display: none;
+}
+#note {
+	padding-top: 30px;
+	margin-top: 165px;
 }
 #keygen {
 	margin-top: 10px;

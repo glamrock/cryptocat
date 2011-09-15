@@ -122,22 +122,24 @@ function processline(chat, flip) {
 			match = chat.match(/\[B-C\](.*)\[E-C\]/);
 			worker.postMessage("!" + match[0].substring(5, match[0].length - 5));
 			worker.onmessage = function(e) {
-				var cipher = e.data.substring(5);
-				worker.postMessage("@");
-				worker.onmessage = function(e) {
-					var signkey = e.data;
-					var loc = jQuery.inArray(thisnick, names);
-					if ((cipher == "corrupt") || (signkey != keys[loc])) {
-						chat = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">error</span>";
-						tag = "c" + tag;
-						chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
-						$("#chat").html(chathtml + chat);
-					}
-					else {
-						chat = chat.replace(/\[B-C\](.*)\[E-C\]/, unescape(cipher));
-						chat = tagify(chat);
-						chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
-						$("#chat").html(chathtml + chat);
+				if (e.data.match(/^\:msg\:/)) {
+					var cipher = e.data.substring(5);
+					worker.postMessage("@");
+					worker.onmessage = function(e) {
+						var signkey = e.data;
+						var loc = jQuery.inArray(thisnick, names);
+						if ((cipher == "corrupt") || (signkey != keys[loc])) {
+							chat = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">error</span>";
+							tag = "c" + tag;
+							chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
+							$("#chat").html(chathtml + chat);
+						}
+						else {
+							chat = chat.replace(/\[B-C\](.*)\[E-C\]/, unescape(cipher));
+							chat = tagify(chat);
+							chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
+							$("#chat").html(chathtml + chat);
+						}
 					}
 				}
 			}
