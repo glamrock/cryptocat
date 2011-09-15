@@ -52,7 +52,7 @@ function soundPlay(which) {
 
 function gen(size) {
 	var str = "";
-	var charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~`!@#$%^&*()-_=+{}[]|;:<,>.?/";
+	var charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~`#$%^&*()-_=+{}[];:<,>./";
 	for (i=0; i < size; i++) {
         str += charset.charAt(Math.floor(Math.random() * charset.length));
 	}
@@ -120,26 +120,24 @@ function processline(chat, flip) {
 		else if (match = chat.match(/^[a-z]{1,12}:\s\[B-C\](.*)\[E-C\]$/)) {
 			thisnick = $.trim(match[0].match(/^[a-z]{1,12}/));
 			match = chat.match(/\[B-C\](.*)\[E-C\]/);
-			if (pos > 0) {
-				worker.postMessage("!" + match[0].substring(5, match[0].length - 5));
+			worker.postMessage("!" + match[0].substring(5, match[0].length - 5));
+			worker.onmessage = function(e) {
+				var cipher = e.data;
+				worker.postMessage("@");
 				worker.onmessage = function(e) {
-					var cipher = e.data;
-					worker.postMessage("@");
-					worker.onmessage = function(e) {
-						var signkey = e.data;
-						var loc = jQuery.inArray(thisnick, names);
-						if ((cipher == "corrupt") || (signkey != keys[loc])) {
-							chat = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">error</span>";
-							tag = "c" + tag;
-							chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
-							$("#chat").html(chathtml + chat);
-						}
-						else {
-							chat = chat.replace(/\[B-C\](.*)\[E-C\]/, unescape(cipher));
-							chat = tagify(chat);
-							chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
-							$("#chat").html(chathtml + chat);
-						}
+					var signkey = e.data;
+					var loc = jQuery.inArray(thisnick, names);
+					if ((cipher == "corrupt") || (signkey != keys[loc])) {
+						chat = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">error</span>";
+						tag = "c" + tag;
+						chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
+						$("#chat").html(chathtml + chat);
+					}
+					else {
+						chat = chat.replace(/\[B-C\](.*)\[E-C\]/, unescape(cipher));
+						chat = tagify(chat);
+						chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
+						$("#chat").html(chathtml + chat);
 					}
 				}
 			}
