@@ -122,7 +122,7 @@ function processline(chat, flip) {
 			match = chat.match(/\[B-C\](.*)\[E-C\]/);
 			worker.postMessage("!" + match[0].substring(5, match[0].length - 5));
 			worker.onmessage = function(e) {
-				var cipher = e.data;
+				var cipher = e.data.substring(5);
 				worker.postMessage("@");
 				worker.onmessage = function(e) {
 					var signkey = e.data;
@@ -243,13 +243,13 @@ function updatechat(div){
 			}
 			if ($("#loader").html() != "*") {
 				processline($("#loader").html(), 1);
-			}
-			scrolldown();
-			if (!focus) {
-				num++;
-				document.title = "[" + num + "] cryptocat";
-				if (sound) {
-					soundPlay("snd/msg.ogg");
+				scrolldown();
+				if (!focus) {
+					num++;
+					document.title = "[" + num + "] cryptocat";
+					if (sound) {
+						soundPlay("snd/msg.ogg");
+					}
 				}
 			}
 		}

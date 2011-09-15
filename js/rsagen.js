@@ -9,7 +9,7 @@ self.onmessage = function(e) {
 			self.postMessage("corrupt");
 		}
 		else if (decrypted.status == "success") {
-			self.postMessage(decrypted.plaintext);
+			self.postMessage(":msg:" + decrypted.plaintext);
 		}
 	}
 	else if ((signkey) && (e.data == "@")) {
