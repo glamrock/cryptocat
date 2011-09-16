@@ -199,7 +199,7 @@ else {
 				<form action="'.$install.'" method="get" class="create" id="welcome">
 					<div id="front">
 						<div id="note">
-						<strong>Important note:</strong> Cryptocat is a new technology that relies on experimental techniques that need years of auditing before they can be declared completely reliable by cryptography academics. If you are trying to avoid surveillance by some intelligence agency or world government, consider decade-proof alternatives such as PGP.
+						<span id="notetext"><strong>Important note:</strong> Cryptocat is a new technology that relies on experimental techniques that need years of auditing before they can be declared completely reliable by cryptography academics. If you are trying to avoid surveillance by some intelligence agency or world government, consider decade-proof alternatives such as PGP.</span>
 						<br /><br /><a id="understand" href="#">I understand. Let me chat!</a>
 						</div>
 					</div>
