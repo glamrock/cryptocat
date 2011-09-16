@@ -199,7 +199,7 @@ else {
 				<form action="'.$install.'" method="get" class="create" id="welcome">
 					<div id="front">
 						<div id="note">
-						<span id="notetext"><strong>Important note:</strong> Cryptocat is a new technology that relies on experimental techniques that need years of auditing before they can be declared completely reliable by cryptography academics. If you are trying to avoid surveillance by some intelligence agency or world government, consider decade-proof alternatives such as PGP.</span>
+						<span id="notetext">While Cryptocat is reliable enough for most situations, it is still experimental software. If you are trying to avoid surveillance from extremely dangerous adversaries, consider using decade-proof alternatives such as PGP.</span>
 						<br /><br /><a id="understand" href="#">I understand. Let me chat!</a>
 						</div>
 					</div>
@@ -225,12 +225,10 @@ else {
 				</table>
 				<p class="bottom" id="bottom">
 					<a href="#" onclick="translate(\'catalan\')">català</a> | 
-					<a href="#" onclick="translate(\'arabic\')">عربي</a> | 
 					<a href="https://crypto.cat/about">about</a> | 
 					<a onclick="window.open(this.href,\'_blank\');return false;" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">license</a> | 
 					<a onclick="window.open(this.href,\'_blank\');return false;" href="https://twitter.com/cryptocatapp">twitter</a> | 
-					<a onclick="window.open(this.href,\'_blank\');return false;" href="https://github.com/kaepora/cryptocat/">github</a> |
-					cryptocat is currently in beta
+					<a onclick="window.open(this.href,\'_blank\');return false;" href="https://github.com/kaepora/cryptocat/">github</a>
 				</p>
 			</div>
 			<script type="text/javascript">var install = "'.$install.'";</script>

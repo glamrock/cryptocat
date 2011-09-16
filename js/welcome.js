@@ -34,22 +34,11 @@ function translate(language) {
 		$("#td2").html("seus missatges són encriptades abans de sortir del seu ordinador usant un algoritme AES-256. totes les converses estan ben esborrat després de 30 minuts d'inactivitat.");
 		$("#td3").html('cryptocat és totalment compatible amb <a onclick=\"window.open(this.href,\'_blank\');return false;\" href="https://torproject.org">Tor</a> per anònima al xat. utilitzeu cryptocat amb Tor de forma anònima la màxima confidencialitat.');
 		$("#video").html("(per a una experiència més segura: <a onclick=\"window.open(this.href,\'_blank\');return false;\" href=\"https://chrome.google.com/webstore/detail/dlafegoljmjdfmhgoeojifolidmllaie\">verificador cryptocat.</a>)");
-		$("#bottom").html('<a href="#" onclick="translate(\'english\')">english</a> | <a href="#" onclick="translate(\'arabic\')">عربي</a> | <a href="https://crypto.cat/about">about</a> | <a onclick=\"window.open(this.href,\'_blank\');return false;\" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">license</a> | <a onclick=\"window.open(this.href,\'_blank\');return false;\" href="https://twitter.com/cryptocatapp">twitter</a> | <a onclick=\"window.open(this.href,\'_blank\');return false;\" href="https://github.com/kaepora/cryptocat/">github</a> | cryptocat està actualment en versió beta');
-		$("#notetext").html('<strong>Nota important:</strong> Cryptocat és una nova tecnologia que es basa en les tècniques experimentals que necessiten anys de l\'auditoria abans que puguin ser declarats totalment fiable per part d\'acadèmics de criptografia. Si vostè està tractant d\'evitar la vigilància per part d\'alguna agència d\'espionatge o de govern mundial, tingui en compte la prova dècada d\'alternatives com el PGP.');
-		$("#understand").html("Jo entenc");
+		$("#bottom").html('<a href="#" onclick="translate(\'english\')">english</a> | <a href="https://crypto.cat/about">about</a> | <a onclick=\"window.open(this.href,\'_blank\');return false;\" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">license</a> | <a onclick=\"window.open(this.href,\'_blank\');return false;\" href="https://twitter.com/cryptocatapp">twitter</a> | <a onclick=\"window.open(this.href,\'_blank\');return false;\" href="https://github.com/kaepora/cryptocat/">github</a>');
+		$("#notetext").html('Mentre Cryptocat és prou fiable per a la majoria de situacions, és encara un programari experimental. Si vostè està tractant d\'evitar la vigilància dels adversaris extremadament perillosos, considerar l\'ús de la prova dècada d\'alternatives com el PGP.');
+		$("#understand").html("Jo entenc.");
 		$("#name").val("escrigui el seu nom de xat");
 		$("#create").val("entrar");
-	}
-	else if (language == "arabic") {
-		$("#td1").html("!<strong>كريبتوكت</strong> يتيح لك إعداد محادثات دردشة أمينة و مشفرة.  <a href=\"info\"> تحقق من هذا الفيديو </a>للحصول على نصائح حول كيفية إستعمال كريبتوكت");
-		$("#td2").html(".يتم تشفير الرسائل قبل مغادرة الكمبيوتر ويتم التحقق من أجل النزاهة. يتم محو جميع المحادثات بعد ثلاثون دقيقة من الخمول");
-		$("#td3").html('.كريبتوكت متوافق تماما مع تور للدردشة لإخفاء الهوية وللسرية القصوى');
-		$("#video").html("(لتجربة أمينة بعد أكثر، سجل : <a target=\"_blank\" href=\"https://chrome.google.com/webstore/detail/dlafegoljmjdfmhgoeojifolidmllaie\">مدقق كريبتوكت.</a>)");
-		$("#bottom").html('<a href="#" onclick="translate(\'catalan\')">català</a> | <a href="#" onclick="translate(\'english\')">english</a> | <a href="https://crypto.cat/about">about</a> | <a onclick=\"window.open(this.href,\'_blank\');return false;\" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">license</a> | <a onclick=\"window.open(this.href,\'_blank\');return false;\" href="https://twitter.com/cryptocatapp">twitter</a> | <a onclick=\"window.open(this.href,\'_blank\');return false;\" href="https://github.com/kaepora/cryptocat/">github</a> | كريبتوكت حالياً تحت التطور');
-		$("#name").val("إدخل إسم المكالمة هنا");
-		$("#notetext").html('<span style="font-size: 16px">' + 'ملاحظة هامة : كريبتوكت تقنية جديدة تعتمد على تقنيات تجريبية تحتاج إلى سنوات من التدقيق قبل أن يعلن أن موثوق بهم تماما من قبل خبراء التشفير. إذا كنت تحاول تجنب المراقبة من قبل المخابرات، فكر بإستعمال بدائل مدققة لعشرات السنوات، مثل PGP.' + '</span');
-		$("#understand").html('<span style="font-size: 16px">' + "أنا أفهم" + '</span>');
-		$("#create").val("تحدث");
 	}
 	else if (language == "english") {
 		$("#td1").html(td1);
