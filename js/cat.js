@@ -186,20 +186,12 @@ function updatekeys() {
 				keys[i] = decodeURIComponent(keymatch[0].substring(1));
 				$("#chatters").html('<span class="chatters">' + names.length + '</span> ' + names.join(' '));
 				var loc = jQuery.inArray(names[i], oldnames);
-				if (keys[i].length != 176) {
+				if ((keys[i].length != 176) || ((names[i] == oldnames[loc]) && (keys[i] != oldkeys[loc]))) {
 					var nbsp = "";
 					for (ni=0; ni != 17; ni++) {
 						nbsp += "&nbsp";
 					}
-					fingerprints[i] = nbsp + " <span class=\"red\">invalid key - do not trust.</span>";
-					$("#fingerlink").click();
-				}
-				else if ((names[i] == oldnames[loc]) && (keys[i] != oldkeys[loc])) {
-					var nbsp = "";
-					for (ni=0; ni != 16; ni++) {
-						nbsp += "&nbsp";
-					}
-					fingerprints[i] = nbsp + " <span class=\"red\">tampered key - do not trust.</span>";
+					fingerprints[i] = nbsp + " <span class=\"red\">unreliable connection/keys</span>";
 					$("#fingerlink").click();
 				}
 				else {

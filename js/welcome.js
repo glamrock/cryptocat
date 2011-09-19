@@ -11,6 +11,11 @@ $("#welcome").submit( function() {
 	}
 	else {
 		$("#front").fadeIn();
+		$(window).keypress(function(e) {
+		    if(e.keyCode == 13) {
+		        $("#understand").click();
+		    }
+		});
 		return false;
 	}
 });
