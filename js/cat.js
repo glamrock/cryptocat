@@ -168,7 +168,7 @@ function processline(chat, flip) {
 }
 
 function updatekeys() {
-	$.ajax( { url: "index.php",
+	$.ajax({ url: install,
 		type: "POST",
 		async: false,
 		data: "nick=" + $("#nickinput").val() + "&name=" + $("#name").val() + "&public=get",
@@ -179,7 +179,7 @@ function updatekeys() {
 			names = new Array();
 			keys = new Array();
 			fingerprints = new Array();
-			for (i=0; i <= data.length - 1; i++) {
+			for (i=0; i <= data.length - 2; i++) {
 				keymatch = data[i].match(/^[a-z]{1,12}:/);
 				names[i] = keymatch[0].substring(0, keymatch[0].length - 1);
 				keymatch = data[i].match(/:.+/);
@@ -281,8 +281,8 @@ $("#chatform").submit( function() {
 			worker.onmessage = function(e) {
 				worker.postMessage("?" + escape(msg));
 				worker.onmessage = function(e) {
-					msg = nick + ": " + "[B-C]" + e.data.replace(/(\r\n|\n\r|\r|\n)/gm, "") + "[E-C]";
-					$.ajax( { url: "index.php",
+					msg = nick + ": " + "[B-C]" + e.data + "[E-C]";
+					$.ajax({ url: "index.php",
 						type: "POST",
 						async: true,
 						data: "input=" + encodeURIComponent(msg) + "&name=" + $("#name").val() + "&talk=send",
@@ -325,7 +325,7 @@ $("#nickform").submit( function() {
 });
 
 function nickajax() {
-	$.ajax( { url: "index.php",
+	$.ajax({ url: "index.php",
 		type: "POST",
 		async: true,
 		data: "nick=" + $("#nickinput").val() + "&name=" + $("#name").val() + "&public=" + encodeURIComponent(mypublic),
@@ -499,7 +499,7 @@ document.onblur = window.onblur;
 document.focus = window.focus;
 
 function logout() {
-	$.ajax( { url : "index.php",
+	$.ajax({ url : "index.php",
 		type: "POST",
 		async: false,
 		data: "logout=" + name,
