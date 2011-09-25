@@ -178,9 +178,8 @@
 	<link rel="stylesheet" href="css/style.css" type="text/css" />
 	<link rel="icon" type="image/png" href="img/favicon.gif" />
 	<script type="text/javascript" src="js/jquery.js"></script>
-	<script type="text/javascript" src="js/color.js"></script>
 	<script type="text/javascript" src="js/cryptico.js"></script>
-	<script type="text/javascript">function StuffSelect(id) {document.getElementById(id).focus();document.getElementById(id).select();} $(document).ready(function() { $("#name,#nickinput,#key,#input").attr("autocomplete", "off"); });</script>
+	<script type="text/javascript">$(document).ready(function() { $("#name,#nickinput,#key,#input").attr("autocomplete", "off"); });</script>
 </head>
 <?php
 if (isset($_GET['c']) && preg_match('/^([a-z]|_|[0-9])+$/', $_GET['c'])) {
@@ -204,7 +203,7 @@ else {
 						</div>
 					</div>
 					<div>
-						<input type="text" class="name" name="c" id="name" onclick="StuffSelect(\'name\');" value="'.$name.'" maxlength="32" />
+						<input type="text" class="name" name="c" id="name" onclick="idSelect(\'name\');" value="'.$name.'" maxlength="32" />
 						<input type="submit" class="create" value="enter" id="create" />
 					</div>
 					<p id="video">(for a safer experience, check out <a onclick="window.open(this.href,\'_blank\');return false;" href="https://chrome.google.com/webstore/detail/dlafegoljmjdfmhgoeojifolidmllaie">cryptocat verifier</a>.)</p>
@@ -308,7 +307,7 @@ else {
 			<div class="invisible" id="loader"></div>
 			<div id="chat"></div>
 			<div id="info">chatting as <span id="nick">'.$nick.'</span> on 
-			<span id="url" onclick="StuffSelect(\'url\');">'.$install.'?c='.$name.'</span> - <span id="fingerlink">fingerprints</span>
+			<span id="url">'.$install.'?c='.$name.'</span> - <span id="fingerlink">fingerprints</span>
 			</div>
 			<form name="chatform" id="chatform" method="post" action="'.$install.'">
 				<div>

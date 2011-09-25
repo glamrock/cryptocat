@@ -34,7 +34,7 @@ var notetext = $("#notetext").html();
 var understand = $("#understand").html();
 var name = $("#name").val();
 var create = $("#create").val();
-var lettersonlydefault = "letters and numbers only";
+var lettersonly = "letters and numbers only";
 
 function translate(language) {
 	if (language == "catalan") {
@@ -59,7 +59,11 @@ function translate(language) {
 		$("#understand").html(understand);
 		$("#name").val(name);
 		$("#create").val(create);
-		lettersonly = lettersonlydefault;
+		lettersonly = "letters and numbers only";
 	}
 }
 
+function idSelect(id) {
+	document.getElementById(id).focus();
+	document.getElementById(id).select();
+}

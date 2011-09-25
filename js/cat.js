@@ -9,6 +9,11 @@ var focus = true;
 var soundEmbed = null;
 var worker = new Worker("js/rsagen.js");
 
+function idSelect(id) {
+	document.getElementById(id).focus();
+	document.getElementById(id).select();
+}
+
 function scrolldown() {
 	$("#chat").animate({ scrollTop: document.getElementById("chat").scrollHeight-20}, 820 );
 }
@@ -249,15 +254,6 @@ function updatechat(div){
 		}
 	});
 	if (($("#chatters").html() != error) && (reconnect)) {
-		$("#chatters").animate({
-			backgroundColor: "#97CEEC",
-		}, 500 );
-		$("#chat").animate({
-			borderTopColor: "#97CEEC",
-			borderRightColor: "#97CEEC",
-			borderBottomColor: "#97CEEC",
-			borderLeftColor: "#97CEEC"
-		}, 500 );
 		errored = 0;
 		reconnect = 0;
 	}
@@ -302,9 +298,6 @@ $("#chatform").submit( function() {
 
 $("#nickform").submit( function() {
 	$("#nickinput").val(document.getElementById("nickinput").value.toLowerCase());
-	$("#nickinput").animate({
-		color: "#000"
-	}, 200 );
 	if (!mypublic) {
 		$('#nickentry').fadeOut('slow', function() {
 			$('#keygen').fadeIn('slow', function() {
@@ -331,9 +324,6 @@ function nickajax() {
 		data: "nick=" + $("#nickinput").val() + "&name=" + $("#name").val() + "&public=" + encodeURIComponent(mypublic),
 		success: function(data) {
 			if ((data != "error") && (data != "inuse") && (data != "full")) {
-				$("#nickinput").animate({
-					color: "#97CEEC"
-				}, 200 );
 				nickset = 1;
 				updatechat("#loader");
 				$("#nick").html($("#nickinput").val());
@@ -345,9 +335,6 @@ function nickajax() {
 			else {
 				$('#keygen').fadeOut('slow', function() {
 					$("#nickentry").fadeIn('slow');
-					$("#nickinput").animate({
-						color: "#97CEEC"
-					}, 200 );
 					if (data == "inuse") {
 						$("#nickinput").val("nickname in use");
 					}
@@ -358,7 +345,7 @@ function nickajax() {
 						$("#nickinput").val("letters only");
 					}
 					$("#front").fadeIn();
-					StuffSelect("nickinput");
+					idSelect("nickinput");
 				});
 			}
 		}
@@ -472,15 +459,6 @@ $("#maximize").click(function(){
 });
 
 function errordisplay(e) {
-	$("#chatters").animate({
-		backgroundColor: "#DF93D6",
-	}, 500 );
-	$("#chat").animate({
-		borderTopColor: "#DF93D6",
-		borderRightColor: "#DF93D6",
-		borderBottomColor: "#DF93D6",
-		borderLeftColor: "#DF93D6"
-	}, 500 );
 	$("#chatters").html("<span class=\"chatters\">x</span>&nbsp " + e);
 	error = $("#chatters").html();
 	errored = 1;
@@ -513,4 +491,4 @@ $(document).ajaxError(function(){
 	}
 });
 
-$("#nickentry").fadeIn(); $("#front").fadeIn(); StuffSelect("nickinput");
+$("#nickentry").fadeIn(); $("#front").fadeIn(); idSelect("nickinput");
