@@ -6,7 +6,7 @@ $("#welcome").submit( function() {
 	}
 	else if (!$("#name").val().match(/^([a-z]|_|[0-9])+$/)) {
 		$("#name").val(lettersonly);
-		StuffSelect("name");
+		idSelect("name");
 		return false;
 	}
 	else {
