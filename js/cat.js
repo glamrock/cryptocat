@@ -458,11 +458,13 @@ $("#maximize").click(function(){
 	}
 });
 
-function errordisplay(e) {
-	$("#chatters").html("<span class=\"chatters\">x</span>&nbsp " + e);
-	error = $("#chatters").html();
-	errored = 1;
-}
+$("#input").keydown(function(){
+	textcounter(document.chatform.input,document.chatform.talk,256);
+});
+
+$("#input").keyup(function(){
+	textcounter(document.chatform.input,document.chatform.talk,256);
+});
 
 window.onfocus = function() {
 	clearTimeout(blur);
@@ -482,6 +484,12 @@ function logout() {
 		async: false,
 		data: "logout=" + name,
 	});
+}
+
+function errordisplay(e) {
+	$("#chatters").html("<span class=\"chatters\">x</span>&nbsp " + e);
+	error = $("#chatters").html();
+	errored = 1;
 }
 
 $(document).ajaxError(function(){

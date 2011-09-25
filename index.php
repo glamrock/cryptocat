@@ -312,7 +312,7 @@ else {
 			<form name="chatform" id="chatform" method="post" action="'.$install.'">
 				<div>
 					<div id="chatters"></div>
-					<input type="text" name="input" id="input" maxlength="'.$maxinput.'" onkeydown="textcounter(document.chatform.input,document.chatform.talk,'.$maxinput.')" onkeyup="textcounter(document.chatform.input,document.chatform.talk,'.$maxinput.')" />
+					<input type="text" name="input" id="input" maxlength="'.$maxinput.'" />
 					<input type="submit" name="talk" id="talk" onmouseover="curcount = this.value; this.value=\'send\';" onmouseout="this.value=curcount;" value="'.$maxinput.'" />
 				</div>
 			</form>
