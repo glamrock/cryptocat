@@ -79,7 +79,7 @@ function scrubtags(str) {
 
 function tagify(chat) {
 	chat = scrubtags(chat);
-	if ((match = chat.match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi)) && fancyurls) {
+	if ((match = chat.match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi)) && genurl) {
 		for (mc = 0; mc <= match.length - 1; mc++) {
 			var sanitize = match[mc].split("");
 			for (ii = 0; ii <= sanitize.length-1; ii++) {
@@ -464,6 +464,14 @@ $("#input").keydown(function(){
 
 $("#input").keyup(function(){
 	textcounter(document.chatform.input,document.chatform.talk,256);
+});
+
+$("#talk").mouseout(function(){
+	textcounter(document.chatform.input,document.chatform.talk,256);
+});
+
+$("#talk").mouseover(function(){
+	$("#talk").val("send");
 });
 
 window.onfocus = function() {

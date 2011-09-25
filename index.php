@@ -10,7 +10,7 @@
 	/* time limit in seconds before deleting chat */
 	$timelimit = 1800;
 	/* set to 0 to disable automatic url linking */
-	$fancyurls = 1;
+	$genurl = 1;
 	/* maximum users in a chat. not recommended to set above 8 */
 	$maxusers = 8;
 	/* default nicknames */
@@ -273,7 +273,7 @@ else {
 			}
 		}
 		function chat($name) {
-			global $data, $nicks, $timelimit, $maxinput, $install, $update, $_SESSION, $mysession, $usedsessions, $usednicks, $fancyurls;
+			global $data, $nicks, $timelimit, $maxinput, $install, $update, $_SESSION, $mysession, $usedsessions, $usednicks, $genurl;
 			$name = strtolower($name);
 			$chat = file($data.$name);
 			getpeople($chat);
@@ -313,11 +313,11 @@ else {
 				<div>
 					<div id="chatters"></div>
 					<input type="text" name="input" id="input" maxlength="'.$maxinput.'" />
-					<input type="submit" name="talk" id="talk" onmouseover="curcount = this.value; this.value=\'send\';" onmouseout="this.value=curcount;" value="'.$maxinput.'" />
+					<input type="submit" name="talk" id="talk" value="'.$maxinput.'" />
 				</div>
 			</form>
 			</div>
-			<script type="text/javascript">var install = "'.$install.'";var update = "'.$update.'";var name = "'.$name.'";var maxinput = "'.$maxinput.'";var fancyurls = '.$fancyurls.';</script>
+			<script type="text/javascript">var install="'.$install.'";var update="'.$update.'";var name="'.$name.'";var maxinput="'.$maxinput.'";var genurl='.$genurl.';</script>
 			<script type="text/javascript" src="js/cat.js"></script>');
 		}
 		
