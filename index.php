@@ -199,7 +199,7 @@ else {
 				<form action="'.$install.'" method="get" class="create" id="welcome">
 					<div id="front">
 						<div id="note">
-						<span id="notetext">While Cryptocat is reliable enough for most situations, it is still experimental software. If you are trying to avoid surveillance from extremely dangerous adversaries, consider using decade-proof alternatives such as PGP.</span>
+						<span id="notetext">While Cryptocat is a great encrypted alternative to public chat services with invasive privacy policies, it\'s not meant as a replacement to high-level technologies such as PGP. Think responsibly if you are in extreme situations.</span>
 						<br /><br /><a id="understand" href="#">I understand. Let me chat!</a>
 						</div>
 					</div>
@@ -212,15 +212,15 @@ else {
 				<table>
 					<tr>
 						<td class="img"><img src="img/1.png" alt="" /></td>
-						<td id="td1"><strong>cryptocat</strong> lets you set up encrypted, private chats for impromptu secure conversations.</td>
+						<td id="td1"><strong>Cryptocat</strong> is an open source encrypted, private alternative to invasive services such as Facebook chat. It allows you to instantly set up secure conversations.</td>
 					</tr>
 					<tr>
 						<td class="img"><img src="img/2.png" alt="" /></td>
-						<td id="td2">messages are encrypted locally and are verified for integrity. conversations are securely wiped after 30 minutes of inactivity.</td>
+						<td id="td2">Messages are encrypted locally and are verified for integrity. Conversations are securely wiped after 30 minutes of inactivity.</td>
 					</tr>
 					<tr>
 						<td class="img"><img src="img/3.png" alt="" /></td>
-						<td id="td3">cryptocat is fully compatible with <a onclick="window.open(this.href,\'_blank\');return false;" href="https://torproject.org">Tor</a> for anonymous chatting. couple cryptocat with Tor anonymization for maximum confidentiality.</td>
+						<td id="td3">Cryptocat is fully compatible with <a onclick="window.open(this.href,\'_blank\');return false;" href="https://torproject.org">Tor</a> for anonymous chatting. Couple cryptocat with Tor anonymization for maximum confidentiality.</td>
 					</tr>
 				</table>
 				<p class="bottom" id="bottom">

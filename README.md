@@ -2,6 +2,8 @@
 ### http://crypto.cat
 #### Beta software - code review highly appreciated.
 
+Cryptocat is an open source encrypted, private alternative to invasive services such as Facebook chat. It allows you to instantly set up secure conversations.
+
 ## Cool features
 * A client-side, multithreaded, OpenSSL cross-compatible RSA public key cryptography engine allows for instant 1048-bit encrypted chat.
 * A client-side AES-256 implementation is used to encrypt data with the RSA keys.
