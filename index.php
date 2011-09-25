@@ -212,7 +212,7 @@ else {
 				<table>
 					<tr>
 						<td class="img"><img src="img/1.png" alt="" /></td>
-						<td id="td1"><strong>Cryptocat</strong> is an open source encrypted, private alternative to invasive services such as Facebook chat. It allows you to instantly set up secure conversations.</td>
+						<td id="td1"><strong>Cryptocat</strong> allows you to instantly set up secure conversations. It\'s an open source encrypted, private alternative to invasive services such as Facebook chat.</td>
 					</tr>
 					<tr>
 						<td class="img"><img src="img/2.png" alt="" /></td>
@@ -220,7 +220,7 @@ else {
 					</tr>
 					<tr>
 						<td class="img"><img src="img/3.png" alt="" /></td>
-						<td id="td3">Cryptocat is fully compatible with <a onclick="window.open(this.href,\'_blank\');return false;" href="https://torproject.org">Tor</a> for anonymous chatting. Couple cryptocat with Tor anonymization for maximum confidentiality.</td>
+						<td id="td3">Cryptocat is fully compatible with <a onclick="window.open(this.href,\'_blank\');return false;" href="https://torproject.org">Tor</a> for anonymous chatting. Couple Cryptocat with Tor for maximum confidentiality.</td>
 					</tr>
 				</table>
 				<p class="bottom" id="bottom">
