@@ -389,7 +389,7 @@ $("#maximize").click(function(){
 			height: "420px"
 		}, 500 );
 		$("#info").animate({
-			width: "590px",
+			width: "588px",
 		}, 500 );
 		$("#chatters").animate({
 			width: "525px",
@@ -402,13 +402,13 @@ $("#maximize").click(function(){
 			width: "67px"
 		}, 500 );
 		$("#inchat").animate({
-			width: "598px",
+			width: "597px",
 			height: "330px",
 			"margin-bottom": "10px"
 		}, 500 );
 		$("#chat").animate({
-			width: "608px",
-			height: "320px"
+			width: "607px",
+			height: "330px"
 		}, 500, function() {
 			document.getElementById("chat").innerHTML = document.getElementById("chat").innerHTML;
 			scrolldown();
@@ -422,7 +422,6 @@ $("#maximize").click(function(){
 		$("#main").animate({
 			"margin-top": "2%",
 			"min-width": "900px",
-			"min-height": "540px",
 			width: "80%",
 			height: "90%"
 		}, 500 );
@@ -442,7 +441,7 @@ $("#maximize").click(function(){
 		$("#inchat").animate({
 			width: "100%",
 			height: "90%",
-			"margin-bottom": "-10px"
+			"margin-bottom": "-30px"
 		}, 500 );
 		$("#chat").animate({
 			width: "102%",
