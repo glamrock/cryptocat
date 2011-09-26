@@ -173,7 +173,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xml:lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+	<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+	<meta name="description" content="Cryptocat allows you to instantly set up secure conversations. It's an open source encrypted, private alternative to invasive services such as Facebook chat." />
+	<meta name="keywords" content="encrypted chat, private chat, secure chat, cryptocat" />
 	<title>cryptocat</title>
 	<link rel="stylesheet" href="css/style.css" type="text/css" />
 	<link rel="icon" type="image/png" href="img/favicon.gif" />
