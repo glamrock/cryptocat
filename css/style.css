@@ -85,25 +85,27 @@ input.create:hover, #talk:hover {
 input.create:active, #talk:active {
 	box-shadow: 2px 2px #97CEEC;
 }
+#inchat {
+	width: 598px;
+	height: 330px;
+	overflow: hidden;
+	margin: 10px auto;
+}
 #chat {
-	padding: 5px 5px 5px 0px;
-	width: 585px;
-	height: 310px;
-	border: 3px solid #97CEEC;
-	margin: 0 auto;
+	padding: 5px 5px 0px 0px;
+	width: 608px;
+	height: 330px;
 	overflow-x: hidden;
-	overflow-y: auto;
+	overflow-y: scroll;
 	word-wrap: break-word;
 	line-height: 17px;
 	font-size: 12px;
-	margin-top: 10px;
 }
 #chatters {
 	background-color: #97CEEC;
 	font-size: 10px;
 	padding: 2px 3px 5px 0px;
 	width: 525px;
-	margin: 0px 0px 0px 1px;
 	word-spacing: 5px;
 	height: 11px;
 }
@@ -116,10 +118,8 @@ span.chatters {
 	font-size: 10px;
 	color: #FFF;
 	background-color: #000;
-	padding: 2px 10px;
-	width: 578px;
-	margin: 0 auto;
-	margin-top: 10px;
+	padding: 2px 0px 2px 10px;
+	width: 590px;
 }
 a {
 	text-decoration: none;
@@ -138,7 +138,6 @@ a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #fingerlink,
 	cursor: pointer;
 }
 #input {
-	margin: 0px 0px 0px 1px;
 	background-color: #000;
 	color: #FFF;
 	padding: 5px 10px;

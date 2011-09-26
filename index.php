@@ -305,7 +305,7 @@ else {
 			<img src="img/nosound.png" alt="sound" id="sound" title="enable message notifications" />
 			<input type="text" value="'.$name.'" name="name" id="name" class="invisible" />
 			<div class="invisible" id="loader"></div>
-			<div id="chat"></div>
+			<div id="inchat"><div id="chat"></div></div>
 			<div id="info">chatting as <span id="nick">'.$nick.'</span> on 
 			<span id="url">'.$install.'?c='.$name.'</span> - <span id="fingerlink">fingerprints</span>
 			</div>

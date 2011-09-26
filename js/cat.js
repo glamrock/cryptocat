@@ -388,29 +388,29 @@ $("#maximize").click(function(){
 			width: "600px",
 			height: "420px"
 		}, 500 );
+		$("#info").animate({
+			width: "590px",
+		}, 500 );
 		$("#chatters").animate({
 			width: "525px",
-			"padding-right": "3px",
-			"margin-left": "1px",
-		}, 500 );
-		$("#info").animate({
-			width: "578px",
-			"margin-left": "1px"
+			"padding-right": "3px"
 		}, 500 );
 		$("#input").animate({
 			width: "508px",
-			"margin-left": "1px"
 		}, 500 );
 		$("#talk").animate({
 			width: "67px"
 		}, 500 );
+		$("#inchat").animate({
+			width: "598px",
+			height: "330px",
+			"margin-bottom": "10px"
+		}, 500 );
 		$("#chat").animate({
-			margin: "0 auto",
-			"margin-top": "10px",
-			"min-height": "310px",
-			width: "585px",
-			height: "295px"
+			width: "608px",
+			height: "320px"
 		}, 500, function() {
+			document.getElementById("chat").innerHTML = document.getElementById("chat").innerHTML;
 			scrolldown();
 		});
 		$("#maximize").attr("src", "img/maximize.png");
@@ -422,33 +422,33 @@ $("#maximize").click(function(){
 		$("#main").animate({
 			"margin-top": "2%",
 			"min-width": "900px",
-			"min-height": "505px",
-			width: "85%",
+			"min-height": "540px",
+			width: "80%",
 			height: "90%"
 		}, 500 );
-		$("#chatters").animate({
-			width: "92%",
-			"padding-right": "20px",
-			"margin-left": "3px"
-		}, 500 );
 		$("#info").animate({
-			width: "98%",
-			"margin-left": "3px"
+			width: "99%"
+		}, 500 );
+		$("#chatters").animate({
+			width: "92.3%",
+			"padding-right": "20px"
 		}, 500 );
 		$("#input").animate({
-			width: "92%",
-			"margin-left": "3px"
+			width: "92.3%"
 		}, 500 );
 		$("#talk").animate({
-			width: "5.3%"
+			width: "5%"
+		}, 500 );
+		$("#inchat").animate({
+			width: "100%",
+			height: "90%",
+			"margin-bottom": "-10px"
 		}, 500 );
 		$("#chat").animate({
-			margin: "2px",
-			"margin-top": "10px",
-			"min-height": "360px",
-			width: "99%",
-			height: "80%"
+			width: "102%",
+			height: "88%"
 		}, 500, function() {
+			document.getElementById("chat").innerHTML = document.getElementById("chat").innerHTML;
 			scrolldown();
 		});
 		$("#maximize").attr("src", "img/minimize.png");
