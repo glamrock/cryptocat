@@ -25,11 +25,10 @@
 	session_set_cookie_params(0, '/', $domain, $https, TRUE);
 	function getpeople($chat) {
 		preg_match_all('/[a-z]{1,12}:/', $chat[0], $people);
-		$people = $people[0];
-		for ($i=0; $i < count($people); $i++) {
-			$people[$i] = substr($people[$i], 0, -1);
+		for ($i=0; $i < count($people[0]); $i++) {
+			$people[0][$i] = substr($people[0][$i], 0, -1);
 		}
-		return $people;
+		return $people[0];
 	}
 	if (isset($_GET['redirect']) && preg_match('/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/i', $_GET['redirect'])) {
 		print('<html><head><title>cryptocat</title><link rel="stylesheet" href="css/style.css" type="text/css" /></head>
@@ -37,7 +36,8 @@
 		exit;
 	}
 	else if (preg_match('/^[a-z]{1,12}$/', $_POST['nick']) && strlen($_POST['nick']) <= 12 && preg_match('/^\w+$/', $_POST['name']) && isset($_POST['public'])) {
-		session_name('s'.strtolower($_POST['name']));
+		$_POST['name'] = strtolower($_POST['name']);
+		session_name('s'.$_POST['name']);
 		session_start();
 		if (file_exists($data.$_POST['name'])) {
 			$chat = file($data.$_POST['name']);
@@ -85,16 +85,17 @@
 		print('error');
 		exit;
 	}
-	else if (isset($_GET['chat']) && $_SERVER['HTTP_REFERER'] == $install."?c=".$_GET['chat'] && preg_match('/^\w+$/', $_GET['chat'])) {
-		session_name('s'.strtolower($_GET['chat']));
+	else if (isset($_GET['chat']) && preg_match('/^\w+$/', $_GET['chat'])) {
+		$_GET['chat'] = strtolower($_GET['chat']);
+		session_name('s'.$_GET['chat']);
 		session_start();
-		$chat = file($data.$_GET['chat']);
-		if (!$chat) {
-			print('NOEXIST');
-		}
-		else if (isset($_GET['pos']) && $_GET['pos'] >= 0) {
-			$_GET['pos'] = $_GET['pos'] + ($_SESSION['pos'] - 1);
-			if ($_SESSION['check'] == "OK") {
+		if ($_SESSION['check'] == "OK") {
+			$chat = file($data.$_GET['chat']);
+			if (!$chat) {
+				print('NOEXIST');
+			}
+			else if (isset($_GET['pos']) && $_GET['pos'] >= 0) {
+				$_GET['pos'] = $_GET['pos'] + ($_SESSION['pos'] - 1);
 				if ($_GET['pos'] <= count($chat) - 1) {
 					if (preg_match('/^[a-z]{1,12}:\s\[B-C\].+\[E-C\]$/', $chat[$_GET['pos']])) {
 						preg_match_all('/\([a-z]{1,12}\)[^\(|^\[]+/', $chat[$_GET['pos']], $match);
@@ -125,7 +126,8 @@
 		exit;
 	}
 	else if (isset($_POST['name']) && preg_match('/^\w+$/', $_POST['name']) && isset($_POST['input']) && $_POST['input'] != '') {
-		session_name('s'.strtolower($_POST['name']));
+		$_POST['name'] = strtolower($_POST['name']);
+		session_name('s'.$_POST['name']);
 		session_start();
 		$chat = file($data.$_POST['name']);
 		preg_match('/^[a-z]{1,12}:/', $_POST['input'], $thisnick);
@@ -204,10 +206,11 @@ else {
 		}
 		function enterchat($name, $nick, $public) {
 			global $data, $_SESSION;
-			session_name('s'.strtolower($name));
+			$name = strtolower($name);
+			session_name('s'.$name);
 			session_start();
 			if (file_exists($data.$name)) {
-				$chat = file($data.strtolower($name));
+				$chat = file($data.$name);
 			}
 			if (!isset($_SESSION['nick'])) {
 				if (!is_null(getpeople($chat)) && in_array($nick, getpeople($chat))) {
@@ -219,8 +222,8 @@ else {
 					$_SESSION['check'] = "OK";
 					$chat[0] = trim($chat[0]).$nick.':'.$public."|\n";
 					$chat[count($chat)] = "> ".$nick." has arrived\n";
-					file_put_contents($data.strtolower($name), implode('', $chat), LOCK_EX);
-					$_SESSION['pos'] = count(file($data.strtolower($name)));
+					file_put_contents($data.$name, implode('', $chat), LOCK_EX);
+					$_SESSION['pos'] = count(file($data.$name));
 				}
 			}
 		}
@@ -285,7 +288,8 @@ else {
 			}
 		}
 		else if (isset($_POST['logout']) && preg_match('/^\w+$/', $_POST['logout'])) {
-				session_name('s'.strtolower($_POST['logout']));
+				$_POST['logout'] = strtolower($_POST['logout']);
+				session_name('s'.$_POST['logout']);
 				session_start();
 				$chat = file($data.$_POST['logout']);
 				if ($_SESSION['nick'] && $_SESSION['check'] == "OK") {
