@@ -86,19 +86,19 @@ input.create:active, #talk:active {
 	box-shadow: 2px 2px #97CEEC;
 }
 #inchat {
-	width: 597px;
-	height: 330px;
+	width: 598px;
+	height: 335px;
 	overflow: hidden;
 	margin: 10px auto;
 }
 #chat {
 	padding: 5px 5px 0px 0px;
-	width: 607px;
+	width: 608px;
 	height: 330px;
 	overflow-x: hidden;
 	overflow-y: scroll;
 	word-wrap: break-word;
-	line-height: 17px;
+	line-height: 16px;
 	font-size: 12px;
 }
 #chatters {
@@ -148,7 +148,7 @@ a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #fingerlink,
 	outline: none;
 	resize: none;
 	word-wrap: break-word;
-	line-height: 17px;
+	line-height: 16px;
 	font-size: 12px;
 }
 #input:active {

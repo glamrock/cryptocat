@@ -15,7 +15,7 @@ function idSelect(id) {
 }
 
 function scrolldown() {
-	$("#chat").animate({ scrollTop: document.getElementById("chat").scrollHeight-20}, 820 );
+	$("#chat").animate({ scrollTop: document.getElementById("chat").scrollHeight + 20}, 820);
 }
 
 function getstamp(nick) {
@@ -24,7 +24,7 @@ function getstamp(nick) {
 	var m = time.getMinutes();
 	var spaces = "";
 	for (si=0; si < (nick.length - 5); si++) {
-		spaces += "&nbsp";
+		spaces += "&#160;";
 	}
 	if (String(h).length == 1) {
 		h = "0" + String(h);
@@ -133,13 +133,7 @@ function processline(chat, flip) {
 					worker.onmessage = function(e) {
 						var signkey = e.data;
 						var loc = jQuery.inArray(thisnick, names);
-						if ((cipher == "corrupt") || (signkey != keys[loc])) {
-							chat = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">error</span>";
-							tag = "c" + tag;
-							chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
-							$("#chat").html(chathtml + chat);
-						}
-						else {
+						if ((cipher != "corrupt") && (signkey == keys[loc])) {
 							chat = chat.replace(/\[B-C\](.*)\[E-C\]/, unescape(cipher));
 							chat = tagify(chat);
 							chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
@@ -153,12 +147,6 @@ function processline(chat, flip) {
 			chat = "<span class=\"nick\">" + match[0] + "</span>";
 			tag = "u" + tag;
 			updatekeys();
-			chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
-			$("#chat").html(chathtml + chat);
-		}
-		else if (thisnick = chat.match(/^[a-z]{1,12}/)) {
-			chat = "<span class=\"nick\">" + thisnick + "</span> <span class=\"diffkey\">error</span>";
-			tag = "c" + tag;
 			chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
 			$("#chat").html(chathtml + chat);
 		}
