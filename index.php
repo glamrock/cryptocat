@@ -111,14 +111,14 @@
 							}
 						}
 					}
-					if ($_SESSION['lastchat'] != $chat[$_GET['pos']]) {
+					if ($_SESSION['lastpos'] != $_GET['pos']) {
 						if (!isset($nick) || ($nick != $_SESSION['nick'])) {
 							print(htmlspecialchars($chat[$_GET['pos']]));
 						}
 						else {
 							print("*");
 						}
-						$_SESSION['lastchat'] =	$chat[$_GET['pos']];
+						$_SESSION['lastpos'] = $_GET['pos'];
 					}
 				}
 			}
