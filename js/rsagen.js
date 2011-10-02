@@ -36,7 +36,12 @@ self.onmessage = function(e) {
 		self.postMessage(gsm);
 	}
 	else {
-		mysecret = cryptico.generateRSAKey(e.data, 1048);
+		if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
+			mysecret = cryptico.generateRSAKey(e.data, 1536);
+		}
+		else {
+			mysecret = cryptico.generateRSAKey(e.data, 1152);
+		}
 		mypublic = cryptico.publicKeyString(mysecret);
 		self.postMessage(mypublic);
 	}
