@@ -176,7 +176,7 @@ function updatekeys() {
 				keymatch = data[i].match(/^[a-z]{1,12}:/);
 				names[i] = keymatch[0].substring(0, keymatch[0].length - 1);
 				keymatch = data[i].match(/:.+/);
-				keys[i] = decodeURIComponent(keymatch[0].substring(1));
+				keys[i] = keymatch[0].substring(1);
 				$("#chatters").html('<span class="chatters">' + names.length + '</span> ' + names.join(' '));
 				var loc = jQuery.inArray(names[i], oldnames);
 				if (((keys[i].length != 256) && (keys[i].length != 192)) || ((names[i] == oldnames[loc]) && (keys[i] != oldkeys[loc]))) {
@@ -194,7 +194,7 @@ function updatekeys() {
 			}
 		}
 	});
-	var fingerhtml = "Verify chatters using their key fingerprint. <br />(You can verify fingerprints over the phone.)<br /><br />";
+	var fingerhtml = "Verify friends using their fingerprint. <br />(be certain of their identity - over the phone is fine.)<br /><br />";
 	for (fi=0; fi <= names.length - 1; fi++) {
 		var nbsp = "";
 		for (ni=0; ni + names[fi].length != 13; ni++) {
@@ -207,7 +207,7 @@ function updatekeys() {
 }
 
 function updatechat(div){
-	$(div).load("index.php?chat=" + name + "&pos=" + pos, function() {
+	$(div).load(install + "?chat=" + name + "&pos=" + pos, function() {
 		if ($("#loader").html() == "NOEXIST") {
 			if (!errored && mypublic) {
 				errordisplay("your chat no longer exists.");
@@ -266,7 +266,7 @@ $("#chatform").submit( function() {
 				worker.postMessage("?" + escape(msg));
 				worker.onmessage = function(e) {
 					msg = nick + ": " + "[B-C]" + e.data + "[E-C]";
-					$.ajax({ url: "index.php",
+					$.ajax({ url: install,
 						type: "POST",
 						async: true,
 						data: "input=" + encodeURIComponent(msg) + "&name=" + $("#name").val() + "&talk=send",
@@ -306,7 +306,7 @@ $("#nickform").submit( function() {
 });
 
 function nickajax() {
-	$.ajax({ url: "index.php",
+	$.ajax({ url: install,
 		type: "POST",
 		async: true,
 		data: "nick=" + $("#nickinput").val() + "&name=" + $("#name").val() + "&public=" + encodeURIComponent(mypublic),
@@ -474,7 +474,7 @@ document.onblur = window.onblur;
 document.focus = window.focus;
 
 function logout() {
-	$.ajax({ url : "index.php",
+	$.ajax({ url: install,
 		type: "POST",
 		async: false,
 		data: "logout=" + name,

@@ -35,7 +35,7 @@
 		<body><div class="redirect"><img src="img/cryptocat.png" alt="" />You are leaving cryptocat to visit: <p><a href="'.htmlspecialchars($_GET['redirect']).'">'.htmlspecialchars($_GET['redirect']).'</a></p>Click the link to continue.</div></body></html>');
 		exit;
 	}
-	else if (preg_match('/^[a-z]{1,12}$/', $_POST['nick']) && strlen($_POST['nick']) <= 12 && preg_match('/^\w+$/', $_POST['name']) && isset($_POST['public'])) {
+	else if (preg_match('/^[a-z]{1,12}$/', $_POST['nick']) && strlen($_POST['nick']) <= 12 && preg_match('/^\w+$/', $_POST['name']) && preg_match('/^(\w|\/|\+|\?|\(|\)|\=)+$/', $_POST['public'])) {
 		$_POST['name'] = strtolower($_POST['name']);
 		session_name('s'.$_POST['name']);
 		session_start();
@@ -60,14 +60,10 @@
 			exit;
 		}
 		else if (isset($_SESSION['nick'])) {
-			preg_match('/'.$_SESSION['nick'].'\:[^\|]+\|/', $chat[0], $public);
-			$chat[count($chat)+1] = "< ".$_SESSION['nick']." has left\n";
-			$_SESSION['nick'] = $_POST['nick'];
-			$chat[0] = str_replace($public[0], $_POST['nick'].':'.$_POST['public'].'|', $chat[0]);
-			$chat[count($chat)+1] = "> ".$_POST['nick']." has arrived\n";
-			file_put_contents($data.$_POST['name'], implode('', $chat), LOCK_EX);
+			session_unset();
+			session_destroy();
 		}
-		else if (!isset($_SESSION['nick'])) {
+		if (!isset($_SESSION['nick'])) {
 			if (file_exists($data.$_POST['name'])) {
 				enterchat($_POST['name'], $_POST['nick'], $_POST['public']);
 			}
@@ -135,7 +131,7 @@
 		$chat = file($data.$_POST['name']);
 		preg_match('/^[a-z]{1,12}:/', $_POST['input'], $thisnick);
 		$thisnick = substr($thisnick[0], 0, -1);
-		if (preg_match('/^[a-z]{1,12}:\s\[B-C\].+\[E-C\]$/', $_POST['input']) && $_SESSION['nick'] == $thisnick) {
+		if (preg_match('/^[a-z]{1,12}:\s\[B-C\](\w|\/|\+|\?|\(|\)|\=)+\[E-C\]$/', $_POST['input']) && $_SESSION['nick'] == $thisnick) {
 			$chat = $_POST['input']."\n";
 			file_put_contents($data.$_POST['name'], $chat, FILE_APPEND | LOCK_EX);
 		}
