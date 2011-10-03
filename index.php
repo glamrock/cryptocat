@@ -14,7 +14,7 @@
 	/* maximum users in a chat. untested above 8 */
 	$maxusers = 8;
 	/* default nicknames */
-	$nicks = array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther');
+	$nicks = array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite');
 ?>
 <?php
 	$maxinput = 256;
@@ -111,7 +111,7 @@
 							}
 						}
 					}
-					if ($_SESSION['lastpos'] != $_GET['pos']) {
+					if ($_SESSION['lastpos'] < $_GET['pos']) {
 						if (!isset($nick) || ($nick != $_SESSION['nick'])) {
 							print(htmlspecialchars($chat[$_GET['pos']]));
 						}
