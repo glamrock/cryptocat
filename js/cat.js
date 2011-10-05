@@ -1,4 +1,4 @@
-Math.seedrandom();
+var seed = Math.seedrandom();
 var t, num, interval, maximized, sound, errored, reconnect, mysecret, mypublic, mtag, nickset, error;
 t = num = interval = maximized = sound = errored = reconnect = pos = 0;
 var names = new Array();
@@ -58,8 +58,13 @@ function soundPlay(which) {
 function gen(size) {
 	var str = "";
 	var charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~`#$%^&*()-_=+{}[];:<,>./";
-	for (i=0; i < size; i++) {
-        str += charset.charAt(Math.floor(Math.random() * charset.length));
+	while (str.length < size) {
+		reseed = Math.seedrandom();
+		seed = Math.seedrandom(seed + reseed);
+		for (var i=0; i != 8; i++) {
+        	str += charset.charAt(Math.floor(Math.random() * charset.length));
+		}
+		seed = reseed;
 	}
  	return str;
 }
@@ -164,7 +169,7 @@ function updatekeys() {
 	$.ajax({ url: install,
 		type: "POST",
 		async: false,
-		data: "nick=" + $("#nickinput").val() + "&name=" + $("#name").val() + "&public=get",
+		data: "nick=" + $("#nickinput").val() + "&name=" + name + "&public=get",
 		success: function(data) {
 			data = data.split('|');
 			oldnames = names;
@@ -206,39 +211,46 @@ function updatekeys() {
 	$("#fingerprints").html(fingerhtml);
 }
 
-function updatechat(div){
-	$(div).load(install + "?chat=" + name + "&pos=" + pos, function() {
-		if ($("#loader").html() == "NOEXIST") {
-			if (!errored && mypublic) {
-				errordisplay("your chat no longer exists.");
+function updatechat() {
+	$.ajax({ url: install,
+		type: "POST",
+		async: true,
+		data: "chat=" + name + "&pos=" + pos,
+		success: function(data) {
+			if (data == "NOEXIST") {
+				if (!errored && mypublic) {
+					errordisplay("your chat no longer exists.");
+				}
 			}
-		}
-		else if ($("#loader").html() == "NOLOGIN") {
-			if (!errored && mypublic) {
-				errordisplay("you have been logged out.");
+			else if (data == "NOLOGIN") {
+				if (!errored && mypublic) {
+					errordisplay("you have been logged out.");
+				}
 			}
-		}
-		else if ($("#loader").html() != "") {
-			pos++;
-			if ((pos) && (nickset)) {
-				$('#keygen').fadeOut('slow', function() {
-					$("#changenick").fadeOut('fast');
-					$("#nickentry").fadeOut('fast');
-				    $("#front").fadeOut();
-				});
-				nickset = 0;
-			}
-			if ($("#loader").html() != "*") {
-				processline($("#loader").html(), 1);
-				scrolldown();
-				if (!focus) {
-					num++;
-					document.title = "[" + num + "] cryptocat";
-					if (sound) {
-						soundPlay("snd/msg.ogg");
+			else if (data != "") {
+				pos++;
+				if ((pos) && (nickset)) {
+					$('#keygen').fadeOut('slow', function() {
+						$("#changenick").fadeOut('fast');
+						$("#nickentry").fadeOut('fast');
+					    $("#front").fadeOut();
+					});
+					nickset = 0;
+				}
+				if (data != "*") {
+					processline(data, 1);
+					scrolldown();
+					if (!focus) {
+						num++;
+						document.title = "[" + num + "] cryptocat";
+						if (sound) {
+							soundPlay("snd/msg.ogg");
+						}
 					}
 				}
 			}
+		},
+		error: function(data) {
 		}
 	});
 	if (($("#chatters").html() != error) && (reconnect)) {
@@ -269,7 +281,7 @@ $("#chatform").submit( function() {
 					$.ajax({ url: install,
 						type: "POST",
 						async: true,
-						data: "input=" + encodeURIComponent(msg) + "&name=" + $("#name").val() + "&talk=send",
+						data: "input=" + encodeURIComponent(msg) + "&name=" + name + "&talk=send",
 						success: function(data) {
 							document.getElementById("input").focus();
 							$("#talk").val(maxinput);
@@ -309,16 +321,16 @@ function nickajax() {
 	$.ajax({ url: install,
 		type: "POST",
 		async: true,
-		data: "nick=" + $("#nickinput").val() + "&name=" + $("#name").val() + "&public=" + encodeURIComponent(mypublic),
+		data: "nick=" + $("#nickinput").val() + "&name=" + name + "&public=" + encodeURIComponent(mypublic),
 		success: function(data) {
 			if ((data != "error") && (data != "inuse") && (data != "full")) {
 				nickset = 1;
-				updatechat("#loader");
+				updatechat();
 				$("#nick").html($("#nickinput").val());
 				nick = $("#nick").html();
 				document.getElementById("input").focus();
 				document.title = "[" + num + "] cryptocat";
-				interval = setInterval("updatechat(\"#loader\")", update);
+				interval = setInterval("updatechat()", update);
 			}
 			else {
 				$('#keygen').fadeOut('slow', function() {

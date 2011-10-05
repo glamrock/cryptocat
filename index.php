@@ -81,40 +81,40 @@
 		print('error');
 		exit;
 	}
-	else if (isset($_GET['chat']) && preg_match('/^\w+$/', $_GET['chat'])) {
-		$_GET['chat'] = strtolower($_GET['chat']);
-		session_name('s'.$_GET['chat']);
+	else if (isset($_POST['chat']) && preg_match('/^\w+$/', $_POST['chat'])) {
+		$_POST['chat'] = strtolower($_POST['chat']);
+		session_name('s'.$_POST['chat']);
 		session_start();
 		if ($_SESSION['check'] == "OK") {
-			$chat = file($data.$_GET['chat']);
+			$chat = file($data.$_POST['chat']);
 			if (!$chat) {
 				print('NOEXIST');
 			}
-			else if (isset($_GET['pos']) && $_GET['pos'] >= 0) {
-				$_GET['pos'] = $_GET['pos'] + ($_SESSION['pos'] - 1);
-				if ($_GET['pos'] <= count($chat) - 1) {
-					if (preg_match('/^[a-z]{1,12}:\s\[B-C\].+\[E-C\]$/', $chat[$_GET['pos']])) {
-						preg_match_all('/\([a-z]{1,12}\)[^\(|^\[]+/', $chat[$_GET['pos']], $match);
-						preg_match('/^[a-z]{1,12}:/', $chat[$_GET['pos']], $nick);
+			else if (isset($_POST['pos']) && $_POST['pos'] >= 0) {
+				$_POST['pos'] = $_POST['pos'] + ($_SESSION['pos'] - 1);
+				if ($_POST['pos'] <= count($chat) - 1) {
+					if (preg_match('/^[a-z]{1,12}:\s\[B-C\].+\[E-C\]$/', $chat[$_POST['pos']])) {
+						preg_match_all('/\([a-z]{1,12}\)[^\(|^\[]+/', $chat[$_POST['pos']], $match);
+						preg_match('/^[a-z]{1,12}:/', $chat[$_POST['pos']], $nick);
 						$nick = substr($nick[0], 0, -1);
 						$ki = 0;
-						$chat[$_GET['pos']] = preg_replace('/\[B-C\](.*)\[E-C\]/', '[B-C][E-C]', $chat[$_GET['pos']]);
+						$chat[$_POST['pos']] = preg_replace('/\[B-C\](.*)\[E-C\]/', '[B-C][E-C]', $chat[$_POST['pos']]);
 						for ($ki=0; $ki <= count($match[0]); $ki++) {
 							if (substr($match[0][$ki], 1, strlen($_SESSION['nick'])) == $_SESSION['nick']) {
 								$match = substr($match[0][$ki], strlen($_SESSION['nick']) + 2);
-								$chat[$_GET['pos']] = preg_replace('/\[B-C\](.*)\[E-C\]/', '[B-C]'.$match.'[E-C]', $chat[$_GET['pos']]);
+								$chat[$_POST['pos']] = preg_replace('/\[B-C\](.*)\[E-C\]/', '[B-C]'.$match.'[E-C]', $chat[$_POST['pos']]);
 								$ki = 9001;
 							}
 						}
 					}
-					if ($_SESSION['lastpos'] < $_GET['pos']) {
+					if ($_SESSION['lastpos'] < $_POST['pos']) {
 						if (!isset($nick) || ($nick != $_SESSION['nick'])) {
-							print(htmlspecialchars($chat[$_GET['pos']]));
+							print(htmlspecialchars($chat[$_POST['pos']]));
 						}
 						else {
 							print("*");
 						}
-						$_SESSION['lastpos'] = $_GET['pos'];
+						$_SESSION['lastpos'] = $_POST['pos'];
 					}
 				}
 			}
@@ -152,7 +152,7 @@
 	<script type="text/javascript">$(document).ready(function() { $("#name,#nickinput,#key,#input").attr("autocomplete", "off"); });</script>
 </head>
 <?php
-if (isset($_GET['c']) && preg_match('/^\w+$/', $_GET['c'])) {
+if (isset($_POST['c']) && preg_match('/^\w+$/', $_POST['c'])) {
 	print('<body onunload="logout();">'."\n");
 }
 else {
@@ -165,7 +165,7 @@ else {
 			global $install;
 			print('<div id="main">
 				<img src="img/cryptocat.png" alt="cryptocat" class="cryptocat" />
-				<form action="'.$install.'" method="get" class="create" id="welcome">
+				<form action="'.$install.'" method="post" class="create" id="welcome">
 					<div id="front">
 						<div id="note">
 						<span id="notetext">While Cryptocat is a great encrypted alternative to public chat services with invasive privacy policies, it\'s not meant as a replacement to high-level technologies such as PGP. Think responsibly if you are in extreme situations.</span>
@@ -239,7 +239,7 @@ else {
 				<div id="changenick">
 					<div id="keygen">
 						<img src="img/keygen.gif" alt="" /><br />
-						<span id="keytext"></span>
+						<span id="keytext">Gathering entropy</span>
 					</div>
 					<div id="nickentry">
 						<p>Enter nickname</p>
@@ -256,11 +256,9 @@ else {
 			<a href="'.$install.'" onclick="logout();"><img src="img/cryptocat.png" alt="cryptocat" /></a>
 			<img src="img/maximize.png" alt="maximize" id="maximize" title="expand" />
 			<img src="img/nosound.png" alt="sound" id="sound" title="enable message notifications" />
-			<input type="text" value="'.$name.'" name="name" id="name" class="invisible" />
-			<div class="invisible" id="loader"></div>
 			<div id="inchat"><div id="chat"></div></div>
 			<div id="info">chatting as <span id="nick">'.$nick.'</span> on 
-			<span id="url">'.$install.'?c='.$name.'</span> - <span id="fingerlink">fingerprints</span>
+			<span class="blue"><strong>'.$name.'</strong></span> - <span id="fingerlink">fingerprints</span>
 			</div>
 			<form name="chatform" id="chatform" method="post" action="'.$install.'">
 				<div>
@@ -273,10 +271,10 @@ else {
 			<script type="text/javascript">var install="'.$install.'";var update="'.$update.'";var name="'.$name.'";var maxinput="'.$maxinput.'";var genurl='.$genurl.';</script>
 			<script type="text/javascript" src="js/cat.js"></script>');
 		}
-		if (isset($_GET['c'])) {
-			if (preg_match('/^\w+$/', $_GET['c'])) {
-				if (strlen($_GET['c']) <= 32) {
-					chat($_GET['c']);
+		if (isset($_POST['c'])) {
+			if (preg_match('/^\w+$/', $_POST['c'])) {
+				if (strlen($_POST['c']) <= 32) {
+					chat($_POST['c']);
 				}
 				else {
 					welcome('chat name too large');
