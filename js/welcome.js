@@ -1,12 +1,12 @@
 var understood;
 $("#welcome").submit( function() {
-	$("#name").val($("#name").val().toLowerCase());
+	$("#c").val($("#c").val().toLowerCase());
 	if (understood) {
 		return true;
 	}
-	else if (!$("#name").val().match(/^\w+$/)) {
-		$("#name").val(lettersonly);
-		idSelect("name");
+	else if (!$("#c").val().match(/^\w+$/)) {
+		$("#c").val(lettersonly);
+		idSelect("c");
 		return false;
 	}
 	else {
@@ -32,7 +32,7 @@ var video = $("#video").html();
 var bottom = $("#bottom").html();
 var notetext = $("#notetext").html();
 var understand = $("#understand").html();
-var name = $("#name").val();
+var name = $("#c").val();
 var create = $("#create").val();
 var lettersonly = "letters and numbers only";
 
@@ -45,7 +45,7 @@ function translate(language) {
 		$("#bottom").html('<a href="#" onclick="translate(\'english\')">english</a> | <a href="https://crypto.cat/about">about</a> | <a onclick=\"window.open(this.href,\'_blank\');return false;\" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">license</a> | <a onclick=\"window.open(this.href,\'_blank\');return false;\" href="https://twitter.com/cryptocatapp">twitter</a> | <a onclick=\"window.open(this.href,\'_blank\');return false;\" href="https://github.com/kaepora/cryptocat/">github</a>');
 		$("#notetext").html('Mentre Cryptocat és una gran alternativa als serveis de xat encriptada públic amb les polítiques invasives de la privacitat, seu no és pensat com un reemplaçament de tecnologies d\'alt nivell com el PGP. Pensar de manera responsable si tu troben en situacions extremes.');
 		$("#understand").html("Jo entenc.");
-		$("#name").val("nom de la xerrada");
+		$("#c").val("nom de la xerrada");
 		$("#create").val("entrar");
 		lettersonly = "lletres i números nomes";
 	}
@@ -57,7 +57,7 @@ function translate(language) {
 		$("#bottom").html(bottom);
 		$("#notetext").html(notetext);
 		$("#understand").html(understand);
-		$("#name").val(name);
+		$("#c").val(name);
 		$("#create").val(create);
 		lettersonly = "letters and numbers only";
 	}

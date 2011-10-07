@@ -1,12 +1,14 @@
 var seed = Math.seedrandom();
-var t, num, interval, maximized, sound, errored, reconnect, mysecret, mypublic, mtag, nickset, error;
-t = num = interval = maximized = sound = errored = reconnect = pos = 0;
+var t, num, interval, maximized, sound, errored, reconnect, mysecret, mypublic, nickset, error, tag;
+t = num = interval = maximized = sound = errored = reconnect = pos = tag = 0;
+var fingerprints = new Array();
 var names = new Array();
 var keys = new Array();
-var fingerprints = new Array();
+var sent = new Array();
 var nick = $("#nick").html();
-var focus = true;
+var name = $("#name").html();
 var soundEmbed = null;
+var focus = true;
 var worker = new Worker("js/rsagen.js");
 
 function idSelect(id) {
@@ -55,9 +57,14 @@ function soundPlay(which) {
 	document.body.appendChild(soundEmbed);
 }
 
-function gen(size) {
+function gen(size, alphan) {
 	var str = "";
-	var charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~`#$%^&*()-_=+{}[];:<,>./";
+	if (alphan) {
+		var charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	}
+	else {
+		var charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~`#$%^&*()-_=+{}[];:<,>./";
+	}
 	while (str.length < size) {
 		reseed = Math.seedrandom();
 		seed = Math.seedrandom(seed + reseed);
@@ -93,7 +100,7 @@ function tagify(chat) {
 				}
 			}
 			sanitize = sanitize.join("");
-			chat = chat.replace(sanitize, "<a target=\"_blank\" href=\"" + install + "?redirect=" + escape(sanitize) + "\">" + match[mc] + "</a>");
+			chat = chat.replace(sanitize, "<a target=\"_blank\" href=\"" + "?redirect=" + escape(sanitize) + "\">" + match[mc] + "</a>");
 		}
 	}
 	chat = chat.replace(/\&lt\;3/g, "<span class=\"monospace\">&#9829;</span>");
@@ -110,21 +117,24 @@ function tagify(chat) {
 }
 
 function processline(chat, flip) {
-	tag = "";
 	chathtml = $("#chat").html();
 	if (chat) {
 		chat = $.trim(chat);
-		if (mtag) {
-			tag += "gsm";
-			mtag = 0;
+		if (tag == "msg") {
+			tag = "gsm";
 		}
 		else {
-			tag += "msg";
-			mtag = 1;
+			tag = "msg";
 		}
 		if (!flip) {
 			chat = tagify(chat);
-			chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
+			if (names.length > 1) {
+				sent.push(gen(8, 1));
+				chat = "<div class=\"" + tag + "\" id=\"" + sent[sent.length - 1] + "\"><div class=\"text\">" + chat + "</div></div>";
+			}
+			else {
+				chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
+			}
 			return chat;
 		}
 		else if (match = chat.match(/^[a-z]{1,12}:\s\[B-C\](.*)\[E-C\]$/)) {
@@ -141,7 +151,7 @@ function processline(chat, flip) {
 						if ((cipher != "corrupt") && (signkey == keys[loc])) {
 							chat = chat.replace(/\[B-C\](.*)\[E-C\]/, unescape(cipher));
 							chat = tagify(chat);
-							chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
+							chat = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + chat + "</div></div>";
 							$("#chat").html(chathtml + chat);
 						}
 					}
@@ -150,16 +160,16 @@ function processline(chat, flip) {
 		}
 		else if ((match = chat.match(/^(\&gt\;|\&lt\;) [a-z]{1,12} (has arrived|has left)$/))) {
 			chat = "<span class=\"nick\">" + match[0] + "</span>";
-			tag = "u" + tag;
 			updatekeys();
-			chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
+			chat = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + chat + "</div></div>";
 			$("#chat").html(chathtml + chat);
+			$("#" + pos).css("background-image","url(\"img/user.png\")");
 		}
 		else {
 			chat = "<span class=\"diffkey\">corrupt</span>"
-			tag = "c" + tag;
-			chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
+			chat = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + chat + "</div></div>";
 			$("#chat").html(chathtml + chat);
+			$("#" + pos).css("background-image","url(\"img/corrupt.png\")");
 		}
 	}
 	return "";
@@ -237,7 +247,12 @@ function updatechat() {
 					});
 					nickset = 0;
 				}
-				if (data != "*") {
+				if (data == "*") {
+					$("#" + sent[0]).css("background-image","url(\"img/chat.png\")");
+					$("#" + sent[0]).attr("id", "x");
+					sent.splice(0, 1);
+				}
+				else {
 					processline(data, 1);
 					scrolldown();
 					if (!focus) {
@@ -272,7 +287,8 @@ $("#chatform").submit( function() {
 		scrolldown();
 		gsm = "";
 		var i = 0;
-		if (pos > 0) {
+		if (names.length > 1) {
+			$("#" + sent[sent.length - 1]).css("background-image","url(\"img/sending.png\")");
 			worker.postMessage("|" + names + ":" + keys + "*" + nick);
 			worker.onmessage = function(e) {
 				worker.postMessage("?" + escape(msg));
@@ -302,7 +318,7 @@ $("#nickform").submit( function() {
 		$('#nickentry').fadeOut('slow', function() {
 			$('#keygen').fadeIn('slow', function() {
 				$('#keytext').html("Generating keys");
-				worker.postMessage(gen(64));
+				worker.postMessage(gen(64, 0));
 				worker.onmessage = function(e) {
 					mypublic = e.data;
 					$('#keytext').html("Communicating");

@@ -18,7 +18,7 @@
 ?>
 <?php
 	$maxinput = 256;
-	$update = 2500;
+	$update = 2143;
 	ini_set("session.entropy_file", "/dev/urandom");
 	ini_set("session.entropy_length", "1024");
 	error_reporting(0);
@@ -149,14 +149,14 @@
 	<link rel="icon" type="image/png" href="img/favicon.gif" />
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/cryptico.js"></script>
-	<script type="text/javascript">$(document).ready(function() { $("#name,#nickinput,#key,#input").attr("autocomplete", "off"); });</script>
+	<script type="text/javascript">$(document).ready(function() { $("#c,#nickinput,#key,#input").attr("autocomplete", "off"); });</script>
 </head>
 <?php
 if (isset($_POST['c']) && preg_match('/^\w+$/', $_POST['c'])) {
 	print('<body onunload="logout();">'."\n");
 }
 else {
-	print('<body onload="document.getElementById(\'name\').focus();">'."\n");
+	print('<body onload="document.getElementById(\'c\').focus();">'."\n");
 }
 ?>
 <div><a href="https://crypto.cat/fundraiser/"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://crypto.cat/fundraiser/fundraiser.png" alt="Donate!" /></a></div>
@@ -173,7 +173,7 @@ else {
 						</div>
 					</div>
 					<div>
-						<input type="text" class="name" name="c" id="name" onclick="idSelect(\'name\');" value="'.$name.'" maxlength="32" />
+						<input type="text" class="name" name="c" id="c" onclick="idSelect(\'c\');" value="'.$name.'" maxlength="32" />
 						<input type="submit" class="create" value="enter" id="create" />
 					</div>
 					<p id="video">(for a safer experience, check out <a onclick="window.open(this.href,\'_blank\');return false;" href="https://chrome.google.com/webstore/detail/dlafegoljmjdfmhgoeojifolidmllaie">cryptocat verifier</a>.)</p>
@@ -258,7 +258,7 @@ else {
 			<img src="img/nosound.png" alt="sound" id="sound" title="enable message notifications" />
 			<div id="inchat"><div id="chat"></div></div>
 			<div id="info">chatting as <span id="nick">'.$nick.'</span> on 
-			<span class="blue"><strong>'.$name.'</strong></span> - <span id="fingerlink">fingerprints</span>
+			<strong id="name">'.$name.'</strong> - <span id="fingerlink">fingerprints</span>
 			</div>
 			<form name="chatform" id="chatform" method="post" action="'.$install.'">
 				<div>
@@ -268,7 +268,7 @@ else {
 				</div>
 			</form>
 			</div>
-			<script type="text/javascript">var install="'.$install.'";var update="'.$update.'";var name="'.$name.'";var maxinput="'.$maxinput.'";var genurl='.$genurl.';</script>
+			<script type="text/javascript">var install="'.$install.'";var update="'.$update.'";var maxinput="'.$maxinput.'";var genurl='.$genurl.';</script>
 			<script type="text/javascript" src="js/cat.js"></script>');
 		}
 		if (isset($_POST['c'])) {

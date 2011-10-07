@@ -163,7 +163,7 @@ a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #fingerlink,
 	border: none;
 	color: #97CEEC;
 }
-div.msg, div.gsm, div.cmsg, div.cgsm, div.umsg, div.ugsm {
+div.msg, div.gsm {
 	padding: 10px 10px 10px 5px;
 	background-color: #D8EDF8;
 	width: 98%;
@@ -172,29 +172,15 @@ div.msg, div.gsm, div.cmsg, div.cgsm, div.umsg, div.ugsm {
 	background-image: url("../img/chat.png");
 	background-position: 97%;
 }
-div.msg a, div.gsm a, div.cmsg a, div.cgsm a, div.umsg a, div.ugsm a {
+div.msg a, div.gsm a {
 	color: #000;
 	border-bottom: 1px dashed #000;
 }
-div.msg a:hover, div.gsm a:hover, div.cmsg a:hover, div.cgsm a:hover, div.umsg a:hover, div.ugsm a:hover {
+div.msg a:hover, div.gsm a:hover {
 	border-bottom: 1px solid #000;
 	text-decoration: none;
 }
 div.gsm {
-	background-color: #FFF;
-}
-div.cmsg {
-	background-image: url("../img/corrupt.png");
-}
-div.cgsm {
-	background-image: url("../img/corrupt.png");
-	background-color: #FFF;
-}
-div.umsg {
-	background-image: url("../img/user.png");
-}
-div.ugsm {
-	background-image: url("../img/user.png");
 	background-color: #FFF;
 }
 span.nick {
@@ -202,7 +188,7 @@ span.nick {
 	color: #FFF;
 	padding: 2px;
 	box-shadow: 2px 2px #90CAEA;
-	margin-right: 5px;
+	margin: 0px 5px 5px 0px;
 	font-family: "Monaco", monospace;
 }
 span.nick a {
@@ -322,7 +308,7 @@ span.underline {
 #fingerlink:hover, #close:hover {
 	text-decoration: underline;
 }
-span.blue {
+span.blue, #name {
 	color: #97CEEC;
 }
 span.red {
