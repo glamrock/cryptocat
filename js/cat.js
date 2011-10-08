@@ -1,10 +1,9 @@
 var seed = Math.seedrandom();
-var t, num, interval, maximized, sound, errored, reconnect, mysecret, mypublic, nickset, error, tag;
+var t, num, interval, maximized, sound, errored, reconnect, mysecret, mypublic, nickset, error, tag, sentid;
 t = num = interval = maximized = sound = errored = reconnect = pos = tag = 0;
 var fingerprints = new Array();
 var names = new Array();
 var keys = new Array();
-var sent = new Array();
 var nick = $("#nick").html();
 var name = $("#name").html();
 var soundEmbed = null;
@@ -133,15 +132,15 @@ function processline(chat, flip) {
 			fliptag();
 			chat = tagify(chat);
 			if (names.length > 1) {
-				sent.push(gen(8, 1));
-				chat = "<div class=\"" + tag + "\" id=\"" + sent[sent.length - 1] + "\"><div class=\"text\">" + chat + "</div></div>";
+				sentid = gen(8, 1);
+				chat = "<div class=\"" + tag + "\" id=\"" + sentid + "\"><div class=\"text\">" + chat + "</div></div>";
 			}
 			else {
 				chat = "<div class=\"" + tag + "\"><div class=\"text\">" + chat + "</div></div>";
 			}
 			return chat;
 		}
-		else if (match = chat.match(/^[a-z]{1,12}:\s\[B-C\](.*)\[E-C\]$/)) {
+		else if (match = chat.match(/^[a-z]{1,12}:\s\[B-C\](\w|\/|\+|\?|\(|\)|\=)+\[E-C\]$/)) {
 			thisnick = $.trim(match[0].match(/^[a-z]{1,12}/));
 			match = chat.match(/\[B-C\](.*)\[E-C\]/);
 			worker.postMessage("!" + match[0].substring(5, match[0].length - 5));
@@ -254,12 +253,7 @@ function updatechat() {
 					});
 					nickset = 0;
 				}
-				if (data == "*") {
-					$("#" + sent[0]).css("background-image","url(\"img/chat.png\")");
-					$("#" + sent[0]).attr("id", "x");
-					sent.splice(0, 1);
-				}
-				else {
+				if (data.match(/\s/)) {
 					processline(data, 1);
 					scrolldown();
 					if (!focus) {
@@ -269,6 +263,10 @@ function updatechat() {
 							soundPlay("snd/msg.ogg");
 						}
 					}
+				}
+				else {
+					$("#" + data).css("background-image","url(\"img/chat.png\")");
+					$("#" + data).attr("id", "x");
 				}
 			}
 		},
@@ -295,12 +293,12 @@ $("#chatform").submit( function() {
 		gsm = "";
 		var i = 0;
 		if (names.length > 1) {
-			$("#" + sent[sent.length - 1]).css("background-image","url(\"img/sending.png\")");
+			$("#" + sentid).css("background-image","url(\"img/sending.png\")");
 			worker.postMessage("|" + names + ":" + keys + "*" + nick);
 			worker.onmessage = function(e) {
 				worker.postMessage("?" + escape(msg));
 				worker.onmessage = function(e) {
-					msg = nick + ": " + "[B-C]" + e.data + "[E-C]";
+					msg = nick + "|" + sentid + ": " + "[B-C]" + e.data + "[E-C]";
 					$.ajax({ url: install,
 						type: "POST",
 						async: true,

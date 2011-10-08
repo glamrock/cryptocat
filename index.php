@@ -93,9 +93,9 @@
 			else if (isset($_POST['pos']) && $_POST['pos'] >= 0) {
 				$_POST['pos'] = $_POST['pos'] + ($_SESSION['pos'] - 1);
 				if ($_POST['pos'] <= count($chat) - 1) {
-					if (preg_match('/^[a-z]{1,12}:\s\[B-C\].+\[E-C\]$/', $chat[$_POST['pos']])) {
+					if (preg_match('/^[a-z]{1,12}\|\w{8}:\s\[B-C\](\w|\/|\+|\?|\(|\)|\=)+\[E-C\]$/', $chat[$_POST['pos']])) {
 						preg_match_all('/\([a-z]{1,12}\)[^\(|^\[]+/', $chat[$_POST['pos']], $match);
-						preg_match('/^[a-z]{1,12}:/', $chat[$_POST['pos']], $nick);
+						preg_match('/^[a-z]{1,12}\|/', $chat[$_POST['pos']], $nick);
 						$nick = substr($nick[0], 0, -1);
 						$ki = 0;
 						$chat[$_POST['pos']] = preg_replace('/\[B-C\](.*)\[E-C\]/', '[B-C][E-C]', $chat[$_POST['pos']]);
@@ -109,10 +109,12 @@
 					}
 					if ($_SESSION['lastpos'] < $_POST['pos']) {
 						if (!isset($nick) || ($nick != $_SESSION['nick'])) {
+							$chat[$_POST['pos']] = preg_replace('/^[a-z]{1,12}\|\w{8}/', $nick, $chat[$_POST['pos']]);
 							print(htmlspecialchars($chat[$_POST['pos']]));
 						}
 						else {
-							print("*");
+							preg_match('/\|\w{8}/', $chat[$_POST['pos']], $sentid);
+							print(substr($sentid[0], 1));
 						}
 						$_SESSION['lastpos'] = $_POST['pos'];
 					}
@@ -129,9 +131,9 @@
 		session_name('s'.$_POST['name']);
 		session_start();
 		$chat = file($data.$_POST['name']);
-		preg_match('/^[a-z]{1,12}:/', $_POST['input'], $thisnick);
+		preg_match('/^[a-z]{1,12}\|/', $_POST['input'], $thisnick);
 		$thisnick = substr($thisnick[0], 0, -1);
-		if (preg_match('/^[a-z]{1,12}:\s\[B-C\](\w|\/|\+|\?|\(|\)|\=)+\[E-C\]$/', $_POST['input']) && $_SESSION['nick'] == $thisnick) {
+		if (preg_match('/^[a-z]{1,12}\|\w{8}:\s\[B-C\](\w|\/|\+|\?|\(|\)|\=)+\[E-C\]$/', $_POST['input']) && $_SESSION['nick'] == $thisnick) {
 			$chat = $_POST['input']."\n";
 			file_put_contents($data.$_POST['name'], $chat, FILE_APPEND | LOCK_EX);
 		}
