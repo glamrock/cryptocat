@@ -300,7 +300,7 @@ $("#chatform").submit( function() {
 			var i = 0;
 			if (names.length > 1) {
 				flood = 1;
-				setTimeout("flood = 0", 3124);
+				setTimeout("flood = 0", 1000);
 				$("#" + sentid).css("background-image","url(\"img/sending.gif\")");
 				worker.postMessage("|" + names + ":" + keys + "*" + nick);
 				worker.onmessage = function(e) {
@@ -311,13 +311,9 @@ $("#chatform").submit( function() {
 							type: "POST",
 							async: true,
 							data: "input=" + encodeURIComponent(msg) + "&name=" + name + "&talk=send",
-							success: function(data) {
-								document.getElementById("input").focus();
-								$("#talk").val(maxinput);
-							},
-							error: function(data) {
-							}
 						});
+						$("#talk").val(maxinput);
+						document.getElementById("input").focus();
 					}
 				}
 			}
@@ -347,6 +343,12 @@ $("#nickform").submit( function() {
 	return false;
 });
 
+$("#nickinput").keyup(function() {
+	if ($("#nickinput").val().match(/^[a-z]{1,12}$/)) {
+		$("#nick").html($("#nickinput").val());
+	}
+});
+
 function nickajax() {
 	$.ajax({ url: install,
 		type: "POST",
@@ -356,7 +358,6 @@ function nickajax() {
 			if ((data != "error") && (data != "inuse") && (data != "full")) {
 				nickset = 1;
 				updatechat();
-				$("#nick").html($("#nickinput").val());
 				nick = $("#nick").html();
 				document.getElementById("input").focus();
 				document.title = "[" + num + "] cryptocat";
@@ -485,10 +486,6 @@ $("#maximize").click(function(){
 		maximized = 1;
 		document.getElementById("input").focus();
 	}
-});
-
-$("#input").keydown(function(){
-	textcounter(document.chatform.input,document.chatform.talk,256);
 });
 
 $("#input").keyup(function(){
