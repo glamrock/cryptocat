@@ -261,6 +261,7 @@ else {
 			<div id="inchat"><div id="chat"></div></div>
 			<div id="info">chatting as <span id="nick">'.$nick.'</span> on 
 			<strong id="name">'.$name.'</strong> - <span id="fingerlink">fingerprints</span>
+			<strong id="flood">wait</strong>
 			</div>
 			<form name="chatform" id="chatform" method="post" action="'.$install.'">
 				<div>

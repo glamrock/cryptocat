@@ -1,6 +1,6 @@
 var seed = Math.seedrandom();
-var t, num, interval, maximized, sound, errored, reconnect, mysecret, mypublic, nickset, error, tag, sentid;
-t = num = interval = maximized = sound = errored = reconnect = pos = tag = 0;
+var t, num, interval, maximized, sound, errored, reconnect, mysecret, mypublic, nickset, error, tag, sentid, flood;
+t = num = interval = maximized = sound = errored = reconnect = pos = tag = flood = 0;
 var fingerprints = new Array();
 var names = new Array();
 var keys = new Array();
@@ -283,33 +283,42 @@ function updatechat() {
 }
 
 $("#chatform").submit( function() {
-	var msg = $.trim($("#input").val());
-	msg = msg.replace(/\$/g,"&#36;");
-	var msgc = nick + ": " + msg;
-	$("#input").val("");
-	if (msg != "") {
-		document.getElementById("chat").innerHTML += processline(msgc, 0);
-		scrolldown();
-		gsm = "";
-		var i = 0;
-		if (names.length > 1) {
-			$("#" + sentid).css("background-image","url(\"img/sending.png\")");
-			worker.postMessage("|" + names + ":" + keys + "*" + nick);
-			worker.onmessage = function(e) {
-				worker.postMessage("?" + escape(msg));
+	if (flood) {
+		$('#flood').fadeIn('fast', function() {
+			setTimeout("$('#flood').fadeOut(1000)", 500);
+		});
+	}
+	else {
+		var msg = $.trim($("#input").val());
+		msg = msg.replace(/\$/g,"&#36;");
+		var msgc = nick + ": " + msg;
+		$("#input").val("");
+		if (msg != "") {
+			document.getElementById("chat").innerHTML += processline(msgc, 0);
+			scrolldown();
+			gsm = "";
+			var i = 0;
+			if (names.length > 1) {
+				flood = 1;
+				setTimeout("flood = 0", 3124);
+				$("#" + sentid).css("background-image","url(\"img/sending.gif\")");
+				worker.postMessage("|" + names + ":" + keys + "*" + nick);
 				worker.onmessage = function(e) {
-					msg = nick + "|" + sentid + ": " + "[B-C]" + e.data + "[E-C]";
-					$.ajax({ url: install,
-						type: "POST",
-						async: true,
-						data: "input=" + encodeURIComponent(msg) + "&name=" + name + "&talk=send",
-						success: function(data) {
-							document.getElementById("input").focus();
-							$("#talk").val(maxinput);
-						},
-						error: function(data) {
-						}
-					});
+					worker.postMessage("?" + escape(msg));
+					worker.onmessage = function(e) {
+						msg = nick + "|" + sentid + ": " + "[B-C]" + e.data + "[E-C]";
+						$.ajax({ url: install,
+							type: "POST",
+							async: true,
+							data: "input=" + encodeURIComponent(msg) + "&name=" + name + "&talk=send",
+							success: function(data) {
+								document.getElementById("input").focus();
+								$("#talk").val(maxinput);
+							},
+							error: function(data) {
+							}
+						});
+					}
 				}
 			}
 		}

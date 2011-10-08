@@ -317,3 +317,9 @@ span.red {
 span.monospace {
 	font-family: "Monaco", monospace;
 }
+#flood {
+	display: none;
+	color: #F00;
+	float: right;
+	margin-right: 22px;
+}
