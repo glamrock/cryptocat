@@ -116,17 +116,21 @@ function tagify(chat) {
 	return chat;
 }
 
+function fliptag() {
+	if (tag == "msg") {
+		tag = "gsm";
+	}
+	else {
+		tag = "msg";
+	}
+}
+
 function processline(chat, flip) {
 	chathtml = $("#chat").html();
 	if (chat) {
 		chat = $.trim(chat);
-		if (tag == "msg") {
-			tag = "gsm";
-		}
-		else {
-			tag = "msg";
-		}
 		if (!flip) {
+			fliptag();
 			chat = tagify(chat);
 			if (names.length > 1) {
 				sent.push(gen(8, 1));
@@ -151,6 +155,7 @@ function processline(chat, flip) {
 						if ((cipher != "corrupt") && (signkey == keys[loc])) {
 							chat = chat.replace(/\[B-C\](.*)\[E-C\]/, unescape(cipher));
 							chat = tagify(chat);
+							fliptag();
 							chat = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + chat + "</div></div>";
 							$("#chat").html(chathtml + chat);
 						}
@@ -161,12 +166,14 @@ function processline(chat, flip) {
 		else if ((match = chat.match(/^(\&gt\;|\&lt\;) [a-z]{1,12} (has arrived|has left)$/))) {
 			chat = "<span class=\"nick\">" + match[0] + "</span>";
 			updatekeys();
+			fliptag();
 			chat = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + chat + "</div></div>";
 			$("#chat").html(chathtml + chat);
 			$("#" + pos).css("background-image","url(\"img/user.png\")");
 		}
 		else {
-			chat = "<span class=\"diffkey\">corrupt</span>"
+			chat = "<span class=\"diffkey\">corrupt</span>";
+			fliptag();
 			chat = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + chat + "</div></div>";
 			$("#chat").html(chathtml + chat);
 			$("#" + pos).css("background-image","url(\"img/corrupt.png\")");
