@@ -308,7 +308,7 @@ span.underline {
 #fingerlink:hover, #close:hover {
 	text-decoration: underline;
 }
-span.blue, #name {
+.blue, #name {
 	color: #97CEEC;
 }
 span.red {

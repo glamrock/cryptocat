@@ -154,7 +154,7 @@
 	<script type="text/javascript">$(document).ready(function() { $("#c,#nickinput,#key,#input").attr("autocomplete", "off"); });</script>
 </head>
 <?php
-if (isset($_POST['c']) && preg_match('/^\w+$/', $_POST['c'])) {
+if (isset($_GET['c']) && preg_match('/^\w+$/', $_GET['c'])) {
 	print('<body onunload="logout();">'."\n");
 }
 else {
@@ -167,7 +167,7 @@ else {
 			global $install;
 			print('<div id="main">
 				<img src="img/cryptocat.png" alt="cryptocat" class="cryptocat" />
-				<form action="'.$install.'" method="post" class="create" id="welcome">
+				<form action="'.$install.'" method="get" class="create" id="welcome">
 					<div id="front">
 						<div id="note">
 						<span id="notetext">While Cryptocat is a great encrypted alternative to public chat services with invasive privacy policies, it\'s not meant as a replacement to high-level technologies such as PGP. Think responsibly if you are in extreme situations.</span>
@@ -260,7 +260,7 @@ else {
 			<img src="img/nosound.png" alt="sound" id="sound" title="enable message notifications" />
 			<div id="inchat"><div id="chat"></div></div>
 			<div id="info">chatting as <span id="nick">'.$nick.'</span> on 
-			<strong id="name">'.$name.'</strong> - <span id="fingerlink">fingerprints</span>
+			<strong class="blue">'.$install.'?c=</strong><strong id="name">'.$name.'</strong> - <span id="fingerlink">fingerprints</span>
 			<strong id="flood">wait</strong>
 			</div>
 			<form name="chatform" id="chatform" method="post" action="'.$install.'">
@@ -274,10 +274,10 @@ else {
 			<script type="text/javascript">var install="'.$install.'";var update="'.$update.'";var maxinput="'.$maxinput.'";var genurl='.$genurl.';</script>
 			<script type="text/javascript" src="js/cat.js"></script>');
 		}
-		if (isset($_POST['c'])) {
-			if (preg_match('/^\w+$/', $_POST['c'])) {
-				if (strlen($_POST['c']) <= 32) {
-					chat($_POST['c']);
+		if (isset($_GET['c'])) {
+			if (preg_match('/^\w+$/', $_GET['c'])) {
+				if (strlen($_GET['c']) <= 32) {
+					chat($_GET['c']);
 				}
 				else {
 					welcome('chat name too large');
