@@ -97,13 +97,13 @@
 						preg_match_all('/\([a-z]{1,12}\)[^\(|^\[]+/', $chat[$_POST['pos']], $match);
 						preg_match('/^[a-z]{1,12}\|/', $chat[$_POST['pos']], $nick);
 						$nick = substr($nick[0], 0, -1);
-						$ki = 0;
 						$chat[$_POST['pos']] = preg_replace('/\[B-C\](.*)\[E-C\]/', '[B-C][E-C]', $chat[$_POST['pos']]);
+						$ki = 0;
 						for ($ki=0; $ki <= count($match[0]); $ki++) {
 							if (substr($match[0][$ki], 1, strlen($_SESSION['nick'])) == $_SESSION['nick']) {
 								$match = substr($match[0][$ki], strlen($_SESSION['nick']) + 2);
 								$chat[$_POST['pos']] = preg_replace('/\[B-C\](.*)\[E-C\]/', '[B-C]'.$match.'[E-C]', $chat[$_POST['pos']]);
-								$ki = 9001;
+								$ki = count($match[0]) + 10;
 							}
 						}
 					}
@@ -257,7 +257,7 @@ else {
 			</div>
 			<a href="'.$install.'" onclick="logout();"><img src="img/cryptocat.png" alt="cryptocat" /></a>
 			<img src="img/maximize.png" alt="maximize" id="maximize" title="expand" />
-			<img src="img/nosound.png" alt="sound" id="sound" title="enable message notifications" />
+			<img src="img/nosound.png" alt="sound" id="sound" title="message sounds off" />
 			<div id="inchat"><div id="chat"></div></div>
 			<div id="info">chatting as <span id="nick">'.$nick.'</span> on 
 			<strong class="blue">'.$install.'?c=</strong><strong id="name">'.$name.'</strong> - <span id="fingerlink">fingerprints</span>
