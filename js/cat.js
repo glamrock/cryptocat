@@ -1,6 +1,6 @@
 var seed = Math.seedrandom();
-var t, num, interval, maximized, sound, errored, reconnect, mysecret, mypublic, nickset, error, tag, sentid, flood;
-t = num = interval = maximized = sound = errored = reconnect = pos = tag = flood = 0;
+var t, num, interval, sound, errored, reconnect, mysecret, mypublic, nickset, error, tag, sentid, flood;
+t = num = interval = sound = errored = reconnect = pos = tag = flood = 0;
 var fingerprints = new Array();
 var names = new Array();
 var keys = new Array();
@@ -126,10 +126,10 @@ function processline(line, flip) {
 			line = tagify(line);
 			if (names.length > 1) {
 				sentid = gen(8, 0);
-				line = "<div class=\"" + tag + "\" id=\"" + sentid + "\"><div class=\"text\">" + line + "</div></div>";
+				line = "<div class=\"" + tag + "\" id=\"" + sentid + "\"><span class=\"text\">" + line + "</span></div>";
 			}
 			else {
-				line = "<div class=\"" + tag + "\"><div class=\"text\">" + line + "</div></div>";
+				line = "<div class=\"" + tag + "\"><span class=\"text\">" + line + "</span></div>";
 			}
 			return line;
 		}
@@ -148,7 +148,7 @@ function processline(line, flip) {
 							line = line.replace(/\[B-C\](.*)\[E-C\]/, unescape(cipher));
 							line = tagify(line);
 							fliptag();
-							line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
+							line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><span class=\"text\">" + line + "</span></div>";
 							$("#chat").html($("#chat").html() + line);
 						}
 					}
@@ -159,14 +159,14 @@ function processline(line, flip) {
 			line = "<span class=\"nick\">" + match[0] + "</span>";
 			updatekeys();
 			fliptag();
-			line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
+			line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><span class=\"text\">" + line + "</span></div>";
 			$("#chat").html($("#chat").html() + line);
 			$("#" + pos).css("background-image","url(\"img/user.png\")");
 		}
 		else {
 			line = "<span class=\"diffkey\">corrupt</span>";
 			fliptag();
-			line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
+			line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><span class=\"text\">" + line + "</span></div>";
 			$("#chat").html($("#chat").html() + line);
 			$("#" + pos).css("background-image","url(\"img/corrupt.png\")");
 		}
@@ -402,7 +402,7 @@ function fingerclose() {
 }
 
 $("#maximize").click(function(){
-	if (maximized) {
+	if ($("#maximize").attr("title") == "contract") {
 		$("#main").animate({
 			"margin-top": "4.5%",
 			"min-width": "600px",
@@ -425,11 +425,11 @@ $("#maximize").click(function(){
 		}, 500 );
 		$("#inchat").animate({
 			width: "597px",
-			height: "330px",
+			height: "333px",
 			"margin-bottom": "10px"
 		}, 500 );
 		$("#chat").animate({
-			width: "607px",
+			width: "608px",
 			height: "330px"
 		}, 500, function() {
 			document.getElementById("chat").innerHTML = document.getElementById("chat").innerHTML;
@@ -437,7 +437,6 @@ $("#maximize").click(function(){
 		});
 		$("#maximize").attr("src", "img/maximize.png");
 		$("#maximize").attr("title", "expand");
-		maximized = 0;
 		document.getElementById("input").focus();
 	}
 	else {
@@ -474,7 +473,6 @@ $("#maximize").click(function(){
 		});
 		$("#maximize").attr("src", "img/minimize.png");
 		$("#maximize").attr("title", "contract");
-		maximized = 1;
 		document.getElementById("input").focus();
 	}
 });

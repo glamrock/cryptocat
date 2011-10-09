@@ -31,9 +31,6 @@ p.bottom {
 	color: #fff;
 	font-weight: bold;
 }
-p.small {
-	font-size: 11px;
-}
 input.name, input.create {
 	width: 330px;
 	margin: 0 auto;
@@ -86,8 +83,8 @@ input.create:active, #talk:active {
 	box-shadow: 2px 2px #97CEEC;
 }
 #inchat {
-	width: 598px;
-	height: 335px;
+	width: 597px;
+	height: 333px;
 	overflow: hidden;
 	margin: 10px auto;
 }
@@ -125,12 +122,13 @@ a {
 	text-decoration: none;
 	color: #97CEEC;
 }
-a img {
-	border: none;
-}
 a:hover {
 	text-decoration: underline;
 }
+a img, img a {
+	border: none;
+}
+
 input.logout:hover {
 	text-decoration: underline;
 }
@@ -170,18 +168,24 @@ div.msg, div.gsm {
 	word-wrap: break-word;
 	background-repeat: no-repeat;
 	background-image: url("../img/chat.png");
-	background-position: 97%;
+	background-position: 97.5%;
 }
 div.msg a, div.gsm a {
 	color: #000;
 	border-bottom: 1px dashed #000;
 }
+div.gsm {
+	background-color: #FFF;
+}
 div.msg a:hover, div.gsm a:hover {
 	border-bottom: 1px solid #000;
 	text-decoration: none;
 }
-div.gsm {
-	background-color: #FFF;
+img.cryptocat {
+	margin-bottom: 90px;
+}
+span.diffkey {
+	border-bottom: 1px dashed #000;
 }
 span.nick {
 	background-color: #000;
@@ -191,21 +195,8 @@ span.nick {
 	margin: 0px 5px 5px 0px;
 	font-family: "Monaco", monospace;
 }
-span.nick a {
-	color: #FFF;
-	border-bottom: 1px dashed #FFF;
-}
-span.nick a:hover {
-	border-bottom: 1px solid #FFF;
-}
-img.cryptocat {
-	margin-bottom: 90px;
-}
-span.diffkey {
-	border-bottom: 1px dashed #000;
-}
-div.text {
-	max-width: 95.5%;
+span.text {
+	max-width: 96%;
 	margin: 0px 0px 0px 0px;
 	padding: 0px 0px 0px 0px;
 	word-wrap: break-word;
@@ -230,7 +221,7 @@ td {
 #sound {
 	margin-right: 10px;
 }
-#video {
+#notice {
 	text-align: center;
 	font-style: italic;
 	margin-top: 0px;
@@ -266,9 +257,6 @@ div.redirect p {
 	font-size: 22px;
 	line-height: 1.7em;
 	word-wrap: break-word;
-}
-span.underline {
-	text-decoration: underline;
 }
 #changenick, #fingerprints, #note {
 	width: 430px;
@@ -310,9 +298,6 @@ span.underline {
 }
 .blue, #name {
 	color: #97CEEC;
-}
-span.red {
-	color: #F00;
 }
 span.monospace {
 	font-family: "Monaco", monospace;
