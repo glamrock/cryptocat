@@ -171,7 +171,7 @@ else {
 					<div id="front">
 						<div id="note">
 						<span id="notetext">While Cryptocat is a great encrypted alternative to public chat services with invasive privacy policies, it\'s not meant as a replacement to high-level technologies such as PGP. Think responsibly if you are in extreme situations.</span>
-						<br /><br /><a id="understand" href="#">I understand. Let me chat!</a>
+						<br /><input id="understand" type="button" value="I understand." />
 						</div>
 					</div>
 					<div>

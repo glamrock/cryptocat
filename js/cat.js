@@ -216,7 +216,7 @@ function updatekeys() {
 		}
 		fingerhtml += "<span class=\"blue\">" + names[fi] + "</span> " + nbsp + " " + fingerprints[fi] + "<br />";
 	}
-	fingerhtml += "<br /><br /><span onclick=\"fingerclose();\" id=\"close\">close</span>"; 
+	fingerhtml += "<br /><input type=\"button\" onclick=\"fingerclose();\" id=\"close\" value=\"close\" />"; 
 	$("#fingerprints").html(fingerhtml);
 }
 

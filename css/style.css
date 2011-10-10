@@ -62,19 +62,32 @@ input.create {
 	text-align: center;
 	outline: none;
 }
-input.nicksubmit {
+
+#understand, input.nicksubmit, #close {
 	border: 1px solid #97CEEC;
 	background-color: #000;
 	color: #97CEEC;
-	margin-left: 5px;
 	outline: none;
 	padding: 3px;
 	font-size: 11px;
 	box-shadow: 1px 1px #FFF;
 }
-input.nicksubmit:active {
+#understand {
+	margin-top: 16px;
+	font-size: 12px;
+}
+input.nicksubmit {
+	margin-left: 5px;
+}
+#close {
+	margin-top: 10px;
+}
+#understand:hover, input.nicksubmit:hover, #close:hover {
 	background-color: #97CEEC;
 	color: #FFF;
+}
+#understand:active, input.nicksubmit:active, #close:active {
+	box-shadow: none;
 }
 #talk {
 	background-color: #000;
@@ -147,7 +160,7 @@ a img, img a {
 input.logout:hover {
 	text-decoration: underline;
 }
-a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #fingerlink, #close, input.nicksubmit {
+a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #fingerlink, #close, #understand, input.nicksubmit {
 	cursor: pointer;
 }
 #input {
@@ -305,10 +318,10 @@ div.redirect p {
 #keygen, #nickentry {
 	display: none;
 }
-#nick, #fingerlink, #close {
+#nick, #fingerlink {
 	color: #97CEEC;
 }
-#fingerlink:hover, #close:hover {
+#fingerlink:hover {
 	text-decoration: underline;
 }
 .blue, #name {
