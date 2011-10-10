@@ -193,7 +193,7 @@ function updatekeys() {
 				keys[i] = keymatch[0].substring(1);
 				$("#chatters").html('<span class="chatters">' + names.length + '</span> ' + names.join(' '));
 				var loc = jQuery.inArray(names[i], oldnames);
-				if (((keys[i].length != 256) && (keys[i].length != 192)) || ((names[i] == oldnames[loc]) && (keys[i] != oldkeys[loc]))) {
+				if (((keys[i].length != 256) && (keys[i].length != 172)) || ((names[i] == oldnames[loc]) && (keys[i] != oldkeys[loc]))) {
 					var nbsp = "";
 					for (ni=0; ni != 17; ni++) {
 						nbsp += "&nbsp";

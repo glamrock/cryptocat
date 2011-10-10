@@ -40,7 +40,7 @@ self.onmessage = function(e) {
 			mysecret = cryptico.generateRSAKey(e.data, 1536);
 		}
 		else {
-			mysecret = cryptico.generateRSAKey(e.data, 1152);
+			mysecret = cryptico.generateRSAKey(e.data, 1024);
 		}
 		mypublic = cryptico.publicKeyString(mysecret);
 		self.postMessage(mypublic);
