@@ -56,10 +56,25 @@ input.create {
 	background-color: #000;
 	border: 1px solid #97CEEC;
 	color: #97CEEC;
-	width: 150px;
+	width: 100px;
 	padding: 3px;
 	font-size: 12px;
 	text-align: center;
+	outline: none;
+}
+input.nicksubmit {
+	border: 1px solid #97CEEC;
+	background-color: #000;
+	color: #97CEEC;
+	margin-left: 5px;
+	outline: none;
+	padding: 3px;
+	font-size: 11px;
+	box-shadow: 1px 1px #FFF;
+}
+input.nicksubmit:active {
+	background-color: #97CEEC;
+	color: #FFF;
 }
 #talk {
 	background-color: #000;
@@ -132,7 +147,7 @@ a img, img a {
 input.logout:hover {
 	text-decoration: underline;
 }
-a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #fingerlink, #close {
+a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #fingerlink, #close, input.nicksubmit {
 	cursor: pointer;
 }
 #input {

@@ -248,7 +248,7 @@ else {
 						<form name="nickform" id="nickform" method="post" action="'.$install.'">
 							<div>
 								<input type="text" name="nickinput" id="nickinput" value="'.$nick.'" maxlength="12" />
-								<input type="submit" class="invisible" value="chat" />
+								<input type="submit" class="nicksubmit" value="chat" />
 							</div>
 						</form>
 					</div>
