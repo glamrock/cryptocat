@@ -223,7 +223,7 @@ span.nick {
 	margin: 0px 5px 5px 0px;
 	font-family: "Monaco", monospace;
 }
-span.text {
+div.text {
 	max-width: 96%;
 	margin: 0px 0px 0px 0px;
 	padding: 0px 0px 0px 0px;
@@ -314,6 +314,16 @@ div.redirect p {
 #keygen {
 	margin-top: 10px;
 	font-size: 9px;
+}
+#keygen img {
+	float: left;
+	margin: 5px 20px 20px 35px;
+}
+#keytext {
+	float: left;
+	text-align: left;
+	line-height: 15px;
+	margin-top: -11px;
 }
 #keygen, #nickentry {
 	display: none;

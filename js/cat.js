@@ -4,6 +4,7 @@ t = num = interval = sound = errored = reconnect = pos = tag = flood = 0;
 var fingerprints = new Array();
 var names = new Array();
 var keys = new Array();
+var queue = new Array();
 var nick = $("#nick").html();
 var name = $("#name").html();
 var soundEmbed = null;
@@ -126,10 +127,10 @@ function processline(line, flip) {
 			line = tagify(line);
 			if (names.length > 1) {
 				sentid = gen(8, 0);
-				line = "<div class=\"" + tag + "\" id=\"" + sentid + "\"><span class=\"text\">" + line + "</span></div>";
+				line = "<div class=\"" + tag + "\" id=\"" + sentid + "\"><div class=\"text\">" + line + "</div></div>";
 			}
 			else {
-				line = "<div class=\"" + tag + "\"><span class=\"text\">" + line + "</span></div>";
+				line = "<div class=\"" + tag + "\"><div class=\"text\">" + line + "</div></div>";
 			}
 			return line;
 		}
@@ -148,7 +149,7 @@ function processline(line, flip) {
 							line = line.replace(/\[B-C\](.*)\[E-C\]/, unescape(cipher));
 							line = tagify(line);
 							fliptag();
-							line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><span class=\"text\">" + line + "</span></div>";
+							line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
 							$("#chat").html($("#chat").html() + line);
 						}
 					}
@@ -159,14 +160,14 @@ function processline(line, flip) {
 			line = "<span class=\"nick\">" + match[0] + "</span>";
 			updatekeys();
 			fliptag();
-			line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><span class=\"text\">" + line + "</span></div>";
+			line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
 			$("#chat").html($("#chat").html() + line);
 			$("#" + pos).css("background-image","url(\"img/user.png\")");
 		}
 		else {
 			line = "<span class=\"diffkey\">corrupt</span>";
 			fliptag();
-			line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><span class=\"text\">" + line + "</span></div>";
+			line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
 			$("#chat").html($("#chat").html() + line);
 			$("#" + pos).css("background-image","url(\"img/corrupt.png\")");
 		}
@@ -262,6 +263,14 @@ function updatechat() {
 					$("#" + data).attr("id", "x");
 				}
 			}
+			if (queue[0]) {
+				$.ajax({ url: install,
+					type: "POST",
+					async: true,
+					data: "input=" + encodeURIComponent(queue[0]) + "&name=" + name + "&talk=send",
+				});
+				queue.splice(0,1);
+			}
 		},
 		error: function(data) {
 		}
@@ -291,18 +300,14 @@ $("#chatform").submit( function() {
 			scrolldown();
 			if (names.length > 1) {
 				flood = 1;
-				setTimeout("flood = 0", 1000);
+				setTimeout("flood = 0", 1200);
 				$("#" + sentid).css("background-image","url(\"img/sending.gif\")");
 				worker.postMessage("|" + names + ":" + keys + "*" + nick);
 				worker.onmessage = function(e) {
 					worker.postMessage("?" + escape(msg));
 					worker.onmessage = function(e) {
 						msg = nick + "|" + sentid + ": " + "[B-C]" + e.data + "[E-C]";
-						$.ajax({ url: install,
-							type: "POST",
-							async: true,
-							data: "input=" + encodeURIComponent(msg) + "&name=" + name + "&talk=send",
-						});
+						queue.push(msg);
 						$("#talk").val(maxinput);
 						document.getElementById("input").focus();
 					}
@@ -318,11 +323,11 @@ $("#nickform").submit( function() {
 	if (!mypublic) {
 		$('#nickentry').fadeOut('slow', function() {
 			$('#keygen').fadeIn('slow', function() {
-				$('#keytext').html("Generating keys");
+				$('#keytext').html($('#keytext').html() + " &#160; <span class=\"blue\">OK</span><br />Generating keys");
 				worker.postMessage(gen(64, 1));
 				worker.onmessage = function(e) {
 					mypublic = e.data;
-					$('#keytext').html("Communicating");
+					$('#keytext').html($('#keytext').html() + " &#160; &#160; <span class=\"blue\">OK</span><br />Communicating");
 					nickajax();
 				}
 			});
@@ -346,6 +351,7 @@ function nickajax() {
 		async: true,
 		data: "nick=" + $("#nickinput").val() + "&name=" + name + "&public=" + encodeURIComponent(mypublic),
 		success: function(data) {
+			$('#keytext').html($('#keytext').html() + " &#160; &#160; &#160; <span class=\"blue\">OK</span>");
 			if ((data != "error") && (data != "inuse") && (data != "full")) {
 				nickset = 1;
 				updatechat();
