@@ -170,7 +170,7 @@ else {
 				<form action="'.$install.'" method="get" class="create" id="welcome">
 					<div id="front">
 						<div id="note">
-						<span id="notetext">While Cryptocat is a great encrypted alternative to public chat services with invasive privacy policies, it\'s not meant as a replacement to high-level technologies such as PGP. Think responsibly if you are in extreme situations.</span>
+						<span id="notetext">Cryptocat provides strongly encrypted, secure communications. However, it is not a replacement to GPG. Think responsibly if you are in extreme, life-threatening situations.</span>
 						<br /><input id="understand" type="button" value="I understand." />
 						</div>
 					</div>

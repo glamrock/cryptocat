@@ -43,7 +43,7 @@ function translate(language) {
 		$("#td3").html('Cryptocat és totalment compatible amb <a onclick=\"window.open(this.href,\'_blank\');return false;\" href="https://torproject.org">Tor</a> per conversar anònims. Utilitza Cryptocat amb Tor per la màxima confidencialitat.');
 		$("#notice").html("(per a una experiència més segura: <a onclick=\"window.open(this.href,\'_blank\');return false;\" href=\"https://chrome.google.com/webstore/detail/dlafegoljmjdfmhgoeojifolidmllaie\">verificador cryptocat.</a>)");
 		$("#bottom").html('<a href="#" onclick="translate(\'english\')">english</a> | <a href="https://crypto.cat/about">about</a> | <a onclick="window.open(this.href,\'_blank\');return false;" href="https://chrome.google.com/webstore/detail/gonbigodpnfghidmnphnadhepmbabhij">chrome app</a> | <a onclick=\"window.open(this.href,\'_blank\');return false;\" href="https://twitter.com/cryptocatapp">twitter</a> | <a onclick=\"window.open(this.href,\'_blank\');return false;\" href="https://github.com/kaepora/cryptocat/">github</a>');
-		$("#notetext").html('Mentre Cryptocat és una gran alternativa als serveis de xat encriptada públic amb les polítiques invasives de la privacitat, seu no és pensat com un reemplaçament de tecnologies d\'alt nivell com el PGP. Pensar de manera responsable si tu troben en situacions extremes.');
+		$("#notetext").html('Cryptocat proporciona un xifratge fort e les comunicacions segures. No obstant això, es no és un reemplaçament de GPG. Pensar de manera responsable si es troba en extrem, situacions potencialment mortals.');
 		$("#understand").val("Jo entenc.");
 		$("#c").val("nom de la xerrada");
 		$("#create").val("entrar");

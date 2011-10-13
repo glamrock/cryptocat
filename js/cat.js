@@ -303,7 +303,7 @@ $("#chatform").submit( function() {
 			scrolldown();
 			if (names.length > 1) {
 				flood = 1;
-				setTimeout("flood = 0", 1200);
+				setTimeout("flood = 0", 1000);
 				$("#" + sentid).css("background-image","url(\"img/sending.gif\")");
 				worker.postMessage("|" + names + ":" + keys + "*" + nick);
 				worker.onmessage = function(e) {
