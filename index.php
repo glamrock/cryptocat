@@ -144,7 +144,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xml:lang="en">
 <head>
 	<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
-	<meta name="description" content="Cryptocat allows you to instantly set up secure conversations. It's an open source encrypted, private alternative to invasive services such as Facebook chat." />
+	<meta name="description" content="Cryptocat lets you instantly set up secure conversations. It's an open source encrypted, private alternative to invasive services such as Facebook chat." />
 	<meta name="keywords" content="encrypted chat, private chat, secure chat, cryptocat" />
 	<title>cryptocat</title>
 	<link rel="stylesheet" href="css/style.css" type="text/css" />
@@ -183,7 +183,7 @@ else {
 				<table>
 					<tr>
 						<td class="img"><img src="img/1.png" alt="" /></td>
-						<td id="td1"><strong>Cryptocat</strong> allows you to instantly set up secure conversations. It\'s an open source encrypted, private alternative to invasive services such as Facebook chat.</td>
+						<td id="td1"><strong>Cryptocat</strong> lets you instantly set up secure conversations. It\'s an open source encrypted, private alternative to invasive services such as Facebook chat.</td>
 					</tr>
 					<tr>
 						<td class="img"><img src="img/2.png" alt="" /></td>
@@ -197,7 +197,7 @@ else {
 				<p class="bottom" id="bottom">
 					<a href="#" onclick="translate(\'catalan\')">català</a> | 
 					<a href="https://crypto.cat/about">about</a> | 
-					<a onclick="window.open(this.href,\'_blank\');return false;" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">license</a> | 
+					<a onclick="window.open(this.href,\'_blank\');return false;" href="https://chrome.google.com/webstore/detail/gonbigodpnfghidmnphnadhepmbabhij">chrome app</a> | 
 					<a onclick="window.open(this.href,\'_blank\');return false;" href="https://twitter.com/cryptocatapp">twitter</a> | 
 					<a onclick="window.open(this.href,\'_blank\');return false;" href="https://github.com/kaepora/cryptocat/">github</a>
 				</p>

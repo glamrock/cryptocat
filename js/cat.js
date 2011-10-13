@@ -58,18 +58,21 @@ function soundPlay(which) {
 }
 
 function gen(size, extra) {
+	var seed = Math.seedrandom();
 	var str = "";
 	var charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 	if (extra) {
 		charset += "~`#$%^&*()-_=+{}[];:<,>./";
 	}
 	while (str.length < size) {
-		reseed = Math.seedrandom();
-		seed = Math.seedrandom(seed + reseed);
+		if (Math.floor(Math.random()*2) == 1) {
+			reseed = Math.seedrandom();
+			seed = Math.seedrandom(seed + reseed);
+			seed = reseed;
+		}
 		for (var i=0; i != 8; i++) {
         	str += charset.charAt(Math.floor(Math.random() * charset.length));
 		}
-		seed = reseed;
 	}
  	return str;
 }
@@ -324,7 +327,7 @@ $("#nickform").submit( function() {
 		$('#nickentry').fadeOut('slow', function() {
 			$('#keygen').fadeIn('slow', function() {
 				$('#keytext').html($('#keytext').html() + " &#160; <span class=\"blue\">OK</span><br />Generating keys");
-				worker.postMessage(gen(64, 1));
+				setTimeout(worker.postMessage(gen(128, 1)), Math.random()*3);
 				worker.onmessage = function(e) {
 					mypublic = e.data;
 					$('#keytext').html($('#keytext').html() + " &#160; &#160; <span class=\"blue\">OK</span><br />Communicating");
