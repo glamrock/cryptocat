@@ -1,15 +1,31 @@
 var seed = Math.seedrandom();
-var t, num, interval, sound, errored, reconnect, mysecret, mypublic, nickset, error, tag, sentid, flood;
+
+var p = str2bigInt(
+"CEF3AE18165488C0D47759F8BCAB21185FEC6A5E69A9FF9C30C0DE5A993E7EC1" + 
+"E40766E6CD9BE25382A421E1EE7DEF78106036029C54E33174A495DC5A8D46CB" + 
+"84D5BD096A179FCCFA77BDFC28B1B66C8B65808647FDAD7F7EDFE789F1BB1858" +
+"2B50C5380B545426FE56B82E9B13CB0B0DCFD02BB750E9CE7905D3AACB1F4ECB" + 
+"E63146427AA894B24B6299C5508F6303E23E5ADF7FD2AC4D0EF4DCCF95770073" + 
+"5A912804C1E0F24B73DA702FE3E657ACF131D72ECC256BA100DC50846F63F1BE" + 
+"57BB361B4B7806E86FC1383A4489A2365C9995A305F6BD9F8D86E07DCB875AE0" + 
+"F4D9221B6E5BE08509C82A6E453C8342E8115565FAD378EB1F81F689915FA070" + 
+"572FB55DE18BBBA42E5852031CBDE1A17678B0D0223AA0B410BFE1356A8AE71B" + 
+"67D5F3B076FA6948496C5F13D97D9EA3BAA1B8883437889F9F4090DAC71D37DD" + 
+"B8EB90FF8DE336D86EA7CD9C5818FC9EAC2B70C1CFB8BF4F80CFD13F198BFD89" + 
+"C4CEE9E5CB829F70C590AC6784FB199768FD73EA27410FE316083664912CE29B", 16, 80);
+
+var g = str2bigInt("2", 10, 80);
+var t, num, interval, sound, errored, reconnect, prikey, pubkey, nickset, error, tag, sentid, flood;
 t = num = interval = sound = errored = reconnect = pos = tag = flood = 0;
 var fingerprints = new Array();
 var names = new Array();
 var keys = new Array();
+var seckeys = new Array();
 var queue = new Array();
 var nick = $("#nick").html();
 var name = $("#name").html();
 var soundEmbed = null;
 var focus = true;
-var worker = new Worker("js/rsagen.js");
 
 function idSelect(id) {
 	document.getElementById(id).focus();
@@ -57,32 +73,39 @@ function soundPlay(which) {
 	document.body.appendChild(soundEmbed);
 }
 
-function gen(size, extra) {
-	var seed = Math.seedrandom();
-	var str = "";
-	var charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-	if (extra) {
-		charset += "~`#$%^&*()-_=+{}[];:<,>./";
-	}
-	while (str.length < size) {
-		if (Math.floor(Math.random()*2) == 1) {
-			reseed = Math.seedrandom();
-			seed = Math.seedrandom(seed + reseed);
-			seed = reseed;
-		}
-		for (var i=0; i != 8; i++) {
-        	str += charset.charAt(Math.floor(Math.random() * charset.length));
-		}
-	}
- 	return str;
-}
-
 function textcounter(field,cntfield,maxlimit) {
 	if (field.value.length > maxlimit) {
 		field.value = field.value.substring(0, maxlimit);
 	}
 	else {
 		cntfield.value = maxlimit - field.value.length;
+	}
+}
+
+function gen(size, extra) {
+	reseed = Math.seedrandom();
+	seed = Math.seedrandom(seed + reseed);
+	seed = reseed;
+	var str = "";
+	var charset = "0123456789";
+	if (extra == 1) {
+		charset += "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	}
+	while (str.length < size) {
+       	str += charset.charAt(Math.floor(Math.random() * charset.length));
+	}
+ 	return str;
+}
+
+function dhgen(key, pub) {
+	if (pub == "gen") {
+		prikey = str2bigInt(key, 10, 80);
+		pubkey = powMod(g, prikey, p);
+		return bigInt2str(pubkey, 64);
+	}
+	else {
+		pub = str2bigInt(pub, 64, 80);
+		return Crypto.SHA256(bigInt2str(powMod(pub, key, p), 64));
 	}
 }
 
@@ -114,12 +137,8 @@ function tagify(chat) {
 }
 
 function fliptag() {
-	if (tag == "msg") {
-		tag = "gsm";
-	}
-	else {
-		tag = "msg";
-	}
+	if (tag == "msg") { tag = "gsm"; }
+	else { tag = "msg"; }
 }
 
 function processline(line, flip) {
@@ -129,7 +148,6 @@ function processline(line, flip) {
 			fliptag();
 			line = tagify(line);
 			if (names.length > 1) {
-				sentid = gen(8, 0);
 				line = "<div class=\"" + tag + "\" id=\"" + sentid + "\"><div class=\"text\">" + line + "</div></div>";
 			}
 			else {
@@ -140,28 +158,18 @@ function processline(line, flip) {
 		else if (match = line.match(/^[a-z]{1,12}:\s\[B-C\](\w|\/|\+|\?|\(|\)|\=)+\[E-C\]$/)) {
 			thisnick = $.trim(match[0].match(/^[a-z]{1,12}/));
 			match = line.match(/\[B-C\](.*)\[E-C\]/);
-			worker.postMessage("!" + match[0].substring(5, match[0].length - 5));
-			worker.onmessage = function(e) {
-				if (e.data.match(/^\:msg\:/)) {
-					var cipher = e.data.substring(5);
-					worker.postMessage("@");
-					worker.onmessage = function(e) {
-						var signkey = e.data;
-						var loc = jQuery.inArray(thisnick, names);
-						if ((cipher != "corrupt") && (signkey == keys[loc])) {
-							line = line.replace(/\[B-C\](.*)\[E-C\]/, unescape(cipher));
-							line = tagify(line);
-							fliptag();
-							line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
-							$("#chat").html($("#chat").html() + line);
-						}
-					}
-				}
-			}
+			match = match[0].substring(5, match[0].length - 5);
+			var loc = jQuery.inArray(thisnick, names);
+			match = Crypto.AES.decrypt(match, dhgen(prikey, keys[loc]), {mode: new Crypto.mode.CBC(Crypto.pad.iso10126)});
+			line = line.replace(/\[B-C\](.*)\[E-C\]/, match);
+			line = tagify(line);
+			fliptag();
+			line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
+			$("#chat").html($("#chat").html() + line);
 		}
-		else if ((match = line.match(/^(\&gt\;|\&lt\;) [a-z]{1,12} (has arrived|has left)$/))) {
-			line = "<span class=\"nick\">" + match[0] + "</span>";
+		else if (match = line.match(/^(\&gt\;|\&lt\;) [a-z]{1,12} (has arrived|has left)$/)) {
 			updatekeys();
+			line = "<span class=\"nick\">" + match[0] + "</span>";
 			fliptag();
 			line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
 			$("#chat").html($("#chat").html() + line);
@@ -182,22 +190,24 @@ function updatekeys() {
 	$.ajax({ url: install,
 		type: "POST",
 		async: false,
-		data: "nick=" + $("#nickinput").val() + "&name=" + name + "&public=get",
+		data: "nick=" + $("#nickinput").val() + "&name=" + name + "&key=get",
 		success: function(data) {
-			data = data.split('|');
 			oldnames = names;
 			oldkeys = keys;
+			data = data.split('|');
 			names = new Array();
 			keys = new Array();
+			seckeys = new Array();
 			fingerprints = new Array();
 			for (i=0; i <= data.length - 2; i++) {
-				keymatch = data[i].match(/^[a-z]{1,12}:/);
-				names[i] = keymatch[0].substring(0, keymatch[0].length - 1);
-				keymatch = data[i].match(/:.+/);
-				keys[i] = keymatch[0].substring(1);
+				sigmatch = data[i].match(/^[a-z]{1,12}:/);
+				names[i] = sigmatch[0].substring(0, sigmatch[0].length - 1);
+				sigmatch = data[i].match(/:.+/);
+				keys[i] = sigmatch[0].substring(1);
 				$("#chatters").html('<span class="chatters">' + names.length + '</span> ' + names.join(' '));
 				var loc = jQuery.inArray(names[i], oldnames);
-				if (((keys[i].length != 256) && (keys[i].length != 172)) || ((names[i] == oldnames[loc]) && (keys[i] != oldkeys[loc]))) {
+				if (((keys[i].length != 511) && (keys[i].length != 512)) || 
+				((names[i] == oldnames[loc]) && (keys[i] != oldkeys[loc]))) {
 					var nbsp = "";
 					for (ni=0; ni != 17; ni++) {
 						nbsp += "&nbsp";
@@ -206,8 +216,13 @@ function updatekeys() {
 					$("#fingerlink").click();
 				}
 				else {
-					fingerprints[i] = SHA256(keys[i]);
-					fingerprints[i] = fingerprints[i].substring(0, 8).toUpperCase() + ":" + fingerprints[i].substring(16, 24).toUpperCase() + ":" + fingerprints[i].substring(32, 40).toUpperCase() + ":" + fingerprints[i].substring(48, 56).toUpperCase() + ":" + fingerprints[i].substring(56, 64).toUpperCase();
+					fingerprints[i] = Crypto.SHA256(keys[i]);
+					fingerprints[i] = fingerprints[i].substring(0, 8).toUpperCase() + ":" + 
+					fingerprints[i].substring(16, 24).toUpperCase() + ":" + 
+					fingerprints[i].substring(32, 40).toUpperCase() + ":" + 
+					fingerprints[i].substring(48, 56).toUpperCase() + ":" + 
+					fingerprints[i].substring(56, 64).toUpperCase();
+					seckeys[i] = dhgen(prikey, keys[i]);
 				}
 			}
 		}
@@ -231,12 +246,12 @@ function updatechat() {
 		data: "chat=" + name + "&pos=" + pos,
 		success: function(data) {
 			if (data == "NOEXIST") {
-				if (!errored && mypublic) {
+				if (!errored && pubkey) {
 					errordisplay("your chat no longer exists.");
 				}
 			}
 			else if (data == "NOLOGIN") {
-				if (!errored && mypublic) {
+				if (!errored && pubkey) {
 					errordisplay("you have been logged out.");
 				}
 			}
@@ -267,10 +282,17 @@ function updatechat() {
 				}
 			}
 			if (queue[0]) {
+				var msg = "";
+				for (var i=0; i != names.length; i++) {
+					if (names && (names[i] != nick)) { 
+						msg += "(" + names[i] + ")" + Crypto.AES.encrypt(queue[0].replace(/\$.+$/, ''), seckeys[i], {mode: new Crypto.mode.CBC(Crypto.pad.iso10126)});
+					}
+				}
+				msg = nick + "|" + queue[0].replace(/^.+\$/, '') + ": " + "[B-C]" + msg + "[E-C]";
 				$.ajax({ url: install,
 					type: "POST",
 					async: true,
-					data: "input=" + encodeURIComponent(queue[0]) + "&name=" + name + "&talk=send",
+					data: "input=" + encodeURIComponent(msg) + "&name=" + name + "&talk=send",
 				});
 				queue.splice(0,1);
 			}
@@ -299,40 +321,31 @@ $("#chatform").submit( function() {
 		var msgc = nick + ": " + msg;
 		$("#input").val("");
 		if (msg != "") {
+			sentid = gen(8, 1);
 			document.getElementById("chat").innerHTML += processline(msgc, 0);
 			scrolldown();
 			if (names.length > 1) {
 				flood = 1;
 				setTimeout("flood = 0", 1000);
 				$("#" + sentid).css("background-image","url(\"img/sending.gif\")");
-				worker.postMessage("|" + names + ":" + keys + "*" + nick);
-				worker.onmessage = function(e) {
-					worker.postMessage("?" + escape(msg));
-					worker.onmessage = function(e) {
-						msg = nick + "|" + sentid + ": " + "[B-C]" + e.data + "[E-C]";
-						queue.push(msg);
-						$("#talk").val(maxinput);
-						document.getElementById("input").focus();
-					}
-				}
+				queue.push(msg + "$" + sentid);
+				$("#talk").val(maxinput);
+				document.getElementById("input").focus();
 			}
 		}
 	}
-	return false;    
+	return false;
 });
 
 $("#nickform").submit( function() {
 	$("#nickinput").val(document.getElementById("nickinput").value.toLowerCase());
-	if (!mypublic) {
+	if (!pubkey) {
 		$('#nickentry').fadeOut('slow', function() {
 			$('#keygen').fadeIn('slow', function() {
 				$('#keytext').html($('#keytext').html() + " &#160; <span class=\"blue\">OK</span><br />Generating keys");
-				setTimeout(worker.postMessage(gen(128, 1)), Math.random()*3);
-				worker.onmessage = function(e) {
-					mypublic = e.data;
-					$('#keytext').html($('#keytext').html() + " &#160; &#160; <span class=\"blue\">OK</span><br />Communicating");
-					nickajax();
-				}
+				pubkey = dhgen(gen(64, 0), "gen");
+				$('#keytext').html($('#keytext').html() + " &#160; &#160; <span class=\"blue\">OK</span><br />Communicating");
+				nickajax();
 			});
 		});
 	}
@@ -352,12 +365,12 @@ function nickajax() {
 	$.ajax({ url: install,
 		type: "POST",
 		async: true,
-		data: "nick=" + $("#nickinput").val() + "&name=" + name + "&public=" + encodeURIComponent(mypublic),
+		data: "nick=" + $("#nickinput").val() + "&name=" + name + "&key=" + encodeURIComponent(pubkey),
 		success: function(data) {
-			$('#keytext').html($('#keytext').html() + " &#160; &#160; &#160; <span class=\"blue\">OK</span>");
 			if ((data != "error") && (data != "inuse") && (data != "full")) {
 				nickset = 1;
 				updatechat();
+				$('#keytext').html($('#keytext').html() + " &#160; &#160; &#160; <span class=\"blue\">OK</span>");
 				nick = $("#nick").html();
 				document.getElementById("input").focus();
 				document.title = "[" + num + "] cryptocat";

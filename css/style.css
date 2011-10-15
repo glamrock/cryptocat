@@ -337,6 +337,9 @@ div.redirect p {
 .blue, #name {
 	color: #97CEEC;
 }
+.red {
+	color: #F00;
+}
 span.monospace {
 	font-family: "Monaco", monospace;
 }

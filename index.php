@@ -31,11 +31,18 @@
 		return $people[0];
 	}
 	if (isset($_GET['redirect']) && preg_match('/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/i', $_GET['redirect'])) {
-		print('<html><head><title>cryptocat</title><link rel="stylesheet" href="css/style.css" type="text/css" /></head>
-		<body><div class="redirect"><img src="img/cryptocat.png" alt="" />You are leaving cryptocat to visit: <p><a href="'.htmlspecialchars($_GET['redirect']).'">'.htmlspecialchars($_GET['redirect']).'</a></p>Click the link to continue.</div></body></html>');
+		print('<html><head><title>cryptocat</title>
+		<link rel="stylesheet" href="css/style.css" type="text/css" /></head>
+		<body><div class="redirect"><img src="img/cryptocat.png" alt="" />
+		You are leaving cryptocat to visit: <p>
+		<a href="'.htmlspecialchars($_GET['redirect']).'">'.htmlspecialchars($_GET['redirect']).'</a>
+		</p>Click the link to continue.</div></body></html>');
 		exit;
 	}
-	else if (preg_match('/^[a-z]{1,12}$/', $_POST['nick']) && strlen($_POST['nick']) <= 12 && preg_match('/^\w+$/', $_POST['name']) && preg_match('/^(\w|\/|\+|\?|\(|\)|\=)+$/', $_POST['public'])) {
+	else if (preg_match('/^[a-z]{1,12}$/', $_POST['nick']) && 
+	strlen($_POST['nick']) <= 12 && 
+	preg_match('/^\w+$/', $_POST['name']) && 
+	preg_match('/^(\w|\/|\+|\?|\(|\)|\=)+$/', $_POST['key'])) {
 		$_POST['name'] = strtolower($_POST['name']);
 		session_name('s'.$_POST['name']);
 		session_start();
@@ -43,11 +50,11 @@
 			$chat = file($data.$_POST['name']);
 			if (time() - filemtime($data.$_POST['name']) > $timelimit) {
 				unlink($data.$_POST['name']);
-				enterchat($_POST['name'], $_POST['nick'], $_POST['public']);
+				enterchat($_POST['name'], $_POST['nick'], $_POST['key']);
 				exit;
 			}
 		}
-		if ($_POST['public'] == 'get') {
+		if ($_POST['key'] == "get") {
 			print(trim($chat[0]));
 			exit;
 		}
@@ -65,10 +72,10 @@
 		}
 		if (!isset($_SESSION['nick'])) {
 			if (file_exists($data.$_POST['name'])) {
-				enterchat($_POST['name'], $_POST['nick'], $_POST['public']);
+				enterchat($_POST['name'], $_POST['nick'], $_POST['key']);
 			}
 			else {
-				enterchat($_POST['name'], $_POST['nick'], $_POST['public']);
+				enterchat($_POST['name'], $_POST['nick'], $_POST['key']);
 				$chat = file($data.$_POST['name']);
 			}
 		}
@@ -97,7 +104,6 @@
 						preg_match_all('/\([a-z]{1,12}\)[^\(|^\[]+/', $chat[$_POST['pos']], $match);
 						preg_match('/^[a-z]{1,12}\|/', $chat[$_POST['pos']], $nick);
 						$nick = substr($nick[0], 0, -1);
-						$chat[$_POST['pos']] = preg_replace('/\[B-C\](.*)\[E-C\]/', '[B-C][E-C]', $chat[$_POST['pos']]);
 						$ki = 0;
 						for ($ki=0; $ki <= count($match[0]); $ki++) {
 							if (substr($match[0][$ki], 1, strlen($_SESSION['nick'])) == $_SESSION['nick']) {
@@ -150,7 +156,7 @@
 	<link rel="stylesheet" href="css/style.css" type="text/css" />
 	<link rel="icon" type="image/png" href="img/favicon.gif" />
 	<script type="text/javascript" src="js/jquery.js"></script>
-	<script type="text/javascript" src="js/cryptico.js"></script>
+	<script type="text/javascript" src="js/crypto.js"></script>
 	<script type="text/javascript">$(document).ready(function() { $("#c,#nickinput,#key,#input").attr("autocomplete", "off"); });</script>
 </head>
 <?php
@@ -205,7 +211,7 @@ else {
 			<script type="text/javascript">var install = "'.$install.'";</script>
 			<script type="text/javascript" src="js/welcome.js"></script>');
 		}
-		function enterchat($name, $nick, $public) {
+		function enterchat($name, $nick, $key) {
 			global $data, $_SESSION;
 			$name = strtolower($name);
 			session_name('s'.$name);
@@ -221,7 +227,7 @@ else {
 				else {
 					$_SESSION['nick'] = $nick;
 					$_SESSION['check'] = "OK";
-					$chat[0] = trim($chat[0]).$nick.':'.$public."|\n";
+					$chat[0] = trim($chat[0]).$nick.':'.$key."|\n";
 					$chat[count($chat)] = "> ".$nick." has arrived\n";
 					file_put_contents($data.$name, implode('', $chat), LOCK_EX);
 					$_SESSION['pos'] = count(file($data.$name));
