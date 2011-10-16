@@ -141,7 +141,7 @@ function fliptag() {
 	else { tag = "msg"; }
 }
 
-function processline(line, flip) {
+function process(line, flip) {
 	if (line) {
 		line = $.trim(line);
 		if (!flip) {
@@ -155,16 +155,25 @@ function processline(line, flip) {
 			}
 			return line;
 		}
-		else if (match = line.match(/^[a-z]{1,12}:\s\[B-C\](\w|\/|\+|\?|\(|\)|\=)+\[E-C\]$/)) {
+		else if (match = line.match(/^[a-z]{1,12}:\s\[B-C\](\w|\/|\+|\?|\(|\)|\=|\|)+\[E-C\]$/)) {
 			thisnick = $.trim(match[0].match(/^[a-z]{1,12}/));
-			match = line.match(/\[B-C\](.*)\[E-C\]/);
-			match = match[0].substring(5, match[0].length - 5);
+			match = line.match(/\[B-C\](.*)\|/);
+			match = match[0].substring(5, match[0].length - 1);
+			var hmac = line.match(/\|\w{64}/);
+			hmac = hmac[0].substring(1);
+			line = line.replace(/\|\w{64}/, '');
 			var loc = jQuery.inArray(thisnick, names);
-			match = Crypto.AES.decrypt(match, seckeys[loc], {mode: new Crypto.mode.CBC(Crypto.pad.iso10126)});
-			line = line.replace(/\[B-C\](.*)\[E-C\]/, match);
-			line = tagify(line);
 			fliptag();
-			line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
+			if (Crypto.HMAC(Crypto.SHA256, match, seckeys[loc]) != hmac) {
+				line = line.replace(/\[B-C\](.*)\[E-C\]/, "<span class=\"diffkey\">corrupt</span>");
+				$("#" + pos).css("background-image","url(\"img/corrupt.png\")");
+			}
+			else {
+				match = Crypto.AES.decrypt(match, seckeys[loc], {mode: new Crypto.mode.CBC(Crypto.pad.iso10126)});
+				line = line.replace(/\[B-C\](.*)\[E-C\]/, match);
+				line = tagify(line);
+				line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
+			}
 			$("#chat").html($("#chat").html() + line);
 		}
 		else if (match = line.match(/^(\&gt\;|\&lt\;) [a-z]{1,12} (has arrived|has left)$/)) {
@@ -266,7 +275,7 @@ function updatechat() {
 					nickset = 0;
 				}
 				if (data.match(/\s/)) {
-					processline(data, 1);
+					process(data, 1);
 					scrolldown();
 					if (!focus) {
 						num++;
@@ -284,8 +293,10 @@ function updatechat() {
 			if (queue[0]) {
 				var msg = "";
 				for (var i=0; i != names.length; i++) {
-					if (names && (names[i] != nick)) { 
-						msg += "(" + names[i] + ")" + Crypto.AES.encrypt(queue[0].replace(/\$.+$/, ''), seckeys[i], {mode: new Crypto.mode.CBC(Crypto.pad.iso10126)});
+					if (names && (names[i] != nick)) {
+						var crypt = Crypto.AES.encrypt(queue[0].replace(/\$.+$/, ''), seckeys[i], {mode: new Crypto.mode.CBC(Crypto.pad.iso10126)});
+						msg += "(" + names[i] + ")" + crypt;
+						msg += "|" + Crypto.HMAC(Crypto.SHA256, crypt, seckeys[i]);
 					}
 				}
 				msg = nick + "|" + queue[0].replace(/^.+\$/, '') + ": " + "[B-C]" + msg + "[E-C]";
@@ -322,7 +333,7 @@ $("#chatform").submit( function() {
 		$("#input").val("");
 		if (msg != "") {
 			sentid = gen(8, 1);
-			document.getElementById("chat").innerHTML += processline(msgc, 0);
+			document.getElementById("chat").innerHTML += process(msgc, 0);
 			scrolldown();
 			if (names.length > 1) {
 				flood = 1;

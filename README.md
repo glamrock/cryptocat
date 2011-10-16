@@ -7,6 +7,7 @@ Cryptocat lets you instantly set up secure conversations. It's an open source en
 ## Cool features
 * A client-side 3072-bit Diffie-Hellman-Merkle public key cryptography engine.
 * A client-side AES-256 implementation is used to encrypt data.
+* Messages are verified for integrity.
 * The identity of chatters can be confirmed via key fingerprints, à la OTR.
 * A seeded, cryptographically secure random number generator that relies on browser elements, DOM, JavaScript variable state, and more to produce entropy. The resulting entropy is hashed to produce the final seed, which is then fed back to the CSPRNG.
 * [Cryptocat Verifier](https://chrome.google.com/webstore/detail/dlafegoljmjdfmhgoeojifolidmllaie), a Google Chrome browser extension, can be used to verify the integrity of your Cryptocat session.
