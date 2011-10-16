@@ -88,7 +88,7 @@ function gen(size, extra) {
 	seed = reseed;
 	var str = "";
 	var charset = "0123456789";
-	if (extra == 1) {
+	if (extra) {
 		charset += "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 	}
 	while (str.length < size) {
@@ -160,7 +160,7 @@ function processline(line, flip) {
 			match = line.match(/\[B-C\](.*)\[E-C\]/);
 			match = match[0].substring(5, match[0].length - 5);
 			var loc = jQuery.inArray(thisnick, names);
-			match = Crypto.AES.decrypt(match, dhgen(prikey, keys[loc]), {mode: new Crypto.mode.CBC(Crypto.pad.iso10126)});
+			match = Crypto.AES.decrypt(match, seckeys[loc], {mode: new Crypto.mode.CBC(Crypto.pad.iso10126)});
 			line = line.replace(/\[B-C\](.*)\[E-C\]/, match);
 			line = tagify(line);
 			fliptag();
