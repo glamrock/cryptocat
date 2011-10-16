@@ -2,7 +2,7 @@
 ### http://crypto.cat
 #### Beta software - code review highly appreciated.
 
-Cryptocat lets you to instantly set up secure conversations. It's an open source encrypted, private alternative to invasive services such as Facebook chat.
+Cryptocat lets you instantly set up secure conversations. It's an open source encrypted, private alternative to invasive services such as Facebook chat.
 
 ## Cool features
 * A client-side 3072-bit Diffie-Hellman-Merkle public key cryptography engine.
