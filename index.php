@@ -18,7 +18,7 @@
 ?>
 <?php
 	$maxinput = 256;
-	$update = 2143;
+	$update = 1300;
 	ini_set("session.entropy_file", "/dev/urandom");
 	ini_set("session.entropy_length", "1024");
 	error_reporting(0);
