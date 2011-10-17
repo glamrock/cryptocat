@@ -33,7 +33,7 @@ function idSelect(id) {
 }
 
 function scrolldown() {
-	$("#chat").animate({ scrollTop: document.getElementById("chat").scrollHeight + 20}, 820);
+	$("#chat").animate({scrollTop: document.getElementById("chat").scrollHeight + 20}, 820);
 }
 
 function getstamp(nick) {
@@ -276,8 +276,10 @@ function updatechat() {
 				}
 				if (data.match(/\s/)) {
 					process(data, 1);
-					scrolldown();
-					if (!focus) {
+					if ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) < 600) {
+						scrolldown();
+					}
+					if (!focus || ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) > 600)) {
 						num++;
 						document.title = "[" + num + "] cryptocat";
 					}
