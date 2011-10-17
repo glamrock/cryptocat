@@ -5,7 +5,7 @@
 Cryptocat lets you instantly set up secure conversations. It's an open source encrypted, private alternative to invasive services such as Facebook chat.
 
 ## Cool features
-* A client-side 3072-bit Diffie-Hellman-Merkle public key cryptography engine.
+* A client-side 4096-bit Diffie-Hellman-Merkle public key cryptography engine.
 * A client-side AES-256 implementation is used to encrypt data.
 * Messages are verified for integrity.
 * The identity of chatters can be confirmed via key fingerprints, à la OTR.
