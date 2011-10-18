@@ -22,10 +22,10 @@ var p = str2bigInt(
 var g = str2bigInt("2", 10);
 var t, num, interval, sound, errored, reconnect, prikey, pubkey, nickset, error, tag, sentid, flood;
 t = num = interval = sound = errored = reconnect = pos = tag = flood = 0;
-var fingerprints = new Array();
 var names = new Array();
 var keys = new Array();
 var seckeys = new Array();
+var fingerprints = new Array();
 var queue = new Array();
 var nick = $("#nick").html();
 var name = $("#name").html();
@@ -203,54 +203,58 @@ function process(line, flip) {
 function updatekeys() {
 	$.ajax({ url: install,
 		type: "POST",
-		async: false,
+		async: true,
 		data: "nick=" + $("#nickinput").val() + "&name=" + name + "&key=get",
 		success: function(data) {
-			oldnames = names;
-			oldkeys = keys;
 			data = data.split('|');
-			names = new Array();
-			keys = new Array();
-			seckeys = new Array();
-			fingerprints = new Array();
-			for (i=0; i <= data.length - 2; i++) {
-				sigmatch = data[i].match(/^[a-z]{1,12}:/);
-				names[i] = sigmatch[0].substring(0, sigmatch[0].length - 1);
-				sigmatch = data[i].match(/:.+/);
-				keys[i] = sigmatch[0].substring(1);
+			data.splice(data.length - 1, 1);
+			if (data.length != names.length) {
+				oldnames = names;
+				oldkeys = keys;
+				names = new Array();
+				keys = new Array();
+				fingerprints = new Array();
+				for (var i=0; i <= data.length - 1; i++) {
+					names[i] = data[i].replace(/:.+$/, '');
+					keys[i] = data[i].replace(/^[a-z]{1,12}:/, '');
+					var loc = jQuery.inArray(names[i], oldnames);
+					if (((keys[i].length != 682) && (keys[i].length != 683)) || 
+					((names[i] == oldnames[loc]) && (keys[i] != oldkeys[loc]))) {
+						var nbsp = "";
+						for (ni=0; ni != 17; ni++) {
+							nbsp += "&nbsp";
+						}
+						fingerprints[i] = nbsp + " <span class=\"red\">unreliable connection/keys</span>";
+						$("#fingerlink").click();
+					}
+					else {
+						if ((names[i] != oldnames[i]) && (names[i] != nick)) {
+							seckeys[i] = dhgen(prikey, keys[i]);
+						}
+						fingerprints[i] = Crypto.SHA256(keys[i]);
+						fingerprints[i] = 
+						fingerprints[i].substring(10, 18) + ":" + 
+						fingerprints[i].substring(20, 28) + ":" + 
+						fingerprints[i].substring(30, 38) + ":" + 
+						fingerprints[i].substring(40, 48) + ":" + 
+						fingerprints[i].substring(50, 58);
+						fingerprints[i] = fingerprints[i].toUpperCase();
+					}
+				}
 				$("#chatters").html('<span class="chatters">' + names.length + '</span> ' + names.join(' '));
-				var loc = jQuery.inArray(names[i], oldnames);
-				seckeys[i] = dhgen(prikey, keys[i]);
-				if (((keys[i].length != 682) && (keys[i].length != 683)) || 
-				((names[i] == oldnames[loc]) && (keys[i] != oldkeys[loc]))) {
+				var fingerhtml = "Verify friends using their fingerprint.<br />(be certain of their identity - over the phone is fine.)<br /><br />";
+				for (fi=0; fi <= names.length - 1; fi++) {
 					var nbsp = "";
-					for (ni=0; ni != 17; ni++) {
+					for (ni=0; ni + names[fi].length != 13; ni++) {
 						nbsp += "&nbsp";
 					}
-					fingerprints[i] = nbsp + " <span class=\"red\">unreliable connection/keys</span>";
-					$("#fingerlink").click();
+					fingerhtml += "<span class=\"blue\">" + names[fi] + "</span> " + nbsp + " " + fingerprints[fi] + "<br />";
 				}
-				else {
-					fingerprints[i] = Crypto.SHA256(keys[i]);
-					fingerprints[i] = fingerprints[i].substring(0, 8).toUpperCase() + ":" + 
-					fingerprints[i].substring(16, 24).toUpperCase() + ":" + 
-					fingerprints[i].substring(32, 40).toUpperCase() + ":" + 
-					fingerprints[i].substring(48, 56).toUpperCase() + ":" + 
-					fingerprints[i].substring(56, 64).toUpperCase();
-				}
+				fingerhtml += "<br /><input type=\"button\" onclick=\"fingerclose();\" id=\"close\" value=\"close\" />"; 
+				$("#fingerprints").html(fingerhtml);
 			}
 		}
 	});
-	var fingerhtml = "Verify friends using their fingerprint. <br />(be certain of their identity - over the phone is fine.)<br /><br />";
-	for (fi=0; fi <= names.length - 1; fi++) {
-		var nbsp = "";
-		for (ni=0; ni + names[fi].length != 13; ni++) {
-			nbsp += "&nbsp";
-		}
-		fingerhtml += "<span class=\"blue\">" + names[fi] + "</span> " + nbsp + " " + fingerprints[fi] + "<br />";
-	}
-	fingerhtml += "<br /><input type=\"button\" onclick=\"fingerclose();\" id=\"close\" value=\"close\" />"; 
-	$("#fingerprints").html(fingerhtml);
 }
 
 function updatechat() {
