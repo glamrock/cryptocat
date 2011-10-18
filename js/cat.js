@@ -20,8 +20,8 @@ var p = str2bigInt(
 16);
 
 var g = str2bigInt("2", 10);
-var t, num, interval, sound, errored, reconnect, prikey, pubkey, nickset, error, tag, sentid, flood;
-t = num = interval = sound = errored = reconnect = pos = tag = flood = 0;
+var num, interval, sound, errored, reconnect, pos, tag, flood, prikey, pubkey, error, sentid;
+num = interval = sound = errored = reconnect = pos = tag = flood = 0;
 var names = new Array();
 var keys = new Array();
 var seckeys = new Array();
@@ -29,8 +29,8 @@ var fingerprints = new Array();
 var queue = new Array();
 var nick = $("#nick").html();
 var name = $("#name").html();
-var soundEmbed = null;
 var focus = true;
+var soundEmbed = null;
 
 function idSelect(id) {
 	document.getElementById(id).focus();
@@ -87,10 +87,12 @@ function textcounter(field,cntfield,maxlimit) {
 	}
 }
 
-function gen(size, extra) {
-	reseed = Math.seedrandom();
-	seed = Math.seedrandom(seed + reseed);
-	seed = reseed;
+function gen(size, extra, s) {
+	if (s) {
+		reseed = Math.seedrandom();
+		seed = Math.seedrandom(seed + reseed);
+		seed = reseed;
+	}
 	var str = "";
 	var charset = "0123456789";
 	if (extra) {
@@ -275,14 +277,6 @@ function updatechat() {
 			}
 			else if (data != "") {
 				pos++;
-				if ((pos) && (nickset)) {
-					$('#keygen').fadeOut('slow', function() {
-						$("#changenick").fadeOut('fast');
-						$("#nickentry").fadeOut('fast');
-					    $("#front").fadeOut();
-					});
-					nickset = 0;
-				}
 				if (data.match(/\s/)) {
 					process(data, 1);
 					if ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) < 600) {
@@ -343,7 +337,7 @@ $("#chatform").submit( function() {
 		var msgc = nick + ": " + msg;
 		$("#input").val("");
 		if (msg != "") {
-			sentid = gen(8, 1);
+			sentid = gen(8, 1, 0);
 			document.getElementById("chat").innerHTML += process(msgc, 0);
 			scrolldown();
 			if (names.length > 1) {
@@ -365,7 +359,7 @@ $("#nickform").submit( function() {
 		$('#nickentry').fadeOut('slow', function() {
 			$('#keygen').fadeIn('slow', function() {
 				$('#keytext').html($('#keytext').html() + " &#160; <span class=\"blue\">OK</span><br />Generating keys");
-				pubkey = dhgen(gen(32, 0), "gen");
+				pubkey = dhgen(gen(32, 0, 1), "gen");
 				$('#keytext').html($('#keytext').html() + " &#160; &#160; <span class=\"blue\">OK</span><br />Communicating");
 				nickajax();
 			});
@@ -390,13 +384,17 @@ function nickajax() {
 		data: "nick=" + $("#nickinput").val() + "&name=" + name + "&key=" + encodeURIComponent(pubkey),
 		success: function(data) {
 			if ((data != "error") && (data != "inuse") && (data != "full")) {
-				nickset = 1;
 				updatechat();
-				$('#keytext').html($('#keytext').html() + " &#160; &#160; &#160; <span class=\"blue\">OK</span>");
 				nick = $("#nick").html();
 				document.getElementById("input").focus();
 				document.title = "[" + num + "] cryptocat";
 				interval = setInterval("updatechat()", update);
+				$('#keytext').html($('#keytext').html() + " &#160; &#160; &#160; <span class=\"blue\">OK</span>");
+				$('#keygen').fadeOut('slow', function() {
+					$("#changenick").fadeOut('fast');
+					$("#nickentry").fadeOut('fast');
+				    $("#front").fadeOut();
+				});
 			}
 			else {
 				$('#keygen').fadeOut('slow', function() {
