@@ -1,55 +1,47 @@
 html {
-	height: 85%;
+	height: 100%;
+	width: 100%;
+}
+.donate {
+	display: none;
 }
 body {
 	height: 100%;
 	background-color: #c7e5f5;
 	margin: 0 auto;
 	font-family: Verdana, Arial, Helvetica;
-	font-size: 11px;
-	color: #FFF;
-	background-image: url("../img/bg.png");
-	line-height: 1.37em;
+	color: #000;
 }
 #main {
-	border: 10px solid #000;
+	border: 7px solid #000;
 	background-color: #FFF;
-	padding: 10px 8px 50px 8px;
-	width: 600px;
-	height: 420px;
-	color: #000;
-	box-shadow: 5px 5px #76BDE5;
-	margin: 4.5% auto 0 auto;
+	width: 100%;
+	height: 100%;
 }
 p.bottom {
-	margin: 40px 0px 0px -10px;
-	width: 610px;
-	background-color: #000;
-	padding: 3px 5px 0px 5px;
-	text-align: center;
-	color: #fff;
-	font-weight: bold;
+	display: none;
 }
 input.name, input.create {
-	width: 330px;
-	margin: 0 auto;
+	width: 260px;
+	margin: 5em auto 0 auto;
 	background-color: #000;
 	border: none;
 	display: block;
 	padding: 7px;
 	color: #fff;
+	font-size: 1em;
 	outline: none;
 	text-align: center;
 	resize: none;
-	font-size: 24px;
 	box-shadow: 2px 2px #90CAEA;
 }
 input.create {
-	width: 344px;
 	margin-top: 10px;
-	margin-bottom: 4px;
-	padding: 0px 7px;
-	height: 30px;
+	width: 273px;
+}
+input.name, input.create, #understand, input.nicksubmit, #nickinput, #input, #close, #talk {
+	border-radius: 0px;
+	-webkit-appearance: none;
 }
 #nickinput {
 	background-color: #000;
@@ -57,23 +49,21 @@ input.create {
 	color: #97CEEC;
 	width: 100px;
 	padding: 3px;
-	font-size: 12px;
 	text-align: center;
 	outline: none;
+	font-size: 1em;
 }
-
 #understand, input.nicksubmit, #close {
 	border: 1px solid #97CEEC;
 	background-color: #000;
 	color: #97CEEC;
 	outline: none;
 	padding: 3px;
-	font-size: 11px;
 	box-shadow: 1px 1px #FFF;
+	font-size: 0.8em;
 }
 #understand {
 	margin-top: 23px;
-	font-size: 12px;
 }
 input.nicksubmit {
 	margin-left: 5px;
@@ -91,14 +81,13 @@ input.nicksubmit {
 #talk {
 	background-color: #000;
 	border: none;
-	margin: -16px 0px 0px 2px;
+	margin: 0px 0px 0px 1px;
 	float: left;
 	display: inline;
-	padding: 3px;
-	width: 67px;
+	width: 20px;
+	padding-right: 30px;
 	color: #97CEEC;
-	height: 53px;
-	font-size: 22px;
+	height: 29px;
 	box-shadow: 2px 2px #90CAEA;
 }
 input.create:hover, #talk:hover {
@@ -110,40 +99,39 @@ input.create:active, #talk:active {
 	box-shadow: 2px 2px #97CEEC;
 }
 #inchat {
-	width: 597px;
-	height: 333px;
+	width: 98%;
+	height: 72%;
 	overflow: hidden;
-	margin: 10px auto;
+	margin: -10px auto 0 auto;
 }
 #chat {
 	padding: 5px 5px 0px 0px;
-	width: 608px;
-	height: 330px;
+	width: 100%;
+	height: 100%;
 	overflow-x: hidden;
 	overflow-y: scroll;
 	word-wrap: break-word;
-	line-height: 16px;
-	font-size: 12px;
+	font-size: 0.6em;
 }
 #chatters {
 	background-color: #97CEEC;
-	font-size: 10px;
 	padding: 2px 3px 5px 0px;
-	width: 525px;
+	width: 99.1%;
 	word-spacing: 5px;
 	height: 11px;
+	font-size: 0.3em;
 }
 span.chatters {
-	padding: 4px 2px 3px 2px;
+	padding: 4px 2px 4px 2px;
 	background-color: #000;
 	color: #FFF;
 }
 #info {
-	font-size: 10px;
 	color: #FFF;
 	background-color: #000;
-	padding: 2px 0px 2px 10px;
-	width: 588px;
+	padding: 2px 0px 2px 2px;
+	font-size: 7px;
+	margin-top: 6px;
 }
 a {
 	text-decoration: none;
@@ -159,22 +147,17 @@ a img, img a {
 input.logout:hover {
 	text-decoration: underline;
 }
-a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #fingerlink, #close, #understand, input.nicksubmit {
-	cursor: pointer;
-}
 #input {
 	background-color: #000;
 	color: #FFF;
 	padding: 5px 10px;
-	width: 508px;
 	border: none;
 	float: left;
-	height: 28px;
+	width: 79.5%;
+	height: 20px;
 	outline: none;
 	resize: none;
 	word-wrap: break-word;
-	line-height: 16px;
-	font-size: 12px;
 }
 #input:active {
 	border: none;
@@ -183,7 +166,6 @@ a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #fingerlink,
 	display: none;
 }
 #url {
-	font-size: 10px;
 	background-color: #000;
 	border: none;
 	color: #97CEEC;
@@ -195,7 +177,7 @@ div.msg, div.gsm {
 	word-wrap: break-word;
 	background-repeat: no-repeat;
 	background-image: url("../img/chat.png");
-	background-position: 97.5%;
+	background-position: 96.5%;
 }
 div.msg a, div.gsm a {
 	color: #000;
@@ -208,8 +190,9 @@ div.msg a:hover, div.gsm a:hover {
 	border-bottom: 1px solid #000;
 	text-decoration: none;
 }
-img.cryptocat {
-	margin-bottom: 90px;
+img.cryptocat, img.chat {
+	margin: 5px 0px 5px 5px;
+	width: 65%;
 }
 span.diffkey {
 	border-bottom: 1px dashed #000;
@@ -220,7 +203,6 @@ span.nick {
 	padding: 2px;
 	box-shadow: 2px 2px #90CAEA;
 	margin: 0px 5px 5px 0px;
-	font-family: "Monaco", monospace;
 }
 div.text {
 	max-width: 96%;
@@ -228,30 +210,8 @@ div.text {
 	padding: 0px 0px 0px 0px;
 	word-wrap: break-word;
 }
-table {
-	margin: 0 auto;
-	display: block;
-	margin-top: 50px;
-	width: 585px;
-}
-td.img {
-	padding-top: 2px;
-	width: 40px;
-}
-td {
-	border-bottom: 8px solid #FFF;
-	font-size: 12px;
-}
-#maximize, #sound {
-	float: right;
-}
-#sound {
-	margin-right: 10px;
-}
-#notice {
-	text-align: center;
-	font-style: italic;
-	margin-top: 0px;
+#maximize, #sound, #notice, table {
+	display: none;
 }
 #front {
 	display: none;
@@ -270,7 +230,6 @@ div.redirect {
 	text-align: center;
 	display: block;
 	margin: 4.5% auto 0 auto;
-	font-size: 12px;
 	min-height: 440px;
 	box-shadow: 5px 5px #76BDE5;
 }
@@ -281,48 +240,36 @@ div.redirect img {
 }
 div.redirect p {
 	font-family: Neuton, Georgia;
-	font-size: 22px;
 	line-height: 1.7em;
 	word-wrap: break-word;
 }
 #changenick, #fingerprints, #note {
-	width: 430px;
-	padding: 45px 10px 10px 10px;
+	padding: 10px;
+	width: 240px;
 	background-color: rgba(0, 0, 0, 0.96);
 	color: #FFF;
 	box-shadow: 4px 4px #97CEEC;
 	text-align: center;
-	margin: 200px auto 0 auto;
-	min-height: 145px;
-	font-size: 11px;
-	font-family: "Monaco", monospace;
-	line-height: 1.8em;
+	margin: 8em auto;
+	min-height: 60px;
+	font-size: 0.7em;
 }
 #changenick {
-	width: 250px;
-	min-height: 85px;
 	padding-top: 10px;
 }
 #fingerprints {
 	display: none;
 }
-#note {
-	padding-top: 40px;
-	margin-top: 165px;
-}
-#keygen {
-	margin-top: 10px;
-	font-size: 9px;
-}
 #keygen img {
 	float: left;
-	margin: 5px 20px 20px 35px;
+	margin: 4px 20px 20px 35px;
 }
 #keytext {
+	font-size: 0.8em;
 	float: left;
 	text-align: left;
-	line-height: 15px;
-	margin-top: -11px;
+	margin: -65px 0px 0px 100px;
+	line-height: 1.65em;
 }
 #keygen, #nickentry {
 	display: none;

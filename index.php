@@ -150,10 +150,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xml:lang="en">
 <head>
 	<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, user-scalable=no" />
 	<meta name="description" content="Cryptocat lets you instantly set up secure conversations. It's an open source encrypted, private alternative to invasive services such as Facebook chat." />
 	<meta name="keywords" content="encrypted chat, private chat, secure chat, cryptocat" />
 	<title>cryptocat</title>
-	<link rel="stylesheet" href="css/style.css" type="text/css" />
+	<?php
+		if (strstr($_SERVER['HTTP_USER_AGENT'], "iPod") || 
+		strstr($_SERVER['HTTP_USER_AGENT'], "iPhone") || 
+		strstr($_SERVER['HTTP_USER_AGENT'], "iPad") || 
+		strstr($_SERVER['HTTP_USER_AGENT'], "Android")) {
+			print('<link rel="stylesheet" href="css/mobile.css" type="text/css" />'."\n");
+		}
+		else {
+			print('<link rel="stylesheet" href="css/style.css" type="text/css" />'."\n");
+		}
+	?>
 	<link rel="icon" type="image/png" href="img/favicon.gif" />
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/crypto.js"></script>
@@ -167,7 +178,7 @@ else {
 	print('<body onload="document.getElementById(\'c\').focus();">'."\n");
 }
 ?>
-<div><a href="https://crypto.cat/fundraiser/"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://crypto.cat/fundraiser/fundraiser.png" alt="Donate!" /></a></div>
+<div class="donate"><a href="https://crypto.cat/fundraiser/"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://crypto.cat/fundraiser/fundraiser.png" alt="Donate!" /></a></div>
 	<?php
 		function welcome($name) {
 			global $install;
@@ -261,7 +272,7 @@ else {
 				</div>
 				<div id="fingerprints"></div>
 			</div>
-			<a href="'.$install.'" onclick="logout();"><img src="img/cryptocat.png" alt="cryptocat" /></a>
+			<a href="'.$install.'" onclick="logout();"><img src="img/cryptocat.png" class="chat" alt="cryptocat" /></a>
 			<img src="img/maximize.png" alt="maximize" id="maximize" title="expand" />
 			<img src="img/nosound.png" alt="sound" id="sound" title="message sounds off" />
 			<div id="inchat"><div id="chat"></div></div>
