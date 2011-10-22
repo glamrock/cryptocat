@@ -176,7 +176,9 @@ function process(line, flip) {
 				$("#" + pos).css("background-image","url(\"img/corrupt.png\")");
 			}
 			else {
-				match = Crypto.AES.decrypt(match, seckeys[loc], {mode: new Crypto.mode.CBC(Crypto.pad.iso10126)});
+				match = Crypto.AES.decrypt(match, seckeys[loc], {
+					mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
+				});
 				line = line.replace(/\[B-C\](.*)\[E-C\]/, match);
 				line = tagify(line);
 				line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
@@ -297,9 +299,11 @@ function updatechat() {
 			}
 			if (queue[0]) {
 				var msg = "";
-				for (var i=0; i != names.length - 1; i++) {
+				for (var i=0; i != names.length; i++) {
 					if (names && (names[i] != nick)) {
-						var crypt = Crypto.AES.encrypt(queue[0].replace(/\$.+$/, ''), seckeys[i], {mode: new Crypto.mode.CBC(Crypto.pad.iso10126)});
+						var crypt = Crypto.AES.encrypt(queue[0].replace(/\$.+$/, ''), seckeys[i], {
+							mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
+						});
 						msg += "(" + names[i] + ")" + crypt;
 						msg += "|" + Crypto.HMAC(Crypto.SHA256, crypt, seckeys[i]);
 					}
