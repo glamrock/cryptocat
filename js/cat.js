@@ -297,7 +297,7 @@ function updatechat() {
 			}
 			if (queue[0]) {
 				var msg = "";
-				for (var i=0; i != names.length; i++) {
+				for (var i=0; i != names.length - 1; i++) {
 					if (names && (names[i] != nick)) {
 						var crypt = Crypto.AES.encrypt(queue[0].replace(/\$.+$/, ''), seckeys[i], {mode: new Crypto.mode.CBC(Crypto.pad.iso10126)});
 						msg += "(" + names[i] + ")" + crypt;
