@@ -1,5 +1,5 @@
 html {
-	height: 100%;
+	height: 98.2%;
 	width: 100%;
 }
 .donate {
@@ -83,10 +83,10 @@ input.nicksubmit {
 	margin: 0px 0px 0px 1px;
 	float: left;
 	display: inline;
-	width: 20px;
-	padding-right: 30px;
+	width: 10%;
 	color: #97CEEC;
-	height: 29px;
+	height: 30px;
+	font-size: 9px;
 	box-shadow: 2px 2px #90CAEA;
 }
 input.create:hover, #talk:hover {
@@ -152,7 +152,7 @@ input.logout:hover {
 	padding: 5px 10px;
 	border: none;
 	float: left;
-	width: 79.5%;
+	width: 82.5%;
 	height: 20px;
 	outline: none;
 	resize: none;
@@ -244,12 +244,12 @@ div.redirect p {
 }
 #changenick, #fingerprints, #note {
 	padding: 10px;
-	width: 240px;
+	width: 255px;
 	background-color: rgba(0, 0, 0, 0.96);
 	color: #FFF;
 	box-shadow: 4px 4px #97CEEC;
 	text-align: center;
-	margin: 8em auto;
+	margin: 4em auto;
 	min-height: 60px;
 	font-size: 0.7em;
 }
