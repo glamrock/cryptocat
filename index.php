@@ -157,7 +157,6 @@
 	<?php
 		if (strstr($_SERVER['HTTP_USER_AGENT'], "iPod") || 
 		strstr($_SERVER['HTTP_USER_AGENT'], "iPhone") || 
-		strstr($_SERVER['HTTP_USER_AGENT'], "iPad") || 
 		strstr($_SERVER['HTTP_USER_AGENT'], "BlackBerry") || 
 		strstr($_SERVER['HTTP_USER_AGENT'], "Android")) {
 			print('<link rel="stylesheet" href="css/mobile.css" type="text/css" />'."\n");

@@ -38,7 +38,7 @@ input.create {
 	margin-top: 10px;
 	width: 273px;
 }
-input.name, input.create, #understand, input.nicksubmit, #nickinput, #input, #close, #talk {
+input {
 	border-radius: 0px;
 	-webkit-appearance: none;
 }

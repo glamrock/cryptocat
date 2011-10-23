@@ -159,6 +159,10 @@ a img, img a {
 input.logout:hover {
 	text-decoration: underline;
 }
+input {
+	border-radius: 0px;
+	-webkit-appearance: none;
+}
 a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #fingerlink, #close, #understand, input.nicksubmit {
 	cursor: pointer;
 }
