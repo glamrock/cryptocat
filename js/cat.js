@@ -207,7 +207,7 @@ function process(line, flip) {
 function updatekeys() {
 	$.ajax({ url: install,
 		type: "POST",
-		async: true,
+		async: false,
 		data: "nick=" + $("#nickinput").val() + "&name=" + name + "&key=get",
 		success: function(data) {
 			data = data.split('|');
@@ -393,6 +393,7 @@ function nickajax() {
 				document.getElementById("input").focus();
 				document.title = "[" + num + "] cryptocat";
 				interval = setInterval("updatechat()", update);
+				updatekeys();
 				$('#keytext').html($('#keytext').html() + " &#160; &#160; &#160; <span class=\"blue\">OK</span>");
 				$('#keygen').fadeOut('slow', function() {
 					$("#changenick").fadeOut('fast');
