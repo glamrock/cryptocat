@@ -157,6 +157,7 @@ input.logout:hover {
 	outline: none;
 	resize: none;
 	word-wrap: break-word;
+	font-size: 10px;
 }
 #input:active {
 	border: none;
