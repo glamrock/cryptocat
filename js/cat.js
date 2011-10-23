@@ -186,7 +186,7 @@ function process(line, flip) {
 			$("#chat").html($("#chat").html() + line);
 		}
 		else if (match = line.match(/^(\&gt\;|\&lt\;) [a-z]{1,12} (has arrived|has left)$/)) {
-			updatekeys();
+			updatekeys(true);
 			line = "<span class=\"nick\">" + match[0] + "</span>";
 			fliptag();
 			line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
@@ -204,10 +204,10 @@ function process(line, flip) {
 	return "";
 }
 
-function updatekeys() {
+function updatekeys(sync) {
 	$.ajax({ url: install,
 		type: "POST",
-		async: false,
+		async: sync,
 		data: "nick=" + $("#nickinput").val() + "&name=" + name + "&key=get",
 		success: function(data) {
 			data = data.split('|');
@@ -325,7 +325,7 @@ function updatechat() {
 		reconnect = 0;
 	}
 	else if (reconnect) {
-		updatekeys();
+		updatekeys(true);
 	}
 }
 
@@ -393,7 +393,7 @@ function nickajax() {
 				document.getElementById("input").focus();
 				document.title = "[" + num + "] cryptocat";
 				interval = setInterval("updatechat()", update);
-				updatekeys();
+				updatekeys(false);
 				$('#keytext').html($('#keytext').html() + " &#160; &#160; &#160; <span class=\"blue\">OK</span>");
 				$('#keygen').fadeOut('slow', function() {
 					$("#changenick").fadeOut('fast');
