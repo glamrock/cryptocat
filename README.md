@@ -29,4 +29,4 @@ Cryptocat lets you instantly set up secure conversations. It's an open source en
 * The code for secure deletion of idle chats after 30 minutes is not included in the Cryptocat git repository. On the [production server](https://crypto.cat), it's actually a cron job that checks the modification time of chats and [wipe](http://linux.die.net/man/1/wipe)s them securely. Those wanting to set up similar functionality should consider writing something similar.
 
 ## About
-Cryptocat is developed by [Nadim Kobeissi](http://nadim.cc). It uses parts of the [crypto-js](http://code.google.com/p/crypto-js/) library and the Bitcons iconset. Furthermore, Cryptocat is indebted to Paul Brodeur, David Mirza, Hasan Saleh, and Tina Salameh for their helpful suggestions and beta testing.
+Cryptocat is developed by [Nadim Kobeissi](http://nadim.cc). It uses parts of the [crypto-js](http://code.google.com/p/crypto-js/) library and the Bitcons iconset. Furthermore, Cryptocat is indebted to Paul Brodeur, David Mirza, Hasan Saleh, Morgan Sutherland and Tina Salameh for their helpful suggestions and beta testing.

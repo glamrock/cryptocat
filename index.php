@@ -1,24 +1,27 @@
 <?php
-	/* cryptocat */
-	/* install directory and domain name */
+	/* Cryptocat */
+	/* Install directory and domain name. */
 	$install = 'https://crypto.cat/';
 	$domain = "crypto.cat";
-	/* https is highly recommended */
+	/* HTTPS is highly recommended. */
 	$https = TRUE;
-	/* where to store data */
+	/* Chat storage directory. Needs to be writable by web server. */
 	$data = '/srv/data/';
-	/* time limit in seconds before deleting chat */
-	$timelimit = 1800;
-	/* set to 0 to disable automatic url linking */
-	$genurl = 1;
-	/* maximum users in a chat. untested above 8 */
+	/* Maximum users in a chat. Untested above 8. */
 	$maxusers = 8;
-	/* default nicknames */
-	$nicks = array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite');
+	/* Maximum characters per line. */
+	$maxinput = 256;
+	/* Time limit in seconds before deleting chat. */
+	$timelimit = 1800;
+	/* Set to 0 to disable automatic url linking. */
+	$genurl = 1;
+	/* Default nicknames: */
+	$nicks = array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'kiwi', 
+	'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite');
+	/* Polling rate. Don't change this. */
+	$update = 1750;
 ?>
 <?php
-	$maxinput = 256;
-	$update = 1300;
 	ini_set("session.entropy_file", "/dev/urandom");
 	ini_set("session.entropy_length", "1024");
 	error_reporting(0);
