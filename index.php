@@ -16,8 +16,8 @@
 	/* Set to 0 to disable automatic url linking. */
 	$genurl = 1;
 	/* Default nicknames: */
-	$nicks = array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'kiwi', 
-	'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite');
+	$nicks = array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 
+	'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite');
 	/* Polling rate. Don't change this. */
 	$update = 1750;
 ?>
@@ -37,7 +37,7 @@
 		print('<html><head><title>cryptocat</title>
 		<link rel="stylesheet" href="css/style.css" type="text/css" /></head>
 		<body><div class="redirect"><img src="img/cryptocat.png" alt="" />
-		You are leaving cryptocat to visit: <p>
+		You are leaving Cryptocat to visit: <p>
 		<a href="'.htmlspecialchars($_GET['redirect']).'">'.htmlspecialchars($_GET['redirect']).'</a>
 		</p>Click the link to continue.</div></body></html>');
 		exit;
@@ -144,7 +144,9 @@
 		$thisnick = substr($thisnick[0], 0, -1);
 		if (preg_match('/^[a-z]{1,12}\|\w{8}:\s\[B-C\](\w|\/|\+|\?|\(|\)|\=|\|)+\[E-C\]$/', $_POST['input']) && $_SESSION['nick'] == $thisnick) {
 			$chat = $_POST['input']."\n";
-			file_put_contents($data.$_POST['name'], $chat, FILE_APPEND | LOCK_EX);
+			if (file_exists($data.$_POST['name'])) {
+				file_put_contents($data.$_POST['name'], $chat, FILE_APPEND | LOCK_EX);
+			}
 		}
 		exit;
 	}
@@ -318,7 +320,9 @@ else {
 					$chat[count($chat)+1] = "< ".$_SESSION['nick']." has left\n";
 					session_unset();
 					session_destroy();
-					file_put_contents($data.$_POST['logout'], implode('', $chat), LOCK_EX);
+					if (file_exists($data.$_POST['logout'])) {
+						file_put_contents($data.$_POST['logout'], implode('', $chat), LOCK_EX);
+					}
 				}
 				welcome('name your chat');
 		}

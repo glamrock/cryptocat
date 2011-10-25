@@ -245,7 +245,6 @@ function updatekeys(sync) {
 						fingerprints[i] = fingerprints[i].toUpperCase();
 					}
 				}
-				$("#chatters").html('<span class="chatters">' + names.length + '</span> ' + names.join(' '));
 				var fingerhtml = "Verify friends using their fingerprint.<br />(be certain of their identity - over the phone is fine.)<br /><br />";
 				for (fi=0; fi <= names.length - 1; fi++) {
 					var nbsp = "";
@@ -256,6 +255,12 @@ function updatekeys(sync) {
 				}
 				fingerhtml += "<br /><input type=\"button\" onclick=\"fingerclose();\" id=\"close\" value=\"close\" />"; 
 				$("#fingerprints").html(fingerhtml);
+			}
+			$("#chatters").html('<span class="chatters">' + names.length + '</span> ' + names.join(' '));
+			if (reconnect) {
+				$("#chatters").css("background-color", "#97CEEC");
+				errored = 0;
+				reconnect = 0;
 			}
 		}
 	});
@@ -320,11 +325,7 @@ function updatechat() {
 		error: function(data) {
 		}
 	});
-	if (($("#chatters").html() != error) && (reconnect)) {
-		errored = 0;
-		reconnect = 0;
-	}
-	else if (reconnect) {
+	if (reconnect) {
 		updatekeys(true);
 	}
 }
@@ -559,12 +560,13 @@ function logout() {
 function errordisplay(e) {
 	$("#chatters").html("<span class=\"chatters\">x</span>&nbsp " + e);
 	error = $("#chatters").html();
+	$("#chatters").css("background-color", "#FE1A12");
 	errored = 1;
 }
 
 $(document).ajaxError(function(){
 	if (!errored) {
-		errordisplay("you have been disconnected. reconnecting...");
+		errordisplay("connection issues. stand by...");
 		reconnect = 1;
 	}
 });

@@ -245,13 +245,13 @@ div.redirect p {
 }
 #changenick, #fingerprints, #note {
 	padding: 10px;
-	width: 255px;
+	width: 275px;
 	background-color: rgba(0, 0, 0, 0.96);
 	color: #FFF;
 	box-shadow: 4px 4px #97CEEC;
 	text-align: center;
 	margin: 4em auto;
-	min-height: 60px;
+	min-height: 80px;
 	font-size: 0.7em;
 }
 #changenick {
