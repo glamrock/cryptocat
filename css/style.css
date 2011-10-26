@@ -110,14 +110,14 @@ input.create:active, #talk:active {
 	box-shadow: 2px 2px #97CEEC;
 }
 #inchat {
-	width: 597px;
+	width: 100%;
 	height: 333px;
 	overflow: hidden;
 	margin: 10px auto;
 }
 #chat {
-	padding: 5px 5px 0px 0px;
-	width: 608px;
+	padding: 5px 0px 0px 0px;
+	width: 102%;
 	height: 330px;
 	overflow-x: hidden;
 	overflow-y: scroll;
@@ -193,7 +193,7 @@ a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #fingerlink,
 	color: #97CEEC;
 }
 div.msg, div.gsm {
-	padding: 10px 10px 10px 5px;
+	padding: 10px 5px 10px 5px;
 	background-color: #D8EDF8;
 	width: 98%;
 	word-wrap: break-word;

@@ -20,8 +20,8 @@ var p = str2bigInt(
 16);
 
 var g = str2bigInt("2", 10);
-var num, interval, sound, errored, reconnect, pos, tag, flood, prikey, pubkey, error, sentid;
-num = interval = sound = errored = reconnect = pos = tag = flood = 0;
+var num, interval, sound, pos, tag, flood, prikey, pubkey, sentid;
+num = interval = sound = pos = tag = flood = 0;
 var names = new Array();
 var keys = new Array();
 var seckeys = new Array();
@@ -257,11 +257,6 @@ function updatekeys(sync) {
 				$("#fingerprints").html(fingerhtml);
 			}
 			$("#chatters").html('<span class="chatters">' + names.length + '</span> ' + names.join(' '));
-			if (reconnect) {
-				$("#chatters").css("background-color", "#97CEEC");
-				errored = 0;
-				reconnect = 0;
-			}
 		}
 	});
 }
@@ -273,13 +268,15 @@ function updatechat() {
 		data: "chat=" + name + "&pos=" + pos,
 		success: function(data) {
 			if (data == "NOEXIST") {
-				if (!errored && pubkey) {
+				if (pubkey) {
 					errordisplay("your chat no longer exists.");
+					clearInterval(interval);
 				}
 			}
 			else if (data == "NOLOGIN") {
-				if (!errored && pubkey) {
+				if (pubkey) {
 					errordisplay("you have been logged out.");
+					clearInterval(interval);
 				}
 			}
 			else if (data != "") {
@@ -301,6 +298,10 @@ function updatechat() {
 					$("#" + data).css("background-image","url(\"img/chat.png\")");
 					$("#" + data).attr("id", "x");
 				}
+			}
+			if ($("#chatters").html() == '<span class="chatters">x</span>&nbsp; connection issues. stand by...') {
+				updatekeys(true);
+				$("#chatters").css("background-color", "#97CEEC");
 			}
 			if (queue[0]) {
 				var msg = "";
@@ -325,9 +326,6 @@ function updatechat() {
 		error: function(data) {
 		}
 	});
-	if (reconnect) {
-		updatekeys(true);
-	}
 }
 
 $("#chatform").submit( function() {
@@ -472,12 +470,10 @@ $("#maximize").click(function(){
 			width: "67px"
 		}, 500 );
 		$("#inchat").animate({
-			width: "597px",
 			height: "333px",
 			"margin-bottom": "10px"
 		}, 500 );
 		$("#chat").animate({
-			width: "608px",
 			height: "330px"
 		}, 500, function() {
 			document.getElementById("chat").innerHTML = document.getElementById("chat").innerHTML;
@@ -508,12 +504,10 @@ $("#maximize").click(function(){
 			width: "5%"
 		}, 500 );
 		$("#inchat").animate({
-			width: "100%",
 			height: "90%",
 			"margin-bottom": "-30px"
 		}, 500 );
 		$("#chat").animate({
-			width: "102%",
 			height: "88%"
 		}, 500, function() {
 			document.getElementById("chat").innerHTML = document.getElementById("chat").innerHTML;
@@ -559,16 +553,11 @@ function logout() {
 
 function errordisplay(e) {
 	$("#chatters").html("<span class=\"chatters\">x</span>&nbsp " + e);
-	error = $("#chatters").html();
 	$("#chatters").css("background-color", "#FE1A12");
-	errored = 1;
 }
 
 $(document).ajaxError(function(){
-	if (!errored) {
-		errordisplay("connection issues. stand by...");
-		reconnect = 1;
-	}
+	errordisplay("connection issues. stand by...");
 });
 
 $("#nickentry").fadeIn(); $("#front").fadeIn(); idSelect("nickinput");
