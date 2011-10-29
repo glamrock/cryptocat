@@ -345,7 +345,7 @@ $("#chatform").submit( function() {
 			scrolldown();
 			if (names.length > 1) {
 				flood = 1;
-				setTimeout("flood = 0", 1000);
+				setTimeout("flood = 0", 550);
 				$("#" + sentid).css("background-image","url(\"img/sending.gif\")");
 				queue.push(msg + "$" + sentid);
 				$("#talk").val(maxinput);
