@@ -1,8 +1,23 @@
 <?php
-	/* Cryptocat */
+	/* Cryptocat - © 2011, Nadim Kobeissi */
+	/* Distributed under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License */
+	/* License available at http://creativecommons.org/licenses/by-nc-sa/3.0/ */
+	/* Additionally:
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+	EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+	MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+	NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+	LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+	OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+	WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+	*/
+	/* Important notes are included in the README.md file. */
+	
+	/* Vital configuration settings */
+	
 	/* Install directory and domain name. */
 	$install = 'https://crypto.cat/';
-	$domain = "crypto.cat";
+	$domain = 'crypto.cat';
 	/* HTTPS is highly recommended. */
 	$https = TRUE;
 	/* Chat storage directory. Needs to be writable by web server. */
@@ -11,21 +26,23 @@
 	$maxusers = 8;
 	/* Maximum characters per line. */
 	$maxinput = 256;
-	/* Time limit in seconds before deleting chat. */
+	/* Time limit in seconds before overwriting chat. */
 	$timelimit = 1800;
-	/* Set to 0 to disable automatic url linking. */
+	/* Set to 0 to disable automatic URL linking. */
 	$genurl = 1;
 	/* Default nicknames: */
 	$nicks = array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 
 	'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite');
 	/* Polling rate. Don't change this. */
 	$update = 1750;
+	
+	/* Do _not_ touch anything below this line. */
 ?>
 <?php
-	ini_set("session.entropy_file", "/dev/urandom");
-	ini_set("session.entropy_length", "1024");
-	error_reporting(0);
+	ini_set('session.entropy_file', '/dev/urandom');
+	ini_set('session.entropy_length', '1024');
 	session_set_cookie_params(0, '/', $domain, $https, TRUE);
+	error_reporting(0);
 	function getpeople($chat) {
 		preg_match_all('/[a-z]{1,12}:/', $chat[0], $people);
 		for ($i=0; $i < count($people[0]); $i++) {
