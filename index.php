@@ -20,8 +20,8 @@
 	$https = TRUE;
 	/* Chat storage directory. Needs to be writable by web server. */
 	$data = '/srv/data/';
-	/* Maximum users in a chat. Untested above 8. */
-	$maxusers = 8;
+	/* Maximum users in a chat. Untested above 10. */
+	$maxusers = 10;
 	/* Maximum characters per line. */
 	$maxinput = 256;
 	/* Time limit in seconds before overwriting chat. */
@@ -224,11 +224,11 @@ else {
 					</tr>
 					<tr>
 						<td class="img"><img src="img/2.png" alt="" /></td>
-						<td id="td2">Messages are encrypted locally and are verified for integrity. Conversations are securely wiped after 30 minutes of inactivity.</td>
+						<td id="td2">Messages are encrypted inside your own browser and are verified for integrity. Conversations are securely wiped after 30 minutes of inactivity.</td>
 					</tr>
 					<tr>
 						<td class="img"><img src="img/3.png" alt="" /></td>
-						<td id="td3">Cryptocat is fully compatible with <a onclick="window.open(this.href,\'_blank\');return false;" href="https://torproject.org">Tor</a> for anonymous chatting. Couple Cryptocat with Tor for maximum confidentiality.</td>
+						<td id="td3">Cryptocat is fully compatible with <a onclick="window.open(this.href,\'_blank\');return false;" href="https://torproject.org">Tor</a> and also works on your iPhone, Android and BlackBerry.</td>
 					</tr>
 				</table>
 				<p class="bottom" id="bottom">
