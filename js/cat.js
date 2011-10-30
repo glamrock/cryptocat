@@ -100,6 +100,9 @@ function gen(size, extra, s) {
 	}
 	while (str.length < size) {
        	str += charset.charAt(Math.floor(Math.random() * charset.length));
+		while (str[0] == "0") {
+			str[0] = charset.charAt(Math.floor(Math.random() * charset.length));
+		}
 	}
  	return str;
 }
@@ -362,7 +365,7 @@ $("#nickform").submit( function() {
 		$('#nickentry').fadeOut('slow', function() {
 			$('#keygen').fadeIn('slow', function() {
 				$('#keytext').html($('#keytext').html() + " &#160; <span class=\"blue\">OK</span><br />Generating keys");
-				pubkey = dhgen(gen(32, 0, 1), "gen");
+				pubkey = dhgen(gen(26, 0, 1), "gen");
 				$('#keytext').html($('#keytext').html() + " &#160; &#160; <span class=\"blue\">OK</span><br />Communicating");
 				nickajax();
 			});
