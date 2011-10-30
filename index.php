@@ -2,18 +2,16 @@
 	/* Cryptocat - © 2011, Nadim Kobeissi */
 	/* Distributed under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License */
 	/* License available at http://creativecommons.org/licenses/by-nc-sa/3.0/ */
-	/* Additionally:
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+	/* Additionally: THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 	EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 	MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
 	NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 	LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 	OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-	WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-	*/
+	WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 	/* Important notes are included in the README.md file. */
 	
-	/* Vital configuration settings */
+	/* Vital configuration settings: */
 	
 	/* Install directory and domain name. */
 	$install = 'https://crypto.cat/';
