@@ -6,16 +6,16 @@ html {
 	display: none;
 }
 body {
-	height: 98%;
+	height: 100%;
 	margin: 0 auto;
 	font-family: Verdana, Arial, Helvetica;
 	color: #000;
-	border: 7px solid #000;
 }
 #main {
 	background-color: #FFF;
-	width: 100%;
+	width: 98%;
 	height: 100%;
+	border: 7px solid #000;
 }
 p.bottom {
 	display: none;
@@ -223,15 +223,11 @@ div.text {
 }
 div.redirect {
 	background-color: #222;
-	box-shadow: 4px 4px #97CEEC;
-	width: 600px;
+	width: 98%;
 	color: #FFF;
 	padding: 20px;
 	text-align: center;
-	display: block;
-	margin: 4.5% auto 0 auto;
-	min-height: 440px;
-	box-shadow: 5px 5px #76BDE5;
+	height: 100%;
 }
 div.redirect img {
 	display: block;

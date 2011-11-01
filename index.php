@@ -48,16 +48,7 @@
 		}
 		return $people[0];
 	}
-	if (isset($_GET['redirect']) && preg_match('/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/i', $_GET['redirect'])) {
-		print('<html><head><title>cryptocat</title>
-		<link rel="stylesheet" href="css/style.css" type="text/css" /></head>
-		<body><div class="redirect"><img src="img/cryptocat.png" alt="" />
-		You are leaving Cryptocat to visit: <p>
-		<a href="'.htmlspecialchars($_GET['redirect']).'">'.htmlspecialchars($_GET['redirect']).'</a>
-		</p>Click the link to continue.</div></body></html>');
-		exit;
-	}
-	else if (preg_match('/^[a-z]{1,12}$/', $_POST['nick']) && 
+	if (preg_match('/^[a-z]{1,12}$/', $_POST['nick']) && 
 	strlen($_POST['nick']) <= 12 && 
 	preg_match('/^\w+$/', $_POST['name']) && 
 	preg_match('/^(\w|\/|\+|\?|\(|\)|\=)+$/', $_POST['key'])) {
@@ -183,6 +174,14 @@
 		}
 		else {
 			print('<link rel="stylesheet" href="css/style.css" type="text/css" />'."\n");
+		}
+		if (isset($_GET['redirect']) && preg_match('/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/i', $_GET['redirect'])) {
+			print('</head>
+			<body><div class="redirect"><img src="img/cryptocat.png" alt="" />
+			You are leaving Cryptocat to visit: <p>
+			<a href="'.htmlspecialchars($_GET['redirect']).'">'.htmlspecialchars($_GET['redirect']).'</a>
+			</p>Click the link to continue.</div></body></html>');
+			exit;
 		}
 	?>
 	<link rel="icon" type="image/png" href="img/favicon.gif" />
