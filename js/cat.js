@@ -94,15 +94,14 @@ function gen(size, extra, s) {
 		seed = reseed;
 	}
 	var str = "";
-	var charset = "0123456789";
+	var charset = "123456789";
 	if (extra) {
 		charset += "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 	}
+	str += charset.charAt(Math.floor(Math.random() * charset.length));
+	charset += "0";
 	while (str.length < size) {
        	str += charset.charAt(Math.floor(Math.random() * charset.length));
-		while (str[0] == "0") {
-			str[0] = charset.charAt(Math.floor(Math.random() * charset.length));
-		}
 	}
  	return str;
 }

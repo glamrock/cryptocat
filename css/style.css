@@ -193,13 +193,14 @@ a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #fingerlink,
 	color: #97CEEC;
 }
 div.msg, div.gsm {
-	padding: 10px 5px 10px 5px;
+	padding: 8px 5px 8px 5px;
 	background-color: #D8EDF8;
 	width: 98%;
 	word-wrap: break-word;
 	background-repeat: no-repeat;
 	background-image: url("../img/chat.png");
 	background-position: 97.5%;
+	line-height: 1.55em;
 }
 div.msg a, div.gsm a {
 	color: #000;
