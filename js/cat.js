@@ -452,7 +452,6 @@ function fingerclose() {
 $("#maximize").click(function(){
 	if ($("#maximize").attr("title") == "contract") {
 		$("#main").animate({
-			"margin-top": "4.5%",
 			"min-width": "600px",
 			"min-height": "420px",
 			width: "600px",
@@ -487,7 +486,6 @@ $("#maximize").click(function(){
 	}
 	else {
 		$("#main").animate({
-			"margin-top": "2%",
 			"min-width": "900px",
 			width: "80%",
 			height: "90%"
