@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xml:lang="en">
+<head>
+	<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, user-scalable=no" />
+	<meta name="keywords" content="encrypted chat, private chat, secure chat, cryptocat" />
+	<title>cryptocat</title>
+	<link rel="stylesheet" href="css/style.css" type="text/css" />
+	<link rel="icon" type="image/png" href="img/favicon.gif" />
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/crypto.js"></script>
+	<script type="text/javascript">$(document).ready(function() { $("#c,#nickinput,#key,#input").attr("autocomplete", "off"); });</script>
+</head>
+<body onunload="logout();">
+<div class="donate"><a href="https://crypto.cat/fundraiser/"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://crypto.cat/fundraiser/fundraiser.png" alt="Donate!" /></a></div>
+	<div id="main">
+			<div id="front">
+				<div id="changenick">
+					<div id="keygen">
+						<img src="img/keygen.gif" alt="" /><br />
+						<span id="keytext">Gathering entropy</span>
+					</div>
+					<div id="nickentry">
+						<p>Enter nickname</p>
+						<form name="nickform" id="nickform" method="post" action="https://crypto.cat/">
+							<div>
+								<input type="text" name="nickinput" id="nickinput" value="raccoon" maxlength="12" />
+								<input type="submit" class="nicksubmit" value="chat" />
+							</div>
+						</form>
+					</div>
+				</div>
+				<div id="fingerprints"></div>
+			</div>
+			<a href="https://crypto.cat/" onclick="logout();"><img src="img/cryptocat.png" class="chat" alt="cryptocat" /></a>
+			<img src="img/maximize.png" alt="maximize" id="maximize" title="expand" />
+			<img src="img/nosound.png" alt="sound" id="sound" title="message sounds off" />
+			<div id="inchat"><div id="chat"></div></div>
+			<div id="info">chatting as <span id="nick">raccoon</span> on 
+			<strong class="blue">https://crypto.cat/?c=</strong><strong id="name"></strong> - <span id="fingerlink">fingerprints</span>
+			<strong id="flood">wait</strong>
+			</div>
+			<form name="chatform" id="chatform" method="post" action="https://crypto.cat/">
+				<div>
+					<div id="chatters"></div>
+					<input type="text" name="input" id="input" maxlength="256" />
+					<input type="submit" name="talk" id="talk" value="256" />
+				</div>
+			</form>
+			</div>
+			<script type="text/javascript">var install="https://crypto.cat/";var update="1750";var maxinput="256";var genurl=1;</script>
+			<script type="text/javascript" src="js/cat.js"></script></body>
+</html>

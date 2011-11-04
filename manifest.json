@@ -1,0 +1,18 @@
+{
+	"name": "Cryptocat",
+	"description": "Cryptocat lets you instantly set up secure conversations. It's an open source encrypted, private alternative to invasive services.",
+	"version": "1.0.60",
+	"app": {
+		"launch": {
+			"local_path": "main.html"
+		}
+	},
+	"icons": {
+		"16": "img/icon-16.png",
+		"48": "img/icon-48.png",
+		"128": "img/icon-128.png"
+	},
+	"permissions": [
+		"https://crypto.cat/"
+	]
+}

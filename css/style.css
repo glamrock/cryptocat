@@ -1,0 +1,355 @@
+html {
+	height: 85%;
+}
+body {
+	height: 100%;
+	background-color: #c7e5f5;
+	margin: 0 auto;
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 11px;
+	color: #FFF;
+	background-image: url("../img/bg.png");
+	line-height: 1.37em;
+}
+#main {
+	border: 10px solid #000;
+	background-color: #FFF;
+	padding: 10px 8px 50px 8px;
+	width: 600px;
+	height: 420px;
+	color: #000;
+	box-shadow: 5px 5px #76BDE5;
+	margin: 2% auto 0 auto;
+}
+p.bottom {
+	margin: 50px 0px 0px -10px;
+	width: 610px;
+	background-color: #000;
+	padding: 3px 5px 0px 5px;
+	text-align: center;
+	color: #fff;
+	font-weight: bold;
+}
+input.name, input.create {
+	width: 330px;
+	margin: 0 auto;
+	background-color: #000;
+	border: none;
+	display: block;
+	padding: 7px;
+	color: #fff;
+	outline: none;
+	text-align: center;
+	resize: none;
+	font-size: 24px;
+	box-shadow: 2px 2px #90CAEA;
+}
+input.create {
+	width: 344px;
+	margin-top: 10px;
+	margin-bottom: 4px;
+	padding: 0px 7px;
+	height: 30px;
+}
+#nickinput {
+	background-color: #000;
+	border: 1px solid #97CEEC;
+	color: #97CEEC;
+	width: 100px;
+	padding: 3px;
+	font-size: 12px;
+	text-align: center;
+	outline: none;
+}
+
+#understand, input.nicksubmit, #close {
+	border: 1px solid #97CEEC;
+	background-color: #000;
+	color: #97CEEC;
+	outline: none;
+	padding: 3px;
+	font-size: 11px;
+	box-shadow: 1px 1px #FFF;
+}
+#understand {
+	margin-top: 23px;
+	font-size: 12px;
+}
+input.nicksubmit {
+	margin-left: 5px;
+}
+#close {
+	margin-top: 10px;
+}
+#understand:hover, input.nicksubmit:hover, #close:hover {
+	background-color: #97CEEC;
+	color: #FFF;
+}
+#understand:active, input.nicksubmit:active, #close:active {
+	box-shadow: none;
+}
+#talk {
+	background-color: #000;
+	border: none;
+	margin: -16px 0px 0px 2px;
+	float: left;
+	display: inline;
+	padding: 3px;
+	width: 67px;
+	color: #97CEEC;
+	height: 53px;
+	font-size: 22px;
+	box-shadow: 2px 2px #90CAEA;
+}
+input.create:hover, #talk:hover {
+	background-color: #97CEEC;
+	box-shadow: 2px 2px #000;
+	color: #FFF;
+}
+input.create:active, #talk:active {
+	box-shadow: 2px 2px #97CEEC;
+}
+#inchat {
+	width: 100%;
+	height: 333px;
+	overflow: hidden;
+	margin: 10px auto;
+}
+#chat {
+	padding: 5px 0px 0px 0px;
+	width: 102.5%;
+	height: 330px;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	word-wrap: break-word;
+	line-height: 16px;
+	font-size: 12px;
+}
+#chatters {
+	background-color: #97CEEC;
+	font-size: 10px;
+	padding: 2px 3px 5px 0px;
+	width: 525px;
+	word-spacing: 5px;
+	height: 11px;
+}
+span.chatters {
+	padding: 4px 2px 3px 2px;
+	background-color: #000;
+	color: #FFF;
+}
+#info {
+	font-size: 10px;
+	color: #FFF;
+	background-color: #000;
+	padding: 2px 0px 2px 10px;
+	width: 588px;
+}
+a {
+	text-decoration: none;
+	color: #84B2CE;
+}
+a:hover {
+	text-decoration: underline;
+}
+a img, img a {
+	border: none;
+}
+
+input.logout:hover {
+	text-decoration: underline;
+}
+input {
+	border-radius: 0px;
+	-webkit-appearance: none;
+}
+a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #fingerlink, #close, #understand, input.nicksubmit {
+	cursor: pointer;
+}
+#input {
+	background-color: #000;
+	color: #FFF;
+	padding: 5px 10px;
+	width: 508px;
+	border: none;
+	float: left;
+	height: 28px;
+	outline: none;
+	resize: none;
+	word-wrap: break-word;
+	line-height: 16px;
+	font-size: 12px;
+}
+#input:active {
+	border: none;
+}
+.invisible {
+	display: none;
+}
+#url {
+	font-size: 10px;
+	background-color: #000;
+	border: none;
+	color: #97CEEC;
+}
+div.msg, div.gsm {
+	padding: 8px 5px 8px 5px;
+	background-color: #D8EDF8;
+	width: 98%;
+	word-wrap: break-word;
+	background-repeat: no-repeat;
+	background-image: url("../img/chat.png");
+	background-position: 97.5%;
+	line-height: 1.55em;
+}
+div.msg a, div.gsm a {
+	color: #000;
+	border-bottom: 1px dashed #000;
+}
+div.gsm {
+	background-color: #FFF;
+}
+div.msg a:hover, div.gsm a:hover {
+	border-bottom: 1px solid #000;
+	text-decoration: none;
+}
+img.cryptocat {
+	margin-bottom: 90px;
+}
+span.diffkey {
+	border-bottom: 1px dashed #000;
+}
+span.nick {
+	background-color: #000;
+	color: #FFF;
+	padding: 2px;
+	box-shadow: 2px 2px #90CAEA;
+	margin: 0px 5px 5px 0px;
+	font-family: "Monaco", monospace;
+}
+div.text {
+	max-width: 96%;
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	word-wrap: break-word;
+}
+table {
+	margin: 0 auto;
+	display: block;
+	margin-top: 50px;
+	width: 585px;
+}
+td.img {
+	padding-top: 2px;
+	width: 40px;
+}
+td {
+	border-bottom: 8px solid #FFF;
+	font-size: 12px;
+}
+#maximize, #sound {
+	float: right;
+}
+#sound {
+	margin-right: 10px;
+}
+#notice {
+	text-align: center;
+	font-style: italic;
+	margin-top: 0px;
+}
+#front {
+	display: none;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+div.redirect {
+	background-color: #222;
+	box-shadow: 4px 4px #97CEEC;
+	width: 600px;
+	color: #FFF;
+	padding: 20px;
+	text-align: center;
+	display: block;
+	margin: 2.5% auto 0 auto;
+	font-size: 12px;
+	min-height: 440px;
+	box-shadow: 5px 5px #76BDE5;
+}
+div.redirect img {
+	display: block;
+	text-align: left;
+	margin-bottom: 100px;
+}
+div.redirect p {
+	font-family: Neuton, Georgia;
+	font-size: 22px;
+	line-height: 1.7em;
+	word-wrap: break-word;
+}
+#changenick, #fingerprints, #note {
+	width: 430px;
+	padding: 45px 10px 10px 10px;
+	background-color: rgba(0, 0, 0, 0.96);
+	color: #FFF;
+	box-shadow: 4px 4px #97CEEC;
+	text-align: center;
+	margin: 200px auto 0 auto;
+	min-height: 145px;
+	font-size: 11px;
+	font-family: "Monaco", monospace;
+	line-height: 1.8em;
+}
+#changenick {
+	width: 250px;
+	min-height: 85px;
+	padding-top: 10px;
+}
+#fingerprints {
+	display: none;
+}
+#note {
+	padding-top: 40px;
+	margin-top: 165px;
+}
+#keygen {
+	margin-top: 10px;
+	font-size: 9px;
+}
+#keygen img {
+	float: left;
+	margin: 5px 20px 20px 35px;
+}
+#keytext {
+	float: left;
+	text-align: left;
+	line-height: 15px;
+	margin-top: -11px;
+}
+#keygen, #nickentry {
+	display: none;
+}
+#nick, #fingerlink {
+	color: #97CEEC;
+}
+#fingerlink:hover {
+	text-decoration: underline;
+}
+.blue, #name {
+	color: #97CEEC;
+}
+.red {
+	color: #F00;
+}
+span.monospace {
+	font-family: "Monaco", monospace;
+}
+#flood {
+	display: none;
+	color: #F00;
+	float: right;
+	margin-right: 21px;
+}
