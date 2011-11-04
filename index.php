@@ -214,7 +214,6 @@ else {
 						<input type="text" class="name" name="c" id="c" onclick="idSelect(\'c\');" value="'.$name.'" maxlength="32" />
 						<input type="submit" class="create" value="enter" id="create" />
 					</div>
-					<p id="notice">(for a safer experience, check out <a onclick="window.open(this.href,\'_blank\');return false;" href="https://chrome.google.com/webstore/detail/dlafegoljmjdfmhgoeojifolidmllaie">cryptocat verifier</a>.)</p>
 				</form>
 				<table>
 					<tr>
@@ -238,7 +237,6 @@ else {
 					<a onclick="window.open(this.href,\'_blank\');return false;" href="https://github.com/kaepora/cryptocat/">github</a>
 				</p>
 			</div>
-			<script type="text/javascript">var install = "'.$install.'";</script>
 			<script type="text/javascript" src="js/welcome.js"></script>');
 		}
 		function enterchat($name, $nick, $key) {
