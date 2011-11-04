@@ -33,7 +33,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ## Important notes
 * Cryptocat provides strongly encrypted, secure communications. However, it is not a replacement to GPG. Think responsibly if you are in extreme, life-threatening situations.
 
-* Paranoid users may want to install [Cryptocat Verifier](https://chrome.google.com/webstore/detail/dlafegoljmjdfmhgoeojifolidmllaie), a Chrome extension that verifies that your Cryptocat session is not serving you modified JavaScript code.
+* Paranoid users may want to use [Cryptocat Chrome](https://chrome.google.com/webstore/detail/gonbigodpnfghidmnphnadhepmbabhij), a Chrome app that loads all code locally, and is secure from being served compromised code.
 
 * The code for secure deletion of idle chats after 30 minutes is not included in the Cryptocat git repository. On the [production server](https://crypto.cat), it's actually a cron job that checks the modification time of chats and [wipe](http://linux.die.net/man/1/wipe)s them securely. Those wanting to set up similar functionality should consider writing something similar.
 
