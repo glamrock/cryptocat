@@ -129,7 +129,7 @@ function tagify(chat) {
 				}
 			}
 			sanitize = sanitize.join("");
-			chat = chat.replace(sanitize, "<a target=\"_blank\" href=\"" + "?redirect=" + escape(sanitize) + "\">" + match[mc] + "</a>");
+			chat = chat.replace(sanitize, "<a target=\"_blank\" href=\"" + sanitize + "\">" + match[mc] + "</a>");
 		}
 	}
 	chat = chat.replace(/\&lt\;3/g, "<span class=\"monospace\">&#9829;</span>");
