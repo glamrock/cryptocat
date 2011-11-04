@@ -14,7 +14,7 @@ Cryptocat Chrome is a Chrome app version of Cryptocat that loads all code locall
 * A sleek design with time-stamping, optional audio notifications, fluid-window mode, and mobile support.
 
 ## License
-### Cryptocat is released under the [Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-nc-sa/3.0/):
+### Cryptocat Chrome is released under the [Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-nc-sa/3.0/):
 * Noncommercial — You may not use this work for commercial purposes.
 * Attribution — You must attribute the work to the Cryptocat project (but not in any way that suggests that they endorse you or your use of the work).
 * Share Alike — If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
