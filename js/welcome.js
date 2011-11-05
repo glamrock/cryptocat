@@ -1,5 +1,7 @@
 var chat;
 var faded = 0;
+var nicks = new Array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 
+'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite');
 
 $(window).keypress(function(e) {
 	if ((e.keyCode == 13) && (!faded)) {
@@ -34,7 +36,9 @@ $("#create").click(function() {
 });
 
 $("#understand").click(function(){
-	document.write(chat.replace('<strong id="name"></strong>', '<strong id="name">' + $("#c").val() + '</strong>'));
+	chat = chat.replace('raccoon', nicks[(Math.floor(Math.random()*14))]);
+	chat = chat.replace('<strong id="name"></strong>', '<strong id="name">' + $("#c").val() + '</strong>');
+	document.write(chat);
 });
 
 var td1 = $("#td1").html();
