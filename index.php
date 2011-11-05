@@ -162,7 +162,7 @@
 <head>
 	<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width, user-scalable=no" />
-	<meta name="description" content="Cryptocat lets you instantly set up secure conversations. It's an open source encrypted, private alternative to invasive services such as Facebook chat." />
+	<meta name="description" content="Cryptocat lets you instantly set up secure conversations. It's an open source encrypted, private alternative to other services such as Facebook chat." />
 	<meta name="keywords" content="encrypted chat, private chat, secure chat, cryptocat" />
 	<title>cryptocat</title>
 	<?php
@@ -218,7 +218,7 @@ else {
 				<table>
 					<tr>
 						<td class="img"><img src="img/1.png" alt="" /></td>
-						<td id="td1"><strong>Cryptocat</strong> lets you instantly set up secure conversations. It\'s an open source encrypted, private alternative to invasive services such as Facebook chat.</td>
+						<td id="td1"><strong>Cryptocat</strong> lets you instantly set up secure conversations. It\'s an open source encrypted, private alternative to other services such as Facebook chat.</td>
 					</tr>
 					<tr>
 						<td class="img"><img src="img/2.png" alt="" /></td>
