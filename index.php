@@ -32,7 +32,7 @@
 	$nicks = array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 
 	'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite');
 	/* Polling rate. Don't change this. */
-	$update = 1750;
+	$update = 1550;
 	
 	/* Do _not_ touch anything below this line. */
 ?>
