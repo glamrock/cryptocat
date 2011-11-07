@@ -309,11 +309,12 @@ div.redirect p {
 	padding-top: 10px;
 }
 #fingerprints {
+	margin-top: 145px;
 	display: none;
 }
 #note {
 	padding-top: 40px;
-	margin-top: 165px;
+	margin-top: 160px;
 }
 #keygen {
 	margin-top: 10px;
