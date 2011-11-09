@@ -169,7 +169,7 @@
 		if (strstr($_SERVER['HTTP_USER_AGENT'], "iPod") || 
 		strstr($_SERVER['HTTP_USER_AGENT'], "iPhone") || 
 		strstr($_SERVER['HTTP_USER_AGENT'], "BlackBerry") || 
-		strstr($_SERVER['HTTP_USER_AGENT'], "Android")) {
+		(strstr($_SERVER['HTTP_USER_AGENT'], "Android") && strstr($_SERVER['HTTP_USER_AGENT'], "obile"))) {
 			print('<link rel="stylesheet" href="css/mobile.css" type="text/css" />'."\n");
 		}
 		else {
