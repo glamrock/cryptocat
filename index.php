@@ -161,15 +161,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xml:lang="en">
 <head>
 	<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
-	<meta name="viewport" content="width=device-width, user-scalable=no" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0;" />
 	<meta name="description" content="Cryptocat lets you instantly set up secure conversations. It's an open source encrypted, private alternative to other services such as Facebook chat." />
 	<meta name="keywords" content="encrypted chat, private chat, secure chat, cryptocat" />
 	<title>cryptocat</title>
 	<?php
-		if (strstr($_SERVER['HTTP_USER_AGENT'], "iPod") || 
-		strstr($_SERVER['HTTP_USER_AGENT'], "iPhone") || 
-		strstr($_SERVER['HTTP_USER_AGENT'], "BlackBerry") || 
-		(strstr($_SERVER['HTTP_USER_AGENT'], "Android") && strstr($_SERVER['HTTP_USER_AGENT'], "obile"))) {
+		$agent = $_SERVER['HTTP_USER_AGENT'];
+		if (strstr($agent, "iPod") || 
+		strstr($agent, "iPhone") || 
+		strstr($agent, "BlackBerry") || 
+		strstr($agent, "Windows Phone") || 
+		strstr($agent, "MeeGo") || 
+		(strstr($agent, "Android") && strstr($agent, "Mobile"))) {
 			print('<link rel="stylesheet" href="css/mobile.css" type="text/css" />'."\n");
 		}
 		else {
