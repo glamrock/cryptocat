@@ -179,12 +179,24 @@ div.msg, div.gsm {
 	background-image: url("../img/chat.png");
 	background-position: 96.5%;
 }
+div.gsm {
+	background-color: #FFF;
+}
+div.bsg {
+	background-color: #222;
+	color: #97BEED;
+	background-image: none;
+	font-size: 10px;
+	padding: 2px 5px;
+	margin-bottom: 3px;
+	border-bottom: 1px dashed #FFF;
+}
 div.msg a, div.gsm a {
 	color: #000;
 	border-bottom: 1px dashed #000;
 }
-div.gsm {
-	background-color: #FFF;
+div.bsg a {
+	color: #FFF;
 }
 div.msg a:hover, div.gsm a:hover {
 	border-bottom: 1px solid #000;
