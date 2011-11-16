@@ -200,7 +200,6 @@ else {
 	print('<body onload="document.getElementById(\'c\').focus();">'."\n");
 }
 ?>
-<div class="donate"><a href="https://crypto.cat/fundraiser/"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://crypto.cat/fundraiser/fundraiser.png" alt="Donate!" /></a></div>
 	<?php
 		function welcome($name) {
 			global $install;

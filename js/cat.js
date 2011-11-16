@@ -224,8 +224,7 @@ function updatekeys(sync) {
 					names[i] = data[i].replace(/:.+$/, '');
 					keys[i] = data[i].replace(/^[a-z]{1,12}:/, '');
 					var loc = jQuery.inArray(names[i], oldnames);
-					if (((keys[i].length != 682) && (keys[i].length != 683)) || 
-					((names[i] == oldnames[loc]) && (keys[i] != oldkeys[loc]))) {
+					if ((keys[i].length < 680) || ((names[i] == oldnames[loc]) && (keys[i] != oldkeys[loc]))) {
 						var nbsp = "";
 						for (ni=0; ni != 17; ni++) {
 							nbsp += "&nbsp";
@@ -389,7 +388,6 @@ function nickajax() {
 		data: "nick=" + $("#nickinput").val() + "&name=" + name + "&key=" + encodeURIComponent(pubkey),
 		success: function(data) {
 			if ((data != "error") && (data != "inuse") && (data != "full")) {
-				updatechat();
 				nick = $("#nick").html();
 				document.getElementById("input").focus();
 				document.title = "[" + num + "] cryptocat";
@@ -401,6 +399,9 @@ function nickajax() {
 					$("#nickentry").fadeOut('fast');
 				    $("#front").fadeOut();
 				});
+				document.getElementById("chat").innerHTML += "<div class=\"bsg\">" +
+				"Cryptocat is supported by people like you. Check out our " + 
+				"<a href=\"https://crypto.cat/fundraiser/\" target=\"_blank\">fundraiser</a> and keep us going.</div>";
 			}
 			else {
 				$('#keygen').fadeOut('slow', function() {
