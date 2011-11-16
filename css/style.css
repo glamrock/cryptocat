@@ -192,8 +192,8 @@ a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #fingerlink,
 	border: none;
 	color: #97CEEC;
 }
-div.msg, div.gsm {
-	padding: 8px 5px 8px 5px;
+div.msg, div.gsm, div.bsg {
+	padding: 8px 5px;
 	background-color: #D8EDF8;
 	width: 98%;
 	word-wrap: break-word;
@@ -202,12 +202,24 @@ div.msg, div.gsm {
 	background-position: 97.5%;
 	line-height: 1.55em;
 }
-div.msg a, div.gsm a {
+div.gsm {
+	background-color: #FFF;
+}
+div.bsg {
+	background-color: #222;
+	color: #97BEED;
+	background-image: none;
+	font-size: 11px;
+	padding: 2px 5px;
+	margin-bottom: 3px;
+	border-bottom: 1px dashed #FFF;
+}
+div.msg a, div.gsm a, {
 	color: #000;
 	border-bottom: 1px dashed #000;
 }
-div.gsm {
-	background-color: #FFF;
+div.bsg a {
+	color: #FFF;
 }
 div.msg a:hover, div.gsm a:hover {
 	border-bottom: 1px solid #000;
