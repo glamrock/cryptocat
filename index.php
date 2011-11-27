@@ -164,7 +164,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0;" />
 	<meta name="description" content="Cryptocat lets you instantly set up secure conversations. It's an open source encrypted, private alternative to other services such as Facebook chat." />
 	<meta name="keywords" content="encrypted chat, private chat, secure chat, cryptocat" />
-	<title>cryptocat</title>
+	<title>Cryptocat</title>
 	<?php
 		$agent = $_SERVER['HTTP_USER_AGENT'];
 		if (strstr($agent, "iPod") || 
@@ -232,6 +232,7 @@ else {
 					</tr>
 				</table>
 				<p class="bottom" id="bottom">
+					<a href="#" onclick="translate(\'french\')">français</a> | 
 					<a href="#" onclick="translate(\'catalan\')">català</a> | 
 					<a href="https://crypto.cat/about">about</a> | 
 					<a onclick="window.open(this.href,\'_blank\');return false;" href="https://chrome.google.com/webstore/detail/gonbigodpnfghidmnphnadhepmbabhij">chrome app</a> | 
