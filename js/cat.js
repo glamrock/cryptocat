@@ -32,6 +32,10 @@ var name = $("#name").html();
 var focus = true;
 var soundEmbed = null;
 
+var donate = "<div class=\"bsg\">" +
+"Cryptocat is supported by people like you. Check out our " + 
+"<a href=\"https://crypto.cat/fundraiser/\" target=\"_blank\">fundraiser</a> and keep us going.</div>";
+
 function idSelect(id) {
 	document.getElementById(id).focus();
 	document.getElementById(id).select();
@@ -271,6 +275,7 @@ function updatechat() {
 			if (data == "NOEXIST") {
 				if (pubkey) {
 					errordisplay("your chat no longer exists.");
+					$("#chat").html(donate);
 					clearInterval(interval);
 				}
 			}
@@ -289,7 +294,7 @@ function updatechat() {
 					}
 					if (!focus || ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) > 600)) {
 						num++;
-						document.title = "[" + num + "] cryptocat";
+						document.title = "[" + num + "] Cryptocat";
 					}
 					if (sound) {
 						soundPlay("snd/msg.ogg");
@@ -390,7 +395,7 @@ function nickajax() {
 			if ((data != "error") && (data != "inuse") && (data != "full")) {
 				nick = $("#nick").html();
 				document.getElementById("input").focus();
-				document.title = "[" + num + "] cryptocat";
+				document.title = "[" + num + "] Cryptocat";
 				interval = setInterval("updatechat()", update);
 				updatekeys(false);
 				$('#keytext').html($('#keytext').html() + " &#160; &#160; &#160; <span class=\"blue\">OK</span>");
@@ -399,9 +404,7 @@ function nickajax() {
 					$("#nickentry").fadeOut('fast');
 				    $("#front").fadeOut();
 				});
-				document.getElementById("chat").innerHTML += "<div class=\"bsg\">" +
-				"Cryptocat is supported by people like you. Check out our " + 
-				"<a href=\"https://crypto.cat/fundraiser/\" target=\"_blank\">fundraiser</a> and keep us going.</div>";
+				$("#chat").html(donate);
 			}
 			else {
 				$('#keygen').fadeOut('slow', function() {
@@ -536,7 +539,7 @@ window.onfocus = function() {
 	clearTimeout(blur);
 	focus = true;
 	num = 0;
-	document.title = "[" + num + "] cryptocat";
+	document.title = "[" + num + "] Cryptocat";
 }
 window.onblur = function() {
 	blur = setTimeout("focus = false", update);
