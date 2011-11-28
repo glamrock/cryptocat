@@ -297,7 +297,7 @@ function updatechat() {
 						document.title = "[" + num + "] Cryptocat";
 					}
 					if (sound) {
-						soundPlay("snd/msg.ogg");
+						soundPlay("snd/msg.wav");
 					}
 				}
 				else {
