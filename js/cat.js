@@ -178,7 +178,10 @@ function process(line, flip) {
 			var loc = jQuery.inArray(thisnick, names);
 			fliptag();
 			if (Crypto.HMAC(Crypto.SHA256, match, seckeys[loc]) != hmac) {
+				line = tagify(line);
 				line = line.replace(/\[B-C\](.*)\[E-C\]/, "<span class=\"diffkey\">corrupt</span>");
+				line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
+				$("#chat").html($("#chat").html() + line);
 				$("#" + pos).css("background-image","url(\"img/corrupt.png\")");
 			}
 			else {
@@ -188,8 +191,8 @@ function process(line, flip) {
 				line = line.replace(/\[B-C\](.*)\[E-C\]/, match);
 				line = tagify(line);
 				line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
+				$("#chat").html($("#chat").html() + line);
 			}
-			$("#chat").html($("#chat").html() + line);
 		}
 		else if (match = line.match(/^(\&gt\;|\&lt\;) [a-z]{1,12} (has arrived|has left)$/)) {
 			updatekeys(true);
