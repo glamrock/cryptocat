@@ -283,12 +283,12 @@ div.redirect {
 	box-shadow: 4px 4px #97CEEC;
 	width: 600px;
 	color: #FFF;
-	padding: 20px;
+	padding: 20px 18px;
 	text-align: center;
 	display: block;
 	margin: 2% auto 0 auto;
 	font-size: 12px;
-	min-height: 440px;
+	min-height: 460px;
 	box-shadow: 5px 5px #76BDE5;
 }
 div.redirect img {
