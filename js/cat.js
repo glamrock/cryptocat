@@ -35,7 +35,7 @@ var soundEmbed = null;
 var notice = ["Cryptocat is supported by people like you. Check out our " + 
 "<a href=\"https://crypto.cat/fundraiser/\" target=\"_blank\">fundraiser</a> and keep us going.", 
 "Do you use Cryptocat often? Please fill out this short " + 
-"<a href=\"https://docs.google.com/a/nadim.cc/spreadsheet/viewform?formkey=dG5yZUNVcFQ0R0hNM0RKSUdHOUdGVEE6MQ\" target=\"_blank\">survey</a> and help us improve."];
+"<a href=\"https://crypto.cat/survey/\" target=\"_blank\">survey</a> and help us improve."];
 
 function idSelect(id) {
 	document.getElementById(id).focus();
