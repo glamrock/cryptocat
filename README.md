@@ -10,7 +10,7 @@ Cryptocat Chrome is a Chrome app version of Cryptocat that loads all code locall
 * HMAC message integrity verification.
 * The identity of chatters can be confirmed via key fingerprints, à la OTR.
 * A seeded, cryptographically secure random number generator that relies on browser elements, DOM, JavaScript variable state, and more to produce entropy. The resulting entropy is hashed to produce the final seed, which is then fed back to the CSPRNG.
-* Chats are securely deleted after 30 minutes of inactivity.
+* Chats are securely deleted after one hour of inactivity.
 * A sleek design with time-stamping, optional audio notifications, fluid-window mode, and mobile support.
 
 ## License
