@@ -25,7 +25,7 @@
 	/* Maximum characters per line. */
 	$maxinput = 256;
 	/* Time limit in seconds before overwriting chat. */
-	$timelimit = 1800;
+	$timelimit = 3600;
 	/* Set to 0 to disable automatic URL linking. */
 	$genurl = 1;
 	/* Default nicknames: */
@@ -224,7 +224,7 @@ else {
 					</tr>
 					<tr>
 						<td class="img"><img src="img/2.png" alt="" /></td>
-						<td id="td2">Messages are encrypted inside your own browser and are verified for integrity. Conversations are securely wiped after 30 minutes of inactivity.</td>
+						<td id="td2">Messages are encrypted inside your own browser and are verified for integrity. Conversations are securely wiped after one hour of inactivity.</td>
 					</tr>
 					<tr>
 						<td class="img"><img src="img/3.png" alt="" /></td>
