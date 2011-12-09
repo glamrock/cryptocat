@@ -99,7 +99,7 @@ input.create:active, #talk:active {
 }
 #inchat {
 	width: 98%;
-	height: 72%;
+	height: 76%;
 	overflow: hidden;
 	margin: -10px auto 0 auto;
 }
