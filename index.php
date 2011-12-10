@@ -157,10 +157,9 @@
 		exit;
 	}
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xml:lang="en">
+<!DOCTYPE html>
 <head>
-	<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0;" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
@@ -189,11 +188,11 @@
 			exit;
 		}
 	?>
-	<link rel="icon" type="image/png" href="img/favicon.gif" />
-	<link rel="apple-touch-icon" href="img/ios.png"/>
+	<link rel="icon" type="image/gif" href="img/favicon.gif" />
+	<link rel="apple-touch-startup-image" type="image/png" href="img/isplash.png" />
+	<link rel="apple-touch-icon" type="image/png" href="img/ios.png"/>
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/crypto.js"></script>
-	<script type="text/javascript">$(document).ready(function() { $("#c,#nickinput,#key,#input").attr("autocomplete", "off"); });</script>
 </head>
 <?php
 if (isset($_GET['c']) && preg_match('/^\w+$/', $_GET['c'])) {
@@ -216,7 +215,7 @@ else {
 						</div>
 					</div>
 					<div>
-						<input type="text" class="name" name="c" id="c" onclick="idSelect(\'c\');" value="'.$name.'" maxlength="32" />
+						<input type="text" class="name" name="c" id="c" onclick="idSelect(\'c\');" value="'.$name.'" maxlength="32" autocomplete="off" />
 						<input type="submit" class="create" value="enter" id="create" />
 					</div>
 				</form>
@@ -231,16 +230,16 @@ else {
 					</tr>
 					<tr>
 						<td class="img"><img src="img/3.png" alt="" /></td>
-						<td id="td3">Cryptocat is fully compatible with <a onclick="window.open(this.href,\'_blank\');return false;" href="https://torproject.org">Tor</a> and also works on your iPhone, Android and BlackBerry.</td>
+						<td id="td3">Cryptocat is fully compatible with <a target="_blank" href="https://torproject.org">Tor</a> and also works on your iPhone, Android and BlackBerry.</td>
 					</tr>
 				</table>
 				<p class="bottom" id="bottom">
 					<a href="#" onclick="translate(\'french\')">français</a> | 
 					<a href="#" onclick="translate(\'catalan\')">català</a> | 
 					<a href="https://crypto.cat/about">about</a> | 
-					<a onclick="window.open(this.href,\'_blank\');return false;" href="https://chrome.google.com/webstore/detail/gonbigodpnfghidmnphnadhepmbabhij">chrome app</a> | 
-					<a onclick="window.open(this.href,\'_blank\');return false;" href="https://twitter.com/cryptocatapp">twitter</a> | 
-					<a onclick="window.open(this.href,\'_blank\');return false;" href="https://github.com/kaepora/cryptocat/">github</a>
+					<a target="_blank" href="https://chrome.google.com/webstore/detail/gonbigodpnfghidmnphnadhepmbabhij">chrome app</a> | 
+					<a target="_blank" href="https://twitter.com/cryptocatapp">twitter</a> | 
+					<a target="_blank" href="https://github.com/kaepora/cryptocat/">github</a>
 				</p>
 			</div>
 			<script type="text/javascript" src="js/welcome.js"></script>');
@@ -287,7 +286,7 @@ else {
 						<p>Enter nickname</p>
 						<form name="nickform" id="nickform" method="post" action="'.$install.'">
 							<div>
-								<input type="text" name="nickinput" id="nickinput" value="'.$nick.'" maxlength="12" />
+								<input type="text" name="nickinput" id="nickinput" value="'.$nick.'" maxlength="12" autocomplete="off" />
 								<input type="submit" class="nicksubmit" value="chat" />
 							</div>
 						</form>
@@ -306,7 +305,7 @@ else {
 			<form name="chatform" id="chatform" method="post" action="'.$install.'">
 				<div>
 					<div id="chatters"></div>
-					<input type="text" name="input" id="input" maxlength="'.$maxinput.'" />
+					<input type="text" name="input" id="input" maxlength="'.$maxinput.'" autocomplete="off" />
 					<input type="submit" name="talk" id="talk" value="'.$maxinput.'" />
 				</div>
 			</form>
