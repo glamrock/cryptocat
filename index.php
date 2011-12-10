@@ -239,6 +239,7 @@ else {
 					<a href="https://crypto.cat/about">about</a> | 
 					<a target="_blank" href="https://chrome.google.com/webstore/detail/gonbigodpnfghidmnphnadhepmbabhij">chrome app</a> | 
 					<a target="_blank" href="https://twitter.com/cryptocatapp">twitter</a> | 
+					<a target="_blank" href="http://blog.crypto.cat">blog</a> | 
 					<a target="_blank" href="https://github.com/kaepora/cryptocat/">github</a>
 				</p>
 			</div>
