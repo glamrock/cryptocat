@@ -1,13 +1,11 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xml:lang="en">
+<!DOCTYPE html>
 <head>
-	<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+	<meta charset="UTF-8" />
 	<title>Cryptocat</title>
 	<link rel="stylesheet" href="css/style.css" type="text/css" />
 	<link rel="icon" type="image/png" href="img/favicon.gif" />
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/crypto.js"></script>
-	<script type="text/javascript">$(document).ready(function() { $("#c,#nickinput,#key,#input").attr("autocomplete", "off"); });</script>
 </head>
 <body onbeforeunload="logout();">
 	<div id="main">
@@ -21,7 +19,7 @@
 						<p>Enter nickname</p>
 						<form name="nickform" id="nickform" method="post" action="https://crypto.cat/">
 							<div>
-								<input type="text" name="nickinput" id="nickinput" value="raccoon" maxlength="12" />
+								<input type="text" name="nickinput" id="nickinput" value="raccoon" maxlength="12" autocomplete="off" />
 								<input type="submit" class="nicksubmit" value="chat" />
 							</div>
 						</form>
@@ -40,7 +38,7 @@
 			<form name="chatform" id="chatform" method="post" action="https://crypto.cat/">
 				<div>
 					<div id="chatters"></div>
-					<input type="text" name="input" id="input" maxlength="256" />
+					<input type="text" name="input" id="input" maxlength="256" autocomplete="off" />
 					<input type="submit" name="talk" id="talk" value="256" />
 				</div>
 			</form>
