@@ -214,7 +214,7 @@ div.bsg {
 	margin-bottom: 3px;
 	border-bottom: 1px dashed #FFF;
 }
-div.msg a, div.gsm a, {
+div.msg a, div.gsm a {
 	color: #000;
 	border-bottom: 1px dashed #000;
 }
@@ -277,30 +277,6 @@ td {
 	position: absolute;
 	top: 0;
 	left: 0;
-}
-div.redirect {
-	background-color: #222;
-	box-shadow: 4px 4px #97CEEC;
-	width: 600px;
-	color: #FFF;
-	padding: 20px;
-	text-align: center;
-	display: block;
-	margin: 2% auto 0 auto;
-	font-size: 12px;
-	min-height: 440px;
-	box-shadow: 5px 5px #76BDE5;
-}
-div.redirect img {
-	display: block;
-	text-align: left;
-	margin-bottom: 100px;
-}
-div.redirect p {
-	font-family: Neuton, Georgia;
-	font-size: 22px;
-	line-height: 1.7em;
-	word-wrap: break-word;
 }
 #changenick, #fingerprints, #note {
 	width: 430px;
