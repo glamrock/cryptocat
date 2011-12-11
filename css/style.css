@@ -214,7 +214,7 @@ div.bsg {
 	margin-bottom: 3px;
 	border-bottom: 1px dashed #FFF;
 }
-div.msg a, div.gsm a, {
+div.msg a, div.gsm a {
 	color: #000;
 	border-bottom: 1px dashed #000;
 }
