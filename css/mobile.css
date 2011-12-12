@@ -2,9 +2,6 @@ html {
 	height: 98.2%;
 	width: 100%;
 }
-.donate {
-	display: none;
-}
 body {
 	height: 100%;
 	margin: 0 auto;
@@ -50,7 +47,7 @@ input {
 	padding: 3px;
 	text-align: center;
 	outline: none;
-	font-size: 1em;
+	font-size: 1.4em;
 }
 #understand, input.nicksubmit, #close {
 	border: 1px solid #97CEEC;
@@ -59,7 +56,7 @@ input {
 	outline: none;
 	padding: 3px;
 	box-shadow: 1px 1px #FFF;
-	font-size: 0.8em;
+	font-size: 1.4em;
 }
 #understand {
 	margin-top: 23px;
@@ -99,7 +96,7 @@ input.create:active, #talk:active {
 }
 #inchat {
 	width: 98%;
-	height: 76%;
+	height: 76.5%;
 	overflow: hidden;
 	margin: -10px auto 0 auto;
 }
@@ -204,7 +201,7 @@ div.msg a:hover, div.gsm a:hover {
 }
 img.cryptocat, img.chat {
 	margin: 5px 0px 5px 5px;
-	width: 65%;
+	width: 75%;
 }
 span.diffkey {
 	border-bottom: 1px dashed #000;
@@ -252,15 +249,14 @@ div.redirect p {
 	word-wrap: break-word;
 }
 #changenick, #fingerprints, #note {
-	padding: 10px;
-	width: 275px;
+	padding: 7em 5px 0 5px;
+	width: 97%;
 	background-color: rgba(0, 0, 0, 0.96);
 	color: #FFF;
-	box-shadow: 4px 4px #97CEEC;
 	text-align: center;
-	margin: 4em auto;
-	min-height: 80px;
-	font-size: 0.7em;
+	margin: 0 auto;
+	height: 100%;
+	font-size: 0.9em;
 }
 #changenick {
 	padding-top: 10px;
@@ -268,7 +264,8 @@ div.redirect p {
 #fingerprints {
 	display: none;
 	word-wrap: break-word;
-	font-size: 0.8em;
+	font-size: 0.5em;
+	text-align: left;
 }
 #keygen img {
 	float: left;
@@ -278,11 +275,12 @@ div.redirect p {
 	font-size: 0.8em;
 	float: left;
 	text-align: left;
-	margin: -65px 0px 0px 100px;
+	margin: -78px 0px 0px 100px;
 	line-height: 1.65em;
 }
 #keygen, #nickentry {
 	display: none;
+	margin: 7em auto;
 }
 #nick, #fingerlink {
 	color: #97CEEC;
