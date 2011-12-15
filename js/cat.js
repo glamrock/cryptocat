@@ -347,6 +347,7 @@ $("#chatform").submit( function() {
 		msg = msg.replace(/\$/g,"&#36;");
 		var msgc = nick + ": " + msg;
 		$("#input").val("");
+		document.getElementById("input").focus();
 		if (msg != "") {
 			sentid = gen(8, 1, 0);
 			document.getElementById("chat").innerHTML += process(msgc, 0);
@@ -357,7 +358,6 @@ $("#chatform").submit( function() {
 				$("#" + sentid).css("background-image","url(\"img/sending.gif\")");
 				queue.push(msg + "$" + sentid);
 				$("#talk").val(maxinput);
-				document.getElementById("input").focus();
 			}
 		}
 	}
