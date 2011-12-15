@@ -94,7 +94,7 @@ function textcounter(field,cntfield,maxlimit) {
 
 function gen(size, extra, s) {
 	if (s) {
-		seed = Math.seedrandom(Crypto.SHA256(seed) + Math.seedrandom());
+		Math.seedrandom(Crypto.SHA256(seed) + Math.seedrandom());
 	}
 	var str = "";
 	var charset = "123456789";
