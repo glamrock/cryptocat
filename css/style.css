@@ -21,7 +21,7 @@ body {
 	box-shadow: 5px 5px #76BDE5;
 	margin: 2% auto 0 auto;
 }
-p.bottom {
+div.bottom {
 	margin: 51px 0px 0px -10px;
 	width: 610px;
 	background-color: #000;
@@ -29,6 +29,20 @@ p.bottom {
 	text-align: center;
 	color: #fff;
 	font-weight: bold;
+}
+#lang {
+	float: left;
+	width: 54px;
+}
+#lang a {
+	background-color: #97CEEC;
+	color: #000;
+	padding: 0px 2px;
+	font-family: monospace;
+}
+#lang a:hover {
+	background-color: #FFF;
+	text-decoration: none;
 }
 input.name, input.create {
 	width: 330px;

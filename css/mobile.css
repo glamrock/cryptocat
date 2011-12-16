@@ -14,7 +14,7 @@ body {
 	height: 100%;
 	border: 7px solid #000;
 }
-p.bottom {
+div.bottom {
 	display: none;
 }
 input.name, input.create {
