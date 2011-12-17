@@ -41,7 +41,7 @@
 	ini_set('session.entropy_length', '1024');
 	session_set_cookie_params(0, '/', $domain, $https, TRUE);
 	error_reporting(0);
-	$msgregex = '/^[a-z]{1,12}\|\w{8}:\s\[B-C\](\w|\/|\+|\?|\(|\)|\=)+\|(\d|a|b|c|d|e|f)+\[E-C\]$/';
+	$msgregex = '/^[a-z]{1,12}\|\w{8}:\s\[B-C\]((\w|\/|\+|\?|\(|\)|\=)+\|(\d|a|b|c|d|e|f)+)+\[E-C\]$/';
 	function getpeople($chat) {
 		preg_match_all('/[a-z]{1,12}:/', $chat[0], $people);
 		for ($i=0; $i < count($people[0]); $i++) {

@@ -407,6 +407,7 @@ function nickajax() {
 				    $("#front").fadeOut();
 				});
 				$("#chat").html("<div class=\"bsg\">" + notice[Math.floor(Math.random()*2)] + "</div>");
+				updatechat();
 			}
 			else {
 				$('#keygen').fadeOut('slow', function() {
