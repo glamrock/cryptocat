@@ -32,7 +32,7 @@
 	$nicks = array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 
 	'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite');
 	/* Polling rate. Don't change this. */
-	$update = 1550;
+	$update = 1250;
 	
 	/* Do _not_ touch anything below this line. */
 ?>
@@ -41,6 +41,7 @@
 	ini_set('session.entropy_length', '1024');
 	session_set_cookie_params(0, '/', $domain, $https, TRUE);
 	error_reporting(0);
+	$msgregex = '/^[a-z]{1,12}\|\w{8}:\s\[B-C\](\w|\/|\+|\?|\(|\)|\=)+\|(\d|a|b|c|d|e|f)+\[E-C\]$/';
 	function getpeople($chat) {
 		preg_match_all('/[a-z]{1,12}:/', $chat[0], $people);
 		for ($i=0; $i < count($people[0]); $i++) {
@@ -109,7 +110,7 @@
 			else if (isset($_POST['pos']) && $_POST['pos'] >= 0) {
 				$_POST['pos'] = $_POST['pos'] + ($_SESSION['pos'] - 1);
 				if ($_POST['pos'] <= count($chat) - 1) {
-					if (preg_match('/^[a-z]{1,12}\|\w{8}:\s\[B-C\](\w|\/|\+|\?|\(|\)|\=|\|)+\[E-C\]$/', $chat[$_POST['pos']])) {
+					if (preg_match($msgregex, $chat[$_POST['pos']])) {
 						preg_match_all('/\([a-z]{1,12}\)[^\(^\[]+/', $chat[$_POST['pos']], $match);
 						preg_match('/^[a-z]{1,12}\|/', $chat[$_POST['pos']], $nick);
 						$nick = substr($nick[0], 0, -1);
@@ -148,7 +149,7 @@
 		$chat = file($data.$_POST['name']);
 		preg_match('/^[a-z]{1,12}\|/', $_POST['input'], $thisnick);
 		$thisnick = substr($thisnick[0], 0, -1);
-		if (preg_match('/^[a-z]{1,12}\|\w{8}:\s\[B-C\](\w|\/|\+|\?|\(|\)|\=|\|)+\[E-C\]$/', $_POST['input']) && $_SESSION['nick'] == $thisnick) {
+		if (preg_match($msgregex, $_POST['input']) && $_SESSION['nick'] == $thisnick) {
 			$chat = $_POST['input']."\n";
 			if (file_exists($data.$_POST['name'])) {
 				file_put_contents($data.$_POST['name'], $chat, FILE_APPEND | LOCK_EX);
