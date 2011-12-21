@@ -227,7 +227,7 @@ else {
 					</tr>
 					<tr>
 						<td class="img"><img src="img/2.png" alt="" /></td>
-						<td id="td2">Messages are encrypted inside your own browser and are verified for integrity. Conversations are securely wiped after one hour of inactivity.</td>
+						<td id="td2">Messages are encrypted inside your own browser using AES-256 and 4096-bit asymmetric keys. Conversations are securely wiped after one hour of inactivity.</td>
 					</tr>
 					<tr>
 						<td class="img"><img src="img/3.png" alt="" /></td>
@@ -237,9 +237,10 @@ else {
 				<div class="bottom">
 					<span id="lang">
 						<a href="#" onclick="translate(\'fra\')">fra</a> 
-						<a href="#" onclick="translate(\'cat\')">cat</a>
+						<a href="#" onclick="translate(\'cat\')">cat</a> 
+						<a href="#" onclick="translate(\'baq\')">baq</a>
 					</span>
-					<a href="https://crypto.cat/about" style="margin-left:-54px">about</a> | 
+					<a href="https://crypto.cat/about" style="margin-left:-83px">about</a> | 
 					<a target="_blank" href="https://chrome.google.com/webstore/detail/gonbigodpnfghidmnphnadhepmbabhij">chrome app</a> | 
 					<a target="_blank" href="https://twitter.com/cryptocatapp">twitter</a> | 
 					<a target="_blank" href="http://blog.crypto.cat">blog</a> | 

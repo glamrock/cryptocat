@@ -266,6 +266,7 @@ div.redirect p {
 	word-wrap: break-word;
 	font-size: 0.5em;
 	text-align: left;
+	font-family: monospace;
 }
 #keygen img {
 	float: left;
