@@ -12,7 +12,7 @@ Cryptocat Chrome is a Chrome app version of Cryptocat that loads all code locall
 * A seeded, cryptographically secure random number generator that relies on browser elements, DOM, JavaScript variable state, and more to produce entropy. The resulting entropy is hashed to produce the final seed, which is then fed back to the CSPRNG.
 * Chats are securely deleted after one hour of inactivity.
 * A sleek design with time-stamping, optional audio notifications, fluid-window mode, and mobile support.
-* Translations available for French and Catalan.
+* Translations available for French, Catalan and Basque.
 
 ## License
 ### Cryptocat Chrome is released under the [Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-nc-sa/3.0/):
@@ -33,4 +33,4 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 * Cryptocat provides strongly encrypted, secure communications. However, it is not a replacement to GPG. Think responsibly if you are in extreme, life-threatening situations.
 
 ## About
-Cryptocat is developed by [Nadim Kobeissi](http://nadim.cc). It uses parts of the [crypto-js](http://code.google.com/p/crypto-js/) library and the Bitcons iconset. Furthermore, Cryptocat is indebted to Paul Brodeur, David Mirza, Hasan Saleh, Morgan Sutherland and Tina Salameh for their suggestions and beta testing.
+Cryptocat is developed by [Nadim Kobeissi](http://nadim.cc). It uses parts of the [crypto-js](http://code.google.com/p/crypto-js/) library and the Bitcons iconset. Cryptocat is indebted to Paul Brodeur, David Mirza, Hasan Saleh, Morgan Sutherland, Tina Salameh, and Mikel Iturbe Urretxa.
