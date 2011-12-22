@@ -27,6 +27,7 @@ var keys = new Array();
 var seckeys = new Array();
 var fingerprints = new Array();
 var queue = new Array();
+var usedhmac = new Array();
 var nick = $("#nick").html();
 var name = $("#name").html();
 var focus = true;
@@ -176,7 +177,7 @@ function process(line, flip) {
 			line = line.replace(/\|\w{64}/, '');
 			var loc = jQuery.inArray(thisnick, names);
 			fliptag();
-			if (Crypto.HMAC(Crypto.SHA256, match, seckeys[loc]) != hmac) {
+			if ((Crypto.HMAC(Crypto.SHA256, match, seckeys[loc]) != hmac) || (jQuery.inArray(hmac, usedhmac) >= 0)) {
 				line = tagify(line);
 				line = line.replace(/\[B-C\](.*)\[E-C\]/, "<span class=\"diffkey\">corrupt</span>");
 				line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
@@ -187,6 +188,7 @@ function process(line, flip) {
 				match = Crypto.AES.decrypt(match, seckeys[loc], {
 					mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
 				});
+				usedhmac.push(hmac);
 				line = line.replace(/\[B-C\](.*)\[E-C\]/, match);
 				line = tagify(line);
 				line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
