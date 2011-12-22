@@ -77,7 +77,7 @@ function translate(language) {
 	}
 	else if (language == "baq") {
 		$("#td1").html("<strong>Cryptocat</strong>-ek elkarrizketa seguruak momentuan eratzea ahalbidetzen du. Facebook-eko txataren moduko zerbitzuen alternatiba pribatu, zifratu eta kode-irekikoa da.");
-		$("#td2").html("Mezuak dira zifratzen AES-256 eta 4096-bit asimetrikoaren teklak erabiliz. Elkarrizketak era seguruan ezabatzen dira haietan jardunik gabeko ordu bat igaro ondoren.");
+		$("#td2").html("Mezuak AES-256 eta 4096 biteko gako asimetrikoak erabiliz zifratzen dira. Elkarrizketak era seguruan ezabatzen dira haietan jardunik gabeko ordu bat igaro ondoren.");
 		$("#td3").html('Cryptocat guztiz bateragarria da Tor-ekin eta zure iPhone, Android edo BlackBerry-an ere badabil.');
 		$("#lang").html('<a href="#" onclick="translate(\'fra\')">fra</a> <a href="#" onclick="translate(\'cat\')">cat</a> <a href="#" onclick="translate(\'eng\')">eng</a>');
 		$("#notetext").html('Cryptocat-ek zifraketa sendoa duten komunikazio seguruak hornitzen ditu. Dena den, ez da GPGren ordezkoa. Arduraz pentsatu muturreko edo bizitza arriskupean dagoen egoera batean bazaude.');
