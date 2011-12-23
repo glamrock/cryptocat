@@ -32,7 +32,7 @@ div.bottom {
 }
 #lang {
 	float: left;
-	width: 83px;
+	width: 120px;
 }
 #lang a {
 	background-color: #97CEEC;
@@ -271,7 +271,7 @@ td.img {
 }
 td {
 	border-bottom: 8px solid #FFF;
-	font-size: 12px;
+	font-size: 11px;
 }
 #maximize, #sound {
 	float: right;

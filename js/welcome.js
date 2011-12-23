@@ -57,7 +57,7 @@ function translate(language) {
 		$("#td1").html("<strong>Cryptocat</strong> li permet crear instantàniament converses segura i encriptada. Es tracta d'una alternativa de codi obert als serveis invasius, com ara el xat de Facebook.");
 		$("#td2").html("Els missatges són xifrats dins el seu navegador utilitzant AES-256 i 4096 bits claus asimètriques. Les converses són amb seguretat eliminat després d'una hora d'inactivitat.");
 		$("#td3").html('Cryptocat és totalment compatible amb <a target=\"_blank\" href="https://torproject.org">Tor</a> i també funciona en iPhone, Android i BlackBerry.');
-		$("#lang").html('<a href="#" onclick="translate(\'fra\')">fra</a> <a href="#" onclick="translate(\'eng\')">eng</a> <a href="#" onclick="translate(\'baq\')">baq</a>');
+		$("#lang").html('<a href="#" onclick="translate(\'fra\')">fra</a> <a href="#" onclick="translate(\'eng\')">eng</a> <a href="#" onclick="translate(\'baq\')">baq</a> <a href="#" onclick="translate(\'ita\')">ita</a>');
 		$("#notetext").html('Cryptocat proporciona un xifratge fort e les comunicacions segures. No obstant això, es no és un reemplaçament de GPG. Pensar de manera responsable si es troba en extrem, situacions potencialment mortals.');
 		$("#understand").val("Jo entenc.");
 		$("#c").val("nom de la xerrada");
@@ -68,7 +68,7 @@ function translate(language) {
 		$("#td1").html("<strong>Cryptocat</strong> vous laisse mettre en place des conversations sécurisées. C'est une alternative open source et privée à d'autres services tel que Facebook Chat.");
 		$("#td2").html("Les messages sont cryptés à l'intérieur de votre navigateur avec AES-256 et des clefs asymétriques 4096-bit. Toutes conversations sont effacés après une heure d'inactivité.");
 		$("#td3").html('Cryptocat est entièrement compatible avec <a target=\"_blank\" href="https://torproject.org">Tor</a> et travaille aussi sur votre iPhone, Android et BlackBerry.');
-		$("#lang").html('<a href="#" onclick="translate(\'eng\')">eng</a> <a href="#" onclick="translate(\'cat\')">cat</a> <a href="#" onclick="translate(\'baq\')">baq</a>');
+		$("#lang").html('<a href="#" onclick="translate(\'eng\')">eng</a> <a href="#" onclick="translate(\'cat\')">cat</a> <a href="#" onclick="translate(\'baq\')">baq</a> <a href="#" onclick="translate(\'ita\')">ita</a>');
 		$("#notetext").html('Cryptocat fournit des communications fortement cryptés. Cependant, Cryptocat n\'est pas un remplacement à GPG. Pensez responsablement si vous êtes dans des situations extrêmes.');
 		$("#understand").val("Je comprends.");
 		$("#c").val("nom de la conversation");
@@ -79,12 +79,23 @@ function translate(language) {
 		$("#td1").html("<strong>Cryptocat</strong>-ek elkarrizketa seguruak momentuan eratzea ahalbidetzen du. Facebook-eko txataren moduko zerbitzuen alternatiba pribatu, zifratu eta kode-irekikoa da.");
 		$("#td2").html("Mezuak AES-256 eta 4096 biteko gako asimetrikoak erabiliz zifratzen dira. Elkarrizketak era seguruan ezabatzen dira haietan jardunik gabeko ordu bat igaro ondoren.");
 		$("#td3").html('Cryptocat guztiz bateragarria da Tor-ekin eta zure iPhone, Android edo BlackBerry-an ere badabil.');
-		$("#lang").html('<a href="#" onclick="translate(\'fra\')">fra</a> <a href="#" onclick="translate(\'cat\')">cat</a> <a href="#" onclick="translate(\'eng\')">eng</a>');
+		$("#lang").html('<a href="#" onclick="translate(\'fra\')">fra</a> <a href="#" onclick="translate(\'cat\')">cat</a> <a href="#" onclick="translate(\'eng\')">eng</a> <a href="#" onclick="translate(\'ita\')">ita</a>');
 		$("#notetext").html('Cryptocat-ek zifraketa sendoa duten komunikazio seguruak hornitzen ditu. Dena den, ez da GPGren ordezkoa. Arduraz pentsatu muturreko edo bizitza arriskupean dagoen egoera batean bazaude.');
 		$("#understand").val("Ulertzen dut.");
 		$("#c").val("izendatu zure elkarrizketa");
 		$("#create").val("sartu");
 		lettersonly = "letrak eta zenbakiak soilik";
+	}
+	else if (language == "ita") {
+		$("#td1").html("<strong>Cryptocat</strong> ti permette di impostare istantaneamente conversazioni sicure. E' un servizio privato, crittografato, open source, alternativo ad altri servizi come la chat di Facebook.");
+		$("#td2").html("I messaggi sono crittografati all'interno del tuo browser usando chiavi asimmetriche AES-256 a 4069-bit. Le tue conversazioni sono cancellate in modo sicuro dopo un'ora di inattività.");
+		$("#td3").html("Cryptocat è completamente compatibile con <a target=\"_blank\" href=\"https://torproject.org\">Tor</a> e funziona anche sul tuo smartphone iPhone, Android e BlackBerry.");
+		$("#lang").html('<a href="#" onclick="translate(\'fra\')">fra</a> <a href="#" onclick="translate(\'cat\')">cat</a> <a href="#" onclick="translate(\'baq\')">baq</a> <a href="#" onclick="translate(\'eng\')">eng</a>');
+		$("#notetxt").html("Cryptocat fornisce comunicazioni sicure e solidamente crittografate. Tuttavia, non è un sostituto di GPG. Pensa in modo responsabile se ti trovi in situazioni di estremo pericolo di vita.");
+		$("#understand").val("Sono consapevole.");
+		$("#c").val("nome della conversazione");
+		$("#create").val("entra");
+		lettersonly = "solo numeri e lettere";
 	}
 	else if (language == "eng") {
 		$("#td1").html(td1);
