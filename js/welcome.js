@@ -75,7 +75,7 @@ function translate(language) {
 		$("#td2").html("I messaggi sono crittografati all'interno del tuo browser usando chiavi asimmetriche AES-256 a 4069-bit. Le tue conversazioni sono cancellate in modo sicuro dopo un'ora di inattività.");
 		$("#td3").html("Cryptocat è completamente compatibile con <a target=\"_blank\" href=\"https://torproject.org\">Tor</a> e funziona anche sul tuo smartphone iPhone, Android e BlackBerry.");
 		$("#lang").html('<a href="#" onclick="translate(\'fra\')">fra</a> <a href="#" onclick="translate(\'cat\')">cat</a> <a href="#" onclick="translate(\'baq\')">baq</a> <a href="#" onclick="translate(\'eng\')">eng</a>');
-		$("#notetxt").html("Cryptocat fornisce comunicazioni sicure e solidamente crittografate. Tuttavia, non è un sostituto di GPG. Pensa in modo responsabile se ti trovi in situazioni di estremo pericolo di vita.");
+		$("#notetext").html("Cryptocat fornisce comunicazioni sicure e solidamente crittografate. Tuttavia, non è un sostituto di GPG. Pensa in modo responsabile se ti trovi in situazioni di estremo pericolo di vita.");
 		$("#understand").val("Sono consapevole.");
 		$("#c").val("nome della conversazione");
 		$("#create").val("entra");
