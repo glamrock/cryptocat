@@ -14,7 +14,7 @@ Cryptocat lets you instantly set up secure conversations. It's an open source en
 * [Cryptocat Chrome](https://chrome.google.com/webstore/detail/gonbigodpnfghidmnphnadhepmbabhij), a Chrome app that loads all code locally, and is secure from being served compromised code.
 * Chats are securely deleted after one hour of inactivity.
 * A sleek design with time-stamping, optional audio notifications, fluid-window mode, and mobile support.
-* Translations available for French, Catalan and Basque.
+* Translations available for French, Catalan, Basque and Italian.
 
 ## License
 ### Cryptocat is released under the [Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-nc-sa/3.0/):
@@ -30,6 +30,10 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+## Installation instructions
+1. Run ./make.sh inside the js/src/ directory in order to generate the client-side cryptography code (requires GCC.)
+2. Configure settings inside index.php.
 
 ## Important notes
 * Cryptocat provides strongly encrypted, secure communications. However, it is not a replacement to GPG. Think responsibly if you are in extreme, life-threatening situations.

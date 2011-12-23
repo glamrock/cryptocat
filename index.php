@@ -193,7 +193,7 @@
 	<link rel="apple-touch-startup-image" type="image/png" href="img/isplash.png" />
 	<link rel="apple-touch-icon" type="image/png" href="img/ios.png"/>
 	<script type="text/javascript" src="js/jquery.js"></script>
-	<script type="text/javascript" src="js/crypto.js"></script>
+	<script type="text/javascript" src="js/build.js"></script>
 </head>
 <?php
 if (isset($_GET['c']) && preg_match('/^\w+$/', $_GET['c'])) {
@@ -238,9 +238,10 @@ else {
 					<span id="lang">
 						<a href="#" onclick="translate(\'fra\')">fra</a> 
 						<a href="#" onclick="translate(\'cat\')">cat</a> 
-						<a href="#" onclick="translate(\'baq\')">baq</a>
+						<a href="#" onclick="translate(\'baq\')">baq</a> 
+						<a href="#" onclick="translate(\'ita\')">ita</a>
 					</span>
-					<a href="https://crypto.cat/about" style="margin-left:-83px">about</a> | 
+					<a href="https://crypto.cat/about" style="margin-left:-120px">about</a> | 
 					<a target="_blank" href="https://chrome.google.com/webstore/detail/gonbigodpnfghidmnphnadhepmbabhij">chrome app</a> | 
 					<a target="_blank" href="https://twitter.com/cryptocatapp">twitter</a> | 
 					<a target="_blank" href="http://blog.crypto.cat">blog</a> | 
