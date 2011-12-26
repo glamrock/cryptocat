@@ -211,8 +211,8 @@ else {
 				<form action="'.$install.'" method="get" class="create" id="welcome">
 					<div id="front">
 						<div id="note">
-						<span id="notetext">Cryptocat provides strongly encrypted, secure communications. However, it is not a replacement to GPG. Think responsibly if you are in extreme, life-threatening situations.</span>
-						<br /><input id="understand" type="button" value="I understand." />
+						<span id="notetext">Cryptocat provides strong encryption, but does not replace a strong security culture alone. Consider installing the <a href="https://chrome.google.com/webstore/detail/gonbigodpnfghidmnphnadhepmbabhij" target="_blank">Cryptocat app for Google Chrome</a> for extra security, and always think responsibly if you are in serious situations.</span>
+						<br /><input id="understand" type="button" value="I understand" />
 						</div>
 					</div>
 					<div>
@@ -236,13 +236,13 @@ else {
 				</table>
 				<div class="bottom">
 					<span id="lang">
-						<a href="#" onclick="translate(\'fra\')">fra</a> 
-						<a href="#" onclick="translate(\'cat\')">cat</a> 
-						<a href="#" onclick="translate(\'baq\')">baq</a> 
-						<a href="#" onclick="translate(\'ita\')">ita</a>
+						<a href="#" onclick="translate(\'fr\')">fr</a> 
+						<a href="#" onclick="translate(\'ca\')">ca</a> 
+						<a href="#" onclick="translate(\'eu\')">eu</a> 
+						<a href="#" onclick="translate(\'it\')">it</a> 
+						<a href="#" onclick="translate(\'pt\')">pt</a>
 					</span>
-					<a href="https://crypto.cat/about" style="margin-left:-120px">about</a> | 
-					<a target="_blank" href="https://chrome.google.com/webstore/detail/gonbigodpnfghidmnphnadhepmbabhij">chrome app</a> | 
+					<a href="https://crypto.cat/about" style="margin-left:-110px">about</a> | 
 					<a target="_blank" href="https://twitter.com/cryptocatapp">twitter</a> | 
 					<a target="_blank" href="http://blog.crypto.cat">blog</a> | 
 					<a target="_blank" href="https://github.com/kaepora/cryptocat/">source</a>
