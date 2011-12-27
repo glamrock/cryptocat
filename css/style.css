@@ -31,8 +31,9 @@ div.bottom {
 	font-weight: bold;
 }
 #lang {
+	margin-left: 2px;
 	float: left;
-	width: 110px;
+	width: 130px;
 }
 #lang a {
 	background-color: #97CEEC;
