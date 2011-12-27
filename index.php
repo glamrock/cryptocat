@@ -240,9 +240,10 @@ else {
 						<a href="#" onclick="translate(\'ca\')">ca</a> 
 						<a href="#" onclick="translate(\'eu\')">eu</a> 
 						<a href="#" onclick="translate(\'it\')">it</a> 
+						<a href="#" onclick="translate(\'de\')">de</a> 
 						<a href="#" onclick="translate(\'pt\')">pt</a>
 					</span>
-					<a href="https://crypto.cat/about" style="margin-left:-110px">about</a> | 
+					<a href="https://crypto.cat/about" style="margin-left:-130px">about</a> | 
 					<a target="_blank" href="https://twitter.com/cryptocatapp">twitter</a> | 
 					<a target="_blank" href="http://blog.crypto.cat">blog</a> | 
 					<a target="_blank" href="https://github.com/kaepora/cryptocat/">source</a>
