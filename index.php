@@ -242,6 +242,7 @@ else {
 						<a href="#" onclick="translate(\'it\')">it</a> 
 						<a href="#" onclick="translate(\'de\')">de</a> 
 						<a href="#" onclick="translate(\'pt\')">pt</a>
+						<a href="#" onclick="translate(\'ru\')">ru</a>
 					</span>
 					<a href="https://crypto.cat/about" style="margin-left:-130px">about</a> | 
 					<a target="_blank" href="https://twitter.com/cryptocatapp">twitter</a> | 
