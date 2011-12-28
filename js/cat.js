@@ -20,7 +20,7 @@ var p = str2bigInt(
 16);
 
 var g = str2bigInt("2", 10);
-var num, interval, sound, pos, tag, flood, prikey, pubkey, sentid;
+var num, interval, sound, pos, tag, flood, prikey, pubkey, sentid, fingerhtml;
 num = interval = sound = pos = tag = flood = 0;
 var names = new Array();
 var keys = new Array();
@@ -137,14 +137,16 @@ function tagify(chat) {
 		}
 	}
 	chat = chat.replace(/\&lt\;3/g, "<span class=\"monospace\">&#9829;</span>");
-	if (match = chat.match(/^[a-z]+:\s\/me\s/)) {
-		match = match[0];
-		thisnick = match.match(/^[a-z]{1,12}/);
-		chat = chat.replace(/^[a-z]+:\s\/me\s/, "<span class=\"nick\">* " + thisnick + " ") + " *</span>";
+	thisnick = chat.match(/^[a-z]{1,12}/).toString();
+	if ((chat.match(/^[a-z]{1,12}:\s\@/)) && 
+	(chat.match(/^[a-z]{1,12}:\s\@[a-z]{1,12}/).toString().substring(thisnick.length + 3) == nick || thisnick == nick)) {
+		chat = chat.replace(/^[a-z]{1,12}\: \@[a-z]{1,12}/, '<span class="nick">' + thisnick + ' <span class="blue">&gt;</span> ' + 
+		chat.match(/^[a-z]{1,12}:\s\@[a-z]{1,12}/).toString().substring(thisnick.length + 3) + '</span>');  
 	}
 	else if (match = chat.match(/^[a-z]{1,12}/)) {
 		var stamp = getstamp(match[0]);
-		chat = chat.replace(/^[a-z]+:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = \'" + stamp + "\';\" onmouseout=\"this.innerHTML = \'" + match[0] + "\';\">" + match[0] + "</span>");
+		chat = chat.replace(/^[a-z]{1,12}:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = \'" + 
+		stamp + "\';\" onmouseout=\"this.innerHTML = \'" + match[0] + "\';\">" + match[0] + "</span>");
 	}
 	return chat;
 }
@@ -254,7 +256,7 @@ function updatekeys(sync) {
 						fingerprints[i] = fingerprints[i].toUpperCase();
 					}
 				}
-				var fingerhtml = "Verify friends using their fingerprint.<br />(be certain of their identity - over the phone is fine.)<br /><br />";
+				fingerhtml = "Verify friends using their fingerprint.<br />(be certain of their identity - over the phone is fine.)<br /><br />";
 				for (fi=0; fi <= names.length - 1; fi++) {
 					var nbsp = "";
 					for (ni=0; ni + names[fi].length != 13; ni++) {
@@ -262,10 +264,13 @@ function updatekeys(sync) {
 					}
 					fingerhtml += "<span class=\"blue\">" + names[fi] + "</span> " + nbsp + " " + fingerprints[fi] + "<br />";
 				}
-				fingerhtml += "<br /><input type=\"button\" onclick=\"fingerclose();\" id=\"close\" value=\"close\" />"; 
-				$("#fingerprints").html(fingerhtml);
+				fingerhtml += "<br /><input type=\"button\" onclick=\"fadeboxclose();\" id=\"close\" value=\"close\" />";
 			}
-			$("#chatters").html('<span class="chatters">' + names.length + '</span> ' + names.join(' '));
+			var chatters = new Array();
+			for (var i=0; i!=names.length; i++) {
+				chatters[i] = '<span class="chatter" onclick="privmsg(\'' + names[i] + '\')">' + names[i] + '</span>';
+			}
+			$("#chatters").html('<span class="chatters">' + chatters.length + '</span> ' + chatters.join(' '));
 		}
 	});
 }
@@ -288,6 +293,9 @@ function updatechat() {
 					errordisplay("you have been logged out.");
 					clearInterval(interval);
 				}
+			}
+			else if (data == "*") {
+				pos++;
 			}
 			else if (data != "") {
 				pos++;
@@ -314,14 +322,30 @@ function updatechat() {
 				$("#chatters").css("background-color", "#97CEEC");
 			}
 			if (queue[0]) {
-				var msg = "";
-				for (var i=0; i != names.length; i++) {
-					if (names && (names[i] != nick)) {
-						var crypt = Crypto.AES.encrypt(queue[0].replace(/\$.+$/, ''), seckeys[i], {
-							mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
-						});
-						msg += "(" + names[i] + ")" + crypt;
-						msg += "|" + Crypto.HMAC(Crypto.SHA256, crypt, seckeys[i]);
+				var msg = queue[0].replace(/\$.+$/, '');
+				if ((msg[0] == "@") && (jQuery.inArray(msg.match(/^\@[a-z]{1,12}/).toString().substring(1), names) >= 0)) {
+					if (msg.match(/^\@[a-z]{1,12}/).toString().substring(1) == nick) {
+						$("#" + queue[0].replace(/^.+\$/, '')).css("background-image","url(\"img/chat.png\")");
+						queue.splice(0,1);
+						return;
+					}
+					var loc = jQuery.inArray(msg.match(/^\@[a-z]{1,12}/).toString().substring(1), names);
+					var crypt = Crypto.AES.encrypt(queue[0].replace(/\$.+$/, ''), seckeys[loc], {
+						mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
+					});
+					var msg = "(" + msg.match(/^\@[a-z]{1,12}/).toString().substring(1) + ")" + crypt;
+					msg += "|" + Crypto.HMAC(Crypto.SHA256, crypt, seckeys[loc]);
+				}
+				else {
+					var msg = "";
+					for (var i=0; i != names.length; i++) {
+						if (names && (names[i] != nick)) {
+							var crypt = Crypto.AES.encrypt(queue[0].replace(/\$.+$/, ''), seckeys[i], {
+								mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
+							});
+							msg += "(" + names[i] + ")" + crypt;
+							msg += "|" + Crypto.HMAC(Crypto.SHA256, crypt, seckeys[i]);
+						}
 					}
 				}
 				msg = nick + "|" + queue[0].replace(/^.+\$/, '') + ": " + "[B-C]" + msg + "[E-C]";
@@ -447,14 +471,25 @@ $("#sound").click(function(){
 });
 
 $("#fingerlink").click(function(){
+	$("#fadebox").html(fingerhtml);
 	$('#front').fadeIn('fast');
-	$('#fingerprints').fadeIn('slow', function() {
+	$('#fadebox').fadeIn('slow', function() {
 	});
 });
 
-function fingerclose() {
-	$('#fingerprints').fadeOut('slow', function() {
+function fadeboxclose() {
+	$('#fadebox').fadeOut('slow', function() {
 		$('#front').fadeOut('fast');
+	});
+}
+
+function privmsg(nick) {
+	var html = 'Send a private note to <span class="blue">' + nick + '</span> by typing:<br /><br />' +
+	'<span class="blue">@' + nick + '</span> followed by your message. <br /><br />' + 
+	'<input type="button" onclick="fadeboxclose();" id="close" value="close" />';
+	$("#fadebox").html(html);
+	$('#front').fadeIn('fast');
+	$('#fadebox').fadeIn('slow', function() {
 	});
 }
 

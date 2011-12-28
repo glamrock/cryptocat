@@ -115,12 +115,17 @@
 						preg_match('/^[a-z]{1,12}\|/', $chat[$_POST['pos']], $nick);
 						$nick = substr($nick[0], 0, -1);
 						$ki = 0;
+						$found = 0;
 						for ($ki=0; $ki <= count($match[0]); $ki++) {
 							if (substr($match[0][$ki], 1, strlen($_SESSION['nick'])) == $_SESSION['nick']) {
 								$match = substr($match[0][$ki], strlen($_SESSION['nick']) + 2);
 								$chat[$_POST['pos']] = preg_replace('/\[B-C\](.*)\[E-C\]/', '[B-C]'.$match.'[E-C]', $chat[$_POST['pos']]);
 								$ki = count($match[0]) + 10;
+								$found = 1;
 							}
+						}
+						if (!$found && preg_match('/\[B-C\](.*)\[E-C\]/', $chat[$_POST['pos']]) && (!isset($nick) || ($nick != $_SESSION['nick']))) {
+							$chat[$_POST['pos']] = '*';
 						}
 					}
 					if ($_SESSION['lastpos'] < $_POST['pos']) {
@@ -301,7 +306,7 @@ else {
 						</form>
 					</div>
 				</div>
-				<div id="fingerprints"></div>
+				<div id="fadebox"></div>
 			</div>
 			<a href="'.$install.'" onclick="logout();"><img src="img/cryptocat.png" class="chat" alt="cryptocat" /></a>
 			<img src="img/maximize.png" alt="maximize" id="maximize" title="expand" />

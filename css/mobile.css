@@ -49,6 +49,15 @@ input {
 	outline: none;
 	font-size: 1.4em;
 }
+span.chatter {
+	color: #000;
+	padding: 3px 2px;
+}
+span.chatter:hover {
+	background-color: #000;
+	color: #97CEEC;
+	text-decoration: none;
+}
 #understand, input.nicksubmit, #close {
 	border: 1px solid #97CEEC;
 	background-color: #000;
@@ -248,7 +257,7 @@ div.redirect p {
 	line-height: 1.7em;
 	word-wrap: break-word;
 }
-#changenick, #fingerprints, #note {
+#changenick, #fadebox, #note {
 	padding: 7em 5px 0 5px;
 	width: 97%;
 	background-color: rgba(0, 0, 0, 0.96);
@@ -261,7 +270,7 @@ div.redirect p {
 #changenick {
 	padding-top: 10px;
 }
-#fingerprints {
+#fadebox {
 	display: none;
 	word-wrap: break-word;
 	font-size: 0.5em;

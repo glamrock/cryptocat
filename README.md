@@ -13,6 +13,7 @@ Cryptocat lets you instantly set up secure conversations. It's an open source en
 * Compatible with all modern browsers, and includes a mobile website that is fully compatible with iPhone, Android and BlackBerry.
 * [Cryptocat Chrome](https://chrome.google.com/webstore/detail/gonbigodpnfghidmnphnadhepmbabhij), a Chrome app that loads all code locally, and is secure from being served compromised code.
 * Chats are securely deleted after one hour of inactivity.
+* Private messaging between only two people in a room.
 * A sleek design with time-stamping, optional audio notifications, fluid-window mode, and mobile support.
 * Translations available for French, Catalan, Basque, Italian, German, Portuguese, Russian and Swedish.
 
