@@ -76,7 +76,15 @@ input.create {
 	text-align: center;
 	outline: none;
 }
-
+span.chatter {
+	color: #000;
+	padding: 3px 2px;
+}
+span.chatter:hover {
+	background-color: #000;
+	color: #97CEEC;
+	text-decoration: none;
+}
 #understand, input.nicksubmit, #close {
 	border: 1px solid #97CEEC;
 	background-color: #000;
@@ -178,7 +186,7 @@ input {
 	border-radius: 0px;
 	-webkit-appearance: none;
 }
-a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #fingerlink, #close, #understand, input.nicksubmit {
+a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #fingerlink, #close, #understand, input.nicksubmit, span.chatter {
 	cursor: pointer;
 }
 #input {
@@ -293,7 +301,7 @@ td {
 	top: 0;
 	left: 0;
 }
-#changenick, #fingerprints, #note {
+#changenick, #fadebox, #note {
 	width: 430px;
 	padding: 45px 10px 10px 10px;
 	background-color: rgba(0, 0, 0, 0.96);
@@ -311,7 +319,7 @@ td {
 	min-height: 85px;
 	padding-top: 10px;
 }
-#fingerprints {
+#fadebox {
 	margin-top: 145px;
 	display: none;
 }
