@@ -566,7 +566,6 @@ $("#maximize").click(function(){
 $("#input").keyup(function(){
 	textcounter(document.chatform.input,document.chatform.talk,256);
 	if ((match = $("#input").val().match(/^\@[a-z]{1,12}/)) && (jQuery.inArray($("#input").val().match(/^\@[a-z]{1,12}/).toString().substring(1), names) >= 0)) {
-		match = match[0].substring(1);
 		$("#input").css("color", "#97CEEC");
 	}
 	else if ($("#input").css("color") == "rgb(151, 206, 236)") {
