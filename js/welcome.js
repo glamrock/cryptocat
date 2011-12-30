@@ -81,7 +81,7 @@ function translate(language) {
 	else if (language == "de") {
 		$("#td1").html('<strong>Cryptocat</strong> kann sofort einen Chatraum mit sicherer Kommunikation einrichten. Es ist eine <a href="http://de.wikipedia.org/wiki/Freie_Software#Open_Source">quelloffene</a>, verschlüsselte, private Alternative zu Diensten wie dem Chat von Facebook.');
 		$("#td2").html('Nachrichten werden im Browser mit AES-256 und asymmetrischen Schlüsseln mit 4096 Bit Länge verschlüsselt. Konversationen werden nach einer Stunde Inaktivität sicher gelöscht.');
-		$("#td3").html('Cryptocat st voll mit <a target="_blank" href="https://torproject.org">Tor</a> kompatibel und funktioniert auch auf iPhone, Android oder BlackBerry.');
+		$("#td3").html('Cryptocat ist voll mit <a target="_blank" href="https://torproject.org">Tor</a> kompatibel und funktioniert auch auf iPhone, Android oder BlackBerry.');
 		$("#lang").html('<a href="#" onclick="translate(\'fr\')">fr</a> <a href="#" onclick="translate(\'ca\')">ca</a> <a href="#" onclick="translate(\'eu\')">eu</a> <a href="#" onclick="translate(\'it\')">it</a> <a href="#" onclick="translate(\'en\')">en</a> <a href="#" onclick="translate(\'pt\')">pt</a> <a href="#" onclick="translate(\'ru\')">ru</a> <a href="#" onclick="translate(\'sv\')">sv</a>');
 		$("#c").val('name des chatraums');
 		$("#create").val('betreten');

@@ -1,26 +1,26 @@
 var seed = Math.seedrandom();
 
 var p = str2bigInt(
-	"C41F45CE6AA3AEB23A9202F8152779A4E42223354306AE1DC3BCC95568518345" + 
-	"80A65E95D6EACA6845EA6DD53E21E01AEE47B58A20E02DCC092337B6D41BDF24" + 
-	"EB04A96C0C83F39E08EA00604A9E4D6D0E78E1515F89C2822AB96C6AD78D8364" + 
-	"EDFCC788C28CAA234A17807119C6ECD43CDF5210347E59145B7B8E37B497A617" + 
-	"A7CBA65CCE00BBA7693D9DECE37EF9D185689A2E6B2FCCF97830520FE2859863" + 
-	"CD370DE738C417B52320D728CFCA51808946A5DA1A94E5D27EFF02B607F178AC" + 
-	"CCB8237D8A756B918B22E1A88F5162CB2557F665889D56E18C622355AEEF2B83" + 
-	"4F0876E6B7CD0FD7B5C98AE6C27787BED4725394F0052D79159409EEFEED5861" + 
-	"96DBF39EDEB01507E1F99922B1EA1FB1B3ECF99820596A2F28EEE0AA136909F6" + 
-	"CEA12199207CA8348637473207611A7E97351C4B326FE69A32FFB2F98B3E52F9" + 
-	"EED788B34A5208D67C0E613AA8D21277A84BE24A5B2B5C8FD4E7BE4F53815DBD" + 
-	"B1A413C8EC99C47A530657D8C178DDD09E0F6D76C938504B0E59E7D6500E47BC" + 
-	"456C2C798F6898E1889DEABFAF39EF1147FD6705B85288C3156C307ECA33C3DE" + 
-	"9830AF6C261FCC11A760A809EF83633F32BD8BAF3339E7537F81F5BC1FE0158B" + 
-	"D4AE88D99C7EA8C19117D2DFE39775A3D0BA00CDFB244D36EF8AEABFB111C5FF" + 
+	"C41F45CE6AA3AEB23A9202F8152779A4E42223354306AE1DC3BCC95568518345" +
+	"80A65E95D6EACA6845EA6DD53E21E01AEE47B58A20E02DCC092337B6D41BDF24" +
+	"EB04A96C0C83F39E08EA00604A9E4D6D0E78E1515F89C2822AB96C6AD78D8364" +
+	"EDFCC788C28CAA234A17807119C6ECD43CDF5210347E59145B7B8E37B497A617" +
+	"A7CBA65CCE00BBA7693D9DECE37EF9D185689A2E6B2FCCF97830520FE2859863" +
+	"CD370DE738C417B52320D728CFCA51808946A5DA1A94E5D27EFF02B607F178AC" +
+	"CCB8237D8A756B918B22E1A88F5162CB2557F665889D56E18C622355AEEF2B83" +
+	"4F0876E6B7CD0FD7B5C98AE6C27787BED4725394F0052D79159409EEFEED5861" +
+	"96DBF39EDEB01507E1F99922B1EA1FB1B3ECF99820596A2F28EEE0AA136909F6" +
+	"CEA12199207CA8348637473207611A7E97351C4B326FE69A32FFB2F98B3E52F9" +
+	"EED788B34A5208D67C0E613AA8D21277A84BE24A5B2B5C8FD4E7BE4F53815DBD" +
+	"B1A413C8EC99C47A530657D8C178DDD09E0F6D76C938504B0E59E7D6500E47BC" +
+	"456C2C798F6898E1889DEABFAF39EF1147FD6705B85288C3156C307ECA33C3DE" +
+	"9830AF6C261FCC11A760A809EF83633F32BD8BAF3339E7537F81F5BC1FE0158B" +
+	"D4AE88D99C7EA8C19117D2DFE39775A3D0BA00CDFB244D36EF8AEABFB111C5FF" +
 	"3771B3BAF8AFBAA33C1D1AF159FD577902A3DC600813EB83C93BAF4CB394C6D3", 
 16);
 
 var g = str2bigInt("2", 10);
-var num, interval, sound, pos, tag, flood, prikey, pubkey, sentid, fingerhtml;
+var num, interval, sound, pos, tag, flood, prikey, pubkey, sentid;
 num = interval = sound = pos = tag = flood = 0;
 var names = new Array();
 var keys = new Array();
@@ -33,9 +33,9 @@ var name = $("#name").html();
 var focus = true;
 var soundEmbed = null;
 
-var notice = ["Cryptocat is supported by people like you. Check out our " + 
+var notice = ["Cryptocat is supported by people like you. Check out our " +
 "<a href=\"https://crypto.cat/fundraiser/\" target=\"_blank\">fundraiser</a> and keep us going.", 
-"Do you use Cryptocat often? Please fill out this short " + 
+"Do you use Cryptocat often? Please fill out this short " +
 "<a href=\"https://crypto.cat/survey/\" target=\"_blank\">survey</a> and help us improve."];
 
 function idSelect(id) {
@@ -140,12 +140,12 @@ function tagify(chat) {
 	thisnick = chat.match(/^[a-z]{1,12}/).toString();
 	if ((chat.match(/^[a-z]{1,12}:\s\@/)) && 
 	(chat.match(/^[a-z]{1,12}:\s\@[a-z]{1,12}/).toString().substring(thisnick.length + 3) == nick || thisnick == nick)) {
-		chat = chat.replace(/^[a-z]{1,12}\: \@[a-z]{1,12}/, '<span class="nick">' + thisnick + ' <span class="blue">&gt;</span> ' + 
+		chat = chat.replace(/^[a-z]{1,12}\: \@[a-z]{1,12}/, '<span class="nick">' + thisnick + ' <span class="blue">&gt;</span> ' +
 		chat.match(/^[a-z]{1,12}:\s\@[a-z]{1,12}/).toString().substring(thisnick.length + 3) + '</span>');  
 	}
 	else if (match = chat.match(/^[a-z]{1,12}/)) {
 		var stamp = getstamp(match[0]);
-		chat = chat.replace(/^[a-z]{1,12}:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = \'" + 
+		chat = chat.replace(/^[a-z]{1,12}:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = \'" +
 		stamp + "\';\" onmouseout=\"this.innerHTML = \'" + match[0] + "\';\">" + match[0] + "</span>");
 	}
 	return chat;
@@ -239,8 +239,7 @@ function updatekeys(sync) {
 						for (ni=0; ni != 17; ni++) {
 							nbsp += "&nbsp";
 						}
-						fingerprints[i] = nbsp + " <span class=\"red\">unreliable connection/keys</span>";
-						$("#fingerlink").click();
+						fingerprints[i] = nbsp + " <span class=\"red\">unreliable key or connection</span>";
 					}
 					else {
 						if ((names[i] != oldnames[i]) && (names[i] != nick)) {
@@ -256,21 +255,18 @@ function updatekeys(sync) {
 						fingerprints[i] = fingerprints[i].toUpperCase();
 					}
 				}
-				fingerhtml = "Verify friends using their fingerprint.<br />(be certain of their identity - over the phone is fine.)<br /><br />";
 				for (fi=0; fi <= names.length - 1; fi++) {
 					var nbsp = "";
 					for (ni=0; ni + names[fi].length != 13; ni++) {
 						nbsp += "&nbsp";
 					}
-					fingerhtml += "<span class=\"blue\">" + names[fi] + "</span> " + nbsp + " " + fingerprints[fi] + "<br />";
 				}
-				fingerhtml += "<br /><input type=\"button\" onclick=\"fadeboxclose();\" id=\"close\" value=\"close\" />"; 
 			}
-			var chatters = new Array();
+			var users = new Array();
 			for (var i=0; i!=names.length; i++) {
-				chatters[i] = '<span class="chatter" onclick="privmsg(\'' + names[i] + '\')">' + names[i] + '</span>';
+				users[i] = '<span class="user" onclick="userinfo(\'' + names[i] + '\')">' + names[i] + '</span>';
 			}
-			$("#chatters").html('<span class="chatters">' + chatters.length + '</span> ' + chatters.join(' '));
+			$("#users").html('<span class="users">' + users.length + '</span> ' + users.join(' '));
 		}
 	});
 }
@@ -317,9 +313,9 @@ function updatechat() {
 					$("#" + data).attr("id", "x");
 				}
 			}
-			if ($("#chatters").html() == '<span class="chatters">x</span>&nbsp; connection issues. stand by...') {
+			if ($("#users").html() == '<span class="users">x</span>&nbsp; connection issues. stand by...') {
 				updatekeys(true);
-				$("#chatters").css("background-color", "#97CEEC");
+				$("#users").css("background-color", "#97CEEC");
 			}
 			if (queue[0]) {
 				var msg = queue[0].replace(/\$.+$/, '');
@@ -470,28 +466,25 @@ $("#sound").click(function(){
 	}
 });
 
-$("#fingerlink").click(function(){
-	$("#fadebox").html(fingerhtml);
-	$('#front').fadeIn('fast');
-	$('#fadebox').fadeIn('slow', function() {
-	});
-});
-
 function fadeboxclose() {
 	$('#fadebox').fadeOut('slow', function() {
 		$('#front').fadeOut('fast');
 	});
 }
 
-function privmsg(nick) {
-	var html = 'Send a private note to <span class="blue">' + nick + '</span> by typing:<br /><br />' +
-	'<span class="blue">@' + nick + '</span> followed by your message. <br /><br />' + 
-	'<input type="button" onclick="fadeboxclose();" id="close" value="close" />';
+function userinfo(nick) {
+	var html = '<input type="button" onclick="fadeboxclose();" id="close" value="x" />' +
+	'<br /><h3>' + nick + '</h3>' +
+	'Send <span class="blue">' + nick + '</span> a private message:<br />' +
+	'<span class="blue">@' + nick + '</span> your message<br /><br />' +
+	'Verify <span class="blue">' + nick + '</span>\'s identity using their fingerprint:<br />' +
+	fingerprints[jQuery.inArray(nick, names)] + '<br />';
 	$("#fadebox").html(html);
 	$('#front').fadeIn('fast');
 	$('#fadebox').fadeIn('slow', function() {
 	});
 }
+
 
 $("#maximize").click(function(){
 	if ($("#maximize").attr("title") == "contract") {
@@ -504,7 +497,7 @@ $("#maximize").click(function(){
 		$("#info").animate({
 			width: "588px",
 		}, 500 );
-		$("#chatters").animate({
+		$("#users").animate({
 			width: "525px",
 			"padding-right": "3px"
 		}, 500 );
@@ -537,7 +530,7 @@ $("#maximize").click(function(){
 		$("#info").animate({
 			width: "99%"
 		}, 500 );
-		$("#chatters").animate({
+		$("#users").animate({
 			width: "92.3%",
 			"padding-right": "20px"
 		}, 500 );
@@ -602,8 +595,8 @@ function logout() {
 }
 
 function errordisplay(e) {
-	$("#chatters").html("<span class=\"chatters\">x</span>&nbsp " + e);
-	$("#chatters").css("background-color", "#FE1A12");
+	$("#users").html("<span class=\"users\">x</span>&nbsp " + e);
+	$("#users").css("background-color", "#FE1A12");
 }
 
 $(document).ajaxError(function(){
