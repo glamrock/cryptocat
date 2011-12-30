@@ -30,6 +30,10 @@ div.bottom {
 	color: #fff;
 	font-weight: bold;
 }
+h3 {
+	color: #97CEEC;
+	margin: 0px 0px 10px 0px;
+}
 #lang {
 	margin-left: -2px;
 	float: left;
@@ -76,16 +80,16 @@ input.create {
 	text-align: center;
 	outline: none;
 }
-span.chatter {
+span.user {
 	color: #000;
 	padding: 3px 2px;
 }
-span.chatter:hover {
+span.user:hover {
 	background-color: #000;
 	color: #97CEEC;
 	text-decoration: none;
 }
-#understand, input.nicksubmit, #close {
+#understand, input.nicksubmit {
 	border: 1px solid #97CEEC;
 	background-color: #000;
 	color: #97CEEC;
@@ -102,7 +106,15 @@ input.nicksubmit {
 	margin-left: 5px;
 }
 #close {
-	margin-top: 10px;
+	margin-top: 4px;
+	float: right;
+	background-color: #97CEEC;
+	color: #FFF;
+	width: 20px;
+	height: 20px;
+	border: none;
+	text-align: center;
+	outline: none;
 }
 #understand:hover, input.nicksubmit:hover, #close:hover {
 	background-color: #97CEEC;
@@ -148,7 +160,7 @@ input.create:active, #talk:active {
 	line-height: 16px;
 	font-size: 12px;
 }
-#chatters {
+#users {
 	background-color: #97CEEC;
 	font-size: 10px;
 	padding: 2px 3px 5px 0px;
@@ -156,7 +168,7 @@ input.create:active, #talk:active {
 	word-spacing: 5px;
 	height: 11px;
 }
-span.chatters {
+span.users {
 	padding: 4px 2px 3px 2px;
 	background-color: #000;
 	color: #FFF;
@@ -186,7 +198,7 @@ input {
 	border-radius: 0px;
 	-webkit-appearance: none;
 }
-a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #fingerlink, #close, #understand, input.nicksubmit, span.chatter {
+a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #fingerlink, #close, #understand, input.nicksubmit, span.user {
 	cursor: pointer;
 }
 #input {
@@ -327,7 +339,7 @@ div.redirect p {
 }
 #changenick, #fadebox, #note {
 	width: 430px;
-	padding: 45px 10px 10px 10px;
+	padding: 35px 10px 10px 10px;
 	background-color: rgba(0, 0, 0, 0.96);
 	color: #FFF;
 	box-shadow: 4px 4px #97CEEC;
@@ -344,8 +356,10 @@ div.redirect p {
 	padding-top: 10px;
 }
 #fadebox {
+	padding: 0px 0px 10px 10px;
 	margin-top: 145px;
 	display: none;
+	text-align: left;
 }
 #note {
 	padding-top: 40px;

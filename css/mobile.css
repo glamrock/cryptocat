@@ -17,6 +17,10 @@ body {
 div.bottom {
 	display: none;
 }
+h3 {
+	color: #97CEEC;
+	margin: 0px 0px 10px 0px;
+}
 input.name, input.create {
 	width: 260px;
 	margin: 4em auto 0 auto;
@@ -49,16 +53,16 @@ input {
 	outline: none;
 	font-size: 1.4em;
 }
-span.chatter {
+span.user {
 	color: #000;
 	padding: 3px 2px;
 }
-span.chatter:hover {
+span.user:hover {
 	background-color: #000;
 	color: #97CEEC;
 	text-decoration: none;
 }
-#understand, input.nicksubmit, #close {
+#understand, input.nicksubmit {
 	border: 1px solid #97CEEC;
 	background-color: #000;
 	color: #97CEEC;
@@ -74,7 +78,15 @@ input.nicksubmit {
 	margin-left: 5px;
 }
 #close {
-	margin-top: 10px;
+	margin-top: 4px;
+	float: right;
+	background-color: #97CEEC;
+	color: #FFF;
+	width: 30px;
+	height: 30px;
+	border: none;
+	text-align: center;
+	outline: none;
 }
 #understand:hover, input.nicksubmit:hover, #close:hover {
 	background-color: #97CEEC;
@@ -118,7 +130,7 @@ input.create:active, #talk:active {
 	word-wrap: break-word;
 	font-size: 0.6em;
 }
-#chatters {
+#users {
 	background-color: #97CEEC;
 	padding: 1px 3px 3px 0px;
 	width: 99.1%;
@@ -126,7 +138,7 @@ input.create:active, #talk:active {
 	height: 9px;
 	font-size: 0.3em;
 }
-span.chatters {
+span.users {
 	padding: 4px 2px 4px 2px;
 	background-color: #000;
 	color: #FFF;
@@ -273,7 +285,7 @@ div.redirect p {
 #fadebox {
 	display: none;
 	word-wrap: break-word;
-	font-size: 0.5em;
+	font-size: 1em;
 	text-align: left;
 	font-family: monospace;
 }
@@ -285,7 +297,7 @@ div.redirect p {
 	font-size: 0.8em;
 	float: left;
 	text-align: left;
-	margin: -78px 0px 0px 100px;
+	margin: -70px 0px 0px 100px;
 	line-height: 1.65em;
 }
 #keygen, #nickentry {

@@ -313,12 +313,12 @@ else {
 			<img src="img/nosound.png" alt="sound" id="sound" title="message sounds off" />
 			<div id="inchat"><div id="chat"></div></div>
 			<div id="info">chatting as <span id="nick">'.$nick.'</span> on 
-			<strong class="blue">'.$install.'?c=</strong><strong id="name">'.$name.'</strong> - <span id="fingerlink">fingerprints</span>
+			<strong class="blue">'.$install.'?c=</strong><strong id="name">'.$name.'</strong>
 			<strong id="flood">wait</strong>
 			</div>
 			<form name="chatform" id="chatform" method="post" action="'.$install.'">
 				<div>
-					<div id="chatters"></div>
+					<div id="users"></div>
 					<input type="text" name="input" id="input" maxlength="'.$maxinput.'" autocomplete="off" />
 					<input type="submit" name="talk" id="talk" value="'.$maxinput.'" />
 				</div>
