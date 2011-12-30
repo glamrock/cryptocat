@@ -28,6 +28,7 @@ var seckeys = new Array();
 var fingerprints = new Array();
 var queue = new Array();
 var usedhmac = new Array();
+var blocked = new Array();
 var nick = $("#nick").html();
 var name = $("#name").html();
 var focus = true;
@@ -47,12 +48,12 @@ function scrolldown() {
 	$("#chat").animate({scrollTop: document.getElementById("chat").scrollHeight + 20}, 820);
 }
 
-function getstamp(nick) {
+function getstamp(n) {
 	var time = new Date();
 	var h = time.getHours();
 	var m = time.getMinutes();
 	var spaces = "";
-	for (si=0; si < (nick.length - 5); si++) {
+	for (si=0; si < (n.length - 5); si++) {
 		spaces += "&#160;";
 	}
 	if (String(h).length == 1) {
@@ -172,6 +173,9 @@ function process(line, flip) {
 		}
 		else if (match = line.match(/^[a-z]{1,12}:\s\[B-C\](\w|\/|\+|\?|\(|\)|\=|\|)+\[E-C\]$/)) {
 			thisnick = $.trim(match[0].match(/^[a-z]{1,12}/));
+			if (jQuery.inArray(thisnick, blocked) >= 0) {
+				return;
+			}
 			match = line.match(/\[B-C\](.*)\|/);
 			match = match[0].substring(5, match[0].length - 1);
 			var hmac = line.match(/\|\w{64}/);
@@ -389,8 +393,8 @@ $("#chatform").submit( function() {
 $("#nickform").submit( function() {
 	$("#nickinput").val(document.getElementById("nickinput").value.toLowerCase());
 	if (!pubkey) {
-		$('#nickentry').fadeOut('slow', function() {
-			$('#keygen').fadeIn('slow', function() {
+		$('#nickentry').fadeOut('fast', function() {
+			$('#keygen').fadeIn('fast', function() {
 				$('#keytext').html($('#keytext').html() + " &#160; <span class=\"blue\">OK</span><br />Generating keys");
 				pubkey = dhgen(gen(26, 0, 1), "gen");
 				$('#keytext').html($('#keytext').html() + " &#160; &#160; <span class=\"blue\">OK</span><br />Communicating");
@@ -423,7 +427,7 @@ function nickajax() {
 				interval = setInterval("updatechat()", update);
 				updatekeys(false);
 				$('#keytext').html($('#keytext').html() + " &#160; &#160; &#160; <span class=\"blue\">OK</span>");
-				$('#keygen').fadeOut('slow', function() {
+				$('#keygen').fadeOut('fast', function() {
 					$("#changenick").fadeOut('fast');
 					$("#nickentry").fadeOut('fast');
 				    $("#front").fadeOut();
@@ -432,8 +436,8 @@ function nickajax() {
 				updatechat();
 			}
 			else {
-				$('#keygen').fadeOut('slow', function() {
-					$("#nickentry").fadeIn('slow');
+				$('#keygen').fadeOut('fast', function() {
+					$("#nickentry").fadeIn('fast');
 					if (data == "inuse") {
 						$("#nickinput").val("nickname in use");
 					}
@@ -467,24 +471,54 @@ $("#sound").click(function(){
 });
 
 function fadeboxclose() {
-	$('#fadebox').fadeOut('slow', function() {
+	$('#fadebox').fadeOut('fast', function() {
 		$('#front').fadeOut('fast');
 	});
 }
 
-function userinfo(nick) {
-	var html = '<input type="button" onclick="fadeboxclose();" id="close" value="x" />' +
-	'<br /><h3>' + nick + '</h3>' +
-	'Send <span class="blue">' + nick + '</span> a private message:<br />' +
-	'<span class="blue">@' + nick + '</span> your message<br /><br />' +
-	'Verify <span class="blue">' + nick + '</span>\'s identity using their fingerprint:<br />' +
-	fingerprints[jQuery.inArray(nick, names)] + '<br />';
-	$("#fadebox").html(html);
+function userinfo(n) {
+	if (n == nick) {
+		$("#fadebox").html('<input type="button" id="close" value="x" />' +
+		'<br /><h3>' + n + '</h3>' +
+		'Users can send you a private message by typing:<br />' +
+		'<span class="blue">@' + n + '</span> their message<br /><br />' +
+		'<br />Verify your identity using your fingerprint:<br />' +
+		fingerprints[jQuery.inArray(n, names)] + '<br />');
+	}
+	else {
+		$("#fadebox").html('<input type="button" id="close" value="x" />' +
+		'<br /><h3>' + n + '</h3>' +
+		'Send <span class="blue">' + n + '</span> a private message:<br />' +
+		'<span class="blue">@' + n + '</span> your message<br /><br />' +
+		'Messages from <span class="blue">' + n + '</span> are <span class="block">allowed</span><br />' +
+		'<br />Verify <span class="blue">' + n + '</span>\'s identity using their fingerprint:<br />' +
+		fingerprints[jQuery.inArray(n, names)] + '<br />');
+	}
+	if (jQuery.inArray(n, blocked) >= 0) {
+		$(".block").css("background-color", "#F00");
+		$(".block").html("blocked");
+	}
+	$(".block").click(function(){
+		if ($(".block").html() == "blocked") {
+			blocked.splice(jQuery.inArray(n, blocked));
+			$(".block").css("background-color", "#97CEEC");
+			$(".block").html("allowed");
+		}
+		else {
+			blocked.push(n);
+			$(".block").css("background-color", "#F00");
+			$(".block").html("blocked");
+		}
+	});
+	$("#close").click(function(){
+		$('#fadebox').fadeOut('fast', function() {
+			$('#front').fadeOut('fast');
+		});
+	});
 	$('#front').fadeIn('fast');
-	$('#fadebox').fadeIn('slow', function() {
+	$('#fadebox').fadeIn('fast', function() {
 	});
 }
-
 
 $("#maximize").click(function(){
 	if ($("#maximize").attr("title") == "contract") {
