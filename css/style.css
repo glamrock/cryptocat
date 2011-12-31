@@ -198,7 +198,7 @@ input {
 	border-radius: 0px;
 	-webkit-appearance: none;
 }
-a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #fingerlink, #close, #understand, input.nicksubmit, span.user {
+a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #fingerlink, #close, #understand, input.nicksubmit, span.user, span.block {
 	cursor: pointer;
 }
 #input {
@@ -402,4 +402,9 @@ span.monospace {
 	color: #F00;
 	float: right;
 	margin-right: 21px;
+}
+span.block {
+	padding: 3px;
+	background-color: #97CEEC;
+	color: #FFF;
 }

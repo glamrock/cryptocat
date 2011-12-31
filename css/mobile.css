@@ -325,3 +325,8 @@ span.monospace {
 	float: right;
 	margin-right: 21px;
 }
+span.block {
+	padding: 3px;
+	background-color: #97CEEC;
+	color: #FFF;
+}
