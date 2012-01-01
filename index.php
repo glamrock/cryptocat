@@ -1,5 +1,5 @@
 <?php
-	/* Cryptocat - © 2011, Nadim Kobeissi */
+	/* Cryptocat © 2011 - 2012, Nadim Kobeissi */
 	/* Distributed under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License */
 	/* License available at http://creativecommons.org/licenses/by-nc-sa/3.0/ */
 	/* Additionally: THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
