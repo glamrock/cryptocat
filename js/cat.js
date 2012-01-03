@@ -106,7 +106,7 @@ function gen(size, extra, s) {
 	str += charset.charAt(Math.floor(Math.random() * charset.length));
 	charset += "0";
 	while (str.length < size) {
-       	str += charset.charAt(Math.floor(Math.random() * charset.length));
+		str += charset.charAt(Math.floor(Math.random() * charset.length));
 	}
  	return str;
 }
@@ -471,23 +471,22 @@ $("#sound").click(function(){
 });
 
 function userinfo(n) {
+	$("#fadebox").html('<input type="button" id="close" value="x" />' +
+	'<br /><h3>' + n + '</h3>');
 	if (n == nick) {
-		$("#fadebox").html('<input type="button" id="close" value="x" />' +
-		'<br /><h3>' + n + '</h3>' +
+		$("#fadebox").html($("#fadebox").html() +
 		'Users can send you a private message by typing:<br />' +
 		'<span class="blue">@' + n + '</span> their message<br /><br />' +
-		'<br />Verify your identity using your fingerprint:<br />' +
-		fingerprints[jQuery.inArray(n, names)] + '<br />');
+		'<br />Verify your identity using your fingerprint:');
 	}
 	else {
-		$("#fadebox").html('<input type="button" id="close" value="x" />' +
-		'<br /><h3>' + n + '</h3>' +
+		$("#fadebox").html($("#fadebox").html() +
 		'Send <span class="blue">' + n + '</span> a private message:<br />' +
 		'<span class="blue">@' + n + '</span> your message<br /><br />' +
 		'Messages from <span class="blue">' + n + '</span> are <span class="block">allowed</span><br />' +
-		'<br />Verify <span class="blue">' + n + '</span>\'s identity using their fingerprint:<br />' +
-		fingerprints[jQuery.inArray(n, names)] + '<br />');
+		'<br />Verify <span class="blue">' + n + '</span>\'s identity using their fingerprint:<br />');
 	}
+	$("#fadebox").html($("#fadebox").html() + '<br />' + fingerprints[jQuery.inArray(n, names)] + '<br />');
 	if (jQuery.inArray(n, blocked) >= 0) {
 		$(".block").css("background-color", "#F00");
 		$(".block").html("blocked");

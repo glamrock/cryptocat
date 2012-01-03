@@ -1,4 +1,5 @@
-## Cryptocat - browser-based webapp for encrypted chat
+## Cryptocat
+### Web chat client with client-side cryptography.
 ### http://crypto.cat
 #### Beta software - code review highly appreciated.
 
