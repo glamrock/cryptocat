@@ -42,6 +42,7 @@
 	session_set_cookie_params(0, '/', $domain, $https, TRUE);
 	error_reporting(0);
 	$msgregex = '/^[a-z]{1,12}\|\w{8}:\s\[B-C\]((\w|\/|\+|\?|\(|\)|\=)+\|(\d|a|b|c|d|e|f)+)+\[E-C\]$/';
+	$inforegex = '/(\>|\<)\s[a-z]{1,12}\shas\s(arrived|left)/';
 	function getpeople($chat) {
 		preg_match_all('/[a-z]{1,12}:/', $chat[0], $people);
 		for ($i=0; $i < count($people[0]); $i++) {
@@ -107,38 +108,39 @@
 			if (!$chat) {
 				print('NOEXIST');
 			}
-			else if (isset($_POST['pos']) && $_POST['pos'] >= 0) {
-				$_POST['pos'] = $_POST['pos'] + ($_SESSION['pos'] - 1);
-				if ($_POST['pos'] <= count($chat) - 1) {
-					if (preg_match($msgregex, $chat[$_POST['pos']])) {
-						preg_match_all('/\([a-z]{1,12}\)[^\(^\[]+/', $chat[$_POST['pos']], $match);
-						preg_match('/^[a-z]{1,12}\|/', $chat[$_POST['pos']], $nick);
+			else if ($_SESSION['pos']) {
+				if ($_SESSION['pos'] <= count($chat)) {
+					if (preg_match($msgregex, $chat[$_SESSION['pos']]) || preg_match($inforegex, $chat[$_SESSION['pos']])) {
+						preg_match_all('/\([a-z]{1,12}\)[^\(^\[]+/', $chat[$_SESSION['pos']], $match);
+						preg_match('/^[a-z]{1,12}\|/', $chat[$_SESSION['pos']], $nick);
 						$nick = substr($nick[0], 0, -1);
 						$ki = 0;
 						$found = 0;
 						for ($ki=0; $ki <= count($match[0]); $ki++) {
 							if (substr($match[0][$ki], 1, strlen($_SESSION['nick'])) == $_SESSION['nick']) {
 								$match = substr($match[0][$ki], strlen($_SESSION['nick']) + 2);
-								$chat[$_POST['pos']] = preg_replace('/\[B-C\](.*)\[E-C\]/', '[B-C]'.$match.'[E-C]', $chat[$_POST['pos']]);
+								$chat[$_SESSION['pos']] = preg_replace('/\[B-C\](.*)\[E-C\]/', '[B-C]'.$match.'[E-C]', $chat[$_SESSION['pos']]);
 								$ki = count($match[0]) + 10;
 								$found = 1;
 							}
 						}
-						if (!$found && preg_match('/\[B-C\](.*)\[E-C\]/', $chat[$_POST['pos']]) && (!isset($nick) || ($nick != $_SESSION['nick']))) {
-							$chat[$_POST['pos']] = '*';
+						if (!$found && preg_match('/\[B-C\](.*)\[E-C\]/', $chat[$_SESSION['pos']]) 
+						&& (!isset($nick) || ($nick != $_SESSION['nick']))) {
+							$chat[$_SESSION['pos']] = '';
 						}
-					}
-					if ($_SESSION['lastpos'] < $_POST['pos']) {
 						if (!isset($nick) || ($nick != $_SESSION['nick'])) {
-							$chat[$_POST['pos']] = preg_replace('/^[a-z]{1,12}\|\w{8}/', $nick, $chat[$_POST['pos']]);
-							print(htmlspecialchars($chat[$_POST['pos']]));
+							$chat[$_SESSION['pos']] = preg_replace('/^[a-z]{1,12}\|\w{8}/', $nick, $chat[$_SESSION['pos']]);
+							print(htmlspecialchars($chat[$_SESSION['pos']]));
 						}
 						else {
-							preg_match('/\|\w{8}/', $chat[$_POST['pos']], $sentid);
+							preg_match('/\|\w{8}/', $chat[$_SESSION['pos']], $sentid);
 							print(substr($sentid[0], 1));
 						}
-						$_SESSION['lastpos'] = $_POST['pos'];
+						$_SESSION['pos']++;
 					}
+				}
+				else {
+					print($chat[$_SESSION['pos'] - 1]);
 				}
 			}
 			else {
@@ -277,7 +279,7 @@ else {
 					$chat[0] = trim($chat[0]).$nick.':'.$key."|\n";
 					$chat[count($chat)] = "> ".$nick." has arrived\n";
 					file_put_contents($data.$name, implode('', $chat), LOCK_EX);
-					$_SESSION['pos'] = count(file($data.$name));
+					$_SESSION['pos'] = count(file($data.$name)) - 1;
 				}
 			}
 		}
