@@ -279,7 +279,7 @@ function updatechat() {
 	$.ajax({ url: install,
 		type: "POST",
 		async: true,
-		data: "chat=" + name + "&pos=" + pos,
+		data: "chat=" + name,
 		success: function(data) {
 			if (data == "NOEXIST") {
 				if (pubkey) {
@@ -293,9 +293,6 @@ function updatechat() {
 					errordisplay("you have been logged out.");
 					clearInterval(interval);
 				}
-			}
-			else if (data == "*") {
-				pos++;
 			}
 			else if (data != "") {
 				pos++;
