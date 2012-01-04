@@ -35,9 +35,7 @@ var focus = true;
 var soundEmbed = null;
 
 var notice = ["Cryptocat is supported by people like you. Check out our " +
-"<a href=\"https://crypto.cat/fundraiser/\" target=\"_blank\">fundraiser</a> and keep us going.", 
-"Do you use Cryptocat often? Please fill out this short " +
-"<a href=\"https://crypto.cat/survey/\" target=\"_blank\">survey</a> and help us improve."];
+"<a href=\"https://crypto.cat/fundraiser/\" target=\"_blank\">fundraiser</a> and keep us going."];
 
 function idSelect(id) {
 	document.getElementById(id).focus();
@@ -284,7 +282,7 @@ function updatechat() {
 			if (data == "NOEXIST") {
 				if (pubkey) {
 					errordisplay("your chat no longer exists.");
-					$("#chat").html("<div class=\"bsg\">" + notice[Math.floor(Math.random()*2)] + "</div>");
+					$("#chat").html("<div class=\"bsg\">" + notice[0] + "</div>");
 					clearInterval(interval);
 				}
 			}
@@ -429,7 +427,7 @@ function nickajax() {
 					$("#nickentry").fadeOut('fast');
 				    $("#front").fadeOut();
 				});
-				$("#chat").html("<div class=\"bsg\">" + notice[Math.floor(Math.random()*2)] + "</div>");
+				$("#chat").html("<div class=\"bsg\">" + notice[0] + "</div>");
 				updatechat();
 			}
 			else {
