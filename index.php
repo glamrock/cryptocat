@@ -139,9 +139,6 @@
 						$_SESSION['pos']++;
 					}
 				}
-				else {
-					print($chat[$_SESSION['pos'] - 1]);
-				}
 			}
 			else {
 				print('NOLOGIN');
