@@ -124,12 +124,13 @@
 								$found = 1;
 							}
 						}
-						if (!$found && preg_match('/\[B-C\](.*)\[E-C\]/', $chat[$_SESSION['pos']]) 
-						&& (!isset($nick) || ($nick != $_SESSION['nick']))) {
-							$chat[$_SESSION['pos']] = '';
-						}
 						if (!isset($nick) || ($nick != $_SESSION['nick'])) {
-							$chat[$_SESSION['pos']] = preg_replace('/^[a-z]{1,12}\|\w{8}/', $nick, $chat[$_SESSION['pos']]);
+							if (!$found && preg_match('/\[B-C\](.*)\[E-C\]/', $chat[$_SESSION['pos']])) {
+								$chat[$_SESSION['pos']] = '';
+							}
+							else {
+								$chat[$_SESSION['pos']] = preg_replace('/^[a-z]{1,12}\|\w{8}/', $nick, $chat[$_SESSION['pos']]);
+							}
 							print(htmlspecialchars($chat[$_SESSION['pos']]));
 						}
 						else {
@@ -140,9 +141,9 @@
 					}
 				}
 			}
-			else {
-				print('NOLOGIN');
-			}
+		}
+		else {
+			print('NOLOGIN');
 		}
 		exit;
 	}
