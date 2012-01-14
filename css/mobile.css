@@ -270,7 +270,7 @@ div.redirect p {
 	word-wrap: break-word;
 }
 #changenick, #fadebox, #note {
-	padding: 7em 5px 0 5px;
+	padding: 7em 5px 0 7px;
 	width: 97%;
 	background-color: rgba(0, 0, 0, 0.96);
 	color: #FFF;
