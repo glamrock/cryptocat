@@ -109,6 +109,22 @@
 				print('NOEXIST');
 			}
 			else if ($_SESSION['pos']) {
+				$people = getpeople($chat);
+				$shm_id = shmop_open(ftok($data.$_POST['chat'], 'c'), "c", 0644, 256);
+				if (!shmop_read($shm_id, 0, shmop_size($shm_id))) {
+					$last = array();
+				}
+				else {
+					$last = unserialize(shmop_read($shm_id, 0, shmop_size($shm_id)));
+					for ($p=0; $p != count($people); $p++) {
+						if (isset($last[$people[$p]]) && ((time() - 20) > $last[$people[$p]])) {
+							unset($last[$people[$p]]);
+							logout($_POST['chat'], $people[$p], 1);
+						}
+					}
+				}
+				$last[$_SESSION['nick']] = time();
+				shmop_write($shm_id, serialize($last), 0);
 				if ($_SESSION['pos'] <= count($chat)) {
 					if (preg_match($msgregex, $chat[$_SESSION['pos']]) || preg_match($inforegex, $chat[$_SESSION['pos']])) {
 						preg_match_all('/\([a-z]{1,12}\)[^\(^\[]+/', $chat[$_SESSION['pos']], $match);
@@ -216,8 +232,11 @@ else {
 				<form action="'.$install.'" method="get" class="create" id="welcome">
 					<div id="front">
 						<div id="note">
-						<span id="notetext">Cryptocat provides strong encryption, but does not replace a strong security culture alone. Consider installing the <a href="https://chrome.google.com/webstore/detail/gonbigodpnfghidmnphnadhepmbabhij" target="_blank">Cryptocat app for Google Chrome</a> for extra security, and always think responsibly if you are in serious situations.</span>
-						<br /><input id="understand" type="button" value="I understand" />
+							<span id="notetext">
+								Cryptocat provides strong encryption, but does not replace a strong security culture alone. 
+								Consider installing the <a href="https://chrome.google.com/webstore/detail/gonbigodpnfghidmnphnadhepmbabhij" target="_blank">Cryptocat app for Google Chrome</a> for extra security, and always think responsibly if you are in serious situations.
+							</span>
+							<br /><input id="understand" type="button" value="I understand" />
 						</div>
 					</div>
 					<div>
@@ -327,6 +346,28 @@ else {
 			<script type="text/javascript">var install="'.$install.'";var update="'.$update.'";var maxinput="'.$maxinput.'";var genurl='.$genurl.';</script>
 			<script type="text/javascript" src="js/cat.js"></script>');
 		}
+		function logout($name, $nick, $ghost) {
+			global $data, $chat, $_SESSION, $public;
+			$name = strtolower($name);
+			session_name('s'.$name);
+			session_start();
+			$chat = file($data.$name);
+			if ($_SESSION['check'] == "OK") {
+				preg_match('/'.$nick.'\:[^\|]+\|/', $chat[0], $public);
+				$chat[0] = str_replace($public[0], '', $chat[0]);
+				$chat[count($chat)+1] = "< ".$nick." has left\n";
+				if (!$ghost) {
+					session_unset();
+					session_destroy();
+				}
+				if (file_exists($data.$name)) {
+					file_put_contents($data.$name, implode('', $chat), LOCK_EX);
+				}
+				if (count(getpeople($chat) == 0)) {
+					shmop_delete(shmop_open(ftok($data.$name, 'c'), "c", 0644, 256));
+				}
+			}
+		}
 		if (isset($_GET['c'])) {
 			if (preg_match('/^\w+$/', $_GET['c'])) {
 				if (strlen($_GET['c']) <= 32) {
@@ -341,20 +382,9 @@ else {
 			}
 		}
 		else if (isset($_POST['logout']) && preg_match('/^\w+$/', $_POST['logout'])) {
-				$_POST['logout'] = strtolower($_POST['logout']);
 				session_name('s'.$_POST['logout']);
 				session_start();
-				$chat = file($data.$_POST['logout']);
-				if ($_SESSION['nick'] && $_SESSION['check'] == "OK") {
-					preg_match('/'.$_SESSION['nick'].'\:[^\|]+\|/', $chat[0], $public);
-					$chat[0] = str_replace($public[0], '', $chat[0]);
-					$chat[count($chat)+1] = "< ".$_SESSION['nick']." has left\n";
-					session_unset();
-					session_destroy();
-					if (file_exists($data.$_POST['logout'])) {
-						file_put_contents($data.$_POST['logout'], implode('', $chat), LOCK_EX);
-					}
-				}
+				logout($_POST['logout'], $_SESSION['nick'], 0);
 				welcome('name your chat');
 		}
 		else {
