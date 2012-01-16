@@ -255,7 +255,7 @@ else {
 					</tr>
 					<tr>
 						<td class="img"><img src="img/3.png" alt="" /></td>
-						<td id="td3">Cryptocat is fully compatible with <a target="_blank" href="https://torproject.org">Tor</a> and also works on your iPhone, Android and BlackBerry.</td>
+						<td id="td3">Cryptocat also runs as a <a target="_blank" href="https://torproject.org">Tor</a> hidden service (<a href="http://xdtfje3c46d2dnjd.onion">http://xdtfje3c46d2dnjd.onion</a>) and works on your iPhone, Android and BlackBerry.</td>
 					</tr>
 				</table>
 				<div class="bottom">
