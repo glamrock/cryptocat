@@ -117,7 +117,7 @@
 				else {
 					$last = unserialize(shmop_read($shm_id, 0, shmop_size($shm_id)));
 					for ($p=0; $p != count($people); $p++) {
-						if (isset($last[$people[$p]]) && ((time() - 35 > $last[$people[$p]])) {
+						if (isset($last[$people[$p]]) && ((time() - 35) > $last[$people[$p]])) {
 							unset($last[$people[$p]]);
 							logout($_POST['chat'], $people[$p], 1);
 						}
