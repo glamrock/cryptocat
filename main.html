@@ -3,49 +3,50 @@
 	<meta charset="UTF-8" />
 	<title>Cryptocat</title>
 	<link rel="stylesheet" href="css/style.css" type="text/css" />
-	<link rel="icon" type="image/png" href="img/favicon.gif" />
+	<link rel="icon" type="image/gif" href="img/favicon.gif" />
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/build.js"></script>
 </head>
 <body onload="document.getElementById('c').focus();">
 	<div id="main">
-				<img src="img/cryptocat.png" alt="cryptocat" class="cryptocat" />
-				<div class="create" id="welcome">
-					<div>
-						<input type="text" class="name" name="c" id="c" onclick="idSelect('c');" value="name your chat" maxlength="32" autocomplete="off" />
-						<input type="submit" class="create" value="enter" id="create" />
-					</div>
-				</div>
-				<table>
-					<tr>
-						<td class="img"><img src="img/1.png" alt="" /></td>
-						<td id="td1"><strong>Cryptocat</strong> lets you instantly set up secure conversations. It's an open source encrypted, private alternative to other services such as Facebook chat.</td>
-					</tr>
-					<tr>
-						<td class="img"><img src="img/2.png" alt="" /></td>
-						<td id="td2">Messages are encrypted inside your own browser using AES-256 and 4096-bit asymmetric keys. Conversations are securely wiped after one hour of inactivity.</td>
-					</tr>
-					<tr>
-						<td class="img"><img src="img/3.png" alt="" /></td>
-						<td id="td3">Cryptocat also runs as a <a target="_blank" href="https://torproject.org">Tor</a> hidden service (<a href="http://xdtfje3c46d2dnjd.onion">http://xdtfje3c46d2dnjd.onion</a>) and works on your iPhone, Android and BlackBerry.</td>
-					</tr>
-				</table>
-				<div class="bottom">
-					<span id="lang">
-						<a href="#" onclick="translate('fr')">fr</a> 
-						<a href="#" onclick="translate('ca')">ca</a> 
-						<a href="#" onclick="translate('eu')">eu</a> 
-						<a href="#" onclick="translate('it')">it</a> 
-						<a href="#" onclick="translate('de')">de</a> 
-						<a href="#" onclick="translate('pt')">pt</a> 
-						<a href="#" onclick="translate('ru')">ru</a> 
-						<a href="#" onclick="translate('sv')">sv</a>
-					</span>
-					<a href="https://crypto.cat/about" style="margin-left:-173px">about</a> | 
-					<a target="_blank" href="https://twitter.com/cryptocatapp">twitter</a> | 
-					<a target="_blank" href="http://blog.crypto.cat">blog</a> | 
-					<a target="_blank" href="https://github.com/kaepora/cryptocat-chrome/">source</a>
-				</div>
+		<img src="img/cryptocat.png" alt="cryptocat" class="cryptocat" />
+		<div class="create" id="welcome">
+			<div>
+				<input type="text" class="name" name="c" id="c" onclick="idSelect('c');" value="name your chat" maxlength="32" autocomplete="off" />
+				<input type="submit" class="create" value="enter" id="create" />
 			</div>
-			<script type="text/javascript" src="js/welcome.js"></script></body>
+		</div>
+		<table>
+			<tr>
+				<td class="img"><img src="img/1.png" alt="" /></td>
+				<td id="td1"><strong>Cryptocat</strong> lets you instantly set up secure conversations. It's an open source encrypted, private alternative to other services such as Facebook chat.</td>
+			</tr>
+			<tr>
+				<td class="img"><img src="img/2.png" alt="" /></td>
+				<td id="td2">Messages are encrypted inside your own browser using AES-256 and 4096-bit asymmetric keys. Conversations are securely wiped after one hour of inactivity.</td>
+			</tr>
+			<tr>
+				<td class="img"><img src="img/3.png" alt="" /></td>
+				<td id="td3">Cryptocat also runs as a <a target="_blank" href="https://torproject.org">Tor</a> hidden service (<a href="http://xdtfje3c46d2dnjd.onion">http://xdtfje3c46d2dnjd.onion</a>) and works on your iPhone, Android and BlackBerry.</td>
+			</tr>
+		</table>
+		<div class="bottom">
+			<span id="lang">
+				<a href="#" onclick="translate('fr')">fr</a> 
+				<a href="#" onclick="translate('ca')">ca</a> 
+				<a href="#" onclick="translate('eu')">eu</a> 
+				<a href="#" onclick="translate('it')">it</a> 
+				<a href="#" onclick="translate('de')">de</a> 
+				<a href="#" onclick="translate('pt')">pt</a> 
+				<a href="#" onclick="translate('ru')">ru</a> 
+				<a href="#" onclick="translate('sv')">sv</a>
+			</span>
+			<a href="https://crypto.cat/about" style="margin-left:-173px">about</a> | 
+			<a target="_blank" href="https://twitter.com/cryptocatapp">twitter</a> | 
+			<a target="_blank" href="http://blog.crypto.cat">blog</a> | 
+			<a target="_blank" href="https://github.com/kaepora/cryptocat-chrome/">source</a>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/welcome.js"></script>
+</body>
 </html>
