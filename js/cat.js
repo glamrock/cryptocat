@@ -358,12 +358,7 @@ function updatechat() {
 }
 
 $("#chatform").submit( function() {
-	if (flood) {
-		$('#flood').fadeIn('fast', function() {
-			setTimeout("$('#flood').fadeOut(1000)", 500);
-		});
-	}
-	else {
+	if (!flood) {
 		var msg = $.trim($("#input").val());
 		msg = msg.replace(/\$/g,"&#36;");
 		var msgc = nick + ": " + msg;
@@ -375,7 +370,7 @@ $("#chatform").submit( function() {
 			scrolldown();
 			if (names.length > 1) {
 				flood = 1;
-				setTimeout("flood = 0", 550);
+				setTimeout("flood = 0", 300);
 				$("#" + sentid).css("background-image","url(\"img/sending.gif\")");
 				queue.push(msg + "$" + sentid);
 				$("#talk").val(maxinput);
@@ -463,6 +458,16 @@ $("#sound").click(function(){
 		sound = 1;
 		document.getElementById("input").focus();
 	}
+});
+
+$("#invite").click(function(){
+	var url = "https://www.facebook.com/dialog/send?app_id=348025968541285&name=Cryptocat%20Chat%20Invitation&" + 
+	"description=Chat%20with%20your%20friends%20in%20privacy%20with%20secure%20encryption%20using%20Cryptocat." + 
+	"&redirect_uri='https://crypto.cat/?close'&link=" + install + "?c=" + name + 
+	"&picture=https://crypto.cat/img/ios.png&display=popup";
+	var pop = window.open(url, 'name', 'height=330,width=450,location=0,menubar=0,resizable=0,scrollbars=0' + 
+	',status=0,titlebar=0,toolbar=0,top='+($(window).height()/4)+',left='+($(window).width()/2.5));
+	if (window.focus) { pop.focus() }
 });
 
 function userinfo(n) {

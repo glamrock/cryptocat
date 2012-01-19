@@ -198,7 +198,7 @@ input {
 	border-radius: 0px;
 	-webkit-appearance: none;
 }
-a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #fingerlink, #close, #understand, input.nicksubmit, span.user, span.block {
+a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #invite, #fingerlink, #close, #understand, input.nicksubmit, span.user, span.block {
 	cursor: pointer;
 }
 #input {
@@ -294,10 +294,10 @@ td {
 	border-bottom: 8px solid #FFF;
 	font-size: 11px;
 }
-#maximize, #sound {
+#maximize, #sound, #invite {
 	float: right;
 }
-#sound {
+#sound, #invite {
 	margin-right: 10px;
 }
 #notice {
@@ -396,12 +396,6 @@ div.redirect p {
 }
 span.monospace {
 	font-family: "Monaco", monospace;
-}
-#flood {
-	display: none;
-	color: #F00;
-	float: right;
-	margin-right: 21px;
 }
 span.block {
 	padding: 3px;

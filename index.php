@@ -209,6 +209,11 @@
 			</p>Click the link to continue.</div></body></html>');
 			exit;
 		}
+		if (isset($_GET['close'])) {
+			print('</head>
+			<body><script type="text/javascript">window.open("", "_self", "");window.close();</script></body></html>');
+			exit;
+		}
 	?>
 	<link rel="icon" type="image/gif" href="img/favicon.gif" />
 	<link rel="apple-touch-startup-image" type="image/png" href="img/isplash.png" />
@@ -330,10 +335,10 @@ else {
 			<a href="'.$install.'" onclick="logout();"><img src="img/cryptocat.png" class="chat" alt="cryptocat" /></a>
 			<img src="img/maximize.png" alt="maximize" id="maximize" title="expand" />
 			<img src="img/nosound.png" alt="sound" id="sound" title="message sounds off" />
+			<img src="img/invite.png" alt="invite" id="invite" title="invite friend" />
 			<div id="inchat"><div id="chat"></div></div>
 			<div id="info">chatting as <span id="nick">'.$nick.'</span> on 
 			<strong class="blue">'.$install.'?c=</strong><strong id="name">'.$name.'</strong>
-			<strong id="flood">wait</strong>
 			</div>
 			<form name="chatform" id="chatform" method="post" action="'.$install.'">
 				<div>

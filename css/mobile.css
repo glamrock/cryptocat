@@ -240,7 +240,7 @@ div.text {
 	padding: 0px 0px 0px 0px;
 	word-wrap: break-word;
 }
-#maximize, #sound, #notice, table {
+#maximize, #sound, #invite, #notice, table {
 	display: none;
 }
 #front {
@@ -318,12 +318,6 @@ div.redirect p {
 }
 span.monospace {
 	font-family: "Monaco", monospace;
-}
-#flood {
-	display: none;
-	color: #F00;
-	float: right;
-	margin-right: 21px;
 }
 span.block {
 	padding: 3px;
