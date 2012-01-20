@@ -31,8 +31,9 @@
 	/* Default nicknames: */
 	$nicks = array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 
 	'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite');
-	/* Polling rate. Don't change this. */
+	/* Polling and timeout rates. You probably shouldn't touch these. */
 	$update = 1250;
+	$timeout = 40;
 	
 	/* Do _not_ touch anything below this line. */
 ?>
@@ -82,11 +83,8 @@
 			session_destroy();
 		}
 		if (!isset($_SESSION['nick'])) {
-			if (file_exists($data.$_POST['name'])) {
-				enterchat($_POST['name'], $_POST['nick'], $_POST['key']);
-			}
-			else {
-				enterchat($_POST['name'], $_POST['nick'], $_POST['key']);
+			enterchat($_POST['name'], $_POST['nick'], $_POST['key']);
+			if (!file_exists($data.$_POST['name'])) {
 				$chat = file($data.$_POST['name']);
 			}
 		}
@@ -117,7 +115,7 @@
 				else {
 					$last = unserialize(shmop_read($shm_id, 0, shmop_size($shm_id)));
 					for ($p=0; $p != count($people); $p++) {
-						if (isset($last[$people[$p]]) && ((time() - 35) > $last[$people[$p]])) {
+						if (isset($last[$people[$p]]) && ((time() - $timeout) > $last[$people[$p]])) {
 							unset($last[$people[$p]]);
 							logout($_POST['chat'], $people[$p], 1);
 						}
@@ -367,8 +365,6 @@ else {
 				}
 				if (file_exists($data.$name)) {
 					file_put_contents($data.$name, implode('', $chat), LOCK_EX);
-				}
-				if (count(getpeople($chat) == 0)) {
 					shmop_delete(shmop_open(ftok($data.$name, 'c'), "c", 0644, 256));
 				}
 			}
