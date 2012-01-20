@@ -484,9 +484,9 @@ function userinfo(n) {
 		'Send <span class="blue">' + n + '</span> a private message:<br />' +
 		'<span class="blue">@' + n + '</span> your message<br /><br />' +
 		'Messages from <span class="blue">' + n + '</span> are <span class="block">allowed</span><br />' +
-		'<br />Verify <span class="blue">' + n + '</span>\'s identity using their fingerprint:<br />');
+		'<br />Verify <span class="blue">' + n + '</span>\'s identity using their fingerprint:');
 	}
-	$("#fadebox").html($("#fadebox").html() + '<br />' + fingerprints[jQuery.inArray(n, names)] + '<br />');
+	$("#fadebox").html($("#fadebox").html() + '<br />' + fingerprints[jQuery.inArray(n, names)]);
 	if (jQuery.inArray(n, blocked) >= 0) {
 		$(".block").css("background-color", "#F00");
 		$(".block").html("blocked");
