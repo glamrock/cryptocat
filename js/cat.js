@@ -66,6 +66,7 @@ function getstamp(n) {
 function soundPlay(which) {
 	function createSound(which) {
 		soundEmbed = document.createElement("audio");
+		soundEmbed.setAttribute("type", "audio/webm");
 		soundEmbed.setAttribute("src", which);
 		soundEmbed.setAttribute("style", "display: none;");
 		soundEmbed.setAttribute("autoplay", true);
@@ -304,7 +305,7 @@ function updatechat() {
 						document.title = "[" + num + "] Cryptocat";
 					}
 					if (sound) {
-						soundPlay("snd/msg.mp4");
+						soundPlay("snd/msg.webm");
 					}
 				}
 				else {
