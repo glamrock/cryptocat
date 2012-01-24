@@ -33,7 +33,7 @@
 	'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite');
 	/* Polling and timeout rates. You probably shouldn't touch these. */
 	$update = 1250;
-	$timeout = 40;
+	$timeout = 80;
 	
 	/* Do _not_ touch anything below this line. */
 ?>
