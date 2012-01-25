@@ -20,13 +20,14 @@ var p = str2bigInt(
 16);
 
 var g = str2bigInt("2", 10);
-var num, interval, sound, pos, tag, flood, prikey, pubkey, sentid;
-num = interval = sound = pos = tag = flood = 0;
+var num, interval, sound, pos, tag, prikey, pubkey;
+num = interval = sound = pos = tag = 0;
 var names = new Array();
 var keys = new Array();
 var seckeys = new Array();
 var fingerprints = new Array();
 var queue = new Array();
+var sending = new Array();
 var usedhmac = new Array();
 var blocked = new Array();
 var nick = $("#nick").html();
@@ -156,10 +157,10 @@ function fliptag() {
 	else { tag = "msg"; }
 }
 
-function process(line, flip) {
+function process(line, sentid) {
 	if (line) {
 		line = $.trim(line);
-		if (!flip) {
+		if (sentid) {
 			fliptag();
 			line = tagify(line);
 			if (names.length > 1) {
@@ -296,7 +297,7 @@ function updatechat() {
 			else if (data != "") {
 				pos++;
 				if (data.match(/\s/)) {
-					process(data, 1);
+					process(data, 0);
 					if ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) < 600) {
 						scrolldown();
 					}
@@ -317,11 +318,32 @@ function updatechat() {
 				updatekeys(true);
 				$("#users").css("background-color", "#97CEEC");
 			}
+			if (sending[0]) {
+				var msg = sending[0].replace(/\$.+$/, '');
+				var sentid = sending[0].replace(/^.+\$/, '');
+				var time = sentid.substring(8);
+				sentid = sentid.substring(0, 8);
+				if ($("#" + sentid).css("background-image")) {
+					if ($("#" + sentid).css("background-image").match(/sending\.gif/)) {
+						var now = new Date;
+						if ((now.getTime() - time) > 2000) {
+							queue.push(msg + "$" + sentid);
+							sending.splice(0,1);
+						}
+					}
+					else {
+						sending.splice(0,1);
+					}
+				}
+			}
 			if (queue[0]) {
 				var msg = queue[0].replace(/\$.+$/, '');
+				var sentid = queue[0].replace(/^.+\$/, '');
+				var time = new Date;
+				sending.push(queue[0] + time.getTime());
 				if ((msg[0] == "@") && (jQuery.inArray(msg.match(/^\@[a-z]{1,12}/).toString().substring(1), names) >= 0)) {
 					if (msg.match(/^\@[a-z]{1,12}/).toString().substring(1) == nick) {
-						$("#" + queue[0].replace(/^.+\$/, '')).css("background-image","url(\"img/chat.png\")");
+						$("#" + sentid).css("background-image","url(\"img/chat.png\")");
 						queue.splice(0,1);
 						return;
 					}
@@ -344,7 +366,7 @@ function updatechat() {
 						}
 					}
 				}
-				msg = nick + "|" + queue[0].replace(/^.+\$/, '') + ": " + "[B-C]" + msg + "[E-C]";
+				msg = nick + "|" + sentid + ": " + "[B-C]" + msg + "[E-C]";
 				$.ajax({ url: install,
 					type: "POST",
 					async: true,
@@ -359,23 +381,19 @@ function updatechat() {
 }
 
 $("#chatform").submit( function() {
-	if (!flood) {
-		var msg = $.trim($("#input").val());
-		msg = msg.replace(/\$/g,"&#36;");
-		var msgc = nick + ": " + msg;
-		$("#input").val("");
-		document.getElementById("input").focus();
-		if (msg != "") {
-			sentid = gen(8, 1, 0);
-			document.getElementById("chat").innerHTML += process(msgc, 0);
-			scrolldown();
-			if (names.length > 1) {
-				flood = 1;
-				setTimeout("flood = 0", 300);
-				$("#" + sentid).css("background-image","url(\"img/sending.gif\")");
-				queue.push(msg + "$" + sentid);
-				$("#talk").val(maxinput);
-			}
+	var msg = $.trim($("#input").val());
+	msg = msg.replace(/\$/g,"&#36;");
+	var msgc = nick + ": " + msg;
+	$("#input").val("");
+	document.getElementById("input").focus();
+	if (msg != "") {
+		var sentid = gen(8, 1, 0);
+		document.getElementById("chat").innerHTML += process(msgc, sentid);
+		scrolldown();
+		if (names.length > 1) {
+			$("#" + sentid).css("background-image","url(\"img/sending.gif\")");
+			queue.push(msg + "$" + sentid);
+			$("#talk").val(maxinput);
 		}
 	}
 	return false;
