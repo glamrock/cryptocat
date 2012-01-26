@@ -324,16 +324,14 @@ function updatechat() {
 				var time = sentid.substring(8);
 				sentid = sentid.substring(0, 8);
 				if ($("#" + sentid).css("background-image")) {
-					if ($("#" + sentid).css("background-image").match(/sending\.gif/)) {
-						var now = new Date;
-						if ((now.getTime() - time) > 2000) {
-							queue.push(msg + "$" + sentid);
-							sending.splice(0,1);
-						}
-					}
-					else {
+					var now = new Date;
+					if ((now.getTime() - time) > 20000) {
+						queue.push(msg + "$" + sentid);
 						sending.splice(0,1);
 					}
+				}
+				else {
+					sending.splice(0,1);
 				}
 			}
 			if (queue[0]) {
