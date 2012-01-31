@@ -123,9 +123,9 @@ function dhgen(key, pub) {
 	}
 }
 
-function tagify(chat) {
-	chat = chat.replace(/</g,"&lt;").replace(/>/g,"&gt;");
-	if ((match = chat.match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi)) && genurl) {
+function tagify(line) {
+	line = line.replace(/</g,"&lt;").replace(/>/g,"&gt;");
+	if ((match = line.match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi)) && genurl) {
 		for (mc = 0; mc <= match.length - 1; mc++) {
 			var sanitize = match[mc].split("");
 			for (ii = 0; ii <= sanitize.length-1; ii++) {
@@ -134,22 +134,25 @@ function tagify(chat) {
 				}
 			}
 			sanitize = sanitize.join("");
-			chat = chat.replace(sanitize, "<a target=\"_blank\" href=\"" + "?redirect=" + escape(sanitize) + "\">" + match[mc] + "</a>");
+			line = line.replace(sanitize, "<a target=\"_blank\" href=\"" + "?redirect=" + escape(sanitize) + "\">" + match[mc] + "</a>");
 		}
 	}
-	chat = chat.replace(/\&lt\;3/g, "<span class=\"monospace\">&#9829;</span>");
-	thisnick = chat.match(/^[a-z]{1,12}/).toString();
-	if ((chat.match(/^[a-z]{1,12}:\s\@/)) && 
-	(chat.match(/^[a-z]{1,12}:\s\@[a-z]{1,12}/).toString().substring(thisnick.length + 3) == nick || thisnick == nick)) {
-		chat = chat.replace(/^[a-z]{1,12}\: \@[a-z]{1,12}/, '<span class="nick">' + thisnick + ' <span class="blue">&gt;</span> ' +
-		chat.match(/^[a-z]{1,12}:\s\@[a-z]{1,12}/).toString().substring(thisnick.length + 3) + '</span>');  
+	line = line.replace(/\&lt\;3/g, "<span class=\"monospace\">&#9829;</span>");
+	thisnick = line.match(/^[a-z]{1,12}/).toString();
+	if ((line.match(/^[a-z]{1,12}:\s\@/)) && 
+	(line.match(/^[a-z]{1,12}:\s\@[a-z]{1,12}/).toString().substring(thisnick.length + 3) == nick || thisnick == nick)) {
+		line = line.replace(/^[a-z]{1,12}\: \@[a-z]{1,12}/, '<span class="nick">' + thisnick + ' <span class="blue">&gt;</span> ' +
+		line.match(/^[a-z]{1,12}:\s\@[a-z]{1,12}/).toString().substring(thisnick.length + 3) + '</span>');  
+		if (match = line.match(/data:image\S+$/)) {
+			line = line.replace(/data:image.+/, '<a onclick="displayfile(\'' + match + '\', \'' + getstamp(5) + '\')">view encrypted image</a>');
+		}
 	}
-	else if (match = chat.match(/^[a-z]{1,12}/)) {
+	else if (match = line.match(/^[a-z]{1,12}/)) {
 		var stamp = getstamp(match[0]);
-		chat = chat.replace(/^[a-z]{1,12}:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = \'" +
+		line = line.replace(/^[a-z]{1,12}:/, "<span class=\"nick\" onmouseover=\"this.innerHTML = \'" +
 		stamp + "\';\" onmouseout=\"this.innerHTML = \'" + match[0] + "\';\">" + match[0] + "</span>");
 	}
-	return chat;
+	return line;
 }
 
 function fliptag() {
@@ -199,6 +202,9 @@ function process(line, sentid) {
 				line = tagify(line);
 				line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
 				$("#chat").html($("#chat").html() + line);
+				if ($("#" + pos).html().match(/data:image.+\<\/a\>\<\/div\>$/)) {
+					$("#" + pos).css("background-image","url(\"img/fileb.png\")");
+				}
 			}
 		}
 		else if (match = line.match(/^(\&gt\;|\&lt\;) [a-z]{1,12} (has arrived|has left)$/)) {
@@ -310,7 +316,12 @@ function updatechat() {
 					}
 				}
 				else {
-					$("#" + data).css("background-image","url(\"img/chat.png\")");
+					if ($("#" + data).html().match(/data:image.+\<\/a\>\<\/div\>$/)) {
+						$("#" + data).css("background-image","url(\"img/fileb.png\")");
+					}
+					else {
+						$("#" + data).css("background-image","url(\"img/chat.png\")");
+					}
 					$("#" + data).attr("id", "x");
 				}
 			}
@@ -365,10 +376,11 @@ function updatechat() {
 					}
 				}
 				msg = nick + "|" + sentid + ": " + "[B-C]" + msg + "[E-C]";
-				$.ajax({ url: install,
-					type: "POST",
-					async: true,
-					data: "input=" + encodeURIComponent(msg) + "&name=" + name + "&talk=send",
+				msg = "name=" + name + "&talk=send" + "&input=" + msg.replace(/\+/g, "%2B");
+				$.ajax({
+					type: 'POST',
+					url: install,
+					data: msg
 				});
 				queue.splice(0,1);
 			}
@@ -378,15 +390,13 @@ function updatechat() {
 	});
 }
 
-$("#chatform").submit( function() {
-	var msg = $.trim($("#input").val());
+function sendmsg(msg) {
 	msg = msg.replace(/\$/g,"&#36;");
-	var msgc = nick + ": " + msg;
 	$("#input").val("");
 	document.getElementById("input").focus();
 	if (msg != "") {
 		var sentid = gen(8, 1, 0);
-		document.getElementById("chat").innerHTML += process(msgc, sentid);
+		document.getElementById("chat").innerHTML += process(nick + ": " + msg, sentid);
 		scrolldown();
 		if (names.length > 1) {
 			$("#" + sentid).css("background-image","url(\"img/sending.gif\")");
@@ -394,6 +404,10 @@ $("#chatform").submit( function() {
 			$("#talk").val(maxinput);
 		}
 	}
+}
+
+$("#chatform").submit( function() {
+	sendmsg($.trim($("#input").val()));
 	return false;
 });
 
@@ -459,6 +473,68 @@ function nickajax() {
 				});
 			}
 		}
+	});
+}
+
+$("#file").click(function(){
+	var select = '<select id="dropdown">';
+	for (var i=0; i!=names.length; i++) {
+		if (names[i] != nick) {
+			select += '<option value="' + names[i] + '">' + names[i] + '</option>';
+		}
+	}
+	select += '</select>'
+	$("#fadebox").html('<input type="button" id="close" value="x" />' +
+	'<br /><h3>send encrypted image</h3>' + 'Select recipient: ' + select + 
+	'<br />Maximum image size: <span class="blue">' + filesize + 
+	'kb</span><br /><br /><span id="filewrap">' + 
+	'<input type="file" id="fileselect" name="file[]" /></span><br /><br />');
+	function handleFileSelect(evt) {
+		var file = evt.target.files;
+		var reader = new FileReader();
+		reader.onload = (function(theFile) {
+			return function(e) {
+				sendmsg('@' + $("#dropdown").val() + ' ' + e.target.result);
+			};
+		})(file[0]);
+		if (file[0].type.match('image.*')) {
+			if (file[0].size > (filesize * 1024)) {
+				$("#filewrap").html('<span class="red">Error: Maximum image size is ' + filesize + 'kb.</span>');
+			}
+			else if (jQuery.inArray($("#dropdown").val(), names) < 0) {
+				$("#filewrap").html('<span class="red">Error: You need to select a recipient.</span>');
+			}
+			else {
+				reader.readAsDataURL(file[0]);
+				$("#close").click();
+			}
+		}
+		else {
+			$("#filewrap").html('<span class="red">Error: Only image files are supported.</span>');
+		}
+	}
+	document.getElementById('fileselect').addEventListener('change', handleFileSelect, false);
+	$("#close").click(function(){
+		$('#fadebox').fadeOut('fast', function() {
+			$('#front').fadeOut('fast');
+		});
+	});
+	$('#front').fadeIn('fast');
+	$('#fadebox').fadeIn('fast', function() {
+	});
+});
+
+function displayfile(dataurl, time) {
+	$("#fadebox").html('<input type="button" id="close" value="x" />' +
+	'<br /><center><img class="encrypted" src="' + dataurl + '" alt="" /><br />' + 
+	'encrypted image received at <span class="blue">' + time + '</span></center>');
+	$("#close").click(function(){
+		$('#fadebox').fadeOut('fast', function() {
+			$('#front').fadeOut('fast');
+		});
+	});
+	$('#front').fadeIn('fast');
+	$('#fadebox').fadeIn('fast', function() {
 	});
 }
 

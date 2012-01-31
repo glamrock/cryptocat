@@ -190,15 +190,15 @@ a:hover {
 a img, img a {
 	border: none;
 }
-
 input.logout:hover {
 	text-decoration: underline;
 }
 input {
 	border-radius: 0px;
 	-webkit-appearance: none;
+	background-color: #000;
 }
-a.logout:hover, input.create:hover, #talk:hover, #maximize, #sound, #invite, #fingerlink, #close, #understand, input.nicksubmit, span.user, span.block {
+a, input.create:hover, #talk:hover, #maximize, #sound, #file, #invite, #fingerlink, #close, #understand, input.nicksubmit, span.user, span.block {
 	cursor: pointer;
 }
 #input {
@@ -263,6 +263,9 @@ div.msg a:hover, div.gsm a:hover {
 img.cryptocat {
 	margin-bottom: 90px;
 }
+img.encrypted {
+	max-width: 300px;
+}
 span.diffkey {
 	border-bottom: 1px dashed #000;
 }
@@ -294,10 +297,10 @@ td {
 	border-bottom: 8px solid #FFF;
 	font-size: 11px;
 }
-#maximize, #sound, #invite {
+#maximize, #sound, #invite, #file {
 	float: right;
 }
-#sound, #invite {
+#sound, #file, #invite {
 	margin-right: 10px;
 }
 #notice {
@@ -306,7 +309,6 @@ td {
 	margin-top: 0px;
 }
 #front {
-	display: none;
 	width: 100%;
 	height: 100%;
 	position: absolute;
@@ -358,7 +360,6 @@ div.redirect p {
 #fadebox {
 	padding: 0px 0px 10px 10px;
 	margin-top: 145px;
-	display: none;
 	text-align: left;
 }
 #note {
@@ -378,9 +379,6 @@ div.redirect p {
 	text-align: left;
 	line-height: 15px;
 	margin-top: -11px;
-}
-#keygen, #nickentry {
-	display: none;
 }
 #nick, #fingerlink {
 	color: #97CEEC;

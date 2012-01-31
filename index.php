@@ -28,6 +28,8 @@
 	$timelimit = 3600;
 	/* Set to 0 to disable automatic URL linking. */
 	$genurl = 1;
+	/* Maximum encrypted image size in kilobytes. */
+	$filesize = 512;
 	/* Default nicknames: */
 	$nicks = array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 
 	'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite');
@@ -42,8 +44,8 @@
 	ini_set('session.entropy_length', '1024');
 	session_set_cookie_params(0, '/', $domain, $https, TRUE);
 	error_reporting(0);
-	$msgregex = '/^[a-z]{1,12}\|\w{8}:\s\[B-C\]((\w|\/|\+|\?|\(|\)|\=)+\|(\d|a|b|c|d|e|f)+)+\[E-C\]$/';
 	$inforegex = '/(\>|\<)\s[a-z]{1,12}\shas\s(arrived|left)/';
+	
 	function getpeople($chat) {
 		preg_match_all('/[a-z]{1,12}:/', $chat[0], $people);
 		for ($i=0; $i < count($people[0]); $i++) {
@@ -51,6 +53,44 @@
 		}
 		return $people[0];
 	}
+	
+	function msgcheck($msg) {
+		$msgarray = array();
+		$msgregex = '/^[a-z]{1,12}\|\w{8}:\s\[B-C\]((\w|\/|\+|\?|\(|\)|\=)+\|(\d|a|b|c|d|e|f)+)+\[E-C\]$/';
+		$msgbeg = '/^[a-z]{1,12}\|\w{8}:\s\[B-C\]((\w|\/|\+|\?|\(|\)|\=))+$/';
+		$msgmid = '/^((\w|\/|\+|\?|\(|\)|\=))+$/';
+		$msgend = '/^((\w|\/|\+|\?|\(|\)|\=)+\|(\d|a|b|c|d|e|f)+)+\[E-C\]$/';
+		if (strlen($msg) > 256) {
+			for ($i=0; (($i) < strlen($msg)); $i+=256) {
+				array_push($msgarray, substr($msg, $i, 256));
+			}
+			for ($i=0; $i != (count($msgarray)); $i++) {
+				if ($msgarray[i]) {
+					if ($i == 0) {
+						if (!preg_match($msgbeg, $msgarray[$i])) {
+							return 0;
+						}
+					}
+					else if ($i != (count($msgarray)-1)) {
+						if (!preg_match($msgmid, $msgarray[$i])) {
+							return 0;
+						}
+					}
+					else {
+						if (!preg_match($msgend, $msgarray[$i])) {
+							return 0;
+						}
+					}
+				}
+			}
+			return 1;
+		}
+		else if (preg_match($msgregex, $msg)) {
+				return 1;
+		}
+		return 0;
+	}
+	
 	if (preg_match('/^[a-z]{1,12}$/', $_POST['nick']) && 
 	strlen($_POST['nick']) <= 12 && 
 	preg_match('/^\w+$/', $_POST['name']) && 
@@ -124,7 +164,7 @@
 				$last[$_SESSION['nick']] = time();
 				shmop_write($shm_id, serialize($last), 0);
 				if ($_SESSION['pos'] <= count($chat)) {
-					if (preg_match($msgregex, $chat[$_SESSION['pos']]) || preg_match($inforegex, $chat[$_SESSION['pos']])) {
+					if (msgcheck($chat[$_SESSION['pos']]) || preg_match($inforegex, $chat[$_SESSION['pos']])) {
 						preg_match_all('/\([a-z]{1,12}\)[^\(^\[]+/', $chat[$_SESSION['pos']], $match);
 						preg_match('/^[a-z]{1,12}\|/', $chat[$_SESSION['pos']], $nick);
 						$nick = substr($nick[0], 0, -1);
@@ -168,10 +208,9 @@
 		$chat = file($data.$_POST['name']);
 		preg_match('/^[a-z]{1,12}\|/', $_POST['input'], $thisnick);
 		$thisnick = substr($thisnick[0], 0, -1);
-		if (preg_match($msgregex, $_POST['input']) && $_SESSION['nick'] == $thisnick) {
-			$chat = $_POST['input']."\n";
+		if ((msgcheck($_POST['input'])) && $_SESSION['nick'] == $thisnick) {
 			if (file_exists($data.$_POST['name'])) {
-				file_put_contents($data.$_POST['name'], $chat, FILE_APPEND | LOCK_EX);
+				file_put_contents($data.$_POST['name'], $_POST['input']."\n", FILE_APPEND | LOCK_EX);
 			}
 		}
 		exit;
@@ -233,7 +272,7 @@ else {
 			print('<div id="main">
 				<img src="img/cryptocat.png" alt="cryptocat" class="cryptocat" />
 				<form action="'.$install.'" method="get" class="create" id="welcome">
-					<div id="front">
+					<div id="front" class="invisible">
 						<div id="note">
 							<span id="notetext">
 								Cryptocat provides strong encryption, but does not replace a strong security culture alone. 
@@ -304,7 +343,7 @@ else {
 			}
 		}
 		function chat($name) {
-			global $data, $nicks, $timelimit, $maxinput, $install, $update, $_SESSION, $genurl;
+			global $data, $nicks, $timelimit, $maxinput, $install, $update, $_SESSION, $genurl, $filesize;
 			$name = strtolower($name);
 			$chat = file($data.$name);
 			$nick = $nicks[mt_rand(0, count($nicks) - 1)];
@@ -314,11 +353,11 @@ else {
 			print('<div id="main">
 			<div id="front">
 				<div id="changenick">
-					<div id="keygen">
+					<div id="keygen" class="invisible">
 						<img src="img/keygen.gif" alt="" /><br />
 						<span id="keytext">Gathering entropy</span>
 					</div>
-					<div id="nickentry">
+					<div id="nickentry" class="invisible">
 						<p>Enter nickname</p>
 						<form name="nickform" id="nickform" method="post" action="'.$install.'">
 							<div>
@@ -328,12 +367,13 @@ else {
 						</form>
 					</div>
 				</div>
-				<div id="fadebox"></div>
+				<div id="fadebox" class="invisible"></div>
 			</div>
 			<a href="'.$install.'" onclick="logout();"><img src="img/cryptocat.png" class="chat" alt="cryptocat" /></a>
 			<img src="img/maximize.png" alt="maximize" id="maximize" title="expand" />
 			<img src="img/nosound.png" alt="sound" id="sound" title="message sounds off" />
 			<img src="img/invite.png" alt="invite" id="invite" title="invite friend" />
+			<img src="img/filer.png" alt="file" id="file" title="send encrypted image" />
 			<div id="inchat"><div id="chat"></div></div>
 			<div id="info">chatting as <span id="nick">'.$nick.'</span> on 
 			<strong class="blue">'.$install.'?c=</strong><strong id="name">'.$name.'</strong>
@@ -346,7 +386,7 @@ else {
 				</div>
 			</form>
 			</div>
-			<script type="text/javascript">var install="'.$install.'";var update="'.$update.'";var maxinput="'.$maxinput.'";var genurl='.$genurl.';</script>
+			<script type="text/javascript">var install="'.$install.'";var update="'.$update.'";var maxinput="'.$maxinput.'";var genurl='.$genurl.';var filesize='.$filesize.';</script>
 			<script type="text/javascript" src="js/cat.js"></script>');
 		}
 		function logout($name, $nick, $ghost) {
