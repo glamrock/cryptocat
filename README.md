@@ -10,7 +10,8 @@ Cryptocat Chrome is a Chrome app version of Cryptocat that loads all code locall
 * A client-side AES-256 implementation is used to encrypt data.
 * HMAC message integrity verification.
 * The identity of chatters can be confirmed via key fingerprints, à la OTR.
-* A seeded, cryptographically secure random number generator that relies on browser elements, DOM, JavaScript variable state, and more to produce entropy. The resulting entropy is hashed to produce the final seed, which is then fed back to the CSPRNG.
+* A seeded, cryptographically secure random number generator that relies on browser elements, DOM, JavaScript variable state, and more to produce entropy.
+* Send encrypted pictures.
 * Chats are securely deleted after one hour of inactivity.
 * Easily invite your Facebook friends to join your Cryptocat chat and have private, secure conversations!
 * Send private messages that can only be seen by a single recipient.
