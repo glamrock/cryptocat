@@ -502,7 +502,7 @@ $("#file").click(function(){
 			select += '<option value="' + names[i] + '">' + names[i] + '</option>';
 		}
 	}
-	select += '</select>'
+	select += '</select>';
 	$("#fadebox").html('<input type="button" id="close" value="x" />' +
 	'<br /><h3>send encrypted image</h3>' + 'Select recipient: ' + select + 
 	'<br />Maximum image size: <span class="blue">' + filesize + 
