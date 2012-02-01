@@ -60,9 +60,9 @@
 		$msgbeg = '/^[a-z]{1,12}\|\w{8}:\s\[B-C\]((\w|\/|\+|\?|\(|\)|\=))+$/';
 		$msgmid = '/^((\w|\/|\+|\?|\(|\)|\=))+$/';
 		$msgend = '/^((\w|\/|\+|\?|\(|\)|\=)+\|(\d|a|b|c|d|e|f)+)+\[E-C\]$/';
-		if (strlen($msg) > 256) {
-			for ($i=0; (($i) < strlen($msg)); $i+=256) {
-				array_push($msgarray, substr($msg, $i, 256));
+		if (strlen($msg) > 4096) {
+			for ($i=0; (($i) < strlen($msg)); $i+=4096) {
+				array_push($msgarray, substr($msg, $i, 4096));
 			}
 			for ($i=0; $i != (count($msgarray)); $i++) {
 				if ($msgarray[i]) {
