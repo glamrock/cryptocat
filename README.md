@@ -10,7 +10,7 @@ Cryptocat lets you instantly set up secure conversations. It's an open source en
 * A client-side AES-256 implementation is used to encrypt data.
 * HMAC message integrity verification.
 * The identity of chatters can be confirmed via key fingerprints, à la OTR.
-* A seeded, cryptographically secure random number generator that relies on browser elements, DOM, JavaScript variable state, and more to produce entropy.
+* Uses the Fortuna secure pseudo-randomness generator.
 * Send encrypted pictures.
 * Compatible with all modern browsers, and includes a mobile website that is fully compatible with iPhone, Android and BlackBerry.
 * [Cryptocat Chrome](https://chrome.google.com/webstore/detail/gonbigodpnfghidmnphnadhepmbabhij), a Chrome app that loads all code locally, and is secure from being served compromised code.

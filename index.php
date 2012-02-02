@@ -355,7 +355,7 @@ else {
 				<div id="changenick">
 					<div id="keygen" class="invisible">
 						<img src="img/keygen.gif" alt="" /><br />
-						<span id="keytext">Gathering entropy</span>
+						<span id="keytext"></span>
 					</div>
 					<div id="nickentry" class="invisible">
 						<p>Enter nickname</p>

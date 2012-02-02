@@ -301,6 +301,12 @@ div.redirect p {
 	margin: -70px 0px 0px 100px;
 	line-height: 1.65em;
 }
+#keytropy {
+	float: left;
+	color: #97CEEC;
+	border: 1px solid #97CEEC;
+	background-color: #000;
+}
 #keygen, #nickentry {
 	margin: 7em auto;
 }

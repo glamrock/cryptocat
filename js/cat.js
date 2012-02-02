@@ -96,7 +96,7 @@ function textcounter(field,cntfield,maxlimit) {
 
 function gen(size, extra, s) {
 	if (s) {
-		Math.seedrandom(Crypto.SHA256(seed) + Math.seedrandom());
+		Math.seedrandom(Crypto.Fortuna.RandomData(512) + Crypto.SHA256(seed));
 	}
 	var str = "";
 	var charset = "123456789";
@@ -416,10 +416,31 @@ $("#nickform").submit( function() {
 	if (!pubkey) {
 		$('#nickentry').fadeOut('fast', function() {
 			$('#keygen').fadeIn('fast', function() {
-				$('#keytext').html($('#keytext').html() + " &#160; <span class=\"blue\">OK</span><br />Generating keys");
-				pubkey = dhgen(gen(24, 0, 1), "gen");
-				$('#keytext').html($('#keytext').html() + " &#160; &#160; <span class=\"blue\">OK</span><br />Communicating");
-				nickajax();
+				var down, up, e;
+				$('#keytext').html('Type on your keyboard as randomly as possible for a few seconds:' + 
+				'<br /><input type="password" id="keytropy" />');
+				document.getElementById("keytropy").focus();
+				$("#keytropy").keydown(function(event) {
+					if (Crypto.Fortuna.Ready() == 0) {
+						e = String.fromCharCode(event.keyCode);
+						var d = new Date();
+						down = d.getTime();
+					}
+				});
+				$("#keytropy").keyup(function() {
+					if (Crypto.Fortuna.Ready() == 0) {
+						var d = new Date();
+						up = d.getTime();
+						Crypto.Fortuna.AddRandomEvent(e + (up - down));
+					}
+					else {
+						$('#keytext').html("<br />Generating keys");
+						pubkey = dhgen(gen(24, 0, 1), "gen");
+						$('#keytext').html($('#keytext').html() + ' &#160; &#160; ' + 
+						'<span class=\"blue\">OK</span><br />Communicating');
+						nickajax();
+					}
+				});
 			});
 		});
 	}
@@ -646,7 +667,8 @@ $("#maximize").click(function(){
 
 $("#input").keyup(function(){
 	textcounter(document.chatform.input,document.chatform.talk,256);
-	if ((match = $("#input").val().match(/^\@[a-z]{1,12}/)) && (jQuery.inArray($("#input").val().match(/^\@[a-z]{1,12}/).toString().substring(1), names) >= 0)) {
+	if ((match = $("#input").val().match(/^\@[a-z]{1,12}/)) &&
+	(jQuery.inArray($("#input").val().match(/^\@[a-z]{1,12}/).toString().substring(1), names) >= 0)) {
 		$("#input").css("color", "#97CEEC");
 	}
 	else if ($("#input").css("color") == "rgb(151, 206, 236)") {
