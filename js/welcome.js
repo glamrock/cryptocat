@@ -1,7 +1,7 @@
 var chat;
 var faded = 0;
-var nicks = new Array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 
-'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite');
+var nicks = new Array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'turtle'
+'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite', 'ducky');
 
 var xhr = new XMLHttpRequest();
 xhr.open("GET", "chat.html", false);
