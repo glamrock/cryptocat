@@ -31,8 +31,8 @@
 	/* Maximum encrypted image size in kilobytes. */
 	$filesize = 512;
 	/* Default nicknames: */
-	$nicks = array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 
-	'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite');
+	$nicks = array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'turtle', 
+	'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite', 'ducky');
 	/* Polling and timeout rates. You probably shouldn't touch these. */
 	$update = 1250;
 	$timeout = 80;
