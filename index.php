@@ -226,13 +226,16 @@
 	<meta name="keywords" content="encrypted chat, private chat, secure chat, cryptocat" />
 	<title>Cryptocat</title>
 	<?php
+		$mobile = 0;
 		$agent = $_SERVER['HTTP_USER_AGENT'];
-		if (strstr($agent, "iPod") || 
-		strstr($agent, "iPhone") || 
-		strstr($agent, "BlackBerry") || 
-		strstr($agent, "Windows Phone") || 
-		strstr($agent, "MeeGo") || 
-		(strstr($agent, "Android") && strstr($agent, "Mobile"))) {
+		$strmobile = array('iPhone', 'iPod', 'BlackBerry', 'Windows Phone', 
+		'Fennec', 'Opera Mini', 'Opera Mobi', 'MeeGo', 'Mobile');
+		for ($i=0; $i != count($strmobile); $i++) {
+			if (strstr($agent, $strmobile[$i])) {
+				$mobile = 1;
+			}
+		}
+		if ($mobile) {
 			print('<link rel="stylesheet" href="css/mobile.css" type="text/css" />'."\n");
 		}
 		else {
