@@ -190,7 +190,7 @@ function process(line, sentid) {
 				line = tagify(line);
 				line = line.replace(/\[B-C\](.*)\[E-C\]/, "<span class=\"diffkey\">corrupt</span>");
 				line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
-				$("#chat").html($("#chat").html() + line);
+				pushline(line);
 				$("#" + pos).css("background-image","url(\"img/corrupt.png\")");
 			}
 			else {
@@ -201,7 +201,7 @@ function process(line, sentid) {
 				line = line.replace(/\[B-C\](.*)\[E-C\]/, match);
 				line = tagify(line);
 				line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
-				$("#chat").html($("#chat").html() + line);
+				pushline(line);
 				if ($("#" + pos).html().match(/data:image.+\<\/a\>\<\/div\>$/)) {
 					$("#" + pos).css("background-image","url(\"img/fileb.png\")");
 				}
@@ -212,18 +212,25 @@ function process(line, sentid) {
 			line = "<span class=\"nick\">" + match[0] + "</span>";
 			fliptag();
 			line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
-			$("#chat").html($("#chat").html() + line);
+			pushline(line);
 			$("#" + pos).css("background-image","url(\"img/user.png\")");
 		}
 		else {
 			line = "<span class=\"diffkey\">corrupt</span>";
 			fliptag();
 			line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
-			$("#chat").html($("#chat").html() + line);
+			pushline(line);
 			$("#" + pos).css("background-image","url(\"img/corrupt.png\")");
 		}
 	}
 	return "";
+}
+
+function pushline(line) {
+	$("#chat").html($("#chat").html() + line);
+	if (sound) {
+		soundPlay("snd/msg.webm");
+	}
 }
 
 function updatekeys(sync) {
@@ -310,9 +317,6 @@ function updatechat() {
 					if (!focus || ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) > 600)) {
 						num++;
 						document.title = "[" + num + "] Cryptocat";
-					}
-					if (sound) {
-						soundPlay("snd/msg.webm");
 					}
 				}
 				else {
@@ -438,7 +442,7 @@ $("#nickform").submit( function() {
 						pubkey = dhgen(gen(24, 0, 1), "gen");
 						$('#keytext').html($('#keytext').html() + ' &#160; &#160; ' + 
 						'<span class=\"blue\">OK</span><br />Communicating');
-						nickajax();
+						setTimeout("nickajax()", 250);
 					}
 				});
 			});
@@ -631,8 +635,7 @@ function userinfo(n) {
 		});
 	});
 	$('#front').fadeIn('fast');
-	$('#fadebox').fadeIn('fast', function() {
-	});
+	$('#fadebox').fadeIn('fast');
 }
 
 $("#maximize").click(function(){
