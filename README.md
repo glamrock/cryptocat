@@ -13,7 +13,7 @@ Cryptocat Chrome is a Chrome app version of Cryptocat that loads all code locall
 * Uses the Fortuna secure pseudo-randomness generator.
 * Send encrypted pictures.
 * Chats are securely deleted after one hour of inactivity.
-* Easily invite your Facebook friends to join your Cryptocat chat and have private, secure conversations!
+* Easily invite your Facebook contacts to join your Cryptocat session.
 * Send private messages that can only be seen by a single recipient.
 * A sleek design with time-stamping, optional audio notifications, fluid-window mode, and mobile support.
 * Translations available for French, Catalan, Basque, Italian, German, Portuguese, Russian and Swedish.
