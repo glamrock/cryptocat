@@ -264,7 +264,7 @@ img.cryptocat {
 	margin-bottom: 90px;
 }
 img.encrypted {
-	max-width: 300px;
+	max-height: 250px;
 }
 span.diffkey {
 	border-bottom: 1px dashed #000;
@@ -335,7 +335,7 @@ td {
 }
 #fadebox {
 	padding: 0px 0px 10px 10px;
-	margin-top: 145px;
+	margin-top: 120px;
 	text-align: left;
 }
 #note {
@@ -348,7 +348,7 @@ td {
 }
 #keygen img {
 	float: left;
-	margin: 5px 20px 20px 35px;
+	margin: 5px 20px 20px 25px;
 }
 #keytext {
 	float: left;

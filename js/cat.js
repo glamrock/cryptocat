@@ -566,7 +566,8 @@ $("#file").click(function(){
 
 function displayfile(dataurl, time) {
 	$("#fadebox").html('<input type="button" id="close" value="x" />' +
-	'<br /><center><img class="encrypted" src="' + dataurl + '" alt="" /><br />' + 
+	'<br /><center><a href="' + dataurl + '" target="_blank">' +
+	'<img class="encrypted" src="' + dataurl + '" alt="" /></a><br />' +
 	'encrypted image received at <span class="blue">' + time + '</span></center>');
 	$("#close").click(function(){
 		$('#fadebox').fadeOut('fast', function() {
