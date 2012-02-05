@@ -385,6 +385,7 @@ div.redirect p {
 	float: left;
 	color: #97CEEC;
 	border: 1px solid #97CEEC;
+	width: 130px;
 }
 #nick, #fingerlink {
 	color: #97CEEC;
