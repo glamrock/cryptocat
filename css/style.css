@@ -52,7 +52,6 @@ h3 {
 input.name, input.create {
 	width: 330px;
 	margin: 0 auto;
-	background-color: #000;
 	border: none;
 	display: block;
 	padding: 7px;
@@ -91,7 +90,6 @@ span.user:hover {
 }
 #understand, input.nicksubmit {
 	border: 1px solid #97CEEC;
-	background-color: #000;
 	color: #97CEEC;
 	outline: none;
 	padding: 3px;
@@ -202,7 +200,6 @@ a, input.create:hover, #talk:hover, #maximize, #sound, #file, #invite, #fingerli
 	cursor: pointer;
 }
 #input {
-	background-color: #000;
 	color: #FFF;
 	padding: 5px 10px;
 	width: 508px;
@@ -406,4 +403,7 @@ span.block {
 	padding: 3px;
 	background-color: #97CEEC;
 	color: #FFF;
+}
+#fileselect {
+	border: 0;
 }
