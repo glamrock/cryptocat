@@ -65,7 +65,7 @@
 				array_push($msgarray, substr($msg, $i, 4096));
 			}
 			for ($i=0; $i != (count($msgarray)); $i++) {
-				if ($msgarray[i]) {
+				if ($msgarray[$i]) {
 					if ($i == 0) {
 						if (!preg_match($msgbeg, $msgarray[$i])) {
 							return 0;
@@ -229,9 +229,9 @@
 		$mobile = 0;
 		$agent = $_SERVER['HTTP_USER_AGENT'];
 		$strmobile = array('iPhone', 'iPod', 'BlackBerry', 'Windows Phone', 
-		'Fennec', 'Opera Mini', 'Opera Mobi', 'MeeGo', 'Mobile');
+		'Fennec', 'Opera Mini', 'Opera Mobi', 'MeeGo');
 		for ($i=0; $i != count($strmobile); $i++) {
-			if (strstr($agent, $strmobile[$i])) {
+			if (strstr($agent, $strmobile[$i]) || (strstr($agent, 'Android') && strstr($agent, 'Mobile'))) {
 				$mobile = 1;
 			}
 		}

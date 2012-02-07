@@ -162,7 +162,7 @@ input.create:active, #talk:active {
 	background-color: #97CEEC;
 	font-size: 10px;
 	padding: 2px 3px 5px 0px;
-	width: 525px;
+	width: 527px;
 	word-spacing: 5px;
 	height: 11px;
 }
@@ -176,7 +176,7 @@ span.users {
 	color: #FFF;
 	background-color: #000;
 	padding: 2px 0px 2px 10px;
-	width: 588px;
+	width: 590px;
 }
 a {
 	text-decoration: none;
@@ -202,7 +202,7 @@ a, input.create:hover, #talk:hover, #maximize, #sound, #file, #invite, #fingerli
 #input {
 	color: #FFF;
 	padding: 5px 10px;
-	width: 508px;
+	width: 510px;
 	border: none;
 	float: left;
 	height: 28px;
