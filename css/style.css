@@ -225,13 +225,13 @@ a, input.create:hover, #talk:hover, #maximize, #sound, #file, #invite, #fingerli
 	color: #97CEEC;
 }
 div.msg, div.gsm, div.bsg {
-	padding: 8px 5px;
+	padding: 8px 2px 8px 25px;
 	background-color: #D8EDF8;
 	width: 98%;
 	word-wrap: break-word;
 	background-repeat: no-repeat;
 	background-image: url("../img/chat.png");
-	background-position: 97.5%;
+	background-position: 0.5%;
 	line-height: 1.55em;
 }
 div.gsm {
