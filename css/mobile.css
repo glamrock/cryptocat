@@ -189,13 +189,13 @@ input.logout:hover {
 	color: #97CEEC;
 }
 div.msg, div.gsm {
-	padding: 10px 10px 10px 5px;
+	padding: 8px 2px 8px 25px;
 	background-color: #D8EDF8;
 	width: 98%;
 	word-wrap: break-word;
 	background-repeat: no-repeat;
 	background-image: url("../img/chat.png");
-	background-position: 96.5%;
+	background-position: 0.5%;
 }
 div.gsm {
 	background-color: #FFF;
