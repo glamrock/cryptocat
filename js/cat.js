@@ -529,42 +529,52 @@ $("#file").click(function(){
 	}
 	select += '</select>';
 	$("#fadebox").html('<input type="button" id="close" value="x" />' +
-	'<br /><h3>send encrypted image</h3>' + 'Select recipient: ' + select + 
-	'<br />Maximum image size: <span class="blue">' + filesize + 
-	'kb</span><br /><br /><span id="filewrap">' + 
-	'<input type="file" id="fileselect" name="file[]" /></span><br /><br />');
-	function handleFileSelect(evt) {
-		var file = evt.target.files;
-		var reader = new FileReader();
-		reader.onload = (function(theFile) {
-			return function(e) {
-				sendmsg('@' + $("#dropdown").val() + ' ' + e.target.result);
-			};
-		})(file[0]);
-		if (file[0].type.match('image.*')) {
-			if (file[0].size > (filesize * 1024)) {
-				$("#filewrap").html('<span class="red">Error: Maximum image size is ' + filesize + 'kb.</span>');
-			}
-			else if (jQuery.inArray($("#dropdown").val(), names) < 0) {
-				$("#filewrap").html('<span class="red">Error: You need to select a recipient.</span>');
-			}
-			else {
-				reader.readAsDataURL(file[0]);
-				$("#close").click();
-			}
+	'<br /><h3>send encrypted image</h3>');
+	if (window.File && window.FileReader) {
+		 $("#fadebox").html($("#fadebox").html() + 'Select recipient: ' + select + 
+		'<br />Maximum image size: <span class="blue">' + filesize + 
+		'kb</span><br /><br /><span id="filewrap">' + 
+		'<input type="file" id="fileselect" name="file[]" /></span><br /><br />');
+		if (jQuery.inArray($("#dropdown").val(), names) < 0) {
+			$("#filewrap").html('<span class="red">There are no recipients in this chat.</span>');
 		}
 		else {
-			$("#filewrap").html('<span class="red">Error: Only image files are supported.</span>');
+			function handleFileSelect(evt) {
+				var file = evt.target.files;
+				var reader = new FileReader();
+				reader.onload = (function(theFile) {
+					return function(e) {
+						sendmsg('@' + $("#dropdown").val() + ' ' + e.target.result);
+					};
+				})(file[0]);
+				if (file[0].type.match('image.*')) {
+					if (file[0].size > (filesize * 1024)) {
+						$("#filewrap").html('<span class="red">Maximum image size is ' + filesize + 'kb.</span>');
+					}
+					else {
+						reader.readAsDataURL(file[0]);
+						$("#close").click();
+					}
+				}
+				else {
+					$("#filewrap").html('<span class="red">Only image files are supported.</span>');
+				}
+			}
+			document.getElementById('fileselect').addEventListener('change', handleFileSelect, false);
 		}
 	}
-	document.getElementById('fileselect').addEventListener('change', handleFileSelect, false);
+	else {
+		$("#fadebox").html($("#fadebox").html() + 
+		'Sorry, your browser does not support this feature. Consider switching to ' + 
+		'<a href="http://google.com/chrome" target="_blank">Google Chrome</a>, it\'s great!');
+	}
 	$("#close").click(function(){
 		$('#fadebox').fadeOut('fast', function() {
-			$('#front').fadeOut('fast');
+			$('#front').fadeOut(0);
 		});
 	});
-	$('#front').fadeIn('fast');
-	$('#fadebox').fadeIn('fast', function() {
+	$('#front').fadeIn(0, function() {
+		$('#fadebox').fadeIn('fast');
 	});
 });
 
@@ -572,14 +582,14 @@ function displayfile(dataurl, time) {
 	$("#fadebox").html('<input type="button" id="close" value="x" />' +
 	'<br /><center><a href="' + dataurl + '" target="_blank">' +
 	'<img class="encrypted" src="' + dataurl + '" alt="" /></a><br />' +
-	'encrypted image received at <span class="blue">' + time + '</span></center>');
+	'<span style="margin-left:-10px">(<span class="blue">' + time + '</span>)</span></center>');
 	$("#close").click(function(){
 		$('#fadebox').fadeOut('fast', function() {
-			$('#front').fadeOut('fast');
+			$('#front').fadeOut(0);
 		});
 	});
-	$('#front').fadeIn('fast');
-	$('#fadebox').fadeIn('fast', function() {
+	$('#front').fadeIn(0, function() {
+		$('#fadebox').fadeIn('fast');
 	});
 }
 
@@ -642,11 +652,12 @@ function userinfo(n) {
 	});
 	$("#close").click(function(){
 		$('#fadebox').fadeOut('fast', function() {
-			$('#front').fadeOut('fast');
+			$('#front').fadeOut(0);
 		});
 	});
-	$('#front').fadeIn('fast');
-	$('#fadebox').fadeIn('fast');
+	$('#front').fadeIn(0, function() {
+		$('#fadebox').fadeIn('fast');
+	});
 }
 
 $("#maximize").click(function(){
@@ -728,4 +739,8 @@ $(document).ajaxError(function(){
 	errordisplay("connection issues. stand by...");
 });
 
-$("#nickentry").fadeIn(); $("#front").fadeIn(); idSelect("nickinput");
+$('#front').fadeIn(0, function() {
+	$('#nickentry').fadeIn('fast', function() {
+		idSelect("nickinput");
+	});
+});
