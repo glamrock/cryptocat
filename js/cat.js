@@ -415,25 +415,6 @@ $("#chatform").submit( function() {
 	return false;
 });
 
-$("#chatform").submit( function() {
-	var msg = $.trim($("#input").val());
-	msg = msg.replace(/\$/g,"&#36;");
-	var msgc = nick + ": " + msg;
-	$("#input").val("");
-	document.getElementById("input").focus();
-	if (msg != "") {
-		var sentid = gen(8, 1, 0);
-		document.getElementById("chat").innerHTML += process(msgc, sentid);
-		scrolldown();
-		if (names.length > 1) {
-			$("#" + sentid).css("background-image","url(\"img/sending.gif\")");
-			queue.push(msg + "$" + sentid);
-			$("#talk").val(maxinput);
-		}
-	}
-	return false;
-});
-
 $("#nickform").submit( function() {
 	$("#nickinput").val(document.getElementById("nickinput").value.toLowerCase());
 	if (!pubkey) {
