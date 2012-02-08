@@ -10,7 +10,7 @@ $("#welcome").submit( function() {
 		return false;
 	}
 	else {
-		$("#front").fadeIn();
+		$("#front").fadeIn('fast');
 		$(window).keypress(function(e) {
 			if (e.keyCode == 13) {
 				$("#understand").click();

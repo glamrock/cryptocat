@@ -92,7 +92,6 @@
 	}
 	
 	if (preg_match('/^[a-z]{1,12}$/', $_POST['nick']) && 
-	strlen($_POST['nick']) <= 12 && 
 	preg_match('/^\w+$/', $_POST['name']) && 
 	preg_match('/^(\w|\/|\+|\?|\(|\)|\=)+$/', $_POST['key'])) {
 		$_POST['name'] = strtolower($_POST['name']);
@@ -107,7 +106,9 @@
 			}
 		}
 		if ($_POST['key'] == "get") {
-			print(trim($chat[0]));
+			if ($_SESSION['check'] == "OK") {
+				print(trim($chat[0]));
+			}
 			exit;
 		}
 		if (count(getpeople($chat)) >= $maxusers) {
