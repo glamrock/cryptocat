@@ -612,8 +612,8 @@ function userinfo(n) {
 		$("#fadebox").html($("#fadebox").html() +
 		'Send <span class="blue">' + n + '</span> a private message:<br />' +
 		'<span class="blue">@' + n + '</span> your message<br /><br />' +
-		'view messages from <span class="blue">' + n + '</span>: &#160;<span class="block" id="incoming">yes</span><br />' +
-		'send my messages to <span class="blue">' + n + '</span>: <span class="block" id="outgoing">yes</span><br />' +
+		'View messages from <span class="blue">' + n + '</span>: &#160;<span class="block" id="incoming">yes</span><br />' +
+		'Send my messages to <span class="blue">' + n + '</span>: <span class="block" id="outgoing">yes</span><br />' +
 		'<br />Verify <span class="blue">' + n + '</span>\'s identity using their fingerprint:');
 	}
 	$("#fadebox").html($("#fadebox").html() + '<br />' + fingerprints[jQuery.inArray(n, names)]);
