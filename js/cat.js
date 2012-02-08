@@ -679,7 +679,7 @@ $("#maximize").click(function(){
 		$("#info").animate({width: "99%"}, 500 );
 		$("#users").animate({width: "92.3%", "padding-right": "20px"}, 500 );
 		$("#input").animate({width: "92.3%"}, 500 );
-		$("#talk").animate({width: "5%"}, 500 );
+		$("#talk").animate({width: "5.2%"}, 500 );
 		$("#inchat").animate({height: "93%", "margin-bottom": "-30px"}, 500 );
 		$("#chat").animate({height: "91%"}, 500, function() {
 			scrolldown();
