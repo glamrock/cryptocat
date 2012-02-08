@@ -29,7 +29,8 @@ var fingerprints = new Array();
 var queue = new Array();
 var sending = new Array();
 var usedhmac = new Array();
-var blocked = new Array();
+var inblocked = new Array();
+var outblocked = new Array();
 var nick = $("#nick").html();
 var name = $("#name").html();
 var focus = true;
@@ -176,7 +177,7 @@ function process(line, sentid) {
 		}
 		else if (match = line.match(/^[a-z]{1,12}:\s\[B-C\](\w|\/|\+|\?|\(|\)|\=|\|)+\[E-C\]$/)) {
 			thisnick = $.trim(match[0].match(/^[a-z]{1,12}/));
-			if (jQuery.inArray(thisnick, blocked) >= 0) {
+			if (jQuery.inArray(thisnick, inblocked) >= 0) {
 				return;
 			}
 			match = line.match(/\[B-C\](.*)\|/);
@@ -370,7 +371,7 @@ function updatechat() {
 				else {
 					var msg = "";
 					for (var i=0; i != names.length; i++) {
-						if (names && (names[i] != nick)) {
+						if (names && (names[i] != nick) && (jQuery.inArray(names[i], outblocked) < 0)) {
 							var crypt = Crypto.AES.encrypt(queue[0].replace(/\$.+$/, ''), seckeys[i], {
 								mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
 							});
@@ -611,24 +612,41 @@ function userinfo(n) {
 		$("#fadebox").html($("#fadebox").html() +
 		'Send <span class="blue">' + n + '</span> a private message:<br />' +
 		'<span class="blue">@' + n + '</span> your message<br /><br />' +
-		'Messages from <span class="blue">' + n + '</span> are <span class="block">allowed</span><br />' +
+		'view messages from <span class="blue">' + n + '</span>: &#160;<span class="block" id="incoming">yes</span><br />' +
+		'send my messages to <span class="blue">' + n + '</span>: <span class="block" id="outgoing">yes</span><br />' +
 		'<br />Verify <span class="blue">' + n + '</span>\'s identity using their fingerprint:');
 	}
 	$("#fadebox").html($("#fadebox").html() + '<br />' + fingerprints[jQuery.inArray(n, names)]);
-	if (jQuery.inArray(n, blocked) >= 0) {
-		$(".block").css("background-color", "#F00");
-		$(".block").html("blocked");
+	if (jQuery.inArray(n, inblocked) >= 0) {
+		$("#incoming").css("background-color", "#F00");
+		$("#incoming").html("no");
 	}
-	$(".block").click(function(){
-		if ($(".block").html() == "blocked") {
-			blocked.splice(jQuery.inArray(n, blocked));
-			$(".block").css("background-color", "#97CEEC");
-			$(".block").html("allowed");
+	$("#incoming").click(function(){
+		if ($("#incoming").html() == "no") {
+			inblocked.splice(jQuery.inArray(n, inblocked));
+			$("#incoming").css("background-color", "#97CEEC");
+			$("#incoming").html("yes");
 		}
 		else {
-			blocked.push(n);
-			$(".block").css("background-color", "#F00");
-			$(".block").html("blocked");
+			inblocked.push(n);
+			$("#incoming").css("background-color", "#F00");
+			$("#incoming").html("no");
+		}
+	});
+	if (jQuery.inArray(n, outblocked) >= 0) {
+		$("#outgoing").css("background-color", "#F00");
+		$("#outgoing").html("no");
+	}
+	$("#outgoing").click(function(){
+		if ($("#outgoing").html() == "no") {
+			outblocked.splice(jQuery.inArray(n, outblocked));
+			$("#outgoing").css("background-color", "#97CEEC");
+			$("#outgoing").html("yes");
+		}
+		else {
+			outblocked.push(n);
+			$("#outgoing").css("background-color", "#F00");
+			$("#outgoing").html("no");
 		}
 	});
 	$("#close").click(function(){

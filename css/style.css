@@ -399,10 +399,13 @@ div.redirect p {
 span.monospace {
 	font-family: "Monaco", monospace;
 }
-span.block {
-	padding: 3px;
+.block {
+	width: 25px;
+	display: inline-block;
+	text-align: center;
 	background-color: #97CEEC;
 	color: #FFF;
+	margin-left: 10px;
 }
 #fileselect {
 	border: 0;

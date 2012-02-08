@@ -298,7 +298,7 @@ div.redirect p {
 	font-size: 0.8em;
 	float: left;
 	text-align: left;
-	margin: -70px 0px 0px 100px;
+	margin: -80px 0px 0px 100px;
 	line-height: 1.65em;
 }
 #keytropy {
@@ -325,8 +325,11 @@ div.redirect p {
 span.monospace {
 	font-family: "Monaco", monospace;
 }
-span.block {
-	padding: 3px;
+.block {
+	width: 25px;
+	display: inline-block;
+	text-align: center;
 	background-color: #97CEEC;
 	color: #FFF;
+	margin-left: 10px;
 }
