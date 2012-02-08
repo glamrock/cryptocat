@@ -26,7 +26,7 @@ $("#create").click(function() {
 		return false;
 	}
 	else {
-		chat = chat.replace('raccoon', nicks[(Math.floor(Math.random()*14))]);
+		chat = chat.replace(/raccoon/g, nicks[(Math.floor(Math.random()*14))]);
 		chat = chat.replace('<strong id="name"></strong>', '<strong id="name">' + $("#c").val() + '</strong>');
 		document.write(chat);
 	}
