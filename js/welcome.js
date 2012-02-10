@@ -6,7 +6,7 @@ $("#welcome").submit( function() {
 	}
 	else if (!$("#c").val().match(/^\w+$/)) {
 		$("#c").val(lettersonly);
-		idSelect("c");
+		$("#c").click();
 		return false;
 	}
 	else {
@@ -18,6 +18,11 @@ $("#welcome").submit( function() {
 		});
 		return false;
 	}
+});
+
+$("#c").click(function(){
+	$("#c").focus();
+	$("#c").select();
 });
 
 $("#understand").click(function(){
@@ -138,8 +143,4 @@ function translate(language) {
 		lettersonly = "letters and numbers only";
 	}
 }
-
-function idSelect(id) {
-	document.getElementById(id).focus();
-	document.getElementById(id).select();
-}
+$("#c").click();

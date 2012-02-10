@@ -286,7 +286,7 @@ else {
 						</div>
 					</div>
 					<div>
-						<input type="text" class="name" name="c" id="c" onclick="idSelect(\'c\');" value="'.$name.'" maxlength="32" autocomplete="off" />
+						<input type="text" class="name" name="c" id="c" value="'.$name.'" maxlength="32" autocomplete="off" />
 						<input type="submit" class="create" value="enter" id="create" />
 					</div>
 				</form>
