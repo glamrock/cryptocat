@@ -56,7 +56,6 @@ input.name, input.create {
 	display: block;
 	padding: 7px;
 	color: #fff;
-	outline: none;
 	text-align: center;
 	resize: none;
 	font-size: 24px;
@@ -77,7 +76,6 @@ input.create {
 	padding: 3px;
 	font-size: 12px;
 	text-align: center;
-	outline: none;
 }
 span.user {
 	color: #000;
@@ -91,7 +89,6 @@ span.user:hover {
 #understand, input.nicksubmit {
 	border: 1px solid #97CEEC;
 	color: #97CEEC;
-	outline: none;
 	padding: 3px;
 	font-size: 11px;
 	box-shadow: 1px 1px #FFF;
@@ -112,7 +109,6 @@ input.nicksubmit {
 	height: 20px;
 	border: none;
 	text-align: center;
-	outline: none;
 }
 #understand:hover, input.nicksubmit:hover, #close:hover {
 	background-color: #97CEEC;
@@ -195,8 +191,10 @@ input {
 	border-radius: 0px;
 	-webkit-appearance: none;
 	background-color: #000;
+	outline: none;
 }
-a, input.create:hover, #talk:hover, #maximize, #sound, #file, #invite, #fingerlink, #close, #understand, input.nicksubmit, span.user, span.block {
+a, input.create:hover, #talk:hover, #maximize, #sound, #file, #invite, 
+#fingerlink, #close, #understand, input.nicksubmit, span.user, span.block, #filebutton {
 	cursor: pointer;
 }
 #input {
@@ -206,7 +204,6 @@ a, input.create:hover, #talk:hover, #maximize, #sound, #file, #invite, #fingerli
 	border: none;
 	float: left;
 	height: 28px;
-	outline: none;
 	resize: none;
 	word-wrap: break-word;
 	line-height: 16px;
@@ -313,7 +310,7 @@ td {
 	left: 0;
 }
 #changenick, #fadebox, #note {
-	width: 430px;
+	width: 460px;
 	padding: 35px 10px 10px 10px;
 	background-color: rgba(0, 0, 0, 0.96);
 	color: #FFF;
@@ -383,6 +380,14 @@ span.monospace {
 	color: #FFF;
 	margin-left: 10px;
 }
+#recipient, #filebutton {
+	color: #97CEEC;
+	border: 1px solid #97CEEC;
+}
+#filebutton {
+	display: none;
+	margin: 0;
+}
 #fileselect {
-	border: 0;
+	opacity: 0;
 }

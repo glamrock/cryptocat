@@ -18,11 +18,16 @@ $(window).keypress(function(e) {
 	}
 });
 
+$("#c").click(function(){
+	$("#c").focus();
+	$("#c").select();
+});
+
 $("#create").click(function() {
 	$("#c").val($("#c").val().toLowerCase());
 	if (!$("#c").val().match(/^\w+$/)) {
 		$("#c").val(lettersonly);
-		idSelect("c");
+		$("#c").click();
 		return false;
 	}
 	else {
@@ -126,7 +131,4 @@ function translate(language) {
 	}
 }
 
-function idSelect(id) {
-	document.getElementById(id).focus();
-	document.getElementById(id).select();
-}
+$("#c").click();

@@ -39,11 +39,6 @@ var soundEmbed = null;
 var notice = ["Cryptocat is supported by people like you. Check out our " +
 "<a href=\"https://crypto.cat/fundraiser/\" target=\"_blank\">fundraiser</a> and keep us going."];
 
-function idSelect(id) {
-	document.getElementById(id).focus();
-	document.getElementById(id).select();
-}
-
 function scrolldown() {
 	$("#chat").animate({scrollTop: document.getElementById("chat").scrollHeight + 20}, 820);
 }
@@ -320,7 +315,7 @@ function updatechat() {
 						document.title = "[" + num + "] Cryptocat";
 					}
 				}
-				else {
+				else if (data) {
 					if ($("#" + data).html().match(/data:image.+\<\/a\>\<\/div\>$/)) {
 						$("#" + data).css("background-image","url(\"img/fileb.png\")");
 					}
@@ -398,7 +393,7 @@ function updatechat() {
 function sendmsg(msg) {
 	msg = msg.replace(/\$/g,"&#36;");
 	$("#input").val("");
-	document.getElementById("input").focus();
+	$("#input").focus();
 	if (msg != "") {
 		var sentid = gen(8, 1, 0);
 		document.getElementById("chat").innerHTML += process(nick + ": " + msg, sentid);
@@ -424,7 +419,7 @@ $("#nickform").submit( function() {
 				var down, up, e;
 				$('#keytext').html('Type on your keyboard as randomly as possible for a few seconds:' + 
 				'<br /><input type="password" id="keytropy" />');
-				document.getElementById("keytropy").focus();
+				$("#keytropy").focus();
 				$("#keytropy").keydown(function(event) {
 					if (Crypto.Fortuna.Ready() == 0) {
 						e = String.fromCharCode(event.keyCode);
@@ -469,7 +464,7 @@ function nickajax() {
 		success: function(data) {
 			if ((data != "error") && (data != "inuse") && (data != "full")) {
 				nick = $("#nick").html();
-				document.getElementById("input").focus();
+				$("#input").focus();
 				document.title = "[" + num + "] Cryptocat";
 				interval = setInterval("updatechat()", update);
 				updatekeys(false);
@@ -495,7 +490,7 @@ function nickajax() {
 						$("#nickinput").val("letters only");
 					}
 					$("#front").fadeIn();
-					idSelect("nickinput");
+					$("#nickinput").focus();
 				});
 			}
 		}
@@ -503,47 +498,52 @@ function nickajax() {
 }
 
 $("#file").click(function(){
-	var select = '<select id="dropdown">';
-	for (var i=0; i!=names.length; i++) {
-		if (names[i] != nick) {
-			select += '<option value="' + names[i] + '">' + names[i] + '</option>';
-		}
-	}
-	select += '</select>';
 	$("#fadebox").html('<input type="button" id="close" value="x" />' +
 	'<br /><h3>send encrypted image</h3>');
 	if (window.File && window.FileReader) {
-		 $("#fadebox").html($("#fadebox").html() + 'Select recipient: ' + select + 
+		 $("#fadebox").html($("#fadebox").html() + 'Enter recipient: ' +
+		'<input type="text" id="recipient" />' +
 		'<br />Maximum image size: <span class="blue">' + filesize + 
 		'kb</span><br /><br /><span id="filewrap">' + 
+		'<input type="button" id="filebutton" value="Select image" />' + 
 		'<input type="file" id="fileselect" name="file[]" /></span><br /><br />');
-		if (jQuery.inArray($("#dropdown").val(), names) < 0) {
-			$("#filewrap").html('<span class="red">There are no recipients in this chat.</span>');
-		}
-		else {
-			function handleFileSelect(evt) {
-				var file = evt.target.files;
-				var reader = new FileReader();
-				reader.onload = (function(theFile) {
-					return function(e) {
-						sendmsg('@' + $("#dropdown").val() + ' ' + e.target.result);
-					};
-				})(file[0]);
-				if (file[0].type.match('image.*')) {
-					if (file[0].size > (filesize * 1024)) {
-						$("#filewrap").html('<span class="red">Maximum image size is ' + filesize + 'kb.</span>');
-					}
-					else {
-						reader.readAsDataURL(file[0]);
-						$("#close").click();
-					}
+		$("#recipient").keyup(function(){
+			if (($("#recipient").val() == nick) || (jQuery.inArray($("#recipient").val(), names) < 0)) {
+				$("#recipient").css("background-color", "#000");
+				$("#recipient").css("color", "#97CEEC");
+				$("#filebutton").css("display", "none");
+			}
+			else {
+				$("#recipient").css("background-color", "#97CEEC");
+				$("#recipient").css("color", "#FFF");
+				$("#filebutton").css("display", "inline");
+			}
+		});
+		$("#filebutton").click(function(){
+			$('input[type=file]').trigger('click');
+		});
+		function handleFileSelect(evt) {
+			var file = evt.target.files;
+			var reader = new FileReader();
+			reader.onload = (function(theFile) {
+				return function(e) {
+					sendmsg('@' + $("#recipient").val() + ' ' + e.target.result);
+				};
+			})(file[0]);
+			if (file[0].type.match('image.*')) {
+				if (file[0].size > (filesize * 1024)) {
+					$("#filewrap").html('<span class="red">Maximum image size is ' + filesize + 'kb.</span>');
 				}
 				else {
-					$("#filewrap").html('<span class="red">Only image files are supported.</span>');
+					reader.readAsDataURL(file[0]);
+					$("#close").click();
 				}
 			}
-			document.getElementById('fileselect').addEventListener('change', handleFileSelect, false);
+			else {
+				$("#filewrap").html('<span class="red">Only image files are supported.</span>');
+			}
 		}
+		document.getElementById('fileselect').addEventListener('change', handleFileSelect, false);
 	}
 	else {
 		$("#fadebox").html($("#fadebox").html() + 
@@ -556,7 +556,9 @@ $("#file").click(function(){
 		});
 	});
 	$('#front').fadeIn(0, function() {
-		$('#fadebox').fadeIn('fast');
+		$('#fadebox').fadeIn('fast', function() {
+			$("#recipient").focus();
+		});
 	});
 });
 
@@ -580,13 +582,13 @@ $("#sound").click(function(){
 		$("#sound").attr("src", "img/nosound.png");
 		$("#sound").attr("title", "message sounds off");
 		sound = 0;
-		document.getElementById("input").focus();
+		$("#input").focus();
 	}
 	else {
 		$("#sound").attr("src", "img/sound.png");
 		$("#sound").attr("title", "message sounds on");
 		sound = 1;
-		document.getElementById("input").focus();
+		$("#input").focus();
 	}
 });
 
@@ -672,7 +674,7 @@ $("#maximize").click(function(){
 		});
 		$("#maximize").attr("src", "img/maximize.png");
 		$("#maximize").attr("title", "expand");
-		document.getElementById("input").focus();
+		$("#input").focus();
 	}
 	else {
 		$("#main").animate({"margin-top": "1%", "min-width": "900px", width: "85%", height: "96.5%"}, 500 );
@@ -686,7 +688,7 @@ $("#maximize").click(function(){
 		});
 		$("#maximize").attr("src", "img/minimize.png");
 		$("#maximize").attr("title", "contract");
-		document.getElementById("input").focus();
+		$("#input").focus();
 	}
 });
 
@@ -740,6 +742,7 @@ $(document).ajaxError(function(){
 
 $('#front').fadeIn(0, function() {
 	$('#nickentry').fadeIn('fast', function() {
-		idSelect("nickinput");
+		$("#nickinput").focus();
+		$("#nickinput").select();
 	});
 });
