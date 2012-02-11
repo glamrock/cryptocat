@@ -172,7 +172,7 @@
 						$ki = 0;
 						$found = 0;
 						for ($ki=0; $ki <= count($match[0]); $ki++) {
-							if (substr($match[0][$ki], 1, strlen($_SESSION['nick'])) == $_SESSION['nick']) {
+							if (substr($match[0][$ki], 0, strlen($_SESSION['nick']) + 2) == '('.$_SESSION['nick'].')') {
 								$match = substr($match[0][$ki], strlen($_SESSION['nick']) + 2);
 								$chat[$_SESSION['pos']] = preg_replace('/\[B-C\](.*)\[E-C\]/', '[B-C]'.$match.'[E-C]', $chat[$_SESSION['pos']]);
 								$ki = count($match[0]) + 10;
