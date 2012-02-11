@@ -396,7 +396,7 @@ function sendmsg(msg) {
 	$("#input").focus();
 	if (msg != "") {
 		var sentid = gen(8, 1, 0);
-		$("chat").html($("chat").html() + process(nick + ": " + msg, sentid));
+		$("#chat").html($("#chat").html() + process(nick + ": " + msg, sentid));
 		scrolldown();
 		if (names.length > 1) {
 			$("#" + sentid).css("background-image","url(\"img/sending.gif\")");
@@ -412,7 +412,7 @@ $("#chatform").submit( function() {
 });
 
 $("#nickform").submit( function() {
-	$("#nickinput").val($("nickinput").val().toLowerCase());
+	$("#nickinput").val($("#nickinput").val().toLowerCase());
 	if (!pubkey) {
 		$('#nickentry').fadeOut('fast', function() {
 			$('#keygen').fadeIn('fast', function() {
