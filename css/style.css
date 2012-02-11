@@ -27,7 +27,7 @@ div.bottom {
 	background-color: #000;
 	padding: 3px 5px 0px 5px;
 	text-align: center;
-	color: #fff;
+	color: #FFF;
 	font-weight: bold;
 }
 h3 {
@@ -55,7 +55,7 @@ input.name, input.create {
 	border: none;
 	display: block;
 	padding: 7px;
-	color: #fff;
+	color: #FFF;
 	text-align: center;
 	resize: none;
 	font-size: 24px;
@@ -232,7 +232,7 @@ div.msg, div.gsm, div.bsg {
 	line-height: 1.55em;
 }
 div.gsm {
-	background-color: #FFF;
+	background-color: transparent;
 }
 div.bsg {
 	background-color: #222;
@@ -288,7 +288,7 @@ td.img {
 	width: 40px;
 }
 td {
-	border-bottom: 8px solid #FFF;
+	border-bottom: 8px solid transparent;
 	font-size: 11px;
 }
 #maximize, #sound, #invite, #file {

@@ -184,10 +184,10 @@ function process(line, sentid) {
 			fliptag();
 			if ((Crypto.HMAC(Crypto.SHA256, match, seckeys[loc]) != hmac) || (jQuery.inArray(hmac, usedhmac) >= 0)) {
 				line = tagify(line);
-				line = line.replace(/\[B-C\](.*)\[E-C\]/, "<span class=\"diffkey\">corrupt</span>");
+				line = line.replace(/\[B-C\](.*)\[E-C\]/, "<span class=\"diffkey\">Error: message authentication failure.</span>");
 				line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
 				pushline(line);
-				$("#" + pos).css("background-image","url(\"img/corrupt.png\")");
+				$("#" + pos).css("background-image","url(\"img/error.png\")");
 			}
 			else {
 				match = Crypto.AES.decrypt(match, seckeys[loc], {
@@ -212,11 +212,11 @@ function process(line, sentid) {
 			$("#" + pos).css("background-image","url(\"img/user.png\")");
 		}
 		else {
-			line = "<span class=\"diffkey\">corrupt</span>";
+			line = "<span class=\"diffkey\">Error: invalid message received.</span>";
 			fliptag();
 			line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
 			pushline(line);
-			$("#" + pos).css("background-image","url(\"img/corrupt.png\")");
+			$("#" + pos).css("background-image","url(\"img/error.png\")");
 		}
 	}
 	return "";
