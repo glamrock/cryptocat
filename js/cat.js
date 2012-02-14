@@ -20,21 +20,20 @@ var p = str2bigInt(
 16);
 
 var g = str2bigInt("2", 10);
-var num, interval, sound, pos, tag, prikey, pubkey;
-num = interval = sound = pos = tag = 0;
-var names = new Array();
+var num = sound = pos = tag = prikey = pubkey = 0;
+var focus = true;
+var soundEmbed = null;
+var nick = $("#nick").html();
+var name = $("#name").html();
 var keys = new Array();
-var seckeys = new Array();
-var fingerprints = new Array();
+var names = new Array();
 var queue = new Array();
 var sending = new Array();
+var seckeys = new Array();
 var usedhmac = new Array();
 var inblocked = new Array();
 var outblocked = new Array();
-var nick = $("#nick").html();
-var name = $("#name").html();
-var focus = true;
-var soundEmbed = null;
+var fingerprints = new Array();
 
 var notice = ["Cryptocat is supported by people like you. Check out our " +
 "<a href=\"https://crypto.cat/fundraiser/\" target=\"_blank\">fundraiser</a> and keep us going."];
@@ -120,6 +119,7 @@ function dhgen(key, pub) {
 }
 
 function tagify(line) {
+	var mime = new RegExp('(data:(application\/((x-compressed)|(x-zip-compressed)|(zip)))|(multipart\/x-zip)).*');
 	line = line.replace(/</g,"&lt;").replace(/>/g,"&gt;");
 	if ((match = line.match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi)) && genurl) {
 		for (mc = 0; mc <= match.length - 1; mc++) {
@@ -140,7 +140,10 @@ function tagify(line) {
 		line = line.replace(/^[a-z]{1,12}\: \@[a-z]{1,12}/, '<span class="nick">' + thisnick + ' <span class="blue">&gt;</span> ' +
 		line.match(/^[a-z]{1,12}:\s\@[a-z]{1,12}/).toString().substring(thisnick.length + 3) + '</span>');  
 		if (match = line.match(/data:image\S+$/)) {
-			line = line.replace(/data:image.+/, '<a onclick="displayfile(\'' + match + '\', \'' + getstamp(5) + '\')">view encrypted image</a>');
+			line = line.replace(/data:image.+/, '<a onclick="display(\'' + match + '\', \'' + getstamp(5) + '\', 1)">view encrypted image</a>');
+		}
+		else if (match = line.match(mime)) {
+			line = line.replace(mime, '<a onclick="display(\'' + match[0] + '\', \'' + getstamp(5) + '\', 0)">download encrypted .zip file</a>');
 		}
 	}
 	else if (match = line.match(/^[a-z]{1,12}/)) {
@@ -198,7 +201,7 @@ function process(line, sentid) {
 				line = tagify(line);
 				line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
 				pushline(line);
-				if ($("#" + pos).html().match(/data:image.+\<\/a\>\<\/div\>$/)) {
+				if ($("#" + pos).html().match(/data:.+\<\/a\>\<\/div\>$/)) {
 					$("#" + pos).css("background-image","url(\"img/fileb.png\")");
 				}
 			}
@@ -231,8 +234,7 @@ function pushline(line) {
 
 function updatekeys(sync) {
 	$.ajax({ url: install,
-		type: "POST",
-		async: sync,
+		type: "POST", async: sync,
 		data: "nick=" + $("#nickinput").val() + "&name=" + name + "&key=get",
 		success: function(data) {
 			data = data.split('|');
@@ -248,11 +250,7 @@ function updatekeys(sync) {
 					keys[i] = data[i].replace(/^[a-z]{1,12}:/, '');
 					var loc = jQuery.inArray(names[i], oldnames);
 					if ((keys[i].length < 680) || ((names[i] == oldnames[loc]) && (keys[i] != oldkeys[loc]))) {
-						var nbsp = "";
-						for (ni=0; ni != 17; ni++) {
-							nbsp += "&nbsp";
-						}
-						fingerprints[i] = nbsp + " <span class=\"red\">unreliable key or connection</span>";
+						fingerprints[i] = "<span class=\"red\">unreliable key or connection</span>";
 					}
 					else {
 						if ((names[i] != oldnames[i]) && (names[i] != nick)) {
@@ -268,12 +266,6 @@ function updatekeys(sync) {
 						fingerprints[i] = fingerprints[i].toUpperCase();
 					}
 				}
-				for (fi=0; fi <= names.length - 1; fi++) {
-					var nbsp = "";
-					for (ni=0; ni + names[fi].length != 13; ni++) {
-						nbsp += "&nbsp";
-					}
-				}
 			}
 			var users = new Array();
 			for (var i=0; i!=names.length; i++) {
@@ -285,21 +277,19 @@ function updatekeys(sync) {
 }
 
 function updatechat() {
-	$.ajax({ url: install,
-		type: "POST",
-		async: true,
+	$.ajax({ url: install, type: "POST", async: true, 
 		data: "chat=" + name,
 		success: function(data) {
 			if (data == "NOEXIST") {
 				if (pubkey) {
-					errordisplay("your chat no longer exists.");
+					errored("your chat no longer exists.");
 					$("#chat").html("<div class=\"bsg\">" + notice[0] + "</div>");
 					clearInterval(interval);
 				}
 			}
 			else if (data == "NOLOGIN") {
 				if (pubkey) {
-					errordisplay("you have been logged out.");
+					errored("you have been logged out.");
 					clearInterval(interval);
 				}
 			}
@@ -316,7 +306,7 @@ function updatechat() {
 					}
 				}
 				else if (data) {
-					if ($("#" + data).html().match(/data:image.+\<\/a\>\<\/div\>$/)) {
+					if ($("#" + data).html().match(/data:.+\<\/a\>\<\/div\>$/)) {
 						$("#" + data).css("background-image","url(\"img/fileb.png\")");
 					}
 					else {
@@ -378,15 +368,12 @@ function updatechat() {
 				msg = nick + "|" + sentid + ": " + "[B-C]" + msg + "[E-C]";
 				msg = "name=" + name + "&talk=send" + "&input=" + msg.replace(/\+/g, "%2B");
 				$.ajax({
-					type: 'POST',
-					url: install,
+					type: 'POST', url: install,
 					data: msg
 				});
 				queue.splice(0,1);
 			}
 		},
-		error: function(data) {
-		}
 	});
 }
 
@@ -438,14 +425,14 @@ $("#nickform").submit( function() {
 						pubkey = dhgen(gen(24, 0, 1), "gen");
 						$('#keytext').html($('#keytext').html() + ' &#160; &#160; ' + 
 						'<span class=\"blue\">OK</span><br />Communicating');
-						setTimeout("nickajax()", 250);
+						setTimeout("nickset()", 250);
 					}
 				});
 			});
 		});
 	}
 	else {
-		nickajax();
+		nickset();
 	}
 	return false;
 });
@@ -456,10 +443,8 @@ $("#nickinput").keyup(function() {
 	}
 });
 
-function nickajax() {
-	$.ajax({ url: install,
-		type: "POST",
-		async: true,
+function nickset() {
+	$.ajax({ url: install, type: "POST",
 		data: "nick=" + $("#nickinput").val() + "&name=" + name + "&key=" + encodeURIComponent(pubkey),
 		success: function(data) {
 			if ((data != "error") && (data != "inuse") && (data != "full")) {
@@ -472,7 +457,7 @@ function nickajax() {
 				$('#keygen').fadeOut('fast', function() {
 					$("#changenick").fadeOut('fast');
 					$("#nickentry").fadeOut('fast');
-				    $("#front").fadeOut();
+				    $("#front").fadeOut('fast');
 				});
 				$("#chat").html("<div class=\"bsg\">" + notice[0] + "</div>");
 				updatechat();
@@ -498,14 +483,15 @@ function nickajax() {
 }
 
 $("#file").click(function(){
+	var mime = new RegExp('(image.*)|(application/((x-compressed)|(x-zip-compressed)|(zip)))|(multipart/x-zip)');
 	$("#fadebox").html('<input type="button" id="close" value="x" />' +
-	'<br /><h3>send encrypted image</h3>');
+	'<br /><h3>send encrypted file</h3>');
 	if (window.File && window.FileReader) {
 		 $("#fadebox").html($("#fadebox").html() + 'Enter recipient: ' +
 		'<input type="text" id="recipient" />' +
-		'<br />Maximum image size: <span class="blue">' + filesize + 
+		'<br />Zip files and images accepted. Maximum size: <span class="blue">' + filesize + 
 		'kb</span><br /><br /><span id="filewrap">' + 
-		'<input type="button" id="filebutton" value="Select image" />' + 
+		'<input type="button" id="filebutton" value="Select file" />' + 
 		'<input type="file" id="fileselect" name="file[]" /></span><br /><br />');
 		$("#recipient").keyup(function(){
 			if (($("#recipient").val() == nick) || (jQuery.inArray($("#recipient").val(), names) < 0)) {
@@ -530,9 +516,9 @@ $("#file").click(function(){
 					sendmsg('@' + $("#recipient").val() + ' ' + e.target.result);
 				};
 			})(file[0]);
-			if (file[0].type.match('image.*')) {
+			if (file[0].type.match(mime)) {
 				if (file[0].size > (filesize * 1024)) {
-					$("#filewrap").html('<span class="red">Maximum image size is ' + filesize + 'kb.</span>');
+					$("#filewrap").html('<span class="red">Maximum file size is ' + filesize + 'kb.</span>');
 				}
 				else {
 					reader.readAsDataURL(file[0]);
@@ -540,7 +526,7 @@ $("#file").click(function(){
 				}
 			}
 			else {
-				$("#filewrap").html('<span class="red">Only image files are supported.</span>');
+				$("#filewrap").html('<span class="red">Only zip and image files are supported.</span>');
 			}
 		}
 		document.getElementById('fileselect').addEventListener('change', handleFileSelect, false);
@@ -562,11 +548,19 @@ $("#file").click(function(){
 	});
 });
 
-function displayfile(dataurl, time) {
-	$("#fadebox").html('<input type="button" id="close" value="x" />' +
-	'<br /><center><a href="' + dataurl + '" target="_blank">' +
-	'<img class="encrypted" src="' + dataurl + '" alt="" /></a><br />' +
-	'<span style="margin-left:-10px">(<span class="blue">' + time + '</span>)</span></center>');
+function display(dataurl, time, image) {
+	$("#fadebox").html('<input type="button" id="close" value="x" />');
+	if (image) {
+		$("#fadebox").html($("#fadebox").html() + '<br /><center><a href="' + dataurl +
+		'" target="_blank"><img class="encrypted" src="' + dataurl + '" alt="" /></a><br />' +
+		'<span style="margin-left:-10px">(<span class="blue">' + time + '</span>) click to enlarge</span></center>');
+	}
+	else {
+		$("#fadebox").html($("#fadebox").html() + '<br /><br /><span class="blue">Note:</span> ' +
+		'Some browsers may save the encrypted data with an incorrect file extension. ' +
+		'Simply rename your file with a .zip extension to remedy this.<br /><br />' + 
+		'<a class="download" href="' + dataurl + '" target="_blank">Download encrypted .zip file</a>');
+	}
 	$("#close").click(function(){
 		$('#fadebox').fadeOut('fast', function() {
 			$('#front').fadeOut(0);
@@ -597,7 +591,7 @@ $("#invite").click(function(){
 	"Chat%20with%20your%20friends%20in%20privacy%20with%20secure%20encryption%20using%20Cryptocat.&redirect_uri=" + 
 	"https://crypto.cat/?close&link=" + install + "?c=" + name + "&picture=" + install + "img/ios.png&display=popup";
 	var pop = window.open(url, 'name', 'height=330,width=550,location=0,menubar=0,resizable=0,scrollbars=0' + 
-	',status=0,titlebar=0,toolbar=0,top='+($(window).height()/3.5)+',left='+($(window).width()/2.5));
+	',status=0,titlebar=0,toolbar=0,top='+($(window).height()/3.5)+',left='+($(window).width()/2.7));
 	pop.focus();
 });
 
@@ -669,9 +663,7 @@ $("#maximize").click(function(){
 		$("#input").animate({width: "508px"}, 500 );
 		$("#talk").animate({width: "67px"}, 500 );
 		$("#inchat").animate({height: "343px", "margin-bottom": "10px"}, 500 );
-		$("#chat").animate({height: "340px"}, 500, function() {
-			scrolldown();
-		});
+		$("#chat").animate({height: "340px"}, 500, function() { scrolldown(); });
 		$("#maximize").attr("src", "img/maximize.png");
 		$("#maximize").attr("title", "expand");
 		$("#input").focus();
@@ -683,9 +675,7 @@ $("#maximize").click(function(){
 		$("#input").animate({width: "92.3%"}, 500 );
 		$("#talk").animate({width: "5.2%"}, 500 );
 		$("#inchat").animate({height: "93%", "margin-bottom": "-30px"}, 500 );
-		$("#chat").animate({height: "91%"}, 500, function() {
-			scrolldown();
-		});
+		$("#chat").animate({height: "91%"}, 500, function() { scrolldown(); });
 		$("#maximize").attr("src", "img/minimize.png");
 		$("#maximize").attr("title", "contract");
 		$("#input").focus();
@@ -725,19 +715,18 @@ document.focus = window.focus;
 
 function logout() {
 	$.ajax({ url: install,
-		type: "POST",
-		async: false,
+		type: "POST", async: false,
 		data: "logout=" + name,
 	});
 }
 
-function errordisplay(e) {
+function errored(e) {
 	$("#users").html("<span class=\"users\">x</span>&nbsp " + e);
 	$("#users").css("background-color", "#FE1A12");
 }
 
 $(document).ajaxError(function(){
-	errordisplay("connection issues. stand by...");
+	errored("connection issues. stand by...");
 });
 
 $('#front').fadeIn(0, function() {
