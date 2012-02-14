@@ -28,7 +28,7 @@
 	$timelimit = 3600;
 	/* Set to 0 to disable automatic URL linking. */
 	$genurl = 1;
-	/* Maximum encrypted image size in kilobytes. */
+	/* Maximum encrypted file size in kilobytes. */
 	$filesize = 512;
 	/* Default nicknames: */
 	$nicks = array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'turtle', 
@@ -377,7 +377,7 @@ else {
 			<img src="img/maximize.png" alt="maximize" id="maximize" title="expand" />
 			<img src="img/nosound.png" alt="sound" id="sound" title="message sounds off" />
 			<img src="img/invite.png" alt="invite" id="invite" title="invite friend" />
-			<img src="img/filer.png" alt="file" id="file" title="send encrypted image" />
+			<img src="img/filer.png" alt="file" id="file" title="send encrypted file" />
 			<div id="inchat"><div id="chat"></div></div>
 			<div id="info">chatting as <span id="nick">'.$nick.'</span> on 
 			<strong class="blue">'.$install.'?c=</strong><strong id="name">'.$name.'</strong>

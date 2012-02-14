@@ -146,7 +146,7 @@ input.create:active, #talk:active {
 }
 #chat {
 	padding: 5px 0px 0px 0px;
-	width: 102.5%;
+	width: 102.9%;
 	height: 340px;
 	overflow-x: hidden;
 	overflow-y: scroll;
@@ -375,12 +375,6 @@ div.redirect p {
 	margin-top: -20px;
 	max-width: 140px;
 }
-#keytropy {
-	float: left;
-	color: #97CEEC;
-	border: 1px solid #97CEEC;
-	width: 130px;
-}
 #nick, #fingerlink {
 	color: #97CEEC;
 }
@@ -404,14 +398,31 @@ span.monospace {
 	color: #FFF;
 	margin-left: 10px;
 }
-#recipient, #filebutton {
+#keytropy, #recipient, #filebutton {
 	color: #97CEEC;
 	border: 1px solid #97CEEC;
+}
+#keytropy {
+	float: left;
+	width: 130px;
 }
 #filebutton {
 	display: none;
 	margin: 0;
 }
+#filebutton:hover {
+	background-color: #97CEEC;
+	color: #FFF;
+}
 #fileselect {
 	opacity: 0;
+}
+a.download {
+	padding: 2px 2px 2px 22px;
+	background: url("../img/fileb.png") center left no-repeat;
+	background-color: #97CEEC;
+	color: #FFF;
+}
+a.download:hover {
+	text-decoration: none;
 }

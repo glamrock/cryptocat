@@ -333,3 +333,12 @@ span.monospace {
 	color: #FFF;
 	margin-left: 10px;
 }
+a.download {
+	padding: 2px 2px 2px 22px;
+	background: url("../img/fileb.png") center left no-repeat;
+	background-color: #97CEEC;
+	color: #FFF;
+}
+a.download:hover {
+	text-decoration: none;
+}
