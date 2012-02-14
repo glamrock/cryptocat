@@ -11,7 +11,7 @@ Cryptocat Chrome is a Chrome app version of Cryptocat that loads all code locall
 * HMAC message integrity verification.
 * The identity of chatters can be confirmed via key fingerprints, à la OTR.
 * Uses the Fortuna secure pseudo-randomness generator.
-* Send encrypted pictures.
+* Send encrypted .zip files and images.
 * Chats are securely deleted after one hour of inactivity.
 * Easily invite your Facebook contacts to join your Cryptocat session.
 * Send private messages that can only be seen by a single recipient.
