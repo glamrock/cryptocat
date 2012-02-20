@@ -173,13 +173,13 @@ function process(line, sentid) {
 			}
 			return line;
 		}
-		else if (match = line.match(/^[a-z]{1,12}:\s\[B-C\](\w|\/|\+|\?|\(|\)|\=|\|)+\[E-C\]$/)) {
+		else if (match = line.match(/^[a-z]{1,12}:\s\[:3\](\w|\/|\+|\?|\(|\)|\=|\|)+\[:3\]$/)) {
 			thisnick = $.trim(match[0].match(/^[a-z]{1,12}/));
 			if (jQuery.inArray(thisnick, inblocked) >= 0) {
 				return;
 			}
-			match = line.match(/\[B-C\](.*)\|/);
-			match = match[0].substring(5, match[0].length - 1);
+			match = line.match(/\[:3\](.*)\|/);
+			match = match[0].substring(4, match[0].length - 1);
 			var hmac = line.match(/\|\w{64}/);
 			hmac = hmac[0].substring(1);
 			line = line.replace(/\|\w{64}/, '');
@@ -187,7 +187,7 @@ function process(line, sentid) {
 			fliptag();
 			if ((Crypto.HMAC(Crypto.SHA256, match, seckeys[loc]) != hmac) || (jQuery.inArray(hmac, usedhmac) >= 0)) {
 				line = tagify(line);
-				line = line.replace(/\[B-C\](.*)\[E-C\]/, "<span class=\"diffkey\">Error: message authentication failure.</span>");
+				line = line.replace(/\[:3\](.*)\[:3\]/, "<span class=\"diffkey\">Error: message authentication failure.</span>");
 				line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
 				pushline(line);
 				$("#" + pos).css("background-image","url(\"img/error.png\")");
@@ -197,7 +197,7 @@ function process(line, sentid) {
 					mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
 				});
 				usedhmac.push(hmac);
-				line = line.replace(/\[B-C\](.*)\[E-C\]/, match);
+				line = line.replace(/\[:3\](.*)\[:3\]/, match);
 				line = tagify(line);
 				line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
 				pushline(line);
@@ -365,7 +365,7 @@ function updatechat() {
 						}
 					}
 				}
-				msg = nick + "|" + sentid + ": " + "[B-C]" + msg + "[E-C]";
+				msg = nick + "|" + sentid + ": " + "[:3]" + msg + "[:3]";
 				msg = "name=" + name + "&talk=send" + "&input=" + msg.replace(/\+/g, "%2B");
 				$.ajax({
 					type: 'POST', url: install,

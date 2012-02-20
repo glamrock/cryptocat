@@ -56,10 +56,10 @@
 	
 	function msgcheck($msg) {
 		$msgarray = array();
-		$msgregex = '/^[a-z]{1,12}\|\w{8}:\s\[B-C\]((\w|\/|\+|\?|\(|\)|\=)*\|?(\d|a|b|c|d|e|f)*)*\[E-C\]$/';
-		$msgbeg = '/^[a-z]{1,12}\|\w{8}:\s\[B-C\]((\w|\/|\+|\?|\(|\)|\=))*$/';
+		$msgregex = '/^[a-z]{1,12}\|\w{8}:\s\[:3\]((\w|\/|\+|\?|\(|\)|\=)*\|?(\d|a|b|c|d|e|f)*)*\[:3\]$/';
+		$msgbeg = '/^[a-z]{1,12}\|\w{8}:\s\[:3\]((\w|\/|\+|\?|\(|\)|\=))*$/';
 		$msgmid = '/^((\w|\/|\+|\?|\(|\)|\=))*$/';
-		$msgend = '/^((\w|\/|\+|\?|\(|\)|\=)*\|?(\d|a|b|c|d|e|f)*)*\[E-C\]$/';
+		$msgend = '/^((\w|\/|\+|\?|\(|\)|\=)*\|?(\d|a|b|c|d|e|f)*)*\[:3\]$/';
 		if (strlen($msg) > 4096) {
 			for ($i=0; (($i) < strlen($msg)); $i+=4096) {
 				array_push($msgarray, substr($msg, $i, 4096));
@@ -174,13 +174,13 @@
 						for ($ki=0; $ki <= count($match[0]); $ki++) {
 							if (substr($match[0][$ki], 0, strlen($_SESSION['nick']) + 2) == '('.$_SESSION['nick'].')') {
 								$match = substr($match[0][$ki], strlen($_SESSION['nick']) + 2);
-								$chat[$_SESSION['pos']] = preg_replace('/\[B-C\](.*)\[E-C\]/', '[B-C]'.$match.'[E-C]', $chat[$_SESSION['pos']]);
+								$chat[$_SESSION['pos']] = preg_replace('/\[:3\](.*)\[:3\]/', '[:3]'.$match.'[:3]', $chat[$_SESSION['pos']]);
 								$ki = count($match[0]) + 10;
 								$found = 1;
 							}
 						}
 						if (!isset($nick) || ($nick != $_SESSION['nick'])) {
-							if (!$found && preg_match('/\[B-C\](.*)\[E-C\]/', $chat[$_SESSION['pos']])) {
+							if (!$found && preg_match('/\[:3\](.*)\[:3\]/', $chat[$_SESSION['pos']])) {
 								$chat[$_SESSION['pos']] = '';
 							}
 							else {
