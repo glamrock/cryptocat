@@ -116,10 +116,6 @@ var AES = C.AES = {
 
 			// Generate key
 			k = (
-				password.constructor == String ?
-				// Derive key from passphrase
-				C.PBKDF2(password, iv, 32, { asBytes: true }) :
-				// else, assume byte array representing cryptographic key
 				password
 			);
 
@@ -157,10 +153,6 @@ var AES = C.AES = {
 
 			// Generate key
 			k = (
-				password.constructor == String ?
-				// Derive key from passphrase
-				C.PBKDF2(password, iv, 32, { asBytes: true }) :
-				// else, assume byte array representing cryptographic key
 				password
 			);
 

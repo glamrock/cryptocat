@@ -114,7 +114,7 @@ function dhgen(key, pub) {
 	}
 	else {
 		pub = bigInt2str(powMod(str2bigInt(pub, 64), key, p), 64);
-		return Crypto.PBKDF2(pub, Crypto.SHA256(pub), 32);
+		return Crypto.SHA256(pub).substring(0, 32);
 	}
 }
 
@@ -173,7 +173,7 @@ function process(line, sentid) {
 			}
 			return line;
 		}
-		else if (match = line.match(/^[a-z]{1,12}:\s\[:3\](\w|\/|\+|\?|\(|\)|\=|\|)+\[:3\]$/)) {
+		else if (match = line.match(/^[a-z]{1,12}\:\s\[:3\](\w|\/|\+|\?|\=)*\|?(\d|a|b|c|d|e|f)*\[:3\]$/)) {
 			thisnick = $.trim(match[0].match(/^[a-z]{1,12}/));
 			if (jQuery.inArray(thisnick, inblocked) >= 0) {
 				return;
@@ -193,7 +193,7 @@ function process(line, sentid) {
 				$("#" + pos).css("background-image","url(\"img/error.png\")");
 			}
 			else {
-				match = Crypto.AES.decrypt(match, seckeys[loc], {
+				match = Crypto.AES.decrypt(match, Crypto.charenc.Binary.stringToBytes(seckeys[loc]), {
 					mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
 				});
 				usedhmac.push(hmac);
@@ -347,7 +347,7 @@ function updatechat() {
 						return;
 					}
 					var loc = jQuery.inArray(msg.match(/^\@[a-z]{1,12}/).toString().substring(1), names);
-					var crypt = Crypto.AES.encrypt(queue[0].replace(/\$.+$/, ''), seckeys[loc], {
+					var crypt = Crypto.AES.encrypt(queue[0].replace(/\$.+$/, ''), Crypto.charenc.Binary.stringToBytes(seckeys[loc]), {
 						mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
 					});
 					var msg = "(" + msg.match(/^\@[a-z]{1,12}/).toString().substring(1) + ")" + crypt;
@@ -357,7 +357,7 @@ function updatechat() {
 					var msg = "";
 					for (var i=0; i != names.length; i++) {
 						if (names && (names[i] != nick) && (jQuery.inArray(names[i], outblocked) < 0)) {
-							var crypt = Crypto.AES.encrypt(queue[0].replace(/\$.+$/, ''), seckeys[i], {
+							var crypt = Crypto.AES.encrypt(queue[0].replace(/\$.+$/, ''), Crypto.charenc.Binary.stringToBytes(seckeys[i]), {
 								mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
 							});
 							msg += "(" + names[i] + ")" + crypt;

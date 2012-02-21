@@ -11,6 +11,10 @@ body {
 	background-image: url("../img/bg.png");
 	line-height: 1.37em;
 }
+h3 {
+	color: #97CEEC;
+	margin: 0px 0px 10px 0px;
+}
 #main {
 	border: 10px solid #000;
 	background-color: #FFF;
@@ -30,9 +34,11 @@ div.bottom {
 	color: #FFF;
 	font-weight: bold;
 }
-h3 {
-	color: #97CEEC;
-	margin: 0px 0px 10px 0px;
+div.links {
+	text-align: right;
+}
+div.links a {
+	margin-right: 2px;
 }
 #lang {
 	margin-left: -2px;

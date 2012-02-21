@@ -315,10 +315,12 @@ else {
 						<a href="#" onclick="translate(\'ru\')">ru</a> 
 						<a href="#" onclick="translate(\'sv\')">sv</a>
 					</span>
-					<a href="https://crypto.cat/about" style="margin-left:-173px">about</a> | 
-					<a target="_blank" href="https://twitter.com/cryptocatapp">twitter</a> | 
-					<a target="_blank" href="http://blog.crypto.cat">blog</a> | 
-					<a target="_blank" href="https://github.com/kaepora/cryptocat/">source</a>
+					<div class="links">
+						<a href="https://crypto.cat/about">about</a> 
+						<a target="_blank" href="https://twitter.com/cryptocatapp">twitter</a> 
+						<a target="_blank" href="http://blog.crypto.cat">blog</a> 
+						<a target="_blank" href="https://github.com/kaepora/cryptocat/">source</a>
+					</div>
 				</div>
 			</div>
 			<script type="text/javascript" src="js/welcome.js"></script>');
