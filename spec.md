@@ -24,7 +24,7 @@ Cryptocat, including software and documentation, a trademark of and is developed
 ### User Identification and Key Pairs
 Cryptocat relies on the Diffie-Hellman key agreement scheme in order to generate key pairs. The following 4096 bit Sophie Germain prime `p`, given in hexadecimal, with a generator `g = 2` (both generated using `ssh-keygen(1)`) may be used, although the security of the protocol is not affected if another 4096 bit Sophie Germain prime (so that `2p + 1` is also prime) is correctly chosen:
 
-`p = 
+`p = `
 `C41F45CE6AA3AEB23A9202F8152779A4E42223354306AE1DC3BCC95568518345`
 `80A65E95D6EACA6845EA6DD53E21E01AEE47B58A20E02DCC092337B6D41BDF24`
 `EB04A96C0C83F39E08EA00604A9E4D6D0E78E1515F89C2822AB96C6AD78D8364`
@@ -162,5 +162,7 @@ The server is required to securely wipe the entire chat session from the hard di
 Special thanks to Jacob Appelbaum, Meredith L. Patterson and Marsh Ray for their helpful comments and insight.
 
 [Cryptocat](https://crypto.cat)
+
 [Source code](https://github.com/kaepora/cryptocat/)
+
 [Email](mailto:nadim@nadim.cc)
