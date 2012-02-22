@@ -1,7 +1,8 @@
 # Cryptocat
-## Protocol Specification
-## Nadim Kobeissi
-## 1st Revision, 21/02/2012 - NON-FINAL DRAFT
+### Protocol Specification
+### Nadim Kobeissi
+### 1st Revision, 21/02/2012
+### Non-final Draft
 
 ### Introduction
 [Cryptocat](https://crypto.cat) is an open source web application intended to allow secure, encrypted online chatting. Cryptocat encrypts chats on the client side inside the browser, only trusting the server side with already-encrypted data. This specification will describe the Cryptocat protocol, including encryption, decryption, authentication and other relevant facets.
