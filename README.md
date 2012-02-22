@@ -18,6 +18,9 @@ Cryptocat Chrome is a Chrome app version of Cryptocat that loads all code locall
 * A sleek design with time-stamping, optional audio notifications, fluid-window mode, and mobile support.
 * Translations available for French, Catalan, Basque, Italian, German, Portuguese, Russian and Swedish.
 
+## Protocol Specification
+A [design specification for the Cryptocat protocol](https://crypto.cat/about/spec-rev1.pdf) is available.
+
 ## License
 ### Cryptocat Chrome is released under the [Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-nc-sa/3.0/):
 * Noncommercial — You may not use this work for commercial purposes.
