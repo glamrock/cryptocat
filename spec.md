@@ -7,11 +7,13 @@
 [Cryptocat](https://crypto.cat) is an open source web application intended to allow secure, encrypted online chatting. Cryptocat encrypts chats on the client side inside the browser, only trusting the server side with already-encrypted data. This specification will describe the Cryptocat protocol, including encryption, decryption, authentication and other relevant facets.
 
 The protocol is developed with the following design goals:
+
 * Provide an encrypted chat environment made for use in web browsers.
 * Provide public key cryptography with perfect forward secrecy from chat to chat.
 * Provide the ability for multi-party chat (more than two parties.)
 
 Cryptocat deploys various technologies:
+
 * AES-CBC is used for encryption and decryption with 256 bit keys and the ISO 10126 padding scheme.
 * Diffie-Hellman is used for public key generation using a 4096 bit Sophie Germain prime.
 * HMAC-SHA256 is used in order to generate message integrity hashes and in order to detect replay attacks.
