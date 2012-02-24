@@ -206,7 +206,7 @@ function process(line, sentid) {
 				}
 			}
 		}
-		else if (match = line.match(/^(\&gt\;|\&lt\;) [a-z]{1,12} (has arrived|has left)$/)) {
+		else if (match = line.match(/^(\&gt\;|\&lt\;)\s[a-z]{1,12}\s(has arrived|has left)$/)) {
 			updatekeys(true);
 			line = "<span class=\"nick\">" + match[0] + "</span>";
 			fliptag();
@@ -297,10 +297,10 @@ function updatechat() {
 				pos++;
 				if (data.match(/\s/)) {
 					process(data, 0);
-					if ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) < 600) {
+					if ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) < 800) {
 						scrolldown();
 					}
-					if (!focus || ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) > 600)) {
+					if (!focus || ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) > 800)) {
 						num++;
 						document.title = "[" + num + "] Cryptocat";
 					}
