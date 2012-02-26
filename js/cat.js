@@ -256,7 +256,7 @@ function updatekeys(sync) {
 						userinfo(names[i]);
 					}
 					else {
-						fingerprints[names[i]] = Crypto.SHA256(names[i]);
+						fingerprints[names[i]] = Crypto.SHA256(names[i] + keys[names[i]]);
 						fingerprints[names[i]] = 
 						fingerprints[names[i]].substring(10, 18) + ":" + 
 						fingerprints[names[i]].substring(20, 28) + ":" + 
