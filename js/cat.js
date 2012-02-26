@@ -20,15 +20,15 @@ var p = str2bigInt(
 16);
 
 var g = str2bigInt("2", 10);
-var num = sound = pos = tag = prikey = pubkey = 0;
+var num = sound = pos = tag = prikey = pubkey = last = 0;
 var focus = true;
 var soundEmbed = null;
 var nick = $("#nick").html();
 var name = $("#name").html();
+var seq = new Array();
 var keys = new Array();
 var names = new Array();
 var queue = new Array();
-var sending = new Array();
 var seckeys = new Array();
 var usedhmac = new Array();
 var inblocked = new Array();
@@ -114,7 +114,7 @@ function dhgen(key, pub) {
 	}
 	else {
 		pub = bigInt2str(powMod(str2bigInt(pub, 64), key, p), 64);
-		return Crypto.SHA256(pub).substring(0, 32);
+		return Crypto.SHA256(pub);
 	}
 }
 
@@ -183,9 +183,9 @@ function process(line, sentid) {
 			var hmac = line.match(/\|\w{64}/);
 			hmac = hmac[0].substring(1);
 			line = line.replace(/\|\w{64}/, '');
-			var loc = jQuery.inArray(thisnick, names);
 			fliptag();
-			if ((Crypto.HMAC(Crypto.SHA256, match, seckeys[loc]) != hmac) || (jQuery.inArray(hmac, usedhmac) >= 0)) {
+			if ((Crypto.HMAC(Crypto.SHA256, match, seckeys[thisnick].substring(32, 64) + seq[thisnick]) != hmac) || 
+			(jQuery.inArray(hmac, usedhmac) >= 0)) {
 				line = tagify(line);
 				line = line.replace(/\[:3\](.*)\[:3\]/, "<span class=\"diffkey\">Error: message authentication failure.</span>");
 				line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
@@ -193,7 +193,8 @@ function process(line, sentid) {
 				$("#" + pos).css("background-image","url(\"img/error.png\")");
 			}
 			else {
-				match = Crypto.AES.decrypt(match, Crypto.charenc.Binary.stringToBytes(seckeys[loc]), {
+				seq[thisnick]++;
+				match = Crypto.AES.decrypt(match, Crypto.charenc.Binary.stringToBytes(seckeys[thisnick].substring(0, 32)), {
 					mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
 				});
 				usedhmac.push(hmac);
@@ -240,30 +241,36 @@ function updatekeys(sync) {
 			data = data.split('|');
 			data.splice(data.length - 1, 1);
 			if (data.length != names.length) {
-				oldnames = names;
-				oldkeys = keys;
+				oldnames = names.slice(0);
 				names = new Array();
-				keys = new Array();
 				fingerprints = new Array();
 				for (var i=0; i <= data.length - 1; i++) {
 					names[i] = data[i].replace(/:.+$/, '');
-					keys[i] = data[i].replace(/^[a-z]{1,12}:/, '');
-					var loc = jQuery.inArray(names[i], oldnames);
-					if ((keys[i].length < 680) || ((names[i] == oldnames[loc]) && (keys[i] != oldkeys[loc]))) {
-						fingerprints[i] = "<span class=\"red\">unreliable key or connection</span>";
+					if (typeof keys[names[i]] === 'undefined') {
+						seq[names[i]] = 1;
+					 	keys[names[i]] = data[i].replace(/^[a-z]{1,12}:/, '');
+						seckeys[names[i]] = dhgen(prikey, keys[names[i]]);
+					}
+					if ((keys[names[i]].length < 680) || (keys[names[i]] != data[i].replace(/^[a-z]{1,12}:/, ''))) {
+						fingerprints[names[i]] = "<span class=\"red\">unreliable key or connection</span>";
+						userinfo(names[i]);
 					}
 					else {
-						if ((names[i] != oldnames[i]) && (names[i] != nick)) {
-							seckeys[i] = dhgen(prikey, keys[i]);
-						}
-						fingerprints[i] = Crypto.SHA256(keys[i]);
-						fingerprints[i] = 
-						fingerprints[i].substring(10, 18) + ":" + 
-						fingerprints[i].substring(20, 28) + ":" + 
-						fingerprints[i].substring(30, 38) + ":" + 
-						fingerprints[i].substring(40, 48) + ":" + 
-						fingerprints[i].substring(50, 58);
-						fingerprints[i] = fingerprints[i].toUpperCase();
+						fingerprints[names[i]] = Crypto.SHA256(names[i]);
+						fingerprints[names[i]] = 
+						fingerprints[names[i]].substring(10, 18) + ":" + 
+						fingerprints[names[i]].substring(20, 28) + ":" + 
+						fingerprints[names[i]].substring(30, 38) + ":" + 
+						fingerprints[names[i]].substring(40, 48) + ":" + 
+						fingerprints[names[i]].substring(50, 58);
+						fingerprints[names[i]] = fingerprints[names[i]].toUpperCase();
+					}
+				}
+				for (var i=0; i != oldnames.length; i++) {
+					if (jQuery.inArray(oldnames[i], names) < 0) {
+						delete seq[oldnames[i]];
+						delete keys[oldnames[i]];
+						delete seckeys[oldnames[i]];
 					}
 				}
 			}
@@ -319,27 +326,19 @@ function updatechat() {
 				updatekeys(true);
 				$("#users").css("background-color", "#97CEEC");
 			}
-			if (sending[0]) {
-				var msg = sending[0].replace(/\$.+$/, '');
-				var sentid = sending[0].replace(/^.+\$/, '');
-				var time = sentid.substring(8);
-				sentid = sentid.substring(0, 8);
-				if ($("#" + sentid).css("background-image")) {
-					var now = new Date;
-					if ((now.getTime() - time) > 20000) {
-						queue.push(msg + "$" + sentid);
-						sending.splice(0,1);
+			if (queue[0]) {
+				if (last && $("#" + last).css("background-image")) {
+					return;
+				}
+				else if (last) {
+					queue.splice(0, 1);
+					if (!queue[0]) {
+						last = 0;
+						return;
 					}
 				}
-				else {
-					sending.splice(0,1);
-				}
-			}
-			if (queue[0]) {
 				var msg = queue[0].replace(/\$.+$/, '');
 				var sentid = queue[0].replace(/^.+\$/, '');
-				var time = new Date;
-				sending.push(queue[0] + time.getTime());
 				if ((msg[0] == "@") && (jQuery.inArray(msg.match(/^\@[a-z]{1,12}/).toString().substring(1), names) >= 0)) {
 					if (msg.match(/^\@[a-z]{1,12}/).toString().substring(1) == nick) {
 						$("#" + sentid).css("background-image","url(\"img/chat.png\")");
@@ -347,31 +346,41 @@ function updatechat() {
 						return;
 					}
 					var loc = jQuery.inArray(msg.match(/^\@[a-z]{1,12}/).toString().substring(1), names);
-					var crypt = Crypto.AES.encrypt(queue[0].replace(/\$.+$/, ''), Crypto.charenc.Binary.stringToBytes(seckeys[loc]), {
+					var crypt = Crypto.AES.encrypt(queue[0].replace(/\$.+$/, ''), 
+					Crypto.charenc.Binary.stringToBytes(seckeys[names[loc]].substring(0, 32)), {
 						mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
 					});
 					var msg = "(" + msg.match(/^\@[a-z]{1,12}/).toString().substring(1) + ")" + crypt;
-					msg += "|" + Crypto.HMAC(Crypto.SHA256, crypt, seckeys[loc]);
+					msg += "|" + Crypto.HMAC(Crypto.SHA256, crypt, seckeys[names[loc]].substring(32, 64) + seq[names[loc]]);
+					seq[names[loc]]++;
 				}
 				else {
 					var msg = "";
 					for (var i=0; i != names.length; i++) {
 						if (names && (names[i] != nick) && (jQuery.inArray(names[i], outblocked) < 0)) {
-							var crypt = Crypto.AES.encrypt(queue[0].replace(/\$.+$/, ''), Crypto.charenc.Binary.stringToBytes(seckeys[i]), {
+							var crypt = Crypto.AES.encrypt(queue[0].replace(/\$.+$/, ''),
+							 Crypto.charenc.Binary.stringToBytes(seckeys[names[i]].substring(0, 32)), {
 								mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
 							});
 							msg += "(" + names[i] + ")" + crypt;
-							msg += "|" + Crypto.HMAC(Crypto.SHA256, crypt, seckeys[i]);
+							msg += "|" + Crypto.HMAC(Crypto.SHA256, crypt, seckeys[names[i]].substring(32, 64) + seq[names[i]]);
+							seq[names[i]]++;
 						}
 					}
 				}
 				msg = nick + "|" + sentid + ": " + "[:3]" + msg + "[:3]";
 				msg = "name=" + name + "&talk=send" + "&input=" + msg.replace(/\+/g, "%2B");
-				$.ajax({
-					type: 'POST', url: install,
-					data: msg
-				});
-				queue.splice(0,1);
+				last = sentid;
+				function postmsg() {
+					$.ajax({
+						type: 'POST', url: install,
+						data: msg,
+						error: function() {
+							postmsg();
+						}
+					});
+				}
+				postmsg();
 			}
 		},
 	});
@@ -612,7 +621,7 @@ function userinfo(n) {
 		'Send my messages to <span class="blue">' + n + '</span>: <span class="block" id="outgoing">yes</span><br />' +
 		'<br />Verify <span class="blue">' + n + '</span>\'s identity using their fingerprint:');
 	}
-	$("#fadebox").html($("#fadebox").html() + '<br />' + fingerprints[jQuery.inArray(n, names)]);
+	$("#fadebox").html($("#fadebox").html() + '<br />' + fingerprints[n]);
 	if (jQuery.inArray(n, inblocked) >= 0) {
 		$("#incoming").css("background-color", "#F00");
 		$("#incoming").html("no");
