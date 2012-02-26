@@ -21,7 +21,7 @@ Cryptocat lets you instantly set up secure conversations. It's an open source en
 * Translations available for French, Catalan, Basque, Italian, German, Portuguese, Russian and Swedish.
 
 ## Protocol Specification
-A [design specification for the Cryptocat protocol](https://crypto.cat/about/spec-rev1.pdf) is available.
+A [design specification for the Cryptocat protocol](https://crypto.cat/about/) is available.
 
 ## License
 ### Cryptocat is released under the [Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-nc-sa/3.0/):
