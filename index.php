@@ -287,7 +287,10 @@ else {
 					</div>
 					<div>
 						<input type="text" class="name" name="c" id="c" value="'.$name.'" maxlength="32" autocomplete="off" />
-						<input type="submit" class="create" value="enter" id="create" />
+						<div class="create">
+							<input type="submit" class="create" value="enter" id="create" />
+							<input type="button" class="create" value="?" id="random" />
+						</div>
 					</div>
 				</form>
 				<table>

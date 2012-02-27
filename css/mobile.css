@@ -21,6 +21,10 @@ h3 {
 	color: #97CEEC;
 	margin: 0px 0px 10px 0px;
 }
+div.create {
+	width: 275px;
+	margin: 0 auto;
+}
 input.name, input.create {
 	width: 260px;
 	margin: 4em auto 0 auto;
@@ -37,7 +41,11 @@ input.name, input.create {
 }
 input.create {
 	margin-top: 10px;
-	width: 273px;
+	width: 229px;
+	display: inline;
+}
+#random {
+	width: 40px;
 }
 input {
 	border-radius: 0px;

@@ -55,6 +55,10 @@ div.links a {
 	background-color: #FFF;
 	text-decoration: none;
 }
+div.create {
+	margin: 0 auto;
+	width: 344px;
+}
 input.name, input.create {
 	width: 330px;
 	margin: 0 auto;
@@ -68,11 +72,15 @@ input.name, input.create {
 	box-shadow: 2px 2px #90CAEA;
 }
 input.create {
-	width: 344px;
+	width: 300px;
 	margin-top: 10px;
 	margin-bottom: 4px;
 	padding: 0px 7px;
 	height: 30px;
+	display: inline;
+}
+#random {
+	width: 40px;
 }
 #nickinput {
 	background-color: #000;

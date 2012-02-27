@@ -1,4 +1,14 @@
 var understood;
+
+function gen(size) {
+	var str = "";
+	var charset = "1234567890abcdefghijklmnopqrstuvwxyz";
+	while (str.length < size) {
+		str += charset.charAt(Math.floor(Math.random() * charset.length));
+	}
+ 	return str;
+}
+
 $("#welcome").submit( function() {
 	$("#c").val($("#c").val().toLowerCase());
 	if (understood) {
@@ -23,6 +33,10 @@ $("#welcome").submit( function() {
 $("#c").click(function(){
 	$("#c").focus();
 	$("#c").select();
+});
+
+$("#random").click(function(){
+	$("#c").val(gen(8));
 });
 
 $("#understand").click(function(){
