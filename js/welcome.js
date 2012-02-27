@@ -3,6 +3,15 @@ var faded = 0;
 var nicks = new Array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'turtle',
 'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite', 'ducky');
 
+function gen(size) {
+	var str = "";
+	var charset = "1234567890abcdefghijklmnopqrstuvwxyz";
+	while (str.length < size) {
+		str += charset.charAt(Math.floor(Math.random() * charset.length));
+	}
+ 	return str;
+}
+
 var xhr = new XMLHttpRequest();
 xhr.open("GET", "chat.html", false);
 xhr.onreadystatechange = function() {
@@ -21,6 +30,10 @@ $(window).keypress(function(e) {
 $("#c").click(function(){
 	$("#c").focus();
 	$("#c").select();
+});
+
+$("#random").click(function(){
+	$("#c").val(gen(8));
 });
 
 $("#create").click(function() {
