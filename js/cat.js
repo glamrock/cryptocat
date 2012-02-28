@@ -21,9 +21,9 @@ var p = str2bigInt(
 
 var g = str2bigInt("2", 10);
 
-var z = "1";
-for (var i=0; i!=680; i++) { z += "0"; }
-z = str2bigInt(z, 64);
+var z = new Array();
+for (var i=0; i!=274; i++) { z[i] = 0; }
+z[272] = 1;
 
 var num = sound = pos = tag = prikey = pubkey = last = 0;
 var focus = true;
