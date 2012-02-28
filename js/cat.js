@@ -20,6 +20,11 @@ var p = str2bigInt(
 16);
 
 var g = str2bigInt("2", 10);
+
+var z = "1";
+for (var i=0; i!=682; i++) { z += "0"; }
+z = str2bigInt(z, 64);
+
 var num = sound = pos = tag = prikey = pubkey = last = 0;
 var focus = true;
 var soundEmbed = null;
@@ -251,8 +256,11 @@ function updatekeys(sync) {
 					 	keys[names[i]] = data[i].replace(/^[a-z]{1,12}:/, '');
 						seckeys[names[i]] = dhgen(prikey, keys[names[i]]);
 					}
-					if ((keys[names[i]].length < 680) || (keys[names[i]] != data[i].replace(/^[a-z]{1,12}:/, ''))) {
-						fingerprints[names[i]] = "<span class=\"red\">unreliable key or connection</span>";
+					var big = str2bigInt(keys[names[i]], 64);
+					if ((equals(big, p) || greater(big, p) || greater(z, big)) || 
+					(keys[names[i]] != data[i].replace(/^[a-z]{1,12}:/, ''))) {
+						fingerprints[names[i]] = "<span class=\"red\">DANGER: This user is using suspicious keys. " + 
+						"Communicating with this user is strongly not recommended.</span>";
 						userinfo(names[i]);
 					}
 					else {

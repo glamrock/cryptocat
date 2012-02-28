@@ -1,12 +1,12 @@
 var understood;
+var interval;
 
-function gen(size) {
-	var str = "";
-	var charset = "1234567890abcdefghijklmnopqrstuvwxyz";
-	while (str.length < size) {
-		str += charset.charAt(Math.floor(Math.random() * charset.length));
+function gen(s) {
+	var c = "1234567890abcdefghijklmnopqrstuvwxyz";
+	$("#c").val($("#c").val() + c.charAt(Math.floor(Math.random() * c.length)));
+	if ($("#c").val().length >= s) {
+		clearInterval(interval);
 	}
- 	return str;
 }
 
 $("#welcome").submit( function() {
@@ -36,7 +36,9 @@ $("#c").click(function(){
 });
 
 $("#random").click(function(){
-	$("#c").val(gen(8));
+	clearInterval(interval);
+	$("#c").val('');
+	interval = setInterval("gen(8)", 40);
 });
 
 $("#understand").click(function(){
