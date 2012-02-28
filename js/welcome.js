@@ -1,15 +1,15 @@
 var chat;
+var interval;
 var faded = 0;
 var nicks = new Array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'turtle',
 'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite', 'ducky');
 
-function gen(size) {
-	var str = "";
-	var charset = "1234567890abcdefghijklmnopqrstuvwxyz";
-	while (str.length < size) {
-		str += charset.charAt(Math.floor(Math.random() * charset.length));
+function gen(s) {
+	var c = "1234567890abcdefghijklmnopqrstuvwxyz";
+	$("#c").val($("#c").val() + c.charAt(Math.floor(Math.random() * c.length)));
+	if ($("#c").val().length >= s) {
+		clearInterval(interval);
 	}
- 	return str;
 }
 
 var xhr = new XMLHttpRequest();
@@ -33,7 +33,9 @@ $("#c").click(function(){
 });
 
 $("#random").click(function(){
-	$("#c").val(gen(8));
+	clearInterval(interval);
+	$("#c").val('');
+	interval = setInterval("gen(8)", 40);
 });
 
 $("#create").click(function() {

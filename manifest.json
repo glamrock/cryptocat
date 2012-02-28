@@ -1,7 +1,7 @@
 {
 	"name": "Cryptocat",
 	"description": "Cryptocat lets you instantly set up encrypted conversations. It's an open source, private, safer chatting alternative.",
-	"version": "1.1.112",
+	"version": "1.1.113",
 	"app": {
 		"launch": {
 			"local_path": "main.html"
