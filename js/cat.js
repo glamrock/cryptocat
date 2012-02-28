@@ -22,7 +22,7 @@ var p = str2bigInt(
 var g = str2bigInt("2", 10);
 
 var z = "1";
-for (var i=0; i!=682; i++) { z += "0"; }
+for (var i=0; i!=680; i++) { z += "0"; }
 z = str2bigInt(z, 64);
 
 var num = sound = pos = tag = prikey = pubkey = last = 0;
