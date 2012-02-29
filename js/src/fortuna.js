@@ -91,7 +91,7 @@ function GenerateBlocks(k) {
 	for (var i=0; i!=k; i++) {
 		var Cp = Crypto.SHA256(C.toString()).substring(0, 16);
 		var iv = Crypto.charenc.Binary.stringToBytes(K.substring(0, 16));
-		var c = Crypto.AES.encrypt(Cp, K, {
+		var c = Crypto.AES.encrypt(Cp, Crypto.util.hexToBytes(K), {
 			mode: new Crypto.mode.CTR, iv: iv
 			}).substring(0, 16);
 		if (!r) {
