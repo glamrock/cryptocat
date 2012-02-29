@@ -96,7 +96,7 @@ function textcounter(field,cntfield,maxlimit) {
 
 function gen(size, extra, s) {
 	if (s) {
-		Math.seedrandom(Crypto.Fortuna.RandomData(512) + Crypto.SHA256(seed));
+		Math.seedrandom(Crypto.Fortuna.RandomData(512) + hex_sha512(seed));
 	}
 	var str = "";
 	var charset = "123456789";
@@ -119,7 +119,7 @@ function dhgen(key, pub) {
 	}
 	else {
 		pub = bigInt2str(powMod(str2bigInt(pub, 64), key, p), 64);
-		return Crypto.SHA256(pub);
+		return hex_sha512(pub);
 	}
 }
 
@@ -189,7 +189,7 @@ function process(line, sentid) {
 			hmac = hmac[0].substring(1);
 			line = line.replace(/\|\w{64}/, '');
 			fliptag();
-			if ((Crypto.HMAC(Crypto.SHA256, match, seckeys[thisnick].substring(32, 64) + seq[thisnick]) != hmac) || 
+			if ((Crypto.HMAC(Crypto.SHA256, match, seckeys[thisnick].substring(64, 128) + seq[thisnick]) != hmac) || 
 			(jQuery.inArray(hmac, usedhmac) >= 0)) {
 				line = tagify(line);
 				line = line.replace(/\[:3\](.*)\[:3\]/, "<span class=\"diffkey\">Error: message authentication failure.</span>");
@@ -199,7 +199,7 @@ function process(line, sentid) {
 			}
 			else {
 				seq[thisnick]++;
-				match = Crypto.AES.decrypt(match, Crypto.charenc.Binary.stringToBytes(seckeys[thisnick].substring(0, 32)), {
+				match = Crypto.AES.decrypt(match, Crypto.util.hexToBytes(seckeys[thisnick].substring(0, 64)), {
 					mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
 				});
 				usedhmac.push(hmac);
@@ -264,13 +264,13 @@ function updatekeys(sync) {
 						userinfo(names[i]);
 					}
 					else {
-						fingerprints[names[i]] = Crypto.SHA256(names[i] + keys[names[i]]);
+						fingerprints[names[i]] = hex_sha512(names[i] + keys[names[i]]);
 						fingerprints[names[i]] = 
-						fingerprints[names[i]].substring(10, 18) + ":" + 
-						fingerprints[names[i]].substring(20, 28) + ":" + 
-						fingerprints[names[i]].substring(30, 38) + ":" + 
-						fingerprints[names[i]].substring(40, 48) + ":" + 
-						fingerprints[names[i]].substring(50, 58);
+						fingerprints[names[i]].substring(25, 33) + ":" + 
+						fingerprints[names[i]].substring(50, 58) + ":" + 
+						fingerprints[names[i]].substring(75, 83) + ":" + 
+						fingerprints[names[i]].substring(100, 108) + ":" + 
+						fingerprints[names[i]].substring(120, 128);
 						fingerprints[names[i]] = fingerprints[names[i]].toUpperCase();
 					}
 				}
@@ -355,11 +355,11 @@ function updatechat() {
 					}
 					var loc = jQuery.inArray(msg.match(/^\@[a-z]{1,12}/).toString().substring(1), names);
 					var crypt = Crypto.AES.encrypt(queue[0].replace(/\$.+$/, ''), 
-					Crypto.charenc.Binary.stringToBytes(seckeys[names[loc]].substring(0, 32)), {
+					Crypto.util.hexToBytes(seckeys[names[loc]].substring(0, 64)), {
 						mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
 					});
 					var msg = "(" + msg.match(/^\@[a-z]{1,12}/).toString().substring(1) + ")" + crypt;
-					msg += "|" + Crypto.HMAC(Crypto.SHA256, crypt, seckeys[names[loc]].substring(32, 64) + seq[names[loc]]);
+					msg += "|" + Crypto.HMAC(Crypto.SHA256, crypt, seckeys[names[loc]].substring(64, 128) + seq[names[loc]]);
 					seq[names[loc]]++;
 				}
 				else {
@@ -367,11 +367,11 @@ function updatechat() {
 					for (var i=0; i != names.length; i++) {
 						if (names && (names[i] != nick) && (jQuery.inArray(names[i], outblocked) < 0)) {
 							var crypt = Crypto.AES.encrypt(queue[0].replace(/\$.+$/, ''),
-							 Crypto.charenc.Binary.stringToBytes(seckeys[names[i]].substring(0, 32)), {
+							 Crypto.util.hexToBytes(seckeys[names[i]].substring(0, 64)), {
 								mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
 							});
 							msg += "(" + names[i] + ")" + crypt;
-							msg += "|" + Crypto.HMAC(Crypto.SHA256, crypt, seckeys[names[i]].substring(32, 64) + seq[names[i]]);
+							msg += "|" + Crypto.HMAC(Crypto.SHA256, crypt, seckeys[names[i]].substring(64, 128) + seq[names[i]]);
 							seq[names[i]]++;
 						}
 					}
