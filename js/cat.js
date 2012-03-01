@@ -266,10 +266,10 @@ function updatekeys(sync) {
 					else {
 						fingerprints[names[i]] = hex_sha512(names[i] + keys[names[i]]);
 						fingerprints[names[i]] = 
-						fingerprints[names[i]].substring(25, 33) + ":" + 
-						fingerprints[names[i]].substring(50, 58) + ":" + 
-						fingerprints[names[i]].substring(75, 83) + ":" + 
-						fingerprints[names[i]].substring(100, 108) + ":" + 
+						fingerprints[names[i]].substring(24, 32) + ":" + 
+						fingerprints[names[i]].substring(48, 56) + ":" + 
+						fingerprints[names[i]].substring(72, 80) + ":" + 
+						fingerprints[names[i]].substring(96, 104) + ":" + 
 						fingerprints[names[i]].substring(120, 128);
 						fingerprints[names[i]] = fingerprints[names[i]].toUpperCase();
 					}
