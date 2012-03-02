@@ -30,7 +30,8 @@ var focus = true;
 var soundEmbed = null;
 var nick = $("#nick").html();
 var name = $("#name").html();
-var seq = new Array();
+var seq_s = new Array();
+var seq_r = new Array();
 var keys = new Array();
 var names = new Array();
 var queue = new Array();
@@ -189,7 +190,7 @@ function process(line, sentid) {
 			hmac = hmac[0].substring(1);
 			line = line.replace(/\|\w{64}/, '');
 			fliptag();
-			if ((Crypto.HMAC(Crypto.SHA256, match, seckeys[thisnick].substring(64, 128) + seq[thisnick]) != hmac) || 
+			if ((Crypto.HMAC(Crypto.SHA256, match, seckeys[thisnick].substring(64, 128) + seq_r[thisnick]) != hmac) || 
 			(jQuery.inArray(hmac, usedhmac) >= 0)) {
 				line = tagify(line);
 				line = line.replace(/\[:3\](.*)\[:3\]/, "<span class=\"diffkey\">Error: message authentication failure.</span>");
@@ -198,7 +199,7 @@ function process(line, sentid) {
 				$("#" + pos).css("background-image","url(\"img/error.png\")");
 			}
 			else {
-				seq[thisnick]++;
+				seq_r[thisnick]++;
 				match = Crypto.AES.decrypt(match, Crypto.util.hexToBytes(seckeys[thisnick].substring(0, 64)), {
 					mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
 				});
@@ -252,7 +253,8 @@ function updatekeys(sync) {
 				for (var i=0; i <= data.length - 1; i++) {
 					names[i] = data[i].replace(/:.+$/, '');
 					if (typeof keys[names[i]] === 'undefined') {
-						seq[names[i]] = 1;
+						seq_s[names[i]] = 1;
+						seq_r[names[i]] = 1;
 					 	keys[names[i]] = data[i].replace(/^[a-z]{1,12}:/, '');
 						seckeys[names[i]] = dhgen(prikey, keys[names[i]]);
 					}
@@ -276,7 +278,8 @@ function updatekeys(sync) {
 				}
 				for (var i=0; i != oldnames.length; i++) {
 					if (jQuery.inArray(oldnames[i], names) < 0) {
-						delete seq[oldnames[i]];
+						delete seq_s[oldnames[i]];
+						delete seq_r[oldnames[i]];
 						delete keys[oldnames[i]];
 						delete seckeys[oldnames[i]];
 					}
@@ -359,8 +362,8 @@ function updatechat() {
 						mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
 					});
 					var msg = "(" + msg.match(/^\@[a-z]{1,12}/).toString().substring(1) + ")" + crypt;
-					msg += "|" + Crypto.HMAC(Crypto.SHA256, crypt, seckeys[names[loc]].substring(64, 128) + seq[names[loc]]);
-					seq[names[loc]]++;
+					msg += "|" + Crypto.HMAC(Crypto.SHA256, crypt, seckeys[names[loc]].substring(64, 128) + seq_s[names[loc]]);
+					seq_s[names[loc]]++;
 				}
 				else {
 					var msg = "";
@@ -371,8 +374,8 @@ function updatechat() {
 								mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
 							});
 							msg += "(" + names[i] + ")" + crypt;
-							msg += "|" + Crypto.HMAC(Crypto.SHA256, crypt, seckeys[names[i]].substring(64, 128) + seq[names[i]]);
-							seq[names[i]]++;
+							msg += "|" + Crypto.HMAC(Crypto.SHA256, crypt, seckeys[names[i]].substring(64, 128) + seq_s[names[i]]);
+							seq_s[names[i]]++;
 						}
 					}
 				}
