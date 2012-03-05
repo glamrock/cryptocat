@@ -41,8 +41,13 @@ var inblocked = new Array();
 var outblocked = new Array();
 var fingerprints = new Array();
 
-var notice = ["Cryptocat is supported by people like you. Check out our " +
-"<a href=\"https://crypto.cat/fundraiser/\" target=\"_blank\">fundraiser</a> and keep us going."];
+var notice = [
+"Cryptocat is supported by people like you. Check out our <a href=\"https://crypto.cat/donate/\" target=\"_blank\">fundraiser</a> and keep us going.",
+"Help Cryptocat become better - please <a href=\"https://crypto.cat/donate/\" target=\"_blank\">donate</a> by buying Cryptocat stickers!",
+"Cryptocat is an open software effort. Your <a href=\"https://crypto.cat/donate/\" target=\"_blank\">donations</a> help us improve.",
+"You can donate to Cryptocat using Bitcoin! Please <a href=\"https://crypto.cat/donate/\" target=\"_blank\">contribute</a> and keep us going.",
+"Cryptocat is volunteer-run and handles thousands of conversations a week. Please <a href=\"https://crypto.cat/donate/\" target=\"_blank\">donate</a> today.",
+];
 
 function scrolldown() {
 	$("#chat").animate({scrollTop: document.getElementById("chat").scrollHeight + 20}, 820);
@@ -304,7 +309,7 @@ function updatechat() {
 			if (data == "NOEXIST") {
 				if (pubkey) {
 					errored("your chat no longer exists.");
-					$("#chat").html("<div class=\"bsg\">" + notice[0] + "</div>");
+					$("#chat").html("<div class=\"bsg\">" + notice[Math.floor(Math.random()*notice.length)] + "</div>");
 					clearInterval(interval);
 				}
 			}
@@ -482,7 +487,7 @@ function nickset() {
 					$("#nickentry").fadeOut('fast');
 				    $("#front").fadeOut('fast');
 				});
-				$("#chat").html("<div class=\"bsg\">" + notice[0] + "</div>");
+				$("#chat").html("<div class=\"bsg\">" + notice[Math.floor(Math.random()*notice.length)] + "</div>");
 				updatechat();
 			}
 			else {
