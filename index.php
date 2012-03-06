@@ -17,6 +17,10 @@
 	$install = 'https://crypto.cat/';
 	$domain = 'crypto.cat';
 	/* HTTPS is highly recommended. */
+	/* Using Cryptocat without HTTPS in a production environment */
+	/* is a recipe for disaster. We severely warn against deploying */
+	/* Cryptocat without HTTPS, unless the deployment is occurring as */
+	/* a Tor Hidden Service. */
 	$https = TRUE;
 	/* Chat storage directory. Needs to be writable by web server. */
 	$data = '/srv/data/';
