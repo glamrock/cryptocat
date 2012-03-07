@@ -469,8 +469,8 @@ $("#nickform").submit( function() {
 });
 
 $("#nickinput").keyup(function() {
-	if ($("#nickinput").val().match(/^[a-z]{1,12}$/)) {
-		$("#nick").html($("#nickinput").val());
+	if ($("#nickinput").val().match(/^\w{1,12}$/)) {
+		$("#nick").html($("#nickinput").val().toLowerCase());
 	}
 });
 
