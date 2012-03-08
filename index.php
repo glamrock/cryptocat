@@ -153,21 +153,23 @@
 			}
 			else if ($_SESSION['pos']) {
 				$people = getpeople($chat);
-				$shm_id = shmop_open(ftok($data.$_POST['chat'], 'c'), "c", 0644, 256);
-				if (!shmop_read($shm_id, 0, shmop_size($shm_id))) {
-					$last = array();
-				}
-				else {
-					$last = unserialize(shmop_read($shm_id, 0, shmop_size($shm_id)));
-					for ($p=0; $p != count($people); $p++) {
-						if (isset($last[$people[$p]]) && ((time() - $timeout) > $last[$people[$p]])) {
-							unset($last[$people[$p]]);
-							logout($_POST['chat'], $people[$p], 1);
+				if (function_exists('shmop_open')) {
+					$shm_id = shmop_open(ftok($data.$_POST['chat'], 'c'), "c", 0644, 256);
+					if (!shmop_read($shm_id, 0, shmop_size($shm_id))) {
+						$last = array();
+					}
+					else {
+						$last = unserialize(shmop_read($shm_id, 0, shmop_size($shm_id)));
+						for ($p=0; $p != count($people); $p++) {
+							if (isset($last[$people[$p]]) && ((time() - $timeout) > $last[$people[$p]])) {
+								unset($last[$people[$p]]);
+								logout($_POST['chat'], $people[$p], 1);
+							}
 						}
 					}
+					$last[$_SESSION['nick']] = time();
+					shmop_write($shm_id, serialize($last), 0);
 				}
-				$last[$_SESSION['nick']] = time();
-				shmop_write($shm_id, serialize($last), 0);
 				if ($_SESSION['pos'] <= count($chat)) {
 					if (msgcheck($chat[$_SESSION['pos']]) || preg_match($inforegex, $chat[$_SESSION['pos']])) {
 						preg_match_all('/\([a-z]{1,12}\)[^\(^\[]+/', $chat[$_SESSION['pos']], $match);
@@ -418,7 +420,9 @@ else {
 				}
 				if (file_exists($data.$name)) {
 					file_put_contents($data.$name, implode('', $chat), LOCK_EX);
-					shmop_delete(shmop_open(ftok($data.$name, 'c'), "c", 0644, 256));
+					if (function_exists('shmop_delete')) {
+						shmop_delete(shmop_open(ftok($data.$name, 'c'), "c", 0644, 256));
+					}
 				}
 			}
 		}
