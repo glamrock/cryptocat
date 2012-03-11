@@ -1,4 +1,4 @@
-// fortuna.js version 0.1
+// fortuna.js version 0.2
 // 2012 Nadim Kobeissi
 // Fortuna PRNG implementation for Crypto-JS
 // http://code.google.com/p/crypto-js/
