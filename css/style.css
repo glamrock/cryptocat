@@ -171,6 +171,7 @@ input.create:active, #talk:active {
 #users {
 	background-color: #97CEEC;
 	font-size: 10px;
+	font-weight: bold;
 	padding: 2px 3px 5px 0px;
 	width: 527px;
 	word-spacing: 5px;
@@ -207,8 +208,7 @@ input {
 	background-color: #000;
 	outline: none;
 }
-a, input.create:hover, #talk:hover, #maximize, #sound, #file, #invite, 
-#fingerlink, #close, #understand, input.nicksubmit, span.user, span.block, #filebutton {
+a, input.create:hover, #talk:hover, #maximize, #sound, #file, #invite, #close, #understand, input.nicksubmit, span.user, span.block, #filebutton {
 	cursor: pointer;
 }
 #input {
@@ -389,11 +389,9 @@ div.redirect p {
 	margin-top: -20px;
 	max-width: 140px;
 }
-#nick, #fingerlink {
+#nick {
 	color: #97CEEC;
-}
-#fingerlink:hover {
-	text-decoration: underline;
+	font-weight: bold;
 }
 .blue, #name {
 	color: #97CEEC;

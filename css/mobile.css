@@ -145,6 +145,7 @@ input.create:active, #talk:active {
 	word-spacing: 5px;
 	height: 9px;
 	font-size: 0.3em;
+	font-weight: bold;
 }
 span.users {
 	padding: 4px 2px 4px 2px;
@@ -318,11 +319,9 @@ div.redirect p {
 #keygen, #nickentry {
 	margin: 7em auto;
 }
-#nick, #fingerlink {
+#nick {
 	color: #97CEEC;
-}
-#fingerlink:hover {
-	text-decoration: underline;
+	font-weight: bold;
 }
 .blue, #name {
 	color: #97CEEC;
