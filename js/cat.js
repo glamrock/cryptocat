@@ -144,7 +144,7 @@ function tagify(line) {
 				}
 			}
 			sanitize = sanitize.join("");
-			line = line.replace(sanitize, "<a target=\"_blank\" href=\"" + "?redirect=" + escape(sanitize) + "\">" + match[mc] + "</a>");
+			line = line.replace(sanitize, "<a target=\"_blank\" href=\"" + sanitize + "\">" + match[mc] + "</a>");
 		}
 	}
 	line = line.replace(/\&lt\;3/g, "<span class=\"monospace\">&#9829;</span>");
