@@ -22,34 +22,34 @@ var p =
 "287C5947 4E6BC05D 99B2964F A090C3A2 233BA186 515BE7ED" +
 "1F612970 CEE2D7AF B81BDD76 2170481C D0069127 D5B05AA9" +
 "93B4EA98 8D8FDDC1 86FFB7DC 90A6C08F 4DF435C9 34063199" +
-"FFFFFFFF FFFFFFFF"
+"FFFFFFFF FFFFFFFF";
 
 var p = str2bigInt(p.replace(/\s/g, ''), 16);
 var g = str2bigInt("2", 10);
-var z = new Array(); for (var i=0; i!=274; i++) { z[i] = 0; } z[272] = 1;
+var z = []; for (var i=0; i!==274; i++) { z[i] = 0; } z[272] = 1;
 
 var num = sound = pos = tag = prikey = pubkey = last = 0;
-var focus = true;
+var cfocus = true;
 var soundEmbed = null;
 var nick = $("#nick").html();
 var name = $("#name").html();
-var seq_s = new Array();
-var seq_r = new Array();
-var keys = new Array();
-var names = new Array();
-var queue = new Array();
-var seckeys = new Array();
-var usedhmac = new Array();
-var inblocked = new Array();
-var outblocked = new Array();
-var fingerprints = new Array();
+var seq_s = [];
+var seq_r = [];
+var keys = [];
+var names = [];
+var queue = [];
+var seckeys = [];
+var usedhmac = [];
+var inblocked = [];
+var outblocked = [];
+var fingerprints = [];
 
 var notice = [
 "Cryptocat is supported by people like you. Check out our <a href=\"https://crypto.cat/donate/\" target=\"_blank\">fundraiser</a> and keep us going.",
 "Help Cryptocat become better - please <a href=\"https://crypto.cat/donate/\" target=\"_blank\">donate</a> by buying Cryptocat stickers!",
 "Cryptocat is an open software effort. Your <a href=\"https://crypto.cat/donate/\" target=\"_blank\">donations</a> help us improve.",
 "You can donate to Cryptocat using Bitcoin! Please <a href=\"https://crypto.cat/donate/\" target=\"_blank\">contribute</a> and keep us going.",
-"Cryptocat is volunteer-run and handles thousands of conversations a week. Please <a href=\"https://crypto.cat/donate/\" target=\"_blank\">donate</a> today.",
+"Cryptocat is volunteer-run and handles thousands of conversations a week. Please <a href=\"https://crypto.cat/donate/\" target=\"_blank\">donate</a> today."
 ];
 
 function scrolldown() {
@@ -64,10 +64,10 @@ function getstamp(n) {
 	for (si=0; si < (n.length - 5); si++) {
 		spaces += "&#160;";
 	}
-	if (String(h).length == 1) {
+	if (String(h).length === 1) {
 		h = "0" + String(h);
 	}
-	if (String(m).length == 1) {
+	if (String(m).length === 1) {
 		m = "0" + String(m);
 	}
 	return spaces + h + ":" + m;
@@ -117,11 +117,11 @@ function gen(size, extra, s) {
 	while (str.length < size) {
 		str += charset.charAt(Math.floor(Math.random() * charset.length));
 	}
- 	return str;
+	return str;
 }
 
 function dhgen(key, pub) {
-	if (pub == "gen") {
+	if (pub === "gen") {
 		prikey = str2bigInt(key, 10);
 		pubkey = powMod(g, prikey, p);
 		return bigInt2str(pubkey, 64);
@@ -152,7 +152,7 @@ function tagify(line) {
 	if (match = line.match(/^[a-z]{1,12}/)) {
 		var atmatch = line.match(/^[a-z]{1,12}:\s\@[a-z]{1,12}/);
 		if (atmatch && jQuery.inArray(atmatch.toString().substring(thisnick.length + 3), names) >= 0 &&
-		(atmatch.toString().substring(thisnick.length + 3) == nick || thisnick == nick)) {
+		(atmatch.toString().substring(thisnick.length + 3) === nick || thisnick === nick)) {
 			line = line.replace(/^[a-z]{1,12}\:\s\@[a-z]{1,12}/, '<span class="nick">' + thisnick + ' <span class="blue">&gt;</span> ' +
 			atmatch.toString().substring(thisnick.length + 3) + '</span>');  
 			if (match = line.match(/data:image\S+$/)) {
@@ -171,43 +171,29 @@ function tagify(line) {
 	return line;
 }
 
-function fliptag() {
-	if (tag == "msg") { tag = "gsm"; }
-	else { tag = "msg"; }
-}
-
 function process(line, sentid) {
 	if (line) {
 		line = $.trim(line);
 		if (sentid) {
-			fliptag();
 			line = tagify(line);
-			if (names.length > 1) {
-				line = "<div class=\"" + tag + "\" id=\"" + sentid + "\"><div class=\"text\">" + line + "</div></div>";
-			}
-			else {
-				line = "<div class=\"" + tag + "\"><div class=\"text\">" + line + "</div></div>";
-			}
-			return line;
+			pushline(line, sentid);
+			return;
 		}
 		else if (match = line.match(/^[a-z]{1,12}\:\s\[:3\](\w|\/|\+|\?|\=)*\|?(\d|a|b|c|d|e|f)*\[:3\]$/)) {
 			thisnick = $.trim(match[0].match(/^[a-z]{1,12}/));
-			if (jQuery.inArray(thisnick, inblocked) >= 0) {
-				return;
-			}
 			match = line.match(/\[:3\](.*)\|/);
 			match = match[0].substring(4, match[0].length - 1);
 			var hmac = line.match(/\|\w{64}/);
 			hmac = hmac[0].substring(1);
 			line = line.replace(/\|\w{64}/, '');
-			fliptag();
-			if ((Crypto.HMAC(Crypto.SHA256, match, seckeys[thisnick].substring(64, 128) + seq_r[thisnick]) != hmac) || 
+			if ((Crypto.HMAC(Crypto.SHA256, match, seckeys[thisnick].substring(64, 128) + seq_r[thisnick]) !== hmac) || 
 			(jQuery.inArray(hmac, usedhmac) >= 0)) {
-				line = tagify(line);
-				line = line.replace(/\[:3\](.*)\[:3\]/, "<span class=\"diffkey\">Error: message authentication failure.</span>");
-				line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
-				pushline(line);
-				$("#" + pos).css("background-image","url(\"img/error.png\")");
+				if (jQuery.inArray(thisnick, inblocked) < 0) {
+					line = tagify(line);
+					line = line.replace(/\[:3\](.*)\[:3\]/, "<span class=\"diffkey\">Error: message authentication failure.</span>");
+					pushline(line, pos);
+					$("#" + pos).css("background-image","url(\"img/error.png\")");
+				}
 			}
 			else {
 				seq_r[thisnick]++;
@@ -215,35 +201,37 @@ function process(line, sentid) {
 					mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
 				});
 				usedhmac.push(hmac);
-				line = line.replace(/\[:3\](.*)\[:3\]/, match);
-				line = tagify(line);
-				line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
-				pushline(line);
-				if ($("#" + pos).html().match(/data:.+\<\/a\>\<\/div\>$/)) {
-					$("#" + pos).css("background-image","url(\"img/fileb.png\")");
+				if (jQuery.inArray(thisnick, inblocked) < 0) {
+					line = line.replace(/\[:3\](.*)\[:3\]/, match);
+					line = tagify(line);
+					pushline(line, pos);
+					if ($("#" + pos).html().match(/data:.+\<\/a\>\<\/div\>$/)) {
+						$("#" + pos).css("background-image","url(\"img/fileb.png\")");
+					}
 				}
 			}
 		}
 		else if (match = line.match(/^(\&gt\;|\&lt\;)\s[a-z]{1,12}\s(has arrived|has left)$/)) {
 			updatekeys(true);
 			line = "<span class=\"nick\">" + match[0] + "</span>";
-			fliptag();
-			line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
-			pushline(line);
+			pushline(line, pos);
 			$("#" + pos).css("background-image","url(\"img/user.png\")");
 		}
 		else {
-			line = "<span class=\"diffkey\">Error: invalid message received.</span>";
-			fliptag();
-			line = "<div class=\"" + tag + "\" id=\"" + pos + "\"><div class=\"text\">" + line + "</div></div>";
-			pushline(line);
-			$("#" + pos).css("background-image","url(\"img/error.png\")");
+			if (jQuery.inArray(thisnick, inblocked) < 0) {
+				line = "<span class=\"diffkey\">Error: invalid message received.</span>";
+				pushline(line, pos);
+				$("#" + pos).css("background-image","url(\"img/error.png\")");
+			}
 		}
 	}
 	return "";
 }
 
-function pushline(line) {
+function pushline(line, id) {
+	if (tag === "msg") {tag = "gsm";}
+	else {tag = "msg";}
+	line = "<div class=\"" + tag + "\" id=\"" + id + "\"><div class=\"text\">" + line + "</div></div>";
 	$("#chat").html($("#chat").html() + line);
 	if (sound) {
 		soundPlay("snd/msg.webm");
@@ -257,21 +245,21 @@ function updatekeys(sync) {
 		success: function(data) {
 			data = data.split('|');
 			data.splice(data.length - 1, 1);
-			if (data.length != names.length) {
+			if (data.length !== names.length) {
 				oldnames = names.slice(0);
-				names = new Array();
-				fingerprints = new Array();
+				names = [];
+				fingerprints = [];
 				for (var i=0; i <= data.length - 1; i++) {
 					names[i] = data[i].replace(/:.+$/, '');
 					if (typeof keys[names[i]] === 'undefined') {
 						seq_s[names[i]] = 1;
 						seq_r[names[i]] = 1;
-					 	keys[names[i]] = data[i].replace(/^[a-z]{1,12}:/, '');
+						keys[names[i]] = data[i].replace(/^[a-z]{1,12}:/, '');
 						seckeys[names[i]] = dhgen(prikey, keys[names[i]]);
 					}
 					var big = str2bigInt(keys[names[i]], 64);
 					if ((equals(big, p) || greater(big, p) || greater(z, big)) || 
-					(keys[names[i]] != data[i].replace(/^[a-z]{1,12}:/, ''))) {
+					(keys[names[i]] !== data[i].replace(/^[a-z]{1,12}:/, ''))) {
 						fingerprints[names[i]] = "<span class=\"red\">DANGER: This user is using suspicious keys. " + 
 						"Communicating with this user is strongly not recommended.</span>";
 						userinfo(names[i]);
@@ -287,7 +275,7 @@ function updatekeys(sync) {
 						fingerprints[names[i]] = fingerprints[names[i]].toUpperCase();
 					}
 				}
-				for (var i=0; i != oldnames.length; i++) {
+				for (var i=0; i !== oldnames.length; i++) {
 					if (jQuery.inArray(oldnames[i], names) < 0) {
 						delete seq_s[oldnames[i]];
 						delete seq_r[oldnames[i]];
@@ -296,8 +284,8 @@ function updatekeys(sync) {
 					}
 				}
 			}
-			var users = new Array();
-			for (var i=0; i!=names.length; i++) {
+			var users = [];
+			for (var i=0; i!==names.length; i++) {
 				users[i] = '<span class="user" onclick="userinfo(\'' + names[i] + '\')">' + names[i] + '</span>';
 			}
 			$("#users").html('<span class="users">' + users.length + '</span> ' + users.join(' '));
@@ -309,27 +297,27 @@ function updatechat() {
 	$.ajax({ url: install, type: "POST", async: true, 
 		data: "chat=" + name,
 		success: function(data) {
-			if (data == "NOEXIST") {
+			if (data === "NOEXIST") {
 				if (pubkey) {
 					errored("your chat no longer exists.");
 					$("#chat").html("<div class=\"bsg\">" + notice[Math.floor(Math.random()*notice.length)] + "</div>");
 					clearInterval(interval);
 				}
 			}
-			else if (data == "NOLOGIN") {
+			else if (data === "NOLOGIN") {
 				if (pubkey) {
 					errored("you have been logged out.");
 					clearInterval(interval);
 				}
 			}
-			else if (data != "") {
+			else if (data !== "") {
 				pos++;
 				if (data.match(/\s/)) {
 					process(data, 0);
 					if ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) < 800) {
 						scrolldown();
 					}
-					if (!focus || ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) > 800)) {
+					if (!cfocus || ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) > 800)) {
 						num++;
 						document.title = "[" + num + "] Cryptocat";
 					}
@@ -344,7 +332,7 @@ function updatechat() {
 					$("#" + data).attr("id", "x");
 				}
 			}
-			if ($("#users").html() == '<span class="users">x</span>&nbsp; connection issues. stand by...') {
+			if ($("#users").html() === '<span class="users">x</span>&nbsp; connection issues. stand by...') {
 				updatekeys(true);
 				$("#users").css("background-color", "#97CEEC");
 			}
@@ -361,8 +349,8 @@ function updatechat() {
 				}
 				var msg = queue[0].replace(/\$.+$/, '');
 				var sentid = queue[0].replace(/^.+\$/, '');
-				if ((msg[0] == "@") && (jQuery.inArray(msg.match(/^\@[a-z]{1,12}/).toString().substring(1), names) >= 0)) {
-					if (msg.match(/^\@[a-z]{1,12}/).toString().substring(1) == nick) {
+				if ((msg[0] === "@") && (jQuery.inArray(msg.match(/^\@[a-z]{1,12}/).toString().substring(1), names) >= 0)) {
+					if (msg.match(/^\@[a-z]{1,12}/).toString().substring(1) === nick) {
 						$("#" + sentid).css("background-image","url(\"img/chat.png\")");
 						queue.splice(0,1);
 						return;
@@ -378,10 +366,10 @@ function updatechat() {
 				}
 				else {
 					var msg = "";
-					for (var i=0; i != names.length; i++) {
-						if (names && (names[i] != nick) && (jQuery.inArray(names[i], outblocked) < 0)) {
+					for (var i=0; i !== names.length; i++) {
+						if (names && (names[i] !== nick) && (jQuery.inArray(names[i], outblocked) < 0)) {
 							var crypt = Crypto.AES.encrypt(queue[0].replace(/\$.+$/, ''),
-							 Crypto.util.hexToBytes(seckeys[names[i]].substring(0, 64)), {
+							Crypto.util.hexToBytes(seckeys[names[i]].substring(0, 64)), {
 								mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
 							});
 							msg += "(" + names[i] + ")" + crypt;
@@ -404,7 +392,7 @@ function updatechat() {
 				}
 				postmsg();
 			}
-		},
+		}
 	});
 }
 
@@ -412,9 +400,9 @@ function sendmsg(msg) {
 	msg = msg.replace(/\$/g,"&#36;");
 	$("#input").val("");
 	$("#input").focus();
-	if (msg != "") {
+	if (msg !== "") {
 		var sentid = gen(8, 1, 0);
-		$("#chat").html($("#chat").html() + process(nick + ": " + msg, sentid));
+		process(nick + ": " + msg, sentid);
 		scrolldown();
 		if (names.length > 1) {
 			$("#" + sentid).css("background-image","url(\"img/sending.gif\")");
@@ -439,14 +427,14 @@ $("#nickform").submit( function() {
 				'<br /><input type="password" id="keytropy" />');
 				$("#keytropy").focus();
 				$("#keytropy").keydown(function(event) {
-					if (Crypto.Fortuna.Ready() == 0) {
+					if (Crypto.Fortuna.Ready() === 0) {
 						e = String.fromCharCode(event.keyCode);
 						var d = new Date();
 						down = d.getTime();
 					}
 				});
 				$("#keytropy").keyup(function() {
-					if (Crypto.Fortuna.Ready() == 0) {
+					if (Crypto.Fortuna.Ready() === 0) {
 						var d = new Date();
 						up = d.getTime();
 						Crypto.Fortuna.AddRandomEvent(e + (up - down));
@@ -478,7 +466,7 @@ function nickset() {
 	$.ajax({ url: install, type: "POST",
 		data: "nick=" + $("#nickinput").val() + "&name=" + name + "&key=" + encodeURIComponent(pubkey),
 		success: function(data) {
-			if ((data != "error") && (data != "inuse") && (data != "full")) {
+			if ((data !== "error") && (data !== "inuse") && (data !== "full")) {
 				nick = $("#nick").html();
 				$("#input").focus();
 				document.title = "[" + num + "] Cryptocat";
@@ -488,7 +476,7 @@ function nickset() {
 				$('#keygen').fadeOut('fast', function() {
 					$("#changenick").fadeOut('fast');
 					$("#nickentry").fadeOut('fast');
-				    $("#front").fadeOut('fast');
+					$("#front").fadeOut('fast');
 				});
 				$("#chat").html("<div class=\"bsg\">" + notice[Math.floor(Math.random()*notice.length)] + "</div>");
 				updatechat();
@@ -496,13 +484,13 @@ function nickset() {
 			else {
 				$('#keygen').fadeOut('fast', function() {
 					$("#nickentry").fadeIn('fast');
-					if (data == "inuse") {
+					if (data === "inuse") {
 						$("#nickinput").val("nickname in use");
 					}
-					else if (data == "full") {
+					else if (data === "full") {
 						$("#nickinput").val("chat is full");
 					}
-					else if (data == "error") {
+					else if (data === "error") {
 						$("#nickinput").val("letters only");
 					}
 					$("#front").fadeIn();
@@ -518,14 +506,14 @@ $("#file").click(function(){
 	$("#fadebox").html('<input type="button" id="close" value="x" />' +
 	'<br /><h3>send encrypted file</h3>');
 	if (window.File && window.FileReader) {
-		 $("#fadebox").html($("#fadebox").html() + 'Enter recipient: ' +
+		$("#fadebox").html($("#fadebox").html() + 'Enter recipient: ' +
 		'<input type="text" id="recipient" />' +
 		'<br />Zip files and images accepted. Maximum size: <span class="blue">' + filesize + 
 		'kb</span><br /><br /><span id="filewrap">' + 
 		'<input type="button" id="filebutton" value="Select file" />' + 
 		'<input type="file" id="fileselect" name="file[]" /></span><br /><br />');
 		$("#recipient").keyup(function(){
-			if (($("#recipient").val() == nick) || (jQuery.inArray($("#recipient").val(), names) < 0)) {
+			if (($("#recipient").val() === nick) || (jQuery.inArray($("#recipient").val(), names) < 0)) {
 				$("#recipient").css("background-color", "#000");
 				$("#recipient").css("color", "#97CEEC");
 				$("#filebutton").css("display", "none");
@@ -629,7 +617,7 @@ $("#invite").click(function(){
 function userinfo(n) {
 	$("#fadebox").html('<input type="button" id="close" value="x" />' +
 	'<br /><h3>' + n + '</h3>');
-	if (n == nick) {
+	if (n === nick) {
 		$("#fadebox").html($("#fadebox").html() +
 		'Users can send you a private message by typing:<br />' +
 		'<span class="blue">@' + n + '</span> their message<br /><br />' +
@@ -649,7 +637,7 @@ function userinfo(n) {
 		$("#incoming").html("no");
 	}
 	$("#incoming").click(function(){
-		if ($("#incoming").html() == "no") {
+		if ($("#incoming").html() === "no") {
 			inblocked.splice(jQuery.inArray(n, inblocked));
 			$("#incoming").css("background-color", "#97CEEC");
 			$("#incoming").html("yes");
@@ -665,7 +653,7 @@ function userinfo(n) {
 		$("#outgoing").html("no");
 	}
 	$("#outgoing").click(function(){
-		if ($("#outgoing").html() == "no") {
+		if ($("#outgoing").html() === "no") {
 			outblocked.splice(jQuery.inArray(n, outblocked));
 			$("#outgoing").css("background-color", "#97CEEC");
 			$("#outgoing").html("yes");
@@ -687,7 +675,7 @@ function userinfo(n) {
 }
 
 $("#maximize").click(function(){
-	if ($("#maximize").attr("title") == "contract") {
+	if ($("#maximize").attr("title") === "contract") {
 		$("#main").animate({"margin-top": "2%", "min-width": "600px", "min-height": "420px", width: "600px", height: "420px"}, 500 );
 		$("#info").animate({width: "588px"}, 500 );
 		$("#users").animate({width: "525px", "padding-right": "3px"}, 500 );
@@ -719,7 +707,7 @@ $("#input").keyup(function(){
 	(jQuery.inArray($("#input").val().match(/^\@[a-z]{1,12}/).toString().substring(1), names) >= 0)) {
 		$("#input").css("color", "#97CEEC");
 	}
-	else if ($("#input").css("color") == "rgb(151, 206, 236)") {
+	else if ($("#input").css("color") === "rgb(151, 206, 236)") {
 		$("#input").css("color", "#FFF");
 	}
 });
@@ -734,20 +722,20 @@ $("#talk").mouseover(function(){
 
 window.onfocus = function() {
 	clearTimeout(blur);
-	focus = true;
+	cfocus = true;
 	num = 0;
 	document.title = "[" + num + "] Cryptocat";
-}
+};
 window.onblur = function() {
-	blur = setTimeout("focus = false", update);
-}
+	blur = setTimeout("cfocus = false", update);
+};
 document.onblur = window.onblur;
 document.focus = window.focus;
 
 function logout() {
 	$.ajax({ url: install,
 		type: "POST", async: false,
-		data: "logout=" + name,
+		data: "logout=" + name
 	});
 }
 
