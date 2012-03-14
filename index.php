@@ -38,7 +38,7 @@
 	$nicks = array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'turtle', 
 	'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite', 'ducky');
 	/* Polling and timeout rates. You probably shouldn't touch these. */
-	$update = 1250;
+	$update = 1150;
 	$timeout = 80;
 	
 	/* Do _not_ touch anything below this line. */
@@ -288,7 +288,7 @@ else {
 								Cryptocat provides strong encryption, but does not replace a strong security culture alone. 
 								Consider installing the <a href="https://chrome.google.com/webstore/detail/gonbigodpnfghidmnphnadhepmbabhij" target="_blank">Cryptocat app for Google Chrome</a> for extra security, and always think responsibly if you are in serious situations.
 							</span>
-							<br /><input id="understand" type="button" value="I understand" />
+							<input id="understand" type="button" value="I understand" />
 						</div>
 					</div>
 					<div>
@@ -297,6 +297,7 @@ else {
 							<input type="submit" class="create" value="enter" id="create" />
 							<input type="button" class="create" value="?" id="random" />
 						</div>
+						<div style="text-align:center" id="intro">New to Cryptocat? Check out this <a href="#" id="video">cool video!</a></div>
 					</div>
 				</form>
 				<table>

@@ -14,9 +14,6 @@ body {
 	height: 100%;
 	border: 7px solid #000;
 }
-div.bottom {
-	display: none;
-}
 h3 {
 	color: #97CEEC;
 	margin: 0px 0px 10px 0px;
@@ -80,6 +77,9 @@ span.user:hover {
 	font-size: 1.4em;
 }
 #understand {
+	display: block;
+	margin: 0 auto;
+	width: 170px;
 	margin-top: 23px;
 }
 input.nicksubmit {
@@ -189,9 +189,6 @@ input.logout:hover {
 #input:active {
 	border: none;
 }
-.invisible {
-	display: none;
-}
 #url {
 	background-color: #000;
 	border: none;
@@ -252,7 +249,7 @@ div.text {
 	padding: 0px 0px 0px 0px;
 	word-wrap: break-word;
 }
-#maximize, #sound, #file, #invite, #notice, table {
+#maximize, #sound, #file, #invite, #notice, table, div.bottom, .invisible, #intro {
 	display: none;
 }
 #front {

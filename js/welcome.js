@@ -46,6 +46,18 @@ $("#understand").click(function(){
 	$("#welcome").submit();
 });
 
+$("#video").click(function(){
+	$("#front").css('background-color', 'rgba(0, 0, 0, 0.8)');
+	$("#note").html('<input type="button" id="close" value="x" /><span id="notetext"><iframe src="https://player.vimeo.com/video/38439169?color=97ceec&amp;autoplay=1" width="500" height="281" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe></span>');
+	$("#front").fadeIn();
+	$("#close").click(function(){
+		$("#front").fadeOut(function(){
+			$("#front").css('background-color', 'rgba(0, 0, 0, 0)');
+			$("#note").html('<span id="notetext">' + notetext + '</span><input id="understand" type="button" value="I understand" />');
+		});
+	});
+});
+
 var td1 = $("#td1").html();
 var td2 = $("#td2").html();
 var td3 = $("#td3").html();
