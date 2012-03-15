@@ -284,10 +284,10 @@ else {
 				<form action="'.$install.'" method="get" class="create" id="welcome">
 					<div id="front" class="invisible">
 						<div id="note">
-							<span id="notetext">
+							<div id="notetext">
 								Cryptocat provides strong encryption, but does not replace a strong security culture alone. 
 								Consider installing the <a href="https://chrome.google.com/webstore/detail/gonbigodpnfghidmnphnadhepmbabhij" target="_blank">Cryptocat app for Google Chrome</a> for extra security, and always think responsibly if you are in serious situations.
-							</span>
+							</div>
 							<input id="understand" type="button" value="I understand" />
 						</div>
 					</div>
