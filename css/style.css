@@ -110,7 +110,7 @@ span.user:hover {
 #understand {
 	font-size: 12px;
 	display: block;
-	margin: 0 auto;
+	margin: 5px auto 0 auto;
 	width: 100px;
 }
 input.nicksubmit {
@@ -350,14 +350,12 @@ td {
 	text-align: left;
 }
 #note {
-	min-width: 460px;
-	max-width: 550px;
-	padding: 0 0 20px 0;
+	width: 585px;
+	padding: 10px 0 5px 0;
 	margin-top: 130px;
 }
 #notetext {
-	padding: 30px 20px 10px 20px;
-	display: block;
+	padding: 20px 0 15px 0;
 }
 #intro {
 	text-align: center;

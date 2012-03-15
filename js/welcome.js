@@ -54,7 +54,7 @@ $("#create").click(function() {
 
 $("#video").click(function(){
 	$("#front").css('background-color', 'rgba(0, 0, 0, 0.8)');
-	$("#note").html('<input type="button" id="close" value="x" /><span id="notetext"><iframe src="https://player.vimeo.com/video/38439169?color=97ceec&amp;autoplay=1" width="500" height="281" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe></span>');
+	$("#note").html('<input type="button" id="close" value="x" /><span id="notetext"><iframe src="https://player.vimeo.com/video/38439169?color=97ceec&amp;autoplay=1" width="549" height="309" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe></span>');
 	$("#front").fadeIn();
 	$("#close").click(function(){
 		$("#front").fadeOut(function(){
