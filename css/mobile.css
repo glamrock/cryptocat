@@ -244,9 +244,7 @@ span.nick {
 	margin: 0px 5px 5px 0px;
 }
 div.text {
-	max-width: 96%;
-	margin: 0px 0px 0px 0px;
-	padding: 0px 0px 0px 0px;
+	max-width: 95%;
 	word-wrap: break-word;
 }
 #maximize, #sound, #file, #invite, #notice, table, div.bottom, .invisible, #intro {
@@ -346,3 +344,23 @@ a.download {
 a.download:hover {
 	text-decoration: none;
 }
+.emoticon {
+	background: transparent url("../img/emoticat.png") no-repeat;
+	height: 13px;
+	width: 13px;
+	display: inline-block;
+	vertical-align: -15%;
+}
+#e_cat { background-position: 0 0; }
+#e_cry { background-position: -13px 0; }
+#e_gasp { background-position: -26px 0; }
+#e_grin { background-position: -39px 0; }
+#e_sad { background-position: -52px 0; }
+#e_smile { background-position: -65px 0; }
+#e_squint { background-position: -78px 0; }
+#e_tongue { background-position: -91px 0; }
+#e_unsure { background-position: -104px 0; }
+#e_wink { background-position: -117px 0; }
+#e_winktongue { background-position: -130px 0; }
+#e_yay { background-position: -143px 0; }
+#e_shut { background-position: -156px 0; }
