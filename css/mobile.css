@@ -197,7 +197,7 @@ input.logout:hover {
 div.msg, div.gsm {
 	padding: 8px 2px 8px 25px;
 	background-color: #D8EDF8;
-	width: 98%;
+	width: 94%;
 	word-wrap: break-word;
 	background-repeat: no-repeat;
 	background-image: url("../img/chat.png");
@@ -207,6 +207,7 @@ div.gsm {
 	background-color: #FFF;
 }
 div.bsg {
+	width: 98%;
 	background-color: #222;
 	color: #97BEED;
 	background-image: none;
@@ -244,7 +245,7 @@ span.nick {
 	margin: 0px 5px 5px 0px;
 }
 div.text {
-	max-width: 95%;
+	max-width: 99%;
 	word-wrap: break-word;
 }
 #maximize, #sound, #file, #invite, #notice, table, div.bottom, .invisible, #intro {
@@ -349,7 +350,9 @@ a.download:hover {
 	height: 13px;
 	width: 13px;
 	display: inline-block;
-	vertical-align: -15%;
+	vertical-align: 70%;
+	font-size: 2px;
+	color: transparent;
 }
 #e_cat { background-position: 0 0; }
 #e_cry { background-position: -13px 0; }

@@ -451,7 +451,9 @@ a.download:hover {
 	height: 13px;
 	width: 13px;
 	display: inline-block;
-	vertical-align: -15%;
+	vertical-align: 18%;
+	font-size: 2px;
+	color: transparent;
 }
 #e_cat { background-position: 0 0; }
 #e_cry { background-position: -13px 0; }
