@@ -16,24 +16,25 @@
 	/* Install directory and domain name. */
 	$install = 'https://crypto.cat/';
 	$domain = 'crypto.cat';
-	/* HTTPS is highly recommended. */
-	/* Using Cryptocat without HTTPS in a production environment */
-	/* is a recipe for disaster. We severely warn against deploying */
-	/* Cryptocat without HTTPS, unless the deployment is occurring as */
+	/* HTTPS is highly recommended! Using Cryptocat without HTTPS */
+	/* in a production environment is a recipe for disaster. */
+	/* You are severely warned against deploying Cryptocat */
+	/* without HTTPS, unless the deployment is occurring as */
 	/* a Tor Hidden Service. */
 	$https = TRUE;
 	/* Chat storage directory. Needs to be writable by web server. */
 	$data = '/srv/data/';
 	/* Maximum users in a chat. Untested above 10. */
 	$maxusers = 10;
-	/* Maximum characters per line. */
+	/* Maximum characters per line (soft limit.) */
 	$maxinput = 256;
+	/* Maximum encrypted file size in kilobytes (soft limit.) */
+	/* Seems not to work above 700kb. */
+	$filesize = 600;
 	/* Time limit in seconds before overwriting chat. */
 	$timelimit = 3600;
 	/* Set to 0 to disable automatic URL linking. */
 	$genurl = 1;
-	/* Maximum encrypted file size in kilobytes. */
-	$filesize = 512;
 	/* Default nicknames: */
 	$nicks = array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'turtle', 
 	'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite', 'ducky');
@@ -402,7 +403,7 @@ else {
 				</div>
 			</form>
 			</div>
-			<script type="text/javascript">var install="'.$install.'";var update="'.$update.'";var maxinput="'.$maxinput.'";var genurl='.$genurl.';var filesize='.$filesize.';</script>
+			<script type="text/javascript">var install="'.$install.'";var update='.$update.';var maxinput='.$maxinput.';var genurl='.$genurl.';var filesize='.$filesize.';</script>
 			<script type="text/javascript" src="js/cat.js"></script>');
 		}
 		function logout($name, $nick, $ghost) {
@@ -450,5 +451,6 @@ else {
 				welcome('name your chat');
 		}
 	?>
+
 </body>
 </html>
