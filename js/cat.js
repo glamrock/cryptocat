@@ -159,7 +159,7 @@ function tagify(line) {
 		line = line.replace(/(:|=)-?(\/|s)/gi, '<div class="emoticon" id="e_unsure">$&</div>');
 		line = line.replace(/;-?\)/gi, '<div class="emoticon" id="e_wink">$&</div>');
 		line = line.replace(/;-?\p/gi, '<div class="emoticon" id="e_winktongue">$&</div>');
-		line = line.replace(/\^(_|-)?\^/gi, '<div class="emoticon" id="e_yay">$&</div>');
+		line = line.replace(/\^(_|\.)?\^/gi, '<div class="emoticon" id="e_yay">$&</div>');
 		line = line.replace(/(:|=)-?x/gi, '<div class="emoticon" id="e_shut">$&</div>');
 		line = line.replace(/\&lt\;3/g, '<span class="monospace">&#9829;</span>');
 	}
