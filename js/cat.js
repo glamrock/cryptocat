@@ -691,24 +691,24 @@ function userinfo(n) {
 
 $("#maximize").click(function(){
 	if ($("#maximize").attr("title") === "contract") {
-		$("#main").animate({"margin-top": "2%", "min-width": "600px", "min-height": "420px", width: "600px", height: "420px"}, 500 );
-		$("#info").animate({width: "588px"}, 500 );
-		$("#users").animate({width: "525px", "padding-right": "3px"}, 500 );
-		$("#input").animate({width: "508px"}, 500 );
-		$("#talk").animate({width: "67px"}, 500 );
-		$("#inchat").animate({height: "343px", "margin-bottom": "10px"}, 500 );
+		$("#main").animate({"margin-top": "2%", "min-width": "600px", "min-height": "420px", width: "600px", height: "420px"}, 500);
+		$("#info").animate({width: "588px"}, 500);
+		$("#users").animate({width: "525px", "padding-right": "3px"}, 500);
+		$("#input").animate({width: "508px"}, 500);
+		$("#talk").animate({width: "67px"}, 500);
+		$("#inchat").animate({height: "343px", "margin-bottom": "10px"}, 500);
 		$("#chat").animate({height: "340px"}, 500, function() { scrolldown(); });
 		$("#maximize").attr("src", "img/maximize.png");
 		$("#maximize").attr("title", "expand");
 		$("#input").focus();
 	}
 	else {
-		$("#main").animate({"margin-top": "1%", "min-width": "900px", width: "85%", height: "96.5%"}, 500 );
-		$("#info").animate({width: "99%"}, 500 );
-		$("#users").animate({width: "92.3%", "padding-right": "20px"}, 500 );
-		$("#input").animate({width: "92.3%"}, 500 );
-		$("#talk").animate({width: "5.2%"}, 500 );
-		$("#inchat").animate({height: "93%", "margin-bottom": "-30px"}, 500 );
+		$("#main").animate({"margin-top": "1%", "min-width": "900px", width: "85%", height: "96.5%"}, 500);
+		$("#info").animate({width: "99%"}, 500);
+		$("#users").animate({width: "92.3%", "padding-right": "20px"}, 500);
+		$("#input").animate({width: "92.3%"}, 500);
+		$("#talk").animate({width: "5.2%"}, 500);
+		$("#inchat").animate({height: "93%", "margin-bottom": "-30px"}, 500);
 		$("#chat").animate({height: "91%"}, 500, function() { scrolldown(); });
 		$("#maximize").attr("src", "img/minimize.png");
 		$("#maximize").attr("title", "contract");
