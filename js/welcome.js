@@ -9,7 +9,7 @@ function gen(s) {
 	}
 }
 
-$("#welcome").submit( function() {
+$("#welcome").submit(function() {
 	$("#c").val($("#c").val().toLowerCase());
 	if (understood) {
 		return true;
