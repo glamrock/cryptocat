@@ -427,19 +427,19 @@ function sendmsg(msg) {
 	}
 }
 
-$("#chatform").submit( function() {
+$("#chatform").submit(function() {
 	sendmsg($.trim($("#input").val()));
 	return false;
 });
 
-$("#nickform").submit( function() {
+$("#nickform").submit(function() {
 	$("#nickinput").val($("#nickinput").val().toLowerCase());
 	if (!pubkey) {
+		$('#keytext').html('Type on your keyboard as randomly as possible for a few seconds:' + 
+		'<br /><input type="password" id="keytropy" />');
 		$('#nickentry').fadeOut('fast', function() {
 			$('#keygen').fadeIn('fast', function() {
 				var down, up, e;
-				$('#keytext').html('Type on your keyboard as randomly as possible for a few seconds:' + 
-				'<br /><input type="password" id="keytropy" />');
 				$("#keytropy").focus();
 				$("#keytropy").keydown(function(event) {
 					if (Crypto.Fortuna.Ready() === 0) {
