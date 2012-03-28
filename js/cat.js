@@ -52,8 +52,8 @@ var notice = [
 "Cryptocat is volunteer-run and handles thousands of conversations a week. Please <a href=\"https://crypto.cat/donate/\" target=\"_blank\">donate</a> today."
 ];
 
-function scrolldown() {
-	$("#chat").animate({scrollTop: document.getElementById("chat").scrollHeight + 20}, 820);
+function scrolldown(s) {
+	$("#chat").animate({scrollTop: document.getElementById("chat").scrollHeight + 20}, s);
 }
 
 function getstamp(n) {
@@ -330,7 +330,7 @@ function updatechat() {
 				if (data.match(/\s/)) {
 					process(data, 0);
 					if ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) < 800) {
-						scrolldown();
+						scrolldown(600);
 					}
 					if (!cfocus || ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) > 800)) {
 						num++;
@@ -418,7 +418,7 @@ function sendmsg(msg) {
 	if (msg !== "") {
 		var sentid = gen(8, 1, 0);
 		process(nick + ": " + msg, sentid);
-		scrolldown();
+		scrolldown(600);
 		if (names.length > 1) {
 			$("#" + sentid).css("background-image","url(\"img/sending.gif\")");
 			queue.push(msg + "$" + sentid);
@@ -697,7 +697,7 @@ $("#maximize").click(function(){
 		$("#input").animate({width: "508px"}, 500);
 		$("#talk").animate({width: "67px"}, 500);
 		$("#inchat").animate({height: "343px", "margin-bottom": "10px"}, 500);
-		$("#chat").animate({height: "340px"}, 500, function() { scrolldown(); });
+		$("#chat").animate({height: "340px"}, 500, function() { scrolldown(999); });
 		$("#maximize").attr("src", "img/maximize.png");
 		$("#maximize").attr("title", "expand");
 		$("#input").focus();
@@ -709,7 +709,7 @@ $("#maximize").click(function(){
 		$("#input").animate({width: "92.3%"}, 500);
 		$("#talk").animate({width: "5.2%"}, 500);
 		$("#inchat").animate({height: "93%", "margin-bottom": "-30px"}, 500);
-		$("#chat").animate({height: "91%"}, 500, function() { scrolldown(); });
+		$("#chat").animate({height: "91%"}, 500, function() { scrolldown(999); });
 		$("#maximize").attr("src", "img/minimize.png");
 		$("#maximize").attr("title", "contract");
 		$("#input").focus();
