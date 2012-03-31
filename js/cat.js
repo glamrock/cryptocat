@@ -198,7 +198,6 @@ function process(line, sentid) {
 			if ((Crypto.HMAC(Crypto.SHA256, match, seckeys[thisnick].substring(64, 128) + seq_r[thisnick]) !== hmac) || 
 			(jQuery.inArray(hmac, usedhmac) >= 0)) {
 				if (jQuery.inArray(thisnick, inblocked) < 0) {
-					line = tagify(line);
 					line = line.replace(/\[:3\](.*)\[:3\]/, "<span class=\"diffkey\">Error: message authentication failure.</span>");
 					pushline(line, pos);
 					$("#" + pos).css("background-image","url(\"img/error.png\")");
@@ -759,7 +758,13 @@ $(document).ajaxError(function(){
 
 $('#front').fadeIn(0, function() {
 	$('#nickentry').fadeIn('fast', function() {
-		$("#nickinput").focus();
-		$("#nickinput").select();
+		if ((navigator.userAgent.match("Macintosh") && navigator.userAgent.match("Safari") && !navigator.userAgent.match("Chrome"))) {
+			$('#nickentry').html('Sorry, but the latest version of Safari has a bug that prevents Cryptocat from working properly.' +
+			' Consider switching to <a href="https://www.google.com/chrome/">Google Chrome</a>!');
+		}
+		else {
+			$("#nickinput").focus();
+			$("#nickinput").select();
+		}
 	});
 });
