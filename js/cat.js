@@ -38,13 +38,15 @@ var inblocked = [];
 var outblocked = [];
 var fingerprints = [];
 
-var notice = [
+/*var notice = [
 "Cryptocat is supported by people like you. Check out our <a href=\"https://crypto.cat/donate/\" target=\"_blank\">fundraiser</a> and keep us going.",
 "Help Cryptocat become better - please <a href=\"https://crypto.cat/donate/\" target=\"_blank\">donate</a> by buying Cryptocat stickers!",
 "Cryptocat is an open software effort. Your <a href=\"https://crypto.cat/donate/\" target=\"_blank\">donations</a> help us improve.",
 "You can donate to Cryptocat using Bitcoin! Please <a href=\"https://crypto.cat/donate/\" target=\"_blank\">contribute</a> and keep us going.",
 "Cryptocat is volunteer-run and handles thousands of conversations a week. Please <a href=\"https://crypto.cat/donate/\" target=\"_blank\">donate</a> today."
-];
+];*/
+
+var notice = ['Our 45-day fundraising campaign has kicked off! Support a year of open Cryptocat development - <a href="http://www.indiegogo.com/cryptocat" target="_blank">participate today</a>!'];
 
 function scrolldown(s) {
 	$("#chat").animate({scrollTop: document.getElementById("chat").scrollHeight + 20}, s);
@@ -198,7 +200,6 @@ function process(line, sentid) {
 			if ((Crypto.HMAC(Crypto.SHA256, match, seckeys[thisnick].substring(64, 128) + seq_r[thisnick]) !== hmac) || 
 			(jQuery.inArray(hmac, usedhmac) >= 0)) {
 				if (jQuery.inArray(thisnick, inblocked) < 0) {
-					line = tagify(line);
 					line = line.replace(/\[:3\](.*)\[:3\]/, "<span class=\"diffkey\">Error: message authentication failure.</span>");
 					pushline(line, pos);
 					$("#" + pos).css("background-image","url(\"img/error.png\")");
