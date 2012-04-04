@@ -1,6 +1,6 @@
 ## Cryptocat
 ### Web chat client with client-side cryptography.
-### http://crypto.cat
+### https://crypto.cat
 #### Beta software - code review highly appreciated.
 
 Cryptocat lets you instantly set up secure conversations. It's an open source encrypted, private alternative to other services such as Facebook chat.
