@@ -26,6 +26,13 @@
 //
 // 2) PseudoRandomData(n) generates 4 blocks for rekeying instead of 2.
 
+/*
+ * Note: this code has been slightly modified
+ * from its original version in order to work
+ * with the Whirlpool implementation used by Cryptocat.
+ * 2012 Nadim Kobeissi (nadim@nadim.cc)
+ */
+
 
 // Initialization
 (function(){
@@ -45,10 +52,10 @@ var P = [0, 0, 0, 0];
 // Accumulator
 function Reseed(s) {
 	if (!K) {
-		K = Crypto.SHA256(s);
+		K = Whirlpool(s).substring(0, 32);
 	}
 	else {
-		K = Crypto.SHA256(K + s);
+		K = Whirlpool(K + s).substring(0, 32);
 	}
 	var d = new Date();
 	LastReseed = d.getTime();
@@ -89,7 +96,7 @@ function GenerateBlocks(k) {
 	}
 	var r = 0;
 	for (var i=0; i!=k; i++) {
-		var Cp = Crypto.SHA256(C.toString()).substring(0, 16);
+		var Cp = Whirlpool((C.toString()).substring(0, 16)).substring(0, 32);
 		var iv = Crypto.charenc.Binary.stringToBytes(K.substring(0, 16));
 		var c = Crypto.AES.encrypt(Cp, Crypto.util.hexToBytes(K), {
 			mode: new Crypto.mode.CTR, iv: iv
@@ -122,10 +129,10 @@ Fortuna.RandomData = function(n) {
 		for (var i=0; i!=31; i++) {
 			if (((ReseedCnt / Math.pow(2, i)) % 1) == 0) {
 				if (!s) {
-					s = Crypto.SHA256(P[i]);
+					s = Whirlpool((P[i])).substring(0, 32);
 				}
 				else {
-					s += Crypto.SHA256(P[i]);
+					s += Whirlpool((P[i])).substring(0, 32);
 				}
 				P[i] = 0;
 			}

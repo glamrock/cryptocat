@@ -451,6 +451,6 @@ else {
 				welcome('name your chat');
 		}
 	?>
-
+	
 </body>
 </html>

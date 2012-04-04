@@ -5,8 +5,7 @@ cat crypto.js >> build.js
 cat aes.js >> build.js
 cat blockmodes.js >> build.js
 cat hmac.js >> build.js
-cat sha256.js >> build.js
-cat sha512.js >> build.js
+cat whirlpool.js >> build.js
 cat fortuna.js >> build.js
 gcc -o jsmin jsmin.c
 chmod +x jsmin

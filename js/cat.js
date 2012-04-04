@@ -103,7 +103,7 @@ function textcounter(field,cntfield,maxlimit) {
 
 function gen(size, extra, s) {
 	if (s) {
-		Math.seedrandom(Crypto.Fortuna.RandomData(512) + hex_sha512(seed));
+		Math.seedrandom(Crypto.Fortuna.RandomData(512) + Whirlpool(seed));
 	}
 	var str = "";
 	var charset = "123456789";
@@ -126,7 +126,7 @@ function dhgen(key, pub) {
 	}
 	else {
 		pub = bigInt2str(powMod(str2bigInt(pub, 64), key, p), 64);
-		return hex_sha512(pub);
+		return Whirlpool(pub);
 	}
 }
 
@@ -196,10 +196,10 @@ function process(line, sentid) {
 			thisnick = $.trim(match[0].match(/^[a-z]{1,12}/));
 			match = line.match(/\[:3\](.*)\|/);
 			match = match[0].substring(4, match[0].length - 1);
-			var hmac = line.match(/\|\w{64}/);
+			var hmac = line.match(/\|\w{128}/);
 			hmac = hmac[0].substring(1);
-			line = line.replace(/\|\w{64}/, '');
-			if ((Crypto.HMAC(Crypto.SHA256, match, seckeys[thisnick].substring(64, 128) + seq_r[thisnick]) !== hmac) || 
+			line = line.replace(/\|\w{128}/, '');
+			if ((Crypto.HMAC(Whirlpool, match, seckeys[thisnick].substring(64, 128) + seq_r[thisnick]) !== hmac) || 
 			(jQuery.inArray(hmac, usedhmac) >= 0)) {
 				if (jQuery.inArray(thisnick, inblocked) < 0) {
 					line = line.replace(/\[:3\](.*)\[:3\]/, "<span class=\"diffkey\">Error: message authentication failure.</span>");
@@ -277,7 +277,7 @@ function updatekeys(sync) {
 						userinfo(names[i]);
 					}
 					else {
-						fingerprints[names[i]] = hex_sha512(names[i] + keys[names[i]]);
+						fingerprints[names[i]] = Whirlpool(names[i] + keys[names[i]]);
 						fingerprints[names[i]] = 
 						fingerprints[names[i]].substring(24, 32) + ":" + 
 						fingerprints[names[i]].substring(48, 56) + ":" + 
@@ -373,7 +373,7 @@ function updatechat() {
 						mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
 					});
 					var msg = "(" + msg.match(/^\@[a-z]{1,12}/).toString().substring(1) + ")" + crypt;
-					msg += "|" + Crypto.HMAC(Crypto.SHA256, crypt, seckeys[names[loc]].substring(64, 128) + seq_s[names[loc]]);
+					msg += "|" + Crypto.HMAC(Whirlpool, crypt, seckeys[names[loc]].substring(64, 128) + seq_s[names[loc]]);
 					seq_s[names[loc]]++;
 				}
 				else {
@@ -385,7 +385,7 @@ function updatechat() {
 								mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
 							});
 							msg += "(" + names[i] + ")" + crypt;
-							msg += "|" + Crypto.HMAC(Crypto.SHA256, crypt, seckeys[names[i]].substring(64, 128) + seq_s[names[i]]);
+							msg += "|" + Crypto.HMAC(Whirlpool, crypt, seckeys[names[i]].substring(64, 128) + seq_s[names[i]]);
 							seq_s[names[i]]++;
 						}
 					}
@@ -762,13 +762,7 @@ $(document).ajaxError(function(){
 
 $('#front').fadeIn(0, function() {
 	$('#nickentry').fadeIn('fast', function() {
-		if ((navigator.userAgent.match("Macintosh") && navigator.userAgent.match("Safari") && !navigator.userAgent.match("Chrome"))) {
-			$('#nickentry').html('Sorry, but the latest version of Safari has a bug that prevents Cryptocat from working properly.' +
-			' Consider switching to <a href="https://www.google.com/chrome/">Google Chrome</a>!');
-		}
-		else {
-			$("#nickinput").focus();
-			$("#nickinput").select();
-		}
+		$("#nickinput").focus();
+		$("#nickinput").select();
 	});
 });
