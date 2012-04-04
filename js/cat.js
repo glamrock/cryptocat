@@ -46,7 +46,8 @@ var fingerprints = [];
 "Cryptocat is volunteer-run and handles thousands of conversations a week. Please <a href=\"https://crypto.cat/donate/\" target=\"_blank\">donate</a> today."
 ];*/
 
-var notice = ['Our 45-day fundraising campaign has kicked off! Support a year of open Cryptocat development - <a href="http://www.indiegogo.com/cryptocat" target="_blank">participate today</a>!'];
+var day = 139 - (Math.round((((new Date()) - (new Date((new Date()).getFullYear(), 0, 1))) / 1000 / 60 / 60 / 24) + .5, 0));
+var notice = ['Only '+day+' days left of the Cryptocat Fundraiser - <a href="http://www.indiegogo.com/cryptocat" target="_blank">Please support a year of open development.</a></blink>'];
 
 function scrolldown(s) {
 	$("#chat").animate({scrollTop: document.getElementById("chat").scrollHeight + 20}, s);
