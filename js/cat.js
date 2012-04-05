@@ -101,23 +101,18 @@ function textcounter(field,cntfield,maxlimit) {
 }
 
 function integritycheck() {
-	var test1 = Crypto.AES.encrypt(Whirlpool("0123456789"), Crypto.util.hexToBytes(Whirlpool('ZsUz0zQLk9ieFQFHPuQZsuQfJ2f5K18c').substring(0,32)), {
-		mode: new Crypto.mode.CBC(Crypto.pad.iso10126), iv: 'T8d8jNrZNfn4XMzj'});
-	var result1 = 'MG3lK0bdR/zvfcu1+ZmJssB0CE5oNAnA3X95rso0GSqixCLsKAKD3zStzplDChIQCFOoTdVVJ/y65' +
-	'Y02OL2+8GYQFIcEXGf/WvfKvaZLTPEKBxbAToC5sIG5P1ITdocYpRo0uFDs7YC5zOJtTUWueNbxWLhlSUtgns1ViWGvvv';
-	var test2 = 'rq24KNAnqcHVxNsoB4yqO4VzZty3lkRsqCUUvhxq6LjUeBBUXAxhBG1r5jUXaMKfFtRdRK4XghVxyYF4V8MvDw==';
-	var result2 = 1204;
-	if (test1.substring(0, 170) === result1) {
-			Math.seedrandom(str2bigInt(
-				Crypto.HMAC(Whirlpool, Crypto.AES.decrypt(
-					test2, Crypto.util.hexToBytes(Whirlpool('rhEa9FsrjpUTX8vUnzj4P2rUsQTLnTPm').substring(0,32)), {
-						mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
-					}), Whirlpool("abcdefghijklmnopqrstuvwxyz")), 16));
-				if (Math.floor(Math.random()*4096) === result2) {
-					Math.seedrandom(Crypto.Fortuna.RandomData(512) + Whirlpool(seed));
-					return 1;
-				}
-		}
+	Math.seedrandom(str2bigInt(Crypto.HMAC(Whirlpool, Whirlpool('TaTWU55cBtxn65IP8KLD3GQjbrdQbhEo'), Whirlpool('UQ4rRqtvnFjoAQySIvoIMNLNpKeiW6fi')), 16).join(''));
+	var testkey = Crypto.util.hexToBytes('744177635650617268753643526a6774775a3445353256584d72756d76725433');
+	var testclear = 'A1695BD7CE297A4B8D84BD183A6F0C26F1D56BD12F025B3A07EB25AE60512F9A3A214130843C9479DBFD62E99D4BC151854D5C4A1C1603CCD889F618C0D2B096';
+	var testbigint = bigInt2str(str2bigInt('2XQLlNpYbwIus4lHWwRmmcyTLhqIy2Mpe7woMkO54lcZeXGJ24F9Hvs=rYwPrBmL65JLnA71O3pDY9zXZ0qh2M', 64), 16);
+	var testencrypt = Crypto.AES.encrypt(Whirlpool('TDqIfHBOvxoPGCRbbJAIqV3GoftvPZ2s'), Crypto.charenc.Binary.stringToBytes(gen(32, 1, 0)), {
+		mode: new Crypto.mode.CBC(Crypto.pad.iso10126)});
+	var testdecrypt = Crypto.AES.decrypt(testencrypt, testkey, {
+		mode: new Crypto.mode.CBC(Crypto.pad.iso10126)});
+	if (testdecrypt === testclear && testclear === testbigint) {
+		Math.seedrandom(Crypto.Fortuna.RandomData(512) + Whirlpool(seed));
+		return 1;
+	}
 	return 0;
 }
 
