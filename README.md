@@ -1,6 +1,6 @@
 ## Cryptocat Chrome
 ### Web chat client with client-side cryptography.
-### http://crypto.cat
+### https://crypto.cat
 #### Beta software - code review highly appreciated.
 
 Cryptocat Chrome is a Chrome app version of Cryptocat that loads all code locally, and is thus secure from being served compromised code.
