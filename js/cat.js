@@ -100,6 +100,27 @@ function textcounter(field,cntfield,maxlimit) {
 	}
 }
 
+function integritycheck() {
+	var test1 = Crypto.AES.encrypt(Whirlpool("0123456789"), Crypto.util.hexToBytes(Whirlpool('ZsUz0zQLk9ieFQFHPuQZsuQfJ2f5K18c').substring(0,32)), {
+		mode: new Crypto.mode.CBC(Crypto.pad.iso10126), iv: 'T8d8jNrZNfn4XMzj'});
+	var result1 = 'MG3lK0bdR/zvfcu1+ZmJssB0CE5oNAnA3X95rso0GSqixCLsKAKD3zStzplDChIQCFOoTdVVJ/y65' +
+	'Y02OL2+8GYQFIcEXGf/WvfKvaZLTPEKBxbAToC5sIG5P1ITdocYpRo0uFDs7YC5zOJtTUWueNbxWLhlSUtgns1ViWGvvv';
+	var test2 = 'rq24KNAnqcHVxNsoB4yqO4VzZty3lkRsqCUUvhxq6LjUeBBUXAxhBG1r5jUXaMKfFtRdRK4XghVxyYF4V8MvDw==';
+	var result2 = 1204;
+	if (test1.substring(0, 170) === result1) {
+			Math.seedrandom(str2bigInt(
+				Crypto.HMAC(Whirlpool, Crypto.AES.decrypt(
+					test2, Crypto.util.hexToBytes(Whirlpool('rhEa9FsrjpUTX8vUnzj4P2rUsQTLnTPm').substring(0,32)), {
+						mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
+					}), Whirlpool("abcdefghijklmnopqrstuvwxyz")), 16));
+				if (Math.floor(Math.random()*4096) == result2) {
+					Math.seedrandom(Crypto.Fortuna.RandomData(512) + Whirlpool(seed));
+					return 1;
+				}
+		}
+	return 0;
+}
+
 function gen(size, extra, s) {
 	if (s) {
 		Math.seedrandom(Crypto.Fortuna.RandomData(512) + Whirlpool(seed));
@@ -451,11 +472,18 @@ $("#nickform").submit(function() {
 						Crypto.Fortuna.AddRandomEvent(e + (up - down));
 					}
 					else {
-						$('#keytext').html("<br />Generating keys");
-						pubkey = dhgen(gen(24, 0, 1), "gen");
-						$('#keytext').html($('#keytext').html() + ' &#160; &#160; ' + 
-						'<span class=\"blue\">OK</span><br />Communicating');
-						setTimeout("nickset()", 250);
+						$('#keytext').html("<br />Checking integrity");
+						if (integritycheck()) {
+							$('#keytext').html($('#keytext').html() + 
+							'  &#160;<span class="blue">OK</span>' + '<br />Generating keys');
+							pubkey = dhgen(gen(24, 0, 1), "gen");
+							$('#keytext').html($('#keytext').html() + ' &#160; &#160; ' + 
+							'<span class="blue">OK</span><br />Communicating');
+							setTimeout("nickset()", 250);
+						}
+						else {
+							$('#keytext').html('<span class="red">Integrity check failed. Cryptocat cannot proceed safely.</span>');
+						}
 					}
 				});
 			});
