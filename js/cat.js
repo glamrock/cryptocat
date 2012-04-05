@@ -192,7 +192,7 @@ function process(line, sentid) {
 			pushline(line, sentid);
 			return;
 		}
-		else if (match = line.match(/^[a-z]{1,12}\:\s\[:3\](\w|\/|\+|\?|\=)*\|?(\d|a|b|c|d|e|f)*\[:3\]$/)) {
+		else if (match = line.match(/^[a-z]{1,12}\:\s\[:3\](\w|\/|\+|\?|\=)*\|(\d|a|b|c|d|e|f){128}\[:3\]$/)) {
 			thisnick = $.trim(match[0].match(/^[a-z]{1,12}/));
 			match = line.match(/\[:3\](.*)\|/);
 			match = match[0].substring(4, match[0].length - 1);
