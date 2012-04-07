@@ -1,32 +1,32 @@
 var seed = Math.seedrandom();
 
 var p = 
-"FFFFFFFF FFFFFFFF C90FDAA2 2168C234 C4C6628B 80DC1CD1 29024E08 8A67CC74" +
-"020BBEA6 3B139B22 514A0879 8E3404DD EF9519B3 CD3A431B 302B0A6D F25F1437" +
-"4FE1356D 6D51C245 E485B576 625E7EC6 F44C42E9 A637ED6B 0BFF5CB6 F406B7ED" +
-"EE386BFB 5A899FA5 AE9F2411 7C4B1FE6 49286651 ECE45B3D C2007CB8 A163BF05" +
-"98DA4836 1C55D39A 69163FA8 FD24CF5F 83655D23 DCA3AD96 1C62F356 208552BB" +
-"9ED52907 7096966D 670C354E 4ABC9804 F1746C08 CA18217C 32905E46 2E36CE3B" +
-"E39E772C 180E8603 9B2783A2 EC07A28F B5C55DF0 6F4C52C9 DE2BCBF6 95581718" +
-"3995497C EA956AE5 15D22618 98FA0510 15728E5A 8AAAC42D AD33170D 04507A33" +
-"A85521AB DF1CBA64 ECFB8504 58DBEF0A 8AEA7157 5D060C7D B3970F85 A6E1E4C7" +
-"ABF5AE8C DB0933D7 1E8C94E0 4A25619D CEE3D226 1AD2EE6B F12FFA06 D98A0864" +
-"D8760273 3EC86A64 521F2B18 177B200C BBE11757 7A615D6C 770988C0 BAD946E2" +
-"08E24FA0 74E5AB31 43DB5BFC E0FD108E 4B82D120 A9210801 1A723C12 A787E6D7" +
-"88719A10 BDBA5B26 99C32718 6AF4E23C 1A946834 B6150BDA 2583E9CA 2AD44CE8" +
-"DBBBC2DB 04DE8EF9 2E8EFC14 1FBECAA6 287C5947 4E6BC05D 99B2964F A090C3A2" +
-"233BA186 515BE7ED 1F612970 CEE2D7AF B81BDD76 2170481C D0069127 D5B05AA9" +
-"93B4EA98 8D8FDDC1 86FFB7DC 90A6C08F 4DF435C9 34063199 FFFFFFFF FFFFFFFF";
+'FFFFFFFF FFFFFFFF C90FDAA2 2168C234 C4C6628B 80DC1CD1 29024E08 8A67CC74' +
+'020BBEA6 3B139B22 514A0879 8E3404DD EF9519B3 CD3A431B 302B0A6D F25F1437' +
+'4FE1356D 6D51C245 E485B576 625E7EC6 F44C42E9 A637ED6B 0BFF5CB6 F406B7ED' +
+'EE386BFB 5A899FA5 AE9F2411 7C4B1FE6 49286651 ECE45B3D C2007CB8 A163BF05' +
+'98DA4836 1C55D39A 69163FA8 FD24CF5F 83655D23 DCA3AD96 1C62F356 208552BB' +
+'9ED52907 7096966D 670C354E 4ABC9804 F1746C08 CA18217C 32905E46 2E36CE3B' +
+'E39E772C 180E8603 9B2783A2 EC07A28F B5C55DF0 6F4C52C9 DE2BCBF6 95581718' +
+'3995497C EA956AE5 15D22618 98FA0510 15728E5A 8AAAC42D AD33170D 04507A33' +
+'A85521AB DF1CBA64 ECFB8504 58DBEF0A 8AEA7157 5D060C7D B3970F85 A6E1E4C7' +
+'ABF5AE8C DB0933D7 1E8C94E0 4A25619D CEE3D226 1AD2EE6B F12FFA06 D98A0864' +
+'D8760273 3EC86A64 521F2B18 177B200C BBE11757 7A615D6C 770988C0 BAD946E2' +
+'08E24FA0 74E5AB31 43DB5BFC E0FD108E 4B82D120 A9210801 1A723C12 A787E6D7' +
+'88719A10 BDBA5B26 99C32718 6AF4E23C 1A946834 B6150BDA 2583E9CA 2AD44CE8' +
+'DBBBC2DB 04DE8EF9 2E8EFC14 1FBECAA6 287C5947 4E6BC05D 99B2964F A090C3A2' +
+'233BA186 515BE7ED 1F612970 CEE2D7AF B81BDD76 2170481C D0069127 D5B05AA9' +
+'93B4EA98 8D8FDDC1 86FFB7DC 90A6C08F 4DF435C9 34063199 FFFFFFFF FFFFFFFF';
 
 var p = str2bigInt(p.replace(/\s/g, ''), 16);
-var g = str2bigInt("2", 10);
+var g = str2bigInt('2', 10);
 var z = []; for (var i=0; i!==274; i++) { z[i] = 0; } z[272] = 1;
 
 var num = sound = pos = tag = prikey = pubkey = last = 0;
 var cfocus = true;
 var soundEmbed = null;
-var nick = $("#nick").html();
-var name = $("#name").html();
+var nick = $('#nick').html();
+var name = $('#name').html();
 var seq_s = [];
 var seq_r = [];
 var keys = [];
@@ -72,11 +72,11 @@ function getstamp(n) {
 
 function soundPlay(which) {
 	function createSound(which) {
-		soundEmbed = document.createElement("audio");
-		soundEmbed.setAttribute("type", "audio/webm");
-		soundEmbed.setAttribute("src", which);
-		soundEmbed.setAttribute("style", "display: none;");
-		soundEmbed.setAttribute("autoplay", true);
+		soundEmbed = document.createElement('audio');
+		soundEmbed.setAttribute('type', 'audio/webm');
+		soundEmbed.setAttribute('src', which);
+		soundEmbed.setAttribute('style', 'display: none;');
+		soundEmbed.setAttribute('autoplay', true);
 	}
 	if (!soundEmbed) {
 		createSound(which);
@@ -147,16 +147,16 @@ function dhgen(key, pub) {
 
 function tagify(line) {
 	var mime = new RegExp('(data:(application\/((x-compressed)|(x-zip-compressed)|(zip)))|(multipart\/x-zip)).*');
-	line = line.replace(/</g,"&lt;").replace(/>/g,"&gt;");
+	line = line.replace(/</g,'&lt;').replace(/>/g,'&gt;');
 	if ((match = line.match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi)) && genurl) {
 		for (mc = 0; mc <= match.length - 1; mc++) {
-			var sanitize = match[mc].split("");
+			var sanitize = match[mc].split('');
 			for (ii = 0; ii <= sanitize.length-1; ii++) {
 				if (!sanitize[ii].match(/\w|\d|\:|\/|\?|\=|\#|\+|\,|\.|\&|\;|\%/)) {
 					sanitize[ii] = encodeURIComponent(sanitize[ii]);
 				}
 			}
-			sanitize = sanitize.join("");
+			sanitize = sanitize.join('');
 			line = line.replace(sanitize, '<a target="_blank" href="' + sanitize + '">' + match[mc] + '</a>');
 		}
 	}
@@ -252,7 +252,7 @@ function process(line, sentid) {
 			}
 		}
 	}
-	return "";
+	return '';
 }
 
 function pushline(line, id) {
@@ -337,7 +337,7 @@ function updatechat() {
 					clearInterval(interval);
 				}
 			}
-			else if (data !== "") {
+			else if (data !== '') {
 				pos++;
 				if (data.match(/\s/)) {
 					process(data, 0);
@@ -392,7 +392,7 @@ function updatechat() {
 					seq_s[names[loc]]++;
 				}
 				else {
-					var msg = "";
+					var msg = '';
 					for (var i=0; i !== names.length; i++) {
 						if (names && (names[i] !== nick) && (jQuery.inArray(names[i], outblocked) < 0)) {
 							var crypt = Crypto.AES.encrypt(queue[0].replace(/\$.+$/, ''),
@@ -425,9 +425,9 @@ function updatechat() {
 
 function sendmsg(msg) {
 	msg = msg.replace(/\$/g,"&#36;");
-	$("#input").val("");
+	$("#input").val('');
 	$("#input").focus();
-	if (msg !== "") {
+	if (msg !== '') {
 		var sentid = gen(8, 1, 0);
 		process(nick + ": " + msg, sentid);
 		scrolldown(600);
@@ -609,12 +609,12 @@ function display(dataurl, time, image) {
 		'<span style="margin-left:-10px">(<span class="blue">' + time + '</span>) click to enlarge</span></center>');
 	}
 	else {
-		$("#fadebox").html($("#fadebox").html() + '<br /><br /><span class="blue">Note:</span> ' +
+		$('#fadebox').html($('#fadebox').html() + '<br /><br /><span class="blue">Note:</span> ' +
 		'Some browsers may save the encrypted data with an incorrect file extension. ' +
 		'Simply rename your file with a .zip extension to remedy this.<br /><br />' + 
 		'<a class="download" href="' + dataurl + '" target="_blank">Download encrypted .zip file</a>');
 	}
-	$("#close").click(function(){
+	$('#close').click(function(){
 		$('#fadebox').fadeOut('fast', function() {
 			$('#front').fadeOut(0);
 		});
@@ -624,81 +624,81 @@ function display(dataurl, time, image) {
 	});
 }
 
-$("#sound").click(function(){
+$('#sound').click(function(){
 	if (sound) {
-		$("#sound").attr("src", "img/nosound.png");
-		$("#sound").attr("title", "message sounds off");
+		$('#sound').attr('src', 'img/nosound.png');
+		$('#sound').attr('title', 'message sounds off');
 		sound = 0;
-		$("#input").focus();
+		$('#input').focus();
 	}
 	else {
-		$("#sound").attr("src", "img/sound.png");
-		$("#sound").attr("title", "message sounds on");
+		$('#sound').attr('src', 'img/sound.png');
+		$('#sound').attr('title', 'message sounds on');
 		sound = 1;
-		$("#input").focus();
+		$('#input').focus();
 	}
 });
 
-$("#invite").click(function(){
-	var url = "https://www.facebook.com/dialog/send?app_id=348025968541285&name=Cryptocat%20Chat%20Invitation&description=" + 
-	"Chat%20with%20your%20friends%20in%20privacy%20with%20secure%20encryption%20using%20Cryptocat.&redirect_uri=" + 
-	"https://crypto.cat/?close&link=" + install + "?c=" + name + "&picture=" + install + "img/ios.png&display=popup";
+$('#invite').click(function(){
+	var url = 'https://www.facebook.com/dialog/send?app_id=348025968541285&name=Cryptocat%20Chat%20Invitation&description=' + 
+	'Chat%20with%20your%20friends%20in%20privacy%20with%20secure%20encryption%20using%20Cryptocat.&redirect_uri=' + 
+	'https://crypto.cat/?close&link=' + install + '?c=' + name + '&picture=' + install + 'img/ios.png&display=popup';
 	var pop = window.open(url, 'name', 'height=330,width=550,location=0,menubar=0,resizable=0,scrollbars=0' + 
 	',status=0,titlebar=0,toolbar=0,top='+($(window).height()/3.5)+',left='+($(window).width()/2.7));
 	pop.focus();
 });
 
 function userinfo(n) {
-	$("#fadebox").html('<input type="button" id="close" value="x" />' +
+	$('#fadebox').html('<input type="button" id="close" value="x" />' +
 	'<br /><h3>' + n + '</h3>');
 	if (n === nick) {
-		$("#fadebox").html($("#fadebox").html() +
+		$('#fadebox').html($('#fadebox').html() +
 		'Users can send you a private message by typing:<br />' +
 		'<span class="blue">@' + n + '</span> their message<br /><br />' +
 		'<br />Verify your identity using your fingerprint:');
 	}
 	else {
-		$("#fadebox").html($("#fadebox").html() +
+		$('#fadebox').html($('#fadebox').html() +
 		'Send <span class="blue">' + n + '</span> a private message:<br />' +
 		'<span class="blue">@' + n + '</span> your message<br /><br />' +
 		'View messages from <span class="blue">' + n + '</span>: &#160;<span class="block" id="incoming">yes</span><br />' +
 		'Send my messages to <span class="blue">' + n + '</span>: <span class="block" id="outgoing">yes</span><br />' +
 		'<br />Verify <span class="blue">' + n + '</span>\'s identity using their fingerprint:');
 	}
-	$("#fadebox").html($("#fadebox").html() + '<br />' + fingerprints[n]);
+	$('#fadebox').html($('#fadebox').html() + '<br />' + fingerprints[n]);
 	if (jQuery.inArray(n, inblocked) >= 0) {
-		$("#incoming").css("background-color", "#F00");
-		$("#incoming").html("no");
+		$('#incoming').css('background-color', '#F00');
+		$('#incoming').html('no');
 	}
-	$("#incoming").click(function(){
-		if ($("#incoming").html() === "no") {
+	$('#incoming').click(function(){
+		if ($('#incoming').html() === 'no') {
 			inblocked.splice(jQuery.inArray(n, inblocked));
-			$("#incoming").css("background-color", "#97CEEC");
-			$("#incoming").html("yes");
+			$('#incoming').css('background-color', '#97CEEC');
+			$('#incoming').html('yes');
 		}
 		else {
 			inblocked.push(n);
-			$("#incoming").css("background-color", "#F00");
-			$("#incoming").html("no");
+			$('#incoming').css('background-color', '#F00');
+			$('#incoming').html('no');
 		}
 	});
 	if (jQuery.inArray(n, outblocked) >= 0) {
-		$("#outgoing").css("background-color", "#F00");
-		$("#outgoing").html("no");
+		$('#outgoing').css('background-color', '#F00');
+		$('#outgoing').html('no');
 	}
-	$("#outgoing").click(function(){
-		if ($("#outgoing").html() === "no") {
+	$('#outgoing').click(function(){
+		if ($('#outgoing').html() === 'no') {
 			outblocked.splice(jQuery.inArray(n, outblocked));
-			$("#outgoing").css("background-color", "#97CEEC");
-			$("#outgoing").html("yes");
+			$('#outgoing').css('background-color', '#97CEEC');
+			$('#outgoing').html('yes');
 		}
 		else {
 			outblocked.push(n);
-			$("#outgoing").css("background-color", "#F00");
-			$("#outgoing").html("no");
+			$('#outgoing').css('background-color', '#F00');
+			$('#outgoing').html('no');
 		}
 	});
-	$("#close").click(function(){
+	$('#close').click(function(){
 		$('#fadebox').fadeOut('fast', function() {
 			$('#front').fadeOut(0);
 		});
@@ -708,50 +708,50 @@ function userinfo(n) {
 	});
 }
 
-$("#maximize").click(function(){
-	if ($("#maximize").attr("title") === "contract") {
-		$("#main").animate({"margin-top": "2%", "min-width": "600px", "min-height": "420px", width: "600px", height: "420px"}, 500);
-		$("#info").animate({width: "588px"}, 500);
-		$("#users").animate({width: "525px", "padding-right": "3px"}, 500);
-		$("#input").animate({width: "508px"}, 500);
-		$("#talk").animate({width: "67px"}, 500);
-		$("#inchat").animate({height: "343px", "margin-bottom": "10px"}, 500);
-		$("#chat").animate({height: "340px"}, 500, function() { scrolldown(999); });
-		$("#maximize").attr("src", "img/maximize.png");
-		$("#maximize").attr("title", "expand");
-		$("#input").focus();
+$('#maximize').click(function(){
+	if ($('#maximize').attr('title') === 'contract') {
+		$('#main').animate({'margin-top': '2%', 'min-width': '600px', 'min-height': '420px', width: '600px', height: '420px'}, 500);
+		$('#info').animate({width: '588px'}, 500);
+		$('#users').animate({width: '525px', 'padding-right': '3px'}, 500);
+		$('#input').animate({width: '508px'}, 500);
+		$('#talk').animate({width: '67px'}, 500);
+		$('#inchat').animate({height: '343px', 'margin-bottom': '10px'}, 500);
+		$('#chat').animate({height: '340px'}, 500, function() { scrolldown(999); });
+		$('#maximize').attr('src', 'img/maximize.png');
+		$('#maximize').attr('title', 'expand');
+		$('#input').focus();
 	}
 	else {
-		$("#main").animate({"margin-top": "1%", "min-width": "900px", width: "85%", height: "96.5%"}, 500);
-		$("#info").animate({width: "99%"}, 500);
-		$("#users").animate({width: "92.3%", "padding-right": "20px"}, 500);
-		$("#input").animate({width: "92.3%"}, 500);
-		$("#talk").animate({width: "5.2%"}, 500);
-		$("#inchat").animate({height: "93%", "margin-bottom": "-30px"}, 500);
-		$("#chat").animate({height: "91%"}, 500, function() { scrolldown(999); });
-		$("#maximize").attr("src", "img/minimize.png");
-		$("#maximize").attr("title", "contract");
-		$("#input").focus();
+		$('#main').animate({'margin-top': '1%', 'min-width': '900px', width: '85%', height: '96.5%'}, 500);
+		$('#info').animate({width: '99%'}, 500);
+		$('#users').animate({width: '92.3%', 'padding-right': '20px'}, 500);
+		$('#input').animate({width: '92.3%'}, 500);
+		$('#talk').animate({width: '5.2%'}, 500);
+		$('#inchat').animate({height: '93%', 'margin-bottom': '-30px'}, 500);
+		$('#chat').animate({height: '91%'}, 500, function() { scrolldown(999); });
+		$('#maximize').attr('src', 'img/minimize.png');
+		$('#maximize').attr('title', 'contract');
+		$('#input').focus();
 	}
 });
 
-$("#input").keyup(function(){
+$('#input').keyup(function(){
 	textcounter(document.chatform.input,document.chatform.talk,256);
-	if ((match = $("#input").val().match(/^\@[a-z]{1,12}/)) &&
-	(jQuery.inArray($("#input").val().match(/^\@[a-z]{1,12}/).toString().substring(1), names) >= 0)) {
-		$("#input").css("color", "#97CEEC");
+	if ((match = $('#input').val().match(/^\@[a-z]{1,12}/)) &&
+	(jQuery.inArray($('#input').val().match(/^\@[a-z]{1,12}/).toString().substring(1), names) >= 0)) {
+		$('#input').css('color', '#97CEEC');
 	}
-	else if ($("#input").css("color") === "rgb(151, 206, 236)") {
-		$("#input").css("color", "#FFF");
+	else if ($('#input').css('color') === 'rgb(151, 206, 236)') {
+		$('#input').css('color', '#FFF');
 	}
 });
 
-$("#talk").mouseout(function(){
+$('#talk').mouseout(function(){
 	textcounter(document.chatform.input,document.chatform.talk,256);
 });
 
-$("#talk").mouseover(function(){
-	$("#talk").val("send");
+$('#talk').mouseover(function(){
+	$('#talk').val('send');
 });
 
 window.onfocus = function() {
@@ -768,8 +768,8 @@ document.focus = window.focus;
 
 function logout() {
 	$.ajax({ url: install,
-		type: "POST", async: false,
-		data: "logout=" + name
+		type: 'POST', async: false,
+		data: 'logout=' + name
 	});
 }
 
