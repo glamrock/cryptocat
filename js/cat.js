@@ -467,6 +467,7 @@ $("#nickform").submit(function() {
 						Crypto.Fortuna.AddRandomEvent(e + (up - down));
 					}
 					else {
+						$('#keytext').css('margin-top', '-=6px');
 						$('#keytext').html("<br />Checking integrity");
 						if (integritycheck()) {
 							$('#keytext').html($('#keytext').html() + 
