@@ -1,1 +1,1 @@
-../../common/js/jquery.js
+../../../common/js/jquery.js
