@@ -15,3 +15,5 @@ Create Javascript crypto APIs in Chrome that allow for random number
 generation
 
 Create Firefox plugin
+
+Add debug log in the webui - to help with "connection issues. stand by..."
