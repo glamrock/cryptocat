@@ -13,3 +13,5 @@ Add top level Makefile to install server side code.
 
 Create Javascript crypto APIs in Chrome that allow for random number
 generation
+
+Create Firefox plugin
