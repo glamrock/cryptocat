@@ -1,0 +1,6 @@
+Implement OTR for communications between two peers
+
+Implement mpOTR for communications between all peers in group chat
+
+Extend Chrome to support cryptographic oracles rather than raw keys in
+javascript accessible memory areas
