@@ -21,3 +21,5 @@ Add debug log in the webui - to help with "connection issues. stand by..."
 Add Nickname parameter for server side chat for easy bookmarklet
 
 Audit index.php
+
+Add server side code to the repo (cron, etc)
