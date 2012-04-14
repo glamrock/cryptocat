@@ -10,3 +10,6 @@ Remove or rewrite jsmin.c as it is not free software.
 Add top level Makefile to build client side code into an extension.
 
 Add top level Makefile to install server side code.
+
+Create Javascript crypto APIs in Chrome that allow for random number
+generation
