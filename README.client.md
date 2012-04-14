@@ -1,1 +1,1 @@
-src/client/README.md
+src/client/chrome-plugin/README.md
