@@ -6,3 +6,7 @@ Extend Chrome to support cryptographic oracles rather than raw keys in
 javascript accessible memory areas
 
 Remove or rewrite jsmin.c as it is not free software.
+
+Add top level Makefile to build client side code into an extension.
+
+Add top level Makefile to install server side code.
