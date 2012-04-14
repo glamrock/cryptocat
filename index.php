@@ -267,6 +267,7 @@
 	<link rel="apple-touch-startup-image" type="image/png" href="img/isplash.png" />
 	<link rel="apple-touch-icon" type="image/png" href="img/ios.png"/>
 	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/notification.js"></script>
 	<script type="text/javascript" src="js/build.js"></script>
 </head>
 <?php

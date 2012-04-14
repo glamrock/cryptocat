@@ -21,8 +21,8 @@ var p =
 var p = str2bigInt(p.replace(/\s/g, ''), 16);
 var g = str2bigInt('2', 10);
 var z = []; for (var i=0; i!==274; i++) { z[i] = 0; } z[272] = 1;
-
 var num = sound = pos = tag = prikey = pubkey = last = 0;
+var browser = navigator.userAgent.toLowerCase();
 var cfocus = true;
 var soundEmbed = null;
 var nick = $('#nick').html();
@@ -47,7 +47,7 @@ var fingerprints = [];
 ];*/
 
 var day = 139 - (Math.round((((new Date()) - (new Date((new Date()).getFullYear(), 0, 1))) / 1000 / 60 / 60 / 24) + .5, 0));
-var notice = ['Only '+day+' days left of the Cryptocat Fundraiser - <a href="http://www.indiegogo.com/cryptocat" target="_blank">Please support a year of open development.</a></blink>'];
+var notice = ['Only '+day+' days left of the Cryptocat Fundraiser - <a href="http://www.indiegogo.com/cryptocat" target="_blank">Please support a year of open development.</a>'];
 
 function scrolldown(s) {
 	$('#chat').animate({scrollTop: document.getElementById('chat').scrollHeight + 20}, s);
@@ -236,6 +236,7 @@ function process(line, sentid) {
 						$("#" + pos).css('background-image', 'url("img/fileb.png")');
 					}
 				}
+				return line.match(/<\/span>.+$/).toString().substring(8);
 			}
 		}
 		else if (match = line.match(/^(\&gt\;|\&lt\;)\s[a-z]{1,12}\s(has arrived|has left)$/)) {
@@ -340,13 +341,13 @@ function updatechat() {
 			else if (data !== '') {
 				pos++;
 				if (data.match(/\s/)) {
-					process(data, 0);
+					var message = process(data, 0);
 					if ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) < 800) {
 						scrolldown(600);
 					}
 					if (!cfocus || ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) > 800)) {
 						num++;
-						document.title = "[" + num + "] Cryptocat";
+						Notification.createNotification('img/ios.png', '[' + num + '] Cryptocat', message);
 					}
 				}
 				else if (data) {
@@ -504,7 +505,7 @@ function nickset() {
 			if ((data !== "error") && (data !== "inuse") && (data !== "full")) {
 				nick = $("#nick").html();
 				$("#input").focus();
-				document.title = "[" + num + "] Cryptocat";
+				document.title = '[-] Cryptocat';
 				interval = setInterval("updatechat()", update);
 				updatekeys(false);
 				$('#keytext').html($('#keytext').html() + ' &#160; &#160; &#160; <span class="blue">OK</span>');
@@ -759,7 +760,7 @@ window.onfocus = function() {
 	clearTimeout(blur);
 	cfocus = true;
 	num = 0;
-	document.title = '[' + num + '] Cryptocat';
+	document.title = '[-] Cryptocat';
 };
 window.onblur = function() {
 	blur = setTimeout('cfocus = false', update);
@@ -788,4 +789,7 @@ $('#front').fadeIn(0, function() {
 		$('#nickinput').focus();
 		$('#nickinput').select();
 	});
+	if (Notification.checkPermission() === 1){
+		Notification.requestPermission();
+	}
 });
