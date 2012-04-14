@@ -1,0 +1,5 @@
+out/cryptocat-plugin.crx
+src/client/chrome-plugin.pem
+src/server/about/
+src/server/donate/
+.DS_Store
