@@ -21,8 +21,8 @@ var p =
 var p = str2bigInt(p.replace(/\s/g, ''), 16);
 var g = str2bigInt('2', 10);
 var z = []; for (var i=0; i!==274; i++) { z[i] = 0; } z[272] = 1;
-
-var num = sound = pos = tag = prikey = pubkey = last = 0;
+var sound = notifications = pos = tag = prikey = pubkey = last = 0;
+var browser = navigator.userAgent.toLowerCase();
 var cfocus = true;
 var soundEmbed = null;
 var nick = $('#nick').html();
@@ -47,7 +47,7 @@ var fingerprints = [];
 ];*/
 
 var day = 139 - (Math.round((((new Date()) - (new Date((new Date()).getFullYear(), 0, 1))) / 1000 / 60 / 60 / 24) + .5, 0));
-var notice = ['Only '+day+' days left of the Cryptocat Fundraiser - <a href="http://www.indiegogo.com/cryptocat" target="_blank">Please support a year of open development.</a></blink>'];
+var notice = ['Only '+day+' days left of the Cryptocat Fundraiser - <a href="http://www.indiegogo.com/cryptocat" target="_blank">Please support a year of open development.</a>'];
 
 function scrolldown(s) {
 	$('#chat').animate({scrollTop: document.getElementById('chat').scrollHeight + 20}, s);
@@ -236,6 +236,7 @@ function process(line, sentid) {
 						$("#" + pos).css('background-image', 'url("img/fileb.png")');
 					}
 				}
+				return line.match(/<\/span>.+$/).toString().substring(8);
 			}
 		}
 		else if (match = line.match(/^(\&gt\;|\&lt\;)\s[a-z]{1,12}\s(has arrived|has left)$/)) {
@@ -243,6 +244,7 @@ function process(line, sentid) {
 			line = '<span class="nick">' + match[0] + '</span>';
 			pushline(line, pos);
 			$("#" + pos).css('background-image', 'url("img/user.png")');
+			return match[0].toString().substring(5);
 		}
 		else {
 			if (jQuery.inArray(thisnick, inblocked) < 0) {
@@ -252,7 +254,7 @@ function process(line, sentid) {
 			}
 		}
 	}
-	return '';
+	return;
 }
 
 function pushline(line, id) {
@@ -294,10 +296,10 @@ function updatekeys(sync) {
 					else {
 						fingerprints[names[i]] = Whirlpool(names[i] + keys[names[i]]);
 						fingerprints[names[i]] = 
-						fingerprints[names[i]].substring(24, 32) + ":" + 
-						fingerprints[names[i]].substring(48, 56) + ":" + 
-						fingerprints[names[i]].substring(72, 80) + ":" + 
-						fingerprints[names[i]].substring(96, 104) + ":" + 
+						fingerprints[names[i]].substring(24, 32)  + ':' + 
+						fingerprints[names[i]].substring(48, 56)  + ':' + 
+						fingerprints[names[i]].substring(72, 80)  + ':' + 
+						fingerprints[names[i]].substring(96, 104) + ':' + 
 						fingerprints[names[i]].substring(120, 128);
 						fingerprints[names[i]] = fingerprints[names[i]].toUpperCase();
 					}
@@ -340,13 +342,14 @@ function updatechat() {
 			else if (data !== '') {
 				pos++;
 				if (data.match(/\s/)) {
-					process(data, 0);
+					var message = process(data, 0);
 					if ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) < 800) {
 						scrolldown(600);
 					}
 					if (!cfocus || ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) > 800)) {
-						num++;
-						document.title = "[" + num + "] Cryptocat";
+						if (notifications) {
+							Notification.createNotification('img/ios.png', 'Cryptocat Message', message);
+						}
 					}
 				}
 				else if (data) {
@@ -504,7 +507,7 @@ function nickset() {
 			if ((data !== "error") && (data !== "inuse") && (data !== "full")) {
 				nick = $("#nick").html();
 				$("#input").focus();
-				document.title = "[" + num + "] Cryptocat";
+				document.title = '[-] Cryptocat';
 				interval = setInterval("updatechat()", update);
 				updatekeys(false);
 				$('#keytext').html($('#keytext').html() + ' &#160; &#160; &#160; <span class="blue">OK</span>');
@@ -628,16 +631,32 @@ function display(dataurl, time, image) {
 $('#sound').click(function(){
 	if (sound) {
 		$('#sound').attr('src', 'img/nosound.png');
-		$('#sound').attr('title', 'message sounds off');
+		$('#sound').attr('title', 'Message sounds off');
 		sound = 0;
-		$('#input').focus();
 	}
 	else {
 		$('#sound').attr('src', 'img/sound.png');
-		$('#sound').attr('title', 'message sounds on');
+		$('#sound').attr('title', 'Message sounds on');
 		sound = 1;
-		$('#input').focus();
 	}
+	$('#input').focus();
+});
+
+$('#notifications').click(function(){
+	if (notifications) {
+		$('#notifications').attr('src', 'img/nonotifications.png');
+		$('#notifications').attr('title', 'Desktop notifications off');
+		notifications = 0;
+	}
+	else {
+		$('#notifications').attr('src', 'img/notifications.png');
+		$('#notifications').attr('title', 'Desktop notifications on');
+		notifications = 1;
+		if (Notification.checkPermission() === 1){
+			Notification.requestPermission();
+		}
+	}
+	$('#input').focus();
 });
 
 $('#invite').click(function(){
@@ -647,6 +666,33 @@ $('#invite').click(function(){
 	var pop = window.open(url, 'name', 'height=330,width=550,location=0,menubar=0,resizable=0,scrollbars=0' + 
 	',status=0,titlebar=0,toolbar=0,top='+($(window).height()/3.5)+',left='+($(window).width()/2.7));
 	pop.focus();
+});
+
+$('#maximize').click(function(){
+	if ($('#maximize').attr('title') === 'contract') {
+		$('#main').animate({'margin-top': '2%', 'min-width': '600px', 'min-height': '420px', width: '600px', height: '420px'}, 500);
+		$('#info').animate({width: '588px'}, 500);
+		$('#users').animate({width: '525px', 'padding-right': '3px'}, 500);
+		$('#input').animate({width: '508px'}, 500);
+		$('#talk').animate({width: '67px'}, 500);
+		$('#inchat').animate({height: '343px', 'margin-bottom': '10px'}, 500);
+		$('#chat').animate({height: '340px'}, 500, function() { scrolldown(999); });
+		$('#maximize').attr('src', 'img/maximize.png');
+		$('#maximize').attr('title', 'Expand');
+		$('#input').focus();
+	}
+	else {
+		$('#main').animate({'margin-top': '1%', 'min-width': '900px', width: '85%', height: '96.5%'}, 500);
+		$('#info').animate({width: '99%'}, 500);
+		$('#users').animate({width: '92.3%', 'padding-right': '20px'}, 500);
+		$('#input').animate({width: '92.3%'}, 500);
+		$('#talk').animate({width: '5.2%'}, 500);
+		$('#inchat').animate({height: '93%', 'margin-bottom': '-30px'}, 500);
+		$('#chat').animate({height: '91%'}, 500, function() { scrolldown(999); });
+		$('#maximize').attr('src', 'img/minimize.png');
+		$('#maximize').attr('title', 'Contract');
+		$('#input').focus();
+	}
 });
 
 function userinfo(n) {
@@ -709,33 +755,6 @@ function userinfo(n) {
 	});
 }
 
-$('#maximize').click(function(){
-	if ($('#maximize').attr('title') === 'contract') {
-		$('#main').animate({'margin-top': '2%', 'min-width': '600px', 'min-height': '420px', width: '600px', height: '420px'}, 500);
-		$('#info').animate({width: '588px'}, 500);
-		$('#users').animate({width: '525px', 'padding-right': '3px'}, 500);
-		$('#input').animate({width: '508px'}, 500);
-		$('#talk').animate({width: '67px'}, 500);
-		$('#inchat').animate({height: '343px', 'margin-bottom': '10px'}, 500);
-		$('#chat').animate({height: '340px'}, 500, function() { scrolldown(999); });
-		$('#maximize').attr('src', 'img/maximize.png');
-		$('#maximize').attr('title', 'expand');
-		$('#input').focus();
-	}
-	else {
-		$('#main').animate({'margin-top': '1%', 'min-width': '900px', width: '85%', height: '96.5%'}, 500);
-		$('#info').animate({width: '99%'}, 500);
-		$('#users').animate({width: '92.3%', 'padding-right': '20px'}, 500);
-		$('#input').animate({width: '92.3%'}, 500);
-		$('#talk').animate({width: '5.2%'}, 500);
-		$('#inchat').animate({height: '93%', 'margin-bottom': '-30px'}, 500);
-		$('#chat').animate({height: '91%'}, 500, function() { scrolldown(999); });
-		$('#maximize').attr('src', 'img/minimize.png');
-		$('#maximize').attr('title', 'contract');
-		$('#input').focus();
-	}
-});
-
 $('#input').keyup(function(){
 	textcounter(document.chatform.input,document.chatform.talk,256);
 	if ((match = $('#input').val().match(/^\@[a-z]{1,12}/)) &&
@@ -758,8 +777,7 @@ $('#talk').mouseover(function(){
 window.onfocus = function() {
 	clearTimeout(blur);
 	cfocus = true;
-	num = 0;
-	document.title = '[' + num + '] Cryptocat';
+	document.title = '[-] Cryptocat';
 };
 window.onblur = function() {
 	blur = setTimeout('cfocus = false', update);

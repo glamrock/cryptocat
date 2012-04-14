@@ -388,10 +388,11 @@ else {
 				<div id="fadebox" class="invisible"></div>
 			</div>
 			<a href="'.$install.'" onclick="logout();"><img src="img/cryptocat.png" class="chat" alt="cryptocat" /></a>
-			<img src="img/maximize.png" alt="maximize" id="maximize" title="expand" />
-			<img src="img/nosound.png" alt="sound" id="sound" title="message sounds off" />
-			<img src="img/invite.png" alt="invite" id="invite" title="invite friend" />
-			<img src="img/filer.png" alt="file" id="file" title="send encrypted file" />
+			<img src="img/maximize.png" alt="maximize" id="maximize" title="Expand" />
+			<img src="img/invite.png" alt="invite" id="invite" title="Invite friend" />
+			<img src="img/nonotifications.png" alt="notifications" id="notifications" title="Desktop notifications off" />
+			<img src="img/nosound.png" alt="sound" id="sound" title="Message sounds off" />
+			<img src="img/filer.png" alt="file" id="file" title="Send encrypted file" />
 			<div id="inchat"><div id="chat"></div></div>
 			<div id="info">chatting as <span id="nick">'.$nick.'</span> on 
 			<strong class="blue">'.$install.'?c=</strong><strong id="name">'.$name.'</strong>
