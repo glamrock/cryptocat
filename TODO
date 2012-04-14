@@ -17,3 +17,7 @@ generation
 Create Firefox plugin
 
 Add debug log in the webui - to help with "connection issues. stand by..."
+
+Add Nickname parameter for server side chat for easy bookmarklet
+
+Audit index.php
