@@ -669,7 +669,7 @@ $('#invite').click(function(){
 });
 
 $('#maximize').click(function(){
-	if ($('#maximize').attr('title') === 'contract') {
+	if ($('#maximize').attr('title') === 'Contract') {
 		$('#main').animate({'margin-top': '2%', 'min-width': '600px', 'min-height': '420px', width: '600px', height: '420px'}, 500);
 		$('#info').animate({width: '588px'}, 500);
 		$('#users').animate({width: '525px', 'padding-right': '3px'}, 500);
