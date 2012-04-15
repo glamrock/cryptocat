@@ -71,6 +71,9 @@ function getstamp(n) {
 }
 
 function soundPlay(which) {
+
+	navigator.notification.vibrate(500);
+	/*
 	function createSound(which) {
 		soundEmbed = document.createElement('audio');
 		soundEmbed.setAttribute('type', 'audio/webm');
@@ -89,6 +92,7 @@ function soundPlay(which) {
 	}
 	soundEmbed.removed = false;
 	document.body.appendChild(soundEmbed);
+	*/
 }
 
 function textcounter(field,cntfield,maxlimit) {
@@ -261,6 +265,7 @@ function pushline(line, id) {
 	line = '<div class="' + tag + '" id="' + id + '"><div class="text">' + line + '</div></div>';
 	$('#chat').html($('#chat').html() + line);
 	if (sound) {
+	
 		soundPlay('snd/msg.webm');
 	}
 }
