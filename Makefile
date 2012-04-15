@@ -34,9 +34,16 @@ build-chrome-crx-signed:
 	google-chrome --pack-extension=`pwd`/src/client/chrome-plugin/ --pack-extension-key=`pwd`/src/client/chrome-plugin.pem
 	mv src/client/chrome-plugin.crx cryptocat-plugin.crx
 
+build-android-apk:
+	android-update-project -p src/client/android/CryptocatBot/
+	ant-debug-release src/client/android/CryptocatBot/build.xml
+#	mv src/client/android/CryptocatBot/bin/CryptocatBot/bin/foo.apk
+
+
 clean:
 	-rm src/client/chrome-plugin/js/build.js
 	-rm out/*.crx
+	-rm	out/*.apk
 
 really-clean:
 	-rm out/*.crx

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="UTF-8" />
+	<title>Cryptocat</title>
+	<link rel="stylesheet" href="css/style.css" type="text/css" />
+	<link rel="icon" type="image/gif" href="img/favicon.gif" />
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/build.js"></script>
+	 <script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
+    <script type="text/javascript" charset="utf-8">
+
+    // The watch id references the current `watchAcceleration`
+    var watchID = null;
+
+    // Wait for PhoneGap to load
+    //
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    // PhoneGap is ready
+    //
+    function onDeviceReady() {
+        startWatch();
+    }
+
+    // Start watching the acceleration
+    //
+    function startWatch() {
+
+        // Update acceleration every 3 seconds
+        var options = { frequency: 100 };
+
+        watchID = navigator.accelerometer.watchAcceleration(onSuccess, onError, options);
+    }
+
+    // Stop watching the acceleration
+    //
+    function stopWatch() {
+        if (watchID) {
+            navigator.accelerometer.clearWatch(watchID);
+            watchID = null;
+        }
+    }
+
+    // onSuccess: Get a snapshot of the current acceleration
+    //
+    function onSuccess(acceleration) {
+        var element = document.getElementById('accelerometer');
+        element.innerHTML = 'Acceleration X: ' + acceleration.x + '<br />' +
+                            'Acceleration Y: ' + acceleration.y + '<br />' +
+                            'Acceleration Z: ' + acceleration.z + '<br />' +
+                            'Timestamp: '      + acceleration.timestamp + '<br />';
+    }
+
+    // onError: Failed to get the acceleration
+    //
+    function onError() {
+        alert('onError!');
+    }
+
+    </script>
+</head>
+<body onbeforeunload="logout();">
+	<div id="main">
+		<div id="front" class="invisible">
+			<div id="changenick">
+				<div id="keygen" class="invisible">
+					<img src="img/keygen.gif" alt="" /><br />
+					<span id="keytext"></span>
+				</div>
+				<div id="nickentry" class="invisible">
+					<p>Enter nickname</p>
+					<form name="nickform" id="nickform" method="post" action="http://xdtfje3c46d2dnjd.onion/">
+						<div>
+							<input type="text" name="nickinput" id="nickinput" value="raccoon" maxlength="12" autocomplete="off" />
+							<input type="submit" class="nicksubmit" value="chat" />
+						</div>
+					</form>
+				</div>
+			</div>
+			<div id="fadebox" class="invisible"></div>
+		</div>
+		<a href="http://xdtfje3c46d2dnjd.onion/" onclick="logout();"><img src="img/cryptocat.png" class="chat" alt="cryptocat" /></a>
+		<img src="img/maximize.png" alt="maximize" id="maximize" title="expand" />
+		<img src="img/nosound.png" alt="sound" id="sound" title="message sounds off" />
+		<img src="img/invite.png" alt="invite" id="invite" title="invite friend" />
+		<img src="img/filer.png" alt="file" id="file" title="send encrypted file" />
+		<div id="inchat"><div id="chat"></div></div>
+		<div id="info">chatting as <span id="nick">raccoon</span> on 
+		<strong class="blue">http://xdtfje3c46d2dnjd.onion/?c=</strong><strong id="name"></strong>
+		</div>
+		<form name="chatform" id="chatform" method="post" action="http://xdtfje3c46d2dnjd.onion/">
+			<div>
+				<div id="users"></div>
+				<input type="text" name="input" id="input" maxlength="256" autocomplete="off" />
+				<input type="submit" name="talk" id="talk" value="256" />
+			</div>
+		</form>
+		</div>
+		<script type="text/javascript">var install="http://xdtfje3c46d2dnjd.onion/";var update=1150;var maxinput=256;var genurl=1;var filesize=600;</script>
+		<script type="text/javascript" src="js/cat.js"></script>
+</body>
+</html>
