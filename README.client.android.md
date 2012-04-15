@@ -1,1 +1,0 @@
-src/client/android/CryptoCatBot/README
