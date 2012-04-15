@@ -1,0 +1,35 @@
+Changes in version 0.0.1-GITHASHHERE - 2012-04-XX
+
+  o Major features:
+    Native Android package
+      Implemented with PhoneGap
+      Additional Random Number Generation seeding through entropic dance moves
+      Natively isolated from the rest of the web system
+      Routes Cryptocat over Tor by default to a Tor Hidden Service with Orbot
+    Easy build process for Chrome Plugin
+    Uses internal CSPRNG for Chrome and Safari
+
+  o Major security features:
+    XXX: Implement mpOTR ( http://www.cypherpunks.ca/~iang/pubs/mpotr.pdf )
+
+  o Minor features:
+    Desktop notification in Chrome
+    Logout button
+
+  o Feature removal and security fix:
+    XXX TODO: All of Nadim's home baked crypto
+
+  o Major bugfixes:
+    Malformed regex for parsing chatroom information for multiple users
+
+  o Minor bugfixes:
+    Many and varied
+
+  o Special thanks to the following individuals:
+    Arturo Filasto, Joseph Bonneau, Jonas Smedegaard, Tobias Pulls, Jacob Appelbaum and amazingly talented anonymous helpers.
+
+  o Code simplifications and refactoring:
+    XXX: Starting with i18n/L10n gettext
+
+  o Documentation and specification changes:
+    XXX: Describe mpOTR choices and extensions
