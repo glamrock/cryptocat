@@ -28,6 +28,7 @@
 			
 			Crypto.Fortuna.AddRandomEvent(ae);
 					
+			navigator.notification.vibrate(500);
 			
 		}
 		else {
