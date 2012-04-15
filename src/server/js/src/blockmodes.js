@@ -1,1 +1,1 @@
-../../../common/js/blockmodes.js
+../../../../ext/crypto-js/blockmodes.js
