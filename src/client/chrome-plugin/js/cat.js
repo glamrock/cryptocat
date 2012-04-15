@@ -236,7 +236,7 @@ function process(line, sentid) {
 						$("#" + pos).css('background-image', 'url("img/fileb.png")');
 					}
 				}
-				return line.match(/<\/span>.+$/).toString().substring(8);
+				return thisnick + '!' + line.match(/<\/span>.+$/).toString().substring(8);
 			}
 		}
 		else if (match = line.match(/^(\&gt\;|\&lt\;)\s[a-z]{1,12}\s(has arrived|has left)$/)) {
@@ -244,7 +244,8 @@ function process(line, sentid) {
 			line = '<span class="nick">' + match[0] + '</span>';
 			pushline(line, pos);
 			$("#" + pos).css('background-image', 'url("img/user.png")');
-			return match[0].toString().substring(5);
+			line = match[0].toString().substring(5);
+			return line.match(/^\w+/).toString() + '!' + line;
 		}
 		else {
 			if (jQuery.inArray(thisnick, inblocked) < 0) {
@@ -343,12 +344,16 @@ function updatechat() {
 				pos++;
 				if (data.match(/\s/)) {
 					var message = process(data, 0);
+					var title = message.match(/^[a-z]+!/).toString();
+					title = title.substring(0, title.length - 1);
+					message = message.match(/!.+$/).toString().substring(1);
+					message = message.replace(/<div class.+<\/div>/, '');
 					if ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) < 800) {
 						scrolldown(600);
 					}
 					if (!cfocus || ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) > 800)) {
 						if (notifications) {
-							Notification.createNotification('img/ios.png', 'Cryptocat Message', message);
+							Notification.createNotification('img/icon-128.png', title, message);
 						}
 					}
 				}
@@ -669,7 +674,7 @@ $('#invite').click(function(){
 });
 
 $('#maximize').click(function(){
-	if ($('#maximize').attr('title') === 'contract') {
+	if ($('#maximize').attr('title') === 'Contract') {
 		$('#main').animate({'margin-top': '2%', 'min-width': '600px', 'min-height': '420px', width: '600px', height: '420px'}, 500);
 		$('#info').animate({width: '588px'}, 500);
 		$('#users').animate({width: '525px', 'padding-right': '3px'}, 500);
