@@ -344,6 +344,7 @@ function updatechat() {
 				pos++;
 				if (data.match(/\s/)) {
 					var message = process(data, 0);
+					message[1] = message[1].replace(/<div class.+<\/div>/, '');
 					if ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) < 800) {
 						scrolldown(600);
 					}

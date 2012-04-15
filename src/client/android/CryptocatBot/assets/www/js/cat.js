@@ -354,7 +354,7 @@ function updatechat() {
 					}
 					if (!cfocus || ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) > 800)) {
 						if (notifications) {
-							Notification.createNotification('img/icon-128.png', message[0], message[1]);
+							//Notification.createNotification('img/icon-128.png', message[0], message[1]);
 						}
 					}
 				}
