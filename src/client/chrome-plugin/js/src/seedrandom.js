@@ -1,1 +1,1 @@
-../../../../common/js/seedrandom.js
+../../../../../ext/seedrandom/seedrandom.js
