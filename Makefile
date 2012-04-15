@@ -35,6 +35,8 @@ build-chrome-crx-signed:
 	mv src/client/chrome-plugin.crx cryptocat-plugin.crx
 
 build-android-apk:
+	git submodule init
+	git submodule update
 	android update project -p src/client/android/CryptocatBot/libs/cordova/framework -t android-15
 	ant jar -f src/client/android/CryptocatBot/libs/cordova/framework/build.xml
 	mv src/client/android/CryptocatBot/libs/cordova/framework/cordova*jar src/client/android/CryptocatBot/libs
