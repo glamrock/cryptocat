@@ -2,10 +2,10 @@ Changes in version 0.0.1-GITHASHHERE - 2012-04-XX
 
   o Major features:
     Native Android package
-      Implemented with PhoneGap
-      Additional Random Number Generation seeding through entropic dance moves
-      Natively isolated from the rest of the web system
-      Routes Cryptocat over Tor by default to a Tor Hidden Service with Orbot
+    Implemented with PhoneGap
+    Additional Random Number Generation seeding through entropic dance moves
+    Natively isolated from the rest of the web system
+    Routes Cryptocat over Tor by default to a Tor Hidden Service with Orbot
     Easy build process for Chrome Plugin
     Uses internal CSPRNG for Chrome and Safari
 
@@ -17,7 +17,7 @@ Changes in version 0.0.1-GITHASHHERE - 2012-04-XX
     Logout button
 
   o Feature removal and security fix:
-    XXX TODO: All of Nadim's home baked crypto
+    XXX TODO: Replace Cryptocat spec with mpOTR
 
   o Major bugfixes:
     Malformed regex for parsing chatroom information for multiple users
