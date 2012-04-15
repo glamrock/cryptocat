@@ -2,3 +2,4 @@
   * When notification is unsupported, suggest to either use Chrome or
     try the Firefox plugin "html-notifications"
   * Display sensible info when JavaScript is disabled
+  * Remove build.js from Android repo
