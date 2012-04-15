@@ -1,1 +1,0 @@
-src/client/chrome-plugin/README.md

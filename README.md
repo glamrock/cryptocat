@@ -5,6 +5,11 @@
 
 Cryptocat lets you instantly set up secure conversations. It's an open source encrypted, private alternative to other services such as Facebook chat.
 
+## Cryptocat Versions
+* **Cryptocat** serves as a server and provides a HTTPS-accessible web interface that works on modern mobile and desktop browsers.
+* **Cryptocat Chrome** is a Google Chrome app that loads code locally and connects to a Cryptocat server only to communicate chat data, thus providing better security.
+* **CryptocatBot** is a native Android app developed in collaboration with the [Guardian Project](https://guardianproject.info/).
+
 ## Cool features
 * A client-side 4096-bit Diffie-Hellman-Merkle public key agreement engine.
 * A client-side AES-256 implementation is used to encrypt data.
@@ -13,7 +18,6 @@ Cryptocat lets you instantly set up secure conversations. It's an open source en
 * Uses the Fortuna secure pseudo-randomness generator.
 * Send encrypted .zip files and images.
 * Includes a mobile website compatible with iPhone, Android and BlackBerry.
-* [Cryptocat Chrome](https://chrome.google.com/webstore/detail/gonbigodpnfghidmnphnadhepmbabhij), a Chrome app that loads all code locally, and is secure from being served compromised code.
 * Chats are securely deleted after one hour of inactivity.
 * Easily invite your Facebook contacts to join your Cryptocat session.
 * Send private messages that can only be seen by a single recipient.
@@ -36,15 +40,21 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRA
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ## Installation instructions
-1. Run `./make.sh` inside the `js/src/` directory in order to generate the client-side cryptography code (requires `gcc`.)
-2. Configure settings inside `index.php`.
+### Cryptocat
+1. If your server does not support symlinks, replace the symlinks with copies of the actual files accordingly.
+2. Run `./make.sh` inside the `src/server/js/src/` directory in order to generate the client-side cryptography code (requires `gcc`.)
+3. Configure settings inside `src/server/index.php`.
+
+### Cryptocat Chrome
+1. Run `make build-chrome-zip` in order to generate a Google Chrome-loadable.zip
+
+### CryptocatBot
+*Instructions coming soon.*
 
 ## Important notes
 * Cryptocat provides strongly encrypted, secure communications. However, it is not a replacement to GPG. Think responsibly if you are in extreme, life-threatening situations.
 
 * Using Cryptocat without HTTPS in a production environment is a recipe for disaster. We severely warn against deploying Cryptocat without HTTPS, unless the deployment is occurring as a Tor Hidden Service.
-
-* Paranoid users may want to use [Cryptocat Chrome](https://chrome.google.com/webstore/detail/gonbigodpnfghidmnphnadhepmbabhij), a Chrome app that loads all code locally, and is secure from being served compromised code.
 
 * The code for secure deletion of idle chats after one hour is not included in the Cryptocat git repository. On the [production server](https://crypto.cat), it's actually a cron job that checks the modification time of chats and [wipe](http://linux.die.net/man/1/wipe)s them securely. Those wanting to set up similar functionality should consider writing something similar.
 
