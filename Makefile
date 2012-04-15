@@ -35,13 +35,19 @@ build-chrome-crx-signed:
 	mv src/client/chrome-plugin.crx cryptocat-plugin.crx
 
 build-android-apk:
-	android-update-project -p src/client/android/CryptocatBot/
-	ant-debug-release src/client/android/CryptocatBot/build.xml
-#	mv src/client/android/CryptocatBot/bin/CryptocatBot/bin/foo.apk
-
+	android update project -p src/client/android/CryptocatBot/libs/cordova/framework -t android-15
+	ant jar -f src/client/android/CryptocatBot/libs/cordova/framework/build.xml
+	mv src/client/android/CryptocatBot/libs/cordova/framework/cordova*jar src/client/android/CryptocatBot/libs
+	android update project -p src/client/android/CryptocatBot/
+	ant release -f src/client/android/CryptocatBot/build.xml
+	mkdir out
+	mv src/client/android/CryptocatBot/bin/CryptocatBot-release-unsigned.apk out/
 
 clean:
 	-rm src/client/chrome-plugin/js/build.js
+	 rm src/client/android/CryptocatBot/libs/*.jar
+	 ant clean -f src/client/android/CryptocatBot/libs/cordova/framework/build.xml
+	 ant clean -f src/client/android/CryptocatBot/build.xml
 	-rm out/*.crx
 	-rm	out/*.apk
 
