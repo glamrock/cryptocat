@@ -60,8 +60,9 @@ install: js-server-build
 
 clean:
 	-rm src/client/chrome-plugin/js/build.js
+	-rm src/server/js/build.js
 	-rm out/*.crx
-	-rm	out/*.apk
+	-rm out/*.apk
 
 really-clean:
 	-rm out/*.crx
