@@ -1,1 +1,1 @@
-../../../../../../common/js/crypto.js
+../../../../../../../ext/crypto-js/crypto.js

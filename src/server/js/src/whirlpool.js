@@ -1,1 +1,1 @@
-../../../common/js/whirlpool.js
+../../../../ext/whirlpool/whirlpool.js

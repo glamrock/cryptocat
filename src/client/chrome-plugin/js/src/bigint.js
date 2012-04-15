@@ -1,1 +1,1 @@
-../../../../common/js/bigint.js
+../../../../../ext/bigint/bigint.js

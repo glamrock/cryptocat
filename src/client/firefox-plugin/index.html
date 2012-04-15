@@ -1,0 +1,13 @@
+<script type="text/javascript">
+	function install() {
+		var installation = navigator.mozApps.install("https://crypto.cat/firefox/cryptocat.webapp");  
+		installation.onsuccess = function() {  
+		    alert('Installation successful');
+		}  
+		installation.onerror = function() {  
+		    alert('Installation failed! :(');
+		}
+	}
+</script>
+
+<a onclick="install();" href="#">Click me to install Cryptocat! :3</a>

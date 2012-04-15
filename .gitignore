@@ -4,3 +4,5 @@ src/server/about/
 src/server/donate/
 .DS_Store
 cryptocat-plugin.zip
+
+src/client/chrome-plugin/js/build.js

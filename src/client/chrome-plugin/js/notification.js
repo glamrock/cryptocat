@@ -1,1 +1,1 @@
-../../../common/js/notification.js
+../../../../ext/notification.js/notification.js
