@@ -236,7 +236,7 @@ function process(line, sentid) {
 						$("#" + pos).css('background-image', 'url("img/fileb.png")');
 					}
 				}
-				return thisnick + '!' + line.match(/<\/span>.+$/).toString().substring(8);
+				return [thisnick, line.match(/<\/span>.+$/).toString().substring(8)];
 			}
 		}
 		else if (match = line.match(/^(\&gt\;|\&lt\;)\s[a-z]{1,12}\s(has arrived|has left)$/)) {
@@ -245,7 +245,7 @@ function process(line, sentid) {
 			pushline(line, pos);
 			$("#" + pos).css('background-image', 'url("img/user.png")');
 			line = match[0].toString().substring(5);
-			return line.match(/^\w+/).toString() + '!' + line;
+			return [line.match(/^\w+/).toString(), line];
 		}
 		else {
 			if (jQuery.inArray(thisnick, inblocked) < 0) {
@@ -344,15 +344,12 @@ function updatechat() {
 				pos++;
 				if (data.match(/\s/)) {
 					var message = process(data, 0);
-					var title = message.match(/^[a-z]+!/).toString();
-					title = title.substring(0, title.length - 1);
-					message = message.match(/!.+$/).toString().substring(1);
 					if ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) < 800) {
 						scrolldown(600);
 					}
 					if (!cfocus || ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) > 800)) {
 						if (notifications) {
-							Notification.createNotification('img/icon-128.png', title, message);
+							Notification.createNotification('img/icon-128.png', message[0], message[1]);
 						}
 					}
 				}
@@ -381,8 +378,8 @@ function updatechat() {
 						return;
 					}
 				}
-				var msg = queue[0].replace(/\$.+$/, '');
-				var sentid = queue[0].replace(/^.+\$/, '');
+				var msg = queue[0][0];
+				var sentid = queue[0][1];
 				if ((msg[0] === "@") && (jQuery.inArray(msg.match(/^\@[a-z]{1,12}/).toString().substring(1), names) >= 0)) {
 					if (msg.match(/^\@[a-z]{1,12}/).toString().substring(1) === nick) {
 						$("#" + sentid).css('background-image', 'url("img/chat.png")');
@@ -390,7 +387,7 @@ function updatechat() {
 						return;
 					}
 					var loc = jQuery.inArray(msg.match(/^\@[a-z]{1,12}/).toString().substring(1), names);
-					var crypt = Crypto.AES.encrypt(queue[0].replace(/\$.+$/, ''), 
+					var crypt = Crypto.AES.encrypt(queue[0][0], 
 					Crypto.util.hexToBytes(seckeys[names[loc]].substring(0, 64)), {
 						mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
 					});
@@ -402,7 +399,7 @@ function updatechat() {
 					var msg = '';
 					for (var i=0; i !== names.length; i++) {
 						if (names && (names[i] !== nick) && (jQuery.inArray(names[i], outblocked) < 0)) {
-							var crypt = Crypto.AES.encrypt(queue[0].replace(/\$.+$/, ''),
+							var crypt = Crypto.AES.encrypt(queue[0][0],
 							Crypto.util.hexToBytes(seckeys[names[i]].substring(0, 64)), {
 								mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
 							});
@@ -440,7 +437,7 @@ function sendmsg(msg) {
 		scrolldown(600);
 		if (names.length > 1) {
 			$("#" + sentid).css('background-image', 'url("img/sending.gif")');
-			queue.push(msg + "$" + sentid);
+			queue.push([msg, sentid]);
 			$("#talk").val(maxinput);
 		}
 	}
@@ -452,43 +449,60 @@ $("#chatform").submit(function() {
 });
 
 $("#nickform").submit(function() {
+	function seeded() {
+		$('#keytext').css('margin-top', '-=6px');
+		$('#keytext').html("<br />Checking integrity");
+		if (integritycheck()) {
+			$('#keytext').html($('#keytext').html() + 
+			'  &#160;<span class="blue">OK</span>' + '<br />Generating keys');
+			pubkey = dhgen(gen(24, 0, 1), "gen");
+			$('#keytext').html($('#keytext').html() + ' &#160; &#160; ' + 
+			'<span class="blue">OK</span><br />Communicating');
+			setTimeout("nickset()", 250);
+		}
+		else {
+			$('#keytext').html('<span class="red">Integrity check failed. Cryptocat cannot proceed safely.</span>');
+		}
+	}
 	$("#nickinput").val($("#nickinput").val().toLowerCase());
 	if (!pubkey) {
-		$('#keytext').html('Type on your keyboard as randomly as possible for a few seconds:' + 
-		'<br /><input type="password" id="keytropy" />');
+		if (typeof window.crypto.getRandomValues == 'function') {
+			var buf = new Uint8Array(512);
+			window.crypto.getRandomValues(buf);
+			for (var i=0; i<buf.byteLength; i++) {
+				Crypto.Fortuna.AddRandomEvent(String.fromCharCode(buf[i]));
+			}
+		}
+		if (Crypto.Fortuna.Ready() === 0) {
+			$('#keytext').html('Type on your keyboard as randomly as possible for a few seconds:' + 
+			'<br /><input type="password" id="keytropy" />');
+		}
 		$('#nickentry').fadeOut('fast', function() {
 			$('#keygen').fadeIn('fast', function() {
-				var down, up, e;
-				$("#keytropy").focus();
-				$("#keytropy").keydown(function(event) {
-					if (Crypto.Fortuna.Ready() === 0) {
-						e = String.fromCharCode(event.keyCode);
-						var d = new Date();
-						down = d.getTime();
-					}
-				});
-				$("#keytropy").keyup(function() {
-					if (Crypto.Fortuna.Ready() === 0) {
-						var d = new Date();
-						up = d.getTime();
-						Crypto.Fortuna.AddRandomEvent(e + (up - down));
-					}
-					else {
-						$('#keytext').css('margin-top', '-=6px');
-						$('#keytext').html("<br />Checking integrity");
-						if (integritycheck()) {
-							$('#keytext').html($('#keytext').html() + 
-							'  &#160;<span class="blue">OK</span>' + '<br />Generating keys');
-							pubkey = dhgen(gen(24, 0, 1), "gen");
-							$('#keytext').html($('#keytext').html() + ' &#160; &#160; ' + 
-							'<span class="blue">OK</span><br />Communicating');
-							setTimeout("nickset()", 250);
+				if (Crypto.Fortuna.Ready()) {
+					seeded();
+				}
+				else {
+					var down, up, e;
+					$('#keytropy').focus();
+					$('#keytropy').keydown(function(event) {
+						if (Crypto.Fortuna.Ready() === 0) {
+							e = String.fromCharCode(event.keyCode);
+							var d = new Date();
+							down = d.getTime();
+						}
+					});
+					$('#keytropy').keyup(function() {
+						if (Crypto.Fortuna.Ready() === 0) {
+							var d = new Date();
+							up = d.getTime();
+							Crypto.Fortuna.AddRandomEvent(e + (up - down));
 						}
 						else {
-							$('#keytext').html('<span class="red">Integrity check failed. Cryptocat cannot proceed safely.</span>');
+							seeded();
 						}
-					}
-				});
+					});
+				}
 			});
 		});
 	}
