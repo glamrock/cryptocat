@@ -1,5 +1,6 @@
 #!/bin/bash
 cat bigint.js > build.js
+cat elliptic.js >> build.js
 cat seedrandom.js >> build.js
 cat crypto.js >> build.js
 cat aes.js >> build.js
