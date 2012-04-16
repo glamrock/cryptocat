@@ -1,8 +1,7 @@
 ## Cryptocat
 ### Web chat client with client-side cryptography.
-### https://crypto.cat
-### http://xdtfje3c46d2dnjd.onion
-#### Alpha software - code review highly appreciated - DO NOT TRUST WITH YOUR LIFE - NOT PEER REVIEWED OR READY FOR PRODUCTION
+### https://crypto.cat - http://xdtfje3c46d2dnjd.onion
+#### Alpha software: Code review highly appreciated - DO NOT TRUST WITH YOUR LIFE - NOT PEER REVIEWED OR READY FOR PRODUCTION
 
 Cryptocat lets you instantly set up secure conversations. It aims to be an open source encrypted and private alternative to other services such as Facebook chat.
 
@@ -51,16 +50,13 @@ The full license text is included in `LICENSE.txt`.
 
 ## Installation instructions
 ### Cryptocat
-1. If your server does not support symlinks, replace the symlinks with copies of the actual files accordingly.
-2. Run `./make.sh` inside the `src/server/js/src/` directory in order to generate the client-side cryptography code (requires `gcc`.)
-3. Configure settings inside `src/server/index.php`.
+1. run `make build-server`.
+2. Configure settings inside `src/server/index.php`.
 
 ### Cryptocat Chrome
 1. Run `make build-chrome-zip` in order to generate a Google Chrome-loadable.zip
 
 ### CryptocatBot
-*Instructions coming soon.*
-
 1. Run `make build-android-apk` in order to build an android package.
 
 ## Important notes
