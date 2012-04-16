@@ -627,9 +627,9 @@ $('#notifications').click(function(){
 		$('#notifications').attr('src', 'img/notifications.png');
 		$('#notifications').attr('title', 'Desktop notifications on');
 		notifications = 1;
-		if (Notification.checkPermission() === 1){
-			Notification.requestPermission();
-		}
+		//if (Notification.checkPermission() === 1){
+		//	Notification.requestPermission();
+		//}
 	}
 	$('#input').focus();
 });
