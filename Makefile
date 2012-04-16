@@ -1,3 +1,6 @@
+build-server:
+	cd src/server/js/src/ && ./make.sh
+
 build-chrome-zip:
 	cat src/client/chrome-plugin/js/src/crypto.js >> src/client/chrome-plugin/js/build.js
 	cat src/client/chrome-plugin/js/src/blockmodes.js >> src/client/chrome-plugin/js/build.js
@@ -47,13 +50,12 @@ build-android-apk:
 
 clean:
 	-rm src/client/chrome-plugin/js/build.js
-	 rm src/client/android/CryptocatBot/libs/*.jar
-	 ant clean -f src/client/android/CryptocatBot/libs/cordova/framework/build.xml
-	 ant clean -f src/client/android/CryptocatBot/build.xml
+	-rm src/client/android/CryptocatBot/libs/*.jar
+	-rm src/server/js/build.js
+	ant clean -f src/client/android/CryptocatBot/libs/cordova/framework/build.xml
+	ant clean -f src/client/android/CryptocatBot/build.xml
 	-rm out/*.crx
 	-rm	out/*.apk
 
-really-clean:
-	-rm out/*.crx
-	-rm src/client/chrome-plugin/js/build.js
+clean-chrome-key:
 	-rm src/client/chrome-plugin.pem
