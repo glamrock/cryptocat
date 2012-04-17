@@ -163,7 +163,7 @@
 			else if ($_SESSION['pos']) {
 				$people = getpeople($chat);
 				if (function_exists('shmop_open')) {
-					$shm_id = shmop_open(ftok($data.$_POST['chat'], 'c'), "c", 0644, 256);
+					$shm_id = shmop_open(ftok($data.$_POST['chat'], 'c'), "c", 0600, 256);
 					if (!shmop_read($shm_id, 0, shmop_size($shm_id))) {
 						$last = array();
 					}
@@ -433,7 +433,7 @@ else {
 				if (file_exists($data.$name)) {
 					file_put_contents($data.$name, implode('', $chat), LOCK_EX);
 					if (function_exists('shmop_delete')) {
-						shmop_delete(shmop_open(ftok($data.$name, 'c'), "c", 0644, 256));
+						shmop_delete(shmop_open(ftok($data.$name, 'c'), "c", 0600, 256));
 					}
 				}
 			}
