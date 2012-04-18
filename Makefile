@@ -2,8 +2,8 @@ build-server:
 	cd src/server/js/src/ && ./make.sh
 
 install-server:
-	DESTDIR ?='/var/www/'
-	cp -LR src/server/ $(DESTDIR)
+	DESTDIR ?= /var/www
+	cp -LR src/server/* $(DESTDIR)/
 
 build-chrome-zip:
 	cat src/client/chrome-plugin/js/src/crypto.js >> src/client/chrome-plugin/js/build.js
