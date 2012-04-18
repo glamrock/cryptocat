@@ -326,14 +326,16 @@ else {
 				</table>
 				<div class="bottom">
 					<span id="lang">
-						<a href="#" onclick="translate(\'fr\')">fr</a> 
+						<a href="#" onclick="translate(\'en\')">en</a> 
 						<a href="#" onclick="translate(\'ca\')">ca</a> 
-						<a href="#" onclick="translate(\'eu\')">eu</a> 
-						<a href="#" onclick="translate(\'it\')">it</a> 
 						<a href="#" onclick="translate(\'de\')">de</a> 
+						<a href="#" onclick="translate(\'eu\')">eu</a> 
+						<a href="#" onclick="translate(\'fr\')">fr</a> 
+						<a href="#" onclick="translate(\'it\')">it</a> 
 						<a href="#" onclick="translate(\'pt\')">pt</a> 
 						<a href="#" onclick="translate(\'ru\')">ru</a> 
-						<a href="#" onclick="translate(\'sv\')">sv</a>
+						<a href="#" onclick="translate(\'sv\')">sv</a> 
+						<a href="#" onclick="translate(\'uk\')">uk</a> 
 					</span>
 					<div class="links">
 						<a href="https://crypto.cat/about">about</a> 
