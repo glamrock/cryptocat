@@ -54,6 +54,10 @@
 	/* Do _not_ touch anything below this line. */
 ?>
 <?php
+	if ($https && $_SERVER['HTTPS'] != 'on') {
+		$redirect= 'https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+		header('Location:'.$redirect);
+	}
 	ini_set('session.entropy_file', '/dev/urandom');
 	ini_set('session.entropy_length', '1024');
 	session_set_cookie_params(0, '/', $domain, $https, TRUE);
