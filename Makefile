@@ -1,8 +1,9 @@
+DESTDIR ?= /var/www
+
 build-server:
 	cd src/server/js/src/ && ./make.sh
 
 install-server:
-	DESTDIR ?= /var/www
 	cp -LR src/server/* $(DESTDIR)/
 
 build-chrome-zip:
