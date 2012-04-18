@@ -20,6 +20,7 @@
 	/* Important notes are included in the README.md file. */
 	
 	/* Vital configuration settings: */
+	/* MIND THE TRAILING SLASHES! */
 	
 	/* Install directory and domain name. */
 	$install = 'https://crypto.cat/';
