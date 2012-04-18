@@ -1,6 +1,9 @@
 build-server:
 	cd src/server/js/src/ && ./make.sh
 
+install-server:
+	cp -LR src/server/ $(DESTDIR)
+
 build-chrome-zip:
 	cat src/client/chrome-plugin/js/src/crypto.js >> src/client/chrome-plugin/js/build.js
 	cat src/client/chrome-plugin/js/src/blockmodes.js >> src/client/chrome-plugin/js/build.js
