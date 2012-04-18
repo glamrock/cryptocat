@@ -51,7 +51,8 @@ The full license text is included in `LICENSE.txt`.
 ## Installation instructions
 ### Cryptocat
 1. run `make build-server`.
-2. Configure settings inside `src/server/index.php`.
+2. run `make DESTDIR=/var/www/ install-server`, replacing `/var/www/` with your intended web directory.
+3. Configure settings inside `index.php`.
 
 ### Cryptocat Chrome
 1. Run `make build-chrome-zip` in order to generate a Google Chrome-loadable.zip
