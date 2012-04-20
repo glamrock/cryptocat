@@ -123,15 +123,10 @@ Fortuna.RandomData = function(n) {
 	var d = new Date();
 	if ((P[0].toString().length >= MinPoolSize) && ((d.getTime() - LastReseed) > 100)) {
 		ReseedCnt++;
-		var s;
+		var s = '';
 		for (var i=0; i!=31; i++) {
 			if (ReseedCnt & (Math.pow(2, i) - 1) == 0) {
-				if (!s) {
-					s = Whirlpool((P[i])).substring(0, 32);
-				}
-				else {
-					s += Whirlpool((P[i])).substring(0, 32);
-				}
+				s += Whirlpool((P[i])).substring(0, 32);
 				P[i] = 0;
 			}
 		}
