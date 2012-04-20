@@ -90,23 +90,20 @@ Fortuna.Ready = function() {
 }
 
 // Generator
+// Returns a string of k*16 bytes (equivalently, k*128 bits) generated from the
+// Whirlpool state.
 function GenerateBlocks(k) {
 	if (C==0) {
 		throw "Fortuna ERROR: Entropy pools too empty.";
 	}
-	var r = 0;
+	var r = '';
 	for (var i=0; i!=k; i++) {
 		var Cp = Whirlpool((C.toString()).substring(0, 16)).substring(0, 32);
 		var iv = Crypto.charenc.Binary.stringToBytes(K.substring(0, 16));
 		var c = Crypto.AES.encrypt(Cp, Crypto.util.hexToBytes(K), {
 			mode: new Crypto.mode.CTR, iv: iv
 			}).substring(0, 16);
-		if (!r) {
-			r = c;
-		}
-		else {
-			r += c;
-		}
+		r += c;
 		C++;
 	}
 	return r;
