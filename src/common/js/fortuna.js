@@ -109,6 +109,7 @@ function GenerateBlocks(k) {
 	return r;
 }
 
+// Returns a string of n pseudorandom characters derived from the Whirlpool state.
 function PseudoRandomData(n) {
 	if ((n <= 0) || (n >= 1048576)) {
 		throw "Fortuna ERROR: Invalid value.";
