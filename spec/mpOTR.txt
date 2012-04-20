@@ -13,14 +13,14 @@
 This specification attempts to document what is believed to be the first mpOTR
 implementation.
 
-The mpOTR paper by Ian Goldberg et al. is the basis for the cryptography in the
-mpOTR Cryptocat implementation. It is lacking in several areas and we felt it
-important to choose specifics for the handwaving parts of the paper carefully.
-Our implementation is mostly a toy but we believe it is a reasonable first stab
-at creating a simple mpOTR demonstration. With native implementations, we
-believe that mpOTR is a very reasonable encrypted chat protocol but our
-implementation is by no means peer-reviewed and should be considered an
-experiment.
+The mpOTR paper by Ian Goldberg et al. [1] is the basis for the cryptography in
+the mpOTR Cryptocat implementation. It is lacking in several areas and we felt
+it important to choose specifics for the handwaving parts of the paper
+carefully.  Our implementation is mostly a toy but we believe it is a
+reasonable first stab at creating a simple mpOTR demonstration. With native
+implementations, we believe that mpOTR is a very reasonable encrypted chat
+protocol but our implementation is by no means peer-reviewed and should be
+considered an experiment.
 
 We have chosen to use elliptic curve cryptography and specifically, we've
 chosen to use (all hail the NSA?) P256, for use with Elliptic curve
@@ -119,3 +119,10 @@ channel name, the IP addresses of the client, the timestamps and the size of
 messages.
 
 XXX: TODO - Document examples of each part of the protocol and process.
+
+References
+
+[1] "Multi-party Off-the-Record Messaging", Ian Goldberg, Berkant Ustaoglu,
+Matthew D. Van Gundy, Hao Chen.  CCS '09, November 9-13, 2009, Chicago, Illinois.
+http://www.cypherpunks.ca/~iang/pubs/mpotr.pdf
+SHA1(mpotr.pdf) = f32d0371d82a295bd5437797f0494071f65342a1
