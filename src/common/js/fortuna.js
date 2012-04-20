@@ -113,7 +113,7 @@ function GenerateBlocks(k) {
 }
 
 function PseudoRandomData(n) {
-	if ((n <= 0) || (n >= 1048576) || (!n)) {
+	if ((n <= 0) || (n >= 1048576)) {
 		throw "Fortuna ERROR: Invalid value.";
 	}
 	var r = GenerateBlocks(Math.ceil(n/16)).substring(0, n);
