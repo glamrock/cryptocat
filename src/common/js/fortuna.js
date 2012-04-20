@@ -125,7 +125,7 @@ Fortuna.RandomData = function(n) {
 		ReseedCnt++;
 		var s;
 		for (var i=0; i!=31; i++) {
-			if (((ReseedCnt / Math.pow(2, i)) % 1) == 0) {
+			if (ReseedCnt & (Math.pow(2, i) - 1) == 0) {
 				if (!s) {
 					s = Whirlpool((P[i])).substring(0, 32);
 				}
