@@ -40,7 +40,7 @@
 var Fortuna = Crypto.Fortuna = function() {
 };
 
-var K = 0;
+var K = '';
 var C = 0;
 var ReseedCnt = 0;
 var MinPoolSize = 32;
@@ -51,12 +51,7 @@ var P = [0, 0, 0, 0];
 
 // Accumulator
 function Reseed(s) {
-	if (!K) {
-		K = Whirlpool(s).substring(0, 32);
-	}
-	else {
-		K = Whirlpool(K + s).substring(0, 32);
-	}
+	K = Whirlpool(K + s).substring(0, 32);
 	var d = new Date();
 	LastReseed = d.getTime();
 	C++;
