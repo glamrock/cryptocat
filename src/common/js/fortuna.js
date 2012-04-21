@@ -40,7 +40,7 @@
 var Fortuna = Crypto.Fortuna = function() {
 };
 
-var K = 0;
+var K = '';
 var C = 0;
 var ReseedCnt = 0;
 var MinPoolSize = 32;
@@ -51,12 +51,7 @@ var P = [0, 0, 0, 0];
 
 // Accumulator
 function Reseed(s) {
-	if (!K) {
-		K = Whirlpool(s).substring(0, 32);
-	}
-	else {
-		K = Whirlpool(K + s).substring(0, 32);
-	}
+	K = Whirlpool(K + s).substring(0, 32);
 	var d = new Date();
 	LastReseed = d.getTime();
 	C++;
@@ -90,30 +85,28 @@ Fortuna.Ready = function() {
 }
 
 // Generator
+// Returns a string of k*16 bytes (equivalently, k*128 bits) generated from the
+// Whirlpool state.
 function GenerateBlocks(k) {
 	if (C==0) {
 		throw "Fortuna ERROR: Entropy pools too empty.";
 	}
-	var r = 0;
+	var r = '';
 	for (var i=0; i!=k; i++) {
 		var Cp = Whirlpool((C.toString()).substring(0, 16)).substring(0, 32);
 		var iv = Crypto.charenc.Binary.stringToBytes(K.substring(0, 16));
 		var c = Crypto.AES.encrypt(Cp, Crypto.util.hexToBytes(K), {
 			mode: new Crypto.mode.CTR, iv: iv
 			}).substring(0, 16);
-		if (!r) {
-			r = c;
-		}
-		else {
-			r += c;
-		}
+		r += c;
 		C++;
 	}
 	return r;
 }
 
+// Returns a string of n pseudorandom characters derived from the Whirlpool state.
 function PseudoRandomData(n) {
-	if ((n <= 0) || (n >= 1048576) || (!n)) {
+	if ((n <= 0) || (n >= 1048576)) {
 		throw "Fortuna ERROR: Invalid value.";
 	}
 	var r = GenerateBlocks(Math.ceil(n/16)).substring(0, n);
@@ -125,17 +118,13 @@ Fortuna.RandomData = function(n) {
 	var d = new Date();
 	if ((P[0].toString().length >= MinPoolSize) && ((d.getTime() - LastReseed) > 100)) {
 		ReseedCnt++;
-		var s;
+		var s = '';
 		for (var i=0; i!=31; i++) {
-			if (((ReseedCnt / Math.pow(2, i)) % 1) == 0) {
-				if (!s) {
-					s = Whirlpool((P[i])).substring(0, 32);
-				}
-				else {
-					s += Whirlpool((P[i])).substring(0, 32);
-				}
-				P[i] = 0;
+			if (ReseedCnt & ((1 << i) - 1) != 0) {
+				break;
 			}
+			s += Whirlpool((P[i])).substring(0, 32);
+			P[i] = 0;
 		}
 		Reseed(s);
 	}
