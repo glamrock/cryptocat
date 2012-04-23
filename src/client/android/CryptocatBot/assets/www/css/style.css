@@ -143,8 +143,8 @@ input.create:active, #talk:active {
 	padding: 1px 3px 3px 0px;
 	width: 99.1%;
 	word-spacing: 5px;
-	height: 9px;
-	font-size: 0.3em;
+	height: 12px;
+	font-size: 0.5em;
 	font-weight: bold;
 }
 span.users {
