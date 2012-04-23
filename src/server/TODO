@@ -4,11 +4,6 @@
 * Implement mpOTR for communications between all peers in group chat
 * Extend Chrome to support cryptographic oracles rather than raw keys in accessible memory areas
 * Remove or rewrite jsmin.c as it is not free software.
-* Add top level Makefile to build client side code into an extension.
-* Add top level Makefile to install server side code.
-* Create Javascript crypto APIs in Chrome that allow for random number generation
 * Create Firefox plugin
-* Add debug log in the webui - to help with "connection issues. stand by..."
-* Add Nickname parameter for server side chat for easy bookmarklet
 * Audit index.php
 * Add server side code to the repo (cron, etc)

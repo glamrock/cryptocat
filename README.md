@@ -58,7 +58,7 @@ The full license text is included in `LICENSE.txt`.
 1. Run `make build-chrome-zip` in order to generate a Google Chrome-loadable.zip
 
 ### CryptocatBot
-1. Run `make build-android-apk` in order to build an android package.
+1. Run `make build-android-apk` in order to build an Android package.
 
 ## Important notes
 * Cryptocat provides strongly encrypted, secure communications. However, it is not a replacement to OTR, GPG or other strong cryptography. Think responsibly; if you are in extreme, life-threatening situations: don't use it!
