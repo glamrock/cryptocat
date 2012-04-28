@@ -295,7 +295,7 @@ else {
 		function welcome($name) {
 			global $install;
 			print('<div id="main">
-				<img src="img/cryptocat.png" alt="cryptocat" class="cryptocat" />
+				<a href="https://project.crypto.cat"><img src="img/cryptocat.png" alt="cryptocat" class="cryptocat" /></a>
 				<form action="'.$install.'" method="get" class="create" id="welcome">
 					<div id="front" class="invisible">
 						<div id="note">
@@ -343,10 +343,7 @@ else {
 						<a href="#" onclick="translate(\'uk\')">uk</a> 
 					</span>
 					<div class="links">
-						<a href="https://crypto.cat/about">about</a> 
-						<a target="_blank" href="https://twitter.com/cryptocatapp">twitter</a> 
-						<a target="_blank" href="https://blog.crypto.cat">blog</a> 
-						<a target="_blank" href="https://github.com/kaepora/cryptocat/">source</a>
+						<a href="https://project.crypto.cat">the Cryptocat Project</a>
 					</div>
 				</div>
 			</div>
