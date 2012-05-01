@@ -1,14 +1,15 @@
 ## Cryptocat
 ### Web chat client with client-side cryptography.
 ### https://crypto.cat - http://xdtfje3c46d2dnjd.onion
-#### Alpha software: Code review highly appreciated - DO NOT TRUST WITH YOUR LIFE - NOT PEER REVIEWED OR READY FOR PRODUCTION
+#### Beta software: Code review highly appreciated.
+#### Experimental software: Don't trust with your life!
 
 Cryptocat lets you instantly set up secure conversations. It aims to be an open source encrypted and private alternative to other services such as Facebook chat.
 
 ## Cryptocat Versions - convenience and security
 * **Cryptocat** is code to place on a web server and provides a HTTPS-accessible web interface that works on modern mobile and desktop browsers. This is for convenience and not for high security use. This is a useful demo and we hope it encourages you to install a native application for your respective platform.
 * **Cryptocat Chrome** is a Google Chrome app that loads code locally and connects to a Cryptocat server only to communicate chat data and the server is only used for discovering other peers and to relay encrypted messages between peers. No code is trusted from the server.
-* **CryptocatBot** is a native Android app developed in collaboration with the [Guardian Project](https://guardianproject.info/). It includes the full Cryptocat program and connects to a Tor hidden service through the Tor anonymity network by default thanks to Orbot integration from the [Guardian Project](https://guardianproject.info/).
+* **Cryptocat for Android** is a native Android app developed in collaboration with the [Guardian Project](https://guardianproject.info/). It includes the full Cryptocat program and connects to a Tor hidden service through the Tor anonymity network by default thanks to Orbot integration from the [Guardian Project](https://guardianproject.info/).
 
 A native iPhone, Blackberry and other versions are possible thanks to the [Guardian Project](https://guardianproject.info/) and [PhoneGap](https://phonegap.com/) but these are not yet implemented. If you're using these platforms, we encourage you to try the web application in the meantime.
 
