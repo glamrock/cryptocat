@@ -3,6 +3,7 @@ var interval;
 var faded = 0;
 var nicks = new Array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'turtle',
 'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite', 'ducky');
+var server = 'https://crypto.cat/';
 
 function gen(s) {
 	var c = "1234567890abcdefghijklmnopqrstuvwxyz";
@@ -23,7 +24,12 @@ xhr.send();
 
 $(window).keypress(function(e) {
 	if (e.keyCode === 13) {
-		$("#create").click();
+		if (typeof($('#server').val()) === 'string') {
+			$("#serverchange").click();
+		}
+		else {
+			$("#create").click();
+		}
 	}
 });
 
@@ -48,16 +54,28 @@ $("#create").click(function() {
 	else {
 		chat = chat.replace(/raccoon/g, nicks[(Math.floor(Math.random()*14))]);
 		chat = chat.replace('<strong id="name"></strong>', '<strong id="name">' + $("#c").val() + '</strong>');
+		chat = chat.replace(/CRYPTOCATSERVER/g, server);
 		document.write(chat);
 	}
 });
 
-$("#video").click(function(){
+$("#custom").click(function(){
 	$("#front").css('background-color', 'rgba(0, 0, 0, 0.8)');
-	$("#note").html('<input type="button" id="close" value="x" /><span id="notetext"><iframe src="https://player.vimeo.com/video/38439169?color=97ceec&amp;autoplay=1" width="549" height="309" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe></span>');
+	$("#note").html('<input type="button" id="close" value="x" /><br /><br />Enter the URL of the ' +
+	'Cryptocat server you wish to connect to:<br /><input type="text" id="server" value="' + server + '" />' + 
+	'<input type="button" id="serverchange" value="Set" />');
 	$("#front").fadeIn();
+	$('#server').focus();
 	$("#close").click(function(){
 		$("#front").fadeOut(function(){
+			$("#note").html('');
+			$("#front").css('background-color', 'rgba(0, 0, 0, 0)');
+		});
+	});
+	$("#serverchange").click(function(){
+		server = $('#server').val();
+		$("#front").fadeOut(function(){
+			$('#c').focus();
 			$("#note").html('');
 			$("#front").css('background-color', 'rgba(0, 0, 0, 0)');
 		});

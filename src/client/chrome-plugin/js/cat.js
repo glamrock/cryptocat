@@ -248,6 +248,7 @@ function process(line, sentid) {
 			return [line.match(/^\w+/).toString(), line];
 		}
 		else {
+			thisnick = $.trim(match[0].match(/^[a-z]{1,12}/));
 			if (jQuery.inArray(thisnick, inblocked) < 0) {
 				line = '<span class="diffkey">Error: invalid message received.</span>';
 				pushline(line, pos);
