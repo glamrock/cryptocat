@@ -6,7 +6,7 @@
 Cryptocat lets you instantly set up secure conversations. It aims to be an open source encrypted and private alternative to other services such as Facebook chat.
 
 ## Cryptocat Versions - convenience and security
-* **Cryptocat** is code to place on a web server and provides a HTTPS-accessible web interface that works on modern mobile and desktop browsers. This is for convenience and not for high security use. This is a useful demo and we hope it encourages you to install a native application for your respective platform.
+* **Cryptocat** is code to place on a web server. In addition to providing the Cryptocat server to which clients can connect to, this code provides a HTTPS-accessible web interface that works on modern mobile and desktop browsers. This interface is for convenience: connecting using a browser or native mobile app (such as Cryptocat Chrome or Cryptocat for Android) remains more recommended for security.
 * **Cryptocat Chrome** is a Google Chrome app that loads code locally and connects to a Cryptocat server only to communicate chat data and the server is only used for discovering other peers and to relay encrypted messages between peers. No code is trusted from the server.
 * **Cryptocat for Android** is a native Android app developed in collaboration with the [Guardian Project](https://guardianproject.info/). It includes the full Cryptocat program and connects to a Tor hidden service through the Tor anonymity network by default thanks to Orbot integration from the [Guardian Project](https://guardianproject.info/).
 
