@@ -46,32 +46,32 @@ build-chrome-crx-signed:
 	mv src/client/chrome-plugin.crx cryptocat-plugin.crx
 
 build-android-apk:
-	cat src/client/android/CryptocatBot/assets/www/js/src/crypto.js > src/client/android/CryptocatBot/assets/www/js/build.js
-	cat src/client/android/CryptocatBot/assets/www/js/src/blockmodes.js >> src/client/android/CryptocatBot/assets/www/js/build.js
-	cat src/client/android/CryptocatBot/assets/www/js/src/aes.js >> src/client/android/CryptocatBot/assets/www/js/build.js
-	cat src/client/android/CryptocatBot/assets/www/js/src/hmac.js >> src/client/android/CryptocatBot/assets/www/js/build.js
-	cat src/client/android/CryptocatBot/assets/www/js/src/fortuna.js >> src/client/android/CryptocatBot/assets/www/js/build.js
-	cat src/client/android/CryptocatBot/assets/www/js/src/whirlpool.js >> src/client/android/CryptocatBot/assets/www/js/build.js
-	cat src/client/android/CryptocatBot/assets/www/js/src/seedrandom.js >> src/client/android/CryptocatBot/assets/www/js/build.js
-	cat src/client/android/CryptocatBot/assets/www/js/src/bigint.js >> src/client/android/CryptocatBot/assets/www/js/build.js
-	cat src/client/android/CryptocatBot/assets/www/js/src/elliptic.js >> src/client/android/CryptocatBot/assets/www/js/build.js
+	cat src/client/android/assets/www/js/src/crypto.js > src/client/android/assets/www/js/build.js
+	cat src/client/android/assets/www/js/src/blockmodes.js >> src/client/android/assets/www/js/build.js
+	cat src/client/android/assets/www/js/src/aes.js >> src/client/android/assets/www/js/build.js
+	cat src/client/android/assets/www/js/src/hmac.js >> src/client/android/assets/www/js/build.js
+	cat src/client/android/assets/www/js/src/fortuna.js >> src/client/android/assets/www/js/build.js
+	cat src/client/android/assets/www/js/src/whirlpool.js >> src/client/android/assets/www/js/build.js
+	cat src/client/android/assets/www/js/src/seedrandom.js >> src/client/android/assets/www/js/build.js
+	cat src/client/android/assets/www/js/src/bigint.js >> src/client/android/assets/www/js/build.js
+	cat src/client/android/assets/www/js/src/elliptic.js >> src/client/android/assets/www/js/build.js
 	git submodule init
 	git submodule update
-	android update project -p src/client/android/CryptocatBot/libs/cordova/framework -t android-15
-	ant jar -f src/client/android/CryptocatBot/libs/cordova/framework/build.xml
-	mv src/client/android/CryptocatBot/libs/cordova/framework/cordova*jar src/client/android/CryptocatBot/libs
-	android update project -p src/client/android/CryptocatBot/
-	ant release -f src/client/android/CryptocatBot/build.xml
+	android update project -p src/client/android/libs/cordova/framework -t android-15
+	ant jar -f src/client/android/libs/cordova/framework/build.xml
+	mv src/client/android/libs/cordova/framework/cordova*jar src/client/android/libs
+	android update project -p src/client/android/
+	ant release -f src/client/android/build.xml
 	mkdir out
-	mv src/client/android/CryptocatBot/bin/CryptocatBot-release-unsigned.apk out/
+	mv src/client/android/bin-release-unsigned.apk out/
 
 clean:
-	-rm src/client/android/CryptocatBot/assets/www/js/build.js
+	-rm src/client/android/assets/www/js/build.js
 	-rm src/client/android/j/build.js
-	-rm src/client/android/CryptocatBot/libs/*.jar
+	-rm src/client/android/libs/*.jar
 	-rm src/server/js/build.js
-	ant clean -f src/client/android/CryptocatBot/libs/cordova/framework/build.xml
-	ant clean -f src/client/android/CryptocatBot/build.xml
+	ant clean -f src/client/android/libs/cordova/framework/build.xml
+	ant clean -f src/client/android/build.xml
 	-rm out/*.crx
 	-rm	out/*.apk
 
