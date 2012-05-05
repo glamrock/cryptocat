@@ -49,13 +49,12 @@ build-android-apk:
 	mv src/client/android/libs/cordova/framework/cordova*jar src/client/android/libs
 	android update project -p src/client/android/
 	ant release -f src/client/android/build.xml
-	mv src/client/android/bin-release-unsigned.apk out/
 
 clean:
 	-rm src/client/android/assets/www/js/build.js
 	-rm src/client/android/j/build.js
 	-rm src/client/android/libs/*.jar
 	-rm src/server/js/build.js
-	-rm src/client/android/local.properties
 	ant clean -f src/client/android/libs/cordova/framework/build.xml
 	ant clean -f src/client/android/build.xml
+	-rm src/client/android/local.properties
