@@ -1,1 +1,1 @@
-../../../../../../../ext/crypto-js/bigint.js
+../../../../../../../ext/bigint/bigint.js
