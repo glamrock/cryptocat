@@ -4,5 +4,11 @@ src/server/about/
 src/server/donate/
 .DS_Store
 cryptocat-plugin.zip
-
 src/client/chrome-plugin/js/build.js
+src/client/android/bin/
+src/client/android/assets/www/js/build.js
+src/client/android/gen/R.java.d
+src/client/android/gen/cat/crypto/android/BuildConfig.java
+src/client/android/gen/cat/crypto/android/R.java
+src/client/android/libs/cordova-1.6.1.jar
+src/client/android/local.properties
