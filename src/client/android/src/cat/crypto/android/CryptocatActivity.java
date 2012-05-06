@@ -10,7 +10,7 @@ import android.widget.Toast;
 import org.apache.cordova.*;
 import org.torproject.android.OrbotHelper;
 
-public class CryptoCatBotActivity extends DroidGap
+public class CryptocatActivity extends DroidGap
 {
 
 	public static String DEFAULT_PROXY_HOST = "localhost";

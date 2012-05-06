@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import org.apache.cordova.*;
 
-public class CryptoCatBotActivity extends DroidGap
+public class CryptocatActivity extends DroidGap
 {
     @Override
     public void onCreate(Bundle savedInstanceState)
