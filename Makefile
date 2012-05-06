@@ -44,17 +44,11 @@ build-android-apk:
 	cat src/client/android/assets/www/js/src/elliptic.js >> src/client/android/assets/www/js/build.js
 	git submodule init
 	git submodule update
-	android update project -p src/client/android/libs/cordova/framework -t android-15
-	ant jar -f src/client/android/libs/cordova/framework/build.xml
-	mv src/client/android/libs/cordova/framework/cordova*jar src/client/android/libs
 	android update project -p src/client/android/
 	ant release -f src/client/android/build.xml
 
 clean:
 	-rm src/client/android/assets/www/js/build.js
-	-rm src/client/android/j/build.js
-	-rm src/client/android/libs/*.jar
 	-rm src/server/js/build.js
-	ant clean -f src/client/android/libs/cordova/framework/build.xml
 	ant clean -f src/client/android/build.xml
 	-rm src/client/android/local.properties

@@ -1,4 +1,0 @@
-#! /bin/sh
-
-./bin/create
-cd ./example && ./cordova/debug && ./cordova/log
