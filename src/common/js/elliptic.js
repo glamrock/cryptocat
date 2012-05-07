@@ -398,16 +398,11 @@ function ecdsaVerify(publicKey, signature, message) {
         return equals(point4[0], r);
 }
 
-function ecDH(x, gY) {
-	x = privateKeyFromString(x);
-
-	if (typeof gY == "undefined") {
-		gX = scalarMultP256(p256Gx, p256Gy, x);
-		return publicKeyToString(gX);
+function ecDH(priv, pub) {
+	if (typeof pub === "undefined") {
+		return scalarMult(priv, basePoint);
 	}
 	else {
-        gY = publicKeyFromString(gY);
-		gXY = scalarMultP256(gY[0], gY[1], x);
-		return publicKeyToString(gXY);
+        return bigInt2str(scalarMult(priv, pub), 64);
 	}
 }
