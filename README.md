@@ -13,7 +13,7 @@ Cryptocat lets you instantly set up secure conversations. It aims to be an open 
 A native iPhone, Blackberry and other versions are possible thanks to the [Guardian Project](https://guardianproject.info/) and [PhoneGap](https://phonegap.com/) but these are not yet implemented. If you're using these platforms, we encourage you to try the web application in the meantime.
 
 ## Cool features
-* A client-side 4096-bit Diffie-Hellman-Merkle public key agreement engine.
+* Client-side Elliptic Curve 25519 Cryptography.
 * A client-side AES-256 implementation is used to encrypt data.
 * HMAC message integrity verification.
 * The identity of chatters can be confirmed via key fingerprints, à la OTR.
