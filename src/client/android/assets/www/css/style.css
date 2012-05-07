@@ -1,6 +1,7 @@
 html {
-	height: 98.2%;
+	height: 100%;
 	width: 100%;
+	background-color: #000;
 }
 body {
 	height: 100%;
@@ -9,40 +10,46 @@ body {
 	color: #000;
 }
 #main {
-	background-color: #FFF;
-	width: 98%;
+	width: 100%;
 	height: 100%;
-	border: 7px solid #000;
 }
 h3 {
 	color: #97CEEC;
 	margin: 0px 0px 10px 0px;
 }
+div.header {
+	background-color: #97CEEC;
+	width: 100%;
+	height: 30px;
+}
+img.cryptocat, img.chat {
+	margin: 5px 0px 5px 5px;
+	box-shadow: 2px 2px #97CEEC;
+}
 div.create {
-	width: 275px;
-	margin: 0 auto;
+	width: 100%;
 }
 input.name, input.create {
-	width: 260px;
-	margin: 4em auto 0 auto;
-	background-color: #000;
+	width: 100%;
+	margin: 4em 0 0 0;
+	background-color: #97CEEC;
 	border: none;
 	display: block;
-	padding: 7px;
+	padding: 7px 0;
 	color: #FFF;
 	font-size: 1em;
 	outline: none;
 	text-align: center;
 	resize: none;
-	box-shadow: 2px 2px #90CAEA;
 }
 input.create {
-	margin-top: 10px;
-	width: 229px;
-	display: inline;
+	width: 88%;
+	margin: 1em 0 0 0;
+	display: inline;	
 }
 #random {
-	width: 40px;
+	width: 10%;
+	float: right;
 }
 input {
 	border-radius: 0px;
@@ -227,10 +234,6 @@ div.msg a:hover, div.gsm a:hover {
 	border-bottom: 1px solid #000;
 	text-decoration: none;
 }
-img.cryptocat, img.chat {
-	margin: 5px 0px 5px 5px;
-	width: 75%;
-}
 img.encrypted {
 	max-width: 150px;
 }
@@ -247,9 +250,6 @@ span.nick {
 div.text {
 	max-width: 99%;
 	word-wrap: break-word;
-}
-#maximize, #sound, #file, #invite, #notice, table, div.bottom, .invisible, #intro {
-	display: none;
 }
 #front {
 	width: 100%;
