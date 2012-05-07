@@ -1,52 +1,39 @@
 External sources
 ================
-
 These are convenience copies of externally maintained sources.
 
 
 jQuery
 ------
-
 Origin: http://jquery.org/
-
 License: MIT or GPL-2+
 
+Cordova (Phonegap)
+------------------
+Origin: http://phonegap.com
+License: Apache 2
 
 Crypto-JS
 ---------
-
 Origin: http://code.google.com/p/crypto-js/
-
 License: BSD-2-Clause
-
 
 BigInt
 ------
-
 Origin: http://leemon.com/crypto/BigInt.html
-
 License: PD
-
 
 seedrandom
 ----------
-
 Origin: http://davidbau.com/encode/seedrandom.js
-
 License: BSD-3-Clause
-
 
 Whirlpool
 ---------
-
 Origin: http://www.sunsean.com/Whirlpool.html
-
 License: PD
-
 
 Notification.js
 ---------------
-
 Origin: https://raw.github.com/MrSwitch/notification.js/
-
 License: MIT
