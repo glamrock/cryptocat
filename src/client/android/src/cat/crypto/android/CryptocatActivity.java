@@ -24,7 +24,7 @@ public class CryptocatActivity extends DroidGap
         super.onCreate(savedInstanceState);
         super.loadUrl("file:///android_asset/www/index.html");
         
-        OrbotHelper.setProxy(this, DEFAULT_PROXY_HOST, DEFAULT_PROXY_PORT);
+        //OrbotHelper.setProxy(this, DEFAULT_PROXY_HOST, DEFAULT_PROXY_PORT);
 		
     }
     
