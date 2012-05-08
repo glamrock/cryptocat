@@ -627,7 +627,6 @@ $('#sound').click(function(){
 		$('#sound').attr('title', 'Message sounds on');
 		sound = 1;
 	}
-	$('#input').focus();
 });
 
 $('#notifications').click(function(){
@@ -644,7 +643,6 @@ $('#notifications').click(function(){
 			Notification.requestPermission();
 		}
 	}
-	$('#input').focus();
 });
 
 $('#invite').click(function(){
@@ -667,7 +665,6 @@ $('#maximize').click(function(){
 		$('#chat').animate({height: '340px'}, 500, function() { scrolldown(999); });
 		$('#maximize').attr('src', 'img/maximize.png');
 		$('#maximize').attr('title', 'Expand');
-		$('#input').focus();
 	}
 	else {
 		$('#main').animate({'margin-top': '1%', 'min-width': '900px', width: '85%', height: '96.5%'}, 500);
@@ -679,7 +676,6 @@ $('#maximize').click(function(){
 		$('#chat').animate({height: '91%'}, 500, function() { scrolldown(999); });
 		$('#maximize').attr('src', 'img/minimize.png');
 		$('#maximize').attr('title', 'Contract');
-		$('#input').focus();
 	}
 });
 

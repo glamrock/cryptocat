@@ -1,6 +1,6 @@
 var seed = Math.seedrandom();
 var z = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4096, 0];
-var sound = notifications = pos = tag = prikey = pubkey = last = 0;
+var sound = pos = tag = prikey = pubkey = last = 0;
 var browser = navigator.userAgent.toLowerCase();
 var cfocus = true;
 var soundEmbed = null;
@@ -309,9 +309,6 @@ function updatechat() {
 						scrolldown(600);
 					}
 					if (!cfocus || ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) > 800)) {
-						if (notifications) {
-							//Notification.createNotification('img/icon-128.png', message[0], message[1]);
-						}
 					}
 				}
 				else if (data) {
@@ -412,7 +409,7 @@ $("#chatform").submit(function() {
 $("#nickform").submit(function() {
 	$("#nickinput").val($("#nickinput").val().toLowerCase());
 	if (!pubkey) {
-		$('#keytext').html('Shake your phone!');
+		$('#keytext').html('Shake your phone!!');
 		$('#nickentry').fadeOut('fast', function() {
 			$('#keygen').fadeIn('fast', function() {
 				startWatch();		
@@ -568,60 +565,6 @@ $('#sound').click(function(){
 		$('#sound').attr('src', 'img/sound.png');
 		$('#sound').attr('title', 'Message sounds on');
 		sound = 1;
-	}
-	$('#input').focus();
-});
-
-$('#notifications').click(function(){
-	if (notifications) {
-		$('#notifications').attr('src', 'img/nonotifications.png');
-		$('#notifications').attr('title', 'Desktop notifications off');
-		notifications = 0;
-	}
-	else {
-		$('#notifications').attr('src', 'img/notifications.png');
-		$('#notifications').attr('title', 'Desktop notifications on');
-		notifications = 1;
-		//if (Notification.checkPermission() === 1){
-		//	Notification.requestPermission();
-		//}
-	}
-	$('#input').focus();
-});
-
-$('#invite').click(function(){
-	var url = 'https://www.facebook.com/dialog/send?app_id=348025968541285&name=Cryptocat%20Chat%20Invitation&description=' + 
-	'Chat%20with%20your%20friends%20in%20privacy%20with%20secure%20encryption%20using%20Cryptocat.&redirect_uri=' + 
-	'https://crypto.cat/?close&link=' + install + '?c=' + name + '&picture=' + install + 'img/ios.png&display=popup';
-	var pop = window.open(url, 'name', 'height=330,width=550,location=0,menubar=0,resizable=0,scrollbars=0' + 
-	',status=0,titlebar=0,toolbar=0,top='+($(window).height()/3.5)+',left='+($(window).width()/2.7));
-	pop.focus();
-});
-
-$('#maximize').click(function(){
-	if ($('#maximize').attr('title') === 'Contract') {
-		$('#main').animate({'margin-top': '2%', 'min-width': '600px', 'min-height': '420px', width: '600px', height: '420px'}, 500);
-		$('#info').animate({width: '588px'}, 500);
-		$('#users').animate({width: '525px', 'padding-right': '3px'}, 500);
-		$('#input').animate({width: '508px'}, 500);
-		$('#talk').animate({width: '67px'}, 500);
-		$('#inchat').animate({height: '343px', 'margin-bottom': '10px'}, 500);
-		$('#chat').animate({height: '340px'}, 500, function() { scrolldown(999); });
-		$('#maximize').attr('src', 'img/maximize.png');
-		$('#maximize').attr('title', 'Expand');
-		$('#input').focus();
-	}
-	else {
-		$('#main').animate({'margin-top': '1%', 'min-width': '900px', width: '85%', height: '96.5%'}, 500);
-		$('#info').animate({width: '99%'}, 500);
-		$('#users').animate({width: '92.3%', 'padding-right': '20px'}, 500);
-		$('#input').animate({width: '92.3%'}, 500);
-		$('#talk').animate({width: '5.2%'}, 500);
-		$('#inchat').animate({height: '93%', 'margin-bottom': '-30px'}, 500);
-		$('#chat').animate({height: '91%'}, 500, function() { scrolldown(999); });
-		$('#maximize').attr('src', 'img/minimize.png');
-		$('#maximize').attr('title', 'Contract');
-		$('#input').focus();
 	}
 });
 
