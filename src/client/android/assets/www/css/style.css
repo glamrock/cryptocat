@@ -24,10 +24,18 @@ div.header {
 	background-color: #97CEEC;
 	width: 100%;
 	height: 30px;
+	color: #FFF;
+	font-family: 'Futura', 'Menlo', 'Helvetica', 'Arial';
 }
-img.cryptocat, img.chat {
+div.header span {
+	float: left;
+	margin: 7px 0 0 4%;
+	font-size: 0.8em;
+}
+img.cryptocat {
 	margin: 5px 0px 5px 5px;
 	box-shadow: 2px 2px #97CEEC;
+	float: left;
 }
 div.create {
 	width: 100%;
@@ -44,6 +52,9 @@ input.name, input.create {
 	text-align: center;
 	outline: none;
 	resize: none;
+}
+input.name {
+	margin-top: 6em;
 }
 input.create {
 	width: 88%;
@@ -95,6 +106,10 @@ span.user:hover {
 input.nicksubmit {
 	margin-left: 5px;
 }
+#file, #sound {
+	float: right;
+	margin: 7px 3.5% 0 0;
+}
 #close {
 	margin-top: 4px;
 	float: right;
@@ -113,18 +128,6 @@ input.nicksubmit {
 #understand:active, input.nicksubmit:active, #close:active {
 	box-shadow: none;
 }
-#talk {
-	background-color: #000;
-	border: none;
-	margin: 0px 0px 0px 1px;
-	float: left;
-	display: inline;
-	width: 10%;
-	color: #97CEEC;
-	height: 30px;
-	font-size: 9px;
-	box-shadow: 2px 2px #90CAEA;
-}
 input.create:hover, #talk:hover {
 	background-color: #97CEEC;
 	box-shadow: 2px 2px #000;
@@ -135,7 +138,7 @@ input.create:active, #talk:active {
 }
 #inchat {
 	width: 98%;
-	height: 76.5%;
+	height: 80%;
 	overflow: hidden;
 	margin: -10px auto 0 auto;
 }
@@ -147,6 +150,10 @@ input.create:active, #talk:active {
 	overflow-y: scroll;
 	word-wrap: break-word;
 	font-size: 0.6em;
+}
+div.controls {
+	width: 100%;
+	height: 15%;
 }
 #users {
 	background-color: #97CEEC;
@@ -188,16 +195,29 @@ input.logout:hover {
 	color: #FFF;
 	padding: 5px 10px;
 	border: none;
+	border-bottom: 2px solid #97CEEC;
 	float: left;
-	width: 82.5%;
-	height: 20px;
+	width: 84.5%;
+	height: 120%;
 	outline: none;
 	resize: none;
 	word-wrap: break-word;
-	font-size: 10px;
+	font-size: 1em;
 }
 #input:active {
 	border: none;
+}
+#talk {
+	background-color: #000;
+	border: none;
+	margin: 0px 0px 0px 1px;
+	float: right;
+	display: inline;
+	width: 10%;
+	color: #97CEEC;
+	height: 28px;
+	font-size: 9px;
+	box-shadow: 2px 2px #90CAEA;
 }
 #url {
 	background-color: #000;
@@ -214,24 +234,12 @@ div.msg, div.gsm {
 	background-position: 0.5%;
 }
 div.gsm {
-	background-color: #FFF;
-}
-div.bsg {
-	width: 98%;
-	background-color: #222;
-	color: #97BEED;
-	background-image: none;
-	font-size: 10px;
-	padding: 2px 5px;
-	margin-bottom: 3px;
-	border-bottom: 1px dashed #FFF;
+	color: #FFF;
+	background-color: #000;
 }
 div.msg a, div.gsm a {
 	color: #000;
 	border-bottom: 1px dashed #000;
-}
-div.bsg a {
-	color: #FFF;
 }
 div.msg a:hover, div.gsm a:hover {
 	border-bottom: 1px solid #000;
@@ -260,24 +268,6 @@ div.text {
 	position: absolute;
 	top: 0;
 	left: 0;
-}
-div.redirect {
-	background-color: #222;
-	width: 98%;
-	color: #FFF;
-	padding: 20px;
-	text-align: center;
-	height: 100%;
-}
-div.redirect img {
-	display: block;
-	text-align: left;
-	margin-bottom: 100px;
-}
-div.redirect p {
-	font-family: Neuton, Georgia;
-	line-height: 1.7em;
-	word-wrap: break-word;
 }
 #changenick, #fadebox, #note {
 	padding: 7em 5px 0 7px;

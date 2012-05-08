@@ -29,23 +29,26 @@
 			</div>
 			<div id="fadebox" class="invisible"></div>
 		</div>
-		<a href="https://crypto.cat/" onclick="logout();"><img src="img/cryptocat.png" class="chat" alt="cryptocat" /></a>
-		<img src="img/maximize.png" alt="maximize" id="maximize" title="expand" />
-		<img src="img/nosound.png" alt="sound" id="sound" title="message sounds off" />
-		<img src="img/invite.png" alt="invite" id="invite" title="invite friend" />
-		<img src="img/filer.png" alt="file" id="file" title="send encrypted file" />
+		<div class="header">
+			<a href="https://crypto.cat/" onclick="logout();"><img src="img/icon-48.png" class="cryptocat" alt="cryptocat" /></a>
+			<span>CHATNAME</span>
+			<img src="img/nosound.png" alt="sound" id="sound" title="message sounds off" />
+			<img src="img/filer.png" alt="file" id="file" title="send encrypted file" />
+		</div>
 		<div id="inchat"><div id="chat"></div></div>
-		<div id="info">chatting as <span id="nick">raccoon</span> on 
-		<strong class="blue">https://crypto.cat/?c=</strong><strong id="name"></strong>
-		</div>
-		<form name="chatform" id="chatform" method="post" action="https://crypto.cat/">
-			<div>
-				<div id="users"></div>
-				<input type="text" name="input" id="input" maxlength="256" autocomplete="off" />
-				<input type="submit" name="talk" id="talk" value="256" />
+		<div class="controls">
+			<div id="info">chatting as <span id="nick">raccoon</span> on 
+			<strong class="blue">https://crypto.cat/?c=</strong><strong id="name">CHATNAME</strong>
 			</div>
-		</form>
+			<form name="chatform" id="chatform" method="post" action="https://crypto.cat/">
+				<div>
+					<div id="users"></div>
+					<input type="text" name="input" id="input" maxlength="256" autocomplete="off" />
+					<input type="submit" name="talk" id="talk" value="256" />
+				</div>
+			</form>
 		</div>
+	</div>
 		<script type="text/javascript">var install="https://crypto.cat/";var update=1150;var maxinput=256;var genurl=1;var filesize=600;</script>
 		<script type="text/javascript" src="js/cat.js"></script>
 </body>

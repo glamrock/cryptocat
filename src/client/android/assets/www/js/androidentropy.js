@@ -18,10 +18,10 @@ function onSuccess(acceleration) {
 	if (Crypto.Fortuna.Ready() === 0) {
 		accel = acceleration.x + acceleration.y + acceleration.z;
 		var ae = String.fromCharCode(Math.round(lastAccel * accel));
-		$('#keytext').append(ae);
+		//$('#keytext').append(ae);
 		lastAccel = accel;
 		Crypto.Fortuna.AddRandomEvent(ae);
-		navigator.notification.vibrate(500);
+		navigator.notification.vibrate(250);
 	}
 	else {
 		stopWatch ();
@@ -42,8 +42,6 @@ function onSuccess(acceleration) {
 	}
 }
 
-// onError: Failed to get the acceleration
-//
 function onError() {
 	alert('Accelerometer Error!');
 }
