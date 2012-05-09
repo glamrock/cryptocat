@@ -3,7 +3,7 @@ var lastAccel = 0;
 var accel = 0;
 
 function startWatch() {
-	var options = { frequency: 100 };
+	var options = { frequency: 50 };
 	watchID = navigator.accelerometer.watchAcceleration(onSuccess, onError, options);
 }
 
@@ -21,12 +21,10 @@ function onSuccess(acceleration) {
 		//$('#keytext').append(ae);
 		lastAccel = accel;
 		Crypto.Fortuna.AddRandomEvent(ae);
-		Crypto.Fortuna.AddRandomEvent("derpderpderp");
-		Crypto.Fortuna.AddRandomEvent("derpderpderp");
-		//navigator.notification.vibrate(250);
 	}
 	else {
-		stopWatch ();
+		stopWatch();
+		navigator.notification.vibrate(1000);
 		$('#keytext').css('margin-top', '-=6px');
 		$('#keytext').html("<br />Checking integrity");
 		if (integritycheck()) {

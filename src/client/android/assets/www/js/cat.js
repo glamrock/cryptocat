@@ -39,9 +39,7 @@ function getstamp(n) {
 }
 
 function soundPlay(which) {
-
-	navigator.notification.vibrate(500);
-	/*
+	navigator.notification.vibrate(250);
 	function createSound(which) {
 		soundEmbed = document.createElement('audio');
 		soundEmbed.setAttribute('type', 'audio/webm');
@@ -60,7 +58,6 @@ function soundPlay(which) {
 	}
 	soundEmbed.removed = false;
 	document.body.appendChild(soundEmbed);
-	*/
 }
 
 function textcounter(field,cntfield,maxlimit) {
@@ -630,7 +627,7 @@ function userinfo(n) {
 	});
 }
 
-/*$('#input').keyup(function(){
+$('#input').keyup(function(){
 	textcounter(document.chatform.input,document.chatform.talk,256);
 	if ((match = $('#input').val().match(/^\@[a-z]{1,12}/)) &&
 	(jQuery.inArray($('#input').val().match(/^\@[a-z]{1,12}/).toString().substring(1), names) >= 0)) {
@@ -639,7 +636,7 @@ function userinfo(n) {
 	else if ($('#input').css('color') === 'rgb(151, 206, 236)') {
 		$('#input').css('color', '#FFF');
 	}
-});*/
+});
 
 $('#talk').mouseout(function(){
 	textcounter(document.chatform.input,document.chatform.talk,256);
@@ -682,3 +679,9 @@ $('#front').fadeIn(0, function() {
 		$('#nickinput').select();
 	});
 });
+
+function handleError(e) {
+	alert(e);
+	return true;
+}
+window.onerror = handleError;
