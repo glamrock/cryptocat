@@ -39,25 +39,9 @@ function getstamp(n) {
 }
 
 function soundPlay(which) {
-	navigator.notification.vibrate(250);
-	function createSound(which) {
-		soundEmbed = document.createElement('audio');
-		soundEmbed.setAttribute('type', 'audio/webm');
-		soundEmbed.setAttribute('src', which);
-		soundEmbed.setAttribute('style', 'display: none;');
-		soundEmbed.setAttribute('autoplay', true);
-	}
-	if (!soundEmbed) {
-		createSound(which);
-	}
-	else {
-		document.body.removeChild(soundEmbed);
-		soundEmbed.removed = true;
-		soundEmbed = null;
-		createSound(which);
-	}
-	soundEmbed.removed = false;
-	document.body.appendChild(soundEmbed);
+	navigator.notification.vibrate(200);
+	var audio = new Media(which, handleError, handleError);
+	audio.play();
 }
 
 function textcounter(field,cntfield,maxlimit) {
@@ -674,14 +658,23 @@ $(document).ajaxError(function(){
 });
 
 $('#front').fadeIn(0, function() {
+	$('#nickinput').val($('#nick').html());
 	$('#nickentry').fadeIn('fast', function() {
 		$('#nickinput').focus();
 		$('#nickinput').select();
 	});
 });
 
+var myScroll;
+function loaded() {
+	setTimeout(function () {
+		myScroll = new iScroll('wrapper');
+	}, 100);
+}
+window.addEventListener('load', loaded, false);
+
 function handleError(e) {
-	alert(e);
+	alert('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
 	return true;
 }
 window.onerror = handleError;

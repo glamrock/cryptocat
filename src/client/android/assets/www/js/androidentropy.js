@@ -21,6 +21,7 @@ function onSuccess(acceleration) {
 		//$('#keytext').append(ae);
 		lastAccel = accel;
 		Crypto.Fortuna.AddRandomEvent(ae);
+		Crypto.Fortuna.AddRandomEvent("lksdhflksjf");
 	}
 	else {
 		stopWatch();

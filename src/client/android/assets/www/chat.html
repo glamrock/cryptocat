@@ -8,7 +8,7 @@
 			<p>Enter nickname</p>
 			<form name="nickform" id="nickform" method="post" action="https://crypto.cat/">
 				<div>
-					<input type="text" name="nickinput" id="nickinput" value="raccoon" maxlength="12" autocomplete="off" />
+					<input type="text" name="nickinput" id="nickinput" value="" maxlength="12" autocomplete="off" />
 					<input type="submit" class="nicksubmit" value="chat" />
 				</div>
 			</form>
@@ -16,7 +16,9 @@
 	</div>
 	<div id="fadebox" class="invisible"></div>
 </div>
-<div id="chat"></div>
+<div id="wrapper">
+	<div id="chat"></div>
+</div>
 <div class="controls">
 	<form name="chatform" id="chatform" method="post" action="https://crypto.cat/">
 		<div id="users"></div>
