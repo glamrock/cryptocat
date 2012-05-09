@@ -58,6 +58,7 @@ The full license text is included in `LICENSE.txt`.
 1. Run `make build-chrome-zip` in order to generate a Google Chrome-loadable.zip
 
 ### Cryptocat for Android
+*Under development! Compile for testing only!*
 1. Run `make build-android-apk` in order to build an Android package.
 
 ## Important notes
