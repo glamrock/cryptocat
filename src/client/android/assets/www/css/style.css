@@ -1,15 +1,13 @@
 html {
-	height: 100%;
+	height: 93%;
 	width: 98.5%;
 	background-color: #000;
-	overflow: hidden;
 }
 body {
 	height: 100%;
 	margin: 0 auto;
 	font-family: Verdana, Arial, Helvetica;
 	color: #000;
-	overflow: hidden;
 }
 .invisible {
 	display: none;
