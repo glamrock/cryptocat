@@ -1,13 +1,15 @@
 html {
 	height: 100%;
-	width: 100%;
+	width: 98.5%;
 	background-color: #000;
+	overflow: hidden;
 }
 body {
 	height: 100%;
 	margin: 0 auto;
 	font-family: Verdana, Arial, Helvetica;
 	color: #000;
+	overflow: hidden;
 }
 .invisible {
 	display: none;
@@ -38,6 +40,7 @@ img.cryptocat {
 	float: left;
 }
 div.create {
+	margin-top: 6em;
 	width: 100%;
 }
 input.name, input.create {
@@ -53,9 +56,6 @@ input.name, input.create {
 	outline: none;
 	resize: none;
 }
-input.name {
-	margin-top: 6em;
-}
 input.create {
 	width: 88%;
 	margin: 1em 0 0 0;
@@ -68,6 +68,11 @@ input.create {
 input {
 	border-radius: 0px;
 	-webkit-appearance: none;
+	outline: none;
+}
+:focus {
+  outline-color: transparent;
+  outline-style: none;
 }
 #nickinput {
 	background-color: #000;
@@ -109,6 +114,7 @@ input.nicksubmit {
 #file, #sound {
 	float: right;
 	margin: 7px 3.5% 0 0;
+	display: none;
 }
 #close {
 	margin-top: 4px;
@@ -139,15 +145,14 @@ input.create:active, #talk:active {
 #chat {
 	padding: 5px 5px 0px 0px;
 	width: 100%;
-	height: 80%;
+	height: 75%;
 	overflow-x: hidden;
 	overflow-y: scroll;
 	word-wrap: break-word;
-	font-size: 0.6em;
+	font-size: 0.8em;
 }
 div.controls {
 	width: 100%;
-	height: 15%;
 }
 #users {
 	background-color: #97CEEC;
@@ -155,7 +160,7 @@ div.controls {
 	width: 99.1%;
 	word-spacing: 5px;
 	height: 12px;
-	font-size: 0.5em;
+	font-size: 0.8em;
 	font-weight: bold;
 }
 span.users {
@@ -191,12 +196,12 @@ input.logout:hover {
 	border: none;
 	border-bottom: 2px solid #97CEEC;
 	float: left;
-	width: 84.5%;
-	height: 120%;
+	width: 83.5%;
+	height: 100%;
 	outline: none;
 	resize: none;
 	word-wrap: break-word;
-	font-size: 1em;
+	font-size: 0.8em;
 }
 #input:active {
 	border: none;
@@ -204,7 +209,6 @@ input.logout:hover {
 #talk {
 	background-color: #000;
 	border: none;
-	margin: 0px 0px 0px 1px;
 	float: right;
 	display: inline;
 	width: 10%;
@@ -221,11 +225,12 @@ input.logout:hover {
 div.msg, div.gsm {
 	padding: 8px 2px 8px 25px;
 	background-color: #D8EDF8;
-	width: 94%;
+	width: 91.5%;
 	word-wrap: break-word;
 	background-repeat: no-repeat;
 	background-image: url("../img/chat.png");
 	background-position: 0.5%;
+	display: none;
 }
 div.gsm {
 	color: #FFF;
@@ -306,7 +311,7 @@ div.text {
 	color: #97CEEC;
 	font-weight: bold;
 }
-.blue, #name {
+.blue {
 	color: #97CEEC;
 }
 .red {

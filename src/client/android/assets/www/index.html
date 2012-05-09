@@ -1,32 +1,29 @@
 <!DOCTYPE html>
 <head>
 	<meta charset="UTF-8" />
-	<title>Cryptocat</title>
 	<link rel="stylesheet" href="css/style.css" type="text/css" />
-	<link rel="icon" type="image/gif" href="img/favicon.gif" />
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/build.js"></script>
 	<script type="text/javascript" src="js/cordova.js"></script>
+	<script type="text/javascript" src="js/androidentropy.js"></script>
 </head>
-<body>
+<body onbeforeunload="logout();">
+	<div class="header">
+		<img src="img/icon-48.png" alt="Cryptocat" class="cryptocat" />
+		<span id="name"></span><span class="invisible" id="nick"></span>
+		<img src="img/nosound.png" alt="sound" id="sound" />
+		<img src="img/filer.png" alt="file" id="file" />
+	</div>
 	<div id="main">
-		<div class="header">
-			<img src="img/icon-48.png" alt="Cryptocat" class="cryptocat" />
-		</div>
 		<div class="create" id="welcome">
 			<div id="front" class="invisible"></div>
 			<div>
 				<input type="text" class="name" name="c" id="c" value="name your chat" maxlength="32" autocomplete="off" />
-				<div class="create">
-					<input type="submit" class="create" value="enter" id="create" />
-					<input type="button" class="create" value="?" id="random" />
-				</div>
+				<input type="submit" class="create" value="enter" id="create" />
+				<input type="button" class="create" value="?" id="random" />
 			</div>
 		</div>
-		<div class="footer">
-		
-		</div>
+		<script type="text/javascript" src="js/welcome.js"></script>
 	</div>
-	<script type="text/javascript" src="js/welcome.js"></script>
 </body>
 </html>

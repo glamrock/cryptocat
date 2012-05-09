@@ -224,8 +224,8 @@ function pushline(line, id) {
 	else {tag = 'msg';}
 	line = '<div class="' + tag + '" id="' + id + '"><div class="text">' + line + '</div></div>';
 	$('#chat').html($('#chat').html() + line);
+	$('#'+id).fadeIn();
 	if (sound) {
-	
 		soundPlay('snd/msg.webm');
 	}
 }
@@ -409,7 +409,7 @@ $("#chatform").submit(function() {
 $("#nickform").submit(function() {
 	$("#nickinput").val($("#nickinput").val().toLowerCase());
 	if (!pubkey) {
-		$('#keytext').html('Shake your phone!!');
+		$('#keytext').html('Shake your phone to generate randomness.');
 		$('#nickentry').fadeOut('fast', function() {
 			$('#keygen').fadeIn('fast', function() {
 				startWatch();		
@@ -443,6 +443,8 @@ function nickset() {
 					$("#changenick").fadeOut('fast');
 					$("#nickentry").fadeOut('fast');
 					$("#front").fadeOut('fast');
+					setTimeout('$("#sound").fadeIn()', 1000);
+					setTimeout('$("#file").fadeIn()', 1000);
 				});
 				updatechat();
 			}
@@ -628,7 +630,7 @@ function userinfo(n) {
 	});
 }
 
-$('#input').keyup(function(){
+/*$('#input').keyup(function(){
 	textcounter(document.chatform.input,document.chatform.talk,256);
 	if ((match = $('#input').val().match(/^\@[a-z]{1,12}/)) &&
 	(jQuery.inArray($('#input').val().match(/^\@[a-z]{1,12}/).toString().substring(1), names) >= 0)) {
@@ -637,7 +639,7 @@ $('#input').keyup(function(){
 	else if ($('#input').css('color') === 'rgb(151, 206, 236)') {
 		$('#input').css('color', '#FFF');
 	}
-});
+});*/
 
 $('#talk').mouseout(function(){
 	textcounter(document.chatform.input,document.chatform.talk,256);

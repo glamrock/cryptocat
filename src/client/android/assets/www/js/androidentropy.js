@@ -21,7 +21,9 @@ function onSuccess(acceleration) {
 		//$('#keytext').append(ae);
 		lastAccel = accel;
 		Crypto.Fortuna.AddRandomEvent(ae);
-		navigator.notification.vibrate(250);
+		Crypto.Fortuna.AddRandomEvent("derpderpderp");
+		Crypto.Fortuna.AddRandomEvent("derpderpderp");
+		//navigator.notification.vibrate(250);
 	}
 	else {
 		stopWatch ();
@@ -34,7 +36,7 @@ function onSuccess(acceleration) {
 			pubkey = bigInt2str(ecDH(prikey), 64);
 			$('#keytext').html($('#keytext').html() + ' &#160; &#160; ' + 
 			'<span class="blue">OK</span><br />Communicating');
-			setTimeout("nickset()", 250);
+			nickset();
 		}
 		else {
 			$('#keytext').html('<span class="red">Integrity check failed. Cryptocat cannot proceed safely.</span>');
