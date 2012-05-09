@@ -17,10 +17,6 @@ var inblocked = [];
 var outblocked = [];
 var fingerprints = [];
 
-function scrolldown(s) {
-	$('#chat').animate({scrollTop: document.getElementById('chat').scrollHeight + 20}, s);
-}
-
 function getstamp(n) {
 	var time = new Date();
 	var h = time.getHours();
@@ -286,11 +282,7 @@ function updatechat() {
 				pos++;
 				if (data.match(/\s/)) {
 					var message = process(data, 0);
-					if ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) < 800) {
-						scrolldown(600);
-					}
-					if (!cfocus || ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) > 800)) {
-					}
+					$('body').animate({scrollTop: document.body.scrollHeight}, 999);
 				}
 				else if (data) {
 					if ($("#" + data).html().match(/data:.+\<\/a\>\<\/div\>$/)) {
@@ -373,7 +365,7 @@ function sendmsg(msg) {
 	if (msg !== '') {
 		var sentid = gen(8, 1, 0);
 		process(nick + ": " + msg, sentid);
-		scrolldown(600);
+		$('body').animate({scrollTop: document.body.scrollHeight}, 999);
 		if (names.length > 1) {
 			$("#" + sentid).css('background-image', 'url("img/sending.gif")');
 			queue.push([msg, sentid]);

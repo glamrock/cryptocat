@@ -29,7 +29,7 @@ $(window).keypress(function(e) {
 
 $("#c").click(function(){
 	$("#c").focus();
-	$("#c").select();
+	$("#c").val('');
 });
 
 $("#random").click(function(){
@@ -51,5 +51,3 @@ $("#create").click(function() {
 		$('#main').html(chat);
 	}
 });
-
-$("#c").click();

@@ -1,6 +1,6 @@
 html {
 	height: 94.5%;
-	width: 98.5%;
+	width: 100%;
 	background-color: #000;
 }
 body {
@@ -26,6 +26,8 @@ div.header {
 	height: 30px;
 	color: #FFF;
 	font-family: 'Futura', 'Menlo', 'Helvetica', 'Arial';
+	position: fixed;
+	top: 0;
 }
 div.header span {
 	float: left;
@@ -139,21 +141,18 @@ input.create:hover, #talk:hover {
 input.create:active, #talk:active {
 	box-shadow: 2px 2px #97CEEC;
 }
-#wrapper {
+#chat {
+	padding: 55px 0;
 	width: 100%;
 	height: 75%;
-}
-#chat {
-	padding: 5px 5px 0px 0px;
-	width: 100%;
-	height: 100%;
 	word-wrap: break-word;
 	font-size: 0.8em;
 }
 div.controls {
 	width: 100%;
-	position: absolute;
+	position: fixed;
 	bottom: 0;
+	background-color: #000;
 }
 #users {
 	background-color: #97CEEC;
@@ -165,7 +164,7 @@ div.controls {
 	font-weight: bold;
 }
 span.users {
-	padding: 4px 2px 4px 2px;
+	padding: 2px 2px 4px 2px;
 	background-color: #000;
 	color: #FFF;
 }
@@ -345,7 +344,7 @@ a.download:hover {
 	height: 13px;
 	width: 13px;
 	display: inline-block;
-	vertical-align: 30%;
+	vertical-align: 35%;
 	font-size: 2px;
 	color: transparent;
 }
