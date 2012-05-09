@@ -48,7 +48,7 @@
 	$nicks = array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'turtle', 
 	'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite', 'ducky');
 	/* Polling and timeout rates. You probably shouldn't touch these. */
-	$update = 3000;
+	$update = 2600;
 	$timeout = 80;
 	
 	/* Do _not_ touch anything below this line. */
