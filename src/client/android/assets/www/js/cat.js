@@ -663,6 +663,7 @@ $(window).keypress(function(e) {
 	}
 });
 
+$('#main').css('overflow', 'visible');
 $('#main').fadeIn(400, function() {
 	var myScroll;
 	function loaded() {
