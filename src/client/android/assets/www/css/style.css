@@ -7,7 +7,7 @@ body {
 	height: 90%;
 	margin: 0 auto;
 	font-family: Verdana, Arial, Helvetica;
-	color: #000;
+	color: #97CEEC;
 }
 .invisible {
 	display: none;
@@ -32,11 +32,11 @@ div.header {
 div.header span {
 	float: left;
 	margin: 7px 0 0 4%;
-	font-size: 0.8em;
+	font-size: 1em;
+	display: none;
 }
 img.cryptocat {
 	margin: 5px 0px 5px 5px;
-	box-shadow: 2px 2px #97CEEC;
 	float: left;
 }
 div.create {
@@ -75,13 +75,44 @@ input, :focus, #sound, #file, span.nick {
 }
 #nickinput {
 	background-color: #000;
-	border: 1px solid #97CEEC;
 	color: #97CEEC;
-	width: 100px;
-	padding: 3px;
-	text-align: center;
+	border: 1px solid #97CEEC;
+	font-size: 1.2em;
+	width: 60%;
+	display: block;
+	margin: 0 auto;
 	outline: none;
-	font-size: 1.4em;
+	padding: 6px 0px;
+	text-align: center;
+}
+input.nicksubmit {
+	background-color: #000;
+	color: #97CEEC;
+	border: 1px solid #97CEEC;
+	font-size: 1.2em;
+	width: 60%;
+	display: block;
+	margin: 15px auto 0 auto;
+	outline: none;
+	padding: 6px 0;
+	text-align: center;
+	border-right: 1px 1px #FFF;
+	border-bottom: 1px 1px #FFF;
+}
+#keygenbar {
+	width: 95%;
+	height: 22px;
+	color: #97CEEC;
+	padding-top: 8px;
+	text-align: center;
+	border: 1px solid #97CEEC;
+	display: block;
+	margin: 0 auto;
+}
+#keygenprogress {
+	height: 100%;
+	background-color: #97CEEC;
+	width: 0%;
 }
 span.user {
 	color: #000;
@@ -91,24 +122,6 @@ span.user:hover {
 	background-color: #000;
 	color: #97CEEC;
 	text-decoration: none;
-}
-#understand, input.nicksubmit {
-	border: 1px solid #97CEEC;
-	background-color: #000;
-	color: #97CEEC;
-	outline: none;
-	padding: 3px;
-	box-shadow: 1px 1px #FFF;
-	font-size: 1.4em;
-}
-#understand {
-	display: block;
-	margin: 0 auto;
-	width: 170px;
-	margin-top: 23px;
-}
-input.nicksubmit {
-	margin-left: 5px;
 }
 #file, #sound {
 	float: right;
@@ -126,21 +139,6 @@ input.nicksubmit {
 	text-align: center;
 	outline: none;
 }
-#understand:hover, input.nicksubmit:hover, #close:hover {
-	background-color: #97CEEC;
-	color: #FFF;
-}
-#understand:active, input.nicksubmit:active, #close:active {
-	box-shadow: none;
-}
-input.create:hover, #talk:hover {
-	background-color: #97CEEC;
-	box-shadow: 2px 2px #000;
-	color: #FFF;
-}
-input.create:active, #talk:active {
-	box-shadow: 2px 2px #97CEEC;
-}
 #chat {
 	padding: 55px 0;
 	width: 100%;
@@ -157,7 +155,7 @@ div.controls {
 #users {
 	background-color: #97CEEC;
 	padding: 1px 3px 3px 0px;
-	width: 99.1%;
+	width: 100%;
 	word-spacing: 5px;
 	height: 12px;
 	font-size: 0.8em;
@@ -207,15 +205,14 @@ input.logout:hover {
 	border: none;
 }
 #talk {
-	background-color: #000;
+	background-color: #97CEEC;
 	border: none;
 	float: right;
 	display: inline;
 	width: 10%;
-	color: #97CEEC;
+	color: #FFF;
 	height: 28px;
 	font-size: 9px;
-	box-shadow: 2px 2px #90CAEA;
 }
 #url {
 	background-color: #000;
@@ -223,6 +220,7 @@ input.logout:hover {
 	color: #97CEEC;
 }
 div.msg, div.gsm {
+	color: #FFF;
 	padding: 8px 0;
 	background-color: #D8EDF8;
 	width: 100%;
@@ -237,7 +235,7 @@ div.gsm {
 	background-color: #000;
 }
 div.msg a, div.gsm a {
-	color: #000;
+	color: #FFF;
 	border-bottom: 1px dashed #000;
 }
 div.msg a:hover, div.gsm a:hover {
@@ -254,7 +252,8 @@ span.nick {
 	background-color: #000;
 	color: #FFF;
 	padding: 2px;
-	box-shadow: 2px 2px #90CAEA;
+	border-right: 1px 1px #90CAEA;
+	border-bottom: 1px 1px #90CAEA;
 	margin: 0px 5px 5px 0px;
 }
 div.text {
@@ -271,17 +270,17 @@ div.text {
 	z-index: 100;
 }
 #changenick, #fadebox, #note {
-	padding: 7em 5px 0 7px;
-	width: 97%;
-	background-color: rgba(0, 0, 0, 0.96);
+	padding: 7em 0 0 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 1);
 	color: #FFF;
 	text-align: center;
 	margin: 0 auto;
-	height: 100%;
-	font-size: 0.9em;
+	font-size: 0.8em;
 }
 #changenick {
-	padding-top: 10px;
+	padding-top: 2em;
 }
 #fadebox {
 	word-wrap: break-word;

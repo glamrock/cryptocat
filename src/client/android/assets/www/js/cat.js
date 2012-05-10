@@ -34,10 +34,17 @@ function getstamp(n) {
 	return spaces + h + ':' + m;
 }
 
-function soundPlay(which) {
+function soundPlay(url) {
 	navigator.notification.vibrate(200);
-	var audio = new Media(which, handleError, handleError);
-	audio.play();
+    var media = new Media(url,
+		function() {
+			console.log("playAudio():Audio Success");
+		},
+		function(err) {
+			console.log("playAudio():Audio Error: "+err);
+		}
+	);
+	media.play();
 }
 
 function textcounter(field,cntfield,maxlimit) {
@@ -203,7 +210,7 @@ function pushline(line, id) {
 	$('#chat').html($('#chat').html() + line);
 	$('#'+id).fadeIn();
 	if (sound) {
-		soundPlay('snd/msg.webm');
+		soundPlay('beep.wav');
 	}
 }
 
@@ -382,9 +389,8 @@ $("#chatform").submit(function() {
 $("#nickform").submit(function() {
 	$("#nickinput").val($("#nickinput").val().toLowerCase());
 	if (!pubkey) {
-		$('#keytext').html('Shake your phone to generate randomness.');
-		$('#nickentry').fadeOut('fast', function() {
-			$('#keygen').fadeIn('fast', function() {
+		$('#nickentry').fadeOut(500, function() {
+			$('#keygen').fadeIn(500, function() {
 				startWatch();		
 			});
 		});
@@ -413,11 +419,9 @@ function nickset() {
 				updatekeys(false);
 				$('#keytext').html($('#keytext').html() + ' &#160; &#160; &#160; <span class="blue">OK</span>');
 				$('#keygen').fadeOut('fast', function() {
-					$("#changenick").fadeOut('fast');
-					$("#nickentry").fadeOut('fast');
-					$("#front").fadeOut('fast');
-					setTimeout('$("#sound").fadeIn()', 1000);
-					setTimeout('$("#file").fadeIn()', 1000);
+					$("#changenick").fadeOut(500);
+					$("#nickentry").fadeOut(500);
+					$("#front").fadeOut(500);
 				});
 				updatechat();
 			}
@@ -543,6 +547,10 @@ $('#sound').click(function(){
 	}
 });
 
+$('#nickinput').click(function(){
+	$('#nickinput').val('');
+});
+
 function userinfo(n) {
 	$('#fadebox').html('<input type="button" id="close" value="x" />' +
 	'<br /><h3>' + n + '</h3>');
@@ -649,24 +657,24 @@ $(document).ajaxError(function(){
 	errored('connection issues. stand by...');
 });
 
-$('#front').fadeIn(0, function() {
-	$('#nickinput').val($('#nick').html());
-	$('#nickentry').fadeIn('fast', function() {
-		$('#nickinput').focus();
-		$('#nickinput').select();
-	});
+$(window).keypress(function(e) {
+	if (e.keyCode === 13) {
+		$("#chatform").submit();
+	}
 });
 
-var myScroll;
-function loaded() {
-	setTimeout(function () {
-		myScroll = new iScroll('wrapper');
-	}, 100);
-}
-window.addEventListener('load', loaded, false);
-
-function handleError(e) {
-	alert('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
-	return true;
-}
-window.onerror = handleError;
+$('#main').fadeIn(400, function() {
+	var myScroll;
+	function loaded() {
+		setTimeout(function () {
+			myScroll = new iScroll('wrapper');
+		}, 100);
+	}
+	window.addEventListener('load', loaded, false);
+	$('#front').fadeIn(0, function() {
+		$('#nickinput').val($('#nick').html());
+		$('#nickentry').fadeIn('fast');
+		$("#sound").fadeIn(0);
+		$("#file").fadeIn(0);
+	});
+});

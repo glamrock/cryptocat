@@ -48,6 +48,9 @@ $("#create").click(function() {
 	else {
 		$('#nick').html(nicks[(Math.floor(Math.random()*14))]);
 		$('#name').html($("#c").val());
-		$('#main').html(chat);
+		$('#name').fadeIn(300);
+		$('#main').fadeOut(400, function() {
+			$('#main').html(chat);
+		});
 	}
 });
