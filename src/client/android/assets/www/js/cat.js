@@ -674,7 +674,7 @@ $('#main').fadeIn(400, function() {
 	$('#front').fadeIn(0, function() {
 		$('#nickinput').val($('#nick').html());
 		$('#nickentry').fadeIn('fast');
-		$("#sound").fadeIn(0);
-		$("#file").fadeIn(0);
+		$("#sound").fadeIn(300);
+		$("#file").fadeIn(300);
 	});
 });

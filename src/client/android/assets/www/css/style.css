@@ -28,6 +28,7 @@ div.header {
 	font-family: 'Futura', 'Menlo', 'Helvetica', 'Arial';
 	position: fixed;
 	top: 0;
+	z-index: 100;
 }
 div.header span {
 	float: left;
@@ -160,6 +161,7 @@ div.controls {
 	height: 12px;
 	font-size: 0.8em;
 	font-weight: bold;
+	color: #FFF;
 }
 span.users {
 	padding: 2px 2px 4px 2px;
@@ -269,7 +271,7 @@ div.text {
 	position: absolute;
 	top: 0;
 	left: 0;
-	z-index: 100;
+	z-index: 50;
 }
 #changenick, #fadebox, #note {
 	padding: 7em 0 0 0;
