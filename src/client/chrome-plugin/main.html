@@ -5,9 +5,10 @@
 	<link rel="stylesheet" href="css/style.css" type="text/css" />
 	<link rel="icon" type="image/gif" href="img/favicon.gif" />
 	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/notification.js"></script>
 	<script type="text/javascript" src="js/build.js"></script>
 </head>
-<body onload="document.getElementById('c').focus();">
+<body onload="document.getElementById('c').focus();" onbeforeunload="logout();">
 	<div id="main">
 		<a href="https://project.crypto.cat"><img src="img/cryptocat.png" alt="cryptocat" class="cryptocat" /></a>
 		<div class="create" id="welcome">

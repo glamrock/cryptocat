@@ -55,7 +55,7 @@ $("#create").click(function() {
 		chat = chat.replace(/raccoon/g, nicks[(Math.floor(Math.random()*14))]);
 		chat = chat.replace('<strong id="name"></strong>', '<strong id="name">' + $("#c").val() + '</strong>');
 		chat = chat.replace(/CRYPTOCATSERVER/g, server);
-		document.write(chat);
+		$('#main').html(chat);
 	}
 });
 
