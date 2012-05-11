@@ -12,7 +12,6 @@ var keys = [];
 var names = [];
 var queue = [];
 var seckeys = [];
-var usedhmac = [];
 var inblocked = [];
 var outblocked = [];
 var fingerprints = [];
@@ -181,8 +180,7 @@ function process(line, sentid) {
 			var hmac = line.match(/\|\w{128}/);
 			hmac = hmac[0].substring(1);
 			line = line.replace(/\|\w{128}/, '');
-			if ((Crypto.HMAC(Whirlpool, match, seckeys[thisnick].substring(64, 128) + seq_r[thisnick]) !== hmac) || 
-			(jQuery.inArray(hmac, usedhmac) >= 0)) {
+			if ((Crypto.HMAC(Whirlpool, match, seckeys[thisnick].substring(64, 128) + seq_r[thisnick]) !== hmac)) {
 				if (jQuery.inArray(thisnick, inblocked) < 0) {
 					line = line.replace(/\[:3\](.*)\[:3\]/, '<span class="diffkey">Error: message authentication failure.</span>');
 					pushline(line, pos);
@@ -194,7 +192,6 @@ function process(line, sentid) {
 				match = Crypto.AES.decrypt(match, Crypto.util.hexToBytes(seckeys[thisnick].substring(0, 64)), {
 					mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
 				});
-				usedhmac.push(hmac);
 				if (jQuery.inArray(thisnick, inblocked) < 0) {
 					line = line.replace(/\[:3\](.*)\[:3\]/, match);
 					line = tagify(line);
