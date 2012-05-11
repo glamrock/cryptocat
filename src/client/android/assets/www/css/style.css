@@ -204,8 +204,10 @@ input.logout:hover {
 	word-wrap: break-word;
 	font-size: 0.8em;
 }
-#input:active {
+#input:active, #input:hover {
 	border: none;
+	background-color: #000;
+	color: #FFF;
 }
 #talk {
 	background-color: #97CEEC;

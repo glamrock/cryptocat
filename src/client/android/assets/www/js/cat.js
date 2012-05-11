@@ -205,7 +205,7 @@ function pushline(line, id) {
 	else {tag = 'msg';}
 	line = '<div class="' + tag + '" id="' + id + '"><div class="text">' + line + '</div></div>';
 	$('#chat').html($('#chat').html() + line);
-	$('#'+id).fadeIn();
+	$('#'+id).fadeIn(80);
 	if (sound) {
 		soundPlay('beep.wav');
 	}

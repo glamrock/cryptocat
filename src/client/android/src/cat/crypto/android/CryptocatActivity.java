@@ -12,7 +12,6 @@ import org.torproject.android.OrbotHelper;
 
 public class CryptocatActivity extends DroidGap
 {
-
 	public static String DEFAULT_PROXY_HOST = "localhost";
 	public static int DEFAULT_PROXY_PORT = 8118;
 	
@@ -34,27 +33,24 @@ public class CryptocatActivity extends DroidGap
 		inflater.inflate(R.menu.main, menu);
 		return true;
 	}
+	
+	@Override
+		public void onPause() {
+		}
     
     @Override
 	public boolean onOptionsItemSelected(MenuItem arg0) {
-
 		switch (arg0.getItemId()) {
-
 		case R.id.menu_new:
 	        super.loadUrl("file:///android_asset/www/index.html");
-
 			return true;
-			
 		case R.id.menu_finish:
 			finish();
 			return true;
-		
 		case R.id.menu_about:
-			
 			Toast.makeText(this, "Please visit https://crypto.cat for more information", Toast.LENGTH_SHORT).show();
 			return true;
 		}
 		return super.onOptionsItemSelected(arg0);
 	}
 }
-
