@@ -58,7 +58,8 @@ The full license text is included in `LICENSE.txt`.
 1. Run `make build-chrome-zip` in order to generate a Google Chrome-loadable.zip
 
 ### Cryptocat for Android
-*Under development! Compile for testing only!*
+**Under development! Compile for testing only!**
+
 1. Run `make build-android-apk` in order to build an Android package.
 
 ## Important notes
@@ -73,4 +74,4 @@ The full license text is included in `LICENSE.txt`.
 * The code for secure deletion of idle chats after one hour is not included in the Cryptocat git repository. On the [production server](https://crypto.cat), it's actually a cron job that checks the modification time of chats and [wipe](http://linux.die.net/man/1/wipe)s them securely. Those wanting to set up similar functionality should consider writing something similar.
 
 ## About
-Cryptocat™ is a trademark of and is developed by [Nadim Kobeissi](http://nadim.cc). It uses parts of the [crypto-js](http://code.google.com/p/crypto-js/) library and the [Bitcons](http://somerandomdude.com/work/bitcons/) iconset. Cryptocat is indebted to Paul Brodeur, David Mirza, Hasan Saleh and Tina Salameh.
+Cryptocat™ is a trademark of and is developed by [Nadim Kobeissi](http://nadim.cc). It uses parts of the [crypto-js](http://code.google.com/p/crypto-js/) library and the [Bitcons](http://somerandomdude.com/work/bitcons/) iconset.
