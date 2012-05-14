@@ -14,17 +14,18 @@ A native iPhone, Blackberry and other versions are possible thanks to the [Guard
 
 ## Cool features
 * Client-side Elliptic Curve 25519 Cryptography.
-* A client-side AES-256 implementation is used to encrypt data.
-* HMAC message integrity verification.
+* AES-256 encryption, HMAC integrity verification
 * The identity of chatters can be confirmed via key fingerprints, à la OTR.
 * Uses the Fortuna secure pseudo-randomness generator.
 * Send encrypted .zip files and images.
-* Includes a mobile website compatible with iPhone, Android and BlackBerry.
-* Chats are securely deleted after one hour of inactivity.
+* Mobile compatibility.
 * Easily invite your Facebook contacts to join your Cryptocat session.
 * Send private messages that can only be seen by a single recipient.
 * A sleek design with time-stamping, optional audio notifications, fluid-window mode, and mobile support.
 * Translations available for French, Catalan, Basque, Italian, German, Portuguese, Russian and Swedish.
+
+## Architecture & Lifecycle
+Please review the [Cryptocat Architecture & Lifecycle Document](https://project.crypto.cat/documents/a&l.pdf) for information on how the development process is organized.
 
 ## Protocol Specification
 A [design specification for the Cryptocat protocol](https://crypto.cat/about/) is available. In the future, the crypto will be entirely replaced with mpOTR for multi-party chat and OTR for private chatting between peers.
