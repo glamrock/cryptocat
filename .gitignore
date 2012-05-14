@@ -12,3 +12,5 @@ src/client/android/gen/cat/crypto/android/BuildConfig.java
 src/client/android/gen/cat/crypto/android/R.java
 src/client/android/libs/cordova-1.6.1.jar
 src/client/android/local.properties
+
+src/server/js/build.js
