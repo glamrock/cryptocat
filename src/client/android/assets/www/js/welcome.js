@@ -12,15 +12,6 @@ function gen(s) {
 	}
 }
 
-var xhr = new XMLHttpRequest();
-xhr.open("GET", "chat.html", false);
-xhr.onreadystatechange = function() {
-	if (xhr.readyState === 4) {
-		chat = xhr.responseText;
-	}
-};
-xhr.send();
-
 $(window).keypress(function(e) {
 	if (e.keyCode === 13) {
 		$("#create").click();
@@ -50,7 +41,8 @@ $("#create").click(function() {
 		$('#name').html($("#c").val());
 		$('#name').fadeIn(300);
 		$('#main').fadeOut(400, function() {
-			$('#main').html(chat);
+			$('#main').html($('#chathtml').html() + '<script type="text/javascript" src="js/cat.js"></script>');
+			$('#chathtml').html('');
 		});
 	}
 });

@@ -17,6 +17,9 @@ body {
 	height: 100%;
 	overflow: hidden;
 }
+#chathtml {
+	display: none;
+}
 h3 {
 	color: #97CEEC;
 	margin: 0px 0px 10px 0px;
