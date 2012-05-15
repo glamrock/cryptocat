@@ -17,6 +17,8 @@ h3 {
 }
 #main {
 	border: 10px solid #000;
+	border-radius: 15px;
+	border-top-right-radius: 0;
 	background-color: #FFF;
 	padding: 10px 8px 50px 8px;
 	width: 600px;
@@ -351,6 +353,8 @@ div.redirect p {
 	background-color: rgba(0, 0, 0, 0.96);
 	color: #FFF;
 	box-shadow: 4px 4px #97CEEC;
+	border-radius: 15px;
+	border-top-right-radius: 0;
 	text-align: center;
 	margin: 200px auto 0 auto;
 	min-height: 145px;
