@@ -34,9 +34,10 @@ public class CryptocatActivity extends DroidGap
 		return true;
 	}
 	
-	@Override
-		public void onPause() {
-		}
+	// TODO: Define onPause
+	//@Override
+	//public void onPause() {
+	//}
     
     @Override
 	public boolean onOptionsItemSelected(MenuItem arg0) {
