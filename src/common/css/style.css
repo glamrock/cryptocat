@@ -83,7 +83,7 @@ input.create {
 #random {
 	width: 40px;
 }
-#nickinput {
+#nickinput, #server {
 	background-color: #000;
 	border: 1px solid #97CEEC;
 	color: #97CEEC;
@@ -91,6 +91,10 @@ input.create {
 	padding: 3px;
 	font-size: 12px;
 	text-align: center;
+}
+#server {
+	margin-top: 10px;
+	width: 200px;
 }
 span.user {
 	color: #000;
@@ -101,7 +105,7 @@ span.user:hover {
 	color: #97CEEC;
 	text-decoration: none;
 }
-#understand, input.nicksubmit {
+#understand, input.nicksubmit, #serverchange {
 	border: 1px solid #97CEEC;
 	color: #97CEEC;
 	padding: 3px;
@@ -117,6 +121,10 @@ span.user:hover {
 input.nicksubmit {
 	margin-left: 5px;
 }
+#serverchange {
+	margin: 0 0 0 10px;
+	width: 60px;
+}
 #close {
 	margin-top: 4px;
 	float: right;
@@ -127,16 +135,17 @@ input.nicksubmit {
 	border: none;
 	text-align: center;
 }
-#understand:hover, input.nicksubmit:hover, #close:hover {
+#understand:hover, input.nicksubmit:hover, #close:hover, #serverchange:hover {
 	background-color: #97CEEC;
 	color: #FFF;
 }
-#understand:active, input.nicksubmit:active, #close:active {
+#understand:active, input.nicksubmit:active, #close:active, #serverchange:active {
 	box-shadow: none;
 }
 #talk {
 	background-color: #000;
 	border: none;
+	border-bottom-right-radius: 15px;
 	margin: -16px 0px 0px 2px;
 	float: left;
 	display: inline;
@@ -219,6 +228,7 @@ a, input.create:hover, #talk:hover, #maximize, #sound, #notifications, #file, #i
 	padding: 5px 10px;
 	width: 510px;
 	border: none;
+	border-bottom-left-radius: 15px;
 	float: left;
 	height: 28px;
 	resize: none;
