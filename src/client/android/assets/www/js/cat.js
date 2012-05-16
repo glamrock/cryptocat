@@ -174,7 +174,7 @@ function process(line, sentid) {
 					line = tagify(line);
 					pushline(line, pos);
 					if ($("#" + pos).html().match(/data:.+\<\/a\>\<\/div\>$/)) {
-						$("#" + pos).css('background-image', 'url("img/fileb.png")');
+						$("#" + pos).css('background-image', 'url("img/photob.png")');
 					}
 				}
 				return [thisnick, line.match(/<\/span>.+$/).toString().substring(8)];
@@ -290,7 +290,7 @@ function updatechat() {
 				}
 				else if (data) {
 					if ($("#" + data).html().match(/data:.+\<\/a\>\<\/div\>$/)) {
-						$("#" + data).css('background-image', 'url("img/fileb.png")');
+						$("#" + data).css('background-image', 'url("img/photob.png")');
 					}
 					else {
 						$("#" + data).css('background-image', 'url("img/chat.png")');
@@ -419,8 +419,9 @@ function nickset() {
 					$("#changenick").fadeOut(500);
 					$("#nickentry").fadeOut(500);
 					$("#front").fadeOut(500);
+					$('#main').css('overflow', 'visible');
+					updatechat();
 				});
-				updatechat();
 			}
 			else {
 				$('#keygen').fadeOut('fast', function() {
@@ -442,10 +443,10 @@ function nickset() {
 	});
 }
 
-$('#file').click(function(){
+$('#photo').click(function(){
 	var mime = new RegExp('(image.*)|(application/((x-compressed)|(x-zip-compressed)|(zip)))|(multipart/x-zip)');
 	$('#fadebox').html('<input type="button" id="close" value="x" />' +
-	'<br /><h3>send encrypted file</h3>');
+	'<br /><h3>send encrypted photo</h3>');
 	if (window.File && window.FileReader) {
 		$('#fadebox').html($('#fadebox').html() + 'Enter recipient: ' +
 		'<input type="text" id="recipient" />' +
@@ -490,11 +491,6 @@ $('#file').click(function(){
 			}
 		}
 		document.getElementById('fileselect').addEventListener('change', handleFileSelect, false);
-	}
-	else {
-		$("#fadebox").html($("#fadebox").html() + 
-		'Sorry, your browser does not support this feature. Consider switching to ' + 
-		'<a href="http://google.com/chrome" target="_blank">Google Chrome</a>, it\'s great!');
 	}
 	$("#close").click(function(){
 		$('#fadebox').fadeOut('fast', function() {
@@ -660,8 +656,7 @@ $(window).keypress(function(e) {
 	}
 });
 
-$('#main').css('overflow', 'visible');
-$('#main').fadeIn(400, function() {
+$('#main').fadeIn(200, function() {
 	var myScroll;
 	function loaded() {
 		setTimeout(function () {
@@ -673,6 +668,6 @@ $('#main').fadeIn(400, function() {
 		$('#nickinput').val($('#nick').html());
 		$('#nickentry').fadeIn('fast');
 		$("#sound").fadeIn(300);
-		$("#file").fadeIn(300);
+		$("#photo").fadeIn(300);
 	});
 });

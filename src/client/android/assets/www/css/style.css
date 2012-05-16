@@ -70,7 +70,7 @@ input.create {
 	width: 10%;
 	float: right;
 }
-input, :focus, #sound, #file, span.nick {
+input, :focus, #sound, #photo, span.nick {
 	border-radius: 0px;
 	outline: none;
 	-webkit-appearance: none;
@@ -128,7 +128,7 @@ span.user:hover {
 	color: #97CEEC;
 	text-decoration: none;
 }
-#file, #sound {
+#photo, #sound {
 	float: right;
 	margin: 7px 3.5% 0 0;
 	display: none;
@@ -162,8 +162,8 @@ div.controls {
 	padding: 1px 3px 3px 0px;
 	width: 100%;
 	word-spacing: 5px;
-	height: 12px;
-	font-size: 0.8em;
+	height: 14px;
+	font-size: 0.9em;
 	font-weight: bold;
 	color: #FFF;
 }
@@ -278,11 +278,13 @@ div.text {
 	top: 0;
 	left: 0;
 	z-index: 50;
+	overflow: hidden;
 }
 #changenick, #fadebox, #note {
-	padding: 7em 0 0 0;
+	padding: 5em 0 0 0;
 	width: 100%;
 	height: 100%;
+	overflow: hidden;
 	background-color: rgba(0, 0, 0, 1);
 	color: #FFF;
 	text-align: center;
@@ -333,6 +335,7 @@ span.monospace {
 }
 .block {
 	width: 25px;
+	padding: 7px;
 	display: inline-block;
 	text-align: center;
 	background-color: #97CEEC;
@@ -341,7 +344,7 @@ span.monospace {
 }
 a.download {
 	padding: 2px 2px 2px 22px;
-	background: url("../img/fileb.png") center left no-repeat;
+	background: url("../img/photob.png") center left no-repeat;
 	background-color: #97CEEC;
 	color: #FFF;
 }

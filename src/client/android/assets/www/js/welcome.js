@@ -40,7 +40,7 @@ $("#create").click(function() {
 		$('#nick').html(nicks[(Math.floor(Math.random()*14))]);
 		$('#name').html($("#c").val());
 		$('#name').fadeIn(300);
-		$('#main').fadeOut(400, function() {
+		$('#main').fadeOut(200, function() {
 			$('#main').html($('#chathtml').html() + '<script type="text/javascript" src="js/cat.js"></script>');
 			$('#chathtml').html('');
 		});
