@@ -351,6 +351,12 @@ a.download {
 a.download:hover {
 	text-decoration: none;
 }
+#recipient, #photobutton {
+	border: 1px solid #97CEEC;
+	background-color: #000;
+	color: #97CEEC;
+	padding: 2px;
+}
 .emoticon {
 	background: transparent url("../img/emoticat.png") no-repeat;
 	height: 13px;

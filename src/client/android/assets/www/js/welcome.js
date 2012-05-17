@@ -4,7 +4,7 @@ var faded = 0;
 var nicks = new Array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'turtle',
 'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite', 'ducky');
 
-function gen(s) {
+function namegen(s) {
 	var c = "1234567890abcdefghijklmnopqrstuvwxyz";
 	$("#c").val($("#c").val() + c.charAt(Math.floor(Math.random() * c.length)));
 	if ($("#c").val().length >= s) {
@@ -26,7 +26,7 @@ $("#c").click(function(){
 $("#random").click(function(){
 	clearInterval(interval);
 	$("#c").val('');
-	interval = setInterval("gen(8)", 40);
+	interval = setInterval("namegen(8)", 40);
 });
 
 $("#create").click(function() {
@@ -41,8 +41,9 @@ $("#create").click(function() {
 		$('#name').html($("#c").val());
 		$('#name').fadeIn(300);
 		$('#main').fadeOut(200, function() {
-			$('#main').html($('#chathtml').html() + '<script type="text/javascript" src="js/cat.js"></script>');
+			$('#main').html($('#chathtml').html());
 			$('#chathtml').html('');
+			startcat();
 		});
 	}
 });

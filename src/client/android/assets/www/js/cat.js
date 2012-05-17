@@ -447,51 +447,40 @@ $('#photo').click(function(){
 	var mime = new RegExp('(image.*)|(application/((x-compressed)|(x-zip-compressed)|(zip)))|(multipart/x-zip)');
 	$('#fadebox').html('<input type="button" id="close" value="x" />' +
 	'<br /><h3>send encrypted photo</h3>');
-	if (window.File && window.FileReader) {
-		$('#fadebox').html($('#fadebox').html() + 'Enter recipient: ' +
-		'<input type="text" id="recipient" />' +
-		'<br />Zip files and images accepted. Maximum size: <span class="blue">' + filesize + 
-		'kb</span><br /><br /><span id="filewrap">' + 
-		'<input type="button" id="filebutton" value="Select file" />' + 
-		'<input type="file" id="fileselect" name="file[]" /></span><br /><br />');
-		$('#recipient').keyup(function(){
-			if (($('#recipient').val() === nick) || (jQuery.inArray($('#recipient').val(), names) < 0)) {
-				$('#recipient').css('background-color', '#000');
-				$('#recipient').css("color", "#97CEEC");
-				$('#filebutton').css("display", "none");
-			}
-			else {
-				$('#recipient').css('background-color', '#97CEEC');
-				$('#recipient').css('color', '#FFF');
-				$('#filebutton').css('display', 'inline');
-			}
-		});
-		$("#filebutton").click(function(){
-			$('input[type=file]').trigger('click');
-		});
-		function handleFileSelect(evt) {
-			var file = evt.target.files;
-			var reader = new FileReader();
-			reader.onload = (function(theFile) {
-				return function(e) {
-					sendmsg('@' + $("#recipient").val() + ' ' + e.target.result);
-				};
-			})(file[0]);
-			if (file[0].type.match(mime)) {
-				if (file[0].size > (filesize * 1024)) {
-					$("#filewrap").html('<span class="red">Maximum file size is ' + filesize + 'kb.</span>');
-				}
-				else {
-					reader.readAsDataURL(file[0]);
-					$("#close").click();
-				}
-			}
-			else {
-				$("#filewrap").html('<span class="red">Only zip and image files are supported.</span>');
-			}
-		}
-		document.getElementById('fileselect').addEventListener('change', handleFileSelect, false);
+	$('#fadebox').html($('#fadebox').html() + 'Enter recipient: ' +
+	'<input type="text" id="recipient" /><br /><br />' + 
+	'<input type="button" id="photobutton" value="Send photo" />');
+	navigator.camera.getPicture(onSuccess, onFail, {
+		quality: 10,
+		destinationType: Camera.DestinationType.DATA_URL,
+		sourceType : Camera.PictureSourceType.CAMERA, 
+		allowEdit : false,
+		encodingType: Camera.EncodingType.JPEG,
+		targetWidth: 100,
+		targetHeight: 100
+	}); 
+	function onSuccess(imageData) {
+		var image = 'data:image/jpeg;base64,' + imageData;
 	}
+	function onFail(message) {
+	    alert('Failed because: ' + message);
+	}
+	$("#photobutton").click(function(){
+		sendmsg('@' + $("#recipient").val() + ' ' + image);
+		$("#close").click();
+	});
+	$('#recipient').keyup(function(){
+		if (($('#recipient').val() === nick) || (jQuery.inArray($('#recipient').val(), names) < 0)) {
+			$('#recipient').css('background-color', '#000');
+			$('#recipient').css("color", "#97CEEC");
+			$('#photobutton').css("display", "none");
+		}
+		else {
+			$('#recipient').css('background-color', '#97CEEC');
+			$('#recipient').css('color', '#FFF');
+			$('#photobutton').css('display', 'inline');
+		}
+	});
 	$("#close").click(function(){
 		$('#fadebox').fadeOut('fast', function() {
 			$('#front').fadeOut(0);
@@ -656,18 +645,20 @@ $(window).keypress(function(e) {
 	}
 });
 
-$('#main').fadeIn(200, function() {
-	var myScroll;
-	function loaded() {
-		setTimeout(function () {
-			myScroll = new iScroll('wrapper');
-		}, 100);
-	}
-	window.addEventListener('load', loaded, false);
-	$('#front').fadeIn(0, function() {
-		$('#nickinput').val($('#nick').html());
-		$('#nickentry').fadeIn('fast');
-		$("#sound").fadeIn(300);
-		$("#photo").fadeIn(300);
+function startcat() {
+	$('#main').fadeIn(200, function() {
+		var myScroll;
+		function loaded() {
+			setTimeout(function () {
+				myScroll = new iScroll('wrapper');
+			}, 100);
+		}
+		window.addEventListener('load', loaded, false);
+		$('#front').fadeIn(0, function() {
+			$('#nickinput').val($('#nick').html());
+			$('#nickentry').fadeIn('fast');
+			$("#sound").fadeIn(300);
+			$("#photo").fadeIn(300);
+		});
 	});
-});
+}
