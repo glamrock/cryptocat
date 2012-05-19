@@ -16,16 +16,7 @@ var inblocked = [];
 var outblocked = [];
 var fingerprints = [];
 
-/*var notice = [
-'Cryptocat is supported by people like you. Check out our <a href="https://crypto.cat/donate/" target="_blank">fundraiser</a> and keep us going.',
-'Help Cryptocat become better - please <a href="https://crypto.cat/donate/" target="_blank">donate</a> by buying Cryptocat stickers!',
-'Cryptocat is an open software effort. Your <a href="https://crypto.cat/donate/" target="_blank">donations</a> help us improve.',
-'You can donate to Cryptocat using Bitcoin! Please <a href="https://crypto.cat/donate/" target="_blank">contribute</a> and keep us going.',
-'Cryptocat is volunteer-run and handles thousands of conversations a week. Please <a href="https://crypto.cat/donate/" target="_blank">donate</a> today.'
-];*/
-
-var day = 139 - (Math.round((((new Date()) - (new Date((new Date()).getFullYear(), 0, 1))) / 1000 / 60 / 60 / 24) + .5, 0));
-var notice = ['Only '+day+' days left of the Cryptocat Fundraiser - <a href="http://www.indiegogo.com/cryptocat" target="_blank">Please support a year of open development.</a>'];
+var notice = ['For more information on how Cryptocat works and its limitations, please visit the <a href="https://project.crypto.cat" target="_blank">project website</a>.'];
 
 function scrolldown(s) {
 	$('#chat').animate({scrollTop: document.getElementById('chat').scrollHeight + 20}, s);
