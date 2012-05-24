@@ -424,11 +424,13 @@ $("#nickform").submit(function() {
 	}
 	$("#nickinput").val($("#nickinput").val().toLowerCase());
 	if (!pubkey) {
-		if (typeof window.crypto.getRandomValues === 'function') {
-			var buf = new Uint8Array(512);
-			window.crypto.getRandomValues(buf);
-			for (var i=0; i<buf.byteLength; i++) {
-				Crypto.Fortuna.AddRandomEvent(String.fromCharCode(buf[i]));
+		if (typeof window.crypto != 'undefined') {
+			if (typeof window.crypto.getRandomValues === 'function') {
+				var buf = new Uint8Array(512);
+				window.crypto.getRandomValues(buf);
+				for (var i=0; i<buf.byteLength; i++) {
+					Crypto.Fortuna.AddRandomEvent(String.fromCharCode(buf[i]));
+				}
 			}
 		}
 		if (Crypto.Fortuna.Ready() === 0) {
