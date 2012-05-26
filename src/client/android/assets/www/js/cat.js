@@ -211,6 +211,34 @@ function pushline(line, id) {
 	}
 }
 
+function bubbleBabble(input) {
+	var result = '';
+	for (var i=0; i!=input.length; i++) {
+		result += String.fromCharCode(input[i]);
+	}
+	input = result;
+	var result = 'x';
+	var consonants = 'bcdfghklmnprstvzx';
+	var vowels = 'aeiouy';
+	var babble = 1;
+  	for (i=0;;i+=2) {
+		if (i >= input.length) {
+			result += vowels.charAt(Math.floor(babble%6)) + consonants.charAt(16) + vowels.charAt(Math.floor(babble/6));
+			break;
+		}
+    	byte1 = input.charCodeAt(i);
+    	result += vowels.charAt((((byte1>>6)&3)+babble)%6) + consonants.charAt((byte1>>2)&15) + vowels.charAt(((byte1&3) + (babble/6))%6);
+		if (i+1 >= input.length) {
+			break;
+		}
+		byte2 = input.charCodeAt(i+1);
+		result += consonants.charAt((byte2>>4)&15) + '-' + consonants.charAt(byte2&15);
+		babble = (babble*5+byte1*7+byte2) % 36;
+	}
+	result += 'x';
+	return result;
+}
+
 function updatekeys(sync) {
 	$.ajax({ url: install,
 		type: 'POST', async: sync,
@@ -238,14 +266,8 @@ function updatekeys(sync) {
 						userinfo(names[i]);
 					}
 					else {
-						fingerprints[names[i]] = Whirlpool(names[i] + keys[names[i]]);
-						fingerprints[names[i]] = 
-						fingerprints[names[i]].substring(24, 32)  + ':' + 
-						fingerprints[names[i]].substring(48, 56)  + ':' + 
-						fingerprints[names[i]].substring(72, 80)  + ':' + 
-						fingerprints[names[i]].substring(96, 104) + ':' + 
-						fingerprints[names[i]].substring(120, 128);
-						fingerprints[names[i]] = fingerprints[names[i]].toUpperCase();
+						fingerprints[names[i]] = Whirlpool(names[i] + keys[names[i]]).substring(0, 22);
+						fingerprints[names[i]] = bubbleBabble(Crypto.util.hexToBytes(fingerprints[names[i]]));
 					}
 				}
 				for (var i=0; i !== oldnames.length; i++) {
