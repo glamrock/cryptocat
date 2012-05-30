@@ -47,8 +47,7 @@
 	/* Default nicknames: */
 	$nicks = array('bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'turtle', 
 	'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite', 'ducky');
-	/* Polling and timeout rates. You probably shouldn't touch these. */
-	$update = 2000;
+	/* Timeout rate. You probably shouldn't touch this. */
 	$timeout = 80;
 	
 	/* Do _not_ touch anything below this line. */
@@ -58,6 +57,7 @@
 		$redirect= 'https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 		header('Location:'.$redirect);
 	}
+	ignore_user_abort(false);
 	ini_set('session.entropy_file', '/dev/urandom');
 	ini_set('session.entropy_length', '1024');
 	session_set_cookie_params(0, '/', $domain, $https, TRUE);
@@ -164,55 +164,68 @@
 			$chat = file($data.$_POST['chat']);
 			if (!$chat) {
 				print('NOEXIST');
+				exit;
 			}
-			else if ($_SESSION['pos']) {
+			else if (intval($_POST['pos']) >= 0) {
+				$pos = $_SESSION['pos'] + intval($_POST['pos']);
 				$people = getpeople($chat);
-				if (function_exists('shmop_open')) {
-					$shm_id = shmop_open(ftok($data.$_POST['chat'], 'c'), "c", 0600, 256);
-					if (!shmop_read($shm_id, 0, shmop_size($shm_id))) {
-						$last = array();
+				$sleepcounter = 0;
+				while ($pos >= count($chat)) {
+					ob_implicit_flush(true);
+					ob_end_flush();
+					print(' ');
+					if (connection_aborted()) {
+						exit;
 					}
-					else {
-						$last = unserialize(shmop_read($shm_id, 0, shmop_size($shm_id)));
-						for ($p=0; $p != count($people); $p++) {
-							if (isset($last[$people[$p]]) && ((time() - $timeout) > $last[$people[$p]])) {
-								unset($last[$people[$p]]);
-								logout($_POST['chat'], $people[$p], 1);
+					usleep(800000);
+					$sleepcounter += 800000;
+					if (function_exists('shmop_open') && (($sleepcounter / 1000000) % ($timeout / 2)) == 0) {
+						$shm_id = shmop_open(ftok($data.$_POST['chat'], 'c'), "c", 0600, 256);
+						if (!shmop_read($shm_id, 0, shmop_size($shm_id))) {
+							$last = array();
+						}
+						else {
+							$last = unserialize(shmop_read($shm_id, 0, shmop_size($shm_id)));
+							for ($p=0; $p != count($people); $p++) {
+								if (isset($last[$people[$p]]) && ((time() - $timeout) > $last[$people[$p]])) {
+									unset($last[$people[$p]]);
+									logout($_POST['chat'], $people[$p], 1);
+								}
 							}
 						}
+						$last[$_SESSION['nick']] = time();
+						shmop_write($shm_id, serialize($last), 0);
 					}
-					$last[$_SESSION['nick']] = time();
-					shmop_write($shm_id, serialize($last), 0);
+					$chat = file($data.$_POST['chat']);
 				}
-				if ($_SESSION['pos'] <= count($chat)) {
-					if (msgcheck($chat[$_SESSION['pos']]) || preg_match($inforegex, $chat[$_SESSION['pos']])) {
-						preg_match_all('/\([a-z]{1,12}\)[^\(^\[]+/', $chat[$_SESSION['pos']], $match);
-						preg_match('/^[a-z]{1,12}\|/', $chat[$_SESSION['pos']], $nick);
+				if ($pos < count($chat)) {
+					if (msgcheck($chat[$pos]) || preg_match($inforegex, $chat[$pos])) {
+						preg_match_all('/\([a-z]{1,12}\)[^\(^\[]+/', $chat[$pos], $match);
+						preg_match('/^[a-z]{1,12}\|/', $chat[$pos], $nick);
 						$nick = substr($nick[0], 0, -1);
 						$ki = 0;
 						$found = 0;
 						for ($ki=0; $ki <= count($match[0]); $ki++) {
 							if (substr($match[0][$ki], 0, strlen($_SESSION['nick']) + 2) == '('.$_SESSION['nick'].')') {
 								$match = substr($match[0][$ki], strlen($_SESSION['nick']) + 2);
-								$chat[$_SESSION['pos']] = preg_replace('/\[:3\](.*)\[:3\]/', '[:3]'.$match.'[:3]', $chat[$_SESSION['pos']]);
+								$chat[$pos] = preg_replace('/\[:3\](.*)\[:3\]/', '[:3]'.$match.'[:3]', $chat[$pos]);
 								$ki = count($match[0]) + 10;
 								$found = 1;
 							}
 						}
 						if (!isset($nick) || ($nick != $_SESSION['nick'])) {
-							if (!$found && preg_match('/\[:3\](.*)\[:3\]/', $chat[$_SESSION['pos']])) {
-								$chat[$_SESSION['pos']] = '';
+							if (!$found && preg_match('/\[:3\](.*)\[:3\]/', $chat[$pos])) {
+								$chat[$pos] = '';
 							}
 							else {
-								$chat[$_SESSION['pos']] = preg_replace('/^[a-z]{1,12}\|\w{8}/', $nick, $chat[$_SESSION['pos']]);
+								$chat[$pos] = preg_replace('/^[a-z]{1,12}\|\w{8}/', $nick, $chat[$pos]);
 							}
-							print(htmlspecialchars($chat[$_SESSION['pos']]));
+							print(htmlspecialchars($chat[$pos]));
 						}
 						else {
-							preg_match('/\|\w{8}/', $chat[$_SESSION['pos']], $sentid);
+							preg_match('/\|\w{8}/', $chat[$pos], $sentid);
 							print(substr($sentid[0], 1));
 						}
-						$_SESSION['pos']++;
 					}
 				}
 			}
@@ -290,7 +303,7 @@
 </head>
 <?php
 if (isset($_GET['c']) && preg_match('/^\w+$/', $_GET['c'])) {
-	print('<body onunload="logout();">'."\n");
+	print('<body>'."\n");
 }
 else {
 	print('<body onload="document.getElementById(\'c\').focus();">'."\n");
@@ -378,7 +391,7 @@ else {
 			}
 		}
 		function chat($name) {
-			global $data, $nicks, $timelimit, $maxinput, $install, $update, $_SESSION, $genurl, $filesize;
+			global $data, $nicks, $timelimit, $maxinput, $install, $_SESSION, $genurl, $filesize;
 			$name = strtolower($name);
 			$chat = file($data.$name);
 			$nick = $nicks[mt_rand(0, count($nicks) - 1)];
@@ -404,7 +417,7 @@ else {
 				</div>
 				<div id="fadebox" class="invisible"></div>
 			</div>
-			<a href="'.$install.'" onclick="logout();"><img src="img/cryptocat.png" class="chat" alt="cryptocat" /></a>
+			<a href="'.$install.'"><img src="img/cryptocat.png" class="chat" alt="cryptocat" /></a>
 			<img src="img/maximize.png" alt="maximize" id="maximize" title="Expand" />
 			<img src="img/invite.png" alt="invite" id="invite" title="Invite friend" />
 			<img src="img/nonotifications.png" alt="notifications" id="notifications" title="Desktop notifications off" />
@@ -422,7 +435,7 @@ else {
 				</div>
 			</form>
 			</div>
-			<script type="text/javascript">var install="'.$install.'";var update='.$update.';var maxinput='.$maxinput.';var genurl='.$genurl.';var filesize='.$filesize.';</script>
+			<script type="text/javascript">var install="'.$install.'";var maxinput='.$maxinput.';var genurl='.$genurl.';var filesize='.$filesize.';</script>
 			<script type="text/javascript" src="js/cat.js"></script>');
 		}
 		function logout($name, $nick, $ghost) {

@@ -1,6 +1,6 @@
 var seed = Math.seedrandom();
 var z = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4096, 0];
-var sound = notifications = pos = tag = prikey = pubkey = last = 0;
+var sound = notifications = pos = tag = prikey = pubkey = getreq = putreq = error = 0;
 var browser = navigator.userAgent.toLowerCase();
 var cfocus = true;
 var soundEmbed = null;
@@ -158,7 +158,6 @@ function tagify(line) {
 
 function process(line, sentid) {
 	if (line) {
-		line = $.trim(line);
 		if (sentid) {
 			line = tagify(line);
 			pushline(line, sentid);
@@ -195,7 +194,7 @@ function process(line, sentid) {
 			}
 		}
 		else if (match = line.match(/^(\&gt\;|\&lt\;)\s[a-z]{1,12}\s(has arrived|has left)$/)) {
-			updatekeys(true);
+			getkeys(true);
 			line = '<span class="nick">' + match[0] + '</span>';
 			pushline(line, pos);
 			$("#" + pos).css('background-image', 'url("img/user.png")');
@@ -252,7 +251,7 @@ function bubbleBabble(input) {
 	return result;
 }
 
-function updatekeys(sync) {
+function getkeys(sync) {
 	$.ajax({ url: install,
 		type: 'POST', async: sync,
 		data: 'nick=' + $('#nickinput').val() + '&name=' + name + '&key=get',
@@ -301,129 +300,155 @@ function updatekeys(sync) {
 	});
 }
 
-function updatechat() {
-	$.ajax({ url: install, type: 'POST', async: true, 
-		data: 'chat=' + name,
-		success: function(data) {
-			if (data === 'NOEXIST') {
-				if (pubkey) {
-					errored('your chat no longer exists.');
-					$("#chat").html('<div class="bsg">' + notice[Math.floor(Math.random()*notice.length)] + '</div>');
-					clearInterval(interval);
+function getmsg(recovery) {
+	if (recovery) {
+		$.ajax({ url: install, type: 'GET', async: true, timeout: 5000,
+			success: function() {
+				if ($("#users").html() === '<span class="users">x</span>&nbsp; connection issues. stand by...') {
+					$("#users").html('<span class="users">x</span>&nbsp; reconnected!');
+					$("#users").css("background-color", "#97CEEC");
+					getkeys(false);
 				}
-			}
-			else if (data === "NOLOGIN") {
-				if (pubkey) {
-					errored("you have been logged out.");
-					clearInterval(interval);
-				}
-			}
-			else if (data !== '') {
-				pos++;
-				if (data.match(/\s/)) {
-					var message = process(data, 0);
-					message[1] = message[1].replace(/<div class.+<\/div>/, '');
-					if ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) < 800) {
-						scrolldown(600);
-					}
-					if (!cfocus || ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) > 800)) {
-						if (notifications) {
-							Notification.createNotification('img/icon-128.png', message[0], message[1]);
-						}
-					}
-				}
-				else if (data) {
-					if ($("#" + data).html().match(/data:.+\<\/a\>\<\/div\>$/)) {
-						$("#" + data).css('background-image', 'url("img/fileb.png")');
-					}
-					else {
-						$("#" + data).css('background-image', 'url("img/chat.png")');
-					}
-					$("#" + data).attr("id", "x");
-				}
-			}
-			if ($("#users").html() === '<span class="users">x</span>&nbsp; connection issues. stand by...') {
-				updatekeys(true);
-				$("#users").css("background-color", "#97CEEC");
-			}
-			if (queue[0]) {
-				if (last && $("#" + last).css("background-image")) {
-					return;
-				}
-				else if (last) {
-					queue.splice(0, 1);
-					if (!queue[0]) {
-						last = 0;
-						return;
-					}
-				}
-				var msg = queue[0][0];
-				var sentid = queue[0][1];
-				if ((msg[0] === "@") && (jQuery.inArray(msg.match(/^\@[a-z]{1,12}/).toString().substring(1), names) >= 0)) {
-					if (msg.match(/^\@[a-z]{1,12}/).toString().substring(1) === nick) {
-						$("#" + sentid).css('background-image', 'url("img/chat.png")');
-						queue.splice(0,1);
-						return;
-					}
-					var loc = jQuery.inArray(msg.match(/^\@[a-z]{1,12}/).toString().substring(1), names);
-					var crypt = Crypto.AES.encrypt(queue[0][0], 
-					Crypto.util.hexToBytes(seckeys[names[loc]].substring(0, 64)), {
-						mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
-					});
-					var msg = "(" + msg.match(/^\@[a-z]{1,12}/).toString().substring(1) + ")" + crypt;
-					msg += "|" + Crypto.HMAC(Whirlpool, crypt, seckeys[names[loc]].substring(64, 128) + seq_s[names[loc]]);
-					seq_s[names[loc]]++;
+				if (queue[0]) {
+					putmsg();
 				}
 				else {
-					var msg = '';
-					for (var i=0; i !== names.length; i++) {
-						if (names && (names[i] !== nick) && (jQuery.inArray(names[i], outblocked) < 0)) {
-							var crypt = Crypto.AES.encrypt(queue[0][0],
-							Crypto.util.hexToBytes(seckeys[names[i]].substring(0, 64)), {
-								mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
-							});
-							msg += "(" + names[i] + ")" + crypt;
-							msg += "|" + Crypto.HMAC(Whirlpool, crypt, seckeys[names[i]].substring(64, 128) + seq_s[names[i]]);
-							seq_s[names[i]]++;
-						}
+					getmsg();
+				}
+			},
+			error: function() {
+				setTimeout('getmsg(1)', 4000);
+			}
+		});
+	}
+	else {
+		getreq = $.ajax({ url: install, type: 'POST', async: true,
+			data: 'chat=' + name + '&pos=' + pos,
+			success: function(data) {
+				data = $.trim(data);
+				if (data === 'NOEXIST') {
+					if (pubkey) {
+						errored('your chat no longer exists.');
+						$("#chat").html('<div class="bsg">' + notice[Math.floor(Math.random()*notice.length)] + '</div>');
 					}
 				}
-				msg = nick + "|" + sentid + ": " + "[:3]" + msg + "[:3]";
-				msg = "name=" + name + "&talk=send" + "&input=" + msg.replace(/\+/g, "%2B");
-				last = sentid;
-				function postmsg() {
-					$.ajax({
-						type: 'POST', url: install,
-						data: msg,
-						error: function() {
-							postmsg();
-						}
-					});
+				else if (data === "NOLOGIN") {
+					if (pubkey) {
+						errored("you have been logged out.");
+					}
 				}
-				postmsg();
+				else if (data !== '') {
+					pos++;
+					if (data.match(/\s/)) {
+						var message = process(data, 0);
+						message[1] = message[1].replace(/<div class.+<\/div>/, '');
+						if ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) < 800) {
+							scrolldown(600);
+						}
+						if (!cfocus || ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) > 800)) {
+							if (notifications) {
+								Notification.createNotification('img/icon-128.png', message[0], message[1]);
+							}
+						}
+					}
+					else if (data) {
+						if ($("#" + data).html().match(/data:.+\<\/a\>\<\/div\>$/)) {
+							$("#" + data).css('background-image', 'url("img/fileb.png")');
+						}
+						else {
+							$("#" + data).css('background-image', 'url("img/chat.png")');
+						}
+						$("#" + data).attr("id", "x");
+					}
+				}
+				getmsg(0);
+			},
+			error: function() {
+				if (error) {
+					getmsg(1);
+				}
 			}
-		}
-	});
+		});
+	}
 }
 
-function sendmsg(msg) {
+function queuemsg(msg) {
 	msg = msg.replace(/\$/g,"&#36;");
 	$("#input").val('');
 	$("#input").focus();
 	if (msg !== '') {
 		var sentid = gen(8, 1, 0);
-		process(nick + ": " + msg, sentid);
+		process($.trim(nick + ": " + msg), sentid);
 		scrolldown(600);
 		if (names.length > 1) {
 			$("#" + sentid).css('background-image', 'url("img/sending.gif")');
-			queue.push([msg, sentid]);
 			$("#talk").val(maxinput);
+			if ((msg[0] === "@") && (jQuery.inArray(msg.match(/^\@[a-z]{1,12}/).toString().substring(1), names) >= 0)) {
+				if (msg.match(/^\@[a-z]{1,12}/).toString().substring(1) === nick) {
+					$("#" + sentid).css('background-image', 'url("img/chat.png")');
+					return;
+				}
+				var loc = jQuery.inArray(msg.match(/^\@[a-z]{1,12}/).toString().substring(1), names);
+				var crypt = Crypto.AES.encrypt(msg, 
+				Crypto.util.hexToBytes(seckeys[names[loc]].substring(0, 64)), {
+					mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
+				});
+				msg = "(" + msg.match(/^\@[a-z]{1,12}/).toString().substring(1) + ")" + crypt;
+				msg += "|" + Crypto.HMAC(Whirlpool, crypt, seckeys[names[loc]].substring(64, 128) + seq_s[names[loc]]);
+				seq_s[names[loc]]++;
+			}
+			else {
+				var plaintext = msg;
+				var msg = '';
+				for (var i=0; i !== names.length; i++) {
+					if (names && (names[i] !== nick) && (jQuery.inArray(names[i], outblocked) < 0)) {
+						var crypt = Crypto.AES.encrypt(plaintext,
+						Crypto.util.hexToBytes(seckeys[names[i]].substring(0, 64)), {
+							mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
+						});
+						msg += "(" + names[i] + ")" + crypt;
+						msg += "|" + Crypto.HMAC(Whirlpool, crypt, seckeys[names[i]].substring(64, 128) + seq_s[names[i]]);
+						seq_s[names[i]]++;
+					}
+				}
+			}
+			msg = nick + "|" + sentid + ": " + "[:3]" + msg + "[:3]";
+			msg = "name=" + name + "&talk=send" + "&input=" + msg.replace(/\+/g, "%2B");
+			queue.push(msg);
+			if (!putreq) {
+				putreq = 1;
+				error = 0;
+				getreq.abort();
+				error = 1;
+				getreq = 0;
+				putmsg();
+			}
 		}
 	}
 }
 
+function putmsg() {
+	$.ajax({
+		type: 'POST', url: install,
+		data: queue[0],
+		success: function() {
+			queue.splice(0, 1);
+			if (queue[0]) {
+				putmsg();
+			}
+			else {
+				putreq = 0;
+				getmsg(0);
+			}
+		},
+		error: function() {
+			getmsg(1);
+		}
+	});
+}
+
 $("#chatform").submit(function() {
-	sendmsg($.trim($("#input").val()));
+	queuemsg($.trim($("#input").val()));
 	return false;
 });
 
@@ -508,8 +533,7 @@ function nickset() {
 				nick = $("#nick").html();
 				$("#input").focus();
 				document.title = '[-] Cryptocat';
-				interval = setInterval("updatechat()", update);
-				updatekeys(false);
+				getkeys(false);
 				$('#keytext').html($('#keytext').html() + ' &#160; &#160; &#160; <span class="blue">OK</span>');
 				$('#keygen').fadeOut('fast', function() {
 					$("#changenick").fadeOut('fast');
@@ -517,7 +541,7 @@ function nickset() {
 					$("#front").fadeOut('fast');
 				});
 				$('#chat').html('<div class="bsg">' + notice[Math.floor(Math.random()*notice.length)] + '</div>');
-				updatechat();
+				getmsg(0);
 			}
 			else {
 				$('#keygen').fadeOut('fast', function() {
@@ -570,7 +594,7 @@ $('#file').click(function(){
 			var reader = new FileReader();
 			reader.onload = (function(theFile) {
 				return function(e) {
-					sendmsg('@' + $("#recipient").val() + ' ' + e.target.result);
+					queuemsg('@' + $("#recipient").val() + ' ' + e.target.result);
 				};
 			})(file[0]);
 			if (file[0].type.match(mime)) {
@@ -776,17 +800,18 @@ window.onfocus = function() {
 	document.title = '[-] Cryptocat';
 };
 window.onblur = function() {
-	blur = setTimeout('cfocus = false', update);
+	blur = setTimeout('cfocus = false', 2000);
 };
 document.onblur = window.onblur;
 document.focus = window.focus;
 
-function logout() {
+$(window).unload(function() {
+	getreq.abort();
 	$.ajax({ url: install,
 		type: 'POST', async: false,
 		data: 'logout=' + name
 	});
-}
+});
 
 function errored(e) {
 	$('#users').html('<span class="users">x</span>&nbsp ' + e);
@@ -794,7 +819,9 @@ function errored(e) {
 }
 
 $(document).ajaxError(function(){
-	errored('connection issues. stand by...');
+	if (error) {
+		errored('connection issues. stand by...');
+	}
 });
 
 $('#front').fadeIn(0, function() {
