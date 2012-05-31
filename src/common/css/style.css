@@ -220,7 +220,7 @@ input {
 	background-color: #000;
 	outline: none;
 }
-a, input.create:hover, #talk:hover, #maximize, #sound, #notifications, #file, #invite, #close, #understand, input.nicksubmit, span.user, span.block, #filebutton {
+a, input.create:hover, #talk:hover, #maximize, #sound, #notifications, #file, #invite, #close, #understand, input.nicksubmit, span.user, span.block, #filebutton, #fb {
 	cursor: pointer;
 }
 #input {
@@ -450,11 +450,14 @@ span.monospace {
 #fileselect {
 	opacity: 0;
 }
+#fb, a.download {
+	padding: 2px;
+	background-color: #97CEEC;
+	color: #FFF;
+}
 a.download {
 	padding: 2px 2px 2px 22px;
 	background: url("../img/fileb.png") center left no-repeat;
-	background-color: #97CEEC;
-	color: #FFF;
 }
 a.download:hover {
 	text-decoration: none;
