@@ -156,7 +156,7 @@
 		print('error');
 		exit;
 	}
-	else if (isset($_POST['chat']) && preg_match('/^\w+$/', $_POST['chat'])) {
+	else if ((intval($_POST['pos']) >= 0) && preg_match('/^\w+$/', $_POST['chat'])) {
 		$_POST['chat'] = strtolower($_POST['chat']);
 		session_name('s'.$_POST['chat']);
 		session_start();
@@ -166,7 +166,7 @@
 				print('NOEXIST');
 				exit;
 			}
-			else if (intval($_POST['pos']) >= 0) {
+			else {
 				$pos = $_SESSION['pos'] + intval($_POST['pos']);
 				$sleepcounter = 0;
 				while ($pos >= count($chat)) {
@@ -215,7 +215,7 @@
 						}
 						if (!isset($nick) || ($nick != $_SESSION['nick'])) {
 							if (!$found && preg_match('/\[:3\](.*)\[:3\]/', $chat[$pos])) {
-								$chat[$pos] = '';
+								$chat[$pos] = '*';
 							}
 							else {
 								$chat[$pos] = preg_replace('/^[a-z]{1,12}\|\w{8}/', $nick, $chat[$pos]);

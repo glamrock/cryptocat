@@ -339,6 +339,10 @@ function getmsg(recovery) {
 				}
 				else if (data !== '') {
 					pos++;
+					if (data === '*') {
+						getmsg(0);
+						return;
+					}
 					if (data.match(/\s/)) {
 						var message = process(data, 0);
 						message[1] = message[1].replace(/<div class.+<\/div>/, '');
@@ -373,19 +377,19 @@ function getmsg(recovery) {
 }
 
 function queuemsg(msg) {
-	msg = msg.replace(/\$/g,"&#36;");
-	$("#input").val('');
-	$("#input").focus();
+	msg = msg.replace(/\$/g,'&#36;');
+	$('#input').val('');
+	$('#input').focus();
 	if (msg !== '') {
 		var sentid = gen(8, 1, 0);
-		process($.trim(nick + ": " + msg), sentid);
+		process($.trim(nick + ': ' + msg), sentid);
 		scrolldown(600);
 		if (names.length > 1) {
-			$("#" + sentid).css('background-image', 'url("img/sending.gif")');
-			$("#talk").val(maxinput);
-			if ((msg[0] === "@") && (jQuery.inArray(msg.match(/^\@[a-z]{1,12}/).toString().substring(1), names) >= 0)) {
+			$('#' + sentid).css('background-image', 'url("img/sending.gif")');
+			$('#talk').val(maxinput);
+			if ((msg[0] === '@') && (jQuery.inArray(msg.match(/^\@[a-z]{1,12}/).toString().substring(1), names) >= 0)) {
 				if (msg.match(/^\@[a-z]{1,12}/).toString().substring(1) === nick) {
-					$("#" + sentid).css('background-image', 'url("img/chat.png")');
+					$('#' + sentid).css('background-image', 'url("img/chat.png")');
 					return;
 				}
 				var loc = jQuery.inArray(msg.match(/^\@[a-z]{1,12}/).toString().substring(1), names);
@@ -393,8 +397,8 @@ function queuemsg(msg) {
 				Crypto.util.hexToBytes(seckeys[names[loc]].substring(0, 64)), {
 					mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
 				});
-				msg = "(" + msg.match(/^\@[a-z]{1,12}/).toString().substring(1) + ")" + crypt;
-				msg += "|" + Crypto.HMAC(Whirlpool, crypt, seckeys[names[loc]].substring(64, 128) + seq_s[names[loc]]);
+				msg = '(' + msg.match(/^\@[a-z]{1,12}/).toString().substring(1) + ')' + crypt;
+				msg += '|' + Crypto.HMAC(Whirlpool, crypt, seckeys[names[loc]].substring(64, 128) + seq_s[names[loc]]);
 				seq_s[names[loc]]++;
 			}
 			else {
@@ -406,14 +410,14 @@ function queuemsg(msg) {
 						Crypto.util.hexToBytes(seckeys[names[i]].substring(0, 64)), {
 							mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
 						});
-						msg += "(" + names[i] + ")" + crypt;
-						msg += "|" + Crypto.HMAC(Whirlpool, crypt, seckeys[names[i]].substring(64, 128) + seq_s[names[i]]);
+						msg += '(' + names[i] + ')' + crypt;
+						msg += '|' + Crypto.HMAC(Whirlpool, crypt, seckeys[names[i]].substring(64, 128) + seq_s[names[i]]);
 						seq_s[names[i]]++;
 					}
 				}
 			}
-			msg = nick + "|" + sentid + ": " + "[:3]" + msg + "[:3]";
-			msg = "name=" + name + "&talk=send" + "&input=" + msg.replace(/\+/g, "%2B");
+			msg = nick + "|" + sentid + ': ' + '[:3]' + msg + '[:3]';
+			msg = 'name=' + name + '&talk=send' + '&input=' + msg.replace(/\+/g, '%2B');
 			queue.push(msg);
 			if (!putreq) {
 				putreq = 1;
