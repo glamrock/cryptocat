@@ -168,18 +168,10 @@
 			}
 			else if (intval($_POST['pos']) >= 0) {
 				$pos = $_SESSION['pos'] + intval($_POST['pos']);
-				$people = getpeople($chat);
 				$sleepcounter = 0;
 				while ($pos >= count($chat)) {
-					ob_implicit_flush(true);
-					ob_end_flush();
-					print(' ');
-					if (connection_aborted()) {
-						exit;
-					}
-					usleep(800000);
-					$sleepcounter += 800000;
-					if (function_exists('shmop_open') && (($sleepcounter / 1000000) % ($timeout / 2)) == 0) {
+					if (function_exists('shmop_open') && ($sleepcounter % ($timeout / 4)) == 0) {
+						$people = getpeople($chat);
 						$shm_id = shmop_open(ftok($data.$_POST['chat'], 'c'), "c", 0600, 256);
 						if (!shmop_read($shm_id, 0, shmop_size($shm_id))) {
 							$last = array();
@@ -196,6 +188,14 @@
 						$last[$_SESSION['nick']] = time();
 						shmop_write($shm_id, serialize($last), 0);
 					}
+					ob_implicit_flush(true);
+					ob_end_flush();
+					print(' ');
+					if (connection_aborted()) {
+						exit;
+					}
+					usleep(1000000);
+					$sleepcounter += 1;
 					$chat = file($data.$_POST['chat']);
 				}
 				if ($pos < count($chat)) {
