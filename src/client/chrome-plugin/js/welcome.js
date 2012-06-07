@@ -107,7 +107,7 @@ $('#ca').click(function(){
 });
 $('#de').click(function(){
 	$("#td1").html('<strong>Cryptocat</strong> kann sofort einen Chatraum mit sicherer Kommunikation einrichten. Es ist eine <a href="http://de.wikipedia.org/wiki/Freie_Software#Open_Source">quelloffene</a>, verschlüsselte, private Alternative zu Diensten wie dem Chat von Facebook.');
-	$("#td2").html('Nachrichten werden im Browser mit AES-256. Daten werden nach einer Stunde Inaktivität sicher gelöscht.');
+	$("#td2").html('Nachrichten werden im eigenen Browser mit AES-256 verschlüsselt. Daten werden nach einer Stunde Inaktivität sicher gelöscht.');
 	$("#td3").html('Cryptocat ist voll mit <a target="_blank" href="https://torproject.org">Tor</a> kompatibel (<a href="http://xdtfje3c46d2dnjd.onion">http://xdtfje3c46d2dnjd.onion</a>) und funktioniert auch auf iPhone, Android oder BlackBerry.');
 	$("#c").val('name des chatraums');
 	$("#create").val('betreten');
@@ -131,7 +131,7 @@ $('#fr').click(function(){
 });
 $('#it').click(function(){
 	$("#td1").html("<strong>Cryptocat</strong> ti permette di impostare istantaneamente conversazioni sicure. E' un servizio privato, crittografato, open source, alternativo ad altri servizi come la chat di Facebook.");
-	$("#td2").html("I messaggi sono crittografati all'interno del tuo browser usando chiavi asimmetriche AES-256. Le tue dati sono cancellate in modo sicuro dopo un'ora di inattività.");
+	$("#td2").html("I messaggi sono crittografati all'interno del tuo browser usando chiavi asimmetriche AES-256. I tuoi dati sono cancellati in modo sicuro dopo un'ora di inattività.");
 	$("#td3").html('Cryptocat è completamente compatibile con <a target="_blank" href="https://torproject.org">Tor</a> (<a href="http://xdtfje3c46d2dnjd.onion">http://xdtfje3c46d2dnjd.onion</a>) e funziona anche sul tuo smartphone iPhone, Android e BlackBerry.');
 	$("#c").val("nome della conversazione");
 	$("#create").val("entra");
