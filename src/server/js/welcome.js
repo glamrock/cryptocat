@@ -119,7 +119,7 @@ $('#fr').click(function(){
 });
 $('#it').click(function(){
 	$("#td1").html("<strong>Cryptocat</strong> ti permette di impostare istantaneamente conversazioni sicure. E' un servizio privato, crittografato, open source, alternativo ad altri servizi come la chat di Facebook.");
-	$("#td2").html("I messaggi sono crittografati all'interno del tuo browser usando chiavi asimmetriche AES-256. Le tue dati sono cancellate in modo sicuro dopo un'ora di inattività.");
+	$("#td2").html("I messaggi sono crittografati all'interno del tuo browser usando chiavi asimmetriche AES-256. I tuoi dati sono cancellati in modo sicuro dopo un'ora di inattività.");
 	$("#td3").html('Cryptocat è completamente compatibile con <a target="_blank" href="https://torproject.org">Tor</a> (<a href="http://xdtfje3c46d2dnjd.onion">http://xdtfje3c46d2dnjd.onion</a>) e funziona anche sul tuo smartphone iPhone, Android e BlackBerry.');
 	$("#notetext").html('Cryptocat fornisce la crittografia forte, ma non è una sostituzione di una cultura della sicurezza forte. Considera l\'installazione di <a href="https://chrome.google.com/webstore/detail/gonbigodpnfghidmnphnadhepmbabhij" target="_blank">Cryptocat per Google Chrome</a> per una maggiore sicurezza e pensa sempre responsabilmente se ti trovi in situazioni gravi.');
 	$("#understand").val("Sono consapevole");
