@@ -118,20 +118,20 @@ function tagify(line) {
 		}
 	}
 	else {
-		line = line.replace(/(\s|^)(:|=)-?3\b/gi, ' <div class="emoticon" id="e_cat">$&</div> ');
-		line = line.replace(/(\s|^)(:|=)-?'\(\b/gi, ' <div class="emoticon" id="e_cry">$&</div> ');
-		line = line.replace(/(\s|^)(:|=)-?o\b/gi, ' <div class="emoticon" id="e_gasp">$&</div> ');
-		line = line.replace(/(\s|^)(:|=)-?D\b/gi, ' <div class="emoticon" id="e_grin">$&</div> ');
-		line = line.replace(/(\s|^)(:|=)-?\(\b/gi, ' <div class="emoticon" id="e_sad">$&</div> ');
-		line = line.replace(/(\s|^)(:|=)-?\)\b/gi, ' <div class="emoticon" id="e_smile">$&</div> ');
-		line = line.replace(/(\s|^)-_-\b/gi, ' <div class="emoticon" id="e_squint">$&</div> ');
-		line = line.replace(/(\s|^)(:|=)-?p\b/gi, ' <div class="emoticon" id="e_tongue">$&</div> ');
-		line = line.replace(/(\s|^)(:|=)-?(\/|s)\b/gi, ' <div class="emoticon" id="e_unsure">$&</div> ');
-		line = line.replace(/(\s|^);-?\)\b/gi, ' <div class="emoticon" id="e_wink">$&</div> ');
-		line = line.replace(/(\s|^);-?\p\b/gi, ' <div class="emoticon" id="e_winktongue">$&</div> ');
-		line = line.replace(/(\s|^)\^(_|\.)?\^\b/gi, ' <div class="emoticon" id="e_yay">$&</div> ');
-		line = line.replace(/(\s|^)(:|=)-?x\b/gi, ' <div class="emoticon" id="e_shut">$&</div> ');
-		line = line.replace(/(\s|^)\&lt\;3\b/g, ' <span class="monospace">&#9829;</span> ');
+		line = line.replace(/(\s|^)(:|=)-?3(?=(\s|$))/gi, ' <div class="emoticon" id="e_cat">$&</div> ');
+		line = line.replace(/(\s|^)(:|=)-?'\((?=(\s|$))/gi, ' <div class="emoticon" id="e_cry">$&</div> ');
+		line = line.replace(/(\s|^)(:|=)-?o(?=(\s|$))/gi, ' <div class="emoticon" id="e_gasp">$&</div> ');
+		line = line.replace(/(\s|^)(:|=)-?D(?=(\s|$))/gi, ' <div class="emoticon" id="e_grin">$&</div> ');
+		line = line.replace(/(\s|^)(:|=)-?\((?=(\s|$))/gi, ' <div class="emoticon" id="e_sad">$&</div> ');
+		line = line.replace(/(\s|^)(:|=)-?\)(?=(\s|$))/gi, ' <div class="emoticon" id="e_smile">$&</div> ');
+		line = line.replace(/(\s|^)-_-(?=(\s|$))/gi, ' <div class="emoticon" id="e_squint">$&</div> ');
+		line = line.replace(/(\s|^)(:|=)-?p(?=(\s|$))/gi, ' <div class="emoticon" id="e_tongue">$&</div> ');
+		line = line.replace(/(\s|^)(:|=)-?(\/|s)(?=(\s|$))/gi, ' <div class="emoticon" id="e_unsure">$&</div> ');
+		line = line.replace(/(\s|^);-?\)(?=(\s|$))/gi, ' <div class="emoticon" id="e_wink">$&</div> ');
+		line = line.replace(/(\s|^);-?\p(?=(\s|$))/gi, ' <div class="emoticon" id="e_winktongue">$&</div> ');
+		line = line.replace(/(\s|^)\^(_|\.)?\^(?=(\s|$))/gi, ' <div class="emoticon" id="e_yay">$&</div> ');
+		line = line.replace(/(\s|^)(:|=)-?x\b(?=(\s|$))/gi, ' <div class="emoticon" id="e_shut">$&</div> ');
+		line = line.replace(/(\s|^)\&lt\;3\b(?=(\s|$))/g, ' <span class="monospace">&#9829;</span> ');
 	}
 	thisnick = line.match(/^[a-z]{1,12}/).toString();
 	if (match = line.match(/^[a-z]{1,12}/)) {
