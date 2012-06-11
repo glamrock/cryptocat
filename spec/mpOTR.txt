@@ -49,14 +49,14 @@ chat server https://crypto.cat/ in the channel '#protocol-spec'.
 Alice generates a long term private/public key pair for verification of her
 identity. She does this once and (optionally) stores it for all time.
 
-  XXX: TODO: We have not yet implemented persistance of this key or a way to
+  XXX: TODO: We have not yet implemented persistence of this key or a way to
   verify the key.
   XXX: TODO: We need to implement binding if we want to bind to specific
   servers.
 
-Currently, any time the list of particpants changes, it is necessary to
+Currently, any time the list of participants changes, it is necessary to
 re-start the key-agreement protocol. In the future, it may be beneficial to
-periodically re-start the protocol to limt the window in which compromise of
+periodically re-start the protocol to limit the window in which compromise of
 any principal can undermine deniability of messages sent after that point.
 
 At the beginning of the key agreement protocol, each party generates an
@@ -73,7 +73,7 @@ multiplexed by the Cryptocat server. Currently, this is an Elliptic Curve
 Diffie-Hellman key exchange authenticated with each principal's long-term ECDSA
 key.
 
-  XXX: Implement deniability - lucky us, we haven't implemented persistance of
+  XXX: Implement deniability - lucky us, we haven't implemented persistence of
   identity keys. We get deniability on accident.
 
 After completing pair-wise key exchange, each party sends messages to confirm
@@ -82,7 +82,7 @@ correct receipt of ephemeral keys, as described by the mpOTR protocol.
 Finally, once all users have exchanged ephemeral keys, a group key exchange
 protocol is conducted to derive a group session key. Currently, each party
 generates a 128-bit random value, and exchanges it pairwise with all other
-participants using Elliptic Curve Diffie Hellman authenticated by each
+participants using Elliptic Curve Diffie-Hellman authenticated by each
 principal's ephemeral private key. The group session key is then the XOR of
 all principals' random values.
 
@@ -107,7 +107,7 @@ chat channel re-keys.
 
 Eve is not part of the chat but is able to intercept data sent to and from the
 server. Eve is able to learn the nickname of each chat member and to watch the
-frequency and size of the messages sent by each pary. If she does not witness
+frequency and size of the messages sent by each party. If she does not witness
 the setup phase, she will not learn the participants' nicknames.
 
 Mallory can use Alice's ephemeral signing key to forge messages that appears to
