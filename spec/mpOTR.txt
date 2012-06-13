@@ -27,8 +27,8 @@ chosen to use (all hail the NSA?) P256, for use with Elliptic curve
 Diffie–Hellman (ECDH) as our ephemeral key agreement protocol,
 Elliptic Curve Digital Signature Algorithm (ECDSA) over P256 as our digital
 signature algorithm (512 bits in length giving 128 bits of security),
-whirlpool512 as our hash function (512 bits in length), HMAC as our MAC over
-our hash function (128 bits in length), AES-128 in OFB with a random IV for
+SHA-512 as our hash function (512 bits in length), HMAC as our MAC over
+our hash function (128 bits in length), AES-128 in CTR with a random IV for
 encryption (128 bits of key material, obviously), BASE64 for encoding of data,
 keys and HTTP for the transport - we assume HTTPS or Tor Hidden Service and
 consider those details out of scope. These choices should work with other
@@ -36,11 +36,11 @@ protocols such as XMPP as the server is essentially just relaying messages -
 encoding will need to be considered for protocols other than HTTP.
 
 The original mpOTR paper leaves the group key agreement protocol open. We have
-chosen to define the group session key as the XOR of secrets from all the
+chosen to define the group session key as the hash of secrets from all the
 participants. The secrets are exchanged between each pair of users by using
 Elliptic Curve El Gamal, authenticated by the pair's ephemeral signing keys.
 
-Each chat message is encrypted with AES in OFB mode with the group session
+Each chat message is encrypted with AES in CTR mode with the group session
 key and signed with the sender's ephemeral ECDSA key.
 
 Alice, Bob, Mallory, and Eve wish to have a chat using the Cryptocat
@@ -92,7 +92,7 @@ all principals' random values.
   timeout (if any), and the name of the chat channel.
 
 When Alice wishes to send a message to the channel - she encrypts it with AES
-in OFB mode using the group session key, signs it with her ephemeral ECDSA key,
+in CTR mode using the group session key, signs it with her ephemeral ECDSA key,
 and sends it to the server.
 
 Alice wants to share a message with Bob and so she does...
