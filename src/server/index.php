@@ -203,23 +203,8 @@
 						preg_match_all('/\([a-z]{1,12}\)[^\(^\[]+/', $chat[$pos], $match);
 						preg_match('/^[a-z]{1,12}\|/', $chat[$pos], $nick);
 						$nick = substr($nick[0], 0, -1);
-						$k = 0;
-						$found = 0;
-						for ($k=0; $k <= count($match[0]); $k++) {
-							if (substr($match[0][$k], 0, strlen($_SESSION['nick']) + 2) == '('.$_SESSION['nick'].')') {
-								$match = substr($match[0][$k], strlen($_SESSION['nick']) + 2);
-								$chat[$pos] = preg_replace('/\[:3\](.*)\[:3\]/', '[:3]'.$match.'[:3]', $chat[$pos]);
-								$found = 1;
-								break;
-							}
-						}
-						if (!isset($nick) || ($nick != $_SESSION['nick'])) {
-							if (!$found && preg_match('/\[:3\](.*)\[:3\]/', $chat[$pos])) {
-								$chat[$pos] = '*';
-							}
-							else {
-								$chat[$pos] = preg_replace('/^[a-z]{1,12}\|\w{8}/', $nick, $chat[$pos]);
-							}
+						if ($nick != $_SESSION['nick']) {
+							$chat[$pos] = preg_replace('/^[a-z]{1,12}\|\w{8}/', $nick, $chat[$pos]);
 							print(htmlspecialchars($chat[$pos]));
 						}
 						else if (preg_match('/\|\w{8}/', $chat[$pos], $sentid)) {
@@ -441,8 +426,8 @@ else {
 			$name = strtolower($name);
 			session_name('s'.$name);
 			session_start();
-			$chat = file($data.$name);
 			if ($_SESSION['check'] == "OK") {
+				$chat = file($data.$name);
 				preg_match('/'.$nick.'\:[^\|]+\|/', $chat[0], $public);
 				$chat[0] = str_replace($public[0], '', $chat[0]);
 				$chat[count($chat)+1] = '< '.$nick." has left\n";

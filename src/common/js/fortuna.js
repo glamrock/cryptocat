@@ -1,4 +1,4 @@
-// fortuna.js version 0.2
+// fortuna.js version 0.3
 // 2012 Nadim Kobeissi
 // Fortuna PRNG implementation for Crypto-JS
 // http://code.google.com/p/crypto-js/
@@ -7,13 +7,13 @@
 // Usage:
 // Add entropy e to be mixed into the Fortuna pools.
 // e has to be a string between 0 and 32 characters:
-// Crypto.Fortuna.AddRandomEvent(e);
+// CryptoJS.Fortuna.AddRandomEvent(e);
 //
 // Check if we have enough entropy to generate random bytes. Returns 1 if yes:
-// Crypto.Fortuna.Ready();
+// CryptoJS.Fortuna.Ready();
 //
 // Generate n random bytes:
-// Crypto.Fortuna.RandomData(n);
+// CryptoJS.Fortuna.RandomData(n);
 
 // Notes
 // This implementation is based on Bruce Schneier and Niels Ferguson's description
@@ -26,18 +26,16 @@
 //
 // 2) PseudoRandomData(n) generates 4 blocks for rekeying instead of 2.
 
-/*
- * Note: this code has been slightly modified
- * from its original version in order to work
- * with the Whirlpool implementation used by Cryptocat.
- * 2012 Nadim Kobeissi (nadim@nadim.cc)
- */
+// License:
+// DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE 
+// TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION 
+// 0. You just DO WHAT THE FUCK YOU WANT TO.
 
 
 // Initialization
 (function(){
 
-var Fortuna = Crypto.Fortuna = function() {
+var Fortuna = CryptoJS.Fortuna = function() {
 };
 
 var K = '';
@@ -51,7 +49,7 @@ var P = [0, 0, 0, 0];
 
 // Accumulator
 function Reseed(s) {
-	K = Whirlpool(K + s).substring(0, 32);
+	K = CryptoJS.SHA512(K + s).toString(CryptoJS.enc.Hex).substring(0, 32);
 	var d = new Date();
 	LastReseed = d.getTime();
 	C++;
@@ -86,25 +84,25 @@ Fortuna.Ready = function() {
 
 // Generator
 // Returns a string of k*16 bytes (equivalently, k*128 bits) generated from the
-// Whirlpool state.
+// SHA512 state.
 function GenerateBlocks(k) {
-	if (C==0) {
+	if (C === 0) {
 		throw "Fortuna ERROR: Entropy pools too empty.";
 	}
 	var r = '';
 	for (var i=0; i!=k; i++) {
-		var Cp = Whirlpool((C.toString()).substring(0, 16)).substring(0, 32);
-		var iv = Crypto.charenc.Binary.stringToBytes(K.substring(0, 16));
-		var c = Crypto.AES.encrypt(Cp, Crypto.util.hexToBytes(K), {
-			mode: new Crypto.mode.CTR, iv: iv
-			}).substring(0, 16);
+		var Cp = CryptoJS.SHA512((C.toString()).substring(0, 16)).toString(CryptoJS.enc.Hex).substring(0, 32);
+		var c = CryptoJS.AES.encrypt(Cp, CryptoJS.enc.Hex.parse(K), { 
+			mode: CryptoJS.mode.CTR,
+			iv: CryptoJS.enc.Hex.parse(K),
+			padding: CryptoJS.pad.NoPadding }).ciphertext.toString(CryptoJS.enc.Base64).substring(0, 16);
 		r += c;
 		C++;
 	}
 	return r;
 }
 
-// Returns a string of n pseudorandom characters derived from the Whirlpool state.
+// Returns a string of n pseudorandom characters derived from the SHA512 state.
 function PseudoRandomData(n) {
 	if ((n <= 0) || (n >= 1048576)) {
 		throw "Fortuna ERROR: Invalid value.";
@@ -123,7 +121,7 @@ Fortuna.RandomData = function(n) {
 			if (ReseedCnt & ((1 << i) - 1) != 0) {
 				break;
 			}
-			s += Whirlpool((P[i])).substring(0, 32);
+			s += CryptoJS.SHA512(P[i]).toString(CryptoJS.enc.Hex).substring(0, 32);
 			P[i] = 0;
 		}
 		Reseed(s);

@@ -1,1 +1,1 @@
-../../../common/js/hmac.js
+../../../../ext/crypto-js/hmac.js

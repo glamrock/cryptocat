@@ -1,19 +1,17 @@
 var seed = Math.seedrandom();
 var z = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4096, 0];
-var sound = notifications = pos = tag = prikey = pubkey = getreq = putreq = error = 0;
+var sound = notifications = pos = tag = prikey = pubkey  = getreq = putreq = error = seq_s = seq_r = 0;
 var browser = navigator.userAgent.toLowerCase();
 var cfocus = true;
 var soundEmbed = null;
 var nick = $('#nick').html();
 var name = $('#name').html();
-var seq_s = [];
-var seq_r = [];
 var keys = [];
 var names = [];
 var queue = [];
 var seckeys = [];
+var groupkey = [];
 var inblocked = [];
-var outblocked = [];
 var fingerprints = [];
 
 var notice = ['For more information on how Cryptocat works and its limitations, please visit the <a href="https://project.crypto.cat" target="_blank">project website</a>.'];
@@ -70,16 +68,11 @@ function textcounter(field,cntfield,maxlimit) {
 }
 
 function integritycheck() {
-	Math.seedrandom(str2bigInt(Crypto.HMAC(Whirlpool, Whirlpool('TaTWU55cBtxn65IP8KLD3GQjbrdQbhEo'), Whirlpool('UQ4rRqtvnFjoAQySIvoIMNLNpKeiW6fi')), 16).join(''));
-	var testkey = Crypto.util.hexToBytes('744177635650617268753643526a6774775a3445353256584d72756d76725433');
-	var testclear = 'A1695BD7CE297A4B8D84BD183A6F0C26F1D56BD12F025B3A07EB25AE60512F9A3A214130843C9479DBFD62E99D4BC151854D5C4A1C1603CCD889F618C0D2B096';
-	var testbigint = bigInt2str(str2bigInt('2XQLlNpYbwIus4lHWwRmmcyTLhqIy2Mpe7woMkO54lcZeXGJ24F9Hvs=rYwPrBmL65JLnA71O3pDY9zXZ0qh2M', 64), 16);
-	var testencrypt = Crypto.AES.encrypt(Whirlpool('TDqIfHBOvxoPGCRbbJAIqV3GoftvPZ2s'), Crypto.charenc.Binary.stringToBytes(gen(32, 1, 0)), {
-		mode: new Crypto.mode.CBC(Crypto.pad.iso10126)});
-	var testdecrypt = Crypto.AES.decrypt(testencrypt, testkey, {
-		mode: new Crypto.mode.CBC(Crypto.pad.iso10126)});
-	if (testdecrypt === testclear && testclear === testbigint) {
-		Math.seedrandom(Crypto.Fortuna.RandomData(512) + Whirlpool(seed));
+	Math.seedrandom(str2bigInt(CryptoJS.HmacSHA512(CryptoJS.SHA512('TaTWU55cBtxn65IP8KLD3GQjbrdQbhEo').toString(), CryptoJS.SHA512('UQ4rRqtvnFjoAQySIvoIMNLNpKeiW6fi').toString()).toString(), 16).join(''));
+	var test = bigInt2str(str2bigInt(CryptoJS.enc.Utf8.parse(gen(32, 1, 0)).toString(CryptoJS.enc.Base64), 64), 16);
+	var result = '8A1CC09115EE9504E28C04CF94EAF47E03EB5BD5D68A0B8169EA8358D5D895FBBF';
+	if (test === result) {
+		Math.seedrandom(CryptoJS.Fortuna.RandomData(512) + CryptoJS.SHA512(seed).toString(CryptoJS.enc.Hex));
 		return 1;
 	}
 	return 0;
@@ -87,7 +80,7 @@ function integritycheck() {
 
 function gen(size, extra, s) {
 	if (s) {
-		Math.seedrandom(Crypto.Fortuna.RandomData(512) + Whirlpool(seed));
+		Math.seedrandom(CryptoJS.Fortuna.RandomData(512) + CryptoJS.SHA512(seed).toString(CryptoJS.enc.Hex));
 	}
 	var str = '';
 	var charset = '123456789';
@@ -114,7 +107,7 @@ function tagify(line) {
 				}
 			}
 			sanitize = sanitize.join('');
-			line = line.replace(sanitize, '<a target="_blank" href="' + sanitize + '">' + match[mc] + '</a>');
+			line = line.replace(sanitize, '<a target="_blank" href="' + '?redirect=' + sanitize + '">' + match[mc] + '</a>');
 		}
 	}
 	else {
@@ -170,7 +163,7 @@ function process(line, sentid) {
 			var hmac = line.match(/\|\w{128}/);
 			hmac = hmac[0].substring(1);
 			line = line.replace(/\|\w{128}/, '');
-			if ((Crypto.HMAC(Whirlpool, match, seckeys[thisnick].substring(64, 128) + seq_r[thisnick]) !== hmac)) {
+			if ((CryptoJS.HmacSHA512(match, groupkey.substring(64, 128) + seq_r).toString() !== hmac)) {
 				if (jQuery.inArray(thisnick, inblocked) < 0) {
 					line = line.replace(/\[:3\](.*)\[:3\]/, '<span class="diffkey">Error: message authentication failure.</span>');
 					pushline(line, pos);
@@ -178,10 +171,9 @@ function process(line, sentid) {
 				}
 			}
 			else {
-				seq_r[thisnick]++;
-				match = Crypto.AES.decrypt(match, Crypto.util.hexToBytes(seckeys[thisnick].substring(0, 64)), {
-					mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
-				});
+				match = CryptoJS.AES.decrypt(match, CryptoJS.enc.Hex.parse(groupkey.substring(0, 64)), { 
+					mode: CryptoJS.mode.CTR, iv: CryptoJS.enc.Hex.parse(seq_r), padding: CryptoJS.pad.NoPadding }).toString(CryptoJS.enc.Utf8);
+				seq_r++;
 				if (jQuery.inArray(thisnick, inblocked) < 0) {
 					line = line.replace(/\[:3\](.*)\[:3\]/, match);
 					line = tagify(line);
@@ -264,31 +256,38 @@ function getkeys(sync) {
 				fingerprints = [];
 				for (var i=0; i <= data.length - 1; i++) {
 					names[i] = data[i].replace(/:.+$/, '');
-					if (typeof keys[names[i]] === 'undefined') {
-						seq_s[names[i]] = 1;
-						seq_r[names[i]] = 1;
-						keys[names[i]] = data[i].replace(/^[a-z]{1,12}:/, '');
-						seckeys[names[i]] = Whirlpool(ecDH(prikey, str2bigInt(keys[names[i]], 64)));
-					}
-					var big = str2bigInt(keys[names[i]], 64);
-					if ((equals(big, p25519) || greater(big, p25519) || greater(z, big)) || 
-					(keys[names[i]] !== data[i].replace(/^[a-z]{1,12}:/, ''))) {
-						fingerprints[names[i]] = '<span class="red">DANGER: This user is using suspicious keys.' + 
-						' Communicating with this user is strongly not recommended.</span>';
-						userinfo(names[i]);
-					}
-					else {
-						fingerprints[names[i]] = Whirlpool(names[i] + keys[names[i]]).substring(0, 22);
-						fingerprints[names[i]] = bubbleBabble(Crypto.util.hexToBytes(fingerprints[names[i]]));
+					if (names[i] != nick) {
+						if (typeof keys[names[i]] === 'undefined') {
+							keys[names[i]] = data[i].replace(/^[a-z]{1,12}:/, '');
+							seckeys[names[i]] = CryptoJS.SHA512(ecDH(prikey, str2bigInt(keys[names[i]], 64))).toString();
+						}
+						var big = str2bigInt(keys[names[i]], 64);
+						if ((equals(big, p25519) || greater(big, p25519) || greater(z, big)) || 
+						(keys[names[i]] !== data[i].replace(/^[a-z]{1,12}:/, ''))) {
+							fingerprints[names[i]] = '<span class="red">DANGER: This user is using suspicious keys.' + 
+							' Communicating with this user is strongly not recommended.</span>';
+							userinfo(names[i]);
+						}
+						else {
+							fingerprints[names[i]] = CryptoJS.SHA512(names[i] + keys[names[i]]).toString().substring(0, 32);
+							//fingerprints[names[i]] = bubbleBabble(CryptoJS.enc.Hex.parse(fingerprints[names[i]]).toString(CryptoJS.enc.Utf8));
+						}
 					}
 				}
 				for (var i=0; i !== oldnames.length; i++) {
 					if (jQuery.inArray(oldnames[i], names) < 0) {
-						delete seq_s[oldnames[i]];
-						delete seq_r[oldnames[i]];
 						delete keys[oldnames[i]];
 						delete seckeys[oldnames[i]];
 					}
+				}
+				if (names[1]) {
+					groupkey = [];
+					for (var i=0; i !== names.length; i++) {
+						if (names[i] !== nick) {
+							groupkey.push(seckeys[names[i]]);
+						}
+					}
+					groupkey = CryptoJS.SHA512(groupkey.sort().join('')).toString();
 				}
 			}
 			var users = [];
@@ -345,7 +344,9 @@ function getmsg(recovery) {
 					}
 					if (data.match(/\s/)) {
 						var message = process(data, 0);
-						message[1] = message[1].replace(/<div class.+<\/div>/, '');
+						if (typeof message != 'undefined') {
+							message[1] = message[1].replace(/<div class.+<\/div>/, '');
+						}
 						if ((document.getElementById("chat").scrollHeight - $("#chat").scrollTop()) < 800) {
 							scrolldown(600);
 						}
@@ -387,35 +388,13 @@ function queuemsg(msg) {
 		if (names.length > 1) {
 			$('#' + sentid).css('background-image', 'url("img/sending.gif")');
 			$('#talk').val(maxinput);
-			if ((msg[0] === '@') && (jQuery.inArray(msg.match(/^\@[a-z]{1,12}/).toString().substring(1), names) >= 0)) {
-				if (msg.match(/^\@[a-z]{1,12}/).toString().substring(1) === nick) {
-					$('#' + sentid).css('background-image', 'url("img/chat.png")');
-					return;
-				}
-				var loc = jQuery.inArray(msg.match(/^\@[a-z]{1,12}/).toString().substring(1), names);
-				var crypt = Crypto.AES.encrypt(msg, 
-				Crypto.util.hexToBytes(seckeys[names[loc]].substring(0, 64)), {
-					mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
-				});
-				msg = '(' + msg.match(/^\@[a-z]{1,12}/).toString().substring(1) + ')' + crypt;
-				msg += '|' + Crypto.HMAC(Whirlpool, crypt, seckeys[names[loc]].substring(64, 128) + seq_s[names[loc]]);
-				seq_s[names[loc]]++;
-			}
-			else {
-				var plaintext = msg;
-				var msg = '';
-				for (var i=0; i !== names.length; i++) {
-					if (names && (names[i] !== nick) && (jQuery.inArray(names[i], outblocked) < 0)) {
-						var crypt = Crypto.AES.encrypt(plaintext,
-						Crypto.util.hexToBytes(seckeys[names[i]].substring(0, 64)), {
-							mode: new Crypto.mode.CBC(Crypto.pad.iso10126)
-						});
-						msg += '(' + names[i] + ')' + crypt;
-						msg += '|' + Crypto.HMAC(Whirlpool, crypt, seckeys[names[i]].substring(64, 128) + seq_s[names[i]]);
-						seq_s[names[i]]++;
-					}
-				}
-			}
+			var plaintext = msg;
+			var msg = '';
+			var msg = CryptoJS.AES.encrypt(plaintext, CryptoJS.enc.Hex.parse(groupkey.substring(0, 64)), { 
+				mode: CryptoJS.mode.CTR, iv: CryptoJS.enc.Hex.parse(seq_s), padding: CryptoJS.pad.NoPadding }).toString();
+			msg = msg.replace(/(\r\n|\n|\r)/gm,"");
+			msg += '|' + CryptoJS.HmacSHA512(msg, groupkey.substring(64, 128) + seq_s).toString();
+			seq_s++;
 			msg = nick + "|" + sentid + ': ' + '[:3]' + msg + '[:3]';
 			msg = 'name=' + name + '&talk=send' + '&input=' + msg.replace(/\+/g, '%2B');
 			queue.push(msg);
@@ -463,7 +442,7 @@ $("#nickform").submit(function() {
 		if (integritycheck()) {
 			$('#keytext').html($('#keytext').html() + 
 			'  &#160;<span class="blue">OK</span>' + '<br />Generating keys');
-			prikey = gen(32, 0, 1).toString();
+			prikey = gen(32, 0, 1);
 			pubkey = bigInt2str(ecDH(prikey), 64);
 			$('#keytext').html($('#keytext').html() + ' &#160; &#160; ' + 
 			'<span class="blue">OK</span><br />Communicating');
@@ -480,34 +459,34 @@ $("#nickform").submit(function() {
 				var buf = new Uint8Array(512);
 				window.crypto.getRandomValues(buf);
 				for (var i=0; i<buf.byteLength; i++) {
-					Crypto.Fortuna.AddRandomEvent(String.fromCharCode(buf[i]));
+					CryptoJS.Fortuna.AddRandomEvent(String.fromCharCode(buf[i]));
 				}
 			}
 		}
-		if (Crypto.Fortuna.Ready() === 0) {
+		if (CryptoJS.Fortuna.Ready() === 0) {
 			$('#keytext').html('Type on your keyboard as randomly as possible for a few seconds:' + 
 			'<br /><input type="password" id="keytropy" />');
 		}
 		$('#nickentry').fadeOut('fast', function() {
 			$('#keygen').fadeIn('fast', function() {
-				if (Crypto.Fortuna.Ready()) {
+				if (CryptoJS.Fortuna.Ready()) {
 					seeded();
 				}
 				else {
 					var down, up, e;
 					$('#keytropy').focus();
 					$('#keytropy').keydown(function(event) {
-						if (Crypto.Fortuna.Ready() === 0) {
+						if (CryptoJS.Fortuna.Ready() === 0) {
 							e = String.fromCharCode(event.keyCode);
 							var d = new Date();
 							down = d.getTime();
 						}
 					});
 					$('#keytropy').keyup(function() {
-						if (Crypto.Fortuna.Ready() === 0) {
+						if (CryptoJS.Fortuna.Ready() === 0) {
 							var d = new Date();
 							up = d.getTime();
-							Crypto.Fortuna.AddRandomEvent(e + (up - down));
+							CryptoJS.Fortuna.AddRandomEvent(e + (up - down));
 						}
 						else {
 							seeded();
@@ -598,7 +577,7 @@ $('#file').click(function(){
 			var reader = new FileReader();
 			reader.onload = (function(theFile) {
 				return function(e) {
-					queuemsg('@' + $("#recipient").val() + ' ' + e.target.result);
+					queuemsg($("#recipient").val() + ' ' + e.target.result);
 				};
 			})(file[0]);
 			if (file[0].type.match(mime)) {
@@ -747,7 +726,6 @@ function userinfo(n) {
 		'Send <span class="blue">' + n + '</span> a private message:<br />' +
 		'<span class="blue">@' + n + '</span> your message<br /><br />' +
 		'View messages from <span class="blue">' + n + '</span>: &#160;<span class="block" id="incoming">yes</span><br />' +
-		'Send my messages to <span class="blue">' + n + '</span>: <span class="block" id="outgoing">yes</span><br />' +
 		'<br />Verify <span class="blue">' + n + '</span>\'s identity using their fingerprint:');
 	}
 	$('#fadebox').html($('#fadebox').html() + '<br />' + fingerprints[n]);
@@ -767,22 +745,6 @@ function userinfo(n) {
 			$('#incoming').html('no');
 		}
 	});
-	if (jQuery.inArray(n, outblocked) >= 0) {
-		$('#outgoing').css('background-color', '#F00');
-		$('#outgoing').html('no');
-	}
-	$('#outgoing').click(function(){
-		if ($('#outgoing').html() === 'no') {
-			outblocked.splice(jQuery.inArray(n, outblocked));
-			$('#outgoing').css('background-color', '#97CEEC');
-			$('#outgoing').html('yes');
-		}
-		else {
-			outblocked.push(n);
-			$('#outgoing').css('background-color', '#F00');
-			$('#outgoing').html('no');
-		}
-	});
 	$('#close').click(function(){
 		$('#fadebox').fadeOut('fast', function() {
 			$('#front').fadeOut(0);
@@ -795,13 +757,6 @@ function userinfo(n) {
 
 $('#input').keyup(function(){
 	textcounter(document.chatform.input,document.chatform.talk,256);
-	if ((match = $('#input').val().match(/^\@[a-z]{1,12}/)) &&
-	(jQuery.inArray($('#input').val().match(/^\@[a-z]{1,12}/).toString().substring(1), names) >= 0)) {
-		$('#input').css('color', '#97CEEC');
-	}
-	else if ($('#input').css('color') === 'rgb(151, 206, 236)') {
-		$('#input').css('color', '#FFF');
-	}
 });
 
 $('#talk').mouseout(function(){
