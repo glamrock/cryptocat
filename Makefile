@@ -8,10 +8,9 @@ install-server:
 
 build-chrome-zip:
 	cat src/client/chrome-plugin/js/src/seedrandom.js > src/client/chrome-plugin/js/build.js
-	cat src/client/chrome-plugin/js/src/core.js >> src/client/chrome-plugin/js/build.js
-	cat src/client/chrome-plugin/js/src/cipher-core.js >> src/client/chrome-plugin/js/build.js
 	cat src/client/chrome-plugin/js/src/aes.js >> src/client/chrome-plugin/js/build.js
 	cat src/client/chrome-plugin/js/src/mode-ctr.js >> src/client/chrome-plugin/js/build.js
+	cat src/client/chrome-plugin/js/src/pad-nopadding.js >> src/client/chrome-plugin/js/build.js
 	cat src/client/chrome-plugin/js/src/x64-core.js >> src/client/chrome-plugin/js/build.js
 	cat src/client/chrome-plugin/js/src/sha512.js >> src/client/chrome-plugin/js/build.js
 	cat src/client/chrome-plugin/js/src/hmac.js >> src/client/chrome-plugin/js/build.js
@@ -23,10 +22,9 @@ build-chrome-zip:
 
 build-android-apk:
 	cat src/client/android/assets/www/js/src/seedrandom.js > src/client/android/assets/www/js/build.js
-	cat src/client/chrome-plugin/js/src/core.js >> src/client/chrome-plugin/js/build.js
-	cat src/client/chrome-plugin/js/src/cipher-core.js >> src/client/chrome-plugin/js/build.js
 	cat src/client/android/assets/www/js/src/aes.js >> src/client/android/assets/www/js/build.js
 	cat src/client/chrome-plugin/js/src/mode-ctr.js >> src/client/chrome-plugin/js/build.js
+	cat src/client/chrome-plugin/js/src/pad-nopadding.js >> src/client/chrome-plugin/js/build.js
 	cat src/client/chrome-plugin/js/src/x64-core.js >> src/client/chrome-plugin/js/build.js
 	cat src/client/chrome-plugin/js/src/sha512.js >> src/client/chrome-plugin/js/build.js
 	cat src/client/android/assets/www/js/src/hmac.js >> src/client/android/assets/www/js/build.js
