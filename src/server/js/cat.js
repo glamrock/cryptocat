@@ -178,6 +178,9 @@ function process(line, sentid) {
 					line = line.replace(/\[:3\](.*)\[:3\]/, match);
 					line = tagify(line);
 					pushline(line, pos);
+					if (sound) {
+						soundPlay('snd/msg_get.webm');
+					}
 					if ($("#" + pos).html().match(/data:.+\<\/a\>\<\/div\>$/)) {
 						$("#" + pos).css('background-image', 'url("img/fileb.png")');
 					}
@@ -187,6 +190,14 @@ function process(line, sentid) {
 		}
 		else if (match = line.match(/^(\&gt\;|\&lt\;)\s[a-z]{1,12}\s(has arrived|has left)$/)) {
 			getkeys(true);
+			if (sound) {
+				if (line.match(/^(\&gt\;|\&lt\;)\s[a-z]{1,12}\shas arrived$/)) {
+					soundPlay('snd/user_join.webm');
+				}
+				else if (line.match(/^(\&gt\;|\&lt\;)\s[a-z]{1,12}\shas left$/)) {
+					soundPlay('snd/user_leave.webm');
+				}
+			}
 			line = '<span class="nick">' + match[0] + '</span>';
 			pushline(line, pos);
 			$("#" + pos).css('background-image', 'url("img/user.png")');
@@ -398,6 +409,9 @@ function queuemsg(msg) {
 			msg = nick + "|" + sentid + ': ' + '[:3]' + msg + '[:3]';
 			msg = 'name=' + name + '&talk=send' + '&input=' + msg.replace(/\+/g, '%2B');
 			queue.push(msg);
+			if (sound) {
+				soundPlay('snd/msg_send.webm');
+			}
 			if (!putreq) {
 				putreq = 1;
 				error = 0;
