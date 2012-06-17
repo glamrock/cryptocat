@@ -337,6 +337,8 @@ td {
 div.redirect {
 	background-color: #222;
 	box-shadow: 4px 4px #97CEEC;
+	border-radius: 15px;
+	border-top-right-radius: 0;
 	width: 600px;
 	color: #FFF;
 	padding: 20px 18px;
