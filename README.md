@@ -28,7 +28,7 @@ A native iPhone, Blackberry and other versions are possible thanks to the [Guard
 Please review the [Cryptocat Architecture & Lifecycle Document](https://project.crypto.cat/documents/a&l.pdf) for information on how the development process is organized.
 
 ## Protocol Specification
-A [design specification for the Cryptocat protocol](https://crypto.cat/about/) is available. In the future, the crypto will be entirely replaced with mpOTR for multi-party chat and OTR for private chatting between peers.
+A [design specification for the Cryptocat protocol](https://project.crypto.cat/documents/spec/spec-rev1.4a.pdf) is available. In the future, the crypto will be entirely replaced with mpOTR for multi-party chat and OTR for private chatting between peers.
 
 ## License
 ### Cryptocat is released under the [GNU Affero General Public License (AGPL3)](https://www.gnu.org/licenses/agpl-3.0.html):
