@@ -96,8 +96,6 @@ var mpotr = (function(){
 			
 			x1 = base64ToBytes(x1);
 			x2 = base64ToBytes(x2);
-			alert('x1: ' + x1 + ' x2: ' + x2);
-			
 			for (var i in x1) {
 				x1[i] ^= x2[i];
 			}
