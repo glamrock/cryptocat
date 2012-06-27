@@ -49,6 +49,10 @@ var mpotr = (function(){
 		},
 
 		hash: function(s, n) {
+			if (n) {
+				var hash = CryptoJS.SHA512(s).toString(CryptoJS.enc.Hex).substring(0, 32);
+				return CryptoJS.enc.Hex.parse(hash).toString(CryptoJS.enc.Base64);
+			}
 			return CryptoJS.SHA512(s).toString(CryptoJS.enc.Base64);
 		},
 
@@ -189,8 +193,8 @@ Participant.prototype = {
 			if (this.nicks[i] == this.nick){
 			continue;
 			}
-			this.authUserEncKey[this.nicks[i]] = mpotr.hash(this.akeGXY[this.nicks[i]] + '_encrypt');
-			this.authUserMacKey[this.nicks[i]] = mpotr.hash(this.akeGXY[this.nicks[i]] + '_mac');
+			this.authUserEncKey[this.nicks[i]] = mpotr.hash(this.akeGXY[this.nicks[i]] + '_encrypt', 1);
+			this.authUserMacKey[this.nicks[i]] = mpotr.hash(this.akeGXY[this.nicks[i]] + '_mac', 1);
 			console.log(JSON.stringify(this.authUserEncKey));
 
 			var message = JSON.stringify([this.ephPublicKey, this.sessionID, this.nick, this.nicks[i]]);
@@ -264,7 +268,7 @@ Participant.prototype = {
 			if (this.nicks[i] == this.nick) {
 				continue;
 			}
-			var mask = mpotr.hash(this.gkeGXY[this.nicks[i]]);
+			var mask = mpotr.hash(this.gkeGXY[this.nicks[i]], 1);
 			result[this.nicks[i]] = mpotr.base64Xor(this.gkeK, mask);
 		}
 
@@ -453,7 +457,7 @@ Participant.prototype = {
 
 		var base = this.gkeK;
 		for (var i in msgs){
-			var mask = mpotr.hash(this.gkeGXY[i]);
+			var mask = mpotr.hash(this.gkeGXY[i], 1);
 			var next = mpotr.base64Xor(mask, msgs[i]);
 			base = mpotr.base64Xor(next, base);
 		}
