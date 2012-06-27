@@ -50,7 +50,7 @@ var mpotr = (function(){
 
 		hash: function(s, n) {
 			if (n) {
-				var hash = CryptoJS.SHA512(s).toString(CryptoJS.enc.Hex).substring(0, 32);
+				var hash = CryptoJS.SHA512(s).toString(CryptoJS.enc.Hex).substring(0, 10);
 				return CryptoJS.enc.Hex.parse(hash).toString(CryptoJS.enc.Base64);
 			}
 			return CryptoJS.SHA512(s).toString(CryptoJS.enc.Base64);
@@ -58,14 +58,14 @@ var mpotr = (function(){
 
 		encrypt: function(m, k) {
 			return CryptoJS.AES.encrypt(m, CryptoJS.enc.Base64.parse(k), { 
-				mode: CryptoJS.mode.CTR, iv: CryptoJS.enc.Latin1.parse(0), padding: CryptoJS.pad.NoPadding 
+				mode: CryptoJS.mode.CTR, iv: CryptoJS.enc.Utf8.parse(0), padding: CryptoJS.pad.NoPadding 
 			}).toString();
 		},
 
 		decrypt: function(m, k) {
 			return CryptoJS.AES.decrypt(m, CryptoJS.enc.Base64.parse(k), { 
-				mode: CryptoJS.mode.CTR, iv: CryptoJS.enc.Latin1.parse(0), padding: CryptoJS.pad.NoPadding
-			}).toString(CryptoJS.enc.Latin1);
+				mode: CryptoJS.mode.CTR, iv: CryptoJS.enc.Utf8.parse(0), padding: CryptoJS.pad.NoPadding
+			}).toString(CryptoJS.enc.Utf8);
 		},
 
 		sign: function(m, k) {
@@ -82,7 +82,7 @@ var mpotr = (function(){
 	
 		base64Xor: function(x1, x2) {
 			function base64ToBytes(x) {
-				x = CryptoJS.enc.Base64.parse(x).toString(CryptoJS.enc.Latin1);
+				x = CryptoJS.enc.Base64.parse(x).toString(CryptoJS.enc.Utf8);
 				var r = [];
 				for (var i in x) {
 					r.push(x.charCodeAt(i));
@@ -94,7 +94,7 @@ var mpotr = (function(){
 				for (var i in x) {
 					r += String.fromCharCode(x[i]);
 				}
-				r = CryptoJS.enc.Latin1.parse(r).toString(CryptoJS.enc.Base64);
+				r = CryptoJS.enc.Utf8.parse(r).toString(CryptoJS.enc.Base64);
 				return r;
 			}
 			
@@ -139,7 +139,7 @@ Participant.prototype = {
 	this.nick = nick
 	this.outstanding = true;
 
-	CryptoJS.enc.Latin1.parse('thisissecretz').toString(CryptoJS.enc.Base64);
+	CryptoJS.enc.Utf8.parse('thisissecretz').toString(CryptoJS.enc.Base64);
 	
 
 	//generate a long-term public key if one doesn't exist
@@ -261,7 +261,7 @@ Participant.prototype = {
 		for (var i in this.gkeK) {
 			gkeK += String.fromCharCode(this.gkeK[i]);
 		}
-		this.gkeK = CryptoJS.enc.Latin1.parse(gkeK).toString(CryptoJS.enc.Base64);
+		this.gkeK = CryptoJS.enc.Utf8.parse(gkeK).toString(CryptoJS.enc.Base64);
 		
 		for (var i in this.nicks){
 			//don't send to yourself
