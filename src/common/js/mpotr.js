@@ -39,7 +39,7 @@ var mpotr = (function(){
 			* nicks: Array() containing the nicks of the users
 			* randomXs: Array() containing the users random data
 		*/
-		deriveSessionID: function(nicks, randomXs){
+		 deriveSessionID: function(nicks, randomXs){
 			preimage = JSON.stringify(randomXs.sort());
 			preimage += JSON.stringify(nicks.sort());
 			var res = CryptoJS.SHA512(preimage).toString(CryptoJS.enc.Base64);
@@ -119,7 +119,7 @@ function Message(data, getParticipant) {
 
 Message.prototype = {
 	verifyMessage: function() {
-	this.verified = ecdsaVerify(this.sender.publicKey, this.signature, this.message);
+		this.verified = ecdsaVerify(this.sender.publicKey, this.signature, this.message);
 	}
 };
 
@@ -136,161 +136,143 @@ function Participant() {
 
 Participant.prototype = {
 	initialize: function(nick, static_private_key) {
-	this.nick = nick
-	this.outstanding = true;
+		this.nick = nick
+		this.outstanding = true;
 
-	CryptoJS.enc.Utf8.parse('thisissecretz').toString(CryptoJS.enc.Base64);
+		CryptoJS.enc.Utf8.parse('thisissecretz').toString(CryptoJS.enc.Base64);
 	
 
-	//generate a long-term public key if one doesn't exist
-	if (!static_private_key) {
-		this.privateKey = ecdsaGenPrivateKey();
-	}
-	this.publicKey = ecdsaGenPublicKey(this.privateKey);
+		//generate a long-term public key if one doesn't exist
+		if (!static_private_key) {
+			this.privateKey = ecdsaGenPrivateKey();
+		}
+		this.publicKey = ecdsaGenPublicKey(this.privateKey);
 
-	//console.log(this.privateKey);
-	//console.log(this.publicKey);
+		//console.log(this.privateKey);
+		//console.log(this.publicKey);
 
-	this.ephPrivateKey = ecdsaGenPrivateKey();
-	this.ephPublicKey = ecdsaGenPublicKey(this.ephPrivateKey);
+		this.ephPrivateKey = ecdsaGenPrivateKey();
+		this.ephPublicKey = ecdsaGenPublicKey(this.ephPrivateKey);
 	},
 
 	protocolError: function(id, errorMessage) {
-	console.log('Error in protocol step ' + id + ' for ' + this.nick + ': ' + errorMessage);
+		console.log('Error in protocol step ' + id + ' for ' + this.nick + ': ' + errorMessage);
 	},
 
 	Error: function(id, errorMessage) {
-	console.log('Error in ' + id + ' for ' + this.nick + ': ' + errorMessage);
+		console.log('Error in ' + id + ' for ' + this.nick + ': ' + errorMessage);
 	},
 
 	sendProtocolMessage: function(id) {
-	switch(id) {
-		case 'randomX':
-		return {'*': {'publicKey':this.publicKey, 'randomX': gen(16,1,0)}};
-		case 'ake':
-		var result = {};
-		this.akeX = {};
-		for (var i in this.nicks){
-			//don't send to yourself
-			if (this.nicks[i] == this.nick){
-			continue;
+		switch(id) {
+			case 'randomX':
+			return {'*': {'publicKey':this.publicKey, 'randomX': gen(16,1,0)}};
+			case 'ake':
+			var result = {};
+			this.akeX = {};
+			for (var i in this.nicks) {
+				//don't send to yourself
+				if (this.nicks[i] == this.nick){
+					continue;
+				}
+				this.akeX[this.nicks[i]] = ecdsaGenPrivateKey();
+				var gX = ecDH(this.akeX[this.nicks[i]]);
+				result[this.nicks[i]] = {'gX': gX, 'sig': ecdsaSign(this.privateKey, gX)};
 			}
-			this.akeX[this.nicks[i]] = ecdsaGenPrivateKey();
-			var gX = ecDH(this.akeX[this.nicks[i]]);
-			result[this.nicks[i]] = {'gX': gX, 'sig': ecdsaSign(this.privateKey, gX)};
-		}
+			return result;
 
-		return result;
+			case 'authUser1':
+			var result = {};
+			this.authUserEncKey = {};
+			this.authUserMacKey = {};
+			for (var i in this.nicks) {
+				//don't send to yourself
+				if (this.nicks[i] == this.nick) {
+					continue;
+				}
+				this.authUserEncKey[this.nicks[i]] = mpotr.hash(this.akeGXY[this.nicks[i]] + '_encrypt', 1);
+				this.authUserMacKey[this.nicks[i]] = mpotr.hash(this.akeGXY[this.nicks[i]] + '_mac', 1);
+				console.log(JSON.stringify(this.authUserEncKey));
 
-	 case 'authUser1':
-		var result = {};
-
-		this.authUserEncKey = {};
-		this.authUserMacKey = {};
-
-		for (var i in this.nicks){
-			//don't send to yourself
-			if (this.nicks[i] == this.nick){
-			continue;
+				var message = JSON.stringify([this.ephPublicKey, this.sessionID, this.nick, this.nicks[i]]);
+				var ciphertext = mpotr.encrypt(message, this.authUserEncKey[this.nicks[i]]);
+				var mac = mpotr.mac(ciphertext, this.authUserMacKey[this.nicks[i]]);
+				result[this.nicks[i]] = {
+					'ciphertext': ciphertext,
+					'mac': mac
+				};
 			}
-			this.authUserEncKey[this.nicks[i]] = mpotr.hash(this.akeGXY[this.nicks[i]] + '_encrypt', 1);
-			this.authUserMacKey[this.nicks[i]] = mpotr.hash(this.akeGXY[this.nicks[i]] + '_mac', 1);
-			console.log(JSON.stringify(this.authUserEncKey));
+			return result;
 
-			var message = JSON.stringify([this.ephPublicKey, this.sessionID, this.nick, this.nicks[i]]);
-			var ciphertext = mpotr.encrypt(message, this.authUserEncKey[this.nicks[i]]);
-			var mac = mpotr.mac(ciphertext, this.authUserMacKey[this.nicks[i]]);
-			result[this.nicks[i]] = {
-			'ciphertext': ciphertext,
-			'mac': mac,
-			};
-
-		}
-		return result;
-
-		case 'authUser2':
-		var result = {};
-
-		for (var i in this.nicks){
-			//don't send to yourself
-			if (this.nicks[i] == this.nick){
-			continue;
+			case 'authUser2':
+			var result = {};
+			for (var i in this.nicks){
+				if (this.nicks[i] == this.nick) {
+					continue;
+				}
+				var message = ecdsaSign(this.ephPrivateKey, JSON.stringify([this.ephPublicKeys[this.nicks[i]], this.sessionID, this.nick, this.nicks[i]]));
+				console.log(this.authUserEncKey[this.nicks[i]]);
+				console.log(JSON.stringify(this.authUserEncKey));
+				console.log(this.nicks[i]);
+				var ciphertext = mpotr.encrypt(message, this.authUserEncKey[this.nicks[i]]);
+				var mac = mpotr.mac(ciphertext, this.authUserMacKey[this.nicks[i]]);
+				result[this.nicks[i]] = {
+					'ciphertext': ciphertext,
+					'mac': mac,
+				};
 			}
+			return result;
 
-			var message = ecdsaSign(this.ephPrivateKey, JSON.stringify([this.ephPublicKeys[this.nicks[i]], this.sessionID, this.nick, this.nicks[i]]));
-			console.log('bang');
-			console.log(this.authUserEncKey[this.nicks[i]]);
-			console.log(JSON.stringify(this.authUserEncKey));
-			console.log(this.nicks[i]);
-
-			var ciphertext = mpotr.encrypt(message, this.authUserEncKey[this.nicks[i]]);
-
-			var mac = mpotr.mac(ciphertext, this.authUserMacKey[this.nicks[i]]);
-			result[this.nicks[i]] = {
-			'ciphertext': ciphertext,
-			'mac': mac,
-			};
-
-		}
-
-		return result;
-
-		case 'gke1':
-		var result = {};
-		this.gkeX = {};
-		for (var i in this.nicks){
-			//don't send to yourself
-			if (this.nicks[i] == this.nick){
-			continue;
+			case 'gke1':
+			var result = {};
+			this.gkeX = {};
+			for (var i in this.nicks){
+				//don't send to yourself
+				if (this.nicks[i] == this.nick){
+					continue;
+				}
+				this.gkeX[this.nicks[i]] = ecdsaGenPrivateKey();
+				var gX = ecDH(this.gkeX[this.nicks[i]]);
+				result[this.nicks[i]] = {'gX': gX, 'sig': ecdsaSign(this.ephPrivateKey, gX)};
 			}
-			this.gkeX[this.nicks[i]] = ecdsaGenPrivateKey();
-			var gX = ecDH(this.gkeX[this.nicks[i]]);
-			result[this.nicks[i]] = {'gX': gX, 'sig': ecdsaSign(this.ephPrivateKey, gX)};
-		}
+			return result;
 
-		return result;
-
-		case 'gke2':
-		var result = {};
-
-		this.gkeK = [];
-		for (var i=0; i!=64; i++) {
-			this.gkeK[i] = Math.floor(Math.random()*256);
-		}
-		var gkeK = '';
-		for (var i in this.gkeK) {
-			gkeK += String.fromCharCode(this.gkeK[i]);
-		}
-		this.gkeK = CryptoJS.enc.Utf8.parse(gkeK).toString(CryptoJS.enc.Base64);
-		
-		for (var i in this.nicks){
-			//don't send to yourself
-			if (this.nicks[i] == this.nick) {
-				continue;
+			case 'gke2':
+			var result = {};
+			this.gkeK = [];
+			for (var i=0; i!=64; i++) {
+				this.gkeK[i] = Math.floor(Math.random()*256);
 			}
-			var mask = mpotr.hash(this.gkeGXY[this.nicks[i]], 1);
-			result[this.nicks[i]] = mpotr.base64Xor(this.gkeK, mask);
-		}
-
-		return result;
-
-		case 'attest':
-		var result = {};
-		var params = {'version': 1, 'timeout': 18000 };
-		var attest_msg = mpotr.hash(JSON.stringify([this.sessionID, params]));
-		this.outstanding_nicks = this.nicks;
-		for (var i in this.nicks){
-			//don't send to yourself
-			if (this.nicks[i] == this.nick){
-			continue;
+			var gkeK = '';
+			for (var i in this.gkeK) {
+				gkeK += String.fromCharCode(this.gkeK[i]);
 			}
-			var message = this.authSend(attest_msg);
+			this.gkeK = CryptoJS.enc.Utf8.parse(gkeK).toString(CryptoJS.enc.Base64);
+			for (var i in this.nicks){
+				//don't send to yourself
+				if (this.nicks[i] == this.nick) {
+					continue;
+				}
+				var mask = mpotr.hash(this.gkeGXY[this.nicks[i]], 1);
+				result[this.nicks[i]] = mpotr.base64Xor(this.gkeK, mask);
+			}
+			return result;
 
-			result[this.nicks[i]] = this.authSend(message);
-
+			case 'attest':
+			var result = {};
+			var params = {'version': 1, 'timeout': 18000 };
+			var attest_msg = mpotr.hash(JSON.stringify([this.sessionID, params]));
+			this.outstanding_nicks = this.nicks;
+			for (var i in this.nicks){
+				//don't send to yourself
+				if (this.nicks[i] == this.nick){
+					continue;
+				}
+				var message = this.authSend(attest_msg);
+				result[this.nicks[i]] = this.authSend(message);
+			}
+			return result;
 		}
-		return result;
-	}
 
 	},
 
@@ -303,173 +285,153 @@ Participant.prototype = {
 	 <CIPHER_TEXT> = ENCRYPT({'nick': <NICKNAME>, 'msg': <MESSAGE>})
 	*/
 	authSend: function(data) {
-	var message = {
+		var message = {
 			'nick': this.nick,
 			'msg': data
-			};
+		};
 
-	console.log(message);
-	console.log(this.sessionKey);
+		console.log(message);
+		console.log(this.sessionKey);
 
-	var ciphertext = mpotr.encrypt(JSON.stringify(message), this.sessionKey);
-	var signature = mpotr.sign(JSON.stringify([this.sessionID, ciphertext]), this.privateKey);
-	return [this.sessionID, ciphertext, signature]
+		var ciphertext = mpotr.encrypt(JSON.stringify(message), this.sessionKey);
+		var signature = mpotr.sign(JSON.stringify([this.sessionID, ciphertext]), this.privateKey);
+		return [this.sessionID, ciphertext, signature]
 
 	},
 
 	authRecv: function(data) {
-	var message = JSON.parse(data);
-	var sessionID = message[0];
-	var ciphertext = message[1];
-	var signature = message[2];
-	if (sessionID != this.sessionID) {
-		this.Error('authRecv', 'sessionID of message does not match');
-		return;
-	}
-	//HERE
-	var cleartext = mpotr.decrypt(ciphertext, this.sessionKey);
-	var to_verify = JSON.stringify([this.sessionID, ciphertext]);
-	var parsed_ct = JSON.parse(cleartext);
+		var message = JSON.parse(data);
+		var sessionID = message[0];
+		var ciphertext = message[1];
+		var signature = message[2];
+		if (sessionID != this.sessionID) {
+			this.Error('authRecv', 'sessionID of message does not match');
+			return;
+		}
+		var cleartext = mpotr.decrypt(ciphertext, this.sessionKey);
+		var to_verify = JSON.stringify([this.sessionID, ciphertext]);
+		var parsed_ct = JSON.parse(cleartext);
 	
-	if (!ecdsaVerify(this.publicKeys[parsed_ct.nick], signature, to_verify)){
-		this.Error('authRecv', 'message verification failed');
-	}
-	return parsed_ct;
+		if (!ecdsaVerify(this.publicKeys[parsed_ct.nick], signature, to_verify)){
+			this.Error('authRecv', 'message verification failed');
+		}
+		return parsed_ct;
 
 	},
 
 	processProtocolMessages: function(id, msgs) {
-	switch(id) {
-		case 'randomX':
-		this.nicks = [];
-		this.msgs = [];
-		this.randomXs = [];
-		this.publicKeys = {};
-		for (var x in msgs) {
-			this.nicks.push(x);
-			this.randomXs.push(msgs[x]['randomX']);
-			this.publicKeys[x]= msgs[x]['publicKey'];
-		}
-		this.sessionID = mpotr.deriveSessionID(this.nicks, this.randomXs);
-		console.log("Generated sessionID: " + this.sessionID);
+		switch(id) {
+			case 'randomX':
+			this.nicks = [];
+			this.msgs = [];
+			this.randomXs = [];
+			this.publicKeys = {};
+			for (var x in msgs) {
+				this.nicks.push(x);
+				this.randomXs.push(msgs[x]['randomX']);
+				this.publicKeys[x]= msgs[x]['publicKey'];
+			}
+			this.sessionID = mpotr.deriveSessionID(this.nicks, this.randomXs);
+			console.log("Generated sessionID: " + this.sessionID);
+			debugLog("randomX "+this.nick, "Generated sessionID "+this.sessionID);
+			return this.sessionID;
 
-		debugLog("randomX "+this.nick, "Generated sessionID "+this.sessionID);
-		return this.sessionID;
-		case 'ake':
-		this.akeGXY = {};
+			case 'ake':
+			this.akeGXY = {};
 
-		for (var i in msgs){
-			if (!ecdsaVerify(this.publicKeys[i], msgs[i]['sig'], msgs[i]['gX'])){
-			//die?
-			this.protocolError('ake', 'signature from ' + i + ' failed');
+			for (var i in msgs){
+				if (!ecdsaVerify(this.publicKeys[i], msgs[i]['sig'], msgs[i]['gX'])) {
+				//die?
+				this.protocolError('ake', 'signature from ' + i + ' failed');
+				return;
+				}
+				//console.log("Verifying signature from " + i);
+				//console.log(ecdsaVerify(this.publicKeys[i], msgs[i]['sig'], msgs[i]['gX']));
+				this.akeGXY = ecDH(this.akeX[i], msgs[i]['gX']);
+
+			}
+			return 0;
+
+			case 'authUser1':
+			this.ephPublicKeys = {};
+			for (var i in msgs) {
+				if (!mpotr.verify_mac(msgs[i].mac, msgs[i].ciphertext, this.authUserMacKey[i])) {
+					this.protocolError('authUser1', 'mac from ' + i + ' failed');
+					return;
+				}
+				var plaintext = mpotr.decrypt(msgs[i].ciphertext, this.authUserEncKey[i]);
+				plaintext = JSON.parse(plaintext);
+				debugLog("authUser1 "+this.nick, plaintext);
+				console.log(plaintext);
+				this.ephPublicKeys[i] = plaintext[0];
+				if (plaintext[1] != this.sessionID) {
+					this.protocolError('authUser1', 'sessionID from ' + i + ' incorrect');
+					return;
+				}
+				if (plaintext[2] != i || plaintext[3] != this.nick) {
+					this.protocolError('authUser1', 'participant IDs from ' + i + ' incorrect');
+					return;
+				}
+			}
+			return 0;
+
+			case 'authUser2':
+			for (var i in msgs) {
+				if (!mpotr.verify_mac(msgs[i].mac, msgs[i].ciphertext, this.authUserMacKey[i])) {
+					this.protocolError('authUser2', 'mac from ' + i + ' failed');
+					return;
+				}
+				var signature = mpotr.decrypt(msgs[i].ciphertext, this.authUserEncKey[i]);
+				var signedMessage = JSON.stringify([this.ephPublicKey, this.sessionID, i, this.nick]);
+				//console.log('crypto at');
+				//console.log(signature);
+				//console.log(signedMessage);
+				if (!ecdsaVerify(this.ephPublicKeys[i], signature, signedMessage)){
+				this.protocolError('authUser2', 'signature from ' + i + ' failed');
+				return;
+				}
+			}
 			return;
-			}
-			//console.log("Verifying signature from " + i);
-			//console.log(ecdsaVerify(this.publicKeys[i], msgs[i]['sig'], msgs[i]['gX']));
-			this.akeGXY = ecDH(this.akeX[i], msgs[i]['gX']);
 
-		}
-		return 0;
-		case 'authUser1':
-
-		this.ephPublicKeys = {};
-
-		for (var i in msgs){
-
-			if (!mpotr.verify_mac(msgs[i].mac, msgs[i].ciphertext, this.authUserMacKey[i])) {
-				this.protocolError('authUser1', 'mac from ' + i + ' failed');
-				return;
-			}
-
-			var plaintext = mpotr.decrypt(msgs[i].ciphertext, this.authUserEncKey[i]);
-			plaintext = JSON.parse(plaintext);
-
-			debugLog("authUser1 "+this.nick, plaintext);
-			console.log(plaintext);
-			this.ephPublicKeys[i] = plaintext[0];
-
-			if (plaintext[1] != this.sessionID) {
-				this.protocolError('authUser1', 'sessionID from ' + i + ' incorrect');
-				return;
-			}
-			if (plaintext[2] != i || plaintext[3] != this.nick) {
-				this.protocolError('authUser1', 'participant IDs from ' + i + ' incorrect');
-				return;
-			}
-
-		}
-		return 0;
-
-		case 'authUser2':
-		for (var i in msgs){
-
-			if (!mpotr.verify_mac(msgs[i].mac, msgs[i].ciphertext, this.authUserMacKey[i])) {
-				this.protocolError('authUser2', 'mac from ' + i + ' failed');
-				return;
-			}
-
-
-			var signature = mpotr.decrypt(msgs[i].ciphertext, this.authUserEncKey[i]);
-			var signedMessage = JSON.stringify([this.ephPublicKey, this.sessionID, i, this.nick]);
-			//console.log('crypto at');
-			//console.log(signature);
-			//console.log(signedMessage);
-			if (!ecdsaVerify(this.ephPublicKeys[i], signature, signedMessage)){
-			this.protocolError('authUser2', 'signature from ' + i + ' failed');
-			return;
-			}
-
-		}
-		return;
-
-		case 'attest':
-		// XXX This function needs quite some refactoring..
-		if (this.outstanding_nicks.length == 0) {
-			this.outstanding = false;
-		}
-		for (var i in msgs) {
+			case 'attest':
+			// XXX This function needs quite some refactoring..
 			if (this.outstanding_nicks.length == 0) {
-			this.outstanding = false;
+				this.outstanding = false;
 			}
-			console.log('bla...');
-			console.log(msgs[i]);
-			var attest = this.authRecv(JSON.stringify(msgs[i]));
-			this.outstanding_nicks.pop(attest);
-		}
-
-		return;
-
-		case 'gke1':
-		this.gkeGXY = {};
-
-		for (var i in msgs){
-			if (!ecdsaVerify(this.ephPublicKeys[i], msgs[i]['sig'], msgs[i]['gX'])){
-			//die?
-			this.protocolError('gke1', 'signature from ' + i + ' failed');
+			for (var i in msgs) {
+				if (this.outstanding_nicks.length == 0) {
+					this.outstanding = false;
+				}
+				console.log('bla...');
+				console.log(msgs[i]);
+				var attest = this.authRecv(JSON.stringify(msgs[i]));
+				this.outstanding_nicks.pop(attest);
+			}
 			return;
+
+			case 'gke1':
+			this.gkeGXY = {};
+			for (var i in msgs){
+				if (!ecdsaVerify(this.ephPublicKeys[i], msgs[i]['sig'], msgs[i]['gX'])) {
+					//die?
+					this.protocolError('gke1', 'signature from ' + i + ' failed');
+					return;
+				}
+				this.gkeGXY[i] = ecDH(this.gkeX[i], msgs[i]['gX']);
 			}
-			this.gkeGXY[i] = ecDH(this.gkeX[i], msgs[i]['gX']);
+			return 0;
 
+			case 'gke2':
+			var base = this.gkeK;
+			for (var i in msgs) {
+				var mask = mpotr.hash(this.gkeGXY[i], 1);
+				var next = mpotr.base64Xor(mask, msgs[i]);
+				base = mpotr.base64Xor(next, base);
+			}
+			this.sessionKey = base;
+			//console.log(this.nick + ' derived session key ' + this.sessionKey);
+			return 0;
 		}
-		return 0;
-
-		case 'gke2':
-
-		var base = this.gkeK;
-		for (var i in msgs){
-			var mask = mpotr.hash(this.gkeGXY[i], 1);
-			var next = mpotr.base64Xor(mask, msgs[i]);
-			base = mpotr.base64Xor(next, base);
-		}
-
-		this.sessionKey = base;
-
-		//console.log(this.nick + ' derived session key ' + this.sessionKey);
-
-		return 0;
-
-	}
-
 	}
 };
 
@@ -488,15 +450,15 @@ var TestServer = {
 				this.state[id][i] = {};
 			}
 			this.state[id][i][nick] = msgs[i];
-				console.log(nick);
-				console.log(id);
-				console.log(i);
-				console.log(msgs[i]);
-				console.log(JSON.stringify(this.state[id][i]));
-			}
-		},
+			console.log(nick);
+			console.log(id);
+			console.log(i);
+			console.log(msgs[i]);
+			console.log(JSON.stringify(this.state[id][i]));
+		}
+	},
 
-		getMessages: function(id, nick) {
+	getMessages: function(id, nick) {
 		//return broadcast message if it exists
 		if (this.state[id]['*']) {
 			return this.state[id]['*'];
