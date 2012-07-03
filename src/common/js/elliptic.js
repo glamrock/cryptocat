@@ -334,7 +334,7 @@ function ecdsaSign(privateKey, message) {
 
         priv = privateKeyFromString(privateKey);
 
-        m = mod(Whirlpool(JSON.stringify(message)).substring(0,32), n256);
+        m = mod(CryptoJS.SHA512(JSON.stringify(message)).toString(CryptoJS.enc.Hex).substring(0,32), n256);
 
         while (true) {
                 var k;
@@ -368,7 +368,7 @@ function ecdsaVerify(publicKey, signature, message) {
         pub = publicKeyFromString(publicKey);
         sig = sigFromString(signature);
 
-        m = mod(Whirlpool(JSON.stringify(message)).substring(0,32), n256);
+        m = mod(CryptoJS.SHA512(JSON.stringify(message)).toString(CryptoJS.enc.Hex).substring(0,32), n256);
 
         var r = sig[0]
         var s = sig[1]
