@@ -104,7 +104,7 @@
 			return 1;
 		}
 		else if (preg_match($msgregex, $msg)) {
-				return 1;
+			return 1;
 		}
 		return 0;
 	}
@@ -199,7 +199,7 @@
 					$chat = file($data.$_POST['chat']);
 				}
 				if ($pos < count($chat)) {
-					if (msgcheck($chat[$pos]) || preg_match($inforegex, $chat[$pos])) {
+					//if (msgcheck($chat[$pos]) || preg_match($inforegex, $chat[$pos])) {
 						preg_match_all('/\([a-z]{1,12}\)[^\(^\[]+/', $chat[$pos], $match);
 						preg_match('/^[a-z]{1,12}\|/', $chat[$pos], $nick);
 						$nick = substr($nick[0], 0, -1);
@@ -210,7 +210,7 @@
 						else if (preg_match('/\|\w{8}/', $chat[$pos], $sentid)) {
 							print(substr($sentid[0], 1));
 						}
-					}
+					//}
 				}
 			}
 		}
