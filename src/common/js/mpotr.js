@@ -136,9 +136,6 @@ Participant.prototype = {
 		this.nick = nick
 		this.outstanding = true;
 
-		CryptoJS.enc.Latin1.parse('thisissecretz').toString(CryptoJS.enc.Base64);
-	
-
 		//generate a long-term public key if one doesn't exist
 		if (!static_private_key) {
 			this.privateKey = ecdsaGenPrivateKey();
@@ -164,7 +161,8 @@ Participant.prototype = {
 		switch(id) {
 			case 'randomX':
 			return {'*': {'publicKey':this.publicKey, 'randomX': gen(16,1,0)}};
-			case 'ake':
+			
+            case 'ake':
 			var result = {};
 			this.akeX = {};
 			for (var i in this.nicks) {
@@ -335,12 +333,11 @@ Participant.prototype = {
 
 			case 'ake':
 			this.akeGXY = {};
-
 			for (var i in msgs){
 				if (!ecdsaVerify(this.publicKeys[i], msgs[i]['sig'], msgs[i]['gX'])) {
-				//die?
-				this.protocolError('ake', 'signature from ' + i + ' failed');
-				return;
+				    //die?
+				    this.protocolError('ake', 'signature from ' + i + ' failed');
+				    return;
 				}
 				//console.log("Verifying signature from " + i);
 				//console.log(ecdsaVerify(this.publicKeys[i], msgs[i]['sig'], msgs[i]['gX']));
@@ -384,8 +381,8 @@ Participant.prototype = {
 				//console.log(signature);
 				//console.log(signedMessage);
 				if (!ecdsaVerify(this.ephPublicKeys[i], signature, signedMessage)){
-				this.protocolError('authUser2', 'signature from ' + i + ' failed');
-				return;
+				    this.protocolError('authUser2', 'signature from ' + i + ' failed');
+				    return;
 				}
 			}
 			return;
@@ -469,13 +466,8 @@ r2 = ecdsaGenPrivateKey();
 
 p1 = ecDH(r1);
 p2 = ecDH(r2);
-//console.log(p1);
-//console.log(p2);
 p3 = ecDH(r1, p2);
 p4 = ecDH(r2, p1);
-//console.log(p3);
-//console.log(p4);
-//console.log(Whirlpool(p3));
 
 var Alice = new Participant();
 Alice.initialize('alice');
@@ -485,56 +477,46 @@ var Charlie = new Participant();
 Charlie.initialize('charlie');
 var participants = [Alice, Bob, Charlie];
 
-
 var messages = ['randomX', 'ake', 'authUser1', 'authUser2', 'gke1', 'gke2', 'attest'];
+
 for (var mid in messages) {
-
-  console.log("-----");
-  console.log("Sending "+ messages[mid] +" messages");
-  console.log("-----");
-  debugLog("----SENDING---", messages[mid]);
-  for (var i in participants) {
-    var id = messages[mid];
-    var participant = participants[i];
-    res = participant.sendProtocolMessage(id);
-    TestServer.send(id, res, participants[i].nick);
-    console.log("Principal "+ participants[i].nick +" sent message " + id + ": " + JSON.stringify(res));
-    debugLog(participants[i].nick +" sent message " + id, JSON.stringify(res));
-
-  }
-
-
-  console.log("-----");
-  console.log("Processing "+ messages[mid] +" messages");
-  console.log("-----");
-
-  debugLog("----PROCESSING---", messages[mid]);
-  for (var i in participants) {
-    var current_messages = TestServer.getMessages(id, participants[i].nick);
-
-    console.log("Principal "+ participants[i].nick +" received: " + JSON.stringify(current_messages));
-
-    debugLog(participants[i].nick +" sent message " + id, JSON.stringify(current_messages));
-    var id = messages[mid];
-    var participant = participants[i];
-    res = participant.processProtocolMessages(id, current_messages);
-  }
-
+	console.log("-----");
+	console.log("Sending "+ messages[mid] +" messages");
+	console.log("-----");
+ 	debugLog("----SENDING---", messages[mid]);
+	for (var i in participants) {
+		var id = messages[mid];
+		var participant = participants[i];
+		res = participant.sendProtocolMessage(id);
+		TestServer.send(id, res, participants[i].nick);
+		console.log("Principal "+ participants[i].nick +" sent message " + id + ": " + JSON.stringify(res));
+		debugLog(participants[i].nick +" sent message " + id, JSON.stringify(res));
+	}
+	console.log("-----");
+	console.log("Processing "+ messages[mid] +" messages");
+	console.log("-----");
+	debugLog("----PROCESSING---", messages[mid]);
+	for (var i in participants) {
+		var current_messages = TestServer.getMessages(id, participants[i].nick);
+    		console.log("Principal "+ participants[i].nick +" received: " + JSON.stringify(current_messages));
+		debugLog(participants[i].nick +" sent message " + id, JSON.stringify(current_messages));
+		var id = messages[mid];
+		var participant = participants[i];
+		res = participant.processProtocolMessages(id, current_messages);
+	}
 }
 
-var enc_msg = JSON.stringify(Alice.authSend("hello peeps"));
+var enc_msg = JSON.stringify(Alice.authSend("mpOTR MOTHERFUCKER"));
 debugLog("encrypted message (ALICE)", JSON.stringify(enc_msg));
 debugLog("decrypted message (ALICE)", Alice.authRecv(enc_msg).msg);
 
-
-var enc_msg = JSON.stringify(Bob.authSend("Hello Alice, I verified that the message is from you!"));
+var enc_msg = JSON.stringify(Bob.authSend("YYYEAAHHHH"));
 debugLog("encrypted message (BOB)", JSON.stringify(enc_msg));
 debugLog("decrypted message (BOB)", Bob.authRecv(enc_msg).msg);
 
-var enc_msg = JSON.stringify(Charlie.authSend("Hello all, it's very nice to see you :)"));
+var enc_msg = JSON.stringify(Charlie.authSend("SHIT SONNNN"));
 debugLog("encrypted message (CHARLIE)", JSON.stringify(enc_msg));
 debugLog("decrypted message (CHARLIE)", Charlie.authRecv(enc_msg).msg);
-
 
 TestServer.send(id, res, participant);
 
