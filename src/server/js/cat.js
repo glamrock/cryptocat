@@ -226,34 +226,6 @@ function pushline(line, id) {
 	}
 }
 
-function bubbleBabble(input) {
-	var result = '';
-	for (var i=0; i!=input.length; i++) {
-		result += String.fromCharCode(input[i]);
-	}
-	input = result;
-	var result = 'x';
-	var consonants = 'bcdfghklmnprstvzx';
-	var vowels = 'aeiouy';
-	var babble = 1;
-  	for (i=0;;i+=2) {
-		if (i >= input.length) {
-			result += vowels.charAt(Math.floor(babble%6)) + consonants.charAt(16) + vowels.charAt(Math.floor(babble/6));
-			break;
-		}
-    	byte1 = input.charCodeAt(i);
-    	result += vowels.charAt((((byte1>>6)&3)+babble)%6) + consonants.charAt((byte1>>2)&15) + vowels.charAt(((byte1&3) + (babble/6))%6);
-		if (i+1 >= input.length) {
-			break;
-		}
-		byte2 = input.charCodeAt(i+1);
-		result += consonants.charAt((byte2>>4)&15) + '-' + consonants.charAt(byte2&15);
-		babble = (babble*5+byte1*7+byte2) % 36;
-	}
-	result += 'x';
-	return result;
-}
-
 function getkeys(sync) {
 	$.ajax({ url: install,
 		type: 'POST', async: sync,
@@ -281,7 +253,6 @@ function getkeys(sync) {
 						}
 						else {
 							fingerprints[names[i]] = CryptoJS.SHA512(names[i] + keys[names[i]]).toString().substring(0, 32);
-							//fingerprints[names[i]] = bubbleBabble(CryptoJS.enc.Hex.parse(fingerprints[names[i]]).toString(CryptoJS.enc.Utf8));
 						}
 					}
 				}
@@ -523,6 +494,7 @@ $("#nickinput").keyup(function() {
 });
 
 function nickset() {
+	
 	$.ajax({ url: install, type: "POST",
 		data: "nick=" + $("#nickinput").val() + "&name=" + name + "&key=" + encodeURIComponent(pubkey),
 		success: function(data) {
