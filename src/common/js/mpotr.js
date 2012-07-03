@@ -40,8 +40,8 @@ var mpotr = (function(){
 			preimage = JSON.stringify(randomXs.sort());
 			preimage += JSON.stringify(nicks.sort());
 			var res = CryptoJS.SHA512(preimage).toString(CryptoJS.enc.Base64);
-			// Take 16 Bytes
-			res = res.slice(0, 16);
+			// Take 32 bytes
+			res = res.slice(0, 32);
 			return res;
 		},
 
@@ -166,7 +166,6 @@ Participant.prototype = {
 			var result = {};
 			this.akeX = {};
 			for (var i in this.nicks) {
-				//don't send to yourself
 				if (this.nicks[i] == this.nick){
 					continue;
 				}
@@ -181,7 +180,6 @@ Participant.prototype = {
 			this.authUserEncKey = {};
 			this.authUserMacKey = {};
 			for (var i in this.nicks) {
-				//don't send to yourself
 				if (this.nicks[i] == this.nick) {
 					continue;
 				}
@@ -222,7 +220,6 @@ Participant.prototype = {
 			var result = {};
 			this.gkeX = {};
 			for (var i in this.nicks){
-				//don't send to yourself
 				if (this.nicks[i] == this.nick){
 					continue;
 				}
@@ -244,7 +241,6 @@ Participant.prototype = {
 			}
 			this.gkeK = CryptoJS.enc.Latin1.parse(gkeK).toString(CryptoJS.enc.Base64);
 			for (var i in this.nicks){
-				//don't send to yourself
 				if (this.nicks[i] == this.nick) {
 					continue;
 				}
@@ -259,7 +255,6 @@ Participant.prototype = {
 			var attest_msg = mpotr.hash(JSON.stringify([this.sessionID, params]));
 			this.outstanding_nicks = this.nicks;
 			for (var i in this.nicks){
-				//don't send to yourself
 				if (this.nicks[i] == this.nick){
 					continue;
 				}
@@ -419,7 +414,7 @@ Participant.prototype = {
 			var base = this.gkeK;
 			for (var i in msgs) {
 				var mask = mpotr.hash(this.gkeGXY[i], 1);
-				var next = mpotr.base64Xor(mask, msgs[i]);
+				var next = mpotr. 	base64Xor(mask, msgs[i]);
 				base = mpotr.base64Xor(next, base);
 			}
 			this.sessionKey = base;
@@ -428,89 +423,6 @@ Participant.prototype = {
 		}
 	}
 };
-
-
-var TestServer = {
-	participants: [],
-	state: {},
-	nicks: [],
-
-	send: function(id, msgs, nick) {
-		if (!this.state[id]) {
-			this.state[id] = {};
-		}
-		for (var i in msgs) {
-			if (!this.state[id][i]) {
-				this.state[id][i] = {};
-			}
-			this.state[id][i][nick] = msgs[i];
-			console.log(nick);
-			console.log(id);
-			console.log(i);
-			console.log(msgs[i]);
-			console.log(JSON.stringify(this.state[id][i]));
-		}
-	},
-
-	getMessages: function(id, nick) {
-		//return broadcast message if it exists
-		if (this.state[id]['*']) {
-			return this.state[id]['*'];
-		}
-		return this.state[id][nick];
-	}
-};
-
-var Alice = new Participant();
-Alice.initialize('alice');
-var Bob = new Participant();
-Bob.initialize('bob');
-var Charlie = new Participant();
-Charlie.initialize('charlie');
-var participants = [Alice, Bob, Charlie];
-
-var messages = ['randomX', 'ake', 'authUser1', 'authUser2', 'gke1', 'gke2', 'attest'];
-
-for (var mid in messages) {
-	console.log("-----");
-	console.log("Sending "+ messages[mid] +" messages");
-	console.log("-----");
- 	debugLog("----SENDING---", messages[mid]);
-	for (var i in participants) {
-		var id = messages[mid];
-		var participant = participants[i];
-		res = participant.sendProtocolMessage(id);
-		TestServer.send(id, res, participants[i].nick);
-		console.log("Principal "+ participants[i].nick +" sent message " + id + ": " + JSON.stringify(res));
-		debugLog(participants[i].nick +" sent message " + id, JSON.stringify(res));
-	}
-	console.log("-----");
-	console.log("Processing "+ messages[mid] +" messages");
-	console.log("-----");
-	debugLog("----PROCESSING---", messages[mid]);
-	for (var i in participants) {
-		var current_messages = TestServer.getMessages(id, participants[i].nick);
-    		console.log("Principal "+ participants[i].nick +" received: " + JSON.stringify(current_messages));
-		debugLog(participants[i].nick +" sent message " + id, JSON.stringify(current_messages));
-		var id = messages[mid];
-		var participant = participants[i];
-		res = participant.processProtocolMessages(id, current_messages);
-	}
-}
-
-var enc_msg = JSON.stringify(Alice.authSend("Hello, this is the first message from Alice."));
-debugLog("encrypted message (ALICE)", JSON.stringify(enc_msg));
-debugLog("decrypted message (ALICE)", Alice.authRecv(enc_msg).msg);
-
-var enc_msg = JSON.stringify(Bob.authSend("This is Bob. How's it going?"));
-debugLog("encrypted message (BOB)", JSON.stringify(enc_msg));
-debugLog("decrypted message (BOB)", Bob.authRecv(enc_msg).msg);
-
-var enc_msg = JSON.stringify(Charlie.authSend("Things seem to be working fine."));
-debugLog("encrypted message (CHARLIE)", JSON.stringify(enc_msg));
-debugLog("decrypted message (CHARLIE)", Charlie.authRecv(enc_msg).msg);
-
-TestServer.send(id, res, participant);
 
 /****************
     //denAKE section - needs to be replaced. Currently static DH-AKE but not deniable
