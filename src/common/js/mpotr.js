@@ -498,15 +498,15 @@ for (var mid in messages) {
 	}
 }
 
-var enc_msg = JSON.stringify(Alice.authSend("mpOTR MOTHERFUCKER"));
+var enc_msg = JSON.stringify(Alice.authSend("Hello, this is the first message from Alice."));
 debugLog("encrypted message (ALICE)", JSON.stringify(enc_msg));
 debugLog("decrypted message (ALICE)", Alice.authRecv(enc_msg).msg);
 
-var enc_msg = JSON.stringify(Bob.authSend("YYYEAAHHHH"));
+var enc_msg = JSON.stringify(Bob.authSend("This is Bob. How's it going?"));
 debugLog("encrypted message (BOB)", JSON.stringify(enc_msg));
 debugLog("decrypted message (BOB)", Bob.authRecv(enc_msg).msg);
 
-var enc_msg = JSON.stringify(Charlie.authSend("SHIT SONNNN"));
+var enc_msg = JSON.stringify(Charlie.authSend("Things seem to be working fine."));
 debugLog("encrypted message (CHARLIE)", JSON.stringify(enc_msg));
 debugLog("decrypted message (CHARLIE)", Charlie.authRecv(enc_msg).msg);
 
