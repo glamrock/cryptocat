@@ -461,14 +461,6 @@ var TestServer = {
 	}
 };
 
-r1 = ecdsaGenPrivateKey();
-r2 = ecdsaGenPrivateKey();
-
-p1 = ecDH(r1);
-p2 = ecDH(r2);
-p3 = ecDH(r1, p2);
-p4 = ecDH(r2, p1);
-
 var Alice = new Participant();
 Alice.initialize('alice');
 var Bob = new Participant();
