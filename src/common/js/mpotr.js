@@ -40,8 +40,8 @@ var mpotr = (function(){
 			preimage = JSON.stringify(randomXs.sort());
 			preimage += JSON.stringify(nicks.sort());
 			var res = CryptoJS.SHA512(preimage).toString(CryptoJS.enc.Base64);
-			// Take 32 bytes
-			res = res.slice(0, 32);
+			// Take 16 bytes
+			res = res.slice(0, 16);
 			return res;
 		},
 
