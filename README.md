@@ -1,4 +1,5 @@
-Cryptocat version 2
+Cryptocat 2
+
 Barebones codebase!
 
 * There will be no server code since we will be using XMPP for server.
