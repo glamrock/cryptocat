@@ -11,5 +11,6 @@ Barebones codebase!
 Goals:
 * XMPP | Discussion: https://github.com/kaepora/cryptocat/issues/83
 * mpOTR | Discussion: https://github.com/kaepora/cryptocat/issues/82
+* OTR (for backwards compatibility) | Discussion: https://github.com/kaepora/cryptocat/issues/84
 
 Feel free to open issues. Contact <nadim@nadim.cc>
