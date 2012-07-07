@@ -5,6 +5,7 @@
 	<link rel="stylesheet" href="css/style.css" type="text/css" />
 	<link rel="icon" type="image/gif" href="img/favicon.gif" />
 	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/strophe.js"></script>
 	<script type="text/javascript" src="js/notification.js"></script>
 	<script type="text/javascript" src="js/build.js"></script>
 </head>
@@ -12,7 +13,7 @@
 	<div id="top">
 		<img src="img/cryptocat.png" alt="Cryptocat" class="logo" />
 		<div id="tabs">
-			<div class="tab-inactive">Chat</div>
+			<div class="tabInactive">Chat</div>
 		</div>
 		<div id="contents">
 			<div id="contacts">
@@ -33,15 +34,16 @@
 			<h1>Welcome to Cryptocat.</h1>
 			<p>Cryptocat is an instant messaging platform that lets you communicate with friends using client-side encryption.</p>
 		</div>
-		<form id="loginform">
+		<form id="loginForm">
 			<input type="text" value="username" id="username" />
 			<input type="password" value="password" id="password" />
-			<div class="inputnote">
-				<input type="checkbox" name="newaccount" value="newaccount" />
+			<div class="inputNote">
+				<input type="checkbox" name="newAccount" id="newAccount" />
 				This is a new account.
 			</div>
-			<input type="button" value="login" id="loginsubmit" />
+			<input type="submit" value="login" id="loginSubmit" />
 		</form>
 	</div>
+	<script type="text/javascript" src="js/cat.js"></script>
 </body>
 </html>

@@ -70,11 +70,11 @@ img.logo {
 	max-width: 360px;
 	font-size: 12px;
 }
-#login #loginform {
+#login #loginForm {
 	float: right;
 	padding-right: 10px;
 }
-#login [type=text], #login [type=password], #login [type=button] {
+#login [type=text], #login [type=password], #login [type=button], #login [type=submit] {
 	display: block;
 	background-color: #222;
 	box-shadow: 2px 2px #97CEEC;
@@ -88,21 +88,22 @@ img.logo {
 	width: 200px;
 	outline: none;
 }
-#login #loginsubmit {
+#login #loginSubmit {
 	width: 210px;
 }
-#login [type=button]:hover {
+#login [type=submit]:hover {
 	cursor: pointer;
 	background-color: #97CEEC;
 	box-shadow: 2px 2px #333;
 }
-#login [type=button]:active {
+#login [type=submit]:active {
 	border: none;
 	box-shadow: 2px 2px #76BDE5;
 }
-#login .inputnote {
+#login .inputNote {
 	background-color: #97CEEC;
-	width: 215px;
+	width: 214px;
+	margin-left: 1px;
 	color: #FFF;
 }
 #login h1 {
@@ -113,7 +114,7 @@ img.logo {
 	float: right;
 	display: none;
 }
-.tab-active, .tab-inactive {
+.tabInactive, .tabActive {
 	cursor: pointer;
 	padding-top: 2px;
 	font-weight: bold;
@@ -125,7 +126,7 @@ img.logo {
 	margin: 15px 15px 0 0;
 	float: right;
 }
-.tab-inactive {
+.tabInactive {
 	color: #777;
 	background-color: #222;
 }
