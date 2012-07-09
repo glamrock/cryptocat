@@ -50,11 +50,21 @@ function connect(username, password) {
 		else if (status === Strophe.Status.CONNECTED) {
 			$('#loginInfo').html('Connected.');
 			$('#loginInfo').css('color', '#0F0');
-			$('#login').animate({'top': '+=10px'}, function() {
-				$('#login').animate({'top': '-=500px'}, function() {
+			$('#bubble').animate({'top': '+=10px'}, function() {
+				$('#info').fadeOut();
+				$('#loginForm').fadeOut();
+				$('#bubble').animate({'margin-top': '-=5%'}, function() {
+					$('#bubble').animate({'width': '900px'});
+					$('#bubble').animate({'height': '550px'}, function() {
+						$('#buddyList').fadeIn(130, function() {
+							function fadeAll(elems) {
+								elems.filter(':hidden:first').fadeIn(130, function() { fadeAll(elems); });
+							}
+							fadeAll($('#buddyList div'));
+						});
+					});
 					var iq = $iq({type: 'get'}).c('query', {xmlns: 'jabber:iq:roster'});
 					conn.sendIQ(iq, buddyList);
-					/* Morph here */
 				});
 			});
 		}
@@ -63,6 +73,11 @@ function connect(username, password) {
 		}
 		else if (status === Strophe.Status.AUTHFAIL){
 			$('#loginInfo').html('Authentication failure.');
+			$('#bubble').animate({'left': '+=5px'}, 100, function() {
+				$('#bubble').animate({'left': '-=10px'}, 100, function() {
+					$('#bubble').animate({'left': '+=5px'}, 100);
+				});
+			});
 			$('#loginInfo').css('color', '#F00');
 			$('#username').attr('readonly', false);
 			$('#password').attr('readonly', false);

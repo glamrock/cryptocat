@@ -1,10 +1,9 @@
 html {
-	height: 85%;
 }
 body {
 	height: 100%;
 	background-color: #c7e5f5;
-	margin: 0 auto;
+	margin: 0;
 	font-family: Helvetica, Arial, Verdana;
 	font-size: 11px;
 	color: #FFF;
@@ -14,8 +13,9 @@ body {
 img.logo {
 	width: 288px;
 	display: inline;
+	padding-left: 10px;
 }
-#login:before {
+#bubble:before {
 	content: ' ';
 	position: absolute;
 	width: 0;
@@ -25,7 +25,7 @@ img.logo {
 	border: 25px solid;
 	border-color: #000 transparent transparent #000;
 }
-#login {
+#bubble {
 	position: relative;
 	width: 670px;
 	height: 310px;
@@ -35,7 +35,7 @@ img.logo {
 	box-shadow: 4px 4px #76BDE5;
 	text-align: center;
 }
-#login:after {
+#bubble:after {
 	content: ' ';
 	position: absolute;
 	width: 0;
@@ -45,27 +45,26 @@ img.logo {
 	border: 15px solid;
 	border-color: #000 transparent transparent #000;
 }
-#login #head {
+#bubble #head {
 	background-color: #222;
-	width: 655px;
-	padding: 5px 5px 5px 10px;
+	width: 100%;
+	padding: 5px 0;
 	height: 35px;
 	border-radius: 15px 0 0 0;
 	text-align: left;
-	margin-bottom: 20px;
 }
-#login #info {
+#bubble #info {
 	float: left;
 	padding-left: 10px;
 	text-align: left;
 	max-width: 360px;
 	font-size: 12px;
 }
-#login #loginForm {
+#bubble #loginForm {
 	float: right;
 	padding-right: 10px;
 }
-#login [type=text], #login [type=password], #login [type=button], #login [type=submit] {
+#bubble [type=text], #bubble [type=password], #bubble [type=button], #bubble [type=submit] {
 	display: block;
 	background-color: #222;
 	box-shadow: 2px 2px #97CEEC;
@@ -79,19 +78,19 @@ img.logo {
 	width: 200px;
 	outline: none;
 }
-#login #loginSubmit {
+#bubble #loginSubmit {
 	width: 210px;
 }
-#login [type=submit]:hover {
+#bubble [type=submit]:hover {
 	cursor: pointer;
 	background-color: #97CEEC;
 	box-shadow: 2px 2px #333;
 }
-#login [type=submit]:active {
+#bubble [type=submit]:active {
 	border: none;
 	box-shadow: 2px 2px #76BDE5;
 }
-#login .inputNote {
+#bubble .inputNote {
 	background-color: #97CEEC;
 	width: 214px;
 	margin-left: 1px;
@@ -106,7 +105,39 @@ img.logo {
 	text-align: left;
 	font-size: 11;
 }
-#login h1 {
+#bubble h1 {
 	font-family: Futura, Helvetica, Arial;
 	font-size: 20px;
 }
+#buddyList {
+	float:right;
+	height: 90%;
+	width: 150px;
+	display: none;
+}
+.buddyBlue, .buddyBlack {
+	background-color: #76BDE5;
+	color: #FFF;
+	font-weight: bold;
+	padding: 6px;
+	font-size: 13px;
+	width: 100%;
+	margin-left: -15px;
+	text-align: left;
+	display: none;
+}
+.buddyBlue {
+	border-left: 3px solid #6BA7C9;
+}
+.buddyBlack {
+	border-left: 3px solid #111;
+	background-color: #222;
+}
+.buddyBlue:hover, .buddyBlack:hover {
+	cursor: pointer;
+	background-color: #97CEEC;
+}
+.buddyBlue:active, .buddyBlack:active {
+	background-color: #333;
+}
+	
