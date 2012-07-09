@@ -54,9 +54,7 @@ function connect(username, password) {
 				$('#login').animate({'top': '-=500px'}, function() {
 					var iq = $iq({type: 'get'}).c('query', {xmlns: 'jabber:iq:roster'});
 					conn.sendIQ(iq, buddyList);
-					$('#top').fadeIn();
-					$('#tabs').fadeIn();
-					$('#contacts').fadeIn();
+					/* Morph here */
 				});
 			});
 		}
