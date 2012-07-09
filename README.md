@@ -2,6 +2,8 @@ Cryptocat 2
 
 Barebones codebase!
 
+**A lot of the new stuff is going in `testing/` so look there first!**
+
 * There will be no server code since we will be using XMPP for server.
 * We will use Strophe.js (http://strophe.im/) for XMPP, available in ext/strophejs
 * mpOTR code is in src/common/js
