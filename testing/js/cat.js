@@ -61,6 +61,7 @@ function connect(username, password) {
 								elems.filter(':hidden:first').fadeIn(130, function() { fadeAll(elems); });
 							}
 							fadeAll($('#buddyList div'));
+							$('#conversationWindow').fadeIn();
 						});
 					});
 					var iq = $iq({type: 'get'}).c('query', {xmlns: 'jabber:iq:roster'});

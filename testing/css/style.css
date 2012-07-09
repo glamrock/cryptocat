@@ -33,7 +33,6 @@ img.logo {
 	background-color: #000;
 	border-radius: 15px 0 15px 15px;
 	box-shadow: 4px 4px #76BDE5;
-	text-align: center;
 }
 #bubble:after {
 	content: ' ';
@@ -51,12 +50,10 @@ img.logo {
 	padding: 5px 0;
 	height: 35px;
 	border-radius: 15px 0 0 0;
-	text-align: left;
 }
 #bubble #info {
 	float: left;
 	padding-left: 10px;
-	text-align: left;
 	max-width: 360px;
 	font-size: 12px;
 }
@@ -102,7 +99,6 @@ img.logo {
 	padding: 2px 5px;
 	width: 204px;
 	margin: 10px 0 0 1px;
-	text-align: left;
 	font-size: 11;
 }
 #bubble h1 {
@@ -123,21 +119,27 @@ img.logo {
 	font-size: 13px;
 	width: 100%;
 	margin-left: -15px;
-	text-align: left;
 	display: none;
 }
 .buddyBlue {
 	border-left: 3px solid #6BA7C9;
 }
 .buddyBlack {
-	border-left: 3px solid #111;
-	background-color: #222;
+	border-left: 3px solid #222;
+	background-color: #333;
 }
 .buddyBlue:hover, .buddyBlack:hover {
 	cursor: pointer;
 	background-color: #97CEEC;
 }
 .buddyBlue:active, .buddyBlack:active {
-	background-color: #333;
+	background-color: #000;
 }
-	
+#conversationWindow {
+	float: left;
+	border: 1px solid #444;
+	width: 700px;
+	height: 400px;
+	display: none;
+	margin-left: 10px;
+}
