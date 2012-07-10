@@ -126,7 +126,7 @@ function connect(username, password) {
 				$('#logout').fadeOut('fast', function() {
 					$('.button').fadeOut();
 					$('#buddyList').fadeOut();
-					$('#conversationWindow').fadeOut();
+					//$('#conversationWindow').fadeOut();
 					$('#loginInfo').css('color', '#999');
 					$('#loginInfo').html('Thank you for using Cryptocat.');
 					$('#bubble').animate({'width': '670px'});

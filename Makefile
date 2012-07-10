@@ -1,4 +1,5 @@
 chrome:
+	cp src/common/img/* src/chrome/img/
 	cat src/chrome/js/src/seedrandom.js > src/chrome/js/build.js
 	cat src/chrome/js/src/aes.js >> src/chrome/js/build.js
 	cat src/chrome/js/src/mode-ctr.js >> src/chrome/js/build.js
@@ -11,6 +12,7 @@ chrome:
 	cat src/chrome/js/src/elliptic.js >> src/chrome/js/build.js
 	cd src/chrome/ && zip -r9 cryptocat-chrome.zip *
 	mv src/chrome/cryptocat-chrome.zip .
+	rm -f src/chrome/img/*
 
 clean:
 	-rm src/client/chrome/js/build.js
