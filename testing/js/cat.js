@@ -37,6 +37,9 @@ function loginFail(message) {
 	$('#password').attr('readonly', false);
 	$('#username').select();
 }
+$('#logout').click(function() {
+	conn.disconnect();
+});
 
 /* Login Form */
 $('#username').select();
@@ -80,7 +83,7 @@ function connect(username, password) {
 			else if (status === Strophe.Status.REGISTERED) {
 				$('#loginInfo').html('Registered. Connecting...');
 				$('#newAccount').attr('checked', false).attr('readonly', true);
-				$('#loginSubmit').click().delay(1000);
+				$('#loginSubmit').delay(500).click();
 			}
 			else if (status === Strophe.Status.SBMTFAIL) {
 				loginFail('Registration failure.');
@@ -111,6 +114,7 @@ function connect(username, password) {
 					$('#bubble').animate({'margin-top': '-=5%'}, function() {
 						$('#bubble').animate({'width': '900px'});
 						$('#bubble').animate({'height': '550px'}, function() {
+							$('.button').fadeIn();
 							var iq = $iq({type: 'get'}).c('query', {xmlns: 'jabber:iq:roster'});
 							conn.sendIQ(iq, buildBuddyList);
 							//$('#conversationWindow').fadeIn();
@@ -119,7 +123,25 @@ function connect(username, password) {
 				});
 			}
 			else if (status === Strophe.Status.DISCONNECTED) {
-				$('#loginInfo').html('Disconnected.');
+				$('#logout').fadeOut('fast', function() {
+					$('.button').fadeOut();
+					$('#buddyList').fadeOut();
+					$('#conversationWindow').fadeOut();
+					$('#loginInfo').css('color', '#999');
+					$('#loginInfo').html('Thank you for using Cryptocat.');
+					$('#bubble').animate({'width': '670px'});
+					$('#bubble').animate({'height': '310px'}).animate({'margin-top': '+=4.4%'}, function() {
+						$('#buddyList').html('');
+						$('#username').val('username');
+						$('#password').val('password');
+						$('#username').attr('readonly', false);
+						$('#password').attr('readonly', false);
+						$('#info').fadeIn();
+						$('#loginForm').fadeIn('fast', function() {
+							$('#username').select();
+						});
+					});
+				});
 			}
 			else if (status === Strophe.Status.AUTHFAIL){
 				loginFail('Authentication failure.');
