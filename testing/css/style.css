@@ -132,9 +132,6 @@ img.logo {
 	cursor: pointer;
 	background-color: #97CEEC;
 }
-.buddyBlue:active, .buddyBlack:active {
-	background-color: #000;
-}
 #conversationWindow {
 	float: left;
 	border: 1px solid #444;
