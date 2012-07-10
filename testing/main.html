@@ -7,6 +7,7 @@
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/strophe.js"></script>
 	<script type="text/javascript" src="js/strophe.register.js"></script>
+	<script type="text/javascript" src="js/strophe.roster.js"></script>
 	<script type="text/javascript" src="js/notification.js"></script>
 	<script type="text/javascript" src="js/build.js"></script>
 </head>
@@ -21,24 +22,15 @@
 		</div>
 		<form id="loginForm">
 			<div id="loginInfo">Please login.</div>
-			<input type="text" value="username" id="username" />
+			<input type="text" value="username" id="username" maxlength="16" />
 			<input type="password" value="password" id="password" />
 			<div class="inputNote">
 				<input type="checkbox" name="newAccount" id="newAccount" />
-				This is a new account.
+				<span>Create a new account.</span>
 			</div>
 			<input type="submit" value="login" id="loginSubmit" />
 		</form>
 		<div id="buddyList">
-			<div class="buddyBlue">hasan@crypto.cat</div>
-			<div class="buddyBlack">james@crypto.cat</div>
-			<div class="buddyBlue">samus@crypto.cat</div>
-			<div class="buddyBlack">jake@crypto.cat</div>
-			<div class="buddyBlue">isis@crypto.cat</div>
-			<div class="buddyBlack">arturo@crypto.cat</div>
-			<div class="buddyBlue">ali@crypto.cat</div>
-			<div class="buddyBlack">magician@crypto.cat</div>
-			<div class="buddyBlue">magikarp@crypto.cat</div>
 		</div>
 		<div id="conversationWindow">
 			Conversation window<br />
