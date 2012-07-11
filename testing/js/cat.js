@@ -3,6 +3,17 @@ var domain =  'crypto.cat';
 var conn;
 var myID;
 $('#username').attr('autocomplete', 'off');
+function loginFail(message) {
+	$('#loginInfo').html(message);
+	$('#bubble').animate({'left': '+=5px'}, 130)
+		.animate({'left': '-=10px'}, 130)
+		.animate({'left': '+=5px'}, 130);
+	$('#loginInfo').css('color', '#F00');
+	$('#username').attr('readonly', false);
+	$('#password').attr('readonly', false);
+	$('#loginSubmit').attr('readonly', false);
+	$('#username').select();
+}
 function jid2ID(jid) {
 	jid = jid.match(/^(\w|\@|\.)+/);
 	return jid[0].replace('@', '-').replace('.', '-');
@@ -44,17 +55,16 @@ function updatePresence(presence) {
 		}
 		return true;
 }
-function loginFail(message) {
-	$('#loginInfo').html(message);
-	$('#bubble').animate({'left': '+=5px'}, 130)
-		.animate({'left': '-=10px'}, 130)
-		.animate({'left': '+=5px'}, 130);
-	$('#loginInfo').css('color', '#F00');
-	$('#username').attr('readonly', false);
-	$('#password').attr('readonly', false);
-	$('#loginSubmit').attr('readonly', false);
-	$('#username').select();
+function dialogBox(data) {
+	$('#dialogBoxContent').html(data);
+	$('#dialogBox').animate({'top': '+=460px'}).animate({'top': '-=10px'});
 }
+$('#dialogBoxClose').click(function() {
+	$('#dialogBox').animate({'top': '+=10px'}).animate({'top': '-450px'});
+});
+$('#add').click(function() {
+	dialogBox('Add buddy dialog goes here');
+});
 $('#logout').click(function() {
 	conn.disconnect();
 });
@@ -138,10 +148,12 @@ function connect(username, password) {
 						$('#bubble').animate({'width': '900px'});
 						$('#bubble').animate({'height': '550px'}, function() {
 							$('.button').fadeIn();
+							//$('#buddyListStart').fadeIn();
 							conn.roster.init(conn);
 							conn.roster.get(function(roster) {
 								buildBuddyList(roster);
 							});
+							$('#buddyListStart').html(username + '@' + domain);
 							conn.addHandler(updatePresence, null, 'presence');
 							conn.send($pres());
 							myID = jid2ID(username + '@' + domain);

@@ -25,11 +25,12 @@ img.logo {
 }
 #bubble {
 	position: relative;
+	z-index: 1;
 	width: 670px;
 	height: 310px;
 	margin: 5% auto 0 auto;
 	background-color: #000;
-	border-radius: 15px 0 15px 15px;
+	border-radius: 12px 0 12px 12px;
 	box-shadow: 4px 4px #76BDE5;
 }
 #bubble:after {
@@ -130,10 +131,7 @@ img.logo {
 	display: none;
 	position: relative;
 	border-left: 3px solid #111;
-}
-.buddy:hover {
 	cursor: pointer;
-	background-color: #97CEEC;
 }
 #conversationWindow {
 	float: left;
@@ -142,4 +140,39 @@ img.logo {
 	height: 400px;
 	display: none;
 	margin-left: 10px;
+}
+#buddyListStart {
+	display: block;
+	width: 100%;
+	font-size: 10px;
+	padding: 4px;
+	margin-left: -19px;
+	display: none;
+	background-color: #006;
+}
+#dialogBox {
+	position: absolute;
+	width: 470px;
+	height: 240px;
+	border-radius: 10px 0 10px 10px;
+	margin: 120px auto 0 -235px;
+	left: 50%;
+	z-index: 2;
+	background-color: rgba(0, 0, 0, 0.94);
+	border: 1px solid #97CEEC;
+	box-shadow: 2px 2px #97CEEC;
+	top: -450px;
+}
+#dialogBoxClose {
+	width: 18px;
+	height: 18px;
+	font-size: 12px;
+	text-align: center;
+	color: #FFF;
+	background-color: #97CEEC;
+	float: right;
+	cursor: pointer;
+}
+#dialogBoxContent {
+	padding: 10px;
 }
