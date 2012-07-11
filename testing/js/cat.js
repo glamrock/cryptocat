@@ -21,9 +21,9 @@ function buildBuddyList(roster) {
 	});
 }
 function updatePresence(presence) { 
-	console.log(presence);
 	var from = jid2ID($(presence).attr('from'));
 		if ($(presence).attr('type') === 'unavailable') {
+			$('#' + from).attr('status', 'offline');
 			$('#' + from).animate({'color': '#BBB', 'backgroundColor': '#222', 'borderLeftColor': '#111'});
 			$('#' + from).slideUp(function() {
 				$(this).insertBefore('#buddyListEnd').slideDown();
@@ -31,9 +31,11 @@ function updatePresence(presence) {
 		}
 		else {
 			if ($(presence).find('show').text() === '' || $(presence).find('show').text() === 'chat') {
+				$('#' + from).attr('status', 'online');
 				$('#' + from).animate({'color': '#FFF', 'backgroundColor': '#76BDE5', 'borderLeftColor': '#6BA7C9'});
 			}
 			else {
+				$('#' + from).attr('status', 'away');
 				$('#' + from).animate({'color': '#FFF', 'backgroundColor': '#F00', 'borderLeftColor': '#E00'});
 			}
 			$('#' + from).slideUp(function() {
