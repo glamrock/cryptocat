@@ -9,6 +9,22 @@ window.console = {
 }
 */
 
+function gen(size, extra, s) {
+	if (s) {
+		Math.seedrandom(Crypto.Fortuna.RandomData(512) + Whirlpool(seed));
+	}
+	var charset = '123456789';
+	if (extra) {
+		charset += 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+	}
+	var str = charset.charAt(Math.floor(Math.random() * charset.length)).toString();
+	charset += '0';
+	while (str.length < size) {
+		str += charset.charAt(Math.floor(Math.random() * charset.length));
+	}
+	return str;
+}
+
 function debugLog(name, value) {
 	var debug = document.getElementById("debug_content");
 	var div = document.createElement("div")

@@ -1,24 +1,11 @@
 /* Initialization */
 var conn;
 $('#username').attr('autocomplete', 'off');
-function jidToId(jid) {
-	return Strophe.getBareJidFromJid(jid);
-		//.replace('@', '-')
-		//.replace('.', '-');
-}
-function buildBuddyList(iq) {
-	console.log(iq);
-	$(iq).find('item').each(function() {
-		var jid = $(this).attr('jid');
-		var name = $(this).attr('name') || jid;
-		var jidID = jidToId(jid);
-		if ($('#buddyList div:last').attr('class') === 'buddyBlue') {
-			$('#buddyList').append('<div class="buddyBlue">' + jid + '</div>');
-		}
-		else {
-			$('#buddyList').append('<div class="buddyBlue">' + jid + '</div>');
-		}
-	});
+function buildBuddyList(roster) {
+	console.log(roster);
+	for (var i in roster) {
+		$('#buddyList').append('<div class="buddyBlue">' + roster[i].jid + '</div>');
+	}
 	$('#buddyList').fadeIn(130, function() {
 		function fadeAll(elems) {
 			elems.filter(':hidden:first').fadeIn(130, function() { fadeAll(elems); });
@@ -29,9 +16,9 @@ function buildBuddyList(iq) {
 }
 function loginFail(message) {
 	$('#loginInfo').html(message);
-	$('#bubble').animate({'left': '+=5px'}, 100)
-		.animate({'left': '-=10px'}, 100)
-		.animate({'left': '+=5px'}, 100);
+	$('#bubble').animate({'left': '+=5px'}, 130)
+		.animate({'left': '-=10px'}, 130)
+		.animate({'left': '+=5px'}, 130);
 	$('#loginInfo').css('color', '#F00');
 	$('#username').attr('readonly', false);
 	$('#password').attr('readonly', false);
@@ -115,8 +102,10 @@ function connect(username, password) {
 						$('#bubble').animate({'width': '900px'});
 						$('#bubble').animate({'height': '550px'}, function() {
 							$('.button').fadeIn();
-							var iq = $iq({type: 'get'}).c('query', {xmlns: 'jabber:iq:roster'});
-							conn.sendIQ(iq, buildBuddyList);
+							conn.roster.init(conn);
+							conn.roster.get(function(roster) {
+								buildBuddyList(roster);
+							});
 							//$('#conversationWindow').fadeIn();
 						});
 					});
@@ -130,7 +119,7 @@ function connect(username, password) {
 					$('#loginInfo').css('color', '#999');
 					$('#loginInfo').html('Thank you for using Cryptocat.');
 					$('#bubble').animate({'width': '670px'});
-					$('#bubble').animate({'height': '310px'}).animate({'margin-top': '+=4.4%'}, function() {
+					$('#bubble').animate({'height': '310px'}).animate({'margin-top': '+=4.25%'}, function() {
 						$('#buddyList').html('');
 						$('#username').val('username');
 						$('#password').val('password');
