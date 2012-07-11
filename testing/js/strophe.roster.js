@@ -63,7 +63,7 @@ Strophe.addConnectionPlugin('roster',
                 try
                 {
                     // Presence subscription
-                    conn.addHandler(roster._onReceivePresence.bind(roster), null, 'presence', null, null, null);
+                    //conn.addHandler(roster._onReceivePresence.bind(roster), null, 'presence', null, null, null);
                     conn.addHandler(roster._onReceiveIQ.bind(roster), Strophe.NS.ROSTER, 'iq', "set", null, null);
                 }
                 catch (e)

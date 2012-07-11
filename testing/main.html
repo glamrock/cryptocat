@@ -5,6 +5,7 @@
 	<link rel="stylesheet" href="css/style.css" type="text/css" />
 	<link rel="icon" type="image/gif" href="img/favicon.gif" />
 	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/jquery.color.js"></script>
 	<script type="text/javascript" src="js/strophe.js"></script>
 	<script type="text/javascript" src="js/strophe.register.js"></script>
 	<script type="text/javascript" src="js/strophe.roster.js"></script>
@@ -20,6 +21,8 @@
 		<div id="info">
 			<h1>Welcome to Cryptocat.</h1>
 			<p>Cryptocat is an instant messaging platform that lets you communicate with friends using client-side encryption.</p>
+			<p>Your conversations are encrypted before going through the network and can only be decrypted by the other end of the conversation.</p>
+			<p>Cryptocat is free software built on open standards.</p>
 		</div>
 		<form id="loginForm">
 			<div id="loginInfo">Please login.</div>
@@ -32,6 +35,8 @@
 			<input type="submit" value="login" id="loginSubmit" />
 		</form>
 		<div id="buddyList">
+			<span id="buddyListStart"></span>
+			<span id="buddyListEnd"></span>
 		</div>
 		<div id="conversationWindow">
 			Conversation window<br />

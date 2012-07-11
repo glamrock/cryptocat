@@ -119,24 +119,19 @@ img.logo {
 	width: 150px;
 	display: none;
 }
-.buddyBlue, .buddyBlack {
-	background-color: #76BDE5;
-	color: #FFF;
+.buddy {
+	background-color: #222;
+	color: #BBB;
 	font-weight: bold;
 	padding: 8px;
 	font-size: 12px;
 	width: 100%;
 	margin-left: -19px;
 	display: none;
+	position: relative;
+	border-left: 3px solid #111;
 }
-.buddyBlue {
-	border-left: 3px solid #6BA7C9;
-}
-.buddyBlack {
-	border-left: 3px solid #222;
-	background-color: #333;
-}
-.buddyBlue:hover, .buddyBlack:hover {
+.buddy:hover {
 	cursor: pointer;
 	background-color: #97CEEC;
 }

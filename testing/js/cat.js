@@ -1,10 +1,16 @@
 /* Initialization */
+var domain =  'crypto.cat';
 var conn;
+var myID;
 $('#username').attr('autocomplete', 'off');
+function jid2ID(jid) {
+	jid = jid.match(/^(\w|\@|\.)+/);
+	return jid[0].replace('@', '-').replace('.', '-');
+}
 function buildBuddyList(roster) {
 	console.log(roster);
 	for (var i in roster) {
-		$('#buddyList').append('<div class="buddyBlue">' + roster[i].jid + '</div>');
+		$('<div class="buddy" id="' + jid2ID(roster[i].jid) + '">' + roster[i].jid + '</div>').insertAfter('#buddyListStart');
 	}
 	$('#buddyList').fadeIn(130, function() {
 		function fadeAll(elems) {
@@ -14,6 +20,28 @@ function buildBuddyList(roster) {
 		
 	});
 }
+function updatePresence(presence) { 
+	console.log(presence);
+	var from = jid2ID($(presence).attr('from'));
+		if ($(presence).attr('type') === 'unavailable') {
+			$('#' + from).animate({'color': '#BBB', 'backgroundColor': '#222', 'borderLeftColor': '#111'});
+			$('#' + from).slideUp(function() {
+				$(this).insertBefore('#buddyListEnd').slideDown();
+			});
+		}
+		else {
+			if ($(presence).find('show').text() === '' || $(presence).find('show').text() === 'chat') {
+				$('#' + from).animate({'color': '#FFF', 'backgroundColor': '#76BDE5', 'borderLeftColor': '#6BA7C9'});
+			}
+			else {
+				$('#' + from).animate({'color': '#FFF', 'backgroundColor': '#F00', 'borderLeftColor': '#E00'});
+			}
+			$('#' + from).slideUp(function() {
+				$(this).insertAfter('#buddyListStart').slideDown();
+			});
+		}
+		return true;
+}
 function loginFail(message) {
 	$('#loginInfo').html(message);
 	$('#bubble').animate({'left': '+=5px'}, 130)
@@ -22,6 +50,7 @@ function loginFail(message) {
 	$('#loginInfo').css('color', '#F00');
 	$('#username').attr('readonly', false);
 	$('#password').attr('readonly', false);
+	$('#loginSubmit').attr('readonly', false);
 	$('#username').select();
 }
 $('#logout').click(function() {
@@ -37,8 +66,12 @@ $('#password').click(function() {
 	$(this).select();
 });
 $('#loginForm').submit(function() {
+	if ($('#loginSubmit').attr('readonly')) {
+		return false;
+	}
 	$('#username').attr('readonly', true);
 	$('#password').attr('readonly', true);
+	$('#loginSubmit').attr('readonly', true);
 	if ($('#username').val() === '' || $('#username').val() === 'username') {
 		loginFail('Please enter a username.');
 		$('#username').focus();
@@ -81,7 +114,7 @@ function connect(username, password) {
 		login();
 	}
 	function login() {
-		conn.connect(username + '@crypto.cat', password, function(status) {
+		conn.connect(username + '@' + domain, password, function(status) {
 			if (status === Strophe.Status.CONNECTING) {
 				$('#loginInfo').css('color', '#999');
 				$('#loginInfo').html('Connecting...');
@@ -89,6 +122,7 @@ function connect(username, password) {
 			else if (status === Strophe.Status.CONNFAIL) {
 				$('#username').attr('readonly', false);
 				$('#password').attr('readonly', false);
+				$('#loginSubmit').attr('readonly', false);
 				$('#loginInfo').html('Connection failed.');
 				$('#loginInfo').css('color', '#F00');
 			}
@@ -106,6 +140,9 @@ function connect(username, password) {
 							conn.roster.get(function(roster) {
 								buildBuddyList(roster);
 							});
+							conn.addHandler(updatePresence, null, 'presence');
+							conn.send($pres());
+							myID = jid2ID(username + '@' + domain);
 							//$('#conversationWindow').fadeIn();
 						});
 					});
@@ -120,11 +157,12 @@ function connect(username, password) {
 					$('#loginInfo').html('Thank you for using Cryptocat.');
 					$('#bubble').animate({'width': '670px'});
 					$('#bubble').animate({'height': '310px'}).animate({'margin-top': '+=4.25%'}, function() {
-						$('#buddyList').html('');
+						$('#buddyList div').remove();
 						$('#username').val('username');
 						$('#password').val('password');
 						$('#username').attr('readonly', false);
 						$('#password').attr('readonly', false);
+						$('#loginSubmit').attr('readonly', false);
 						$('#info').fadeIn();
 						$('#loginForm').fadeIn('fast', function() {
 							$('#username').select();
