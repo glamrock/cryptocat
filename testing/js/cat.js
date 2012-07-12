@@ -51,7 +51,7 @@ function updatePresence(presence) {
 		var authorizeForm = '<form id="authorizeForm"><div class="bar">authorize new buddy?</div>'
 			+ '<div class="bar">' + rosterID + '</div>'
 			+ '<div id="yes" class="yes">yes</div><div id="no" class="no">no</div></form>';
-		dialogBox(authorizeForm, 0, function() {
+		dialogBox(authorizeForm, 1, function() {
 			conn.addHandler(updatePresence, null, 'presence');
 		});
 		$('#yes').click(function() {
@@ -81,14 +81,18 @@ function updatePresence(presence) {
 	return true;
 }
 function dialogBox(data, closeable, onClose) {
-	$('#dialogBoxClose').css('display', 'block');
-	if (!closeable) {
-		$('#dialogBoxClose').css('display', 'none');
+	if (closeable) {
+		$('#dialogBoxClose').css('display', 'block');
 	}
 	$('#dialogBoxContent').html(data);
 	$('#dialogBox').animate({'top': '+=460px'}, 'fast').animate({'top': '-=10px'}, 'fast');
 	$('#dialogBoxClose').click(function() {
-		$('#dialogBox').animate({'top': '+=10px'}, 'fast').animate({'top': '-450px'}, 'fast');
+		if ($('#dialogBoxClose').css('display') === 'none') {
+			return false;
+		}
+		$('#dialogBox').animate({'top': '+=10px'}, 'fast').animate({'top': '-450px'}, 'fast', function() {
+			$('#dialogBoxClose').css('display', 'none');
+		});
 		if (onClose) {
 			onClose();
 		}
