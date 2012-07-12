@@ -213,7 +213,7 @@ img.logo {
 	background-color: #97CEEC;
 	z-index: 3;
 	width: 700px;
-	height: 400px;
+	height: 445px;
 	display: none;
 	margin-left: 9px;
 	position: relative;
@@ -232,10 +232,10 @@ img.logo {
 	font-size: 13px;
 }
 #conversationWindow .Line2 {
-	background-color: #222;
+	background-color: #111;
 }
 #conversationWindow .sender {
-	background-color: #333;
+	background-color: #222;
 	padding: 8px 10px;
 	width: 60px;
 	margin-right: 20px;
@@ -244,13 +244,14 @@ img.logo {
 }
 #userInputText {
 	background-color: #000;
-	box-shadow: 1px 1px #97CEEC;
 	width: 580px;
 	text-align: left;
 	float: left;
 	margin: 10px 0 10px 10px;
 	display: inline;
 	padding: 10px 6px;
+	border-color: #222;
+	background-color: #222;
 }
 #userInputSubmit {
 	display: inline;
