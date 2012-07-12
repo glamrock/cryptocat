@@ -54,6 +54,7 @@ function updatePresence(presence) {
 		dialogBox(authorizeForm, 0);
 		$('#yes').click(function() {
 			conn.roster.authorize(rosterID);
+			conn.roster.subscribe(rosterID);
 			conn.addHandler(updatePresence, null, 'presence');
 			$('#dialogBoxClose').click();
 		});
@@ -71,7 +72,7 @@ function updatePresence(presence) {
 		}
 		else {
 			$('#' + from).attr('status', 'away');
-			$('#' + from).animate({'color': '#FFF', 'backgroundColor': '#F00', 'borderLeftColor': '#E00'});
+			$('#' + from).animate({'color': '#FFF', 'backgroundColor': '#E93028', 'borderLeftColor': '#E00'});
 		}
 		$('#' + from).slideUp('fast', function() {
 			$(this).insertAfter('#buddyListStart').slideDown('fast');
@@ -105,6 +106,24 @@ $('#add').click(function() {
 		return false;
 	});
 	$('#addBuddyJID').select();
+});
+$('#remove').click(function() {
+	var addBuddyForm = '<form id="removeBuddyForm"><div class="bar">remove a buddy:</div>'
+		+ '<input id="removeBuddyJID" class="bar" type="text" value="user@' + domain + '" autocomplete="off"/>'
+		+ '<input class="yes" id="removeBuddySubmit" type="submit" value="Remove buddy :("/><br /><br />'
+		+ '</form>';
+	dialogBox(addBuddyForm, 1);
+	$('#removeBuddyJID').click(function() {
+		$(this).select();
+	});
+	$('#removeBuddyForm').submit(function() {
+		conn.roster.unauthorize($('#removeBuddyJID').val());
+		conn.roster.unsubscribe($('#removeBuddyJID').val());
+		$('#' + jid2ID($('#removeBuddyJID').val())).remove();
+		$('#dialogBoxClose').click();
+		return false;
+	});
+	$('#removeBuddyJID').select();
 });
 $('#logout').click(function() {
 	conn.disconnect();
