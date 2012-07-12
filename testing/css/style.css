@@ -145,7 +145,7 @@ img.logo {
 	border: 1px solid #222;
 	border-right: none;
 	background-color: rgba(0, 0, 0, 0.94);
-	box-shadow: 2px 2px #97CEEC;
+	box-shadow: 2px 2px #E93028;
 	top: -450px;
 }
 #dialogBoxClose {
@@ -154,7 +154,7 @@ img.logo {
 	font-size: 12px;
 	text-align: center;
 	color: #FFF;
-	background-color: #97CEEC;
+	background-color: #E93028;
 	float: right;
 	cursor: pointer;
 	margin-top: 1px;

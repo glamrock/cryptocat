@@ -1,5 +1,6 @@
 /* Initialization */
 var domain =  'crypto.cat';
+var conversations = [];
 var conn;
 var myID;
 function loginFail(message) {
@@ -27,6 +28,18 @@ function buildBuddyList(roster) {
 			+ rosterID + '</div>').insertAfter('#buddyListStart').slideDown('fast');
 	}
 }
+function goOffline(buddy) {
+	$(buddy).attr('status', 'offline');
+	$(buddy).animate({
+		'color': '#BBB',
+		'backgroundColor': '#222',
+		'borderLeftColor': '#111'
+	});
+	$(buddy).css('cursor', 'default');
+	$(buddy).slideUp('fast', function() {
+		$(this).insertBefore('#buddyListEnd').slideDown('fast');
+	});
+}
 function updatePresence(presence) {
 	var from = jid2ID($(presence).attr('from'));
 	var rosterID = $(presence).attr('from').match(/^(\w|\@|\.)+/)[0];
@@ -41,16 +54,7 @@ function updatePresence(presence) {
 			+ rosterID + '</div>').insertBefore('#buddyListEnd');
 	}
 	if ($(presence).attr('type') === 'unavailable') {
-		$('#' + from).attr('status', 'offline');
-		$('#' + from).animate({
-			'color': '#BBB',
-			'backgroundColor': '#222',
-			'borderLeftColor': '#111'
-		});
-		$('#' + from).css('cursor', 'default');
-		$('#' + from).slideUp('fast', function() {
-			$(this).insertBefore('#buddyListEnd').slideDown('fast');
-		});
+		goOffline('#' + from);
 	}
 	else if ($(presence).attr('type') === 'subscribe') {
 		var authorizeForm = '<form id="authorizeForm"><div class="bar">authorize new buddy?</div>'
@@ -91,15 +95,17 @@ function updatePresence(presence) {
 		$('#' + from).slideUp('fast', function() {
 			$(this).insertAfter('#buddyListStart').slideDown('fast');
 		});
-		$('.buddy').click(function() {
+		$('#' + from).click(function() {
+			$('#buddyList div').each(function(index, item) {
+				if ($(item).css('border-left-width') !== '3px') {
+					$(item).animate({'border-left-width': '3px', 'right': '0px'}, 300, function() {
+					});
+				}
+			});
 			if ($(this).attr('status') !== 'offline' && $(this).css('border-left-width') === '3px') {
-				$(this).slideUp('fast', function() {
-					$(this).insertAfter('#buddyListStart').slideDown('fast', function() {
-						$(this).animate({'border-left-width': '725px', 'right': '722px'}, 300, function() {
-							$('#conversationWindow').slideDown(function() {
-								$('#userInput').fadeIn();
-							});
-						});
+				$(this).animate({'border-left-width': '725px', 'right': '722px'}, 300, function() {
+					$('#conversationWindow').slideDown(function() {
+						$('#userInput').fadeIn();
 					});
 				});
 			}
