@@ -133,6 +133,7 @@ img.logo {
 	display: none;
 	position: relative;
 	border-left: 3px solid #111;
+	z-index: 1;
 }
 #dialogBox {
 	position: absolute;
@@ -203,6 +204,10 @@ img.logo {
 #userInput {
 	display: none;
 }
+#conversationWrapper {
+	width: 711px;
+	overflow: hidden;
+}
 #conversationWindow {
 	float: left;
 	background-color: #97CEEC;
@@ -212,6 +217,30 @@ img.logo {
 	display: none;
 	margin-left: 9px;
 	position: relative;
+	font-size: 12px;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+#conversationWindow .Line0, #conversationWindow .Line1, #conversationWindow .Line2 {
+	background-color: #97CEEC;
+	padding: 8px 10px 7px 0;
+	width: 692px;
+}
+#conversationWindow .Line0 {
+	text-align: center;
+	font-weight: bold;
+	font-size: 13px;
+}
+#conversationWindow .Line2 {
+	background-color: #222;
+}
+#conversationWindow .sender {
+	background-color: #333;
+	padding: 8px 10px;
+	width: 60px;
+	margin-right: 20px;
+	display: inline;
+	text-align: right;
 }
 #userInputText {
 	background-color: #000;

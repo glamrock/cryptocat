@@ -1,8 +1,7 @@
 /* Initialization */
 var domain =  'crypto.cat';
 var conversations = [];
-var conn;
-var myID;
+var conn, myID, currentConversation, username;
 function loginFail(message) {
 	$('#loginInfo').html(message);
 	$('#bubble').animate({'left': '+=5px'}, 130)
@@ -88,7 +87,7 @@ function updatePresence(presence) {
 			$('#' + from).animate({
 				'color': '#FFF',
 				'backgroundColor': '#E93028',
-				'borderLeftColor': '#E00'
+				'borderLeftColor': '#97CEEC'
 			});
 		}
 		$('#' + from).css('cursor', 'pointer');
@@ -103,8 +102,11 @@ function updatePresence(presence) {
 				}
 			});
 			if ($(this).attr('status') !== 'offline' && $(this).css('border-left-width') === '3px') {
-				$(this).animate({'border-left-width': '725px', 'right': '722px'}, 300, function() {
+				$(this).animate({'border-left-width': '25px', 'right': '22px'}, 300, function() {
+					currentConversation = $(this).attr('title');
 					$('#conversationWindow').slideDown(function() {
+						var scrollWidth = document.getElementById('conversationWindow').scrollWidth;
+						$('#conversationWindow').css('width', (702 + scrollWidth) + 'px');
 						$('#userInput').fadeIn();
 					});
 				});
@@ -176,8 +178,38 @@ $('#remove').click(function() {
 	});
 	$('#removeBuddyJID').select();
 });
+function handleMessage(message) {
+	var from = jid2ID($(message).attr('from'));
+	var rosterID = $(message).attr('from').match(/^(\w|\@|\.)+/)[0];
+	var sender = $(message).attr('from').match(/^(\w)+/)[0];
+	var body = $(message).find('body').text();
+	addtoConversation(body, sender, rosterID);
+	return true;
+}
+function addtoConversation(message, sender, conversation) {
+	if (!conversations[conversation]) {
+		conversations[conversation] = '<div class="Line0">Cryptocat chat initiated.</div>';
+	}
+	if (sender === username) {
+		lineDecoration = 1;
+	}
+	else {
+		lineDecoration = 2;
+	}
+	sender = '<span class="sender">' + sender + '</span>';
+	message = '<div class="Line' + lineDecoration + '">' + sender + message + '</div>';
+	conversations[conversation] += message;
+	$('#conversationWindow').append(message);
+	if ((document.getElementById('conversationWindow').scrollHeight - $('#conversationWindow').scrollTop()) < 800) {	
+		$('#conversationWindow').animate({scrollTop: document.getElementById('conversationWindow').scrollHeight + 20}, 600);
+	}
+}
 $('#userInput').submit(function() {
+	var message = $('#userInputText').val();
 	$('#userInputText').val('');
+	conn.send($msg({to: currentConversation, 'type': 'chat'}).c('body').t(message));
+	message = message;
+	addtoConversation(message, username, currentConversation);
 	return false;
 });
 $('#logout').click(function() {
@@ -193,6 +225,7 @@ $('#password').click(function() {
 	$(this).select();
 });
 $('#loginForm').submit(function() {
+	username = $('#username').val();
 	if ($('#loginSubmit').attr('readonly')) {
 		return false;
 	}
@@ -211,7 +244,7 @@ $('#loginForm').submit(function() {
 		loginFail('Username must be alphanumeric.');
 	}
 	else {
-		connect($('#username').val(), $('#password').val());
+		connect(username, $('#password').val());
 	}
 	return false;
 });
@@ -268,6 +301,7 @@ function connect(username, password) {
 							conn.roster.get(function(roster) {
 								buildBuddyList(roster);
 								conn.addHandler(updatePresence, null, 'presence');
+								conn.addHandler(handleMessage, null, 'message', 'chat');
 								conn.send($pres());
 							});
 							myID = jid2ID(username + '@' + domain);
@@ -285,6 +319,9 @@ function connect(username, password) {
 						$('#bubble').animate({'width': '670px'});
 						$('#bubble').animate({'height': '310px'}).animate({'margin-top': '+=4.25%'}, function() {
 							$('#buddyList div').remove();
+							$('#conversationWindow').html();
+							conversations = [];
+							myID = username = null;
 							$('#username').val('username');
 							$('#password').val('password');
 							$('#username').attr('readonly', false);
