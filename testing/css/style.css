@@ -66,7 +66,7 @@ img.logo {
 	float: right;
 	padding-right: 10px;
 }
-#bubble [type=text], #bubble [type=password], #bubble [type=button], #bubble [type=submit] {
+[type=text], [type=password], [type=button], [type=submit] {
 	display: block;
 	background-color: #222;
 	box-shadow: 2px 2px #97CEEC;
@@ -83,12 +83,12 @@ img.logo {
 #bubble #loginSubmit {
 	width: 210px;
 }
-#bubble [type=submit]:hover {
+[type=submit]:hover {
 	cursor: pointer;
 	background-color: #97CEEC;
 	box-shadow: 2px 2px #333;
 }
-#bubble [type=submit]:active {
+[type=submit]:active {
 	border: none;
 	box-shadow: 2px 2px #76BDE5;
 }
@@ -158,8 +158,9 @@ img.logo {
 	margin: 120px auto 0 -235px;
 	left: 50%;
 	z-index: 2;
+	border: 1px solid #222;
+	border-right: none;
 	background-color: rgba(0, 0, 0, 0.94);
-	border: 1px solid #97CEEC;
 	box-shadow: 2px 2px #97CEEC;
 	top: -450px;
 }
@@ -172,7 +173,45 @@ img.logo {
 	background-color: #97CEEC;
 	float: right;
 	cursor: pointer;
+	margin-top: 1px;
+	font-weight: bold;
 }
 #dialogBoxContent {
+	padding: 35px 0 0 0;
+	text-align: center;
+}
+#dialogBoxContent p {
 	padding: 10px;
+	max-width: 340px;
+	margin: 0 auto;
+}
+#dialogBox .bar, #dialogBox .yes, #dialogBox .no {
+	width: 458px;
+	background-color: #333;
+	padding: 6px;
+	font-size: 14px;
+	box-shadow: none;
+	text-align: left;
+	font-weight: bold;
+	font-family: Futura, Helvetica, Arial;
+	margin: 15px 0 0 0;
+	border: none;
+	display: block;
+	box-sizing: content-box;
+}
+#dialogBox .yes {
+	cursor: pointer;
+	background-color: #97CEEC;
+}
+#dialogBox .no {
+	cursor: pointer;
+	background-color: #F00;
+}
+#addBuddyJID, #addBuddySubmit {
+	font-size: 11px;
+	display: inline;
+}
+#addBuddySubmit {
+	width: 150px;
+	margin-left: 10px;
 }

@@ -2,7 +2,6 @@
 var domain =  'crypto.cat';
 var conn;
 var myID;
-$('#username').attr('autocomplete', 'off');
 function loginFail(message) {
 	$('#loginInfo').html(message);
 	$('#bubble').animate({'left': '+=5px'}, 130)
@@ -19,51 +18,93 @@ function jid2ID(jid) {
 	return jid[0].replace('@', '-').replace('.', '-');
 }
 function buildBuddyList(roster) {
-	console.log(roster);
 	for (var i in roster) {
-		$('<div class="buddy" id="' + jid2ID(roster[i].jid) + '">' + roster[i].jid + '</div>').insertAfter('#buddyListStart');
-	}
-	$('#buddyList').fadeIn(130, function() {
-		function fadeAll(elems) {
-			elems.filter(':hidden:first').fadeIn(130, function() { fadeAll(elems); });
+		var rosterID = roster[i].jid;
+		if (rosterID.length > 22) {
+			rosterID = rosterID.substring(0, 19) + '...';
 		}
-		fadeAll($('#buddyList div'));
-		
-	});
+		$('<div class="buddy" title="' + roster[i].jid + '" id="' + jid2ID(roster[i].jid) + '" status="offline">'
+			+ rosterID + '</div>').insertAfter('#buddyListStart').slideDown('fast');
+	}
 }
-function updatePresence(presence) { 
+function updatePresence(presence) {
 	var from = jid2ID($(presence).attr('from'));
-		if ($(presence).attr('type') === 'unavailable') {
-			$('#' + from).attr('status', 'offline');
-			$('#' + from).animate({'color': '#BBB', 'backgroundColor': '#222', 'borderLeftColor': '#111'});
-			$('#' + from).slideUp(function() {
-				$(this).insertBefore('#buddyListEnd').slideDown();
-			});
+	var rosterID = $(presence).attr('from').match(/^(\w|\@|\.)+/)[0];
+	if (from === myID) {
+		return true;
+	}
+	if ($('#' + from).length === 0) {
+		if (rosterID.length > 22) {
+			rosterID = rosterID.substring(0, 19) + '...';
+		}
+		$('<div class="buddy" title="' + from + '" id="' + from + '" status="offline">'
+				+ rosterID + '</div>').insertBefore('#buddyListEnd');
+	}
+	if ($(presence).attr('type') === 'unavailable') {
+		$('#' + from).attr('status', 'offline');
+		$('#' + from).animate({'color': '#BBB', 'backgroundColor': '#222', 'borderLeftColor': '#111'});
+		$('#' + from).slideUp('fast', function() {
+			$(this).insertBefore('#buddyListEnd').slideDown('fast');
+		});
+	}
+	else if ($(presence).attr('type') === 'subscribe') {
+		var authorizeForm = '<form id="authorizeForm"><div class="bar">authorize new buddy?</div>'
+			+ '<div class="bar">' + rosterID + '</div>'
+			+ '<div id="yes" class="yes">yes</div><div id="no" class="no">no</div></form>';
+		dialogBox(authorizeForm, 0);
+		$('#yes').click(function() {
+			conn.roster.authorize(rosterID);
+			conn.addHandler(updatePresence, null, 'presence');
+			$('#dialogBoxClose').click();
+		});
+		$('#no').click(function() {
+			conn.roster.unauthorize(rosterID);
+			conn.addHandler(updatePresence, null, 'presence');
+			$('#dialogBoxClose').click();
+		});
+		return false;
+	}
+	else {
+		if ($(presence).find('show').text() === '' || $(presence).find('show').text() === 'chat') {
+			$('#' + from).attr('status', 'online');
+			$('#' + from).animate({'color': '#FFF', 'backgroundColor': '#76BDE5', 'borderLeftColor': '#6BA7C9'});
 		}
 		else {
-			if ($(presence).find('show').text() === '' || $(presence).find('show').text() === 'chat') {
-				$('#' + from).attr('status', 'online');
-				$('#' + from).animate({'color': '#FFF', 'backgroundColor': '#76BDE5', 'borderLeftColor': '#6BA7C9'});
-			}
-			else {
-				$('#' + from).attr('status', 'away');
-				$('#' + from).animate({'color': '#FFF', 'backgroundColor': '#F00', 'borderLeftColor': '#E00'});
-			}
-			$('#' + from).slideUp(function() {
-				$(this).insertAfter('#buddyListStart').slideDown();
-			});
+			$('#' + from).attr('status', 'away');
+			$('#' + from).animate({'color': '#FFF', 'backgroundColor': '#F00', 'borderLeftColor': '#E00'});
 		}
-		return true;
+		$('#' + from).slideUp('fast', function() {
+			$(this).insertAfter('#buddyListStart').slideDown('fast');
+		});
+	}
+	return true;
 }
-function dialogBox(data) {
+function dialogBox(data, closeable) {
+	$('#dialogBoxClose').css('display', 'block');
+	if (!closeable) {
+		$('#dialogBoxClose').css('display', 'none');
+	}
 	$('#dialogBoxContent').html(data);
-	$('#dialogBox').animate({'top': '+=460px'}).animate({'top': '-=10px'});
+	$('#dialogBox').animate({'top': '+=460px'}, 'fast').animate({'top': '-=10px'}, 'fast');
 }
 $('#dialogBoxClose').click(function() {
-	$('#dialogBox').animate({'top': '+=10px'}).animate({'top': '-450px'});
+	$('#dialogBox').animate({'top': '+=10px'}, 'fast').animate({'top': '-450px'}, 'fast');
 });
 $('#add').click(function() {
-	dialogBox('Add buddy dialog goes here');
+	var addBuddyForm = '<form id="addBuddyForm"><div class="bar">add new buddy:</div>'
+		+ '<input id="addBuddyJID" class="bar" type="text" value="user@' + domain + '" autocomplete="off"/>'
+		+ '<input class="yes" id="addBuddySubmit" type="submit" value="Send buddy request"/><br /><br />'
+		+ '</form>';
+	dialogBox(addBuddyForm, 1);
+	$('#addBuddyJID').click(function() {
+		$(this).select();
+	});
+	$('#addBuddyForm').submit(function() {
+		conn.roster.subscribe($('#addBuddyJID').val());
+		$('#dialogBoxClose').click();
+		return false;
+	});
+	$('#addBuddyJID').select();
 });
 $('#logout').click(function() {
 	conn.disconnect();
@@ -148,14 +189,15 @@ function connect(username, password) {
 						$('#bubble').animate({'width': '900px'});
 						$('#bubble').animate({'height': '550px'}, function() {
 							$('.button').fadeIn();
+							$('#buddyList').fadeIn();
 							//$('#buddyListStart').fadeIn();
 							conn.roster.init(conn);
 							conn.roster.get(function(roster) {
 								buildBuddyList(roster);
+								conn.addHandler(updatePresence, null, 'presence');
+								conn.send($pres());
 							});
 							$('#buddyListStart').html(username + '@' + domain);
-							conn.addHandler(updatePresence, null, 'presence');
-							conn.send($pres());
 							myID = jid2ID(username + '@' + domain);
 							//$('#conversationWindow').fadeIn();
 						});
@@ -163,9 +205,8 @@ function connect(username, password) {
 				});
 			}
 			else if (status === Strophe.Status.DISCONNECTED) {
-				$('#logout').fadeOut('fast', function() {
-					$('.button').fadeOut();
-					$('#buddyList').fadeOut();
+				$('.button').fadeOut('fast');
+				$('#buddyList').fadeOut(function() {
 					//$('#conversationWindow').fadeOut();
 					$('#loginInfo').css('color', '#999');
 					$('#loginInfo').html('Thank you for using Cryptocat.');
