@@ -37,12 +37,17 @@ function updatePresence(presence) {
 		if (rosterID.length > 22) {
 			rosterID = rosterID.substring(0, 19) + '...';
 		}
-		$('<div class="buddy" title="' + from + '" id="' + from + '" status="offline">'
+		$('<div class="buddy" title="' + rosterID + '" id="' + from + '" status="offline">'
 				+ rosterID + '</div>').insertBefore('#buddyListEnd');
 	}
 	if ($(presence).attr('type') === 'unavailable') {
 		$('#' + from).attr('status', 'offline');
-		$('#' + from).animate({'color': '#BBB', 'backgroundColor': '#222', 'borderLeftColor': '#111'});
+		$('#' + from).animate({
+			'color': '#BBB',
+			'backgroundColor': '#222',
+			'borderLeftColor': '#111'
+		});
+		$('#' + from).css('cursor', 'default');
 		$('#' + from).slideUp('fast', function() {
 			$(this).insertBefore('#buddyListEnd').slideDown('fast');
 		});
@@ -65,15 +70,24 @@ function updatePresence(presence) {
 		});
 		return false;
 	}
-	else if ($(presence).attr('type') !== 'unsubscribed') {
+	else if ($(presence).attr('type') !== 'unsubscribed' && $(presence).attr('type') !== 'error') {
 		if ($(presence).find('show').text() === '' || $(presence).find('show').text() === 'chat') {
 			$('#' + from).attr('status', 'online');
-			$('#' + from).animate({'color': '#FFF', 'backgroundColor': '#76BDE5', 'borderLeftColor': '#6BA7C9'});
+			$('#' + from).animate({
+				'color': '#FFF',
+				'backgroundColor': '#76BDE5',
+				'borderLeftColor': '#6BA7C9'
+			});
 		}
 		else {
 			$('#' + from).attr('status', 'away');
-			$('#' + from).animate({'color': '#FFF', 'backgroundColor': '#E93028', 'borderLeftColor': '#E00'});
+			$('#' + from).animate({
+				'color': '#FFF',
+				'backgroundColor': '#E93028',
+				'borderLeftColor': '#E00'
+			});
 		}
+		$('#' + from).css('cursor', 'pointer');
 		$('#' + from).slideUp('fast', function() {
 			$(this).insertAfter('#buddyListStart').slideDown('fast');
 		});
@@ -104,6 +118,9 @@ function dialogBox(data, closeable, onClose) {
 	});
 }
 $('#add').click(function() {
+	if ($('#dialogBoxClose').css('display') === 'block') {
+		return false;
+	}
 	var addBuddyForm = '<form id="addBuddyForm"><div class="bar">add new buddy:</div>'
 		+ '<input id="addBuddyJID" class="bar" type="text" value="user@' + domain + '" autocomplete="off"/>'
 		+ '<input class="yes" id="addBuddySubmit" type="submit" value="Send buddy request"/><br /><br />'
@@ -120,6 +137,9 @@ $('#add').click(function() {
 	$('#addBuddyJID').select();
 });
 $('#remove').click(function() {
+	if ($('#dialogBoxClose').css('display') === 'block') {
+		return false;
+	}
 	var addBuddyForm = '<form id="removeBuddyForm"><div class="bar">remove a buddy:</div>'
 		+ '<input id="removeBuddyJID" class="bar" type="text" value="user@' + domain + '" autocomplete="off"/>'
 		+ '<input class="yes" id="removeBuddySubmit" type="submit" value="Remove buddy :("/><br /><br />'

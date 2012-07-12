@@ -131,7 +131,6 @@ img.logo {
 	display: none;
 	position: relative;
 	border-left: 3px solid #111;
-	cursor: pointer;
 }
 #conversationWindow {
 	float: left;
@@ -175,6 +174,7 @@ img.logo {
 	cursor: pointer;
 	margin-top: 1px;
 	font-weight: bold;
+	display: none;
 }
 #dialogBoxContent {
 	padding: 35px 0 0 0;
