@@ -7,7 +7,7 @@ function loginFail(message) {
 	$('#bubble').animate({'left': '+=5px'}, 130)
 		.animate({'left': '-=10px'}, 130)
 		.animate({'left': '+=5px'}, 130);
-	$('#loginInfo').css('color', '#F00');
+	$('#loginInfo').css('color', '#E93028');
 	$('#username').attr('readonly', false);
 	$('#password').attr('readonly', false);
 	$('#loginSubmit').attr('readonly', false);
@@ -51,21 +51,21 @@ function updatePresence(presence) {
 		var authorizeForm = '<form id="authorizeForm"><div class="bar">authorize new buddy?</div>'
 			+ '<div class="bar">' + rosterID + '</div>'
 			+ '<div id="yes" class="yes">yes</div><div id="no" class="no">no</div></form>';
-		dialogBox(authorizeForm, 0);
+		dialogBox(authorizeForm, 0, function() {
+			conn.addHandler(updatePresence, null, 'presence');
+		});
 		$('#yes').click(function() {
 			conn.roster.authorize(rosterID);
 			conn.roster.subscribe(rosterID);
-			conn.addHandler(updatePresence, null, 'presence');
 			$('#dialogBoxClose').click();
 		});
 		$('#no').click(function() {
 			conn.roster.unauthorize(rosterID);
-			conn.addHandler(updatePresence, null, 'presence');
 			$('#dialogBoxClose').click();
 		});
 		return false;
 	}
-	else {
+	else if ($(presence).attr('type') !== 'unsubscribed') {
 		if ($(presence).find('show').text() === '' || $(presence).find('show').text() === 'chat') {
 			$('#' + from).attr('status', 'online');
 			$('#' + from).animate({'color': '#FFF', 'backgroundColor': '#76BDE5', 'borderLeftColor': '#6BA7C9'});
@@ -80,17 +80,25 @@ function updatePresence(presence) {
 	}
 	return true;
 }
-function dialogBox(data, closeable) {
+function dialogBox(data, closeable, onClose) {
 	$('#dialogBoxClose').css('display', 'block');
 	if (!closeable) {
 		$('#dialogBoxClose').css('display', 'none');
 	}
 	$('#dialogBoxContent').html(data);
 	$('#dialogBox').animate({'top': '+=460px'}, 'fast').animate({'top': '-=10px'}, 'fast');
+	$('#dialogBoxClose').click(function() {
+		$('#dialogBox').animate({'top': '+=10px'}, 'fast').animate({'top': '-450px'}, 'fast');
+		if (onClose) {
+			onClose();
+		}
+	});
+	$(document).keyup(function(e) {
+		if (e.keyCode == 27) {
+			$('#dialogBoxClose').click();
+		}
+	});
 }
-$('#dialogBoxClose').click(function() {
-	$('#dialogBox').animate({'top': '+=10px'}, 'fast').animate({'top': '-450px'}, 'fast');
-});
 $('#add').click(function() {
 	var addBuddyForm = '<form id="addBuddyForm"><div class="bar">add new buddy:</div>'
 		+ '<input id="addBuddyJID" class="bar" type="text" value="user@' + domain + '" autocomplete="off"/>'
@@ -196,7 +204,7 @@ function connect(username, password) {
 				$('#password').attr('readonly', false);
 				$('#loginSubmit').attr('readonly', false);
 				$('#loginInfo').html('Connection failed.');
-				$('#loginInfo').css('color', '#F00');
+				$('#loginInfo').css('color', '#E93028');
 			}
 			else if (status === Strophe.Status.CONNECTED) {
 				$('#loginInfo').html('Connected.');
