@@ -34,11 +34,11 @@ function updatePresence(presence) {
 		return true;
 	}
 	if ($('#' + from).length === 0) {
-		if (rosterID.length > 22) {
-			rosterID = rosterID.substring(0, 19) + '...';
+		if (rosterID.length > 24) {
+			rosterID = rosterID.substring(0, 21) + '...';
 		}
 		$('<div class="buddy" title="' + rosterID + '" id="' + from + '" status="offline">'
-				+ rosterID + '</div>').insertBefore('#buddyListEnd');
+			+ rosterID + '</div>').insertBefore('#buddyListEnd');
 	}
 	if ($(presence).attr('type') === 'unavailable') {
 		$('#' + from).attr('status', 'offline');
@@ -76,7 +76,7 @@ function updatePresence(presence) {
 			$('#' + from).animate({
 				'color': '#FFF',
 				'backgroundColor': '#76BDE5',
-				'borderLeftColor': '#6BA7C9'
+				'borderLeftColor': '#97CEEC'
 			});
 		}
 		else {
@@ -90,6 +90,19 @@ function updatePresence(presence) {
 		$('#' + from).css('cursor', 'pointer');
 		$('#' + from).slideUp('fast', function() {
 			$(this).insertAfter('#buddyListStart').slideDown('fast');
+		});
+		$('.buddy').click(function() {
+			if ($(this).attr('status') !== 'offline' && $(this).css('border-left-width') === '3px') {
+				$(this).slideUp('fast', function() {
+					$(this).insertAfter('#buddyListStart').slideDown('fast', function() {
+						$(this).animate({'border-left-width': '725px', 'right': '722px'}, 300, function() {
+							$('#conversationWindow').slideDown(function() {
+								$('#userInput').fadeIn();
+							});
+						});
+					});
+				});
+			}
 		});
 	}
 	return true;
@@ -156,6 +169,10 @@ $('#remove').click(function() {
 		return false;
 	});
 	$('#removeBuddyJID').select();
+});
+$('#userInput').submit(function() {
+	$('#userInputText').val('');
+	return false;
 });
 $('#logout').click(function() {
 	conn.disconnect();
@@ -241,37 +258,36 @@ function connect(username, password) {
 						$('#bubble').animate({'height': '550px'}, function() {
 							$('.button').fadeIn();
 							$('#buddyList').fadeIn();
-							//$('#buddyListStart').fadeIn();
 							conn.roster.init(conn);
 							conn.roster.get(function(roster) {
 								buildBuddyList(roster);
 								conn.addHandler(updatePresence, null, 'presence');
 								conn.send($pres());
 							});
-							$('#buddyListStart').html(username + '@' + domain);
 							myID = jid2ID(username + '@' + domain);
-							//$('#conversationWindow').fadeIn();
 						});
 					});
 				});
 			}
 			else if (status === Strophe.Status.DISCONNECTED) {
 				$('.button').fadeOut('fast');
-				$('#buddyList').fadeOut(function() {
-					//$('#conversationWindow').fadeOut();
-					$('#loginInfo').css('color', '#999');
-					$('#loginInfo').html('Thank you for using Cryptocat.');
-					$('#bubble').animate({'width': '670px'});
-					$('#bubble').animate({'height': '310px'}).animate({'margin-top': '+=4.25%'}, function() {
-						$('#buddyList div').remove();
-						$('#username').val('username');
-						$('#password').val('password');
-						$('#username').attr('readonly', false);
-						$('#password').attr('readonly', false);
-						$('#loginSubmit').attr('readonly', false);
-						$('#info').fadeIn();
-						$('#loginForm').fadeIn('fast', function() {
-							$('#username').select();
+				$('#userInput').fadeOut(function() {
+					$('#conversationWindow').slideUp(function() {
+						$('#buddyList').fadeOut();
+						$('#loginInfo').css('color', '#999');
+						$('#loginInfo').html('Thank you for using Cryptocat.');
+						$('#bubble').animate({'width': '670px'});
+						$('#bubble').animate({'height': '310px'}).animate({'margin-top': '+=4.25%'}, function() {
+							$('#buddyList div').remove();
+							$('#username').val('username');
+							$('#password').val('password');
+							$('#username').attr('readonly', false);
+							$('#password').attr('readonly', false);
+							$('#loginSubmit').attr('readonly', false);
+							$('#info').fadeIn();
+							$('#loginForm').fadeIn('fast', function() {
+								$('#username').select();
+							});
 						});
 					});
 				});
