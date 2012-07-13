@@ -181,11 +181,11 @@ $('#remove').click(function() {
 	if ($('#dialogBoxClose').css('display') === 'block') {
 		return false;
 	}
-	var addBuddyForm = '<form id="removeBuddyForm"><div class="bar">remove a buddy:</div>'
+	var removeBuddyForm = '<form id="removeBuddyForm"><div class="bar">remove a buddy:</div>'
 		+ '<input id="removeBuddyJID" class="bar" type="text" value="user@' + domain + '" autocomplete="off"/>'
 		+ '<input class="yes" id="removeBuddySubmit" type="submit" value="Remove buddy :("/><br /><br />'
 		+ '</form>';
-	dialogBox(addBuddyForm, 1);
+	dialogBox(removeBuddyForm, 1);
 	$('#removeBuddyJID').click(function() {
 		$(this).select();
 	});
@@ -284,9 +284,8 @@ function connect(username, password) {
 				conn.register.submit();
 			}
 			else if (status === Strophe.Status.REGISTERED) {
-				$('#loginInfo').html('Registered. Connecting...');
-				$('#newAccount').attr('checked', false).attr('readonly', true);
-				$('#loginSubmit').delay(500).click();
+				conn.disconnect();
+				login();
 			}
 			else if (status === Strophe.Status.SBMTFAIL) {
 				loginFail('Registration failure.');
@@ -297,6 +296,7 @@ function connect(username, password) {
 		login();
 	}
 	function login() {
+		conn = new Strophe.Connection('https://crypto.cat/http-bind');
 		conn.connect(username + '@' + domain, password, function(status) {
 			if (status === Strophe.Status.CONNECTING) {
 				$('#loginInfo').css('color', '#999');
@@ -349,6 +349,7 @@ function connect(username, password) {
 							$('#password').val('password');
 							$('#username').attr('readonly', false);
 							$('#password').attr('readonly', false);
+							$('#newAccount').attr('checked', false);
 							$('#loginSubmit').attr('readonly', false);
 							$('#info').fadeIn();
 							$('#loginForm').fadeIn('fast', function() {
