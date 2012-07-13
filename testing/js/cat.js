@@ -204,7 +204,7 @@ function handleMessage(message) {
 	var sender = $(message).attr('from').match(/^(\w)+/)[0];
 	var body = $(message).find('body').text();
 	addtoConversation(body, sender, rosterID);
-	if (currentConversation !== from) {
+	if (currentConversation !== rosterID) {
 		$('#' + from).animate({'background-color': '#97CEEC'});
 	}
 	return true;
