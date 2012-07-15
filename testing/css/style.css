@@ -117,23 +117,26 @@ img.logo {
 	font-size: 20px;
 }
 #buddyList {
-	float:right;
+	float: right;
 	height: 90%;
 	width: 150px;
 	display: none;
+	margin-right: 17px;
 }
 .buddy {
 	background-color: #222;
+	background-position: right center;
+	background-repeat: no-repeat;
 	color: #BBB;
 	font-weight: bold;
-	padding: 8px;
-	font-size: 12px;
+	padding: 7px;
+	font-size: 11px;
 	width: 100%;
-	margin-left: -19px;
 	display: none;
 	position: relative;
 	border-left: 3px solid #111;
 	z-index: 1;
+	
 }
 #dialogBox {
 	position: absolute;
@@ -205,41 +208,45 @@ img.logo {
 	display: none;
 }
 #conversationWrapper {
-	width: 711px;
+	width: 733px;
 	overflow: hidden;
+	float: left;
 }
 #conversationWindow {
-	float: left;
-	background-color: #97CEEC;
 	z-index: 3;
 	width: 700px;
-	height: 445px;
+	height: 412px;
 	display: none;
-	margin-left: 9px;
 	position: relative;
 	font-size: 12px;
 	overflow-x: hidden;
 	overflow-y: scroll;
 }
-#conversationWindow .Line0, #conversationWindow .Line1, #conversationWindow .Line2 {
-	background-color: #97CEEC;
-	padding: 6px 10px 5px 0;
-	width: 692px;
+#conversationInfo, #conversationWindow .Line1, #conversationWindow .Line2 {
+	background-color: #111;
+	padding: 5px 10px 5px 0;
+	width: 723px;
+	line-height: 20px;
 }
-#conversationWindow .Line0 {
+#conversationInfo {
+	background-color: #97CEEC;
 	text-align: center;
 	font-weight: bold;
 	font-size: 13px;
-	padding: 8px 10px 7px 0;
+	padding: 8px 0 7px 0;
+	width: 0;
+	float: right;
+	height: 14px;
 }
 #conversationWindow .Line2 {
-	background-color: #111;
+	background-color: #000;
 }
 #conversationWindow .sender {
-	background-color: #222;
-	padding: 6px 10px;
+	background-color: #97CEEC;
+	padding: 6px;
 	width: 60px;
-	margin-right: 20px;
+	width: 100%;
+	margin: 0 20px 0 0;
 	display: inline;
 	text-align: right;
 }
@@ -250,13 +257,13 @@ img.logo {
 	float: left;
 	margin: 10px 0 10px 10px;
 	display: inline;
-	padding: 10px 6px;
+	padding: 10px 4px;
 	border-color: #222;
 	background-color: #222;
 }
 #userInputSubmit {
 	display: inline;
-	padding: 10px 6px;
+	padding: 10px 7px;
 	width: 80px;
 	box-sizing: content-box;
 	margin: 10px;

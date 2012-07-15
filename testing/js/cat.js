@@ -9,9 +9,12 @@ function scrollDown(speed) {
 }
 function initiateConversation(conversation) {
 	if (!conversations[conversation]) {
-		var date = new Date();
-		conversations[conversation] = '<div class="Line0">Cryptocat chat initiated at ' + date + '</div>';
+		conversations[conversation] = '';
 	}
+}
+function conversationInfo(conversation) {
+	var date = new Date();
+	$('#conversationInfo').html('Cryptocat chat initiated at ' + date + '</div>');
 }
 function loginFail(message) {
 	$('#loginInfo').html(message);
@@ -35,20 +38,8 @@ function buildBuddyList(roster) {
 			rosterID = rosterID.substring(0, 19) + '...';
 		}
 		$('<div class="buddy" title="' + roster[i].jid + '" id="' + jid2ID(roster[i].jid) + '" status="offline">'
-			+ rosterID + '</div>').insertAfter('#buddyListStart').slideDown('fast');
+			+ rosterID + '</div>').insertAfter('#buddiesOffline').slideDown('fast');
 	}
-}
-function goOffline(buddy) {
-	$(buddy).attr('status', 'offline');
-	$(buddy).animate({
-		'color': '#BBB',
-		'backgroundColor': '#222',
-		'borderLeftColor': '#111'
-	});
-	$(buddy).css('cursor', 'default');
-	$(buddy).slideUp('fast', function() {
-		$(this).insertBefore('#buddyListEnd').slideDown('fast');
-	});
 }
 function updatePresence(presence) {
 	var from = jid2ID($(presence).attr('from'));
@@ -57,14 +48,25 @@ function updatePresence(presence) {
 		return true;
 	}
 	if ($('#' + from).length === 0) {
-		if (rosterID.length > 24) {
-			rosterID = rosterID.substring(0, 21) + '...';
+		if (rosterID.length > 21) {
+			rosterID = rosterID.substring(0, 18) + '...';
 		}
 		$('<div class="buddy" title="' + rosterID + '" id="' + from + '" status="offline">'
-			+ rosterID + '</div>').insertBefore('#buddyListEnd');
+			+ rosterID + '</div>').insertAfter('#buddiesOffline');
 	}
 	if ($(presence).attr('type') === 'unavailable') {
-		goOffline('#' + from);
+		if ($('#' + from).attr('status') !== 'offline') {
+			$('#' + from).attr('status', 'offline');
+			$('#' + from).animate({
+				'color': '#BBB',
+				'backgroundColor': '#222',
+				'borderLeftColor': '#111'
+			});
+			$('#' + from).css('cursor', 'default');
+			$('#' + from).slideUp('fast', function() {
+				$(this).insertAfter('#buddiesOffline').slideDown('fast');
+			});
+		}
 	}
 	else if ($(presence).attr('type') === 'subscribe') {
 		var authorizeForm = '<form id="authorizeForm"><div class="bar">authorize new buddy?</div>'
@@ -86,48 +88,59 @@ function updatePresence(presence) {
 	}
 	else if ($(presence).attr('type') !== 'unsubscribed' && $(presence).attr('type') !== 'error') {
 		if ($(presence).find('show').text() === '' || $(presence).find('show').text() === 'chat') {
-			$('#' + from).attr('status', 'online');
-			$('#' + from).animate({
-				'color': '#FFF',
-				'backgroundColor': '#76BDE5',
-				'borderLeftColor': '#97CEEC'
-			});
+			if ($('#' + from).attr('status') !== 'online') {
+				$('#' + from).attr('status', 'online');
+				$('#' + from).animate({
+					'color': '#FFF',
+					'backgroundColor': '#76BDE5',
+					'borderLeftColor': '#97CEEC'
+				});
+				$('#' + from).slideUp('fast', function() {
+					$(this).insertAfter('#buddiesOnline').slideDown('fast');
+				});
+			}
 		}
 		else {
-			$('#' + from).attr('status', 'away');
-			$('#' + from).animate({
-				'color': '#FFF',
-				'backgroundColor': '#E93028',
-				'borderLeftColor': '#97CEEC'
-			});
+			if ($('#' + from).attr('status') !== 'away') {
+				$('#' + from).attr('status', 'away');
+				$('#' + from).animate({
+					'color': '#FFF',
+					'backgroundColor': '#E93028',
+					'borderLeftColor': '#97CEEC'
+				});
+				$('#' + from).slideUp('fast', function() {
+					$(this).insertAfter('#buddiesAway').slideDown('fast');
+				});
+			}
 		}
 		$('#' + from).css('cursor', 'pointer');
-		$('#' + from).slideUp('fast', function() {
-			$(this).insertAfter('#buddyListStart').slideDown('fast');
-		});
 		$('#' + from).click(function() {
-			if ($(this).css('border-left-width') !== '3px') {
+			if ($(this).attr('current') === 'yes') {
 				return true;
 			}
 			if ($(this).css('background-color') === 'rgb(151, 206, 236)') {
 				$(this).animate({'background-color': 'rgb(118, 189, 229)'});
+				$(this).css('background-image', 'none');
 			}
 			$('#buddyList div').each(function(index, item) {
-				if ($(item).css('border-left-width') !== '3px') {
-					$(item).animate({'border-left-width': '3px', 'right': '0px'}, 300, function() {
-					});
-				}
+				$(item).attr('current', 'no');
 			});
-			if ($(this).attr('status') !== 'offline') {
+			if ($(this).attr('status') !== 'offline' && currentConversation !== $(this).attr('title')) {
 				currentConversation = $(this).attr('title');
 				initiateConversation(currentConversation);
+				conversationInfo(currentConversation);
 				$('#conversationWindow').html(conversations[currentConversation]);
-				$(this).animate({'border-left-width': '25px', 'right': '22px'}, 300, function() {
-					$('#conversationWindow').slideDown(function() {
-						var scrollWidth = document.getElementById('conversationWindow').scrollWidth;
-						$('#conversationWindow').css('width', (702 + scrollWidth) + 'px');
-						$('#userInput').fadeIn();
-						scrollDown(600);
+				$(this).slideUp('fast', function() {
+					$(this).insertAfter('#currentConversation').slideDown('fast', function() {
+						$(this).attr('current', 'yes');
+						$('#conversationInfo').animate({'width': '733px'}, function() {
+							$('#conversationWindow').slideDown(function() {
+								var scrollWidth = document.getElementById('conversationWindow').scrollWidth;
+								$('#conversationWindow').css('width', (702 + scrollWidth) + 'px');
+								$('#userInput').fadeIn();
+								scrollDown(600);
+							});
+						});
 					});
 				});
 			}
@@ -206,6 +219,7 @@ function handleMessage(message) {
 	addtoConversation(body, sender, rosterID);
 	if (currentConversation !== rosterID) {
 		$('#' + from).animate({'background-color': '#97CEEC'});
+		$('#' + from).css('background-image', 'url("img/message.png")');
 	}
 	return true;
 }
@@ -335,6 +349,8 @@ function connect(username, password) {
 			else if (status === Strophe.Status.DISCONNECTED) {
 				$('.button').fadeOut('fast');
 				$('#userInput').fadeOut(function() {
+					$('#conversationInfo').animate({'width': '0'});
+					$('#conversationInfo').html('');
 					$('#conversationWindow').slideUp(function() {
 						$('#buddyList').fadeOut();
 						$('#loginInfo').css('color', '#999');
