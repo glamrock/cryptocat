@@ -9,10 +9,7 @@ window.console = {
 }
 */
 
-function gen(size, extra, s) {
-	if (s) {
-		Math.seedrandom(Crypto.Fortuna.RandomData(512) + Whirlpool(seed));
-	}
+function gen(size, extra) {
 	var charset = '123456789';
 	if (extra) {
 		charset += 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
@@ -176,7 +173,7 @@ Participant.prototype = {
 	sendProtocolMessage: function(id) {
 		switch(id) {
 			case 'randomX':
-			return {'*': {'publicKey':this.publicKey, 'randomX': gen(16,1,0)}};
+			return {'*': {'publicKey':this.publicKey, 'randomX': gen(16,1)}};
 			
             case 'ake':
 			var result = {};
