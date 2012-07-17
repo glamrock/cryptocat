@@ -5,6 +5,7 @@
 	<link rel="stylesheet" href="css/style.css" type="text/css" />
 	<link rel="icon" type="image/gif" href="img/favicon.gif" />
 	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/jquery.color.js"></script>
 	<script type="text/javascript" src="js/strophe.js"></script>
 	<script type="text/javascript" src="js/strophe.register.js"></script>
 	<script type="text/javascript" src="js/strophe.roster.js"></script>
@@ -12,18 +13,26 @@
 	<script type="text/javascript" src="js/build.js"></script>
 </head>
 <body>
+	<div id="dialogBox">
+		<div id="dialogBoxClose">x</div>
+		<div id="dialogBoxContent"></div>
+	</div>
 	<div id="bubble">
 		<div id="head">
 			<img src="img/cryptocat.png" alt="Cryptocat" class="logo" />
 			<img class="button" id="logout" src="img/logout.png" title="Logout" alt="Logout" />
+			<img class="button" id="remove" src="img/remove.png" title="Remove Buddy" alt="Remove Buddy" />
+			<img class="button" id="add" src="img/add.png" title="Add Buddy" alt="Add Buddy" />
 		</div>
 		<div id="info">
 			<h1>Welcome to Cryptocat.</h1>
 			<p>Cryptocat is an instant messaging platform that lets you communicate with friends using client-side encryption.</p>
+			<p>Your conversations are encrypted before going through the network and can only be decrypted by the other end of the conversation.</p>
+			<p>Cryptocat is free software built on open standards.</p>
 		</div>
 		<form id="loginForm">
 			<div id="loginInfo">Please login.</div>
-			<input type="text" value="username" id="username" maxlength="16" />
+			<input type="text" value="username" id="username" maxlength="16" autocomplete="off" />
 			<input type="password" value="password" id="password" />
 			<div class="inputNote">
 				<input type="checkbox" name="newAccount" id="newAccount" />
@@ -31,11 +40,23 @@
 			</div>
 			<input type="submit" value="login" id="loginSubmit" />
 		</form>
-		<div id="buddyList">
+		<div id="buddyWrapper">
+			<div id="buddyList">
+				<span id="currentConversation"></span>
+				<span id="buddiesOnline"></span>
+				<span id="buddiesAway"></span>
+				<span id="buddiesOffline"></span>
+			</div>
 		</div>
-		<div id="conversationWindow">
-			Conversation window<br />
+		<div id="conversationInfo"></div>
+		<div id="conversationWrapper">
+			<div id="conversationWindow">
+			</div>
 		</div>
+		<form id="userInput">
+			<input type="text" id="userInputText" autocomplete="off" />
+			<input type="submit" id="userInputSubmit" value="Send" />
+		</form>
 	</div>
 	<script type="text/javascript" src="js/cat.js"></script>
 </body>
