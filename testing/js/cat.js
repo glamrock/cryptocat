@@ -12,9 +12,20 @@ function initiateConversation(conversation) {
 		conversations[conversation] = '';
 	}
 }
-function conversationInfo(conversation) {
+function conversationSwitch(buddy) {
 	var date = new Date();
-	$('#conversationInfo').html('Cryptocat chat initiated at ' + date + '</div>');
+	$('#conversationInfo').animate({'width': '750px'}, function() {
+		$('#conversationWindow').slideDown('fast', function() {
+			$('#conversationInfo').html('<span>Conversation initiated at ' + date.getHours() 
+				+ ':' + date.getMinutes() + ':' + date.getSeconds() + '</span>');
+			$('#userInput').fadeIn('fast', function() {
+				$('#userInputText').focus();
+			});
+			var scrollWidth = document.getElementById('conversationWindow').scrollWidth;
+			$('#conversationWindow').css('width', (712 + scrollWidth) + 'px');
+			scrollDown(600);
+		});
+	});
 }
 function loginFail(message) {
 	$('#loginInfo').html(message);
@@ -31,26 +42,26 @@ function jid2ID(jid) {
 	jid = jid.match(/^(\w|\@|\.)+/);
 	return jid[0].replace('@', '-').replace('.', '-');
 }
+function shortenBuddy(buddy, length) {
+	if (buddy.length > length) {
+		return buddy.substring(0, (length -2)) + '..';
+	}
+	return buddy;
+}
 function buildBuddyList(roster) {
 	for (var i in roster) {
-		var rosterID = roster[i].jid;
-		if (rosterID.length > 22) {
-			rosterID = rosterID.substring(0, 19) + '...';
-		}
+		var rosterID = shortenBuddy(roster[i].jid, 21);
 		$('<div class="buddy" title="' + roster[i].jid + '" id="' + jid2ID(roster[i].jid) + '" status="offline">'
 			+ rosterID + '</div>').insertAfter('#buddiesOffline').slideDown('fast');
 	}
 }
 function updatePresence(presence) {
 	var from = jid2ID($(presence).attr('from'));
-	var rosterID = $(presence).attr('from').match(/^(\w|\@|\.)+/)[0];
+	var rosterID = shortenBuddy($(presence).attr('from').match(/^(\w|\@|\.)+/)[0], 21);
 	if (from === myID) {
 		return true;
 	}
 	if ($('#' + from).length === 0) {
-		if (rosterID.length > 21) {
-			rosterID = rosterID.substring(0, 18) + '...';
-		}
 		$('<div class="buddy" title="' + rosterID + '" id="' + from + '" status="offline">'
 			+ rosterID + '</div>').insertAfter('#buddiesOffline');
 	}
@@ -115,34 +126,43 @@ function updatePresence(presence) {
 		}
 		$('#' + from).css('cursor', 'pointer');
 		$('#' + from).click(function() {
-			if ($(this).attr('current') === 'yes') {
-				return true;
-			}
 			if ($(this).css('background-color') === 'rgb(151, 206, 236)') {
 				$(this).animate({'background-color': 'rgb(118, 189, 229)'});
 				$(this).css('background-image', 'none');
 			}
-			$('#buddyList div').each(function(index, item) {
-				$(item).attr('current', 'no');
-			});
-			if ($(this).attr('status') !== 'offline' && currentConversation !== $(this).attr('title')) {
+			if ($(this).prev().attr('id') === 'currentConversation') {
+				$('#userInputText').focus();
+				return true;
+			}
+			if ($(this).attr('status') !== 'offline') {
 				currentConversation = $(this).attr('title');
 				initiateConversation(currentConversation);
-				conversationInfo(currentConversation);
 				$('#conversationWindow').html(conversations[currentConversation]);
-				$(this).slideUp('fast', function() {
-					$(this).insertAfter('#currentConversation').slideDown('fast', function() {
-						$(this).attr('current', 'yes');
-						$('#conversationInfo').animate({'width': '733px'}, function() {
-							$('#conversationWindow').slideDown(function() {
-								var scrollWidth = document.getElementById('conversationWindow').scrollWidth;
-								$('#conversationWindow').css('width', (702 + scrollWidth) + 'px');
-								$('#userInput').fadeIn();
-								scrollDown(600);
-							});
+				if ($('#currentConversation').next().attr('status')) {
+					if ($('#currentConversation').next().attr('status') === 'online') {
+						var placement = '#buddiesOnline';
+					}
+					else if ($('#currentConversation').next().attr('status') === 'away') {
+						var placement = '#buddiesAway';
+					}
+					else {
+						var placement = '#buddiesOffline';
+					}
+					$('#currentConversation').next().slideUp('fast', function() {
+						$('#currentConversation').next().insertAfter(placement).slideDown('fast');
+					});
+				}
+				if ($(this).prev().attr('id') !== 'buddiesOnline') {
+					$(this).slideUp('fast', function() {
+						$(this).insertBefore('#buddiesOnline').slideDown('fast', function() {
+							conversationSwitch($(this).attr('id'));
 						});
 					});
-				});
+				}
+				else {
+					$(this).insertBefore('#buddiesOnline');
+					conversationSwitch($(this).attr('id'));
+				}
 			}
 		});
 	}
@@ -164,6 +184,7 @@ function dialogBox(data, closeable, onClose) {
 		if (onClose) {
 			onClose();
 		}
+		$('#userInputText').focus();
 	});
 	$(document).keyup(function(e) {
 		if (e.keyCode == 27) {
@@ -231,7 +252,7 @@ function addtoConversation(message, sender, conversation) {
 	else {
 		lineDecoration = 2;
 	}
-	sender = '<span class="sender">' + sender + '</span>';
+	sender = '<span class="sender">' + shortenBuddy(sender, 16) + '</span>';
 	message = '<div class="Line' + lineDecoration + '">' + sender + message + '</div>';
 	conversations[conversation] += message;
 	if (conversation === currentConversation) {
@@ -242,11 +263,13 @@ function addtoConversation(message, sender, conversation) {
 	}
 }
 $('#userInput').submit(function() {
-	var message = $('#userInputText').val();
+	var message = $.trim($('#userInputText').val());
+	if (message !== '') {
+		conn.send($msg({to: currentConversation, 'type': 'chat'}).c('body').t(message));
+		message = message;
+		addtoConversation(message, username, currentConversation);
+	}
 	$('#userInputText').val('');
-	conn.send($msg({to: currentConversation, 'type': 'chat'}).c('body').t(message));
-	message = message;
-	addtoConversation(message, username, currentConversation);
 	return false;
 });
 $('#logout').click(function() {
@@ -333,7 +356,10 @@ function connect(username, password) {
 						$('#bubble').animate({'width': '900px'});
 						$('#bubble').animate({'height': '550px'}, function() {
 							$('.button').fadeIn();
-							$('#buddyList').fadeIn();
+							$('#buddyWrapper').fadeIn('fast', function() {
+								var scrollWidth = document.getElementById('buddyList').scrollWidth;
+								$('#buddyList').css('width', (150 + scrollWidth) + 'px');
+							});
 							conn.roster.init(conn);
 							conn.roster.get(function(roster) {
 								buildBuddyList(roster);
@@ -352,7 +378,7 @@ function connect(username, password) {
 					$('#conversationInfo').animate({'width': '0'});
 					$('#conversationInfo').html('');
 					$('#conversationWindow').slideUp(function() {
-						$('#buddyList').fadeOut();
+						$('#buddyWrapper').fadeOut();
 						$('#loginInfo').css('color', '#999');
 						$('#loginInfo').html('Thank you for using Cryptocat.');
 						$('#bubble').animate({'width': '670px'});
