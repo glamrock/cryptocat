@@ -74,9 +74,12 @@ function updatePresence(presence) {
 				'borderLeftColor': '#111'
 			});
 			$('#' + from).css('cursor', 'default');
-			$('#' + from).slideUp('fast', function() {
-				$(this).insertAfter('#buddiesOffline').slideDown('fast');
-			});
+			$('#' + from).css('background-image', 'none');
+			if ($('#' + from).prev().attr('id') !== 'currentConversation') {
+				$('#' + from).slideUp('fast', function() {
+					$(this).insertAfter('#buddiesOffline').slideDown('fast');
+				});
+			}
 		}
 	}
 	else if ($(presence).attr('type') === 'subscribe') {
