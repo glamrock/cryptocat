@@ -239,6 +239,7 @@ img.logo {
 	width: 0;
 	float: right;
 	height: 13px;
+	font-family: monospace;
 }
 #conversationInfo span {
 	margin-left: 10px;
