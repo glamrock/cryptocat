@@ -240,6 +240,7 @@ img.logo {
 	float: right;
 	height: 13px;
 	font-family: monospace;
+	border-bottom: 1px dashed #000;
 }
 #conversationInfo span {
 	margin-left: 10px;

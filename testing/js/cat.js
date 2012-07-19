@@ -14,6 +14,8 @@ function initiateConversation(conversation) {
 }
 function conversationSwitch(buddy) {
 	var date = new Date();
+	$('#' + buddy).animate({'background-color': '#97CEEC'});
+	$('#' + buddy).css('border-bottom', '1px dashed #000');
 	$('#conversationInfo').animate({'width': '750px'}, function() {
 		$('#conversationWindow').slideDown('fast', function() {
 			$('#conversationInfo').html('<span>Conversation initiated at ' + date.getHours() 
@@ -129,8 +131,7 @@ function updatePresence(presence) {
 		}
 		$('#' + from).css('cursor', 'pointer');
 		$('#' + from).click(function() {
-			if ($(this).css('background-color') === 'rgb(151, 206, 236)') {
-				$(this).animate({'background-color': 'rgb(118, 189, 229)'});
+			if ($(this).css('background-color') !== 'none') {
 				$(this).css('background-image', 'none');
 			}
 			if ($(this).prev().attr('id') === 'currentConversation') {
@@ -144,14 +145,19 @@ function updatePresence(presence) {
 				if ($('#currentConversation').next().attr('status')) {
 					if ($('#currentConversation').next().attr('status') === 'online') {
 						var placement = '#buddiesOnline';
+						var backgroundColor = '#76BDE5';
 					}
 					else if ($('#currentConversation').next().attr('status') === 'away') {
 						var placement = '#buddiesAway';
+						var backgroundColor = '#E93028';
 					}
 					else {
 						var placement = '#buddiesOffline';
+						var backgroundColor = '#222';
 					}
 					$('#currentConversation').next().slideUp('fast', function() {
+						$('#currentConversation').next().css('background-color', backgroundColor);
+						$('#currentConversation').next().css('border-bottom', 'none');
 						$('#currentConversation').next().insertAfter(placement).slideDown('fast');
 					});
 				}
@@ -242,7 +248,6 @@ function handleMessage(message) {
 	var body = $(message).find('body').text();
 	addtoConversation(body, sender, rosterID);
 	if (currentConversation !== rosterID) {
-		$('#' + from).animate({'background-color': '#97CEEC'});
 		$('#' + from).css('background-image', 'url("img/message.png")');
 	}
 	return true;
