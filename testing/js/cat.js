@@ -15,7 +15,7 @@ function initiateConversation(conversation) {
 function conversationSwitch(buddy) {
 	var date = new Date();
 	$('#' + buddy).animate({'background-color': '#97CEEC'});
-	$('#' + buddy).css('border-bottom', '1px dashed #000');
+	$('#' + buddy).css('border-bottom', '1px dashed #76BDE5');
 	$('#conversationInfo').animate({'width': '750px'}, function() {
 		$('#conversationWindow').slideDown('fast', function() {
 			$('#conversationInfo').html('<span>Conversation initiated at ' + date.getHours() 

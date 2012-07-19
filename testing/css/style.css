@@ -131,7 +131,7 @@ img.logo {
 }
 .buddy {
 	background-color: #222;
-	background-position: 44% 50%;
+	background-position: 46% 50%;
 	background-repeat: no-repeat;
 	color: #BBB;
 	font-weight: bold;
@@ -240,7 +240,7 @@ img.logo {
 	float: right;
 	height: 13px;
 	font-family: monospace;
-	border-bottom: 1px dashed #000;
+	border-bottom: 1px dashed #111;
 }
 #conversationInfo span {
 	margin-left: 10px;
