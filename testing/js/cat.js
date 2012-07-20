@@ -1,7 +1,8 @@
 /* Initialization */
 var domain =  'crypto.cat';
 var conversations = [];
-var conn, myID, currentConversation, username;
+var currentConversation = 0;
+var conn, myID, username;
 function scrollDown(speed) {
 	$('#conversationWindow').animate({
 		scrollTop: document.getElementById('conversationWindow').scrollHeight + 20
@@ -121,7 +122,7 @@ function updatePresence(presence) {
 				$('#' + from).attr('status', 'away');
 				$('#' + from).animate({
 					'color': '#FFF',
-					'backgroundColor': '#E93028',
+					'backgroundColor': '#5588A5',
 					'borderLeftColor': '#97CEEC'
 				});
 				$('#' + from).slideUp('fast', function() {
@@ -131,46 +132,47 @@ function updatePresence(presence) {
 		}
 		$('#' + from).css('cursor', 'pointer');
 		$('#' + from).click(function() {
-			if ($(this).css('background-color') !== 'none') {
-				$(this).css('background-image', 'none');
-			}
+			$(this).css('background-image', 'none');
 			if ($(this).prev().attr('id') === 'currentConversation') {
 				$('#userInputText').focus();
 				return true;
 			}
 			if ($(this).attr('status') !== 'offline') {
-				currentConversation = $(this).attr('title');
-				initiateConversation(currentConversation);
-				$('#conversationWindow').html(conversations[currentConversation]);
-				if ($('#currentConversation').next().attr('status')) {
-					if ($('#currentConversation').next().attr('status') === 'online') {
+				if (currentConversation) {
+					var oldConversation = '#' + jid2ID(currentConversation);
+					if ($(oldConversation).attr('status') === 'online') {
 						var placement = '#buddiesOnline';
 						var backgroundColor = '#76BDE5';
 					}
-					else if ($('#currentConversation').next().attr('status') === 'away') {
+					else if ($(oldConversation).attr('status') === 'away') {
 						var placement = '#buddiesAway';
-						var backgroundColor = '#E93028';
+						var backgroundColor = '#5588A5';
 					}
 					else {
 						var placement = '#buddiesOffline';
 						var backgroundColor = '#222';
 					}
-					$('#currentConversation').next().slideUp('fast', function() {
-						$('#currentConversation').next().css('background-color', backgroundColor);
-						$('#currentConversation').next().css('border-bottom', 'none');
-						$('#currentConversation').next().insertAfter(placement).slideDown('fast');
+					$(oldConversation).slideUp('fast', function() {
+						$(oldConversation).css('background-color', backgroundColor);
+						$(oldConversation).css('border-bottom', 'none');
+						$(oldConversation).insertAfter(placement).slideDown('fast');
 					});
 				}
-				if ($(this).prev().attr('id') !== 'buddiesOnline') {
+				currentConversation = $(this).attr('title');
+				initiateConversation(currentConversation);
+				$('#conversationWindow').html(conversations[currentConversation]);
+				if (($(this).prev().attr('id') === 'buddiesOnline')
+					|| (($(this).prev().attr('id') === 'buddiesAway')
+					&& $('#buddiesOnline').next().attr('id') === 'buddiesAway')) {
+					$(this).insertAfter('#currentConversation');
+					conversationSwitch($(this).attr('id'));
+				}
+				else {
 					$(this).slideUp('fast', function() {
-						$(this).insertBefore('#buddiesOnline').slideDown('fast', function() {
+						$(this).insertAfter('#currentConversation').slideDown('fast', function() {
 							conversationSwitch($(this).attr('id'));
 						});
 					});
-				}
-				else {
-					$(this).insertBefore('#buddiesOnline');
-					conversationSwitch($(this).attr('id'));
 				}
 			}
 		});
