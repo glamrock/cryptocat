@@ -8,6 +8,13 @@ body {
 	background-image: url("../img/bg.png");
 	line-height: 1.37em;
 }
+a {
+	color: #97CEEC;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
 img.logo {
 	width: 288px;
 	display: inline;
@@ -51,6 +58,7 @@ img.logo {
 	padding: 5px 0;
 	height: 35px;
 	border-radius: 15px 0 0 0;
+	margin-bottom: 5px;
 }
 #bubble .button {
 	display: none;
@@ -61,8 +69,9 @@ img.logo {
 #bubble #info {
 	float: left;
 	padding-left: 10px;
-	max-width: 360px;
+	width: 380px;
 	font-size: 12px;
+	line-height: 20px;
 }
 #bubble #loginForm {
 	float: right;
@@ -114,7 +123,7 @@ img.logo {
 }
 #bubble h1 {
 	font-family: Futura, Helvetica, Arial;
-	font-size: 20px;
+	font-size: 18px;
 }
 #buddyWrapper {
 	overflow: hidden;
