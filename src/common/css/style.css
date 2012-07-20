@@ -58,7 +58,6 @@ img.logo {
 	padding: 5px 0;
 	height: 35px;
 	border-radius: 15px 0 0 0;
-	margin-bottom: 5px;
 }
 #bubble .button {
 	display: none;
@@ -72,10 +71,12 @@ img.logo {
 	width: 380px;
 	font-size: 12px;
 	line-height: 20px;
+	margin-top: 5px;
 }
 #bubble #loginForm {
 	float: right;
 	padding-right: 10px;
+	margin-top: 5px;
 }
 [type=text], [type=password], [type=button], [type=submit] {
 	display: block;
