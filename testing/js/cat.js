@@ -127,30 +127,27 @@ function handlePresence(presence) {
 	else if ($(presence).attr('type') !== 'unsubscribed' && $(presence).attr('type') !== 'error') {
 		if ($(presence).find('show').text() === '' || $(presence).find('show').text() === 'chat') {
 			if ($('#' + from).attr('status') !== 'online') {
-				$('#' + from).attr('status', 'online');
-				$('#' + from).animate({
-					'color': '#FFF',
-					'backgroundColor': '#76BDE5',
-					'borderLeftColor': '#97CEEC'
-				});
-				$('#' + from).slideUp('fast', function() {
-					$(this).insertAfter('#buddiesOnline').slideDown('fast');
-				});
+				var status = 'online';
+				var backgroundColor = '#76BDE5';
+				var placement = '#buddiesOnline';
 			}
 		}
-		else {
-			if ($('#' + from).attr('status') !== 'away') {
-				$('#' + from).attr('status', 'away');
-				$('#' + from).animate({
-					'color': '#FFF',
-					'backgroundColor': '#5588A5',
-					'borderLeftColor': '#97CEEC'
-				});
-				$('#' + from).slideUp('fast', function() {
-					$(this).insertAfter('#buddiesAway').slideDown('fast');
-				});
-			}
+		else if ($('#' + from).attr('status') !== 'away') {
+				var status = 'away';
+				var backgroundColor = '#5588A5';
+				var placement = '#buddiesAway';
 		}
+		$('#' + from).attr('status', status);
+		if ($('#' + from).attr('title') !== currentConversation) {
+			$('#' + from).animate({
+				'color': '#FFF',
+				'backgroundColor': backgroundColor,
+				'borderLeftColor': '#97CEEC'
+			});
+			$('#' + from).slideUp('fast', function() {
+				$(this).insertAfter(placement).slideDown('fast');
+			});
+		}	
 		$('#' + from).css('cursor', 'pointer');
 		$('#' + from).click(function() {
 			$(this).css('background-image', 'none');
