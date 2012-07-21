@@ -34,7 +34,7 @@ img.logo {
 #bubble {
 	position: relative;
 	z-index: 1;
-	width: 670px;
+	width: 680px;
 	height: 310px;
 	margin: 5% auto 0 auto;
 	background-color: #000;
@@ -67,7 +67,7 @@ img.logo {
 }
 #bubble #info {
 	float: left;
-	padding-left: 10px;
+	padding-left: 15px;
 	width: 380px;
 	font-size: 12px;
 	line-height: 20px;
@@ -75,7 +75,7 @@ img.logo {
 }
 #bubble #loginForm {
 	float: right;
-	padding-right: 10px;
+	padding-right: 15px;
 	margin-top: 5px;
 }
 [type=text], [type=password], [type=button], [type=submit] {
@@ -141,13 +141,13 @@ img.logo {
 }
 .buddy {
 	background-color: #222;
-	background-position: 43.4% 50%;
+	background-position: 80% 50%;
 	background-repeat: no-repeat;
 	color: #BBB;
 	font-weight: bold;
 	padding: 7px;
 	font-size: 11px;
-	width: 100%;
+	width: 160px;
 	display: none;
 	position: relative;
 	border-left: 3px solid #111;
@@ -237,14 +237,14 @@ img.logo {
 }
 #conversationInfo, #conversationWindow .Line1, #conversationWindow .Line2 {
 	background-color: #111;
-	padding: 5px 10px;
+	padding: 5px 10px 5px 5px;
 	width: 733px;
 	line-height: 20px;
 }
 #conversationInfo {
 	background-color: #97CEEC;
 	text-align: left;
-	font-size: 13px;
+	font-size: 11px;
 	padding: 6px 0 10px 0;
 	width: 0;
 	float: right;
@@ -258,11 +258,16 @@ img.logo {
 #conversationWindow .Line2 {
 	background-color: #000;
 }
+#conversationWindow .timeStamp {
+	color: #CCC;
+	font-size: 10px;
+	font-family: monospace;
+}
 #conversationWindow .sender {
 	color: #97CEEC;
 	padding: 6px 6px 6px 0;
 	width: 100px;
-	margin: 0 20px 0 0;
+	margin: 0 10px;
 	display: inline;
 	text-align: right;
 	font-weight: bold;
