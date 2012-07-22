@@ -16,7 +16,6 @@ a:hover {
 	text-decoration: underline;
 }
 img.logo {
-	width: 288px;
 	display: inline;
 	padding-left: 10px;
 }
@@ -141,7 +140,7 @@ img.logo {
 }
 .buddy {
 	background-color: #222;
-	background-position: 80% 50%;
+	background-position: 73% 7px;
 	background-repeat: no-repeat;
 	color: #BBB;
 	font-weight: bold;
@@ -152,7 +151,24 @@ img.logo {
 	position: relative;
 	border-left: 3px solid #111;
 	z-index: 1;
-	
+}
+.buddyMenu {
+	position: relative;
+	z-index: 2;
+	float: right;
+	margin: 0 22px 0 0;
+	background-image: url("../img/down.png");
+	width: 14px;
+	height: 14px;
+	cursor: pointer;
+	border-radius: 3px 0 3px 3px;
+}
+.buddyMenu:hover {
+	background-color: #222;
+	box-shadow: 1px 1px #000;
+}
+.buddyMenu:active {
+	background-color: #000;
 }
 #dialogBox {
 	position: absolute;
@@ -161,7 +177,7 @@ img.logo {
 	border-radius: 10px 0 10px 10px;
 	margin: 120px auto 0 -235px;
 	left: 50%;
-	z-index: 2;
+	z-index: 4;
 	border: 1px solid #222;
 	border-right: none;
 	background-color: rgba(0, 0, 0, 0.94);

@@ -76,18 +76,20 @@ function buildBuddyList(roster) {
 	for (var i in roster) {
 		var rosterID = shortenBuddy(roster[i].jid, 19);
 		$('<div class="buddy" title="' + roster[i].jid + '" id="' + jid2ID(roster[i].jid) + '" status="offline">'
-			+ rosterID + '</div>').insertAfter('#buddiesOffline').slideDown('fast');
+			+ rosterID + '<div class="buddyMenu" id="' + jid2ID(roster[i].jid)
+			+ '-menu"></div></div>').insertAfter('#buddiesOffline').slideDown('fast');
 	}
 }
 function handlePresence(presence) {
 	var from = jid2ID($(presence).attr('from'));
-	var rosterID = shortenBuddy($(presence).attr('from').match(/^(\w|\@|\.)+/)[0], 19);
+	var rosterID = $(presence).attr('from').match(/^(\w|\@|\.)+/)[0];
 	if (from === myID) {
 		return true;
 	}
 	if ($('#' + from).length === 0) {
 		$('<div class="buddy" title="' + rosterID + '" id="' + from + '" status="offline">'
-			+ rosterID + '</div>').insertAfter('#buddiesOffline');
+			+ shortenBuddy(rosterID, 19) + '<div class="buddyMenu" id="'
+			+ from + '-menu"></div></div>').insertAfter('#buddiesOffline');
 	}
 	if ($(presence).attr('type') === 'unavailable') {
 		if ($('#' + from).attr('status') !== 'offline') {
@@ -147,14 +149,26 @@ function handlePresence(presence) {
 			$('#' + from).slideUp('fast', function() {
 				$(this).insertAfter(placement).slideDown('fast');
 			});
-		}	
+		}
+		$('.buddyMenu').click(function(event) {
+			event.stopPropagation();
+			var buddy = '#' + $(this).attr('id').substring(0, ($(this).attr('id').length - 5));
+			if ($(buddy).height() === 15) {
+				$(this).css('background-image', 'url("../img/up.png")');
+				$(buddy).delay(10).animate({'height': '50px'}, 180);
+			}
+			else {
+				$(this).css('background-image', 'url("../img/down.png")');
+				$(buddy).animate({'height': '15px'}, 190);
+			}
+		});
 		$('#' + from).css('cursor', 'pointer');
 		$('#' + from).click(function() {
-			$(this).css('background-image', 'none');
 			if ($(this).prev().attr('id') === 'currentConversation') {
 				$('#userInputText').focus();
 				return true;
 			}
+			$(this).css('background-image', 'none');
 			if ($(this).attr('status') !== 'offline') {
 				if (currentConversation) {
 					var oldConversation = '#' + jid2ID(currentConversation);
