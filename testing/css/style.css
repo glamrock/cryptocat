@@ -272,6 +272,7 @@ img.logo {
 	padding: 5px 10px 5px 5px;
 	width: 735px;
 	line-height: 20px;
+	word-wrap: break-word;
 }
 #conversationInfo {
 	background-color: #97CEEC;
@@ -309,7 +310,7 @@ img.logo {
 }
 #userInputText {
 	background-color: #000;
-	width: 620px;
+	width: 730px;
 	text-align: left;
 	float: left;
 	margin: 10px 0;
@@ -321,14 +322,5 @@ img.logo {
 	font-size: 12px;
 }
 #userInputSubmit {
-	display: inline;
-	padding: 10px 7px;
-	width: 80px;
-	box-sizing: content-box;
-	margin: 10px 0 10px 10px;
-	border: none;
-	border-bottom: 4px solid #97CEEC;
-	background-color: #000;
-	box-shadow: none;
-	font-size: 12px;
+	display: none;
 }
