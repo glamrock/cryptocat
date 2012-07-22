@@ -152,14 +152,43 @@ function handlePresence(presence) {
 		}
 		$('.buddyMenu').click(function(event) {
 			event.stopPropagation();
-			var buddy = '#' + $(this).attr('id').substring(0, ($(this).attr('id').length - 5));
-			if ($(buddy).height() === 15) {
+			var buddy = $(this).attr('id').substring(0, ($(this).attr('id').length - 5));
+			if ($('#' + buddy).height() === 15) {
+				var buddyMenuContents = '<div class="buddyMenuContents" id="' + buddy + '-contents">'
+					+ '<li class="startGroupChat">Start group chat</li>'
+					+ '<li class="setNickname">Set nickname</li>'
+					+ '<li class="removeBuddy">Remove buddy</li></div>';
 				$(this).css('background-image', 'url("../img/up.png")');
-				$(buddy).delay(10).animate({'height': '50px'}, 180);
+				$('#' + buddy).delay(10).animate({'height': '61px'}, 180, function() {
+					$('#' + buddy).append(buddyMenuContents);
+					$('#' + buddy + '-contents').fadeIn('fast', function() {
+						$('.startGroupChat').click(function(event) {
+							event.stopPropagation();
+							//Group chat init goes here
+						});
+						$('.setNickname').click(function(event) {
+							event.stopPropagation();
+							//Set nickname goes here
+						});
+						$('.removeBuddy').click(function(event) {
+							event.stopPropagation();
+							var buddy = $('.removeBuddy').parent().attr('id');
+							buddy = buddy.substring(0, (buddy.length - 9));
+							conn.roster.unauthorize($('#' + buddy).attr('title'));
+							conn.roster.unsubscribe($('#' + buddy).attr('title'));
+							$('#' + buddy).slideUp('fast', function() {
+								$('#' + buddy).remove();
+							});
+						});
+					});
+				});
 			}
 			else {
 				$(this).css('background-image', 'url("../img/down.png")');
-				$(buddy).animate({'height': '15px'}, 190);
+				$('#' + buddy).animate({'height': '15px'}, 190);
+				$('#' + buddy + '-contents').fadeOut('fast', function() {
+					$('#' + buddy + '-contents').remove();
+				});
 			}
 		});
 		$('#' + from).css('cursor', 'pointer');
@@ -253,27 +282,6 @@ $('#add').click(function() {
 		return false;
 	});
 	$('#addBuddyJID').select();
-});
-$('#remove').click(function() {
-	if ($('#dialogBoxClose').css('display') === 'block') {
-		return false;
-	}
-	var removeBuddyForm = '<form id="removeBuddyForm"><div class="bar">remove a buddy:</div>'
-		+ '<input id="removeBuddyJID" class="bar" type="text" value="user@' + domain + '" autocomplete="off"/>'
-		+ '<input class="yes" id="removeBuddySubmit" type="submit" value="Remove buddy :("/><br /><br />'
-		+ '</form>';
-	dialogBox(removeBuddyForm, 1);
-	$('#removeBuddyJID').click(function() {
-		$(this).select();
-	});
-	$('#removeBuddyForm').submit(function() {
-		conn.roster.unauthorize($('#removeBuddyJID').val());
-		conn.roster.unsubscribe($('#removeBuddyJID').val());
-		$('#' + jid2ID($('#removeBuddyJID').val())).remove();
-		$('#dialogBoxClose').click();
-		return false;
-	});
-	$('#removeBuddyJID').select();
 });
 function handleMessage(message) {
 	var from = jid2ID($(message).attr('from'));
