@@ -264,6 +264,20 @@ function dialogBox(data, closeable, onClose) {
 		}
 	});
 }
+$('#status').click(function() {
+	if ($(this).attr('title') === 'Status: Available') {
+		conn.send($pres().c('show').t('away').up().c('status').t('reading'));
+		$(this).attr('src', 'img/away.png');
+		$(this).attr('alt', 'Status: Away');
+		$(this).attr('title', 'Status: Away');
+	}
+	else {
+		conn.send($pres().c('show').t('').up().c('status').t('reading'));
+		$(this).attr('src', 'img/available.png');
+		$(this).attr('alt', 'Status: Available');
+		$(this).attr('title', 'Status: Available');
+	}
+});
 $('#add').click(function() {
 	if ($('#dialogBoxClose').css('display') === 'block') {
 		return false;
@@ -291,7 +305,7 @@ function handleMessage(message) {
 	addtoConversation(body, sender, rosterID);
 	if (currentConversation !== rosterID) {
 		var backgroundColor = $('#' + from).css('background-color');
-		$('#' + from).css('background-image', 'url("img/message.png")');
+		$('#' + from).css('background-image', 'url("img/newMessage.png")');
 		$('#' + from).animate({'backgroundColor': '#A7D8F7'}).animate({'backgroundColor': backgroundColor});
 	}
 	return true;
