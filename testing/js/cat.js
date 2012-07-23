@@ -417,6 +417,7 @@ function connect(username, password) {
 				$('#loginInfo').html('Connected.');
 				$('#loginInfo').css('color', '#0F0');
 				$('#bubble').animate({'top': '+=10px'}, function() {
+					$('#loginLinks').fadeOut();
 					$('#info').fadeOut();
 					$('#loginForm').fadeOut();
 					$('#bubble').animate({'margin-top': '-=5%'}, function() {
@@ -461,6 +462,7 @@ function connect(username, password) {
 							$('#newAccount').attr('checked', false);
 							$('#loginSubmit').attr('readonly', false);
 							$('#info').fadeIn();
+							$('#loginLinks').fadeIn();
 							$('#loginForm').fadeIn('fast', function() {
 								$('#username').select();
 							});

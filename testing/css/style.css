@@ -58,6 +58,12 @@ img.logo {
 	height: 35px;
 	border-radius: 15px 0 0 0;
 }
+#bubble #loginLinks {
+	float: right;
+	word-spacing: 10px;
+	margin: 10px 10px 0 0;
+	font-weight: bold;
+}
 #bubble .button {
 	display: none;
 	cursor: pointer;
