@@ -3,6 +3,7 @@ var domain =  'crypto.cat';
 var conversations = [];
 var conversationInfo = [];
 var currentConversation = 0;
+var currentStatus = 'online';
 var conn, myID, username;
 
 function currentTime(seconds) {
@@ -86,6 +87,9 @@ function handlePresence(presence) {
 	if (from === myID) {
 		return true;
 	}
+	else {
+		sendStatus();
+	}
 	if ($('#' + from).length === 0) {
 		$('<div class="buddy" title="' + rosterID + '" id="' + from + '" status="offline">'
 			+ shortenBuddy(rosterID, 19) + '<div class="buddyMenu" id="'
@@ -150,6 +154,7 @@ function handlePresence(presence) {
 				$(this).insertAfter(placement).slideDown('fast');
 			});
 		}
+		$('.buddyMenu').unbind('click');
 		$('.buddyMenu').click(function(event) {
 			event.stopPropagation();
 			var buddy = $(this).attr('id').substring(0, ($(this).attr('id').length - 5));
@@ -168,7 +173,22 @@ function handlePresence(presence) {
 						});
 						$('.setNickname').click(function(event) {
 							event.stopPropagation();
-							//Set nickname goes here
+							var defaultNickname = ['bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'turtle', 
+								'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite', 'ducky'];
+							defaultNickname = defaultNickname[Math.floor((Math.random()*defaultNickname.length))];
+							var setNicknameForm = '<form id="setNicknameForm">'
+								+ '<div class="bar">Set nickname for ' + $('#' + buddy).attr('title') + '</div>'
+								+ '<input id="setNicknameText" class="bar" type="text" value="'
+								+ defaultNickname + '" autocomplete="off"/>'
+								+ '<input class="yes" id="setNicknameSubmit" type="submit" value="Set nickname"/>'
+								+ '</form>';
+							dialogBox(setNicknameForm, 1);
+							$('#setNicknameText').select();
+							$('#setNicknameForm').submit(function() {
+								//setNickname($('#' + buddy).attr('title'), $('#setNicknameText').val());
+								$('#dialogBoxClose').click();
+								return false;
+							});
 						});
 						$('.removeBuddy').click(function(event) {
 							event.stopPropagation();
@@ -192,6 +212,7 @@ function handlePresence(presence) {
 			}
 		});
 		$('#' + from).css('cursor', 'pointer');
+		$('#' + from).unbind('click');
 		$('#' + from).click(function() {
 			if ($(this).prev().attr('id') === 'currentConversation') {
 				$('#userInputText').focus();
@@ -240,6 +261,20 @@ function handlePresence(presence) {
 	}
 	return true;
 }
+function sendStatus() {
+	if (currentStatus === 'away') {
+		conn.send($pres().c('show').t('away'));
+	}
+	else {
+		conn.send($pres());
+	}
+}
+function setNickname(buddy, nickname) {
+	var iq = $iq({type: 'set'}).c('query', {xmlns: 'jabber:iq:roster'}).c('item', {
+		jid: buddy, name: nickname
+	});
+	conn.sendIQ(iq);
+}
 function dialogBox(data, closeable, onClose) {
 	if (closeable) {
 		$('#dialogBoxClose').css('display', 'block');
@@ -266,16 +301,18 @@ function dialogBox(data, closeable, onClose) {
 }
 $('#status').click(function() {
 	if ($(this).attr('title') === 'Status: Available') {
-		conn.send($pres().c('show').t('away').up().c('status').t('reading'));
 		$(this).attr('src', 'img/away.png');
 		$(this).attr('alt', 'Status: Away');
 		$(this).attr('title', 'Status: Away');
+		currentStatus = 'away';
+		sendStatus();
 	}
 	else {
-		conn.send($pres().c('show').t('').up().c('status').t('reading'));
 		$(this).attr('src', 'img/available.png');
 		$(this).attr('alt', 'Status: Available');
 		$(this).attr('title', 'Status: Available');
+		currentStatus = 'online';
+		sendStatus();
 	}
 });
 $('#add').click(function() {
@@ -284,7 +321,7 @@ $('#add').click(function() {
 	}
 	var addBuddyForm = '<form id="addBuddyForm"><div class="bar">add new buddy:</div>'
 		+ '<input id="addBuddyJID" class="bar" type="text" value="user@' + domain + '" autocomplete="off"/>'
-		+ '<input class="yes" id="addBuddySubmit" type="submit" value="Send buddy request"/><br /><br />'
+		+ '<input class="yes" id="addBuddySubmit" type="submit" value="Send buddy request"/>'
 		+ '</form>';
 	dialogBox(addBuddyForm, 1);
 	$('#addBuddyJID').click(function() {
@@ -433,7 +470,7 @@ function connect(username, password) {
 								buildBuddyList(roster);
 								conn.addHandler(handlePresence, null, 'presence');
 								conn.addHandler(handleMessage, null, 'message', 'chat');
-								conn.send($pres());
+								sendStatus();
 							});
 							myID = jid2ID(username + '@' + domain);
 						});
