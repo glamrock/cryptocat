@@ -75,7 +75,6 @@ function shortenBuddy(buddy, length) {
 }
 function buildBuddy(buddyObject) {
 	if (buddyObject.name.match(/^(\w|\s)+$/)) {
-		console.log(buddyObject);
 		var name = shortenBuddy(buddyObject.name, 19);
 	}
 	else {
@@ -88,7 +87,9 @@ function buildBuddy(buddyObject) {
 function handlePresence(presence) {
 	var from = jid2ID($(presence).attr('from'));
 	var rosterID = $(presence).attr('from').match(/^(\w|\@|\.)+/)[0];
-	if (from === myID) {
+	if ((from === myID)
+		|| ($(presence).attr('type') === 'unsubscribed')
+		|| ($(presence).attr('type') === 'error')) {
 		return true;
 	}
 	else {
@@ -96,6 +97,7 @@ function handlePresence(presence) {
 	}
 	if ($('#' + from).length === 0) {
 		buildBuddy({jid: rosterID, name: ''});
+		console.log(presence);
 	}
 	if ($(presence).attr('type') === 'unavailable') {
 		if ($('#' + from).attr('status') !== 'offline') {
@@ -132,7 +134,7 @@ function handlePresence(presence) {
 		});
 		return false;
 	}
-	else if ($(presence).attr('type') !== 'unsubscribed' && $(presence).attr('type') !== 'error') {
+	else {
 		if ($(presence).find('show').text() === '' || $(presence).find('show').text() === 'chat') {
 			if ($('#' + from).attr('status') !== 'online') {
 				var status = 'online';
@@ -298,15 +300,14 @@ function dialogBox(data, closeable, onClose) {
 		if ($('#dialogBoxClose').css('display') === 'none') {
 			return false;
 		}
-		$('#dialogBox').animate({'top': '+=10px'}, 'fast').animate({'top': '-450px'}, 'fast', function() {
-			$('#dialogBoxClose').css('display', 'none');
-		});
+		$('#dialogBox').animate({'top': '+=10px'}, 'fast').animate({'top': '-450px'}, 'fast');
+		$('#dialogBoxClose').css('display', 'none');
 		if (onClose) {
 			onClose();
 		}
 		$('#userInputText').focus();
 	});
-	$(document).keyup(function(e) {
+	$(document).keydown(function(e) {
 		if (e.keyCode == 27) {
 			$('#dialogBoxClose').click();
 		}
