@@ -73,13 +73,17 @@ function shortenBuddy(buddy, length) {
 	}
 	return buddy;
 }
-function buildBuddyList(roster) {
-	for (var i in roster) {
-		var rosterID = shortenBuddy(roster[i].jid, 19);
-		$('<div class="buddy" title="' + roster[i].jid + '" id="' + jid2ID(roster[i].jid) + '" status="offline">'
-			+ rosterID + '<div class="buddyMenu" id="' + jid2ID(roster[i].jid)
-			+ '-menu"></div></div>').insertAfter('#buddiesOffline').slideDown('fast');
+function buildBuddy(buddyObject) {
+	if (buddyObject.name.match(/^(\w|\s)+$/)) {
+		console.log(buddyObject);
+		var name = shortenBuddy(buddyObject.name, 19);
 	}
+	else {
+		var name = shortenBuddy(buddyObject.jid, 19);
+	}
+	$('<div class="buddy" title="' + buddyObject.jid + '" id="' + jid2ID(buddyObject.jid) + '" status="offline">'
+		+ '<span>' + name + '</span>' + '<div class="buddyMenu" id="' + jid2ID(buddyObject.jid)
+		+ '-menu"></div></div>').insertAfter('#buddiesOffline').slideDown('fast');
 }
 function handlePresence(presence) {
 	var from = jid2ID($(presence).attr('from'));
@@ -91,9 +95,7 @@ function handlePresence(presence) {
 		sendStatus();
 	}
 	if ($('#' + from).length === 0) {
-		$('<div class="buddy" title="' + rosterID + '" id="' + from + '" status="offline">'
-			+ shortenBuddy(rosterID, 19) + '<div class="buddyMenu" id="'
-			+ from + '-menu"></div></div>').insertAfter('#buddiesOffline');
+		buildBuddy({jid: rosterID, name: ''});
 	}
 	if ($(presence).attr('type') === 'unavailable') {
 		if ($('#' + from).attr('status') !== 'offline') {
@@ -185,9 +187,16 @@ function handlePresence(presence) {
 							dialogBox(setNicknameForm, 1);
 							$('#setNicknameText').select();
 							$('#setNicknameForm').submit(function() {
-								//setNickname($('#' + buddy).attr('title'), $('#setNicknameText').val());
-								$('#dialogBoxClose').click();
-								return false;
+								if ($('#setNicknameText').val().match(/^(\w|\s)+$/)) {
+									setNickname($('#' + buddy).attr('title'), $('#setNicknameText').val());
+									$('#' + buddy).find('span').html($('#setNicknameText').val());
+									$('#dialogBoxClose').click();
+									return false;
+								}
+								else {
+									$('#setNicknameText').val('Letters, numbers and spaces only').select();
+									return false;
+								}
 							});
 						});
 						$('.removeBuddy').click(function(event) {
@@ -270,12 +279,16 @@ function sendStatus() {
 	}
 }
 function setNickname(buddy, nickname) {
-	var iq = $iq({type: 'set'}).c('query', {xmlns: 'jabber:iq:roster'}).c('item', {
-		jid: buddy, name: nickname
-	});
-	conn.sendIQ(iq);
+	conn.sendIQ(
+		$iq({type: 'set'}).c('query', {xmlns: 'jabber:iq:roster'}).c('item', {
+			jid: buddy, name: nickname
+		})
+	);
 }
 function dialogBox(data, closeable, onClose) {
+	if ($('#dialogBox').css('top') !== '-450px') {
+		return false;
+	}
 	if (closeable) {
 		$('#dialogBoxClose').css('display', 'block');
 	}
@@ -467,7 +480,12 @@ function connect(username, password) {
 							});
 							conn.roster.init(conn);
 							conn.roster.get(function(roster) {
-								buildBuddyList(roster);
+								for (var i in roster) {
+									if (!roster[i].name) {
+										roster[i].name = '';
+									}
+									buildBuddy(roster[i]);
+								}
 								conn.addHandler(handlePresence, null, 'presence');
 								conn.addHandler(handleMessage, null, 'message', 'chat');
 								sendStatus();
