@@ -6,6 +6,8 @@ var currentConversation = 0;
 var currentStatus = 'online';
 var conn, myID, username;
 
+$('.button').qtip();
+
 function currentTime(seconds) {
 	var date = new Date();
 	var time = [];
@@ -97,7 +99,6 @@ function handlePresence(presence) {
 	}
 	if ($('#' + from).length === 0) {
 		buildBuddy({jid: rosterID, name: ''});
-		console.log(presence);
 	}
 	if ($(presence).attr('type') === 'unavailable') {
 		if ($('#' + from).attr('status') !== 'offline') {

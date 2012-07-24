@@ -3,7 +3,10 @@ var domain =  'crypto.cat';
 var conversations = [];
 var conversationInfo = [];
 var currentConversation = 0;
+var currentStatus = 'online';
 var conn, myID, username;
+
+$('.button').qtip();
 
 function currentTime(seconds) {
 	var date = new Date();
@@ -72,24 +75,30 @@ function shortenBuddy(buddy, length) {
 	}
 	return buddy;
 }
-function buildBuddyList(roster) {
-	for (var i in roster) {
-		var rosterID = shortenBuddy(roster[i].jid, 19);
-		$('<div class="buddy" title="' + roster[i].jid + '" id="' + jid2ID(roster[i].jid) + '" status="offline">'
-			+ rosterID + '<div class="buddyMenu" id="' + jid2ID(roster[i].jid)
-			+ '-menu"></div></div>').insertAfter('#buddiesOffline').slideDown('fast');
+function buildBuddy(buddyObject) {
+	if (buddyObject.name.match(/^(\w|\s)+$/)) {
+		var name = shortenBuddy(buddyObject.name, 19);
 	}
+	else {
+		var name = shortenBuddy(buddyObject.jid, 19);
+	}
+	$('<div class="buddy" title="' + buddyObject.jid + '" id="' + jid2ID(buddyObject.jid) + '" status="offline">'
+		+ '<span>' + name + '</span>' + '<div class="buddyMenu" id="' + jid2ID(buddyObject.jid)
+		+ '-menu"></div></div>').insertAfter('#buddiesOffline').slideDown('fast');
 }
 function handlePresence(presence) {
 	var from = jid2ID($(presence).attr('from'));
 	var rosterID = $(presence).attr('from').match(/^(\w|\@|\.)+/)[0];
-	if (from === myID) {
+	if ((from === myID)
+		|| ($(presence).attr('type') === 'unsubscribed')
+		|| ($(presence).attr('type') === 'error')) {
 		return true;
 	}
+	else {
+		sendStatus();
+	}
 	if ($('#' + from).length === 0) {
-		$('<div class="buddy" title="' + rosterID + '" id="' + from + '" status="offline">'
-			+ shortenBuddy(rosterID, 19) + '<div class="buddyMenu" id="'
-			+ from + '-menu"></div></div>').insertAfter('#buddiesOffline');
+		buildBuddy({jid: rosterID, name: ''});
 	}
 	if ($(presence).attr('type') === 'unavailable') {
 		if ($('#' + from).attr('status') !== 'offline') {
@@ -126,7 +135,7 @@ function handlePresence(presence) {
 		});
 		return false;
 	}
-	else if ($(presence).attr('type') !== 'unsubscribed' && $(presence).attr('type') !== 'error') {
+	else {
 		if ($(presence).find('show').text() === '' || $(presence).find('show').text() === 'chat') {
 			if ($('#' + from).attr('status') !== 'online') {
 				var status = 'online';
@@ -150,6 +159,7 @@ function handlePresence(presence) {
 				$(this).insertAfter(placement).slideDown('fast');
 			});
 		}
+		$('.buddyMenu').unbind('click');
 		$('.buddyMenu').click(function(event) {
 			event.stopPropagation();
 			var buddy = $(this).attr('id').substring(0, ($(this).attr('id').length - 5));
@@ -168,7 +178,29 @@ function handlePresence(presence) {
 						});
 						$('.setNickname').click(function(event) {
 							event.stopPropagation();
-							//Set nickname goes here
+							var defaultNickname = ['bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'turtle', 
+								'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite', 'ducky'];
+							defaultNickname = defaultNickname[Math.floor((Math.random()*defaultNickname.length))];
+							var setNicknameForm = '<form id="setNicknameForm">'
+								+ '<div class="bar">Set nickname for ' + $('#' + buddy).attr('title') + '</div>'
+								+ '<input id="setNicknameText" class="bar" type="text" value="'
+								+ defaultNickname + '" autocomplete="off"/>'
+								+ '<input class="yes" id="setNicknameSubmit" type="submit" value="Set nickname"/>'
+								+ '</form>';
+							dialogBox(setNicknameForm, 1);
+							$('#setNicknameText').select();
+							$('#setNicknameForm').submit(function() {
+								if ($('#setNicknameText').val().match(/^(\w|\s)+$/)) {
+									setNickname($('#' + buddy).attr('title'), $('#setNicknameText').val());
+									$('#' + buddy).find('span').html($('#setNicknameText').val());
+									$('#dialogBoxClose').click();
+									return false;
+								}
+								else {
+									$('#setNicknameText').val('Letters, numbers and spaces only').select();
+									return false;
+								}
+							});
 						});
 						$('.removeBuddy').click(function(event) {
 							event.stopPropagation();
@@ -192,6 +224,7 @@ function handlePresence(presence) {
 			}
 		});
 		$('#' + from).css('cursor', 'pointer');
+		$('#' + from).unbind('click');
 		$('#' + from).click(function() {
 			if ($(this).prev().attr('id') === 'currentConversation') {
 				$('#userInputText').focus();
@@ -240,7 +273,25 @@ function handlePresence(presence) {
 	}
 	return true;
 }
+function sendStatus() {
+	if (currentStatus === 'away') {
+		conn.send($pres().c('show').t('away'));
+	}
+	else {
+		conn.send($pres());
+	}
+}
+function setNickname(buddy, nickname) {
+	conn.sendIQ(
+		$iq({type: 'set'}).c('query', {xmlns: 'jabber:iq:roster'}).c('item', {
+			jid: buddy, name: nickname
+		})
+	);
+}
 function dialogBox(data, closeable, onClose) {
+	if ($('#dialogBox').css('top') !== '-450px') {
+		return false;
+	}
 	if (closeable) {
 		$('#dialogBoxClose').css('display', 'block');
 	}
@@ -250,15 +301,14 @@ function dialogBox(data, closeable, onClose) {
 		if ($('#dialogBoxClose').css('display') === 'none') {
 			return false;
 		}
-		$('#dialogBox').animate({'top': '+=10px'}, 'fast').animate({'top': '-450px'}, 'fast', function() {
-			$('#dialogBoxClose').css('display', 'none');
-		});
+		$('#dialogBox').animate({'top': '+=10px'}, 'fast').animate({'top': '-450px'}, 'fast');
+		$('#dialogBoxClose').css('display', 'none');
 		if (onClose) {
 			onClose();
 		}
 		$('#userInputText').focus();
 	});
-	$(document).keyup(function(e) {
+	$(document).keydown(function(e) {
 		if (e.keyCode == 27) {
 			$('#dialogBoxClose').click();
 		}
@@ -266,16 +316,18 @@ function dialogBox(data, closeable, onClose) {
 }
 $('#status').click(function() {
 	if ($(this).attr('title') === 'Status: Available') {
-		conn.send($pres().c('show').t('away').up().c('status').t('reading'));
 		$(this).attr('src', 'img/away.png');
 		$(this).attr('alt', 'Status: Away');
 		$(this).attr('title', 'Status: Away');
+		currentStatus = 'away';
+		sendStatus();
 	}
 	else {
-		conn.send($pres().c('show').t('').up().c('status').t('reading'));
 		$(this).attr('src', 'img/available.png');
 		$(this).attr('alt', 'Status: Available');
 		$(this).attr('title', 'Status: Available');
+		currentStatus = 'online';
+		sendStatus();
 	}
 });
 $('#add').click(function() {
@@ -284,7 +336,7 @@ $('#add').click(function() {
 	}
 	var addBuddyForm = '<form id="addBuddyForm"><div class="bar">add new buddy:</div>'
 		+ '<input id="addBuddyJID" class="bar" type="text" value="user@' + domain + '" autocomplete="off"/>'
-		+ '<input class="yes" id="addBuddySubmit" type="submit" value="Send buddy request"/><br /><br />'
+		+ '<input class="yes" id="addBuddySubmit" type="submit" value="Send buddy request"/>'
 		+ '</form>';
 	dialogBox(addBuddyForm, 1);
 	$('#addBuddyJID').click(function() {
@@ -417,6 +469,7 @@ function connect(username, password) {
 				$('#loginInfo').html('Connected.');
 				$('#loginInfo').css('color', '#0F0');
 				$('#bubble').animate({'top': '+=10px'}, function() {
+					$('#loginLinks').fadeOut();
 					$('#info').fadeOut();
 					$('#loginForm').fadeOut();
 					$('#bubble').animate({'margin-top': '-=5%'}, function() {
@@ -429,10 +482,15 @@ function connect(username, password) {
 							});
 							conn.roster.init(conn);
 							conn.roster.get(function(roster) {
-								buildBuddyList(roster);
+								for (var i in roster) {
+									if (!roster[i].name) {
+										roster[i].name = '';
+									}
+									buildBuddy(roster[i]);
+								}
 								conn.addHandler(handlePresence, null, 'presence');
 								conn.addHandler(handleMessage, null, 'message', 'chat');
-								conn.send($pres());
+								sendStatus();
 							});
 							myID = jid2ID(username + '@' + domain);
 						});
@@ -461,6 +519,7 @@ function connect(username, password) {
 							$('#newAccount').attr('checked', false);
 							$('#loginSubmit').attr('readonly', false);
 							$('#info').fadeIn();
+							$('#loginLinks').fadeIn();
 							$('#loginForm').fadeIn('fast', function() {
 								$('#username').select();
 							});
