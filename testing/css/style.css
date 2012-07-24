@@ -184,7 +184,6 @@ img.logo {
 }
 .buddyMenuContents li:hover {
 	background-color: rgba(255, 255, 255, 0.4);
-	border-bottom: 1px solid #EEE;
 }
 .buddyMenu:hover {
 	background-color: #222;
