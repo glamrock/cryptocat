@@ -1,6 +1,14 @@
 Cryptocat 2
 
-Barebones codebase!
+**Alpha codebase!** We are not responsible if this code results in:
+* Alien invasion
+* Zombie apocalypse
+* Upset stomach
+* Volcano eruption
+* Tsunami
+* Destruction of the Internet
+* Girlfriend/boyfriend problems
+* Anything else
 
 **A lot of the new stuff is going in `testing/` so look there first!**
 
