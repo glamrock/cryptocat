@@ -6,7 +6,8 @@ var currentConversation = 0;
 var currentStatus = 'online';
 var conn, myID, username;
 
-$('.button').qtip();
+$('.input[title]').qtip();
+$('.button[title]').qtip();
 
 function currentTime(seconds) {
 	var date = new Date();
@@ -59,11 +60,57 @@ function loginFail(message) {
 	$('#bubble').animate({'left': '+=5px'}, 130)
 		.animate({'left': '-=10px'}, 130)
 		.animate({'left': '+=5px'}, 130);
-	$('#loginInfo').css('color', '#E93028');
-	$('#username').attr('readonly', false);
-	$('#password').attr('readonly', false);
-	$('#loginSubmit').attr('readonly', false);
+	$('#loginInfo').animate({'color': '#E93028'}, 'fast');
 	$('#username').select();
+}
+function seedRNG() {
+	if ((typeof window.crypto !== 'undefined') && (typeof window.crypto.getRandomValues === 'function')) {
+		var buffer = new Uint8Array(1024);
+		window.crypto.getRandomValues(buffer);
+		var seed = '';
+		for (var i in buffer) {
+			seed += String.fromCharCode(buffer[i]);
+		}
+		Math.seedrandom(seed);
+		delete seed;
+		return true;
+	}
+	else {
+		var e, up, down;
+		var seedRNGForm = '<br /><p id="seedRNGForm"><img src="img/keygen.gif" alt="" />Please type on your keyboard'
+			+ ' as randomly as possible for a few seconds.</p><input type="password" id="seedRNGInput" />';
+		dialogBox(seedRNGForm, 1, function() {
+			$('#loginInfo').html('Please login.');
+			$('#username').select();
+		});
+		$('#seedRNGInput').select();
+		$('#seedRNGInput').keydown(function(event) {
+			if (CryptoJS.Fortuna.Ready() === 0) {
+				e = String.fromCharCode(event.keyCode);
+				var d = new Date();
+				down = d.getTime();
+			}
+		});
+		$('#seedRNGInput').keyup(function() {
+			if (CryptoJS.Fortuna.Ready() === 0) {
+				var d = new Date();
+				up = d.getTime();
+				if (e) {
+					CryptoJS.Fortuna.AddRandomEvent(e + (up - down));
+				}
+			}
+			else {
+				$('#seedRNGInput').unbind('keyup').unbind('keydown');
+				$('#username').attr('readonly', 'true');
+				$('#password').attr('readonly', 'true');
+				$('#seedRNGInput').attr('readonly', 'true');
+				$('#dialogBoxClose').click();
+				Math.seedrandom(CryptoJS.Fortuna.RandomData(1024));
+				connect(username, $('#password').val());
+			}
+		});
+		return false;
+	}
 }
 function jid2ID(jid) {
 	jid = jid.match(/^(\w|\@|\.)+/);
@@ -418,12 +465,6 @@ $('#password').click(function() {
 });
 $('#loginForm').submit(function() {
 	username = $('#username').val();
-	if ($('#loginSubmit').attr('readonly')) {
-		return false;
-	}
-	$('#username').attr('readonly', true);
-	$('#password').attr('readonly', true);
-	$('#loginSubmit').attr('readonly', true);
 	if ($('#username').val() === '' || $('#username').val() === 'username') {
 		loginFail('Please enter a username.');
 		$('#username').focus();
@@ -468,19 +509,21 @@ function connect(username, password) {
 		conn = new Strophe.Connection('https://crypto.cat/http-bind');
 		conn.connect(username + '@' + domain, password, function(status) {
 			if (status === Strophe.Status.CONNECTING) {
-				$('#loginInfo').css('color', '#999');
+				$('#loginInfo').animate({'color': '#999'}, 'fast');
 				$('#loginInfo').html('Connecting...');
 			}
 			else if (status === Strophe.Status.CONNFAIL) {
-				$('#username').attr('readonly', false);
-				$('#password').attr('readonly', false);
-				$('#loginSubmit').attr('readonly', false);
 				$('#loginInfo').html('Connection failed.');
-				$('#loginInfo').css('color', '#E93028');
+				$('#loginInfo').animate({'color': '#E93028'}, 'fast');
 			}
 			else if (status === Strophe.Status.CONNECTED) {
+				if (CryptoJS.Fortuna.Ready() === 0) {
+					if (!seedRNG()) {
+						return false;
+					}
+				}
 				$('#loginInfo').html('Connected.');
-				$('#loginInfo').css('color', '#0F0');
+				$('#loginInfo').animate({'color': '#0F0'}, 'fast');
 				$('#bubble').animate({'top': '+=10px'}, function() {
 					$('#loginLinks').fadeOut();
 					$('#info').fadeOut();
@@ -517,7 +560,7 @@ function connect(username, password) {
 					$('#conversationInfo').html('');
 					$('#conversationWindow').slideUp(function() {
 						$('#buddyWrapper').fadeOut();
-						$('#loginInfo').css('color', '#999');
+						$('#loginInfo').animate({'color': '#999'}, 'fast');
 						$('#loginInfo').html('Thank you for using Cryptocat.');
 						$('#bubble').animate({'width': '680px'});
 						$('#bubble').animate({'height': '310px'}).animate({'margin-top': '+=4.25%'}, function() {
@@ -527,10 +570,9 @@ function connect(username, password) {
 							myID = username = null;
 							$('#username').val('username');
 							$('#password').val('password');
-							$('#username').attr('readonly', false);
-							$('#password').attr('readonly', false);
+							$('#username').attr('readonly', 'true');
+							$('#password').attr('readonly', 'true');
 							$('#newAccount').attr('checked', false);
-							$('#loginSubmit').attr('readonly', false);
 							$('#info').fadeIn();
 							$('#loginLinks').fadeIn();
 							$('#loginForm').fadeIn('fast', function() {
