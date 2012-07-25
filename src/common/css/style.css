@@ -202,7 +202,7 @@ img.logo {
 	z-index: 4;
 	border: 1px solid #222;
 	border-right: none;
-	background-color: rgba(0, 0, 0, 0.94);
+	background-color: rgba(0, 0, 0, 0.9);
 	box-shadow: 2px 2px #E93028;
 	top: -450px;
 }
@@ -362,7 +362,7 @@ img.logo {
 	line-height: 12px;
 	border: 2px solid #97CEEC;
 	box-shadow: 1px 1px 3px #5588A5;
-	background-color: rgba(0, 0, 0, 0.9);
+	background-color: rgba(0, 0, 0, 0.75);
 	color: #EEE;
 	padding: 6px;
 	border-radius: 4px 0 4px 4px;

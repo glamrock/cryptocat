@@ -215,7 +215,7 @@ function handlePresence(presence) {
 					+ '<li class="startGroupChat">Start group chat</li>'
 					+ '<li class="setNickname">Set nickname</li>'
 					+ '<li class="removeBuddy">Remove buddy</li></div>';
-				$(this).css('background-image', 'url("../img/up.png")');
+				$(this).css('background-image', 'url("img/up.png")');
 				$('#' + buddy).delay(10).animate({'height': '61px'}, 180, function() {
 					$('#' + buddy).append(buddyMenuContents);
 					$('#' + buddy + '-contents').fadeIn('fast', function() {
@@ -263,7 +263,7 @@ function handlePresence(presence) {
 				});
 			}
 			else {
-				$(this).css('background-image', 'url("../img/down.png")');
+				$(this).css('background-image', 'url("img/down.png")');
 				$('#' + buddy).animate({'height': '15px'}, 190);
 				$('#' + buddy + '-contents').fadeOut('fast', function() {
 					$('#' + buddy + '-contents').remove();
@@ -570,8 +570,8 @@ function connect(username, password) {
 							myID = username = null;
 							$('#username').val('username');
 							$('#password').val('password');
-							$('#username').attr('readonly', 'false');
-							$('#password').attr('readonly', 'false');
+							$('#username').removeAttr('readonly');
+							$('#password').removeAttr('readonly');
 							$('#newAccount').attr('checked', false);
 							$('#info').fadeIn();
 							$('#loginLinks').fadeIn();
