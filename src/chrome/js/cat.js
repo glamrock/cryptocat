@@ -370,6 +370,19 @@ function addtoConversation(message, sender, conversation) {
 	else {
 		lineDecoration = 2;
 	}
+	message = message.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+	if ((URLs = message.match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi))) {
+		for (var i in URLs) {
+			var sanitize = URLs[i].split('');
+			for (var l in sanitize) {
+				if (!sanitize[l].match(/\w|\d|\:|\/|\?|\=|\#|\+|\,|\.|\&|\;|\%/)) {
+					sanitize[l] = encodeURIComponent(sanitize[l]);
+				}
+			}
+			sanitize = sanitize.join('');
+			message = message.replace(sanitize, '<a target="_blank" href="' + sanitize + '">' + URLs[i] + '</a>');
+		}
+	}
 	var timeStamp = '<span class="timeStamp">' + currentTime(0) + '</span>';
 	var sender = '<span class="sender">' + shortenBuddy(sender, 16) + '</span>';
 	message = '<div class="Line' + lineDecoration + '">' + timeStamp + sender + message + '</div>';

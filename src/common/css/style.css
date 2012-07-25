@@ -301,6 +301,7 @@ img.logo {
 	color: #CCC;
 	font-size: 10px;
 	font-family: monospace;
+	text-shadow: 1px 1px #555;
 }
 #conversationWindow .sender {
 	color: #97CEEC;
