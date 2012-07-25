@@ -570,8 +570,8 @@ function connect(username, password) {
 							myID = username = null;
 							$('#username').val('username');
 							$('#password').val('password');
-							$('#username').attr('readonly', 'true');
-							$('#password').attr('readonly', 'true');
+							$('#username').attr('readonly', 'false');
+							$('#password').attr('readonly', 'false');
 							$('#newAccount').attr('checked', false);
 							$('#info').fadeIn();
 							$('#loginLinks').fadeIn();
