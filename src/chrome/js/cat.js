@@ -70,6 +70,7 @@ function seedRNG() {
 		var seed = '';
 		for (var i in buffer) {
 			seed += String.fromCharCode(buffer[i]);
+			CryptoJS.Fortuna.AddRandomEvent(String.fromCharCode(buffer[i]));
 		}
 		Math.seedrandom(seed);
 		delete seed;
@@ -524,7 +525,7 @@ function connect(username, password) {
 				}
 				$('#loginInfo').html('Connected.');
 				$('#loginInfo').animate({'color': '#0F0'}, 'fast');
-				$('#bubble').animate({'top': '+=10px'}, function() {
+				$('#bubble').animate({'top': '+=20px'}, function() {
 					$('#loginLinks').fadeOut();
 					$('#info').fadeOut();
 					$('#loginForm').fadeOut();
