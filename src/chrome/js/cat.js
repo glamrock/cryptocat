@@ -115,7 +115,7 @@ function seedRNG() {
 }
 function jid2ID(jid) {
 	jid = jid.match(/^(\w|\@|\.)+/);
-	return jid[0].replace('@', '-').replace('.', '-');
+	return jid[0].replace('@', '-').replace(/\./g, '-');
 }
 function shortenBuddy(buddy, length) {
 	if (buddy.length > length) {
@@ -256,6 +256,10 @@ function handlePresence(presence) {
 							buddy = buddy.substring(0, (buddy.length - 9));
 							conn.roster.unauthorize($('#' + buddy).attr('title'));
 							conn.roster.unsubscribe($('#' + buddy).attr('title'));
+							var iq = $iq({type: 'set'})
+								.c('query', {xmlns: Strophe.NS.ROSTER})
+								.c('item', {jid: $('#' + buddy).attr('title'), subscription: 'remove'});
+							conn.sendIQ(iq);
 							$('#' + buddy).slideUp('fast', function() {
 								$('#' + buddy).remove();
 							});
@@ -400,7 +404,7 @@ $('#add').click(function() {
 function handleMessage(message) {
 	var from = jid2ID($(message).attr('from'));
 	var rosterID = $(message).attr('from').match(/^(\w|\@|\.)+/)[0];
-	var sender = $(message).attr('from').match(/^(\w)+/)[0];
+	var sender = $('#' + jid2ID(rosterID)).find('span').html().match(/^\w+/)[0];
 	var body = $(message).find('body').text();
 	addtoConversation(body, sender, rosterID);
 	if (currentConversation !== rosterID) {
