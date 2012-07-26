@@ -529,32 +529,30 @@ function connect(username, password) {
 				}
 				$('#loginInfo').html('Connected.');
 				$('#loginInfo').animate({'color': '#0F0'}, 'fast');
-				$('#bubble').animate({'top': '+=20px'}, function() {
+				$('#bubble').animate({'margin-top': '1.5%'}, function() {
 					$('#loginLinks').fadeOut();
 					$('#info').fadeOut();
 					$('#loginForm').fadeOut();
-					$('#bubble').animate({'margin-top': '-=5%'}, function() {
-						$('#bubble').animate({'width': '900px'});
-						$('#bubble').animate({'height': '550px'}, function() {
-							$('.button').fadeIn();
-							$('#buddyWrapper').fadeIn('fast', function() {
-								var scrollWidth = document.getElementById('buddyList').scrollWidth;
-								$('#buddyList').css('width', (150 + scrollWidth) + 'px');
-							});
-							conn.roster.init(conn);
-							conn.roster.get(function(roster) {
-								for (var i in roster) {
-									if (!roster[i].name) {
-										roster[i].name = '';
-									}
-									buildBuddy(roster[i]);
-								}
-								conn.addHandler(handlePresence, null, 'presence');
-								conn.addHandler(handleMessage, null, 'message', 'chat');
-								sendStatus();
-							});
-							myID = jid2ID(username + '@' + domain);
+					$('#bubble').animate({'width': '900px'});
+					$('#bubble').animate({'height': '550px'}, function() {
+						$('.button').fadeIn();
+						$('#buddyWrapper').fadeIn('fast', function() {
+							var scrollWidth = document.getElementById('buddyList').scrollWidth;
+							$('#buddyList').css('width', (150 + scrollWidth) + 'px');
 						});
+						conn.roster.init(conn);
+						conn.roster.get(function(roster) {
+							for (var i in roster) {
+								if (!roster[i].name) {
+									roster[i].name = '';
+								}
+								buildBuddy(roster[i]);
+							}
+							conn.addHandler(handlePresence, null, 'presence');
+							conn.addHandler(handleMessage, null, 'message', 'chat');
+							sendStatus();
+						});
+						myID = jid2ID(username + '@' + domain);
 					});
 				});
 			}
@@ -568,7 +566,7 @@ function connect(username, password) {
 						$('#loginInfo').animate({'color': '#999'}, 'fast');
 						$('#loginInfo').html('Thank you for using Cryptocat.');
 						$('#bubble').animate({'width': '680px'});
-						$('#bubble').animate({'height': '310px'}).animate({'margin-top': '+=4.25%'}, function() {
+						$('#bubble').animate({'height': '310px'}).animate({'margin-top': '5%'}, function() {
 							$('#buddyList div').remove();
 							$('#conversationWindow').html('');
 							conversations = [];
