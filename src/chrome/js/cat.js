@@ -222,7 +222,7 @@ function handlePresence(presence) {
 					$('#' + buddy + '-contents').fadeIn('fast', function() {
 						$('.startGroupChat').click(function(event) {
 							event.stopPropagation();
-							//Group chat init goes here
+							dialogBox('<h1>Coming soon!</h1>', 1);
 						});
 						$('.setNickname').click(function(event) {
 							event.stopPropagation();
