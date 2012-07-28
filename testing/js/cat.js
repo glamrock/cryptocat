@@ -1,8 +1,11 @@
 /* Initialization */
 var domain =  'crypto.cat';
+var bosh = 'https://crypto.cat/http-bind';
 var conversations = [];
 var conversationInfo = [];
 var currentConversation = 0;
+var audioNotifications = 0;
+var soundEmbed = null;
 var currentStatus = 'online';
 var conn, myID, username;
 
@@ -23,6 +26,26 @@ function currentTime(seconds) {
 		}
 	}
 	return time.join(':');
+}
+function playSound(audio) {
+	function createSound(audio) {
+		soundEmbed = document.createElement('audio');
+		soundEmbed.setAttribute('type', 'audio/webm');
+		soundEmbed.setAttribute('src', audio);
+		soundEmbed.setAttribute('style', 'display: none;');
+		soundEmbed.setAttribute('autoplay', true);
+	}
+	if (!soundEmbed) {
+		createSound(audio);
+	}
+	else {
+		document.body.removeChild(soundEmbed);
+		soundEmbed.removed = true;
+		soundEmbed = null;
+		createSound(audio);
+	}
+	soundEmbed.removed = false;
+	document.body.appendChild(soundEmbed);
 }
 function scrollDown(speed) {
 	$('#conversationWindow').animate({
@@ -158,6 +181,9 @@ function handlePresence(presence) {
 			});
 			$('#' + from).css('cursor', 'default');
 			$('#' + from).css('background-image', 'none');
+			if (audioNotifications) {
+				playSound('snd/userOffline.webm');
+			}
 			if ($('#' + from).prev().attr('id') !== 'currentConversation') {
 				$('#' + from).slideUp('fast', function() {
 					$(this).insertAfter('#buddiesOffline').slideDown('fast');
@@ -189,6 +215,9 @@ function handlePresence(presence) {
 				var status = 'online';
 				var backgroundColor = '#76BDE5';
 				var placement = '#buddiesOnline';
+				if (audioNotifications) {
+					playSound('snd/userOnline.webm');
+				}
 			}
 		}
 		else if ($('#' + from).attr('status') !== 'away') {
@@ -401,6 +430,20 @@ $('#add').click(function() {
 	});
 	$('#addBuddyJID').select();
 });
+$('#audio').click(function() {
+	if ($(this).attr('title') === 'Audio Notifications Off') {
+		$(this).attr('src', 'img/sound.png');
+		$(this).attr('alt', 'Audio Notifications On');
+		$(this).attr('title', 'Audio Notifications On');
+		audioNotifications = 1;
+	}
+	else {
+		$(this).attr('src', 'img/noSound.png');
+		$(this).attr('alt', 'Audio Notifications Off');
+		$(this).attr('title', 'Audio Notifications Off');
+		audioNotifications = 0;
+	}
+});
 function handleMessage(message) {
 	var from = jid2ID($(message).attr('from'));
 	var rosterID = $(message).attr('from').match(/^(\w|\@|\.)+/)[0];
@@ -418,9 +461,11 @@ function addtoConversation(message, sender, conversation) {
 	initiateConversation(conversation);
 	if (sender === username) {
 		lineDecoration = 1;
+		audioNotification = 'snd/msgSend.webm';
 	}
 	else {
 		lineDecoration = 2;
+		audioNotification = 'snd/msgGet.webm';
 	}
 	message = message.replace(/</g,'&lt;').replace(/>/g,'&gt;');
 	if ((URLs = message.match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi))) {
@@ -441,6 +486,9 @@ function addtoConversation(message, sender, conversation) {
 	conversations[conversation] += message;
 	if (conversation === currentConversation) {
 		$('#conversationWindow').append(message);
+	}
+	if (audioNotifications) {
+		playSound(audioNotification);
 	}
 	if ((document.getElementById('conversationWindow').scrollHeight - $('#conversationWindow').scrollTop()) < 800) {	
 		scrollDown(600);
@@ -489,9 +537,9 @@ $('#loginForm').submit(function() {
 
 /* Connection */
 function connect(username, password) {
-	conn = new Strophe.Connection('https://crypto.cat/http-bind');
+	conn = new Strophe.Connection(bosh);
 	if ($('#newAccount').attr('checked')) {
-		conn.register.connect('crypto.cat', function(status) {
+		conn.register.connect(domain, function(status) {
 			if (status === Strophe.Status.REGISTER) {
 				$('#loginInfo').html('Registering...');
 				conn.register.fields.username = username;
@@ -511,7 +559,7 @@ function connect(username, password) {
 		login();
 	}
 	function login() {
-		conn = new Strophe.Connection('https://crypto.cat/http-bind');
+		conn = new Strophe.Connection(bosh);
 		conn.connect(username + '@' + domain, password, function(status) {
 			if (status === Strophe.Status.CONNECTING) {
 				$('#loginInfo').animate({'color': '#999'}, 'fast');
