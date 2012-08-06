@@ -2,7 +2,7 @@
 ***
 ### Browser Instant Messaging Platform with Accessible, Encrypted Messaging
 
-`░░▓▓░░░░░░░░▓▓░░  
+░░▓▓░░░░░░░░▓▓░░  
 ░▓▒▒▓░░░░░░▓▒▒▓░  
 ░▓▒▒▒▓░░░░▓▒▒▒▓░  
 ░▓▒▒▒▒▓▓▓▓▒▒▒▒▓░  
@@ -14,7 +14,7 @@
 ▓▒░░▒▓▒▒▓▒▒▓▒░░▓  
 ░▓▒▒▒▓▓▓▓▓▓▓▒▒▓░  
 ░░▓▒▒▒▒▒▒▒▒▒▒▓░░  
-░░░▓▓▓▓▓▓▓▓▓▓░░░  `
+░░░▓▓▓▓▓▓▓▓▓▓░░░  
 
 
 #### Target platforms:
@@ -26,8 +26,8 @@
 
 #### Notes:
 **ALPHA CODEBASE!!!! NOTHING WORKS EVERYTHING IS BROKEN FOREVER**
-* Most recent changes in `testing/` directory, which is loadable in Chrome
-* Firefox development has not yet begun
+* Most recent changes in `testing/` directory, which is loadable in Chrome.
+* Firefox development has not yet begun.
 
 #### Goals:
 * XMPP | [Discussion](https://github.com/kaepora/cryptocat/issues/83)
