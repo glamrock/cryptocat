@@ -1,26 +1,37 @@
-Cryptocat 2
+#Cryptocat 2
+### Browser Instant Messaging Platform with Accessible, Encrypted Messaging
 
-**Alpha codebase!** We are not responsible if this code results in:
-* Alien invasion
-* Zombie apocalypse
-* Upset stomach
-* Volcano eruption
-* Tsunami
-* Destruction of the Internet
-* Girlfriend/boyfriend problems
-* Anything else
+`░░▓▓░░░░░░░░▓▓░░
+░▓▒▒▓░░░░░░▓▒▒▓░
+░▓▒▒▒▓░░░░▓▒▒▒▓░
+░▓▒▒▒▒▓▓▓▓▒▒▒▒▓░
+░▓▒▒▒▒▒▒▒▒▒▒▒▒▒▓
+▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓
+▓▒▒▒░▓▒▒▒▒▒░▓▒▒▓
+▓▒▒▒▓▓▒▒▒▓▒▓▓▒▒▓
+▓▒░░▒▒▒▒▒▒▒▒▒░░▓
+▓▒░░▒▓▒▒▓▒▒▓▒░░▓
+░▓▒▒▒▓▓▓▓▓▓▓▒▒▓░
+░░▓▒▒▒▒▒▒▒▒▒▒▓░░
+░░░▓▓▓▓▓▓▓▓▓▓░░░`
 
-**A lot of the new stuff is going in `testing/` so look there first!**
 
-* There will be no server code since we will be using XMPP for server.
-* We will use Strophe.js (http://strophe.im/) for XMPP, available in ext/strophejs
-* mpOTR code is in src/common/js
-* We will only focus on the Chrome extension until that's done, and then port to other browsers/platforms
-* Most of the code here (excluding libraries) will be written from scratch, not from Cryptocat v1
+#### Target platforms:
+* Google Chrome: `src/chrome/`
+* Mozilla Firefox: `src/firefox/`
 
-Goals:
-* XMPP | Discussion: https://github.com/kaepora/cryptocat/issues/83
-* mpOTR | Discussion: https://github.com/kaepora/cryptocat/issues/82
-* OTR (for backwards compatibility) | Discussion: https://github.com/kaepora/cryptocat/issues/84
+#### License:
+* AGPL3: `LICENSE.txt`
 
-Feel free to open issues. Contact <nadim@nadim.cc>
+#### Notes:
+**ALPHA CODEBASE!!!! NOTHING WORKS EVERYTHING IS BROKEN FOREVER**
+* Most recent changes in `testing/` directory, which is loadable in Chrome
+* Firefox development has not yet begun
+
+#### Goals:
+* XMPP | [Discussion](https://github.com/kaepora/cryptocat/issues/83)
+* OTR | [Discussion](https://github.com/kaepora/cryptocat/issues/84)
+* mpOTR | [Discussion](https://github.com/kaepora/cryptocat/issues/82)
+
+#### Discussion:
+We have [a million issues worth discussing here!](https://github.com/kaepora/cryptocat/issues)
