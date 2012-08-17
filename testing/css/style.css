@@ -69,6 +69,7 @@ img.logo {
 	cursor: pointer;
 	float: right;
 	margin: 9px 10px 0 0;
+	box-shadow: 2px 2px #111;
 }
 #bubble #info {
 	float: left;
@@ -170,6 +171,10 @@ img.logo {
 	border-radius: 3px 0 3px 3px;
 	opacity: 0.8;
 }
+.buddyMenu:hover {
+	background-color: #222;
+	box-shadow: 2px 2px #111;
+}
 .buddyMenuContents {
 	display: none;
 	margin-left: -7px;
@@ -184,10 +189,6 @@ img.logo {
 }
 .buddyMenuContents li:hover {
 	background-color: rgba(255, 255, 255, 0.4);
-}
-.buddyMenu:hover {
-	background-color: #222;
-	box-shadow: 1px 1px #000;
 }
 .buddyMenu:active {
 	background-color: #000;
