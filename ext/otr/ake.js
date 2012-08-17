@@ -51,10 +51,10 @@
   function hMac(gx, gy, pk, kid, m) {
     var pass = CryptoJS.enc.Latin1.parse(m)
     var hmac = CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256, pass)
-    hmac.update(HLP.packMPI(gx))
-    hmac.update(HLP.packMPI(gy))
-    hmac.update(pk)
-    hmac.update(kid)
+    hmac.update(CryptoJS.enc.Latin1.parse(HLP.packMPI(gx)))
+    hmac.update(CryptoJS.enc.Latin1.parse(HLP.packMPI(gy)))
+    hmac.update(CryptoJS.enc.Latin1.parse(pk))
+    hmac.update(CryptoJS.enc.Latin1.parse(kid))
     return (hmac.finalize()).toString(CryptoJS.enc.Latin1)
   }
 
@@ -261,7 +261,7 @@
           this.their_y = HLP.readMPI(gxmpi)
 
           // verify hash
-          var hash = CryptoJS.SHA256(gxmpi)
+          var hash = CryptoJS.SHA256(CryptoJS.enc.Latin1.parse(gxmpi))
 
           if (this.hashed !== hash.toString(CryptoJS.enc.Latin1))
             return this.otr.error('Hashed g^x does not match.', true)
@@ -354,7 +354,7 @@
       key = CryptoJS.enc.Latin1.stringify(key)
       send += HLP.packData(HLP.makeAes(gxmpi, key, HLP.packCtr(0)))
 
-      this.myhashed = CryptoJS.SHA256(gxmpi)
+      this.myhashed = CryptoJS.SHA256(CryptoJS.enc.Latin1.parse(gxmpi))
       this.myhashed = HLP.packData(this.myhashed.toString(CryptoJS.enc.Latin1))
       send += this.myhashed
 

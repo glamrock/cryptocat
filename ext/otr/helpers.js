@@ -52,17 +52,23 @@
 
   HLP.smpHash = function (version, fmpi, smpi) {
     var sha256 = CryptoJS.algo.SHA256.create()
-    sha256.update(version.toString())
-    sha256.update(HLP.packMPI(fmpi))
-    if (smpi) sha256.update(HLP.packMPI(smpi))
+    sha256.update(CryptoJS.enc.Latin1.parse(version.toString()))
+    sha256.update(CryptoJS.enc.Latin1.parse(HLP.packMPI(fmpi)))
+    if (smpi) sha256.update(CryptoJS.enc.Latin1.parse(HLP.packMPI(smpi)))
     var hash = sha256.finalize()
     return BigInt.str2bigInt(hash.toString(CryptoJS.enc.Hex), 16)
   }
 
   HLP.makeMac = function (aesctr, m) {
     var pass = CryptoJS.enc.Latin1.parse(m)
-    var mac = CryptoJS.HmacSHA256(aesctr, pass)
+    var mac = CryptoJS.HmacSHA256(CryptoJS.enc.Latin1.parse(aesctr), pass)
     return HLP.mask(mac.toString(CryptoJS.enc.Latin1), 0, 160)
+  }
+
+  HLP.make1Mac = function (aesctr, m) {
+    var pass = CryptoJS.enc.Latin1.parse(m)
+    var mac = CryptoJS.HmacSHA1(CryptoJS.enc.Latin1.parse(aesctr), pass)
+    return mac.toString(CryptoJS.enc.Latin1)
   }
 
   HLP.makeAes = function (msg, c, iv) {
@@ -131,20 +137,21 @@
   }
 
   HLP.h1 = function (b, secbytes) {
-    return (CryptoJS.SHA1(b + secbytes)).toString(CryptoJS.enc.Latin1)
+    var sha1 = CryptoJS.algo.SHA1.create()
+    sha1.update(CryptoJS.enc.Latin1.parse(b))
+    sha1.update(CryptoJS.enc.Latin1.parse(secbytes))
+    return (sha1.finalize()).toString(CryptoJS.enc.Latin1)
   }
 
   HLP.h2 = function (b, secbytes) {
     var sha256 = CryptoJS.algo.SHA256.create()
-    sha256.update(b)
-    sha256.update(secbytes)
-    var hash = sha256.finalize()
-    return hash.toString(CryptoJS.enc.Latin1)
+    sha256.update(CryptoJS.enc.Latin1.parse(b))
+    sha256.update(CryptoJS.enc.Latin1.parse(secbytes))
+    return (sha256.finalize()).toString(CryptoJS.enc.Latin1)
   }
 
   HLP.mask = function (bytes, start, n) {
-    start = start / 8
-    return bytes.substring(start + 0, start + (n / 8))
+    return bytes.substr(start / 8, n / 8)
   }
 
   HLP.twotothe = function (g) {
@@ -157,8 +164,9 @@
 
   HLP.packBytes = function (val, bytes) {
     var res = ''  // big-endian, unsigned long
-    for (bytes -= 1, bytes *= 8; bytes > -1; bytes -= 8) {
-      res += _toString(val >> bytes & 0xff)
+    for (bytes -= 1; bytes > -1; bytes--) {
+      res = _toString(val & 0xff) + res
+      val >>= 8
     }
     return res
   }
