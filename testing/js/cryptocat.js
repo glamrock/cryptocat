@@ -7,6 +7,7 @@ var bosh = 'https://crypto.cat/http-bind';
 /* Initialization */
 var conversations = [];
 var conversationInfo = [];
+var loginCredentials = [];
 var currentConversation = 0;
 var audioNotifications = 0;
 var currentStatus = 'online';
@@ -14,7 +15,6 @@ var soundEmbed = null;
 var conn, myID, chatName;
 $('.input[title]').qtip();
 $('.button[title]').qtip();
-$('#chatName').val(randomString(12, 1, 0, 1));
 
 // Outputs the current hh:mm.
 // If `seconds = 1`, outputs hh:mm:ss.
@@ -147,7 +147,8 @@ function seedRNG() {
 				$('#seedRNGInput').attr('readonly', 'true');
 				$('#dialogBoxClose').click();
 				Math.seedrandom(CryptoJS.Fortuna.RandomData(1024));
-				connect(username, $('#password').val());
+				// Now that the RNG is seeded, we can again submit the login form
+				$('#loginForm').submit();
 			}
 		});
 		return false;
@@ -220,7 +221,7 @@ function handleMessage(message) {
 // Add a `message` from `sender` to the `conversation` display and log.
 function addtoConversation(message, sender, conversation) {
 	initiateConversation(conversation);
-	if (sender === username) {
+	if (sender === loginCredentials[0]) {
 		lineDecoration = 1;
 		audioNotification = 'snd/msgSend.webm';
 	}
@@ -566,7 +567,7 @@ $('#userInput').submit(function() {
 	if (message !== '') {
 		conn.send($msg({to: currentConversation, 'type': 'chat'}).c('body').t(message));
 		message = message;
-		addtoConversation(message, username, currentConversation);
+		addtoConversation(message, loginCredentials[0], currentConversation);
 	}
 	$('#userInputText').val('');
 	return false;
@@ -582,124 +583,125 @@ $('#chatName').click(function() {
 	$(this).select();
 });
 $('#loginForm').submit(function() {
-	username = $('#chatName').val();
-	if ($('#chatName').val() === '' || $('#chatName').val() === 'username') {
-		loginFail('Please enter a username.');
-		$('#chatName').focus();
+	// Don't process any login request if RNG isn't seeded
+	if (CryptoJS.Fortuna.Ready() === 0) {
+		if (!seedRNG()) {
+			return false;
+		}
 	}
-	else if (!$('#chatName').val().match(/^\w{1,16}$/)) {
-		loginFail('Username must be alphanumeric.');
+	chatName = $('#chatName').val();
+	if ($('#chatName').val() === '') {
+		return false;
+	}
+	else if (!$('#chatName').val().match(/^\w{1,20}$/)) {
+		loginFail('Chat name must be alphanumeric.');
 	}
 	else {
-		connect(username, $('#password').val());
+		loginCredentials[0] = randomString(256, 1, 1, 1);
+		loginCredentials[1] = randomString(256, 1, 1, 1);
+		registerXMPPUser(loginCredentials[0], loginCredentials[1]);
 	}
 	return false;
 });
 
-/* Connection */
-function connect(username, password) {
+// Registers a new user on the XMPP server.
+function registerXMPPUser(username, password) {
+	var registrationConnection = new Strophe.Connection(bosh);
+	registrationConnection.register.connect(domain, function(status) {
+		if (status === Strophe.Status.REGISTER) {
+			$('#loginInfo').html('Registering...');
+			registrationConnection.register.fields.username = username;
+			registrationConnection.register.fields.password = password;
+			registrationConnection.register.submit();
+		}
+		else if (status === Strophe.Status.REGISTERED) {
+			registrationConnection.disconnect();
+			login(loginCredentials[0], loginCredentials[1]);
+			return true;
+		}
+		else if (status === Strophe.Status.SBMTFAIL) {
+			return false;
+		}
+	});
+}
+
+// Logs into the XMPP server, creating main connection handlers.
+function login(username, password) {
 	conn = new Strophe.Connection(bosh);
-	if ($('#newAccount').attr('checked')) {
-		conn.register.connect(domain, function(status) {
-			if (status === Strophe.Status.REGISTER) {
-				$('#loginInfo').html('Registering...');
-				conn.register.fields.username = username;
-				conn.register.fields.password = password;
-				conn.register.submit();
-			}
-			else if (status === Strophe.Status.REGISTERED) {
-				conn.disconnect();
-				login();
-			}
-			else if (status === Strophe.Status.SBMTFAIL) {
-				loginFail('Registration failure.');
-			}
-		});
-	}
-	else {
-		login();
-	}
-	function login() {
-		conn = new Strophe.Connection(bosh);
-		conn.connect(username + '@' + domain, password, function(status) {
-			if (status === Strophe.Status.CONNECTING) {
-				$('#loginInfo').animate({'color': '#999'}, 'fast');
-				$('#loginInfo').html('Connecting...');
-			}
-			else if (status === Strophe.Status.CONNFAIL) {
-				$('#loginInfo').html('Connection failed.');
-				$('#loginInfo').animate({'color': '#E93028'}, 'fast');
-			}
-			else if (status === Strophe.Status.CONNECTED) {
-				if (CryptoJS.Fortuna.Ready() === 0) {
-					if (!seedRNG()) {
-						return false;
-					}
-				}
-				$('#loginInfo').html('Connected.');
-				$('#loginInfo').animate({'color': '#0F0'}, 'fast');
-				$('#bubble').animate({'margin-top': '1.5%'}, function() {
-					$('#loginLinks').fadeOut();
-					$('#info').fadeOut();
-					$('#loginForm').fadeOut();
-					$('#bubble').animate({'width': '900px'});
-					$('#bubble').animate({'height': '550px'}, function() {
-						$('.button').fadeIn();
-						$('#buddyWrapper').fadeIn('fast', function() {
-							var scrollWidth = document.getElementById('buddyList').scrollWidth;
-							$('#buddyList').css('width', (150 + scrollWidth) + 'px');
-						});
-						conn.roster.init(conn);
-						conn.roster.get(function(roster) {
-							for (var i in roster) {
-								if (!roster[i].name) {
-									roster[i].name = '';
-								}
-								buildBuddy(roster[i]);
+	conn.connect(username + '@' + domain, password, function(status) {
+		if (status === Strophe.Status.CONNECTING) {
+			$('#loginInfo').animate({'color': '#999'}, 'fast');
+			$('#loginInfo').html('Connecting...');
+		}
+		else if (status === Strophe.Status.CONNFAIL) {
+			$('#loginInfo').html('Connection failed.');
+			$('#loginInfo').animate({'color': '#E93028'}, 'fast');
+		}
+		else if (status === Strophe.Status.CONNECTED) {
+			$('#loginInfo').html('Connected.');
+			$('#loginInfo').animate({'color': '#0F0'}, 'fast');
+			$('#bubble').animate({'margin-top': '1.5%'}, function() {
+				$('#loginLinks').fadeOut();
+				$('#info').fadeOut();
+				$('#loginForm').fadeOut();
+				$('#bubble').animate({'width': '900px'});
+				$('#bubble').animate({'height': '550px'}, function() {
+					$('.button').fadeIn();
+					$('#buddyWrapper').fadeIn('fast', function() {
+						var scrollWidth = document.getElementById('buddyList').scrollWidth;
+						$('#buddyList').css('width', (150 + scrollWidth) + 'px');
+					});
+					conn.roster.init(conn);
+					conn.roster.get(function(roster) {
+						for (var i in roster) {
+							if (!roster[i].name) {
+								roster[i].name = '';
 							}
-							conn.addHandler(handlePresence, null, 'presence');
-							conn.addHandler(handleMessage, null, 'message', 'chat');
-							sendStatus();
+							buildBuddy(roster[i]);
+						}
+						conn.addHandler(handlePresence, null, 'presence');
+						conn.addHandler(handleMessage, null, 'message', 'chat');
+						sendStatus();
+					});
+					myID = jid2ID(loginCredentials[0] + '@' + domain);
+				});
+			});
+		}
+		else if (status === Strophe.Status.DISCONNECTED) {
+			$('.button').fadeOut('fast');
+			$('#userInput').fadeOut(function() {
+				$('#conversationInfo').animate({'width': '0'});
+				$('#conversationInfo').html('');
+				$('#conversationWindow').slideUp(function() {
+					$('#buddyWrapper').fadeOut();
+					$('#loginInfo').animate({'color': '#999'}, 'fast');
+					$('#loginInfo').html('Thank you for using Cryptocat.');
+					$('#bubble').animate({'width': '680px'});
+					$('#bubble').animate({'height': '310px'}).animate({'margin-top': '5%'}, function() {
+						$('#buddyList div').remove();
+						$('#conversationWindow').html('');
+						conversations = [];
+						myID = null;
+						loginCredentials = [];
+						$('#chatName').val('');
+						$('#chatName').removeAttr('readonly');
+						$('#newAccount').attr('checked', false);
+						$('#info').fadeIn();
+						$('#loginLinks').fadeIn();
+						$('#loginForm').fadeIn('fast', function() {
+							$('#chatName').select();
 						});
-						myID = jid2ID(username + '@' + domain);
 					});
 				});
-			}
-			else if (status === Strophe.Status.DISCONNECTED) {
-				$('.button').fadeOut('fast');
-				$('#userInput').fadeOut(function() {
-					$('#conversationInfo').animate({'width': '0'});
-					$('#conversationInfo').html('');
-					$('#conversationWindow').slideUp(function() {
-						$('#buddyWrapper').fadeOut();
-						$('#loginInfo').animate({'color': '#999'}, 'fast');
-						$('#loginInfo').html('Thank you for using Cryptocat.');
-						$('#bubble').animate({'width': '680px'});
-						$('#bubble').animate({'height': '310px'}).animate({'margin-top': '5%'}, function() {
-							$('#buddyList div').remove();
-							$('#conversationWindow').html('');
-							conversations = [];
-							myID = username = null;
-							$('#chatName').val('username');
-							$('#chatName').removeAttr('readonly');
-							$('#newAccount').attr('checked', false);
-							$('#info').fadeIn();
-							$('#loginLinks').fadeIn();
-							$('#loginForm').fadeIn('fast', function() {
-								$('#chatName').select();
-							});
-						});
-					});
-				});
-			}
-			else if (status === Strophe.Status.AUTHFAIL){
-				loginFail('Authentication failure.');
-			}
-			else if (status === Strophe.Status.ERROR) {
-				console.log('status ' + status);
-			}
-		});
-	}
+			});
+		}
+		else if (status === Strophe.Status.AUTHFAIL){
+			loginFail('Authentication failure.');
+		}
+		else if (status === Strophe.Status.ERROR) {
+			console.log('status ' + status);
+		}
+	});
 }
 
 })();
