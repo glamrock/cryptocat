@@ -1,17 +1,23 @@
-/* Initialization */
-var domain =  'crypto.cat';
+(function(){ var Cryptocat = function() {};
+
+/* Configuration */
+var domain = 'crypto.cat';
 var bosh = 'https://crypto.cat/http-bind';
+
+/* Initialization */
 var conversations = [];
 var conversationInfo = [];
 var currentConversation = 0;
 var audioNotifications = 0;
-var soundEmbed = null;
 var currentStatus = 'online';
-var conn, myID, username;
-
+var soundEmbed = null;
+var conn, myID, chatName;
 $('.input[title]').qtip();
 $('.button[title]').qtip();
+$('#chatName').val(randomString(12, 1, 0, 1));
 
+// Outputs the current hh:mm.
+// If `seconds = 1`, outputs hh:mm:ss.
 function currentTime(seconds) {
 	var date = new Date();
 	var time = [];
@@ -27,6 +33,8 @@ function currentTime(seconds) {
 	}
 	return time.join(':');
 }
+
+// Plays the audio file defined by the `audio` variable.
 function playSound(audio) {
 	function createSound(audio) {
 		soundEmbed = document.createElement('audio');
@@ -47,6 +55,8 @@ function playSound(audio) {
 	soundEmbed.removed = false;
 	document.body.appendChild(soundEmbed);
 }
+
+// Scrolls down the chat window to the bottom in a smooth animation.
 function scrollDown(speed) {
 	$('#conversationWindow').animate({
 		scrollTop: document.getElementById('conversationWindow').scrollHeight + 20
@@ -57,6 +67,8 @@ function initiateConversation(conversation) {
 		conversations[conversation] = '';
 	}
 }
+
+// Switches the currently active conversation to `buddy`
 function conversationSwitch(buddy) {
 	$('#' + buddy).animate({'background-color': '#97CEEC'});
 	$('#' + buddy).css('border-bottom', '1px dashed #76BDE5');
@@ -78,14 +90,20 @@ function conversationSwitch(buddy) {
 		});
 	});
 }
+
+// Handles login failures (this function will probably be replaced)
 function loginFail(message) {
 	$('#loginInfo').html(message);
 	$('#bubble').animate({'left': '+=5px'}, 130)
 		.animate({'left': '-=10px'}, 130)
 		.animate({'left': '+=5px'}, 130);
 	$('#loginInfo').animate({'color': '#E93028'}, 'fast');
-	$('#username').select();
+	$('#chatName').select();
 }
+
+// Seeds the RNG via Math.seedrandom().
+// If the browser supports window.crypto.getRandomValues(), then that is used.
+// Otherwise, the built-in Fortuna RNG is used.
 function seedRNG() {
 	if ((typeof window.crypto !== 'undefined') && (typeof window.crypto.getRandomValues === 'function')) {
 		var buffer = new Uint8Array(1024);
@@ -105,7 +123,7 @@ function seedRNG() {
 			+ ' as randomly as possible for a few seconds.</p><input type="password" id="seedRNGInput" />';
 		dialogBox(seedRNGForm, 1, function() {
 			$('#loginInfo').html('Please login.');
-			$('#username').select();
+			$('#chatName').select();
 		});
 		$('#seedRNGInput').select();
 		$('#seedRNGInput').keydown(function(event) {
@@ -125,8 +143,7 @@ function seedRNG() {
 			}
 			else {
 				$('#seedRNGInput').unbind('keyup').unbind('keydown');
-				$('#username').attr('readonly', 'true');
-				$('#password').attr('readonly', 'true');
+				$('#chatName').attr('readonly', 'true');
 				$('#seedRNGInput').attr('readonly', 'true');
 				$('#dialogBoxClose').click();
 				Math.seedrandom(CryptoJS.Fortuna.RandomData(1024));
@@ -136,16 +153,43 @@ function seedRNG() {
 		return false;
 	}
 }
+
+// Generates a random string of length `size` characters.
+// If `alpha = 1`, random string will contain alpha characters, and so on.
+function randomString(size, alpha, uppercase, numeric) {
+	var keyspace = '';
+	var result = '';
+	if (alpha) {
+		keyspace += 'abcdefghijklmnopqrstuvwxyz';
+	}
+	if (uppercase) {
+		keyspace += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	}
+	if (numeric) {
+		keyspace += '0123456789';
+	}
+	for (var i = 0; i != size; i++) {
+		result += keyspace[Math.floor(Math.random()*keyspace.length)];
+	}
+	return result;
+}
+
+// Converts format of jid so that it's usable as an element ID.
 function jid2ID(jid) {
 	jid = jid.match(/^(\w|\@|\.)+/);
 	return jid[0].replace('@', '-').replace(/\./g, '-');
 }
+
+// Simply shortens a buddy's name to an acceptable size for display
+// in certain parts of the UI.
 function shortenBuddy(buddy, length) {
 	if (buddy.length > length) {
 		return buddy.substring(0, (length -2)) + '..';
 	}
 	return buddy;
 }
+
+// Builds a buddy element to be added to the buddy list.
 function buildBuddy(buddyObject) {
 	if (buddyObject.name.match(/^(\w|\s)+$/)) {
 		var name = shortenBuddy(buddyObject.name, 19);
@@ -157,6 +201,63 @@ function buildBuddy(buddyObject) {
 		+ '<span>' + name + '</span>' + '<div class="buddyMenu" id="' + jid2ID(buddyObject.jid)
 		+ '-menu"></div></div>').insertAfter('#buddiesOffline').slideDown('fast');
 }
+
+// Handle incoming messages from the XMPP server.
+function handleMessage(message) {
+	var from = jid2ID($(message).attr('from'));
+	var rosterID = $(message).attr('from').match(/^(\w|\@|\.)+/)[0];
+	var sender = $('#' + jid2ID(rosterID)).find('span').html().match(/^\w+/)[0];
+	var body = $(message).find('body').text();
+	addtoConversation(body, sender, rosterID);
+	if (currentConversation !== rosterID) {
+		var backgroundColor = $('#' + from).css('background-color');
+		$('#' + from).css('background-image', 'url("img/newMessage.png")');
+		$('#' + from).animate({'backgroundColor': '#A7D8F7'}).animate({'backgroundColor': backgroundColor});
+	}
+	return true;
+}
+
+// Add a `message` from `sender` to the `conversation` display and log.
+function addtoConversation(message, sender, conversation) {
+	initiateConversation(conversation);
+	if (sender === username) {
+		lineDecoration = 1;
+		audioNotification = 'snd/msgSend.webm';
+	}
+	else {
+		lineDecoration = 2;
+		audioNotification = 'snd/msgGet.webm';
+	}
+	message = message.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+	if ((URLs = message.match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi))) {
+		for (var i in URLs) {
+			var sanitize = URLs[i].split('');
+			for (var l in sanitize) {
+				if (!sanitize[l].match(/\w|\d|\:|\/|\?|\=|\#|\+|\,|\.|\&|\;|\%/)) {
+					sanitize[l] = encodeURIComponent(sanitize[l]);
+				}
+			}
+			sanitize = sanitize.join('');
+			message = message.replace(sanitize, '<a target="_blank" href="' + sanitize + '">' + URLs[i] + '</a>');
+		}
+	}
+	var timeStamp = '<span class="timeStamp">' + currentTime(0) + '</span>';
+	var sender = '<span class="sender">' + shortenBuddy(sender, 16) + '</span>';
+	message = '<div class="Line' + lineDecoration + '">' + timeStamp + sender + message + '</div>';
+	conversations[conversation] += message;
+	if (conversation === currentConversation) {
+		$('#conversationWindow').append(message);
+	}
+	if (audioNotifications) {
+		playSound(audioNotification);
+	}
+	if ((document.getElementById('conversationWindow').scrollHeight - $('#conversationWindow').scrollTop()) < 800) {	
+		scrollDown(600);
+	}
+}
+
+// Handle incoming presence updates from the XMPP server.
+// Large, but fully handles any relevant presence update.
 function handlePresence(presence) {
 	var from = jid2ID($(presence).attr('from'));
 	var rosterID = $(presence).attr('from').match(/^(\w|\@|\.)+/)[0];
@@ -354,6 +455,8 @@ function handlePresence(presence) {
 	}
 	return true;
 }
+
+// Send your current status to the XMPP server.
 function sendStatus() {
 	if (currentStatus === 'away') {
 		conn.send($pres().c('show').t('away'));
@@ -362,6 +465,8 @@ function sendStatus() {
 		conn.send($pres());
 	}
 }
+
+// Set a `nickname` for `buddy`.
 function setNickname(buddy, nickname) {
 	conn.sendIQ(
 		$iq({type: 'set'}).c('query', {xmlns: 'jabber:iq:roster'}).c('item', {
@@ -369,6 +474,10 @@ function setNickname(buddy, nickname) {
 		})
 	);
 }
+
+// Displays the dialog box with `data` as the content HTML.
+// If `closeable = 1`, then the dialog box has a close button on the top right.
+// onClose may be defined as a callback function to execute on dialog box close.
 function dialogBox(data, closeable, onClose) {
 	if ($('#dialogBox').css('top') !== '-450px') {
 		return false;
@@ -395,6 +504,9 @@ function dialogBox(data, closeable, onClose) {
 		}
 	});
 }
+
+// Buttons
+// Status button
 $('#status').click(function() {
 	if ($(this).attr('title') === 'Status: Available') {
 		$(this).attr('src', 'img/away.png');
@@ -411,6 +523,8 @@ $('#status').click(function() {
 		sendStatus();
 	}
 });
+
+// Add buddy button (likely to be removed)
 $('#add').click(function() {
 	if ($('#dialogBoxClose').css('display') === 'block') {
 		return false;
@@ -430,6 +544,8 @@ $('#add').click(function() {
 	});
 	$('#addBuddyJID').select();
 });
+
+// Audio notifications button
 $('#audio').click(function() {
 	if ($(this).attr('title') === 'Audio Notifications Off') {
 		$(this).attr('src', 'img/sound.png');
@@ -444,56 +560,7 @@ $('#audio').click(function() {
 		audioNotifications = 0;
 	}
 });
-function handleMessage(message) {
-	var from = jid2ID($(message).attr('from'));
-	var rosterID = $(message).attr('from').match(/^(\w|\@|\.)+/)[0];
-	var sender = $('#' + jid2ID(rosterID)).find('span').html().match(/^\w+/)[0];
-	var body = $(message).find('body').text();
-	addtoConversation(body, sender, rosterID);
-	if (currentConversation !== rosterID) {
-		var backgroundColor = $('#' + from).css('background-color');
-		$('#' + from).css('background-image', 'url("img/newMessage.png")');
-		$('#' + from).animate({'backgroundColor': '#A7D8F7'}).animate({'backgroundColor': backgroundColor});
-	}
-	return true;
-}
-function addtoConversation(message, sender, conversation) {
-	initiateConversation(conversation);
-	if (sender === username) {
-		lineDecoration = 1;
-		audioNotification = 'snd/msgSend.webm';
-	}
-	else {
-		lineDecoration = 2;
-		audioNotification = 'snd/msgGet.webm';
-	}
-	message = message.replace(/</g,'&lt;').replace(/>/g,'&gt;');
-	if ((URLs = message.match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi))) {
-		for (var i in URLs) {
-			var sanitize = URLs[i].split('');
-			for (var l in sanitize) {
-				if (!sanitize[l].match(/\w|\d|\:|\/|\?|\=|\#|\+|\,|\.|\&|\;|\%/)) {
-					sanitize[l] = encodeURIComponent(sanitize[l]);
-				}
-			}
-			sanitize = sanitize.join('');
-			message = message.replace(sanitize, '<a target="_blank" href="' + sanitize + '">' + URLs[i] + '</a>');
-		}
-	}
-	var timeStamp = '<span class="timeStamp">' + currentTime(0) + '</span>';
-	var sender = '<span class="sender">' + shortenBuddy(sender, 16) + '</span>';
-	message = '<div class="Line' + lineDecoration + '">' + timeStamp + sender + message + '</div>';
-	conversations[conversation] += message;
-	if (conversation === currentConversation) {
-		$('#conversationWindow').append(message);
-	}
-	if (audioNotifications) {
-		playSound(audioNotification);
-	}
-	if ((document.getElementById('conversationWindow').scrollHeight - $('#conversationWindow').scrollTop()) < 800) {	
-		scrollDown(600);
-	}
-}
+
 $('#userInput').submit(function() {
 	var message = $.trim($('#userInputText').val());
 	if (message !== '') {
@@ -504,29 +571,23 @@ $('#userInput').submit(function() {
 	$('#userInputText').val('');
 	return false;
 });
+
 $('#logout').click(function() {
 	conn.disconnect();
 });
 
 /* Login Form */
-$('#username').select();
-$('#username').click(function() {
-	$(this).select();
-});
-$('#password').click(function() {
+$('#chatName').select();
+$('#chatName').click(function() {
 	$(this).select();
 });
 $('#loginForm').submit(function() {
-	username = $('#username').val();
-	if ($('#username').val() === '' || $('#username').val() === 'username') {
+	username = $('#chatName').val();
+	if ($('#chatName').val() === '' || $('#chatName').val() === 'username') {
 		loginFail('Please enter a username.');
-		$('#username').focus();
+		$('#chatName').focus();
 	}
-	else if ($('#password').val() === '' || $('#password').val() === 'password') {
-		loginFail('Please enter a password.');
-		$('#password').focus();
-	}
-	else if (!$('#username').val().match(/^\w{1,16}$/)) {
+	else if (!$('#chatName').val().match(/^\w{1,16}$/)) {
 		loginFail('Username must be alphanumeric.');
 	}
 	else {
@@ -619,15 +680,13 @@ function connect(username, password) {
 							$('#conversationWindow').html('');
 							conversations = [];
 							myID = username = null;
-							$('#username').val('username');
-							$('#password').val('password');
-							$('#username').removeAttr('readonly');
-							$('#password').removeAttr('readonly');
+							$('#chatName').val('username');
+							$('#chatName').removeAttr('readonly');
 							$('#newAccount').attr('checked', false);
 							$('#info').fadeIn();
 							$('#loginLinks').fadeIn();
 							$('#loginForm').fadeIn('fast', function() {
-								$('#username').select();
+								$('#chatName').select();
 							});
 						});
 					});
@@ -642,3 +701,5 @@ function connect(username, password) {
 		});
 	}
 }
+
+})();

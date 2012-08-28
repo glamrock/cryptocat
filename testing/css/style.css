@@ -110,16 +110,6 @@ img.logo {
 	border: none;
 	box-shadow: 2px 2px #76BDE5;
 }
-#bubble .inputNote {
-	background-color: #97CEEC;
-	width: 214px;
-	margin-left: 1px;
-	color: #FFF;
-}
-#bubble .inputNote span {
-	position: relative;
-	bottom: 2px;
-}
 #loginInfo {
 	color: #999;
 	background-color: #222;
