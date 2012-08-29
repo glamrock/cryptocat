@@ -2,7 +2,8 @@
 
 /* Configuration */
 var domain = 'crypto.cat';
-var bosh = 'https://crypto.cat/http-bind';
+var bosh = 'https://crypto.cat/http-bind'; // We deployed BOSH over an HTTPS proxy for better security and availability.
+var conferenceServer = 'conference.crypto.cat';
 
 /* Initialization */
 var conversations = [];
@@ -205,6 +206,7 @@ function buildBuddy(buddyObject) {
 
 // Handle incoming messages from the XMPP server.
 function handleMessage(message) {
+	console.log(message);
 	var from = jid2ID($(message).attr('from'));
 	var rosterID = $(message).attr('from').match(/^(\w|\@|\.)+/)[0];
 	var sender = $('#' + jid2ID(rosterID)).find('span').html().match(/^\w+/)[0];
@@ -260,6 +262,7 @@ function addtoConversation(message, sender, conversation) {
 // Handle incoming presence updates from the XMPP server.
 // Large, but fully handles any relevant presence update.
 function handlePresence(presence) {
+	console.log(presence);
 	var from = jid2ID($(presence).attr('from'));
 	var rosterID = $(presence).attr('from').match(/^(\w|\@|\.)+/)[0];
 	if ((from === myID)
@@ -339,73 +342,7 @@ function handlePresence(presence) {
 			});
 		}
 		$('.buddyMenu').unbind('click');
-		$('.buddyMenu').click(function(event) {
-			event.stopPropagation();
-			var buddy = $(this).attr('id').substring(0, ($(this).attr('id').length - 5));
-			if ($('#' + buddy).height() === 15) {
-				var buddyMenuContents = '<div class="buddyMenuContents" id="' + buddy + '-contents">'
-					+ '<li class="startGroupChat">Start group chat</li>'
-					+ '<li class="setNickname">Set nickname</li>'
-					+ '<li class="removeBuddy">Remove buddy</li></div>';
-				$(this).css('background-image', 'url("img/up.png")');
-				$('#' + buddy).delay(10).animate({'height': '61px'}, 180, function() {
-					$('#' + buddy).append(buddyMenuContents);
-					$('#' + buddy + '-contents').fadeIn('fast', function() {
-						$('.startGroupChat').click(function(event) {
-							event.stopPropagation();
-							dialogBox('<h1>Coming soon!</h1>', 1);
-						});
-						$('.setNickname').click(function(event) {
-							event.stopPropagation();
-							var defaultNickname = ['bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'turtle', 
-								'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite', 'ducky'];
-							defaultNickname = defaultNickname[Math.floor((Math.random()*defaultNickname.length))];
-							var setNicknameForm = '<form id="setNicknameForm">'
-								+ '<div class="bar">Set nickname for ' + $('#' + buddy).attr('title') + '</div>'
-								+ '<input id="setNicknameText" class="bar" type="text" value="'
-								+ defaultNickname + '" autocomplete="off"/>'
-								+ '<input class="yes" id="setNicknameSubmit" type="submit" value="Set nickname"/>'
-								+ '</form>';
-							dialogBox(setNicknameForm, 1);
-							$('#setNicknameText').select();
-							$('#setNicknameForm').submit(function() {
-								if ($('#setNicknameText').val().match(/^(\w|\s)+$/)) {
-									setNickname($('#' + buddy).attr('title'), $('#setNicknameText').val());
-									$('#' + buddy).find('span').html($('#setNicknameText').val());
-									$('#dialogBoxClose').click();
-									return false;
-								}
-								else {
-									$('#setNicknameText').val('Letters, numbers and spaces only').select();
-									return false;
-								}
-							});
-						});
-						$('.removeBuddy').click(function(event) {
-							event.stopPropagation();
-							var buddy = $('.removeBuddy').parent().attr('id');
-							buddy = buddy.substring(0, (buddy.length - 9));
-							conn.roster.unauthorize($('#' + buddy).attr('title'));
-							conn.roster.unsubscribe($('#' + buddy).attr('title'));
-							var iq = $iq({type: 'set'})
-								.c('query', {xmlns: Strophe.NS.ROSTER})
-								.c('item', {jid: $('#' + buddy).attr('title'), subscription: 'remove'});
-							conn.sendIQ(iq);
-							$('#' + buddy).slideUp('fast', function() {
-								$('#' + buddy).remove();
-							});
-						});
-					});
-				});
-			}
-			else {
-				$(this).css('background-image', 'url("img/down.png")');
-				$('#' + buddy).animate({'height': '15px'}, 190);
-				$('#' + buddy + '-contents').fadeOut('fast', function() {
-					$('#' + buddy + '-contents').remove();
-				});
-			}
-		});
+		buildBuddyMenu();
 		$('#' + from).css('cursor', 'pointer');
 		$('#' + from).unbind('click');
 		$('#' + from).click(function() {
@@ -476,7 +413,7 @@ function setNickname(buddy, nickname) {
 	);
 }
 
-// Displays the dialog box with `data` as the content HTML.
+// Displays a pretty dialog box with `data` as the content HTML.
 // If `closeable = 1`, then the dialog box has a close button on the top right.
 // onClose may be defined as a callback function to execute on dialog box close.
 function dialogBox(data, closeable, onClose) {
@@ -502,6 +439,77 @@ function dialogBox(data, closeable, onClose) {
 	$(document).keydown(function(e) {
 		if (e.keyCode == 27) {
 			$('#dialogBoxClose').click();
+		}
+	});
+}
+
+// Create buddy menus for new buddies. Used internally.
+function buildBuddyMenu() {
+	$('.buddyMenu').click(function(event) {
+		event.stopPropagation();
+		var buddy = $(this).attr('id').substring(0, ($(this).attr('id').length - 5));
+		if ($('#' + buddy).height() === 15) {
+			var buddyMenuContents = '<div class="buddyMenuContents" id="' + buddy + '-contents">'
+				+ '<li class="startGroupChat">Start group chat</li>'
+				+ '<li class="setNickname">Set nickname</li>'
+				+ '<li class="removeBuddy">Remove buddy</li></div>';
+			$(this).css('background-image', 'url("img/up.png")');
+			$('#' + buddy).delay(10).animate({'height': '61px'}, 180, function() {
+				$('#' + buddy).append(buddyMenuContents);
+				$('#' + buddy + '-contents').fadeIn('fast', function() {
+					$('.startGroupChat').click(function(event) {
+						event.stopPropagation();
+						dialogBox('<h1>Coming soon!</h1>', 1);
+					});
+					$('.setNickname').click(function(event) {
+						event.stopPropagation();
+						var defaultNickname = ['bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'turtle', 
+							'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite', 'ducky'];
+						defaultNickname = defaultNickname[Math.floor((Math.random()*defaultNickname.length))];
+						var setNicknameForm = '<form id="setNicknameForm">'
+							+ '<div class="bar">Set nickname for ' + $('#' + buddy).attr('title') + '</div>'
+							+ '<input id="setNicknameText" class="bar" type="text" value="'
+							+ defaultNickname + '" autocomplete="off"/>'
+							+ '<input class="yes" id="setNicknameSubmit" type="submit" value="Set nickname"/>'
+							+ '</form>';
+						dialogBox(setNicknameForm, 1);
+						$('#setNicknameText').select();
+						$('#setNicknameForm').submit(function() {
+							if ($('#setNicknameText').val().match(/^(\w|\s)+$/)) {
+								setNickname($('#' + buddy).attr('title'), $('#setNicknameText').val());
+								$('#' + buddy).find('span').html($('#setNicknameText').val());
+								$('#dialogBoxClose').click();
+								return false;
+							}
+							else {
+								$('#setNicknameText').val('Letters, numbers and spaces only').select();
+								return false;
+							}
+						});
+					});
+					$('.removeBuddy').click(function(event) {
+						event.stopPropagation();
+						var buddy = $('.removeBuddy').parent().attr('id');
+						buddy = buddy.substring(0, (buddy.length - 9));
+						conn.roster.unauthorize($('#' + buddy).attr('title'));
+						conn.roster.unsubscribe($('#' + buddy).attr('title'));
+						var iq = $iq({type: 'set'})
+							.c('query', {xmlns: Strophe.NS.ROSTER})
+							.c('item', {jid: $('#' + buddy).attr('title'), subscription: 'remove'});
+						conn.sendIQ(iq);
+						$('#' + buddy).slideUp('fast', function() {
+							$('#' + buddy).remove();
+						});
+					});
+				});
+			});
+		}
+		else {
+			$(this).css('background-image', 'url("img/down.png")');
+			$('#' + buddy).animate({'height': '15px'}, 190);
+			$('#' + buddy + '-contents').fadeOut('fast', function() {
+				$('#' + buddy + '-contents').remove();
+			});
 		}
 	});
 }
@@ -562,6 +570,12 @@ $('#audio').click(function() {
 	}
 });
 
+// Logout button
+$('#logout').click(function() {
+	logout();
+});
+
+// Submit user input
 $('#userInput').submit(function() {
 	var message = $.trim($('#userInputText').val());
 	if (message !== '') {
@@ -571,10 +585,6 @@ $('#userInput').submit(function() {
 	}
 	$('#userInputText').val('');
 	return false;
-});
-
-$('#logout').click(function() {
-	conn.disconnect();
 });
 
 /* Login Form */
@@ -597,8 +607,10 @@ $('#loginForm').submit(function() {
 		loginFail('Chat name must be alphanumeric.');
 	}
 	else {
-		loginCredentials[0] = randomString(512, 1, 1, 1);
-		loginCredentials[1] = randomString(512, 1, 1, 1);
+		chatName = $('#chatName').val();
+		loginCredentials[0] = randomString(20, 1, 1, 1);
+		loginCredentials[1] = randomString(20, 1, 1, 1);
+		console.log(loginCredentials);
 		registerXMPPUser(loginCredentials[0], loginCredentials[1]);
 	}
 	return false;
@@ -625,7 +637,7 @@ function registerXMPPUser(username, password) {
 	});
 }
 
-// Logs into the XMPP server, creating main connection handlers.
+// Logs into the XMPP server, creating main connection/disconnection handlers.
 function login(username, password) {
 	conn = new Strophe.Connection(bosh);
 	conn.connect(username + '@' + domain, password, function(status) {
@@ -659,11 +671,17 @@ function login(username, password) {
 							}
 							buildBuddy(roster[i]);
 						}
-						conn.addHandler(handlePresence, null, 'presence');
-						conn.addHandler(handleMessage, null, 'message', 'chat');
 						sendStatus();
 					});
 					myID = jid2ID(loginCredentials[0] + '@' + domain);
+					conn.muc.join(chatName + '@' + conferenceServer, randomString(20, 1, 1, 1), 
+						function(message) {
+							handleMessage(message);
+						}, 
+						function(presence) {
+							console.log(presence);
+						}
+					);
 				});
 			});
 		}
@@ -704,4 +722,10 @@ function login(username, password) {
 	});
 }
 
-})();
+// Logout function
+function logout() {
+	conn.muc.leave(chatName + '@' + conferenceServer);
+	conn.disconnect();
+}
+
+})();//:3
