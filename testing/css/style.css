@@ -136,10 +136,10 @@ img.logo {
 	overflow-x: hidden;
 }
 .buddy {
-	background-color: #222;
+	background-color: #76BDE5;
 	background-position: 85% 7px;
 	background-repeat: no-repeat;
-	color: #BBB;
+	color: #FFF;
 	font-weight: bold;
 	padding: 7px;
 	font-size: 10px;
@@ -148,6 +148,7 @@ img.logo {
 	position: relative;
 	border-left: 3px solid #111;
 	z-index: 1;
+	cursor: pointer;
 }
 .buddyMenu {
 	position: relative;
