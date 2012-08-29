@@ -21,6 +21,10 @@
 * Google Chrome: `src/chrome/`
 * Mozilla Firefox: `src/firefox/`
 
+## Documentation:
+* [Threat Model](https://github.com/kaepora/cryptocat/wiki/Cryptocat-2-Threat-Model)  
+* [Design and Functionality Overview](https://github.com/kaepora/cryptocat/wiki/Cryptocat-2-Design-and-Functionality)  
+
 #### License:
 * AGPL3: `LICENSE.txt`
 

@@ -58,11 +58,14 @@ function playSound(audio) {
 }
 
 // Scrolls down the chat window to the bottom in a smooth animation.
+// 'speed' is animation speed in milliseconds.
 function scrollDown(speed) {
 	$('#conversationWindow').animate({
 		scrollTop: document.getElementById('conversationWindow').scrollHeight + 20
 	}, speed);
 }
+
+// Initiates a conversation. Internal use.
 function initiateConversation(conversation) {
 	if (!conversations[conversation]) {
 		conversations[conversation] = '';
