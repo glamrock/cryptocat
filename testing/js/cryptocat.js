@@ -597,8 +597,8 @@ $('#loginForm').submit(function() {
 		loginFail('Chat name must be alphanumeric.');
 	}
 	else {
-		loginCredentials[0] = randomString(256, 1, 1, 1);
-		loginCredentials[1] = randomString(256, 1, 1, 1);
+		loginCredentials[0] = randomString(512, 1, 1, 1);
+		loginCredentials[1] = randomString(512, 1, 1, 1);
 		registerXMPPUser(loginCredentials[0], loginCredentials[1]);
 	}
 	return false;
