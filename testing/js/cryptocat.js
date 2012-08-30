@@ -2,7 +2,8 @@
 
 /* Configuration */
 var domain = 'crypto.cat';
-var bosh = 'https://crypto.cat/http-bind'; // We deployed BOSH over an HTTPS proxy for better security and availability.
+// We deployed BOSH over an HTTPS proxy for better security and availability.
+var bosh = 'https://crypto.cat/http-bind';
 var conferenceServer = 'conference.crypto.cat';
 
 /* Initialization */
@@ -11,6 +12,7 @@ var conversationInfo = [];
 var loginCredentials = [];
 var currentConversation = 0;
 var audioNotifications = 0;
+var loginError = 0;
 var currentStatus = 'online';
 var soundEmbed = null;
 var conn, chatName, myNickname;
@@ -102,7 +104,6 @@ function loginFail(message) {
 		.animate({'left': '-=10px'}, 130)
 		.animate({'left': '+=5px'}, 130);
 	$('#loginInfo').animate({'color': '#E93028'}, 'fast');
-	$('#chatName').select();
 }
 
 // Seeds the RNG via Math.seedrandom().
@@ -190,15 +191,15 @@ function shortenString(string, length) {
 
 // Builds a buddy element to be added to the buddy list.
 function buildBuddy(buddyObject) {
-	if (buddyObject.name.match(/^(\w|\s)+$/)) {
+	if (buddyObject.nick.match(/^(\w|\s)+$/)) {
 		var nick = shortenString(buddyObject.nick, 19);
 	}
 	else {
-		var alias = shortenString(buddyObject.alias, 19);
+		var nick = shortenString(buddyObject.alias, 19);
 	}
-	$('<div class="buddy" title="' + buddyObject.jid + '" id="' + buddyObject.nick + '" status="online">'
-		+ '<span>' + alias + '</span>' + '<div class="buddyMenu" id="' + buddyObject.nick
-		+ '-menu"></div></div>').insertAfter('#buddiesOnline').slideDown('fast');
+	$('<div class="buddy" title="' + buddyObject.nick + '" id="buddy-' + buddyObject.nick + '" status="online">'
+		+ '<span>' + nick + '</span>' + '<div class="buddyMenu" id="menu-' + buddyObject.nick
+		+ '"></div></div>').insertAfter('#buddiesOnline').slideDown('fast');
 }
 
 // Add a `message` from `sender` to the `conversation` display and log.
@@ -249,88 +250,99 @@ function handleMessage(message) {
 	var type = $(message).attr('type');
 	var body = $(message).find('body').text();
 	if (type === 'groupchat') {
-		addtoConversation(body, nick, chatName + '@' + conferenceServer);
+		addtoConversation(body, nick, 'Main Conversation');
 	}
 	else if (type === 'chat') {
-		var rosterID = $(message).attr('from').match(/^(\w|\@|\.)+/)[0];
-		addtoConversation(body, sender, rosterID);
+		addtoConversation(body, nick, nick);
 	}
-	if (currentConversation !== rosterID) {
-		var backgroundColor = $('#' + from).css('background-color');
-		$('#' + from).css('background-image', 'url("img/newMessage.png")');
-		$('#' + from).animate({'backgroundColor': '#A7D8F7'}).animate({'backgroundColor': backgroundColor});
+	if (currentConversation !== nick) {
+		var backgroundColor = $('#' + nick).css('background-color');
+		$('#' + nick).css('background-image', 'url("img/newMessage.png")');
+		$('#' + nick).animate({'backgroundColor': '#A7D8F7'}).animate({'backgroundColor': backgroundColor});
 	}
 	return true;
 }
 
 // Handle incoming presence updates from the XMPP server.
-// Large, but fully handles any relevant presence update.
 function handlePresence(presence) {
 	console.log(presence);
-	var from = $(presence).attr('from');
-	var nickname = from.match(/\/\w+/)[0].substring(1);
-	console.log('from: ' + from + ' | myNickname: ' + myNickname);
-	
-	if (($(presence).attr('type') === 'error')) {
+	var from = $(presence).attr('from').match(/\/\w+/)[0].substring(1);
+	if ($(presence).attr('type') === 'error') {
+		if ($(presence).find('error').attr('code') === '409') {
+			loginError = 1;
+			logout();
+			loginFail('Nickname in use.');
+			return false;
+		}
 		return true;
 	}
 	
 	if (nickname === myNickname) {
-		buildBuddy({nick: from, alias: 'Conversation'});
-		sendStatus();
+		return true;
 	}
 	else {
 		sendStatus();
 	}
-	if ($('#' + from).length === 0) {
-		buildBuddy({nick: from, alias: ''});
+	if ($('#' + nickname).length === 0) {
+		buildBuddy({nick: nickname, alias: ''});
+		bindBuddyClick(nickname);
 	}
-	
 	return true;
 }
 
-// Send your current status to the XMPP server.
-function sendStatus() {
-	if (currentStatus === 'away') {
-		conn.send($pres().c('show').t('away'));
-	}
-	else {
-		conn.send($pres());
-	}
+// Bind buddy click actions. Used internally.
+function bindBuddyClick(nickname) {
+	$('#buddy-' + nickname).click(function() {
+		if ($(this).prev().attr('id') === 'currentConversation') {
+			$('#userInputText').focus();
+			return true;
+		}
+		$(this).css('background-image', 'none');
+		if (currentConversation) {
+			var oldConversation = currentConversation;
+			if ($('#' + oldConversation).attr('status') === 'online') {
+				var placement = '#buddiesOnline';
+				var backgroundColor = '#76BDE5';
+				var color = '#FFF';
+			}
+			else if ($(oldConversation).attr('status') === 'away') {
+				var placement = '#buddiesAway';
+				var backgroundColor = '#5588A5';
+				var color = '#FFF';
+			}
+			else {
+				var placement = '#buddiesOffline';
+				var backgroundColor = '#222';
+				var color = '#BBB';
+			}
+			$('#' + oldConversation).slideUp('fast', function() {
+				$('#' + oldConversation).css('background-color', backgroundColor);
+				$('#' + oldConversation).css('color', color);
+				$('#' + oldConversation).css('border-bottom', 'none');
+				$('#' + oldConversation).insertAfter(placement).slideDown('fast');
+			});
+		}
+		currentConversation = $(this).attr('title');
+		initiateConversation(currentConversation);
+		$('#conversationWindow').html(conversations[currentConversation]);
+		if (($(this).prev().attr('id') === 'buddiesOnline')
+			|| (($(this).prev().attr('id') === 'buddiesAway')
+			&& $('#buddiesOnline').next().attr('id') === 'buddiesAway')) {
+			$(this).insertAfter('#currentConversation');
+			conversationSwitch($(this).attr('id'));
+		}
+		else {
+			$(this).slideUp('fast', function() {
+				$(this).insertAfter('#currentConversation').slideDown('fast', function() {
+					conversationSwitch($(this).attr('id'));
+				});
+			});
+		}
+	});
 }
 
-// Displays a pretty dialog box with `data` as the content HTML.
-// If `closeable = 1`, then the dialog box has a close button on the top right.
-// onClose may be defined as a callback function to execute on dialog box close.
-function dialogBox(data, closeable, onClose) {
-	if ($('#dialogBox').css('top') !== '-450px') {
-		return false;
-	}
-	if (closeable) {
-		$('#dialogBoxClose').css('display', 'block');
-	}
-	$('#dialogBoxContent').html(data);
-	$('#dialogBox').animate({'top': '+=460px'}, 'fast').animate({'top': '-=10px'}, 'fast');
-	$('#dialogBoxClose').click(function() {
-		if ($('#dialogBoxClose').css('display') === 'none') {
-			return false;
-		}
-		$('#dialogBox').animate({'top': '+=10px'}, 'fast').animate({'top': '-450px'}, 'fast');
-		$('#dialogBoxClose').css('display', 'none');
-		if (onClose) {
-			onClose();
-		}
-		$('#userInputText').focus();
-	});
-	$(document).keydown(function(e) {
-		if (e.keyCode == 27) {
-			$('#dialogBoxClose').click();
-		}
-	});
-}
-
-// Create buddy menus for new buddies. Used internally.
-function buildBuddyMenu() {
+// Bind buddy menus for new buddies. Used internally.
+function bindBuddyMenu() {
 	$('.buddyMenu').click(function(event) {
 		event.stopPropagation();
 		var buddy = $(this).attr('id').substring(0, ($(this).attr('id').length - 5));
@@ -386,6 +398,46 @@ function buildBuddyMenu() {
 	});
 }
 
+// Send your current status to the XMPP server.
+function sendStatus() {
+	if (currentStatus === 'away') {
+		conn.send($pres().c('show').t('away'));
+	}
+	else {
+		conn.send($pres());
+	}
+}
+
+// Displays a pretty dialog box with `data` as the content HTML.
+// If `closeable = 1`, then the dialog box has a close button on the top right.
+// onClose may be defined as a callback function to execute on dialog box close.
+function dialogBox(data, closeable, onClose) {
+	if ($('#dialogBox').css('top') !== '-450px') {
+		return false;
+	}
+	if (closeable) {
+		$('#dialogBoxClose').css('display', 'block');
+	}
+	$('#dialogBoxContent').html(data);
+	$('#dialogBox').animate({'top': '+=460px'}, 'fast').animate({'top': '-=10px'}, 'fast');
+	$('#dialogBoxClose').click(function() {
+		if ($('#dialogBoxClose').css('display') === 'none') {
+			return false;
+		}
+		$('#dialogBox').animate({'top': '+=10px'}, 'fast').animate({'top': '-450px'}, 'fast');
+		$('#dialogBoxClose').css('display', 'none');
+		if (onClose) {
+			onClose();
+		}
+		$('#userInputText').focus();
+	});
+	$(document).keydown(function(e) {
+		if (e.keyCode == 27) {
+			$('#dialogBoxClose').click();
+		}
+	});
+}
+
 // Buttons
 // Status button
 $('#status').click(function() {
@@ -430,9 +482,13 @@ $('#logout').click(function() {
 $('#userInput').submit(function() {
 	var message = $.trim($('#userInputText').val());
 	if (message !== '') {
-		conn.send($msg({to: currentConversation, 'type': 'chat'}).c('body').t(message));
-		message = message;
-		addtoConversation(message, loginCredentials[0], currentConversation);
+		if (currentConversation === 'Main Conversation') {
+			conn.muc.message(chatName + '@' + conferenceServer, null, message, null);
+		}
+		else {
+			conn.muc.message(chatName + '@' + conferenceServer, currentConversation, message, null);
+		}
+		addtoConversation(message, myNickname, currentConversation);
 	}
 	$('#userInputText').val('');
 	return false;
@@ -441,6 +497,9 @@ $('#userInput').submit(function() {
 /* Login Form */
 $('#chatName').select();
 $('#chatName').click(function() {
+	$(this).select();
+});
+$('#nickname').click(function() {
 	$(this).select();
 });
 $('#loginForm').submit(function() {
@@ -454,13 +513,29 @@ $('#loginForm').submit(function() {
 	if ($('#chatName').val() === '') {
 		return false;
 	}
+	else if (($('#chatName').val() === '')
+		|| ($('#chatName').val() === 'conversation name')) {
+		loginFail('Please enter a conversation name.');
+		$('#chatName').select();
+	}
+	else if (($('#nickname').val() === '')
+		|| ($('#nickname').val() === 'nickname')) {
+		loginFail('Please enter a nickname.');
+		$('#nickname').select();
+	}
 	else if (!$('#chatName').val().match(/^\w{1,20}$/)) {
 		loginFail('Chat name must be alphanumeric.');
+		$('#chatName').select();
+	}
+	else if (!$('#nickname').val().match(/^\w{1,16}$/)) {
+		loginFail('Nickname must be alphanumeric.');
+		$('#nickname').select();
 	}
 	else {
 		chatName = $('#chatName').val();
-		loginCredentials[0] = randomString(20, 1, 1, 1);
-		loginCredentials[1] = randomString(20, 1, 1, 1);
+		myNickname = $('#nickname').val();
+		loginCredentials[0] = randomString(256, 1, 1, 1);
+		loginCredentials[1] = randomString(256, 1, 1, 1);
 		console.log(loginCredentials);
 		registerXMPPUser(loginCredentials[0], loginCredentials[1]);
 	}
@@ -498,7 +573,9 @@ function login(username, password) {
 			$('#loginInfo').html('Connecting...');
 		}
 		else if (status === Strophe.Status.CONNFAIL) {
-			$('#loginInfo').html('Connection failed.');
+			if (!loginError) {
+				$('#loginInfo').html('Connection failed.');
+			}
 			$('#loginInfo').animate({'color': '#E93028'}, 'fast');
 		}
 		else if (status === Strophe.Status.CONNECTED) {
@@ -514,8 +591,9 @@ function login(username, password) {
 					$('#buddyWrapper').fadeIn('fast', function() {
 						var scrollWidth = document.getElementById('buddyList').scrollWidth;
 						$('#buddyList').css('width', (150 + scrollWidth) + 'px');
+						bindBuddyClick('main-Conversation');
 					});
-					myNickname = randomString(20, 1, 1, 1);
+					loginError = 0;
 					conn.muc.join(chatName + '@' + conferenceServer, myNickname, 
 						function(message) {
 							if (handleMessage(message)) {
@@ -538,16 +616,22 @@ function login(username, password) {
 				$('#conversationInfo').html('');
 				$('#conversationWindow').slideUp(function() {
 					$('#buddyWrapper').fadeOut();
-					$('#loginInfo').animate({'color': '#999'}, 'fast');
-					$('#loginInfo').html('Thank you for using Cryptocat.');
+					if (!loginError) {
+						$('#loginInfo').animate({'color': '#999'}, 'fast');
+						$('#loginInfo').html('Thank you for using Cryptocat.');
+					}
 					$('#bubble').animate({'width': '680px'});
 					$('#bubble').animate({'height': '310px'}).animate({'margin-top': '5%'}, function() {
 						$('#buddyList div').remove();
 						$('#conversationWindow').html('');
 						conversations = [];
 						loginCredentials = [];
-						$('#chatName').val('');
+						if (!loginError) {
+							$('#chatName').val('conversation name');
+						}
 						$('#chatName').removeAttr('readonly');
+						$('#nickname').val('nickname');
+						$('#nickname').removeAttr('readonly');
 						$('#newAccount').attr('checked', false);
 						$('#info').fadeIn();
 						$('#loginLinks').fadeIn();
@@ -555,14 +639,18 @@ function login(username, password) {
 							$('#chatName').select();
 						});
 					});
+					$('.buddy').unbind('click');
+					$('.buddyMenu').unbind('click');
 				});
 			});
 		}
 		else if (status === Strophe.Status.AUTHFAIL){
 			loginFail('Authentication failure.');
+			$('#chatName').select();
 		}
 		else if (status === Strophe.Status.ERROR) {
 			loginFail('Error ' + status);
+			$('#chatName').select();
 		}
 	});
 }

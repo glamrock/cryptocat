@@ -145,7 +145,7 @@ Strophe.addConnectionPlugin('muc', {
   (String) nick - The nick name used in the chat room.
   (String) message - The plaintext message to send to the room.
   (String) html_message - The message to send to the room with html markup.
-  (String) type - "groupchat" for group chat messages o
+  (String) type - "groupchat" for group chat messages or
                   "chat" for private chat messages
   Returns:
   msgiq - the unique id used to send the message
