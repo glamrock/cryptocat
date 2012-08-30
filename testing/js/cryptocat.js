@@ -76,8 +76,10 @@ function initiateConversation(conversation) {
 
 // Switches the currently active conversation to `buddy`
 function conversationSwitch(buddy) {
-	$('#' + buddy).animate({'background-color': '#97CEEC'});
-	$('#' + buddy).css('border-bottom', '1px dashed #76BDE5');
+	if ($('#' + buddy).attr('status') !== 'offline') {
+		$('#' + buddy).animate({'background-color': '#97CEEC'});
+		$('#' + buddy).css('border-bottom', '1px dashed #76BDE5');
+	}
 	$('#' + buddy).css('background-image', 'none');
 	$('#conversationInfo').animate({'width': '750px'}, function() {
 		$('#conversationWindow').slideDown('fast', function() {
@@ -341,7 +343,7 @@ function handlePresence(presence) {
 			playSound('snd/userOnline.webm');
 		}
 	}
-	if ($(presence).find('show').text() === '' || $(presence).find('show').text() === 'chat') {
+	else if ($(presence).find('show').text() === '' || $(presence).find('show').text() === 'chat') {
 		if ($('#buddy-' + nickname).attr('status') !== 'online') {
 			var status = 'online';
 			var backgroundColor = '#76BDE5';
