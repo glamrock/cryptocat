@@ -78,6 +78,7 @@ function initiateConversation(conversation) {
 function conversationSwitch(buddy) {
 	$('#' + buddy).animate({'background-color': '#97CEEC'});
 	$('#' + buddy).css('border-bottom', '1px dashed #76BDE5');
+	$('#' + buddy).css('background-image', 'none');
 	$('#conversationInfo').animate({'width': '750px'}, function() {
 		$('#conversationWindow').slideDown('fast', function() {
 			if (conversationInfo[currentConversation]) {
@@ -94,6 +95,16 @@ function conversationSwitch(buddy) {
 			$('#conversationWindow').css('width', (712 + scrollWidth) + 'px');
 			scrollDown(600);
 		});
+	});
+	// Clean up finished conversations
+	$('#buddyList div').each(function() {
+		if (($(this).attr('title') !== currentConversation)
+			&& ($(this).css('background-image').match('png')[0] !== 'png')
+			&& ($(this).attr('status') === 'offline')) {
+			$(this).slideUp(500, function() {
+				$(this).remove();
+			});
+		}
 	});
 }
 
@@ -174,7 +185,7 @@ function randomString(size, alpha, uppercase, numeric) {
 	if (numeric) {
 		keyspace += '0123456789';
 	}
-	for (var i = 0; i != size; i++) {
+	for (var i = 0; i !== size; i++) {
 		result += keyspace[Math.floor(Math.random()*keyspace.length)];
 	}
 	return result;
@@ -249,16 +260,24 @@ function handleMessage(message) {
 	var nick = from.match(/\/\w+/)[0].substring(1);
 	var type = $(message).attr('type');
 	var body = $(message).find('body').text();
+	if (nick === myNickname) {
+		return true;
+	}
 	if (type === 'groupchat') {
-		addtoConversation(body, nick, 'Main Conversation');
+		addtoConversation(body, nick, 'main-Conversation');
+		if (currentConversation !== 'main-Conversation') {
+			var backgroundColor = $('#buddy-main-Conversation').css('background-color');
+			$('#buddy-main-Conversation').css('background-image', 'url("img/newMessage.png")');
+			$('#buddy-main-Conversation').animate({'backgroundColor': '#A7D8F7'}).animate({'backgroundColor': backgroundColor});
+		}
 	}
 	else if (type === 'chat') {
 		addtoConversation(body, nick, nick);
-	}
-	if (currentConversation !== nick) {
-		var backgroundColor = $('#' + nick).css('background-color');
-		$('#' + nick).css('background-image', 'url("img/newMessage.png")');
-		$('#' + nick).animate({'backgroundColor': '#A7D8F7'}).animate({'backgroundColor': backgroundColor});
+		if (currentConversation !== nick) {
+			var backgroundColor = $('#buddy-' + nick).css('background-color');
+			$('#buddy-' + nick).css('background-image', 'url("img/newMessage.png")');
+			$('#buddy-' + nick).animate({'backgroundColor': '#A7D8F7'}).animate({'backgroundColor': backgroundColor});
+		}
 	}
 	return true;
 }
@@ -266,7 +285,8 @@ function handleMessage(message) {
 // Handle incoming presence updates from the XMPP server.
 function handlePresence(presence) {
 	console.log(presence);
-	var from = $(presence).attr('from').match(/\/\w+/)[0].substring(1);
+	var nickname = $(presence).attr('from').match(/\/\w+/)[0].substring(1);
+	// Handle errors
 	if ($(presence).attr('type') === 'error') {
 		if ($(presence).find('error').attr('code') === '409') {
 			loginError = 1;
@@ -276,14 +296,44 @@ function handlePresence(presence) {
 		}
 		return true;
 	}
-	
+	// Ignore if presence status is coming from myself
 	if (nickname === myNickname) {
 		return true;
 	}
 	else {
 		sendStatus();
 	}
-	if ($('#' + nickname).length === 0) {
+	// Handle buddy going offline
+	if ($(presence).attr('type') === 'unavailable') {
+		if ($('#buddy-' + nickname).length !== 0) {
+			if ($('#buddy-' + nickname).attr('status') !== 'offline') {
+				if ((currentConversation !== nickname)
+					&& ($('#buddy-' + nickname).css('background-image').match('png')[0] !== 'png')) {
+					$('#buddy-' + nickname).slideUp(500, function() {
+						$(this).remove();
+					});
+				}
+				else {
+					$('#buddy-' + nickname).attr('status', 'offline');
+					$('#buddy-' + nickname).animate({
+						'color': '#BBB',
+						'backgroundColor': '#222',
+						'borderLeftColor': '#111',
+						'borderBottom': 'none'
+					});
+					if (audioNotifications) {
+						playSound('snd/userOffline.webm');
+					}
+					if (currentConversation !== nickname) {
+						$('#buddy-' + nickname).slideUp('fast', function() {
+							$(this).insertAfter('#buddiesOffline').slideDown('fast');
+						});
+					}
+				}
+			}
+		}
+	}
+	else if ($('#buddy-' + nickname).length === 0) {
 		buildBuddy({nick: nickname, alias: ''});
 		bindBuddyClick(nickname);
 	}
@@ -300,12 +350,12 @@ function bindBuddyClick(nickname) {
 		$(this).css('background-image', 'none');
 		if (currentConversation) {
 			var oldConversation = currentConversation;
-			if ($('#' + oldConversation).attr('status') === 'online') {
+			if ($('#buddy-' + oldConversation).attr('status') === 'online') {
 				var placement = '#buddiesOnline';
 				var backgroundColor = '#76BDE5';
 				var color = '#FFF';
 			}
-			else if ($(oldConversation).attr('status') === 'away') {
+			else if ($('#buddy-' + oldConversation).attr('status') === 'away') {
 				var placement = '#buddiesAway';
 				var backgroundColor = '#5588A5';
 				var color = '#FFF';
@@ -315,11 +365,11 @@ function bindBuddyClick(nickname) {
 				var backgroundColor = '#222';
 				var color = '#BBB';
 			}
-			$('#' + oldConversation).slideUp('fast', function() {
-				$('#' + oldConversation).css('background-color', backgroundColor);
-				$('#' + oldConversation).css('color', color);
-				$('#' + oldConversation).css('border-bottom', 'none');
-				$('#' + oldConversation).insertAfter(placement).slideDown('fast');
+			$('#buddy-' + oldConversation).slideUp('fast', function() {
+				$(this).css('background-color', backgroundColor);
+				$(this).css('color', color);
+				$(this).css('border-bottom', 'none');
+				$(this).insertAfter(placement).slideDown('fast');
 			});
 		}
 		currentConversation = $(this).attr('title');
@@ -482,7 +532,7 @@ $('#logout').click(function() {
 $('#userInput').submit(function() {
 	var message = $.trim($('#userInputText').val());
 	if (message !== '') {
-		if (currentConversation === 'Main Conversation') {
+		if (currentConversation === 'main-Conversation') {
 			conn.muc.message(chatName + '@' + conferenceServer, null, message, null);
 		}
 		else {
@@ -622,7 +672,11 @@ function login(username, password) {
 					}
 					$('#bubble').animate({'width': '680px'});
 					$('#bubble').animate({'height': '310px'}).animate({'margin-top': '5%'}, function() {
-						$('#buddyList div').remove();
+						$('#buddyList div').each(function() {
+							if ($(this).attr('id') !== 'buddy-main-Conversation') {
+								$(this).remove();
+							}
+						});
 						$('#conversationWindow').html('');
 						conversations = [];
 						loginCredentials = [];
