@@ -99,7 +99,7 @@ function conversationSwitch(buddy) {
 	// Clean up finished conversations
 	$('#buddyList div').each(function() {
 		if (($(this).attr('title') !== currentConversation)
-			&& ($(this).css('background-image').match('png')[0] !== 'png')
+			&& ($(this).css('background-image') === 'none')
 			&& ($(this).attr('status') === 'offline')) {
 			$(this).slideUp(500, function() {
 				$(this).remove();
@@ -308,7 +308,7 @@ function handlePresence(presence) {
 		if ($('#buddy-' + nickname).length !== 0) {
 			if ($('#buddy-' + nickname).attr('status') !== 'offline') {
 				if ((currentConversation !== nickname)
-					&& ($('#buddy-' + nickname).css('background-image').match('png')[0] !== 'png')) {
+					&& ($('#buddy-' + nickname).css('background-image') === 'none')) {
 					$('#buddy-' + nickname).slideUp(500, function() {
 						$(this).remove();
 					});
@@ -333,9 +333,36 @@ function handlePresence(presence) {
 			}
 		}
 	}
+	// Create buddy element if buddy is new
 	else if ($('#buddy-' + nickname).length === 0) {
 		buildBuddy({nick: nickname, alias: ''});
 		bindBuddyClick(nickname);
+		if (audioNotifications) {
+			playSound('snd/userOnline.webm');
+		}
+	}
+	if ($(presence).find('show').text() === '' || $(presence).find('show').text() === 'chat') {
+		if ($('#buddy-' + nickname).attr('status') !== 'online') {
+			var status = 'online';
+			var backgroundColor = '#76BDE5';
+			var placement = '#buddiesOnline';
+		}
+	}
+	else if ($('#buddy-' + nickname).attr('status') !== 'away') {
+			var status = 'away';
+			var backgroundColor = '#5588A5';
+			var placement = '#buddiesAway';
+	}
+	$('#buddy-' + nickname).attr('status', status);
+	if (($('#buddy-' + nickname).attr('title') !== currentConversation) && (placement)) {
+		$('#buddy-' + nickname).animate({
+			'color': '#FFF',
+			'backgroundColor': backgroundColor,
+			'borderLeftColor': '#97CEEC'
+		});
+		$('#buddy-' + nickname).slideUp('fast', function() {
+			$(this).insertAfter(placement).slideDown('fast');
+		});
 	}
 	return true;
 }
@@ -642,6 +669,7 @@ function login(username, password) {
 						var scrollWidth = document.getElementById('buddyList').scrollWidth;
 						$('#buddyList').css('width', (150 + scrollWidth) + 'px');
 						bindBuddyClick('main-Conversation');
+						$('#buddy-main-Conversation').delay(2000).click();
 					});
 					loginError = 0;
 					conn.muc.join(chatName + '@' + conferenceServer, myNickname, 
