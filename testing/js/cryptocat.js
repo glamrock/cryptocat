@@ -302,9 +302,6 @@ function handlePresence(presence) {
 	if (nickname === myNickname) {
 		return true;
 	}
-	else {
-		sendStatus();
-	}
 	// Handle buddy going offline
 	if ($(presence).attr('type') === 'unavailable') {
 		if ($('#buddy-' + nickname).length !== 0) {
@@ -343,6 +340,7 @@ function handlePresence(presence) {
 			playSound('snd/userOnline.webm');
 		}
 	}
+	// Handle buddy status change to 'available'
 	else if ($(presence).find('show').text() === '' || $(presence).find('show').text() === 'chat') {
 		if ($('#buddy-' + nickname).attr('status') !== 'online') {
 			var status = 'online';
@@ -350,11 +348,13 @@ function handlePresence(presence) {
 			var placement = '#buddiesOnline';
 		}
 	}
+	// Handle buddy status change to 'away'
 	else if ($('#buddy-' + nickname).attr('status') !== 'away') {
 			var status = 'away';
 			var backgroundColor = '#5588A5';
 			var placement = '#buddiesAway';
 	}
+	// Perform status change
 	$('#buddy-' + nickname).attr('status', status);
 	if (($('#buddy-' + nickname).attr('title') !== currentConversation) && (placement)) {
 		$('#buddy-' + nickname).animate({
@@ -480,10 +480,10 @@ function bindBuddyMenu() {
 // Send your current status to the XMPP server.
 function sendStatus() {
 	if (currentStatus === 'away') {
-		conn.send($pres().c('show').t('away'));
+		conn.muc.setStatus(chatName + '@' + conferenceServer, myNickname, 'away', 'away');
 	}
 	else {
-		conn.send($pres());
+		conn.muc.setStatus(chatName + '@' + conferenceServer, myNickname, '', '');
 	}
 }
 
@@ -744,5 +744,10 @@ function logout() {
 	conn.muc.leave(chatName + '@' + conferenceServer);
 	conn.disconnect();
 }
+
+// Logout on browser close
+$(window).unload(function() {
+	logout();
+});
 
 })();//:3
