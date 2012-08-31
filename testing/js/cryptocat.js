@@ -21,10 +21,11 @@ $('.button[title]').qtip();
 
 // Initialize worker
 var worker = new Worker('js/worker.js');
-worker.postMessage('generateDSA');
 worker.addEventListener('message', function(e) {
-	console.log(e.data);
 	myKey = e.data;
+	DSA.inherit(myKey);
+	console.log(myKey);
+	$('#dialogBoxClose').click();
 }, false);
 
 // Outputs the current hh:mm.
@@ -145,10 +146,10 @@ function seedRNG() {
 	}
 	else {
 		var e, up, down;
-		var seedRNGForm = '<br /><p id="seedRNGForm"><img src="img/keygen.gif" alt="" />Please type on your keyboard'
+		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" alt="" />Please type on your keyboard'
 			+ ' as randomly as possible for a few seconds.</p><input type="password" id="seedRNGInput" />';
-		dialogBox(seedRNGForm, 1, function() {
-			$('#loginInfo').html('Please login.');
+		dialogBox(progressForm, 1, function() {
+			$('#loginInfo').html('Please enter a conversation name.');
 			$('#chatName').select();
 		});
 		$('#seedRNGInput').select();
@@ -482,16 +483,18 @@ function dialogBox(data, closeable, onClose) {
 		return false;
 	}
 	if (closeable) {
-		$('#dialogBoxClose').css('display', 'block');
+		$('#dialogBoxClose').css('width', '18px');
+		$('#dialogBoxClose').css('font-size', '12px');
 	}
 	$('#dialogBoxContent').html(data);
 	$('#dialogBox').animate({'top': '+=460px'}, 'fast').animate({'top': '-=10px'}, 'fast');
 	$('#dialogBoxClose').click(function() {
-		if ($('#dialogBoxClose').css('display') === 'none') {
+		if ($('#dialogBoxClose').css('width') === '0') {
 			return false;
 		}
 		$('#dialogBox').animate({'top': '+=10px'}, 'fast').animate({'top': '-450px'}, 'fast');
-		$('#dialogBoxClose').css('display', 'none');
+		$('#dialogBoxClose').css('width', '0');
+		$('#dialogBoxClose').css('font-size', '0');
 		if (onClose) {
 			onClose();
 		}
@@ -569,12 +572,6 @@ $('#nickname').click(function() {
 	$(this).select();
 });
 $('#loginForm').submit(function() {
-	// Don't process any login request if RNG isn't seeded
-	if (CryptoJS.Fortuna.Ready() === 0) {
-		if (!seedRNG()) {
-			return false;
-		}
-	}
 	chatName = $('#chatName').val();
 	if ($('#chatName').val() === '') {
 		return false;
@@ -596,6 +593,21 @@ $('#loginForm').submit(function() {
 	else if (!$('#nickname').val().match(/^\w{1,16}$/)) {
 		loginFail('Nickname must be alphanumeric.');
 		$('#nickname').select();
+	}
+	// Don't process any login request unless RNG is seeded
+	else if (CryptoJS.Fortuna.Ready() === 0) {
+		if (!seedRNG()) {
+			return false;
+		}
+	}
+	// Check if we have an OTR key, if not, generate
+	else if (!myKey) {
+		worker.postMessage('generateDSA');
+		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" '
+			+ 'alt="" /><p id="progressInfo">Generating encryption keys...</p>';
+		dialogBox(progressForm, 0, function() {
+			$('#loginForm').submit();
+		});
 	}
 	else {
 		chatName = $('#chatName').val();

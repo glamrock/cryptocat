@@ -194,14 +194,14 @@ img.logo {
 	z-index: 4;
 	border: 1px solid #222;
 	border-right: none;
-	background-color: rgba(0, 0, 0, 0.9);
+	background-color: rgba(0, 0, 0, 0.94);
 	box-shadow: 2px 2px #E93028;
 	top: -450px;
 }
 #dialogBoxClose {
-	width: 18px;
 	height: 18px;
-	font-size: 12px;
+	width: 0;
+	font-size: 0;
 	text-align: center;
 	color: #FFF;
 	background-color: #E93028;
@@ -209,7 +209,6 @@ img.logo {
 	cursor: pointer;
 	margin-top: 1px;
 	font-weight: bold;
-	display: none;
 }
 #dialogBoxContent {
 	padding: 35px 0 0 0;
@@ -323,15 +322,22 @@ img.logo {
 #userInputSubmit {
 	display: none;
 }
-#seedRNGForm {
+#progressForm {
 	text-align: left;
 	font-size: 13px;
 	margin-bottom: 0;
 }
-#seedRNGForm img {
+#progressForm img {
 	float: left;
 	margin: 8px 20px 0 0;
 	box-shadow: 2px 2px #97CEEC;
+}
+#progressInfo {
+	color: #000;
+	font-family: monospace;
+	background-color: #97ceec;
+	width: 250px;
+	font-size: 12px;
 }
 #seedRNGInput {
 	background-color: #000;

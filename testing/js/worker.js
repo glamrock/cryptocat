@@ -17,8 +17,8 @@ importScripts('otr/otr.js');
 self.addEventListener('message', function(e) {
 	var cmd = e.data;
 	switch (cmd) {
-	case 'generateDSA':
-		self.postMessage(new DSA());
+		case 'generateDSA':
+			self.postMessage(new DSA());
 		break;
 	};
 }, false);
