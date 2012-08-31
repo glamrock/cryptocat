@@ -223,7 +223,7 @@ function buildBuddy(buddyObject) {
 // Used internally.
 function addtoConversation(message, sender, conversation) {
 	initiateConversation(conversation);
-	if (sender === loginCredentials[0]) {
+	if (sender === myNickname) {
 		lineDecoration = 1;
 		audioNotification = 'snd/msgSend.webm';
 	}
@@ -639,32 +639,34 @@ function login(username, password) {
 		else if (status === Strophe.Status.CONNECTED) {
 			$('#loginInfo').html('Connected.');
 			$('#loginInfo').animate({'color': '#0F0'}, 'fast');
-			$('#bubble').animate({'margin-top': '1.5%'}, function() {
-				$('#loginLinks').fadeOut();
-				$('#info').fadeOut();
-				$('#loginForm').fadeOut();
-				$('#bubble').animate({'width': '900px'});
-				$('#bubble').animate({'height': '550px'}, function() {
-					$('.button').fadeIn();
-					$('#buddyWrapper').fadeIn('fast', function() {
-						var scrollWidth = document.getElementById('buddyList').scrollWidth;
-						$('#buddyList').css('width', (150 + scrollWidth) + 'px');
-						bindBuddyClick('main-Conversation');
-						$('#buddy-main-Conversation').delay(2000).click();
+			$('#bubble').animate({'margin-top': '+=0.5%'}, function() {
+				$('#bubble').animate({'margin-top': '1.5%'}, function() {
+					$('#loginLinks').fadeOut();
+					$('#info').fadeOut();
+					$('#loginForm').fadeOut();
+					$('#bubble').animate({'width': '900px'});
+					$('#bubble').animate({'height': '550px'}, function() {
+						$('.button').fadeIn();
+						$('#buddyWrapper').fadeIn('fast', function() {
+							var scrollWidth = document.getElementById('buddyList').scrollWidth;
+							$('#buddyList').css('width', (150 + scrollWidth) + 'px');
+							bindBuddyClick('main-Conversation');
+							$('#buddy-main-Conversation').delay(2000).click();
+						});
+						loginError = 0;
+						conn.muc.join(chatName + '@' + conferenceServer, myNickname, 
+							function(message) {
+								if (handleMessage(message)) {
+									return true;
+								}
+							}, 
+							function(presence) {
+								if (handlePresence(presence)) {
+									return true;
+								}
+							}
+						);
 					});
-					loginError = 0;
-					conn.muc.join(chatName + '@' + conferenceServer, myNickname, 
-						function(message) {
-							if (handleMessage(message)) {
-								return true;
-							}
-						}, 
-						function(presence) {
-							if (handlePresence(presence)) {
-								return true;
-							}
-						}
-					);
 				});
 			});
 		}
