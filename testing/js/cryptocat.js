@@ -24,7 +24,6 @@ var worker = new Worker('js/worker.js');
 worker.addEventListener('message', function(e) {
 	myKey = e.data;
 	DSA.inherit(myKey);
-	console.log(myKey);
 	$('#dialogBoxClose').click();
 }, false);
 
@@ -148,9 +147,8 @@ function seedRNG() {
 		var e, up, down;
 		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" alt="" />Please type on your keyboard'
 			+ ' as randomly as possible for a few seconds.</p><input type="password" id="seedRNGInput" />';
-		dialogBox(progressForm, 1, function() {
-			$('#loginInfo').html('Please enter a conversation name.');
-			$('#chatName').select();
+		dialogBox(progressForm, 0, function() {
+			$('#loginForm').delay(2000).submit();
 		});
 		$('#seedRNGInput').select();
 		$('#seedRNGInput').keydown(function(event) {
@@ -173,9 +171,7 @@ function seedRNG() {
 				$('#chatName').attr('readonly', 'true');
 				$('#seedRNGInput').attr('readonly', 'true');
 				$('#dialogBoxClose').click();
-				Math.seedrandom(CryptoJS.Fortuna.RandomData(1024));
-				// Now that the RNG is seeded, we can again submit the login form
-				$('#loginForm').submit();
+				Math.seedrandom(CryptoJS.Fortuna.RandomData(1024));				
 			}
 		});
 		return false;
@@ -492,12 +488,14 @@ function dialogBox(data, closeable, onClose) {
 		if ($('#dialogBoxClose').css('width') === '0') {
 			return false;
 		}
-		$('#dialogBox').animate({'top': '+=10px'}, 'fast').animate({'top': '-450px'}, 'fast');
+		$('#dialogBox').animate({'top': '+=10px'}, 'fast').animate({'top': '-450px'}, 'fast', function() {
+			if (onClose) {
+				onClose();
+			}
+		});
 		$('#dialogBoxClose').css('width', '0');
 		$('#dialogBoxClose').css('font-size', '0');
-		if (onClose) {
-			onClose();
-		}
+		
 		$('#userInputText').focus();
 	});
 	$(document).keydown(function(e) {
