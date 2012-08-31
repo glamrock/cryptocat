@@ -15,9 +15,17 @@ var audioNotifications = 0;
 var loginError = 0;
 var currentStatus = 'online';
 var soundEmbed = null;
-var conn, chatName, myNickname;
+var conn, chatName, myNickname, myKey;
 $('.input[title]').qtip();
 $('.button[title]').qtip();
+
+// Initialize worker
+var worker = new Worker('js/worker.js');
+worker.postMessage('generateDSA');
+worker.addEventListener('message', function(e) {
+	console.log(e.data);
+	myKey = e.data;
+}, false);
 
 // Outputs the current hh:mm.
 // If `seconds = 1`, outputs hh:mm:ss.
