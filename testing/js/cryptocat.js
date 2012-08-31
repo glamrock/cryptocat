@@ -213,6 +213,10 @@ function buildBuddy(buddyObject) {
 	$('<div class="buddy" title="' + buddyObject.nick + '" id="buddy-' + buddyObject.nick + '" status="online">'
 		+ '<span>' + nick + '</span>' + '<div class="buddyMenu" id="menu-' + buddyObject.nick
 		+ '"></div></div>').insertAfter('#buddiesOnline').slideDown('fast');
+	$('#buddy-' + nick).unbind('click');
+	bindBuddyClick(buddyObject.nick);
+	$('#menu-' + nick).unbind('click');
+	bindBuddyMenu(buddyObject.nick);
 }
 
 // Add a `message` from `sender` to the `conversation` display and log.
@@ -335,7 +339,6 @@ function handlePresence(presence) {
 	// Create buddy element if buddy is new
 	else if ($('#buddy-' + nickname).length === 0) {
 		buildBuddy({nick: nickname, alias: ''});
-		bindBuddyClick(nickname);
 		if (audioNotifications) {
 			playSound('snd/userOnline.webm');
 		}
@@ -421,57 +424,33 @@ function bindBuddyClick(nickname) {
 }
 
 // Bind buddy menus for new buddies. Used internally.
-function bindBuddyMenu() {
-	$('.buddyMenu').click(function(event) {
+function bindBuddyMenu(nickname) {
+	$('#menu-' + nickname).click(function(event) {
 		event.stopPropagation();
-		var buddy = $(this).attr('id').substring(0, ($(this).attr('id').length - 5));
-		if ($('#' + buddy).height() === 15) {
-			var buddyMenuContents = '<div class="buddyMenuContents" id="' + buddy + '-contents">'
-				+ '<li class="startGroupChat">Start group chat</li>'
-				+ '<li class="setNickname">Set nickname</li>'
-				+ '<li class="removeBuddy">Remove buddy</li></div>';
+		if ($('#buddy-' + nickname).height() === 15) {
+			var buddyMenuContents = '<div class="buddyMenuContents" id="' + nickname + '-contents">'
+				+ '<li class="option1">Option 1</li>'
+				+ '<li class="option2">Option 2</li>';
 			$(this).css('background-image', 'url("img/up.png")');
-			$('#' + buddy).delay(10).animate({'height': '61px'}, 180, function() {
-				$('#' + buddy).append(buddyMenuContents);
-				$('#' + buddy + '-contents').fadeIn('fast', function() {
-					$('.startGroupChat').click(function(event) {
+			$('#buddy-' + nickname).delay(10).animate({'height': '61px'}, 180, function() {
+				$(this).append(buddyMenuContents);
+				$('#' + nickname + '-contents').fadeIn('fast', function() {
+					$('.option1').click(function(event) {
 						event.stopPropagation();
-						dialogBox('<h1>Coming soon!</h1>', 1);
+						
 					});
-					$('.setNickname').click(function(event) {
+					$('.option2').click(function(event) {
 						event.stopPropagation();
-						var defaultNickname = ['bunny', 'kitty', 'pony', 'puppy', 'squirrel', 'sparrow', 'turtle', 
-							'kiwi', 'fox', 'owl', 'raccoon', 'koala', 'echidna', 'panther', 'sprite', 'ducky'];
-						defaultNickname = defaultNickname[Math.floor((Math.random()*defaultNickname.length))];
-						var setNicknameForm = '<form id="setNicknameForm">'
-							+ '<div class="bar">Set nickname for ' + $('#' + buddy).attr('title') + '</div>'
-							+ '<input id="setNicknameText" class="bar" type="text" value="'
-							+ defaultNickname + '" autocomplete="off"/>'
-							+ '<input class="yes" id="setNicknameSubmit" type="submit" value="Set nickname"/>'
-							+ '</form>';
-						dialogBox(setNicknameForm, 1);
-						$('#setNicknameText').select();
-						$('#setNicknameForm').submit(function() {
-							if ($('#setNicknameText').val().match(/^(\w|\s)+$/)) {
-								setNickname($('#' + buddy).attr('title'), $('#setNicknameText').val());
-								$('#' + buddy).find('span').html($('#setNicknameText').val());
-								$('#dialogBoxClose').click();
-								return false;
-							}
-							else {
-								$('#setNicknameText').val('Letters, numbers and spaces only').select();
-								return false;
-							}
-						});
+						
 					});
 				});
 			});
 		}
 		else {
 			$(this).css('background-image', 'url("img/down.png")');
-			$('#' + buddy).animate({'height': '15px'}, 190);
-			$('#' + buddy + '-contents').fadeOut('fast', function() {
-				$('#' + buddy + '-contents').remove();
+			$('#buddy-' + nickname).animate({'height': '15px'}, 190);
+			$('#' + nickname + '-contents').fadeOut('fast', function() {
+				$('#' + nickname + '-contents').remove();
 			});
 		}
 	});
