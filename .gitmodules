@@ -1,3 +1,0 @@
-[submodule "src/client/android/CryptocatBot/libs/cordova"]
-	path = src/client/android/CryptocatBot/libs/cordova
-	url = https://github.com/apache/incubator-cordova-android
