@@ -134,7 +134,10 @@ function conversationSwitch(buddy) {
 		}
 	});
 	if (otrKeys[buddy] === undefined) {
-		otrKeys[buddy] = new OTR(myKey, uicb(buddy), iocb(buddy));
+		var options = {
+			send_interval: 500
+		}
+		otrKeys[buddy] = new OTR(myKey, uicb(buddy), iocb(buddy), options);
 		otrKeys[buddy].REQUIRE_ENCRYPTION = true;
 		console.log(otrKeys[buddy]);
 	};
@@ -305,7 +308,8 @@ function handleMessage(message) {
 		}
 	}
 	else if (type === 'chat') {
-		otrKeys[nick].receiveMsg(body);
+		//otrKeys[nick].receiveMsg(body);
+		addtoConversation(body, nick, nick);
 		if (currentConversation !== nick) {
 			var backgroundColor = $('#buddy-' + nick).css('background-color');
 			$('#buddy-' + nick).css('background-image', 'url("img/newMessage.png")');
@@ -575,7 +579,8 @@ $('#userInput').submit(function() {
 			conn.muc.message(chatName + '@' + conferenceServer, null, message, null);
 		}
 		else {
-			otrKeys[currentConversation].sendMsg(message);
+			//otrKeys[currentConversation].sendMsg(message);
+			conn.muc.message(chatName + '@' + conferenceServer, currentConversation, message, null);
 		}
 		addtoConversation(message, myNickname, currentConversation);
 	}
