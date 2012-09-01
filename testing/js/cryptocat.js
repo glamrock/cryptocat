@@ -84,19 +84,18 @@ function initiateConversation(conversation) {
 }
 
 // OTR functions
-
 // Handle incoming messages
-var uicb = function(message) {
-	console.log('rec' + '(' + sender + ')' + ': ' + message);
-	return message;
+var uicb = function(buddy) {
+  return function(message) {
+    console.log('rec' + '(' + buddy + ')' + ': ' + message);
+	addtoConversation(message, buddy, buddy);
+  }
 }
-
 // Handle outgoing messages
-var iocb = function (buddy) {
+var iocb = function(buddy) {
   return function(message) {
     console.log('send' + '(' + buddy + ')' + ': ' + message);
     conn.muc.message(chatName + '@' + conferenceServer, buddy, message, null);
-    return message;
   }
 }
 
@@ -135,7 +134,7 @@ function conversationSwitch(buddy) {
 		}
 	});
 	if (otrKeys[buddy] === undefined) {
-		otrKeys[buddy] = new OTR(myKey, uicb, iocb(buddy));
+		otrKeys[buddy] = new OTR(myKey, uicb(buddy), iocb(buddy));
 		otrKeys[buddy].REQUIRE_ENCRYPTION = true;
 		console.log(otrKeys[buddy]);
 	};
@@ -306,7 +305,7 @@ function handleMessage(message) {
 		}
 	}
 	else if (type === 'chat') {
-		addtoConversation(otrKeys[nick].receiveMsg(body), sender, sender);
+		otrKeys[nick].receiveMsg(body);
 		if (currentConversation !== nick) {
 			var backgroundColor = $('#buddy-' + nick).css('background-color');
 			$('#buddy-' + nick).css('background-image', 'url("img/newMessage.png")');
