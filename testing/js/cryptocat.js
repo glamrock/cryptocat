@@ -300,8 +300,7 @@ function handleMessage(message) {
 		}
 	}
 	else if (type === 'chat') {
-		//otrKeys[nick].receiveMsg(body);
-		addtoConversation(body, nick, nick);
+		otrKeys[nick].receiveMsg(body);
 		if (currentConversation !== nick) {
 			var backgroundColor = $('#buddy-' + nick).css('background-color');
 			$('#buddy-' + nick).css('background-image', 'url("img/newMessage.png")');
@@ -576,8 +575,7 @@ $('#userInput').submit(function() {
 			conn.muc.message(chatName + '@' + conferenceServer, null, message, null);
 		}
 		else {
-			//otrKeys[currentConversation].sendMsg(message);
-			conn.muc.message(chatName + '@' + conferenceServer, currentConversation, message, null);
+			otrKeys[currentConversation].sendMsg(message);
 		}
 		addtoConversation(message, myNickname, currentConversation);
 	}
