@@ -84,16 +84,20 @@ function initiateConversation(conversation) {
 }
 
 // OTR functions
+
 // Handle incoming messages
 var uicb = function(message) {
 	console.log('rec' + '(' + sender + ')' + ': ' + message);
 	return message;
 }
+
 // Handle outgoing messages
-var iocb = function(message) {
-	console.log('send' + '(' + currentConversation + ')' + ': ' + message);
-	conn.muc.message(chatName + '@' + conferenceServer, currentConversation, message, null);
-	return message;
+var iocb = function (buddy) {
+  return function(message) {
+    console.log('send' + '(' + buddy + ')' + ': ' + message);
+    conn.muc.message(chatName + '@' + conferenceServer, buddy, message, null);
+    return message;
+  }
 }
 
 // Switches the currently active conversation to `buddy`
@@ -131,7 +135,7 @@ function conversationSwitch(buddy) {
 		}
 	});
 	if (otrKeys[buddy] === undefined) {
-		otrKeys[buddy] = new OTR(myKey, uicb, iocb);
+		otrKeys[buddy] = new OTR(myKey, uicb, iocb(buddy));
 		otrKeys[buddy].REQUIRE_ENCRYPTION = true;
 		console.log(otrKeys[buddy]);
 	};
