@@ -10,7 +10,7 @@ var conferenceServer = 'conference.crypto.cat';
 var conversations = [];
 var conversationInfo = [];
 var loginCredentials = [];
-var otrKeys = [];
+var otrKeys = {};
 var currentConversation = 0;
 var audioNotifications = 0;
 var loginError = 0;
@@ -133,14 +133,6 @@ function conversationSwitch(buddy) {
 			});
 		}
 	});
-	if (otrKeys[buddy] === undefined) {
-		var options = {
-			send_interval: 500
-		}
-		otrKeys[buddy] = new OTR(myKey, uicb(buddy), iocb(buddy), options);
-		otrKeys[buddy].REQUIRE_ENCRYPTION = true;
-		console.log(otrKeys[buddy]);
-	};
 }
 
 // Handles login failures
@@ -336,6 +328,11 @@ function handlePresence(presence) {
 	// Ignore if presence status is coming from myself
 	if (nickname === myNickname) {
 		return true;
+	}
+	// Add to otrKeys if necessary
+	if (nickname !== 'main-Conversation' && otrKeys[nickname] === undefined) {
+		otrKeys[nickname] = new OTR(myKey, uicb(nickname), iocb(nickname));
+		otrKeys[nickname].REQUIRE_ENCRYPTION = true;
 	}
 	// Handle buddy going offline
 	if ($(presence).attr('type') === 'unavailable') {
