@@ -69,6 +69,7 @@ img.logo {
 	cursor: pointer;
 	float: right;
 	margin: 9px 10px 0 0;
+	box-shadow: 2px 2px #111;
 }
 #bubble #info {
 	float: left;
@@ -109,16 +110,6 @@ img.logo {
 	border: none;
 	box-shadow: 2px 2px #76BDE5;
 }
-#bubble .inputNote {
-	background-color: #97CEEC;
-	width: 214px;
-	margin-left: 1px;
-	color: #FFF;
-}
-#bubble .inputNote span {
-	position: relative;
-	bottom: 2px;
-}
 #loginInfo {
 	color: #999;
 	background-color: #222;
@@ -145,18 +136,19 @@ img.logo {
 	overflow-x: hidden;
 }
 .buddy {
-	background-color: #222;
+	background-color: #76BDE5;
 	background-position: 85% 7px;
 	background-repeat: no-repeat;
-	color: #BBB;
+	color: #FFF;
 	font-weight: bold;
 	padding: 7px;
 	font-size: 10px;
 	width: 133px;
 	display: none;
 	position: relative;
-	border-left: 3px solid #111;
+	border-left: 3px solid #97CEEC;
 	z-index: 1;
+	cursor: pointer;
 }
 .buddyMenu {
 	position: relative;
@@ -169,6 +161,10 @@ img.logo {
 	cursor: pointer;
 	border-radius: 3px 0 3px 3px;
 	opacity: 0.8;
+}
+.buddyMenu:hover {
+	background-color: #222;
+	box-shadow: 2px 2px #111;
 }
 .buddyMenuContents {
 	display: none;
@@ -185,10 +181,6 @@ img.logo {
 .buddyMenuContents li:hover {
 	background-color: rgba(255, 255, 255, 0.4);
 }
-.buddyMenu:hover {
-	background-color: #222;
-	box-shadow: 1px 1px #000;
-}
 .buddyMenu:active {
 	background-color: #000;
 }
@@ -202,14 +194,14 @@ img.logo {
 	z-index: 4;
 	border: 1px solid #222;
 	border-right: none;
-	background-color: rgba(0, 0, 0, 0.9);
+	background-color: rgba(0, 0, 0, 0.94);
 	box-shadow: 2px 2px #E93028;
 	top: -450px;
 }
 #dialogBoxClose {
-	width: 18px;
 	height: 18px;
-	font-size: 12px;
+	width: 0;
+	font-size: 0;
 	text-align: center;
 	color: #FFF;
 	background-color: #E93028;
@@ -217,7 +209,6 @@ img.logo {
 	cursor: pointer;
 	margin-top: 1px;
 	font-weight: bold;
-	display: none;
 }
 #dialogBoxContent {
 	padding: 35px 0 0 0;
@@ -331,15 +322,22 @@ img.logo {
 #userInputSubmit {
 	display: none;
 }
-#seedRNGForm {
+#progressForm {
 	text-align: left;
 	font-size: 13px;
 	margin-bottom: 0;
 }
-#seedRNGForm img {
+#progressForm img {
 	float: left;
 	margin: 8px 20px 0 0;
 	box-shadow: 2px 2px #97CEEC;
+}
+#progressInfo {
+	color: #000;
+	font-family: monospace;
+	background-color: #97ceec;
+	width: 250px;
+	font-size: 12px;
 }
 #seedRNGInput {
 	background-color: #000;
