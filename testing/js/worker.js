@@ -1,8 +1,8 @@
 ﻿(function(){
 
 importScripts('crypto-js/core.js');
-importScripts('crypto-js/cipher-core.js');
 importScripts('crypto-js/enc-base64.js');
+importScripts('crypto-js/cipher-core.js');
 importScripts('crypto-js/x64-core.js');
 importScripts('crypto-js/aes.js');
 importScripts('crypto-js/sha1.js');
