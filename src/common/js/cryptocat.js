@@ -10,6 +10,7 @@ var conferenceServer = 'conference.crypto.cat';
 var conversations = [];
 var conversationInfo = [];
 var loginCredentials = [];
+var otrKeys = {};
 var currentConversation = 0;
 var audioNotifications = 0;
 var loginError = 0;
@@ -82,13 +83,29 @@ function initiateConversation(conversation) {
 	}
 }
 
+// OTR functions
+// Handle incoming messages
+var uicb = function(buddy) {
+  return function(message) {
+    console.log('rec' + '(' + buddy + ')' + ': ' + message);
+	addtoConversation(message, buddy, buddy);
+  }
+}
+// Handle outgoing messages
+var iocb = function(buddy) {
+  return function(message) {
+    console.log('send' + '(' + buddy + ')' + ': ' + message);
+    conn.muc.message(chatName + '@' + conferenceServer, buddy, message, null);
+  }
+}
+
 // Switches the currently active conversation to `buddy`
 function conversationSwitch(buddy) {
-	if ($('#' + buddy).attr('status') !== 'offline') {
+	if ($('#buddy-' + buddy).attr('status') !== 'offline') {
 		$('#' + buddy).animate({'background-color': '#97CEEC'});
-		$('#' + buddy).css('border-bottom', '1px dashed #76BDE5');
+		$('#buddy-' + buddy).css('border-bottom', '1px dashed #76BDE5');
 	}
-	$('#' + buddy).css('background-image', 'none');
+	$('#buddy-' + buddy).css('background-image', 'none');
 	$('#conversationInfo').animate({'width': '750px'}, function() {
 		$('#conversationWindow').slideDown('fast', function() {
 			if (conversationInfo[currentConversation]) {
@@ -131,7 +148,7 @@ function loginFail(message) {
 // If the browser supports window.crypto.getRandomValues(), then that is used.
 // Otherwise, the built-in Fortuna RNG is used.
 function seedRNG() {
-	if ((typeof window.crypto !== 'undefined') && (typeof window.crypto.getRandomValues === 'function')) {
+	if ((window.crypto !== undefined) && (typeof window.crypto.getRandomValues === 'function')) {
 		var buffer = new Uint8Array(1024);
 		window.crypto.getRandomValues(buffer);
 		var seed = '';
@@ -283,7 +300,7 @@ function handleMessage(message) {
 		}
 	}
 	else if (type === 'chat') {
-		addtoConversation(body, nick, nick);
+		otrKeys[nick].receiveMsg(body);
 		if (currentConversation !== nick) {
 			var backgroundColor = $('#buddy-' + nick).css('background-color');
 			$('#buddy-' + nick).css('background-image', 'url("img/newMessage.png")');
@@ -310,6 +327,11 @@ function handlePresence(presence) {
 	// Ignore if presence status is coming from myself
 	if (nickname === myNickname) {
 		return true;
+	}
+	// Add to otrKeys if necessary
+	if (nickname !== 'main-Conversation' && otrKeys[nickname] === undefined) {
+		otrKeys[nickname] = new OTR(myKey, uicb(nickname), iocb(nickname));
+		otrKeys[nickname].REQUIRE_ENCRYPTION = true;
 	}
 	// Handle buddy going offline
 	if ($(presence).attr('type') === 'unavailable') {
@@ -416,12 +438,12 @@ function bindBuddyClick(nickname) {
 			|| (($(this).prev().attr('id') === 'buddiesAway')
 			&& $('#buddiesOnline').next().attr('id') === 'buddiesAway')) {
 			$(this).insertAfter('#currentConversation');
-			conversationSwitch($(this).attr('id'));
+			conversationSwitch(nickname);
 		}
 		else {
 			$(this).slideUp('fast', function() {
 				$(this).insertAfter('#currentConversation').slideDown('fast', function() {
-					conversationSwitch($(this).attr('id'));
+					conversationSwitch(nickname);
 				});
 			});
 		}
@@ -553,7 +575,7 @@ $('#userInput').submit(function() {
 			conn.muc.message(chatName + '@' + conferenceServer, null, message, null);
 		}
 		else {
-			conn.muc.message(chatName + '@' + conferenceServer, currentConversation, message, null);
+			otrKeys[currentConversation].sendMsg(message);
 		}
 		addtoConversation(message, myNickname, currentConversation);
 	}
@@ -599,7 +621,7 @@ $('#loginForm').submit(function() {
 		}
 	}
 	// Check if we have an OTR key, if not, generate
-	else if (!myKey) {
+	if (!myKey) {
 		worker.postMessage('generateDSA');
 		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" '
 			+ 'alt="" /><p id="progressInfo">Generating encryption keys...</p>';
