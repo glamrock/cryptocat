@@ -148,7 +148,7 @@ function seedRNG() {
 		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" alt="" />Please type on your keyboard'
 			+ ' as randomly as possible for a few seconds.</p><input type="password" id="seedRNGInput" />';
 		dialogBox(progressForm, 0, function() {
-			$('#loginForm').delay(2000).submit();
+			$('#loginForm').submit();
 		});
 		$('#seedRNGInput').select();
 		$('#seedRNGInput').keydown(function(event) {
