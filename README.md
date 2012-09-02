@@ -38,8 +38,8 @@ The full license text is included in `LICENSE.txt`.
 * Firefox development has not yet begun.
 
 ## Goals:
-* XMPP | [Discussion](https://github.com/kaepora/cryptocat/issues/83), [Library](http://strophe.im)
-* OTR | [Discussion](https://github.com/kaepora/cryptocat/issues/84), [Library](https://github.com/arlolra/otr)
+* XMPP *[DONE]* | [Discussion](https://github.com/kaepora/cryptocat/issues/83), [Library](http://strophe.im)
+* OTR *[DONE]* | [Discussion](https://github.com/kaepora/cryptocat/issues/84), [Library](https://github.com/arlolra/otr)
 * mpOTR | [Discussion](https://github.com/kaepora/cryptocat/issues/82), Spec in progress
 
 ## Discussion:
