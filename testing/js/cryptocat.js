@@ -99,6 +99,10 @@ var iocb = function(buddy) {
   }
 }
 
+// Creates a template for the conversation info bar at the top of each conversation.
+function buildConversationInfo() {
+}
+
 // Switches the currently active conversation to `buddy`
 function conversationSwitch(buddy) {
 	if ($('#buddy-' + buddy).attr('status') !== 'offline') {
@@ -112,6 +116,9 @@ function conversationSwitch(buddy) {
 				$('#conversationInfo').html(conversationInfo[currentConversation]);
 			}
 			else {
+				if (currentConversation === 'main-Conversation') {
+					
+				}
 				$('#conversationInfo').html('<span>Conversation initiated at ' + currentTime(1) + '</span>');
 				conversationInfo[currentConversation] = $('#conversationInfo').html();
 			}
@@ -619,9 +626,12 @@ $('#loginForm').submit(function() {
 		if (!seedRNG()) {
 			return false;
 		}
+		else {
+			$('#loginForm').submit();
+		}
 	}
 	// Check if we have an OTR key, if not, generate
-	if (!myKey) {
+	else if (!myKey) {
 		// Interesting facts to make the wait seem shorter
 		var interestingFacts = [
 			'Both humans and cats have identical regions in the brain responsible for emotion.',
