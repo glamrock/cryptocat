@@ -635,7 +635,7 @@ $('#loginForm').submit(function() {
 		// Interesting facts to make the wait seem shorter
 		var interestingFacts = [
 			'Both humans and cats have identical regions in the brain responsible for emotion.',
-			'A cat\'s brain is more similar to a man\'s brain than that of a dog.',
+			'A cat\'s brain is more similar to a human brain than that of a dog.',
 			'Cats can rotate their ears independently in 180 degrees.',
 			'Cats\' hearing stops at 65 khz (kilohertz); humans\' hearing stops at 20 khz.',
 			'Cats see about 6 times better than humans at night.',
