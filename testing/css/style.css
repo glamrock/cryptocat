@@ -333,11 +333,21 @@ img.logo {
 	box-shadow: 2px 2px #97CEEC;
 }
 #progressInfo {
-	color: #000;
+	color: #97CEEC;
+	border-left: 1px solid #97CEEC;
 	font-family: monospace;
-	background-color: #97ceec;
-	width: 250px;
-	font-size: 12px;
+	width: 320px;
+	font-size: 10px;
+	text-align: left;
+	position: relative;
+	bottom: 74px;
+	float: right;
+}
+#progressInfo span {
+	font-size: 13px;
+}
+#progressInfo #interestingFact {
+	font-size: 11px;
 }
 #seedRNGInput {
 	background-color: #000;
