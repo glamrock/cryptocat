@@ -608,14 +608,14 @@ $('#loginForm').submit(function() {
 		loginFail('Please enter a conversation name.');
 		$('#chatName').select();
 	}
+	else if (!$('#chatName').val().match(/^\w{1,20}$/)) {
+		loginFail('Conversation name must be alphanumeric.');
+		$('#chatName').select();
+	}
 	else if (($('#nickname').val() === '')
 		|| ($('#nickname').val() === 'nickname')) {
 		loginFail('Please enter a nickname.');
 		$('#nickname').select();
-	}
-	else if (!$('#chatName').val().match(/^\w{1,20}$/)) {
-		loginFail('Chat name must be alphanumeric.');
-		$('#chatName').select();
 	}
 	else if (!$('#nickname').val().match(/^\w{1,16}$/)) {
 		loginFail('Nickname must be alphanumeric.');
@@ -641,7 +641,7 @@ $('#loginForm').submit(function() {
 			'Cats see about 6 times better than humans at night.',
 			'Cats can judge within 3 inches the precise location of a sound being made 1 yard away.',
 			'Cats can be right-pawed or left-pawed.',
-			'Cat cannot see directly under their nose.',
+			'Cats cannot see directly under their nose.',
 			'Cats express their present state of mind through their tail.',
 			'Cats walk on their toes.',
 			'Cats were worshipped as holy in Ancient Egypt and granted great respect in every household.',
