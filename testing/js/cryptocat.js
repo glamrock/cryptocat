@@ -342,6 +342,8 @@ function handlePresence(presence) {
 	}
 	// Handle buddy going offline
 	if ($(presence).attr('type') === 'unavailable') {
+		// Delete their OTR key
+		delete otrKeys[nickname];
 		if ($('#buddy-' + nickname).length !== 0) {
 			if ($('#buddy-' + nickname).attr('status') !== 'offline') {
 				if ((currentConversation !== nickname)
