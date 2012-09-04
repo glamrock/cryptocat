@@ -465,10 +465,10 @@ function bindBuddyMenu(nickname) {
 		event.stopPropagation();
 		if ($('#buddy-' + nickname).height() === 15) {
 			var buddyMenuContents = '<div class="buddyMenuContents" id="' + nickname + '-contents">'
-				+ '<li class="option1">Option 1</li>'
-				+ '<li class="option2">Option 2</li>';
+				+ '<li class="option1">Send Encrypted File</li>'
+				+ '<li class="option2">Display Info</li>';
 			$(this).css('background-image', 'url("img/up.png")');
-			$('#buddy-' + nickname).delay(10).animate({'height': '61px'}, 180, function() {
+			$('#buddy-' + nickname).delay(10).animate({'height': '45px'}, 180, function() {
 				$(this).append(buddyMenuContents);
 				$('#' + nickname + '-contents').fadeIn('fast', function() {
 					$('.option1').click(function(event) {
@@ -638,7 +638,7 @@ $('#loginForm').submit(function() {
 		var interestingFacts = [
 			'Both humans and cats have identical regions in the brain responsible for emotion.',
 			'A cat\'s brain is more similar to a human brain than that of a dog.',
-			'Cats can rotate their ears independently in 180 degrees.',
+			'Cats can rotate each ear independently from the other in 180 degrees.',
 			'Cats\' hearing stops at 65 khz (kilohertz); humans\' hearing stops at 20 khz.',
 			'Cats see about 6 times better than humans at night.',
 			'Cats can judge within 3 inches the precise location of a sound being made 1 yard away.',
