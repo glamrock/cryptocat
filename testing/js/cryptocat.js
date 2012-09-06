@@ -78,7 +78,7 @@ function playSound(audio) {
 // 'speed' is animation speed in milliseconds.
 function scrollDown(speed) {
 	$('#conversationWindow').animate({
-		scrollTop: document.getElementById('conversationWindow').scrollHeight + 20
+		scrollTop: $('#conversationWindow')[0].scrollHeight + 20
 	}, speed);
 }
 
@@ -125,7 +125,9 @@ function conversationSwitch(buddy) {
 				if (currentConversation === 'main-Conversation') {
 					
 				}
-				$('#conversationInfo').html('<span>Conversation initiated at ' + currentTime(1) + '</span>');
+				$('#conversationInfo').html(
+					'<span>Conversation initiated at ' + currentTime(1) + '</span>'
+				);
 				conversationInfo[currentConversation] = $('#conversationInfo').html();
 			}
 			$('#userInput').fadeIn('fast', function() {
@@ -175,8 +177,10 @@ function seedRNG() {
 	}
 	else {
 		var e, up, down;
-		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" alt="" />Please type on your keyboard'
-			+ ' as randomly as possible for a few seconds.</p><input type="password" id="seedRNGInput" />';
+		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" alt="" />'
+			+ 'Please type on your keyboard'
+			+ ' as randomly as possible for a few seconds.</p>'
+			+ '<input type="password" id="seedRNGInput" />';
 		dialogBox(progressForm, 0, function() {
 			$('#loginForm').submit();
 		});
@@ -245,11 +249,14 @@ function buildBuddy(buddyObject) {
 	else {
 		var nick = shortenString(buddyObject.alias, 19);
 	}
-	$('<div class="buddy" title="' + buddyObject.nick + '" id="buddy-' + buddyObject.nick + '" status="online">'
+	$('<div class="buddy" title="' + buddyObject.nick + '" id="buddy-' 
+		+ buddyObject.nick + '" status="online">'
 		+ '<span>' + nick + '</span>' + '<div class="buddyMenu" id="menu-' + buddyObject.nick
 		+ '"></div></div>').insertAfter('#buddiesOnline').slideDown('fast');
 	$('#buddy-' + nick).unbind('click');
-	bindBuddyClick(buddyObject.nick);
+	if (nick !== myNickname) {
+		bindBuddyClick(buddyObject.nick);
+	}
 	$('#menu-' + nick).unbind('click');
 	bindBuddyMenu(buddyObject.nick);
 }
@@ -276,7 +283,9 @@ function addtoConversation(message, sender, conversation) {
 				}
 			}
 			sanitize = sanitize.join('');
-			message = message.replace(sanitize, '<a target="_blank" href="' + sanitize + '">' + URLs[i] + '</a>');
+			message = message.replace(
+				sanitize, '<a target="_blank" href="' + sanitize + '">' + URLs[i] + '</a>'
+			);
 		}
 	}
 	var timeStamp = '<span class="timeStamp">' + currentTime(0) + '</span>';
@@ -289,7 +298,7 @@ function addtoConversation(message, sender, conversation) {
 	if (audioNotifications) {
 		playSound(audioNotification);
 	}
-	if ((document.getElementById('conversationWindow').scrollHeight - $('#conversationWindow').scrollTop()) < 800) {	
+	if (($('#conversationWindow')[0].scrollHeight - $('#conversationWindow').scrollTop()) < 800) {	
 		scrollDown(600);
 	}
 }
@@ -309,7 +318,9 @@ function handleMessage(message) {
 		if (currentConversation !== 'main-Conversation') {
 			var backgroundColor = $('#buddy-main-Conversation').css('background-color');
 			$('#buddy-main-Conversation').css('background-image', 'url("img/newMessage.png")');
-			$('#buddy-main-Conversation').animate({'backgroundColor': '#A7D8F7'}).animate({'backgroundColor': backgroundColor});
+			$('#buddy-main-Conversation')
+				.animate({'backgroundColor': '#A7D8F7'})
+				.animate({'backgroundColor': backgroundColor});
 		}
 	}
 	else if (type === 'chat') {
@@ -317,7 +328,9 @@ function handleMessage(message) {
 		if (currentConversation !== nick) {
 			var backgroundColor = $('#buddy-' + nick).css('background-color');
 			$('#buddy-' + nick).css('background-image', 'url("img/newMessage.png")');
-			$('#buddy-' + nick).animate({'backgroundColor': '#A7D8F7'}).animate({'backgroundColor': backgroundColor});
+			$('#buddy-' + nick)
+				.animate({'backgroundColor': '#A7D8F7'})
+				.animate({'backgroundColor': backgroundColor});
 		}
 	}
 	return true;
@@ -475,13 +488,14 @@ function bindBuddyMenu(nickname) {
 			$(this).css('background-image', 'url("img/up.png")');
 			$('#buddy-' + nickname).delay(10).animate({'height': '45px'}, 180, function() {
 				$(this).append(buddyMenuContents);
-				if (nickname != myNickname) {
-					$('#' + nickname + '-contents').append('<li class="option1">Send Encrypted File</li>');
+				if (nickname !== myNickname) {
+					$('#' + nickname + '-contents').append(
+						'<li class="option1">Send Encrypted File</li>'
+					);
 				}
-				else {
-					$('#' + nickname + '-contents').append('This is you!');
-				}
-				$('#' + nickname + '-contents').append('<li class="option2">Display Info</li>');
+				$('#' + nickname + '-contents').append(
+					'<li class="option2">Display Info</li>'
+				);
 				$('#' + nickname + '-contents').fadeIn('fast', function() {
 					$('.option1').click(function(event) {
 						event.stopPropagation();
@@ -531,18 +545,19 @@ function dialogBox(data, closeable, onClose) {
 		if ($('#dialogBoxClose').css('width') === '0') {
 			return false;
 		}
-		$('#dialogBox').animate({'top': '+=10px'}, 'fast').animate({'top': '-450px'}, 'fast', function() {
-			if (onClose) {
-				onClose();
-			}
-		});
+		$('#dialogBox').animate({'top': '+=10px'}, 'fast')
+			.animate({'top': '-450px'}, 'fast', function() {
+				if (onClose) {
+					onClose();
+				}
+			});
 		$('#dialogBoxClose').css('width', '0');
 		$('#dialogBoxClose').css('font-size', '0');
 		
 		$('#userInputText').focus();
 	});
 	$(document).keydown(function(e) {
-		if (e.keyCode == 27) {
+		if (e.keyCode === 27) {
 			$('#dialogBoxClose').click();
 		}
 	});
@@ -778,28 +793,29 @@ function login(username, password) {
 						$('#loginInfo').html('Thank you for using Cryptocat.');
 					}
 					$('#bubble').animate({'width': '680px'});
-					$('#bubble').animate({'height': '310px'}).animate({'margin-top': '5%'}, function() {
-						$('#buddyList div').each(function() {
-							if ($(this).attr('id') !== 'buddy-main-Conversation') {
-								$(this).remove();
+					$('#bubble').animate({'height': '310px'})
+						.animate({'margin-top': '5%'}, function() {
+							$('#buddyList div').each(function() {
+								if ($(this).attr('id') !== 'buddy-main-Conversation') {
+									$(this).remove();
+								}
+							});
+							$('#conversationWindow').html('');
+							conversations = [];
+							loginCredentials = [];
+							if (!loginError) {
+								$('#chatName').val('conversation name');
 							}
+							$('#chatName').removeAttr('readonly');
+							$('#nickname').val('nickname');
+							$('#nickname').removeAttr('readonly');
+							$('#newAccount').attr('checked', false);
+							$('#info').fadeIn();
+							$('#loginLinks').fadeIn();
+							$('#loginForm').fadeIn('fast', function() {
+								$('#chatName').select();
+							});
 						});
-						$('#conversationWindow').html('');
-						conversations = [];
-						loginCredentials = [];
-						if (!loginError) {
-							$('#chatName').val('conversation name');
-						}
-						$('#chatName').removeAttr('readonly');
-						$('#nickname').val('nickname');
-						$('#nickname').removeAttr('readonly');
-						$('#newAccount').attr('checked', false);
-						$('#info').fadeIn();
-						$('#loginLinks').fadeIn();
-						$('#loginForm').fadeIn('fast', function() {
-							$('#chatName').select();
-						});
-					});
 					$('.buddy').unbind('click');
 					$('.buddyMenu').unbind('click');
 				});
