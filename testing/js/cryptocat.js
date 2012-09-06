@@ -5,6 +5,9 @@ var domain = 'crypto.cat';
 // We deployed BOSH over an HTTPS proxy for better security and availability.
 var bosh = 'https://crypto.cat/http-bind';
 var conferenceServer = 'conference.crypto.cat';
+// Enable/disable group chat functionality.
+// Currently disabled since group chat crypto is not yet implemented.
+var groupChat = 0;
 
 /* Initialization */
 var conversations = [];
@@ -19,6 +22,9 @@ var soundEmbed = null;
 var conn, chatName, myNickname, myKey;
 $('.input[title]').qtip();
 $('.button[title]').qtip();
+if (!groupChat) {
+	$('#buddy-main-Conversation').remove();
+}
 
 // Initialize worker
 var worker = new Worker('js/worker.js');
@@ -298,7 +304,7 @@ function handleMessage(message) {
 	if (nick === myNickname) {
 		return true;
 	}
-	if (type === 'groupchat') {
+	if (type === 'groupchat' && groupChat) {
 		addtoConversation(body, nick, 'main-Conversation');
 		if (currentConversation !== 'main-Conversation') {
 			var backgroundColor = $('#buddy-main-Conversation').css('background-color');
@@ -732,8 +738,10 @@ function login(username, password) {
 						$('#buddyWrapper').fadeIn('fast', function() {
 							var scrollWidth = document.getElementById('buddyList').scrollWidth;
 							$('#buddyList').css('width', (150 + scrollWidth) + 'px');
-							bindBuddyClick('main-Conversation');
-							$('#buddy-main-Conversation').delay(2000).click();
+							if (groupChat) {
+								bindBuddyClick('main-Conversation');
+								$('#buddy-main-Conversation').delay(2000).click();
+							}
 						});
 						loginError = 0;
 						conn.muc.join(chatName + '@' + conferenceServer, myNickname, 
