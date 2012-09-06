@@ -258,6 +258,9 @@ function buildBuddy(buddyObject) {
 	if (nick !== myNickname) {
 		bindBuddyClick(buddyObject.nick);
 	}
+	else {
+		$('#buddy' + nick).css('cursor', 'default');
+	}
 	$('#menu-' + nick).unbind('click');
 	bindBuddyMenu(buddyObject.nick);
 }
