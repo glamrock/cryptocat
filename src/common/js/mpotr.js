@@ -79,7 +79,7 @@ var mpotr = (function(){
 		},
 
 		sign: function(m, k) {
-			return ecdsaSign(k, m);
+			return Curve25519.ecdsaSign(k, m);
 		},
 
 		mac: function(m, k) {
@@ -129,7 +129,7 @@ function Message(data, getParticipant) {
 
 Message.prototype = {
 	verifyMessage: function() {
-		this.verified = ecdsaVerify(this.sender.publicKey, this.signature, this.message);
+		this.verified = Curve25519.ecdsaVerify(this.sender.publicKey, this.signature, this.message);
 	}
 };
 
@@ -151,15 +151,15 @@ Participant.prototype = {
 
 		//generate a long-term public key if one doesn't exist
 		if (!static_private_key) {
-			this.privateKey = ecdsaGenPrivateKey();
+			this.privateKey = Curve25519.ecdsaGenPrivateKey();
 		}
-		this.publicKey = ecdsaGenPublicKey(this.privateKey);
+		this.publicKey = Curve25519.ecdsaGenPublicKey(this.privateKey);
 
 		//console.log(this.privateKey);
 		//console.log(this.publicKey);
 
-		this.ephPrivateKey = ecdsaGenPrivateKey();
-		this.ephPublicKey = ecdsaGenPublicKey(this.ephPrivateKey);
+		this.ephPrivateKey = Curve25519.ecdsaGenPrivateKey();
+		this.ephPublicKey = Curve25519.ecdsaGenPublicKey(this.ephPrivateKey);
 	},
 
 	protocolError: function(id, errorMessage) {
@@ -182,9 +182,9 @@ Participant.prototype = {
 				if (this.nicks[i] == this.nick){
 					continue;
 				}
-				this.akeX[this.nicks[i]] = ecdsaGenPrivateKey();
-				var gX = ecDH(this.akeX[this.nicks[i]]);
-				result[this.nicks[i]] = {'gX': gX, 'sig': ecdsaSign(this.privateKey, gX)};
+				this.akeX[this.nicks[i]] = Curve25519.ecdsaGenPrivateKey();
+				var gX = Curve25519.ecDH(this.akeX[this.nicks[i]]);
+				result[this.nicks[i]] = {'gX': gX, 'sig': Curve25519.ecdsaSign(this.privateKey, gX)};
 			}
 			return result;
 
@@ -216,7 +216,9 @@ Participant.prototype = {
 				if (this.nicks[i] == this.nick) {
 					continue;
 				}
-				var message = ecdsaSign(this.ephPrivateKey, JSON.stringify([this.ephPublicKeys[this.nicks[i]], this.sessionID, this.nick, this.nicks[i]]));
+				var message = Curve25519.ecdsaSign(this.ephPrivateKey, JSON.stringify(
+					[this.ephPublicKeys[this.nicks[i]], this.sessionID, this.nick, this.nicks[i]])
+				);
 				console.log(this.authUserEncKey[this.nicks[i]]);
 				console.log(JSON.stringify(this.authUserEncKey));
 				console.log(this.nicks[i]);
@@ -236,9 +238,9 @@ Participant.prototype = {
 				if (this.nicks[i] == this.nick){
 					continue;
 				}
-				this.gkeX[this.nicks[i]] = ecdsaGenPrivateKey();
-				var gX = ecDH(this.gkeX[this.nicks[i]]);
-				result[this.nicks[i]] = {'gX': gX, 'sig': ecdsaSign(this.ephPrivateKey, gX)};
+				this.gkeX[this.nicks[i]] = Curve25519.ecdsaGenPrivateKey();
+				var gX = Curve25519.ecDH(this.gkeX[this.nicks[i]]);
+				result[this.nicks[i]] = {'gX': gX, 'sig': Curve25519.ecdsaSign(this.ephPrivateKey, gX)};
 			}
 			return result;
 
@@ -315,7 +317,7 @@ Participant.prototype = {
 		var to_verify = JSON.stringify([this.sessionID, ciphertext]);
 		var parsed_ct = JSON.parse(cleartext);
 	
-		if (!ecdsaVerify(this.publicKeys[parsed_ct.nick], signature, to_verify)){
+		if (!Curve25519.ecdsaVerify(this.publicKeys[parsed_ct.nick], signature, to_verify)){
 			this.Error('authRecv', 'message verification failed');
 		}
 		return parsed_ct;
@@ -342,14 +344,14 @@ Participant.prototype = {
 			case 'ake':
 			this.akeGXY = {};
 			for (var i in msgs){
-				if (!ecdsaVerify(this.publicKeys[i], msgs[i]['sig'], msgs[i]['gX'])) {
+				if (!Curve25519.ecdsaVerify(this.publicKeys[i], msgs[i]['sig'], msgs[i]['gX'])) {
 				    //die?
 				    this.protocolError('ake', 'signature from ' + i + ' failed');
 				    return;
 				}
 				//console.log("Verifying signature from " + i);
-				//console.log(ecdsaVerify(this.publicKeys[i], msgs[i]['sig'], msgs[i]['gX']));
-				this.akeGXY = ecDH(this.akeX[i], msgs[i]['gX']);
+				//console.log(Curve25519.ecdsaVerify(this.publicKeys[i], msgs[i]['sig'], msgs[i]['gX']));
+				this.akeGXY = Curve25519.ecDH(this.akeX[i], msgs[i]['gX']);
 
 			}
 			return 0;
@@ -388,7 +390,7 @@ Participant.prototype = {
 				//console.log('crypto at');
 				//console.log(signature);
 				//console.log(signedMessage);
-				if (!ecdsaVerify(this.ephPublicKeys[i], signature, signedMessage)){
+				if (!Curve25519.ecdsaVerify(this.ephPublicKeys[i], signature, signedMessage)){
 				    this.protocolError('authUser2', 'signature from ' + i + ' failed');
 				    return;
 				}
@@ -414,12 +416,12 @@ Participant.prototype = {
 			case 'gke1':
 			this.gkeGXY = {};
 			for (var i in msgs){
-				if (!ecdsaVerify(this.ephPublicKeys[i], msgs[i]['sig'], msgs[i]['gX'])) {
+				if (!Curve25519.ecdsaVerify(this.ephPublicKeys[i], msgs[i]['sig'], msgs[i]['gX'])) {
 					//die?
 					this.protocolError('gke1', 'signature from ' + i + ' failed');
 					return;
 				}
-				this.gkeGXY[i] = ecDH(this.gkeX[i], msgs[i]['gX']);
+				this.gkeGXY[i] = Curve25519.ecDH(this.gkeX[i], msgs[i]['gX']);
 			}
 			return 0;
 

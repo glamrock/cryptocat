@@ -16,6 +16,11 @@ var pub2 = scalarMult(priv2, basePoint)
 print (scalarMult(priv1, pub2))
 print (scalarMult(priv2, pub1)) */
 
+var Curve25519 = function() {
+};
+
+(function(){
+
 // p22519 is the curve25519 prime: 2^255 - 19
 var p25519 = BigInt.str2bigInt("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffed", 16);
 // p25519Minus2 = 2^255 - 21
@@ -32,7 +37,7 @@ var three = BigInt.str2bigInt("3", 10);
 var two = BigInt.str2bigInt("2", 10);
 
 // groupAdd adds two elements of the elliptic curve group in Montgomery form.
-function groupadd(x1, xn, zn, xm, zm) {
+function groupAdd(x1, xn, zn, xm, zm) {
         // x₃ = 4(x·x′ - z·z′)² · z1
         var xx = BigInt.multMod(xn, xm, p25519);
         var zz = BigInt.multMod(zn, zm, p25519);
@@ -86,7 +91,7 @@ function groupDouble(x, z) {
 }
 
 // scalarMult calculates i*base in the elliptic curve.
-function scalarMult(i, base) {
+Curve25519.scalarMult = function(i, base) {
         var scalar = BigInt.expand(i, 18);
         scalar[0] &= (248 | 0x7f00);
         scalar[17] = 0;
@@ -104,14 +109,14 @@ function scalarMult(i, base) {
                 }
                 for (; j >= 0; j--) {
                         if (scalar[i]&0x4000) {
-                                var point = groupadd(base, x1, z1, x2, z2);
+                                var point = groupAdd(base, x1, z1, x2, z2);
                                 x1 = point[0];
                                 z1 = point[1];
                                 point = groupDouble(x2, z2);
                                 x2 = point[0];
                                 z2 = point[1];
                         } else {
-                                var point = groupadd(base, x1, z1, x2, z2);
+                                var point = groupAdd(base, x1, z1, x2, z2);
                                 x2 = point[0];
                                 z2 = point[1];
                                 point = groupDouble(x1, z1);
@@ -152,43 +157,43 @@ var p256Gy = BigInt.str2bigInt("4fe342e2fe1a7f9b8ee7eb4a7c0f9e162bce33576b315ece
 
 
 
-function privateKeyToString(p){
+Curve25519.privateKeyToString = function(p){
   return BigInt.bigInt2str(p, 64);
 }
 
-function privateKeyFromString(s){
+Curve25519.privateKeyFromString = function(s){
   return BigInt.str2bigInt(s, 64);
 }
 
 
-function sigToString(p){
+Curve25519.sigToString = function(p){
   return JSON.stringify([BigInt.bigInt2str(p[0], 64), BigInt.bigInt2str(p[1], 64)]);
 }
 
-function sigFromString(s){
+Curve25519.sigFromString = function(s){
   p = JSON.parse(s);
   p[0] = BigInt.str2bigInt(p[0], 64);
   p[1] = BigInt.str2bigInt(p[1], 64);
   return p;
 }
 
-function publicKeyToString(p){
+Curve25519.publicKeyToString = function(p){
   return JSON.stringify([BigInt.bigInt2str(p[0], 64), BigInt.bigInt2str(p[1], 64)]);
 }
 
-function publicKeyFromString(s){
+Curve25519.publicKeyFromString = function(s){
   p = JSON.parse(s);
   p[0] = BigInt.str2bigInt(p[0], 64);
   p[1] = BigInt.str2bigInt(p[1], 64);
   return p;
 }
 
-function ecdsaGenPrivateKey(){
-  return privateKeyToString(BigInt.randBigInt(256));
+Curve25519.ecdsaGenPrivateKey = function(){
+  return Curve25519.privateKeyToString(BigInt.randBigInt(256));
 }
 
-function ecdsaGenPublicKey(privateKey){
-  return publicKeyToString(scalarMultP256(p256Gx, p256Gy, privateKeyFromString(privateKey)));
+Curve25519.ecdsaGenPublicKey = function(privateKey){
+  return Curve25519.publicKeyToString(scalarMultP256(p256Gx, p256Gy, Curve25519.privateKeyFromString(privateKey)));
 }
 
 // isOnCurve returns true if the given point is on the curve.
@@ -328,11 +333,11 @@ function scalarMultP256(bx, by, in_k) {
 // careful because the NSA and SECG documents differ on how the conversion to
 // an interger occurs. SECG says that you should truncate to the big-length of
 // the curve first and that's what OpenSSL does.
-function ecdsaSign(privateKey, message) {
+Curve25519.ecdsaSign = function(privateKey, message) {
         var r;
         var s;
 
-        priv = privateKeyFromString(privateKey);
+        priv = Curve25519.privateKeyFromString(privateKey);
 
         m = BigInt.mod(CryptoJS.SHA512(JSON.stringify(message)).toString(CryptoJS.enc.Hex).substring(0,32), n256);
 
@@ -357,16 +362,16 @@ function ecdsaSign(privateKey, message) {
                 }
         }
 
-        return sigToString([r,s]);
+        return Curve25519.sigToString([r,s]);
 }
 
 // ecdsaVerify returns true iff signature is a valid ECDSA signature for
 // message. See the comment above ecdsaSign about converting a message into the
 // bigint |message|.
-function ecdsaVerify(publicKey, signature, message) {
+Curve25519.ecdsaVerify = function(publicKey, signature, message) {
 
-        pub = publicKeyFromString(publicKey);
-        sig = sigFromString(signature);
+        pub = Curve25519.publicKeyFromString(publicKey);
+        sig = Curve25519.sigFromString(signature);
 
         m = BigInt.mod(CryptoJS.SHA512(JSON.stringify(message)).toString(CryptoJS.enc.Hex).substring(0,32), n256);
 
@@ -398,11 +403,12 @@ function ecdsaVerify(publicKey, signature, message) {
         return BigInt.equals(point4[0], r);
 }
 
-function ecDH(priv, pub) {
+Curve25519.ecDH = function(priv, pub) {
 	if (typeof pub === "undefined") {
-		return scalarMult(priv, basePoint);
+		return Curve25519.scalarMult(priv, basePoint);
 	}
 	else {
-        return BigInt.bigInt2str(scalarMult(priv, pub), 64);
+        return BigInt.bigInt2str(Curve25519.scalarMult(priv, pub), 64);
 	}
 }
+})();

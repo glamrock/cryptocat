@@ -135,4 +135,3 @@ Fortuna.RandomData = function(n) {
 }
 
 })();
-
