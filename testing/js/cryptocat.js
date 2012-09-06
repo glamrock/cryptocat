@@ -1,4 +1,5 @@
-(function(){ var Cryptocat = function() {};
+var Cryptocat = function() {};
+(function(){
 
 /* Configuration */
 var domain = 'crypto.cat';
@@ -661,31 +662,6 @@ $('#loginForm').submit(function() {
 	}
 	// Check if we have an OTR key, if not, generate
 	else if (!myKey) {
-		// Interesting facts to make the wait seem shorter
-		var interestingFacts = [
-			'Both humans and cats have identical regions in the brain responsible for emotion.',
-			'A cat\'s brain is more similar to a human brain than that of a dog.',
-			'Cats can rotate each ear independently from the other in 180 degrees.',
-			'Cats\' hearing stops at 65 khz (kilohertz); humans\' hearing stops at 20 khz.',
-			'Cats see about 6 times better than humans at night.',
-			'Cats can judge within 3 inches the precise location of a sound being made 1 yard away.',
-			'Cats can be right-pawed or left-pawed.',
-			'Cats cannot see directly under their nose.',
-			'Cats express their present state of mind through their tail.',
-			'Cats walk on their toes.',
-			'Cats were worshipped as holy in Ancient Egypt and granted great respect in every household.',
-			'Phoenician ships are thought to have brought the first domesticated cats to Europe in about 900 BC.',
-			'Ancient Egyptians shaved their eyebrows in mourning when the family cat died.',
-			'In Siam, a cat rode in a chariot at the head of a parade celebrating the new king.',
-			'Most cats adore sardines.',
-			'Cats use their whiskers to measure distances and changes in air pressure.',
-			'Abraham Lincoln kept four cats at the White House during his presidency.',
-			'Cats purr at the same frequency as an idling diesel engine.',
-			'Nikola Tesla was inspired to study electricity after his cat shocked him with static when he was young.',
-			'Isaac Newton invented the cat-flap.',
-			'Cats use their tails for balance and have nearly 30 individual bones in them.',
-			'Even though Napoleon conquered many countries, he was always very afraid of cats.'
-		];
 		worker.postMessage('generateDSA');
 		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" '
 			+ 'alt="" /><p id="progressInfo"><span>Generating encryption keys...</span></p>';
@@ -695,7 +671,7 @@ $('#loginForm').submit(function() {
 		$('#progressInfo').append(
 			'<br />Here is an interesting fact while you wait:'
 			+ '<br /><br /><span id="interestingFact">'
-			+ interestingFacts[Math.floor(Math.random()*interestingFacts.length)] + '</span>'
+			+ CatFacts.getFact() + '</span>'
 		);
 	}
 	else {
