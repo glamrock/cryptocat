@@ -339,7 +339,8 @@ function handlePresence(presence) {
 	}
 	// Ignore if presence status is coming from myself
 	if (nickname === myNickname) {
-		return true;
+		// Currently not ignored
+		//return true;
 	}
 	// Add to otrKeys if necessary
 	if (nickname !== 'main-Conversation' && otrKeys[nickname] === undefined) {
@@ -470,12 +471,17 @@ function bindBuddyMenu(nickname) {
 	$('#menu-' + nickname).click(function(event) {
 		event.stopPropagation();
 		if ($('#buddy-' + nickname).height() === 15) {
-			var buddyMenuContents = '<div class="buddyMenuContents" id="' + nickname + '-contents">'
-				+ '<li class="option1">Send Encrypted File</li>'
-				+ '<li class="option2">Display Info</li>';
+			var buddyMenuContents = '<div class="buddyMenuContents" id="' + nickname + '-contents">';
 			$(this).css('background-image', 'url("img/up.png")');
 			$('#buddy-' + nickname).delay(10).animate({'height': '45px'}, 180, function() {
 				$(this).append(buddyMenuContents);
+				if (nickname != myNickname) {
+					$('#' + nickname + '-contents').append('<li class="option1">Send Encrypted File</li>');
+				}
+				else {
+					$('#' + nickname + '-contents').append('This is you!');
+				}
+				$('#' + nickname + '-contents').append('<li class="option2">Display Info</li>');
 				$('#' + nickname + '-contents').fadeIn('fast', function() {
 					$('.option1').click(function(event) {
 						event.stopPropagation();
