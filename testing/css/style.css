@@ -359,6 +359,31 @@ img.logo {
 	width: 255px;
 	box-shadow: 2px 2px #97CEEC;
 }
+
+.emoticon {
+	background: transparent url("../img/emoticat.png") no-repeat;
+	height: 13px;
+	width: 13px;
+	display: inline-block;
+	vertical-align: 4%;
+	margin: 0 3px;
+	font-size: 2px;
+	color: transparent;
+}
+#eCat { background-position: 0 0; }
+#eCry { background-position: -13px 0; }
+#eGasp { background-position: -26px 0; }
+#eGrin { background-position: -39px 0; }
+#eSad { background-position: -52px 0; }
+#eSmile { background-position: -65px 0; }
+#eSquint { background-position: -78px 0; }
+#eTongue { background-position: -91px 0; }
+#eUnsure { background-position: -104px 0; }
+#eWink { background-position: -117px 0; }
+#eWinkTongue { background-position: -130px 0; }
+#eYay { background-position: -143px 0; }
+#eShut { background-position: -156px 0; }
+
 .ui-tooltip, .qtip{
 	position: absolute;
 	left: -28000px;

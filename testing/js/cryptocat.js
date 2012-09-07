@@ -11,13 +11,15 @@ var conferenceServer = 'conference.crypto.cat';
 var groupChat = 0;
 
 /* Initialization */
+var otrKeys = {};
 var conversations = [];
 var conversationInfo = [];
 var loginCredentials = [];
-var otrKeys = {};
 var currentConversation = 0;
 var audioNotifications = 0;
+var desktopNotifications = 0;
 var loginError = 0;
+var windowFocus = 1;
 var currentStatus = 'online';
 var soundEmbed = null;
 var conn, chatName, myNickname, myKey;
@@ -26,6 +28,15 @@ $('.button[title]').qtip();
 if (!groupChat) {
 	$('#buddy-main-Conversation').remove();
 }
+
+// Detect window focus
+window.onfocus = function() {
+	windowFocus = 1;
+	document.title = 'Cryptocat';
+};
+window.onblur = function() {
+	windowFocus = 0;
+};
 
 // Initialize worker
 var worker = new Worker('js/worker.js');
@@ -144,9 +155,7 @@ function conversationSwitch(buddy) {
 		if (($(this).attr('title') !== currentConversation)
 			&& ($(this).css('background-image') === 'none')
 			&& ($(this).attr('status') === 'offline')) {
-			$(this).slideUp(500, function() {
-				$(this).remove();
-			});
+			removeBuddy($(this).attr('title'));
 		}
 	});
 }
@@ -265,19 +274,15 @@ function buildBuddy(buddyObject) {
 	bindBuddyMenu(buddyObject.nick);
 }
 
-// Add a `message` from `sender` to the `conversation` display and log.
-// Used internally.
-function addtoConversation(message, sender, conversation) {
-	initiateConversation(conversation);
-	if (sender === myNickname) {
-		lineDecoration = 1;
-		audioNotification = 'snd/msgSend.webm';
-	}
-	else {
-		lineDecoration = 2;
-		audioNotification = 'snd/msgGet.webm';
-	}
-	message = message.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+// Remove buddy from buddy list
+function removeBuddy(nickname) {
+	$('#buddy-' + nickname).slideUp(500, function() {
+		$(this).remove();
+	});
+}
+
+// Convert message URLs to links. Used internally.
+function addLinks(message) {
 	if ((URLs = message.match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi))) {
 		for (var i in URLs) {
 			var sanitize = URLs[i].split('');
@@ -292,6 +297,49 @@ function addtoConversation(message, sender, conversation) {
 			);
 		}
 	}
+	return message;
+}
+
+// Add emoticons to a message line. Used internally.
+function addEmoticons(message) {
+	return message
+		.replace(/(\s|^)(:|=)-?3(?=(\s|$))/gi, ' <div class="emoticon" id="eCat">$&</div> ')
+		.replace(/(\s|^)(:|=)-?'\((?=(\s|$))/gi, ' <div class="emoticon" id="eCry">$&</div> ')
+		.replace(/(\s|^)(:|=)-?o(?=(\s|$))/gi, ' <div class="emoticon" id="eGasp">$&</div> ')
+		.replace(/(\s|^)(:|=)-?D(?=(\s|$))/gi, ' <div class="emoticon" id="eGrin">$&</div> ')
+		.replace(/(\s|^)(:|=)-?\((?=(\s|$))/gi, ' <div class="emoticon" id="eSad">$&</div> ')
+		.replace(/(\s|^)(:|=)-?\)(?=(\s|$))/gi, ' <div class="emoticon" id="eSmile">$&</div> ')
+		.replace(/(\s|^)-_-(?=(\s|$))/gi, ' <div class="emoticon" id="eSquint">$&</div> ')
+		.replace(/(\s|^)(:|=)-?p(?=(\s|$))/gi, ' <div class="emoticon" id="eTongue">$&</div> ')
+		.replace(/(\s|^)(:|=)-?(\/|s)(?=(\s|$))/gi, ' <div class="emoticon" id="eUnsure">$&</div> ')
+		.replace(/(\s|^);-?\)(?=(\s|$))/gi, ' <div class="emoticon" id="eWink">$&</div> ')
+		.replace(/(\s|^);-?\p(?=(\s|$))/gi, ' <div class="emoticon" id="eWinkTongue">$&</div> ')
+		.replace(/(\s|^)\^(_|\.)?\^(?=(\s|$))/gi, ' <div class="emoticon" id="eYay">$&</div> ')
+		.replace(/(\s|^)(:|=)-?x\b(?=(\s|$))/gi, ' <div class="emoticon" id="eShut">$&</div> ')
+		.replace(/(\s|^)\&lt\;3\b(?=(\s|$))/g, ' <span class="monospace">&#9829;</span> ');
+}
+
+// Add a `message` from `sender` to the `conversation` display and log.
+// Used internally.
+function addtoConversation(message, sender, conversation) {
+	initiateConversation(conversation);
+	if (sender === myNickname) {
+		lineDecoration = 1;
+		audioNotification = 'snd/msgSend.webm';
+	}
+	else {
+		lineDecoration = 2;
+		audioNotification = 'snd/msgGet.webm';
+		if (desktopNotifications) {
+			if ((sender !== currentConversation) || (!windowFocus)) {
+				// BUG: Icon does not show
+				Notification.createNotification('img/keygen.gif', sender, message);
+			}
+		}
+	}
+	message = message.replace(/</g,'&lt;').replace(/>/g,'&gt;'); // Sanitize
+	message = addLinks(message);
+	message = addEmoticons(message);
 	var timeStamp = '<span class="timeStamp">' + currentTime(0) + '</span>';
 	var sender = '<span class="sender">' + shortenString(sender, 16) + '</span>';
 	message = '<div class="Line' + lineDecoration + '">' + timeStamp + sender + message + '</div>';
@@ -372,9 +420,7 @@ function handlePresence(presence) {
 			if ($('#buddy-' + nickname).attr('status') !== 'offline') {
 				if ((currentConversation !== nickname)
 					&& ($('#buddy-' + nickname).css('background-image') === 'none')) {
-					$('#buddy-' + nickname).slideUp(500, function() {
-						$(this).remove();
-					});
+					removeBuddy(nickname);
 				}
 				else {
 					$('#buddy-' + nickname).attr('status', 'offline');
@@ -419,7 +465,7 @@ function handlePresence(presence) {
 	}
 	// Perform status change
 	$('#buddy-' + nickname).attr('status', status);
-	if (($('#buddy-' + nickname).attr('title') !== currentConversation) && (placement)) {
+	if (placement) {
 		$('#buddy-' + nickname).animate({
 			'color': '#FFF',
 			'backgroundColor': backgroundColor,
@@ -583,6 +629,25 @@ $('#status').click(function() {
 		$(this).attr('title', 'Status: Available');
 		currentStatus = 'online';
 		sendStatus();
+	}
+});
+
+// Desktop notifications button
+$('#notifications').click(function() {
+	if ($(this).attr('title') === 'Desktop Notifications Off') {
+		$(this).attr('src', 'img/notifications.png');
+		$(this).attr('alt', 'Desktop Notifications On');
+		$(this).attr('title', 'Desktop Notifications On');
+		desktopNotifications = 1;
+		if (Notification.checkPermission()) {
+			Notification.requestPermission();
+		}
+	}
+	else {
+		$(this).attr('src', 'img/noNotifications.png');
+		$(this).attr('alt', 'Desktop Notifications Off');
+		$(this).attr('title', 'Desktop Notification Off');
+		desktopNotifications = 0;
 	}
 });
 
