@@ -332,7 +332,6 @@ function addtoConversation(message, sender, conversation) {
 		audioNotification = 'snd/msgGet.webm';
 		if (desktopNotifications) {
 			if ((sender !== currentConversation) || (!windowFocus)) {
-				// BUG: Icon does not show
 				Notification.createNotification('img/keygen.gif', sender, message);
 			}
 		}
