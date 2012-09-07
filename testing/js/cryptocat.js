@@ -337,9 +337,12 @@ function addtoConversation(message, sender, conversation) {
 			}
 		}
 	}
-	message = message.replace(/</g,'&lt;').replace(/>/g,'&gt;'); // Sanitize
 	message = addLinks(message);
 	message = addEmoticons(message);
+	message = message.replace(/</g,'&lt;') // Sanitize
+		.replace(/>/g,'&gt;')
+		.replace(/:/g, '&#58;')
+		.replace(/=/g, '&#61;');
 	var timeStamp = '<span class="timeStamp">' + currentTime(0) + '</span>';
 	var sender = '<span class="sender">' + shortenString(sender, 16) + '</span>';
 	message = '<div class="Line' + lineDecoration + '">' + timeStamp + sender + message + '</div>';
