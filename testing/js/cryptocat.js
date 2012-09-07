@@ -6,9 +6,8 @@ var domain = 'crypto.cat';
 // We deployed BOSH over an HTTPS proxy for better security and availability.
 var bosh = 'https://crypto.cat/http-bind';
 var conferenceServer = 'conference.crypto.cat';
-// Enable/disable group chat functionality.
-// Currently disabled since group chat crypto is not yet implemented.
-var groupChat = 0;
+// Enable/disable group chat client functionality. Used internally for debugging.
+var groupChat = 1;
 
 /* Initialization */
 var otrKeys = {};
@@ -303,19 +302,19 @@ function addLinks(message) {
 // Add emoticons to a message line. Used internally.
 function addEmoticons(message) {
 	return message
-		.replace(/(\s|^)(:|=)-?3(?=(\s|$))/gi, ' <div class="emoticon" id="eCat">$&</div> ')
-		.replace(/(\s|^)(:|=)-?'\((?=(\s|$))/gi, ' <div class="emoticon" id="eCry">$&</div> ')
-		.replace(/(\s|^)(:|=)-?o(?=(\s|$))/gi, ' <div class="emoticon" id="eGasp">$&</div> ')
-		.replace(/(\s|^)(:|=)-?D(?=(\s|$))/gi, ' <div class="emoticon" id="eGrin">$&</div> ')
-		.replace(/(\s|^)(:|=)-?\((?=(\s|$))/gi, ' <div class="emoticon" id="eSad">$&</div> ')
-		.replace(/(\s|^)(:|=)-?\)(?=(\s|$))/gi, ' <div class="emoticon" id="eSmile">$&</div> ')
+		.replace(/(\s|^)(:|(&#61;))-?3(?=(\s|$))/gi, ' <div class="emoticon" id="eCat">$&</div> ')
+		.replace(/(\s|^)(:|(&#61;))-?'\((?=(\s|$))/gi, ' <div class="emoticon" id="eCry">$&</div> ')
+		.replace(/(\s|^)(:|(&#61;))-?o(?=(\s|$))/gi, ' <div class="emoticon" id="eGasp">$&</div> ')
+		.replace(/(\s|^)(:|(&#61;))-?D(?=(\s|$))/gi, ' <div class="emoticon" id="eGrin">$&</div> ')
+		.replace(/(\s|^)(:|(&#61;))-?\((?=(\s|$))/gi, ' <div class="emoticon" id="eSad">$&</div> ')
+		.replace(/(\s|^)(:|(&#61;))-?\)(?=(\s|$))/gi, ' <div class="emoticon" id="eSmile">$&</div> ')
 		.replace(/(\s|^)-_-(?=(\s|$))/gi, ' <div class="emoticon" id="eSquint">$&</div> ')
-		.replace(/(\s|^)(:|=)-?p(?=(\s|$))/gi, ' <div class="emoticon" id="eTongue">$&</div> ')
-		.replace(/(\s|^)(:|=)-?(\/|s)(?=(\s|$))/gi, ' <div class="emoticon" id="eUnsure">$&</div> ')
+		.replace(/(\s|^)(:|(&#61;))-?p(?=(\s|$))/gi, ' <div class="emoticon" id="eTongue">$&</div> ')
+		.replace(/(\s|^)(:|(&#61;))-?(\/|s)(?=(\s|$))/gi, ' <div class="emoticon" id="eUnsure">$&</div> ')
 		.replace(/(\s|^);-?\)(?=(\s|$))/gi, ' <div class="emoticon" id="eWink">$&</div> ')
 		.replace(/(\s|^);-?\p(?=(\s|$))/gi, ' <div class="emoticon" id="eWinkTongue">$&</div> ')
 		.replace(/(\s|^)\^(_|\.)?\^(?=(\s|$))/gi, ' <div class="emoticon" id="eYay">$&</div> ')
-		.replace(/(\s|^)(:|=)-?x\b(?=(\s|$))/gi, ' <div class="emoticon" id="eShut">$&</div> ')
+		.replace(/(\s|^)(:|(&#61;))-?x\b(?=(\s|$))/gi, ' <div class="emoticon" id="eShut">$&</div> ')
 		.replace(/(\s|^)\&lt\;3\b(?=(\s|$))/g, ' <span class="monospace">&#9829;</span> ');
 }
 
@@ -336,12 +335,10 @@ function addtoConversation(message, sender, conversation) {
 			}
 		}
 	}
+	message = message.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/=/g, '&#61;');
 	message = addLinks(message);
 	message = addEmoticons(message);
-	message = message.replace(/</g,'&lt;') // Sanitize
-		.replace(/>/g,'&gt;')
-		.replace(/:/g, '&#58;')
-		.replace(/=/g, '&#61;');
+	message = message.replace(/:/g, '&#58;');
 	var timeStamp = '<span class="timeStamp">' + currentTime(0) + '</span>';
 	var sender = '<span class="sender">' + shortenString(sender, 16) + '</span>';
 	message = '<div class="Line' + lineDecoration + '">' + timeStamp + sender + message + '</div>';
@@ -699,11 +696,10 @@ $('#nickname').click(function() {
 	$(this).select();
 });
 $('#loginForm').submit(function() {
+	$('#chatName').val($.trim($('#chatName').val()));
+	$('#nickname').val($.trim($('#nickname').val()));
 	chatName = $('#chatName').val();
-	if ($('#chatName').val() === '') {
-		return false;
-	}
-	else if (($('#chatName').val() === '')
+	if (($('#chatName').val() === '')
 		|| ($('#chatName').val() === 'conversation name')) {
 		loginFail('Please enter a conversation name.');
 		$('#chatName').select();
