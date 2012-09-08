@@ -326,6 +326,8 @@ img.logo {
 	text-align: left;
 	font-size: 13px;
 	margin-bottom: 0;
+	font-family: monospace;
+	color: #97CEEC;
 }
 #progressForm img {
 	float: left;
@@ -333,9 +335,9 @@ img.logo {
 	box-shadow: 2px 2px #97CEEC;
 }
 #progressInfo {
-	color: #97CEEC;
 	border-left: 1px solid #97CEEC;
 	font-family: monospace;
+	color: #97CEEC;
 	width: 320px;
 	font-size: 10px;
 	text-align: left;
@@ -352,6 +354,7 @@ img.logo {
 #seedRNGInput {
 	background-color: #000;
 	border: 1px solid #97CEEC;
+	color: #97CEEC;
 	box-shadow: none;
 	float: left;
 	text-align: left;
