@@ -24,7 +24,7 @@ var interestingFacts = [
 'Isaac Newton invented the cat-flap.',
 'Cats use their tails for balance and have nearly 30 individual bones in them.',
 'Even though Napoleon conquered many countries, he was always very afraid of cats.',
-'A kitten\'s eye are always blue at first.',
+'A kitten\'s eyes are always blue at first.',
 'A cat can jump as high as seven times as it is tall.',
 'Kittens begin dreaming at just over one week old.',
 'Every cat\'s nose is unique, and no two nose-prints are the same.',
