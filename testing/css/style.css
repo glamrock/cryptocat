@@ -87,7 +87,6 @@ img.logo {
 [type=text], [type=password], [type=button], [type=submit] {
 	display: block;
 	background-color: #222;
-	box-shadow: 2px 2px #97CEEC;
 	font-size: 14px;
 	padding: 5px;
 	color: #FFF;
@@ -100,6 +99,9 @@ img.logo {
 }
 #bubble #loginSubmit {
 	width: 210px;
+}
+[type=submit] {
+	box-shadow: 2px 2px #97CEEC;
 }
 [type=submit]:hover {
 	cursor: pointer;
@@ -240,14 +242,6 @@ img.logo {
 #dialogBox .no {
 	cursor: pointer;
 	background-color: #E93028;
-}
-#addBuddyJID, #addBuddySubmit {
-	font-size: 11px;
-	display: inline;
-}
-#addBuddySubmit {
-	width: 150px;
-	margin-left: 10px;
 }
 #conversationWrapper {
 	width: 750px;
