@@ -2,12 +2,11 @@ var Cryptocat = function() {};
 (function(){
 
 /* Configuration */
-var domain = 'crypto.cat';
-// We deployed BOSH over an HTTPS proxy for better security and availability.
-var bosh = 'https://crypto.cat/http-bind';
-var conferenceServer = 'conference.crypto.cat';
-// Enable/disable group chat client functionality. Used internally for debugging.
-var groupChat = 1;
+var domain = 'crypto.cat'; // Domain name to connect to for XMPP.
+var conferenceServer = 'conference.crypto.cat'; // Address of the XMPP MUC server.
+var bosh = 'https://crypto.cat/http-bind'; // BOSH is served over an HTTPS proxy for better security and availability.
+var fileSize = 700; // Maximum encrypted file sharing size, in kilobytes. Doesn't work above 700kb.
+var groupChat = 1; // Enable/disable group chat client functionality.
 
 /* Initialization */
 var otrKeys = {};
@@ -104,14 +103,12 @@ function initiateConversation(conversation) {
 // Handle incoming messages
 var uicb = function(buddy) {
   return function(message) {
-    console.log('rec' + '(' + buddy + ')' + ': ' + message);
 	addtoConversation(message, buddy, buddy);
   }
 }
 // Handle outgoing messages
 var iocb = function(buddy) {
   return function(message) {
-    console.log('send' + '(' + buddy + ')' + ': ' + message);
     conn.muc.message(chatName + '@' + conferenceServer, buddy, message, null);
   }
 }
@@ -245,7 +242,7 @@ function randomString(size, alpha, uppercase, numeric) {
 // Adds '..' to delineate that string was shortened.
 function shortenString(string, length) {
 	if (string.length > length) {
-		return string.substring(0, (length -2)) + '..';
+		return string.substring(0, (length - 2)) + '..';
 	}
 	return string;
 }
@@ -262,15 +259,17 @@ function buildBuddy(buddyObject) {
 		+ buddyObject.nick + '" status="online">'
 		+ '<span>' + nick + '</span>' + '<div class="buddyMenu" id="menu-' + buddyObject.nick
 		+ '"></div></div>').insertAfter('#buddiesOnline').slideDown('fast');
-	$('#buddy-' + nick).unbind('click');
+	$('#menu-' + buddyObject.nick).unbind('click');
+	bindBuddyMenu(buddyObject.nick);
+	$('#buddy-' + buddyObject.nick).unbind('click');
 	if (nick !== myNickname) {
 		bindBuddyClick(buddyObject.nick);
 	}
 	else {
-		$('#buddy' + nick).css('cursor', 'default');
+		$('#buddy-' + buddyObject.nick).click(function() {
+			$('#menu-' + buddyObject.nick).click();
+		});
 	}
-	$('#menu-' + nick).unbind('click');
-	bindBuddyMenu(buddyObject.nick);
 }
 
 // Remove buddy from buddy list
@@ -356,7 +355,6 @@ function addtoConversation(message, sender, conversation) {
 
 // Handle incoming messages from the XMPP server.
 function handleMessage(message) {
-	console.log(message);
 	var from = $(message).attr('from');
 	var nick = from.match(/\/\w+/)[0].substring(1);
 	var type = $(message).attr('type');
@@ -389,7 +387,6 @@ function handleMessage(message) {
 
 // Handle incoming presence updates from the XMPP server.
 function handlePresence(presence) {
-	console.log(presence);
 	var nickname = $(presence).attr('from').match(/\/\w+/)[0].substring(1);
 	// Handle errors
 	if ($(presence).attr('type') === 'error') {
@@ -528,6 +525,35 @@ function bindBuddyClick(nickname) {
 	});
 }
 
+// Send encrypted file
+// Encrypted file sharing is simple: The file is converted into a base64 Data URI
+// which is then sent as an OTR message.
+function sendFile(nickname) {
+	var mime = new RegExp('(image.*)|(application/((x-compressed)|(x-zip-compressed)|(zip)))|(multipart/x-zip)');
+	var sendFileDialog = '<input type="file" id="fileSelector" name="file[]" />';
+	dialogBox(sendFileDialog, 1);
+	$('#fileSelector').change(function() {
+		var file = event.target.files;
+		var reader = new FileReader();
+		reader.onload = (function(theFile) {
+			return function(e) {
+				otrKeys[nickname].sendMsg(event.target.result);
+			};
+		})(file[0]);
+		if (file[0].type.match(mime)) {
+			if (file[0].size > (fileSize * 1024)) {
+				console.log('filesize error');
+			}
+			else {
+				reader.readAsDataURL(file[0]);
+			}
+		}
+		else {
+			console.log('mimetype error');
+		}
+	});
+}
+
 // Bind buddy menus for new buddies. Used internally.
 function bindBuddyMenu(nickname) {
 	$('#menu-' + nickname).click(function(event) {
@@ -548,7 +574,7 @@ function bindBuddyMenu(nickname) {
 				$('#' + nickname + '-contents').fadeIn('fast', function() {
 					$('.option1').click(function(event) {
 						event.stopPropagation();
-						
+						sendFile(nickname);
 					});
 					$('.option2').click(function(event) {
 						event.stopPropagation();
@@ -745,7 +771,6 @@ $('#loginForm').submit(function() {
 		myNickname = $('#nickname').val();
 		loginCredentials[0] = randomString(256, 1, 1, 1);
 		loginCredentials[1] = randomString(256, 1, 1, 1);
-		console.log(loginCredentials);
 		registerXMPPUser(loginCredentials[0], loginCredentials[1]);
 	}
 	return false;
