@@ -41,6 +41,7 @@ var worker = new Worker('js/worker.js');
 worker.addEventListener('message', function(e) {
 	myKey = e.data;
 	DSA.inherit(myKey);
+	console.log(myKey);
 	$('#dialogBoxClose').click();
 }, false);
 
@@ -114,7 +115,16 @@ var iocb = function(buddy) {
 }
 
 // Creates a template for the conversation info bar at the top of each conversation.
-function buildConversationInfo() {
+function buildConversationInfo(conversation) {
+	$('#conversationInfo').html(
+		'<span class="chatName">' + chatName + '</span>'
+	);
+	if (conversation !== 'main-Conversation') {
+		$('#conversationInfo').append(
+			'<span class="fingerprint">' + DSA.fingerprint(otrKeys[conversation]) + '</span>'
+		);
+	}
+	conversationInfo[currentConversation] = $('#conversationInfo').html();
 }
 
 // Switches the currently active conversation to `buddy`
@@ -123,20 +133,16 @@ function conversationSwitch(buddy) {
 		$('#' + buddy).animate({'background-color': '#97CEEC'});
 		$('#buddy-' + buddy).css('border-bottom', '1px dashed #76BDE5');
 	}
-	$('#buddy-' + buddy).css('background-image', 'none');
+	if (buddy !== 'main-Conversation') {
+		$('#buddy-' + buddy).css('background-image', 'none');
+	}
 	$('#conversationInfo').animate({'width': '750px'}, function() {
 		$('#conversationWindow').slideDown('fast', function() {
 			if (conversationInfo[currentConversation]) {
 				$('#conversationInfo').html(conversationInfo[currentConversation]);
 			}
 			else {
-				if (currentConversation === 'main-Conversation') {
-					
-				}
-				$('#conversationInfo').html(
-					'<span>Conversation initiated at ' + currentTime(1) + '</span>'
-				);
-				conversationInfo[currentConversation] = $('#conversationInfo').html();
+				buildConversationInfo(currentConversation);
 			}
 			$('#userInput').fadeIn('fast', function() {
 				$('#userInputText').focus();
@@ -481,7 +487,12 @@ function bindBuddyClick(nickname) {
 			$('#userInputText').focus();
 			return true;
 		}
-		$(this).css('background-image', 'none');
+		if (nickname !== 'main-Conversation') {
+			$(this).css('background-image', 'none');
+		}
+		else {
+			$(this).css('background-image', 'url("img/groupChat.png")');
+		}
 		if (currentConversation) {
 			var oldConversation = currentConversation;
 			if ($('#buddy-' + oldConversation).attr('status') === 'online') {
@@ -526,8 +537,7 @@ function bindBuddyClick(nickname) {
 }
 
 // Send encrypted file
-// Encrypted file sharing is simple: The file is converted into a base64 Data URI
-// which is then sent as an OTR message.
+// File is converted into a base64 Data URI which is then sent as an OTR message.
 function sendFile(nickname) {
 	var mime = new RegExp('(image.*)|(application/((x-compressed)|(x-zip-compressed)|(zip)))|(multipart/x-zip)');
 	var sendFileDialog = '<input type="file" id="fileSelector" name="file[]" />';

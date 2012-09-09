@@ -186,6 +186,10 @@ img.logo {
 .buddyMenu:active {
 	background-color: #000;
 }
+#buddy-main-Conversation {
+	background-image: url("../img/groupChat.png");
+	background-position: 96% 7px;
+}
 #dialogBox {
 	position: absolute;
 	width: 470px;
