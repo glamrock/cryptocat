@@ -368,8 +368,8 @@ img.logo {
 #fileErrorField {
 	color: #F00;
 	margin: 20px 0;
+	font-weight: bold;
 }
-
 .imageView, .fileView {
 	background-color: #97CEEC;
 	color: #FFF;

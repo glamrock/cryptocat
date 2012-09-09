@@ -5,7 +5,7 @@ var Cryptocat = function() {};
 var domain = 'crypto.cat'; // Domain name to connect to for XMPP.
 var conferenceServer = 'conference.crypto.cat'; // Address of the XMPP MUC server.
 var bosh = 'https://crypto.cat/http-bind'; // BOSH is served over an HTTPS proxy for better security and availability.
-var fileSize = 700; // Maximum encrypted file sharing size, in kilobytes. Doesn't work above 700kb.
+var fileSize = 700; // Maximum encrypted file sharing size, in kilobytes. Also needs to be defined in datareader.js
 var groupChat = 1; // Enable/disable group chat client functionality.
 
 /* Initialization */
@@ -36,14 +36,15 @@ window.onblur = function() {
 	windowFocus = 0;
 };
 
-// Initialize worker
-var worker = new Worker('js/worker.js');
-worker.addEventListener('message', function(e) {
+// Initialize workers
+var keyGenerator = new Worker('js/keygenerator.js');
+var dataReader = new Worker('js/datareader.js');
+keyGenerator.onmessage = function(e) {
 	myKey = e.data;
 	DSA.inherit(myKey);
 	console.log(myKey);
 	$('#dialogBoxClose').click();
-}, false);
+}
 
 // Outputs the current hh:mm.
 // If `seconds = 1`, outputs hh:mm:ss.
@@ -104,7 +105,7 @@ function initiateConversation(conversation) {
 // Handle incoming messages
 var uicb = function(buddy) {
   return function(message) {
-	addtoConversation(message, buddy, buddy);
+	addToConversation(message, buddy, buddy);
   }
 }
 // Handle outgoing messages
@@ -341,7 +342,7 @@ function addFile(message) {
 
 // Add a `message` from `sender` to the `conversation` display and log.
 // Used internally.
-function addtoConversation(message, sender, conversation) {
+function addToConversation(message, sender, conversation) {
 	initiateConversation(conversation);
 	if (sender === myNickname) {
 		lineDecoration = 1;
@@ -386,7 +387,7 @@ function handleMessage(message) {
 		return true;
 	}
 	if (type === 'groupchat' && groupChat) {
-		addtoConversation(body, nick, 'main-Conversation');
+		addToConversation(body, nick, 'main-Conversation');
 		if (currentConversation !== 'main-Conversation') {
 			var backgroundColor = $('#buddy-main-Conversation').css('background-color');
 			$('#buddy-main-Conversation').css('background-image', 'url("img/newMessage.png")');
@@ -430,7 +431,7 @@ function handlePresence(presence) {
 	// Add to otrKeys if necessary
 	if (nickname !== 'main-Conversation' && otrKeys[nickname] === undefined) {
 		var options = {
-			fragment_size: 10000,
+			fragment_size: 1000,
 			send_interval: 300
 		}
 		otrKeys[nickname] = new OTR(myKey, uicb(nickname), iocb(nickname), options);
@@ -561,35 +562,28 @@ function bindBuddyClick(nickname) {
 // Send encrypted file
 // File is converted into a base64 Data URI which is then sent as an OTR message.
 function sendFile(nickname) {
-	var mime = new RegExp('(image.*)|(application/((x-compressed)|(x-zip-compressed)|(zip)))|(multipart/x-zip)');
 	var sendFileDialog = '<div class="bar">send encrypted file</div>'
 	 + '<input type="file" id="fileSelector" name="file[]" />'
 	 + '<input type="button" id="fileSelectButton" class="button" value="Select file" />'
 	 + '<div id="fileErrorField"></div>'
 	 + 'Only .zip files and images are accepted.<br />'
-	 + 'Maximum file size: ' + fileSize + ' kilobytes';
+	 + 'Maximum file size: ' + fileSize + ' kilobytes.';
 	dialogBox(sendFileDialog, 1);
 	$('#fileSelector').change(function() {
-		var file = event.target.files;
-		var reader = new FileReader();
-		reader.onload = (function(theFile) {
-			return function(e) {
-				$('#userInputText').val(event.target.result);
-				$('#userInput').submit();
-				$('#dialogBoxClose').click();
-			};
-		})(file[0]);
-		if (file[0] && file[0].type.match(mime)) {
-			if (file[0].size > (fileSize * 1024)) {
+		dataReader.onmessage = function(e) {
+			if (e.data === 'typeError') {
+				$('#fileErrorField').text('Please make sure your file is a .zip file or an image.');
+			}
+			else if (e.data === 'sizeError') {
 				$('#fileErrorField').text('File cannot be larger than ' + fileSize + ' kilobytes');
 			}
 			else {
-				reader.readAsDataURL(file[0]);
+				otrKeys[nickname].sendMsg(e.data);
+				addToConversation(e.data, myNickname, nickname);
+				$('#dialogBoxClose').click();
 			}
-		}
-		else {
-			$('#fileErrorField').text('Please make sure your file is a .zip file or an image.');
-		}
+		};
+		dataReader.postMessage(this.files);
 	});
 	$('#fileSelectButton').click(function() {
 		$('#fileSelector').trigger('click');
@@ -670,7 +664,6 @@ function dialogBox(data, closeable, onClose) {
 			});
 		$('#dialogBoxClose').css('width', '0');
 		$('#dialogBoxClose').css('font-size', '0');
-		
 		$('#userInputText').focus();
 	});
 	$(document).keydown(function(e) {
@@ -749,7 +742,7 @@ $('#userInput').submit(function() {
 		else {
 			otrKeys[currentConversation].sendMsg(message);
 		}
-		addtoConversation(message, myNickname, currentConversation);
+		addToConversation(message, myNickname, currentConversation);
 	}
 	$('#userInputText').val('');
 	return false;
@@ -796,7 +789,7 @@ $('#loginForm').submit(function() {
 	}
 	// Check if we have an OTR key, if not, generate
 	else if (!myKey) {
-		worker.postMessage('generateDSA');
+		keyGenerator.postMessage('generateDSA');
 		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" '
 			+ 'alt="" /><p id="progressInfo"><span>Generating encryption keys...</span></p>';
 		dialogBox(progressForm, 0, function() {
