@@ -50,4 +50,4 @@ We have [a million issues worth discussing here!](https://github.com/kaepora/cry
 * **Development Contributors**: Jacob Appelbaum, Joseph Bonneau, Arlo Breault, Arturo Filasto, P. J. Onori, Fabio Pietrosanti  
 * **Multimedia Contributors**: A.J. Korkidakis, P.J. Onori, Rich Vreeland  
   
-With a warm thanks to also the hard-working contributors who wish to remain anonymous.*
+With a warm thanks to the hard-working contributors who wish to remain anonymous.
