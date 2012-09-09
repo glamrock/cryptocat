@@ -369,6 +369,13 @@ function addToConversation(message, sender, conversation) {
 	if (conversation === currentConversation) {
 		$('#conversationWindow').append(message);
 	}
+	else {
+		var backgroundColor = $('#buddy-' + conversation).css('background-color');
+		$('#buddy-' + conversation).css('background-image', 'url("img/newMessage.png")');
+		$('#buddy-' + conversation)
+			.animate({'backgroundColor': '#A7D8F7'})
+			.animate({'backgroundColor': backgroundColor});
+	}
 	if (audioNotifications) {
 		playSound(audioNotification);
 	}
@@ -388,23 +395,9 @@ function handleMessage(message) {
 	}
 	if (type === 'groupchat' && groupChat) {
 		addToConversation(body, nick, 'main-Conversation');
-		if (currentConversation !== 'main-Conversation') {
-			var backgroundColor = $('#buddy-main-Conversation').css('background-color');
-			$('#buddy-main-Conversation').css('background-image', 'url("img/newMessage.png")');
-			$('#buddy-main-Conversation')
-				.animate({'backgroundColor': '#A7D8F7'})
-				.animate({'backgroundColor': backgroundColor});
-		}
 	}
 	else if (type === 'chat') {
 		otrKeys[nick].receiveMsg(body);
-		if (currentConversation !== nick) {
-			var backgroundColor = $('#buddy-' + nick).css('background-color');
-			$('#buddy-' + nick).css('background-image', 'url("img/newMessage.png")');
-			$('#buddy-' + nick)
-				.animate({'backgroundColor': '#A7D8F7'})
-				.animate({'backgroundColor': backgroundColor});
-		}
 	}
 	return true;
 }
@@ -413,26 +406,24 @@ function handleMessage(message) {
 function handlePresence(presence) {
 	console.log(presence);
 	var nickname = $(presence).attr('from').match(/\/\w+/)[0].substring(1);
-	// Handle errors
 	if ($(presence).attr('type') === 'error') {
 		if ($(presence).find('error').attr('code') === '409') {
 			loginError = 1;
 			logout();
-			loginFail('Conflict error. Nickname may be in use.');
+			loginFail('Nickname in use.');
 			return false;
 		}
 		return true;
 	}
 	// Ignore if presence status is coming from myself
 	if (nickname === myNickname) {
-		// Currently not ignored
-		//return true;
+		return true;
 	}
 	// Add to otrKeys if necessary
 	if (nickname !== 'main-Conversation' && otrKeys[nickname] === undefined) {
 		var options = {
-			fragment_size: 1000,
-			send_interval: 300
+			fragment_size: 20000,
+			send_interval: 200
 		}
 		otrKeys[nickname] = new OTR(myKey, uicb(nickname), iocb(nickname), options);
 		otrKeys[nickname].REQUIRE_ENCRYPTION = true;
@@ -565,11 +556,15 @@ function sendFile(nickname) {
 	var sendFileDialog = '<div class="bar">send encrypted file</div>'
 	 + '<input type="file" id="fileSelector" name="file[]" />'
 	 + '<input type="button" id="fileSelectButton" class="button" value="Select file" />'
-	 + '<div id="fileErrorField"></div>'
+	 + '<div id="fileErrorField">THIS IS CURRENTLY VERY BUGGY AND MAY DISCONNECT YOU</div>'
 	 + 'Only .zip files and images are accepted.<br />'
 	 + 'Maximum file size: ' + fileSize + ' kilobytes.';
 	dialogBox(sendFileDialog, 1);
-	$('#fileSelector').change(function() {
+	$('#fileSelector').click(function(event) {
+		event.stopPropagation();
+	});
+	$('#fileSelector').change(function(event) {
+		event.stopPropagation();
 		dataReader.onmessage = function(e) {
 			if (e.data === 'typeError') {
 				$('#fileErrorField').text('Please make sure your file is a .zip file or an image.');
@@ -586,7 +581,7 @@ function sendFile(nickname) {
 		dataReader.postMessage(this.files);
 	});
 	$('#fileSelectButton').click(function() {
-		$('#fileSelector').trigger('click');
+		$('#fileSelector').click();
 	});
 }
 
@@ -706,7 +701,7 @@ $('#notifications').click(function() {
 	else {
 		$(this).attr('src', 'img/noNotifications.png');
 		$(this).attr('alt', 'Desktop Notifications Off');
-		$(this).attr('title', 'Desktop Notification Off');
+		$(this).attr('title', 'Desktop Notifications Off');
 		desktopNotifications = 0;
 	}
 });
@@ -905,6 +900,9 @@ function login(username, password) {
 							$('#conversationWindow').html('');
 							conversations = [];
 							loginCredentials = [];
+							conversationInfo = [];
+							currentConversation = 0;
+							coflictIsPossible = 1;
 							if (!loginError) {
 								$('#chatName').val('conversation name');
 							}
@@ -923,12 +921,8 @@ function login(username, password) {
 				});
 			});
 		}
-		else if (status === Strophe.Status.AUTHFAIL){
+		else if (status === Strophe.Status.AUTHFAIL) {
 			loginFail('Authentication failure.');
-			$('#chatName').select();
-		}
-		else if (status === Strophe.Status.ERROR) {
-			loginFail('Error ' + status);
 			$('#chatName').select();
 		}
 	});
