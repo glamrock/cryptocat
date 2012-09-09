@@ -1,30 +1,47 @@
-(function(){ var Cryptocat = function() {};
+var Cryptocat = function() {};
+(function(){
 
 /* Configuration */
-var domain = 'crypto.cat';
-// We deployed BOSH over an HTTPS proxy for better security and availability.
-var bosh = 'https://crypto.cat/http-bind';
-var conferenceServer = 'conference.crypto.cat';
+var domain = 'crypto.cat'; // Domain name to connect to for XMPP.
+var conferenceServer = 'conference.crypto.cat'; // Address of the XMPP MUC server.
+var bosh = 'https://crypto.cat/http-bind'; // BOSH is served over an HTTPS proxy for better security and availability.
+var fileSize = 700; // Maximum encrypted file sharing size, in kilobytes. Doesn't work above 700kb.
+var groupChat = 1; // Enable/disable group chat client functionality.
 
 /* Initialization */
+var otrKeys = {};
 var conversations = [];
 var conversationInfo = [];
 var loginCredentials = [];
-var otrKeys = {};
 var currentConversation = 0;
 var audioNotifications = 0;
+var desktopNotifications = 0;
 var loginError = 0;
+var windowFocus = 1;
 var currentStatus = 'online';
 var soundEmbed = null;
 var conn, chatName, myNickname, myKey;
 $('.input[title]').qtip();
 $('.button[title]').qtip();
+if (!groupChat) {
+	$('#buddy-main-Conversation').remove();
+}
+
+// Detect window focus
+window.onfocus = function() {
+	windowFocus = 1;
+	document.title = 'Cryptocat';
+};
+window.onblur = function() {
+	windowFocus = 0;
+};
 
 // Initialize worker
 var worker = new Worker('js/worker.js');
 worker.addEventListener('message', function(e) {
 	myKey = e.data;
 	DSA.inherit(myKey);
+	console.log(myKey);
 	$('#dialogBoxClose').click();
 }, false);
 
@@ -72,7 +89,7 @@ function playSound(audio) {
 // 'speed' is animation speed in milliseconds.
 function scrollDown(speed) {
 	$('#conversationWindow').animate({
-		scrollTop: document.getElementById('conversationWindow').scrollHeight + 20
+		scrollTop: $('#conversationWindow')[0].scrollHeight + 20
 	}, speed);
 }
 
@@ -87,16 +104,27 @@ function initiateConversation(conversation) {
 // Handle incoming messages
 var uicb = function(buddy) {
   return function(message) {
-    console.log('rec' + '(' + buddy + ')' + ': ' + message);
 	addtoConversation(message, buddy, buddy);
   }
 }
 // Handle outgoing messages
 var iocb = function(buddy) {
   return function(message) {
-    console.log('send' + '(' + buddy + ')' + ': ' + message);
     conn.muc.message(chatName + '@' + conferenceServer, buddy, message, null);
   }
+}
+
+// Creates a template for the conversation info bar at the top of each conversation.
+function buildConversationInfo(conversation) {
+	$('#conversationInfo').html(
+		'<span class="chatName">' + chatName + '</span>'
+	);
+	if (conversation !== 'main-Conversation') {
+		$('#conversationInfo').append(
+			'<span class="fingerprint">' + DSA.fingerprint(otrKeys[conversation]) + '</span>'
+		);
+	}
+	conversationInfo[currentConversation] = $('#conversationInfo').html();
 }
 
 // Switches the currently active conversation to `buddy`
@@ -105,15 +133,16 @@ function conversationSwitch(buddy) {
 		$('#' + buddy).animate({'background-color': '#97CEEC'});
 		$('#buddy-' + buddy).css('border-bottom', '1px dashed #76BDE5');
 	}
-	$('#buddy-' + buddy).css('background-image', 'none');
+	if (buddy !== 'main-Conversation') {
+		$('#buddy-' + buddy).css('background-image', 'none');
+	}
 	$('#conversationInfo').animate({'width': '750px'}, function() {
 		$('#conversationWindow').slideDown('fast', function() {
 			if (conversationInfo[currentConversation]) {
 				$('#conversationInfo').html(conversationInfo[currentConversation]);
 			}
 			else {
-				$('#conversationInfo').html('<span>Conversation initiated at ' + currentTime(1) + '</span>');
-				conversationInfo[currentConversation] = $('#conversationInfo').html();
+				buildConversationInfo(currentConversation);
 			}
 			$('#userInput').fadeIn('fast', function() {
 				$('#userInputText').focus();
@@ -128,9 +157,7 @@ function conversationSwitch(buddy) {
 		if (($(this).attr('title') !== currentConversation)
 			&& ($(this).css('background-image') === 'none')
 			&& ($(this).attr('status') === 'offline')) {
-			$(this).slideUp(500, function() {
-				$(this).remove();
-			});
+			removeBuddy($(this).attr('title'));
 		}
 	});
 }
@@ -162,8 +189,10 @@ function seedRNG() {
 	}
 	else {
 		var e, up, down;
-		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" alt="" />Please type on your keyboard'
-			+ ' as randomly as possible for a few seconds.</p><input type="password" id="seedRNGInput" />';
+		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" alt="" />'
+			+ 'Please type on your keyboard'
+			+ ' as randomly as possible for a few seconds.</p>'
+			+ '<input type="password" id="seedRNGInput" />';
 		dialogBox(progressForm, 0, function() {
 			$('#loginForm').submit();
 		});
@@ -219,7 +248,7 @@ function randomString(size, alpha, uppercase, numeric) {
 // Adds '..' to delineate that string was shortened.
 function shortenString(string, length) {
 	if (string.length > length) {
-		return string.substring(0, (length -2)) + '..';
+		return string.substring(0, (length - 2)) + '..';
 	}
 	return string;
 }
@@ -232,13 +261,66 @@ function buildBuddy(buddyObject) {
 	else {
 		var nick = shortenString(buddyObject.alias, 19);
 	}
-	$('<div class="buddy" title="' + buddyObject.nick + '" id="buddy-' + buddyObject.nick + '" status="online">'
+	$('<div class="buddy" title="' + buddyObject.nick + '" id="buddy-' 
+		+ buddyObject.nick + '" status="online">'
 		+ '<span>' + nick + '</span>' + '<div class="buddyMenu" id="menu-' + buddyObject.nick
 		+ '"></div></div>').insertAfter('#buddiesOnline').slideDown('fast');
-	$('#buddy-' + nick).unbind('click');
-	bindBuddyClick(buddyObject.nick);
-	$('#menu-' + nick).unbind('click');
+	$('#menu-' + buddyObject.nick).unbind('click');
 	bindBuddyMenu(buddyObject.nick);
+	$('#buddy-' + buddyObject.nick).unbind('click');
+	if (nick !== myNickname) {
+		bindBuddyClick(buddyObject.nick);
+	}
+	else {
+		$('#buddy-' + buddyObject.nick).click(function() {
+			$('#menu-' + buddyObject.nick).click();
+		});
+	}
+}
+
+// Remove buddy from buddy list
+function removeBuddy(nickname) {
+	$('#buddy-' + nickname).slideUp(500, function() {
+		$(this).remove();
+	});
+}
+
+// Convert message URLs to links. Used internally.
+function addLinks(message) {
+	if ((URLs = message.match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi))) {
+		for (var i in URLs) {
+			var sanitize = URLs[i].split('');
+			for (var l in sanitize) {
+				if (!sanitize[l].match(/\w|\d|\:|\/|\?|\=|\#|\+|\,|\.|\&|\;|\%/)) {
+					sanitize[l] = encodeURIComponent(sanitize[l]);
+				}
+			}
+			sanitize = sanitize.join('');
+			message = message.replace(
+				sanitize, '<a target="_blank" href="' + sanitize + '">' + URLs[i] + '</a>'
+			);
+		}
+	}
+	return message;
+}
+
+// Add emoticons to a message line. Used internally.
+function addEmoticons(message) {
+	return message
+		.replace(/(\s|^)(:|(&#61;))-?3(?=(\s|$))/gi, ' <div class="emoticon" id="eCat">$&</div> ')
+		.replace(/(\s|^)(:|(&#61;))-?'\((?=(\s|$))/gi, ' <div class="emoticon" id="eCry">$&</div> ')
+		.replace(/(\s|^)(:|(&#61;))-?o(?=(\s|$))/gi, ' <div class="emoticon" id="eGasp">$&</div> ')
+		.replace(/(\s|^)(:|(&#61;))-?D(?=(\s|$))/gi, ' <div class="emoticon" id="eGrin">$&</div> ')
+		.replace(/(\s|^)(:|(&#61;))-?\((?=(\s|$))/gi, ' <div class="emoticon" id="eSad">$&</div> ')
+		.replace(/(\s|^)(:|(&#61;))-?\)(?=(\s|$))/gi, ' <div class="emoticon" id="eSmile">$&</div> ')
+		.replace(/(\s|^)-_-(?=(\s|$))/gi, ' <div class="emoticon" id="eSquint">$&</div> ')
+		.replace(/(\s|^)(:|(&#61;))-?p(?=(\s|$))/gi, ' <div class="emoticon" id="eTongue">$&</div> ')
+		.replace(/(\s|^)(:|(&#61;))-?(\/|s)(?=(\s|$))/gi, ' <div class="emoticon" id="eUnsure">$&</div> ')
+		.replace(/(\s|^);-?\)(?=(\s|$))/gi, ' <div class="emoticon" id="eWink">$&</div> ')
+		.replace(/(\s|^);-?\p(?=(\s|$))/gi, ' <div class="emoticon" id="eWinkTongue">$&</div> ')
+		.replace(/(\s|^)\^(_|\.)?\^(?=(\s|$))/gi, ' <div class="emoticon" id="eYay">$&</div> ')
+		.replace(/(\s|^)(:|(&#61;))-?x\b(?=(\s|$))/gi, ' <div class="emoticon" id="eShut">$&</div> ')
+		.replace(/(\s|^)\&lt\;3\b(?=(\s|$))/g, ' <span class="monospace">&#9829;</span> ');
 }
 
 // Add a `message` from `sender` to the `conversation` display and log.
@@ -252,20 +334,16 @@ function addtoConversation(message, sender, conversation) {
 	else {
 		lineDecoration = 2;
 		audioNotification = 'snd/msgGet.webm';
-	}
-	message = message.replace(/</g,'&lt;').replace(/>/g,'&gt;');
-	if ((URLs = message.match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi))) {
-		for (var i in URLs) {
-			var sanitize = URLs[i].split('');
-			for (var l in sanitize) {
-				if (!sanitize[l].match(/\w|\d|\:|\/|\?|\=|\#|\+|\,|\.|\&|\;|\%/)) {
-					sanitize[l] = encodeURIComponent(sanitize[l]);
-				}
+		if (desktopNotifications) {
+			if ((sender !== currentConversation) || (!windowFocus)) {
+				Notification.createNotification('img/keygen.gif', sender, message);
 			}
-			sanitize = sanitize.join('');
-			message = message.replace(sanitize, '<a target="_blank" href="' + sanitize + '">' + URLs[i] + '</a>');
 		}
 	}
+	message = message.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/=/g, '&#61;');
+	message = addLinks(message);
+	message = addEmoticons(message);
+	message = message.replace(/:/g, '&#58;');
 	var timeStamp = '<span class="timeStamp">' + currentTime(0) + '</span>';
 	var sender = '<span class="sender">' + shortenString(sender, 16) + '</span>';
 	message = '<div class="Line' + lineDecoration + '">' + timeStamp + sender + message + '</div>';
@@ -276,14 +354,13 @@ function addtoConversation(message, sender, conversation) {
 	if (audioNotifications) {
 		playSound(audioNotification);
 	}
-	if ((document.getElementById('conversationWindow').scrollHeight - $('#conversationWindow').scrollTop()) < 800) {	
+	if (($('#conversationWindow')[0].scrollHeight - $('#conversationWindow').scrollTop()) < 800) {	
 		scrollDown(600);
 	}
 }
 
 // Handle incoming messages from the XMPP server.
 function handleMessage(message) {
-	console.log(message);
 	var from = $(message).attr('from');
 	var nick = from.match(/\/\w+/)[0].substring(1);
 	var type = $(message).attr('type');
@@ -291,12 +368,14 @@ function handleMessage(message) {
 	if (nick === myNickname) {
 		return true;
 	}
-	if (type === 'groupchat') {
+	if (type === 'groupchat' && groupChat) {
 		addtoConversation(body, nick, 'main-Conversation');
 		if (currentConversation !== 'main-Conversation') {
 			var backgroundColor = $('#buddy-main-Conversation').css('background-color');
 			$('#buddy-main-Conversation').css('background-image', 'url("img/newMessage.png")');
-			$('#buddy-main-Conversation').animate({'backgroundColor': '#A7D8F7'}).animate({'backgroundColor': backgroundColor});
+			$('#buddy-main-Conversation')
+				.animate({'backgroundColor': '#A7D8F7'})
+				.animate({'backgroundColor': backgroundColor});
 		}
 	}
 	else if (type === 'chat') {
@@ -304,7 +383,9 @@ function handleMessage(message) {
 		if (currentConversation !== nick) {
 			var backgroundColor = $('#buddy-' + nick).css('background-color');
 			$('#buddy-' + nick).css('background-image', 'url("img/newMessage.png")');
-			$('#buddy-' + nick).animate({'backgroundColor': '#A7D8F7'}).animate({'backgroundColor': backgroundColor});
+			$('#buddy-' + nick)
+				.animate({'backgroundColor': '#A7D8F7'})
+				.animate({'backgroundColor': backgroundColor});
 		}
 	}
 	return true;
@@ -312,7 +393,6 @@ function handleMessage(message) {
 
 // Handle incoming presence updates from the XMPP server.
 function handlePresence(presence) {
-	console.log(presence);
 	var nickname = $(presence).attr('from').match(/\/\w+/)[0].substring(1);
 	// Handle errors
 	if ($(presence).attr('type') === 'error') {
@@ -326,7 +406,8 @@ function handlePresence(presence) {
 	}
 	// Ignore if presence status is coming from myself
 	if (nickname === myNickname) {
-		return true;
+		// Currently not ignored
+		//return true;
 	}
 	// Add to otrKeys if necessary
 	if (nickname !== 'main-Conversation' && otrKeys[nickname] === undefined) {
@@ -335,13 +416,13 @@ function handlePresence(presence) {
 	}
 	// Handle buddy going offline
 	if ($(presence).attr('type') === 'unavailable') {
+		// Delete their OTR key
+		delete otrKeys[nickname];
 		if ($('#buddy-' + nickname).length !== 0) {
 			if ($('#buddy-' + nickname).attr('status') !== 'offline') {
 				if ((currentConversation !== nickname)
 					&& ($('#buddy-' + nickname).css('background-image') === 'none')) {
-					$('#buddy-' + nickname).slideUp(500, function() {
-						$(this).remove();
-					});
+					removeBuddy(nickname);
 				}
 				else {
 					$('#buddy-' + nickname).attr('status', 'offline');
@@ -386,7 +467,7 @@ function handlePresence(presence) {
 	}
 	// Perform status change
 	$('#buddy-' + nickname).attr('status', status);
-	if (($('#buddy-' + nickname).attr('title') !== currentConversation) && (placement)) {
+	if (placement) {
 		$('#buddy-' + nickname).animate({
 			'color': '#FFF',
 			'backgroundColor': backgroundColor,
@@ -406,7 +487,12 @@ function bindBuddyClick(nickname) {
 			$('#userInputText').focus();
 			return true;
 		}
-		$(this).css('background-image', 'none');
+		if (nickname !== 'main-Conversation') {
+			$(this).css('background-image', 'none');
+		}
+		else {
+			$(this).css('background-image', 'url("img/groupChat.png")');
+		}
 		if (currentConversation) {
 			var oldConversation = currentConversation;
 			if ($('#buddy-' + oldConversation).attr('status') === 'online') {
@@ -450,21 +536,55 @@ function bindBuddyClick(nickname) {
 	});
 }
 
+// Send encrypted file
+// File is converted into a base64 Data URI which is then sent as an OTR message.
+function sendFile(nickname) {
+	var mime = new RegExp('(image.*)|(application/((x-compressed)|(x-zip-compressed)|(zip)))|(multipart/x-zip)');
+	var sendFileDialog = '<input type="file" id="fileSelector" name="file[]" />';
+	dialogBox(sendFileDialog, 1);
+	$('#fileSelector').change(function() {
+		var file = event.target.files;
+		var reader = new FileReader();
+		reader.onload = (function(theFile) {
+			return function(e) {
+				otrKeys[nickname].sendMsg(event.target.result);
+			};
+		})(file[0]);
+		if (file[0].type.match(mime)) {
+			if (file[0].size > (fileSize * 1024)) {
+				console.log('filesize error');
+			}
+			else {
+				reader.readAsDataURL(file[0]);
+			}
+		}
+		else {
+			console.log('mimetype error');
+		}
+	});
+}
+
 // Bind buddy menus for new buddies. Used internally.
 function bindBuddyMenu(nickname) {
 	$('#menu-' + nickname).click(function(event) {
 		event.stopPropagation();
 		if ($('#buddy-' + nickname).height() === 15) {
-			var buddyMenuContents = '<div class="buddyMenuContents" id="' + nickname + '-contents">'
-				+ '<li class="option1">Option 1</li>'
-				+ '<li class="option2">Option 2</li>';
+			var buddyMenuContents = '<div class="buddyMenuContents" id="' + nickname + '-contents">';
 			$(this).css('background-image', 'url("img/up.png")');
-			$('#buddy-' + nickname).delay(10).animate({'height': '61px'}, 180, function() {
+			$('#buddy-' + nickname).delay(10).animate({'height': '45px'}, 180, function() {
 				$(this).append(buddyMenuContents);
+				if (nickname !== myNickname) {
+					$('#' + nickname + '-contents').append(
+						'<li class="option1">Send Encrypted File</li>'
+					);
+				}
+				$('#' + nickname + '-contents').append(
+					'<li class="option2">Display Info</li>'
+				);
 				$('#' + nickname + '-contents').fadeIn('fast', function() {
 					$('.option1').click(function(event) {
 						event.stopPropagation();
-						
+						sendFile(nickname);
 					});
 					$('.option2').click(function(event) {
 						event.stopPropagation();
@@ -510,18 +630,19 @@ function dialogBox(data, closeable, onClose) {
 		if ($('#dialogBoxClose').css('width') === '0') {
 			return false;
 		}
-		$('#dialogBox').animate({'top': '+=10px'}, 'fast').animate({'top': '-450px'}, 'fast', function() {
-			if (onClose) {
-				onClose();
-			}
-		});
+		$('#dialogBox').animate({'top': '+=10px'}, 'fast')
+			.animate({'top': '-450px'}, 'fast', function() {
+				if (onClose) {
+					onClose();
+				}
+			});
 		$('#dialogBoxClose').css('width', '0');
 		$('#dialogBoxClose').css('font-size', '0');
 		
 		$('#userInputText').focus();
 	});
 	$(document).keydown(function(e) {
-		if (e.keyCode == 27) {
+		if (e.keyCode === 27) {
 			$('#dialogBoxClose').click();
 		}
 	});
@@ -543,6 +664,25 @@ $('#status').click(function() {
 		$(this).attr('title', 'Status: Available');
 		currentStatus = 'online';
 		sendStatus();
+	}
+});
+
+// Desktop notifications button
+$('#notifications').click(function() {
+	if ($(this).attr('title') === 'Desktop Notifications Off') {
+		$(this).attr('src', 'img/notifications.png');
+		$(this).attr('alt', 'Desktop Notifications On');
+		$(this).attr('title', 'Desktop Notifications On');
+		desktopNotifications = 1;
+		if (Notification.checkPermission()) {
+			Notification.requestPermission();
+		}
+	}
+	else {
+		$(this).attr('src', 'img/noNotifications.png');
+		$(this).attr('alt', 'Desktop Notifications Off');
+		$(this).attr('title', 'Desktop Notification Off');
+		desktopNotifications = 0;
 	}
 });
 
@@ -592,23 +732,22 @@ $('#nickname').click(function() {
 	$(this).select();
 });
 $('#loginForm').submit(function() {
+	$('#chatName').val($.trim($('#chatName').val()));
+	$('#nickname').val($.trim($('#nickname').val()));
 	chatName = $('#chatName').val();
-	if ($('#chatName').val() === '') {
-		return false;
-	}
-	else if (($('#chatName').val() === '')
+	if (($('#chatName').val() === '')
 		|| ($('#chatName').val() === 'conversation name')) {
 		loginFail('Please enter a conversation name.');
+		$('#chatName').select();
+	}
+	else if (!$('#chatName').val().match(/^\w{1,20}$/)) {
+		loginFail('Conversation name must be alphanumeric.');
 		$('#chatName').select();
 	}
 	else if (($('#nickname').val() === '')
 		|| ($('#nickname').val() === 'nickname')) {
 		loginFail('Please enter a nickname.');
 		$('#nickname').select();
-	}
-	else if (!$('#chatName').val().match(/^\w{1,20}$/)) {
-		loginFail('Chat name must be alphanumeric.');
-		$('#chatName').select();
 	}
 	else if (!$('#nickname').val().match(/^\w{1,16}$/)) {
 		loginFail('Nickname must be alphanumeric.');
@@ -619,22 +758,29 @@ $('#loginForm').submit(function() {
 		if (!seedRNG()) {
 			return false;
 		}
+		else {
+			$('#loginForm').submit();
+		}
 	}
 	// Check if we have an OTR key, if not, generate
-	if (!myKey) {
+	else if (!myKey) {
 		worker.postMessage('generateDSA');
 		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" '
-			+ 'alt="" /><p id="progressInfo">Generating encryption keys...</p>';
+			+ 'alt="" /><p id="progressInfo"><span>Generating encryption keys...</span></p>';
 		dialogBox(progressForm, 0, function() {
 			$('#loginForm').submit();
 		});
+		$('#progressInfo').append(
+			'<br />Here is an interesting fact while you wait:'
+			+ '<br /><br /><span id="interestingFact">'
+			+ CatFacts.getFact() + '</span>'
+		);
 	}
 	else {
 		chatName = $('#chatName').val();
 		myNickname = $('#nickname').val();
 		loginCredentials[0] = randomString(256, 1, 1, 1);
 		loginCredentials[1] = randomString(256, 1, 1, 1);
-		console.log(loginCredentials);
 		registerXMPPUser(loginCredentials[0], loginCredentials[1]);
 	}
 	return false;
@@ -690,8 +836,10 @@ function login(username, password) {
 						$('#buddyWrapper').fadeIn('fast', function() {
 							var scrollWidth = document.getElementById('buddyList').scrollWidth;
 							$('#buddyList').css('width', (150 + scrollWidth) + 'px');
-							bindBuddyClick('main-Conversation');
-							$('#buddy-main-Conversation').delay(2000).click();
+							if (groupChat) {
+								bindBuddyClick('main-Conversation');
+								$('#buddy-main-Conversation').delay(2000).click();
+							}
 						});
 						loginError = 0;
 						conn.muc.join(chatName + '@' + conferenceServer, myNickname, 
@@ -722,28 +870,29 @@ function login(username, password) {
 						$('#loginInfo').html('Thank you for using Cryptocat.');
 					}
 					$('#bubble').animate({'width': '680px'});
-					$('#bubble').animate({'height': '310px'}).animate({'margin-top': '5%'}, function() {
-						$('#buddyList div').each(function() {
-							if ($(this).attr('id') !== 'buddy-main-Conversation') {
-								$(this).remove();
+					$('#bubble').animate({'height': '310px'})
+						.animate({'margin-top': '5%'}, function() {
+							$('#buddyList div').each(function() {
+								if ($(this).attr('id') !== 'buddy-main-Conversation') {
+									$(this).remove();
+								}
+							});
+							$('#conversationWindow').html('');
+							conversations = [];
+							loginCredentials = [];
+							if (!loginError) {
+								$('#chatName').val('conversation name');
 							}
+							$('#chatName').removeAttr('readonly');
+							$('#nickname').val('nickname');
+							$('#nickname').removeAttr('readonly');
+							$('#newAccount').attr('checked', false);
+							$('#info').fadeIn();
+							$('#loginLinks').fadeIn();
+							$('#loginForm').fadeIn('fast', function() {
+								$('#chatName').select();
+							});
 						});
-						$('#conversationWindow').html('');
-						conversations = [];
-						loginCredentials = [];
-						if (!loginError) {
-							$('#chatName').val('conversation name');
-						}
-						$('#chatName').removeAttr('readonly');
-						$('#nickname').val('nickname');
-						$('#nickname').removeAttr('readonly');
-						$('#newAccount').attr('checked', false);
-						$('#info').fadeIn();
-						$('#loginLinks').fadeIn();
-						$('#loginForm').fadeIn('fast', function() {
-							$('#chatName').select();
-						});
-					});
 					$('.buddy').unbind('click');
 					$('.buddyMenu').unbind('click');
 				});

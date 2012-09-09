@@ -87,7 +87,6 @@ img.logo {
 [type=text], [type=password], [type=button], [type=submit] {
 	display: block;
 	background-color: #222;
-	box-shadow: 2px 2px #97CEEC;
 	font-size: 14px;
 	padding: 5px;
 	color: #FFF;
@@ -100,6 +99,9 @@ img.logo {
 }
 #bubble #loginSubmit {
 	width: 210px;
+}
+[type=submit] {
+	box-shadow: 2px 2px #97CEEC;
 }
 [type=submit]:hover {
 	cursor: pointer;
@@ -184,6 +186,10 @@ img.logo {
 .buddyMenu:active {
 	background-color: #000;
 }
+#buddy-main-Conversation {
+	background-image: url("../img/groupChat.png");
+	background-position: 96% 7px;
+}
 #dialogBox {
 	position: absolute;
 	width: 470px;
@@ -240,14 +246,6 @@ img.logo {
 #dialogBox .no {
 	cursor: pointer;
 	background-color: #E93028;
-}
-#addBuddyJID, #addBuddySubmit {
-	font-size: 11px;
-	display: inline;
-}
-#addBuddySubmit {
-	width: 150px;
-	margin-left: 10px;
 }
 #conversationWrapper {
 	width: 750px;
@@ -326,6 +324,8 @@ img.logo {
 	text-align: left;
 	font-size: 13px;
 	margin-bottom: 0;
+	font-family: monospace;
+	color: #97CEEC;
 }
 #progressForm img {
 	float: left;
@@ -333,15 +333,26 @@ img.logo {
 	box-shadow: 2px 2px #97CEEC;
 }
 #progressInfo {
-	color: #000;
+	border-left: 1px solid #97CEEC;
 	font-family: monospace;
-	background-color: #97ceec;
-	width: 250px;
-	font-size: 12px;
+	color: #97CEEC;
+	width: 320px;
+	font-size: 10px;
+	text-align: left;
+	position: relative;
+	bottom: 70px;
+	float: right;
+}
+#progressInfo span {
+	font-size: 13px;
+}
+#progressInfo #interestingFact {
+	font-size: 11px;
 }
 #seedRNGInput {
 	background-color: #000;
 	border: 1px solid #97CEEC;
+	color: #97CEEC;
 	box-shadow: none;
 	float: left;
 	text-align: left;
@@ -349,6 +360,31 @@ img.logo {
 	width: 255px;
 	box-shadow: 2px 2px #97CEEC;
 }
+
+.emoticon {
+	background: transparent url("../img/emoticat.png") no-repeat;
+	height: 13px;
+	width: 13px;
+	display: inline-block;
+	vertical-align: 4%;
+	margin: 0 3px;
+	font-size: 2px;
+	color: transparent;
+}
+#eCat { background-position: 0 0; }
+#eCry { background-position: -13px 0; }
+#eGasp { background-position: -26px 0; }
+#eGrin { background-position: -39px 0; }
+#eSad { background-position: -52px 0; }
+#eSmile { background-position: -65px 0; }
+#eSquint { background-position: -78px 0; }
+#eTongue { background-position: -91px 0; }
+#eUnsure { background-position: -104px 0; }
+#eWink { background-position: -117px 0; }
+#eWinkTongue { background-position: -130px 0; }
+#eYay { background-position: -143px 0; }
+#eShut { background-position: -156px 0; }
+
 .ui-tooltip, .qtip{
 	position: absolute;
 	left: -28000px;
