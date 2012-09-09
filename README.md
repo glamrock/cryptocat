@@ -44,3 +44,9 @@ The full license text is included in `LICENSE.txt`.
 
 ## Discussion:
 We have [a million issues worth discussing here!](https://github.com/kaepora/cryptocat/issues)
+
+## Contributors
+*Lead Developer*: Nadim Kobeissi  
+*Development Contributors*: Jacob Appelbaum, Joseph Bonneau, Arlo Breault, Arturo Filasto, P. J. Onori, Fabio Pietrosanti
+*Multimedia Contributors*: A.J. Korkidakis, P.J. Onori, Rich Vreeland  
+*With a warm thanks to also the hard-working contributors who wish to remain anonymous.*
