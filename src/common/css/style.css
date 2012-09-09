@@ -203,6 +203,8 @@ img.logo {
 	background-color: rgba(0, 0, 0, 0.94);
 	box-shadow: 2px 2px #E93028;
 	top: -450px;
+	color: #97CEEC;
+	font-family: monospace;
 }
 #dialogBoxClose {
 	height: 18px;
@@ -214,6 +216,7 @@ img.logo {
 	float: right;
 	cursor: pointer;
 	margin-top: 1px;
+	font-family: Helvetica, Arial, Verdana;
 	font-weight: bold;
 }
 #dialogBoxContent {
@@ -225,7 +228,7 @@ img.logo {
 	max-width: 340px;
 	margin: 0 auto;
 }
-#dialogBox .bar, #dialogBox .yes, #dialogBox .no {
+#dialogBox .bar, #dialogBox .button, #dialogBox .no {
 	width: 458px;
 	background-color: #333;
 	padding: 6px;
@@ -234,17 +237,20 @@ img.logo {
 	text-align: left;
 	font-weight: bold;
 	font-family: Helvetica, Arial;
-	margin: 15px 0 0 0;
+	margin: 0;
 	border: none;
 	display: block;
 	box-sizing: content-box;
+	color: #FFF;
 }
-#dialogBox .yes {
+#dialogBox .button, #dialogBox .no {
 	cursor: pointer;
+	margin-top: 15px;
+}
+#dialogBox .button {
 	background-color: #97CEEC;
 }
 #dialogBox .no {
-	cursor: pointer;
 	background-color: #E93028;
 }
 #conversationWrapper {
@@ -324,8 +330,6 @@ img.logo {
 	text-align: left;
 	font-size: 13px;
 	margin-bottom: 0;
-	font-family: monospace;
-	color: #97CEEC;
 }
 #progressForm img {
 	float: left;
@@ -334,8 +338,6 @@ img.logo {
 }
 #progressInfo {
 	border-left: 1px solid #97CEEC;
-	font-family: monospace;
-	color: #97CEEC;
 	width: 320px;
 	font-size: 10px;
 	text-align: left;
@@ -359,6 +361,27 @@ img.logo {
 	margin-top: 0;
 	width: 255px;
 	box-shadow: 2px 2px #97CEEC;
+}
+#fileSelector {
+	display: none;
+}
+#fileErrorField {
+	color: #F00;
+	margin: 20px 0;
+	font-weight: bold;
+}
+.imageView, .fileView {
+	background-color: #97CEEC;
+	color: #FFF;
+	padding: 2px 2px 2px 21px;
+	box-shadow: 1px 1px #34BEED;
+	background-image: url("../img/fileBlue.png");
+	background-position: center left;
+	background-repeat: no-repeat;
+	font-family: monospace;
+}
+.imageView:hover, .fileView:hover {
+	text-decoration: none;
 }
 
 .emoticon {

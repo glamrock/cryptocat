@@ -5,7 +5,7 @@ var Cryptocat = function() {};
 var domain = 'crypto.cat'; // Domain name to connect to for XMPP.
 var conferenceServer = 'conference.crypto.cat'; // Address of the XMPP MUC server.
 var bosh = 'https://crypto.cat/http-bind'; // BOSH is served over an HTTPS proxy for better security and availability.
-var fileSize = 700; // Maximum encrypted file sharing size, in kilobytes. Doesn't work above 700kb.
+var fileSize = 700; // Maximum encrypted file sharing size, in kilobytes. Also needs to be defined in datareader.js
 var groupChat = 1; // Enable/disable group chat client functionality.
 
 /* Initialization */
@@ -21,7 +21,6 @@ var windowFocus = 1;
 var currentStatus = 'online';
 var soundEmbed = null;
 var conn, chatName, myNickname, myKey;
-$('.input[title]').qtip();
 $('.button[title]').qtip();
 if (!groupChat) {
 	$('#buddy-main-Conversation').remove();
@@ -36,14 +35,15 @@ window.onblur = function() {
 	windowFocus = 0;
 };
 
-// Initialize worker
-var worker = new Worker('js/worker.js');
-worker.addEventListener('message', function(e) {
+// Initialize workers
+var keyGenerator = new Worker('js/keygenerator.js');
+var dataReader = new Worker('js/datareader.js');
+keyGenerator.onmessage = function(e) {
 	myKey = e.data;
 	DSA.inherit(myKey);
 	console.log(myKey);
 	$('#dialogBoxClose').click();
-}, false);
+}
 
 // Outputs the current hh:mm.
 // If `seconds = 1`, outputs hh:mm:ss.
@@ -104,7 +104,7 @@ function initiateConversation(conversation) {
 // Handle incoming messages
 var uicb = function(buddy) {
   return function(message) {
-	addtoConversation(message, buddy, buddy);
+	addToConversation(message, buddy, buddy);
   }
 }
 // Handle outgoing messages
@@ -119,11 +119,11 @@ function buildConversationInfo(conversation) {
 	$('#conversationInfo').html(
 		'<span class="chatName">' + chatName + '</span>'
 	);
-	if (conversation !== 'main-Conversation') {
-		$('#conversationInfo').append(
-			'<span class="fingerprint">' + DSA.fingerprint(otrKeys[conversation]) + '</span>'
-		);
-	}
+	//if (conversation !== 'main-Conversation') {
+	//	$('#conversationInfo').append(
+	//		'<span class="fingerprint">' + myKey.constructor.fingerprint(otrKeys[conversation]) + '</span>'
+	//	);
+	//}
 	conversationInfo[currentConversation] = $('#conversationInfo').html();
 }
 
@@ -304,28 +304,44 @@ function addLinks(message) {
 	return message;
 }
 
-// Add emoticons to a message line. Used internally.
+// Convert text emoticons to graphical emoticons.
 function addEmoticons(message) {
 	return message
-		.replace(/(\s|^)(:|(&#61;))-?3(?=(\s|$))/gi, ' <div class="emoticon" id="eCat">$&</div> ')
-		.replace(/(\s|^)(:|(&#61;))-?'\((?=(\s|$))/gi, ' <div class="emoticon" id="eCry">$&</div> ')
-		.replace(/(\s|^)(:|(&#61;))-?o(?=(\s|$))/gi, ' <div class="emoticon" id="eGasp">$&</div> ')
-		.replace(/(\s|^)(:|(&#61;))-?D(?=(\s|$))/gi, ' <div class="emoticon" id="eGrin">$&</div> ')
-		.replace(/(\s|^)(:|(&#61;))-?\((?=(\s|$))/gi, ' <div class="emoticon" id="eSad">$&</div> ')
-		.replace(/(\s|^)(:|(&#61;))-?\)(?=(\s|$))/gi, ' <div class="emoticon" id="eSmile">$&</div> ')
+		.replace(/(\s|^)(:|(=))-?3(?=(\s|$))/gi, ' <div class="emoticon" id="eCat">$&</div> ')
+		.replace(/(\s|^)(:|(=))-?'\((?=(\s|$))/gi, ' <div class="emoticon" id="eCry">$&</div> ')
+		.replace(/(\s|^)(:|(=))-?o(?=(\s|$))/gi, ' <div class="emoticon" id="eGasp">$&</div> ')
+		.replace(/(\s|^)(:|(=))-?D(?=(\s|$))/gi, ' <div class="emoticon" id="eGrin">$&</div> ')
+		.replace(/(\s|^)(:|(=))-?\((?=(\s|$))/gi, ' <div class="emoticon" id="eSad">$&</div> ')
+		.replace(/(\s|^)(:|(=))-?\)(?=(\s|$))/gi, ' <div class="emoticon" id="eSmile">$&</div> ')
 		.replace(/(\s|^)-_-(?=(\s|$))/gi, ' <div class="emoticon" id="eSquint">$&</div> ')
-		.replace(/(\s|^)(:|(&#61;))-?p(?=(\s|$))/gi, ' <div class="emoticon" id="eTongue">$&</div> ')
-		.replace(/(\s|^)(:|(&#61;))-?(\/|s)(?=(\s|$))/gi, ' <div class="emoticon" id="eUnsure">$&</div> ')
+		.replace(/(\s|^)(:|(=))-?p(?=(\s|$))/gi, ' <div class="emoticon" id="eTongue">$&</div> ')
+		.replace(/(\s|^)(:|(=))-?(\/|s)(?=(\s|$))/gi, ' <div class="emoticon" id="eUnsure">$&</div> ')
 		.replace(/(\s|^);-?\)(?=(\s|$))/gi, ' <div class="emoticon" id="eWink">$&</div> ')
 		.replace(/(\s|^);-?\p(?=(\s|$))/gi, ' <div class="emoticon" id="eWinkTongue">$&</div> ')
 		.replace(/(\s|^)\^(_|\.)?\^(?=(\s|$))/gi, ' <div class="emoticon" id="eYay">$&</div> ')
-		.replace(/(\s|^)(:|(&#61;))-?x\b(?=(\s|$))/gi, ' <div class="emoticon" id="eShut">$&</div> ')
+		.replace(/(\s|^)(:|(=))-?x\b(?=(\s|$))/gi, ' <div class="emoticon" id="eShut">$&</div> ')
 		.replace(/(\s|^)\&lt\;3\b(?=(\s|$))/g, ' <span class="monospace">&#9829;</span> ');
+}
+
+// Convert Data URI to viewable/downloadable file.
+function addFile(message) {
+	var mime = new RegExp('(data:(application\/((x-compressed)|(x-zip-compressed)|'
+		+ '(zip)))|(multipart\/x-zip))\;base64,(\\w|\\/|\\+|\\=|\\s)*$');
+		
+	if (match = message.match(/data:image\/\w+\;base64,(\w|\\|\/|\+|\=)*$/)) {
+		message = message.replace(/data:image\/\w+\;base64,(\w|\\|\/|\+|\=)*$/,
+			'<a href="' + match[0] + '" class="imageView" target="_blank">view encrypted image</a>');
+	}
+	else if (match = message.match(mime)) {
+		message = message.replace(mime,
+			'<a href="' + match[0] + '" class="fileView" target="_blank">download encrypted .zip file</a>');
+	}
+	return message;
 }
 
 // Add a `message` from `sender` to the `conversation` display and log.
 // Used internally.
-function addtoConversation(message, sender, conversation) {
+function addToConversation(message, sender, conversation) {
 	initiateConversation(conversation);
 	if (sender === myNickname) {
 		lineDecoration = 1;
@@ -340,7 +356,8 @@ function addtoConversation(message, sender, conversation) {
 			}
 		}
 	}
-	message = message.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/=/g, '&#61;');
+	message = message.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+	message = addFile(message);
 	message = addLinks(message);
 	message = addEmoticons(message);
 	message = message.replace(/:/g, '&#58;');
@@ -351,10 +368,17 @@ function addtoConversation(message, sender, conversation) {
 	if (conversation === currentConversation) {
 		$('#conversationWindow').append(message);
 	}
+	else {
+		var backgroundColor = $('#buddy-' + conversation).css('background-color');
+		$('#buddy-' + conversation).css('background-image', 'url("img/newMessage.png")');
+		$('#buddy-' + conversation)
+			.animate({'backgroundColor': '#A7D8F7'})
+			.animate({'backgroundColor': backgroundColor});
+	}
 	if (audioNotifications) {
 		playSound(audioNotification);
 	}
-	if (($('#conversationWindow')[0].scrollHeight - $('#conversationWindow').scrollTop()) < 800) {	
+	if (($('#conversationWindow')[0].scrollHeight - $('#conversationWindow').scrollTop()) < 1500) {	
 		scrollDown(600);
 	}
 }
@@ -369,32 +393,18 @@ function handleMessage(message) {
 		return true;
 	}
 	if (type === 'groupchat' && groupChat) {
-		addtoConversation(body, nick, 'main-Conversation');
-		if (currentConversation !== 'main-Conversation') {
-			var backgroundColor = $('#buddy-main-Conversation').css('background-color');
-			$('#buddy-main-Conversation').css('background-image', 'url("img/newMessage.png")');
-			$('#buddy-main-Conversation')
-				.animate({'backgroundColor': '#A7D8F7'})
-				.animate({'backgroundColor': backgroundColor});
-		}
+		addToConversation(body, nick, 'main-Conversation');
 	}
 	else if (type === 'chat') {
 		otrKeys[nick].receiveMsg(body);
-		if (currentConversation !== nick) {
-			var backgroundColor = $('#buddy-' + nick).css('background-color');
-			$('#buddy-' + nick).css('background-image', 'url("img/newMessage.png")');
-			$('#buddy-' + nick)
-				.animate({'backgroundColor': '#A7D8F7'})
-				.animate({'backgroundColor': backgroundColor});
-		}
 	}
 	return true;
 }
 
 // Handle incoming presence updates from the XMPP server.
 function handlePresence(presence) {
+	console.log(presence);
 	var nickname = $(presence).attr('from').match(/\/\w+/)[0].substring(1);
-	// Handle errors
 	if ($(presence).attr('type') === 'error') {
 		if ($(presence).find('error').attr('code') === '409') {
 			loginError = 1;
@@ -406,12 +416,15 @@ function handlePresence(presence) {
 	}
 	// Ignore if presence status is coming from myself
 	if (nickname === myNickname) {
-		// Currently not ignored
-		//return true;
+		return true;
 	}
 	// Add to otrKeys if necessary
 	if (nickname !== 'main-Conversation' && otrKeys[nickname] === undefined) {
-		otrKeys[nickname] = new OTR(myKey, uicb(nickname), iocb(nickname));
+		var options = {
+			fragment_size: 20000,
+			send_interval: 100
+		}
+		otrKeys[nickname] = new OTR(myKey, uicb(nickname), iocb(nickname), options);
 		otrKeys[nickname].REQUIRE_ENCRYPTION = true;
 	}
 	// Handle buddy going offline
@@ -539,28 +552,34 @@ function bindBuddyClick(nickname) {
 // Send encrypted file
 // File is converted into a base64 Data URI which is then sent as an OTR message.
 function sendFile(nickname) {
-	var mime = new RegExp('(image.*)|(application/((x-compressed)|(x-zip-compressed)|(zip)))|(multipart/x-zip)');
-	var sendFileDialog = '<input type="file" id="fileSelector" name="file[]" />';
+	var sendFileDialog = '<div class="bar">send encrypted file</div>'
+	 + '<input type="file" id="fileSelector" name="file[]" />'
+	 + '<input type="button" id="fileSelectButton" class="button" value="select file" />'
+	 + '<div id="fileErrorField"></div>'
+	 + 'Only .zip files and images are accepted.<br />'
+	 + 'Maximum file size: ' + fileSize + ' kilobytes.';
 	dialogBox(sendFileDialog, 1);
-	$('#fileSelector').change(function() {
-		var file = event.target.files;
-		var reader = new FileReader();
-		reader.onload = (function(theFile) {
-			return function(e) {
-				otrKeys[nickname].sendMsg(event.target.result);
-			};
-		})(file[0]);
-		if (file[0].type.match(mime)) {
-			if (file[0].size > (fileSize * 1024)) {
-				console.log('filesize error');
+	$('#fileSelector').change(function(event) {
+		event.stopPropagation();
+		dataReader.onmessage = function(e) {
+			if (e.data === 'typeError') {
+				$('#fileErrorField').text('Please make sure your file is a .zip file or an image.');
+			}
+			else if (e.data === 'sizeError') {
+				$('#fileErrorField').text('File cannot be larger than ' + fileSize + ' kilobytes');
 			}
 			else {
-				reader.readAsDataURL(file[0]);
+				otrKeys[nickname].sendMsg(e.data);
+				addToConversation(e.data, myNickname, nickname);
+				$('#dialogBoxClose').click();
 			}
+		};
+		if (this.files) {
+			dataReader.postMessage(this.files);
 		}
-		else {
-			console.log('mimetype error');
-		}
+	});
+	$('#fileSelectButton').click(function() {
+		$('#fileSelector').click();
 	});
 }
 
@@ -626,8 +645,10 @@ function dialogBox(data, closeable, onClose) {
 	}
 	$('#dialogBoxContent').html(data);
 	$('#dialogBox').animate({'top': '+=460px'}, 'fast').animate({'top': '-=10px'}, 'fast');
-	$('#dialogBoxClose').click(function() {
-		if ($('#dialogBoxClose').css('width') === '0') {
+	$('#dialogBoxClose').unbind('click');
+	$('#dialogBoxClose').click(function(event) {
+		event.stopPropagation();
+		if ($(this).css('width') === 0) {
 			return false;
 		}
 		$('#dialogBox').animate({'top': '+=10px'}, 'fast')
@@ -636,9 +657,8 @@ function dialogBox(data, closeable, onClose) {
 					onClose();
 				}
 			});
-		$('#dialogBoxClose').css('width', '0');
-		$('#dialogBoxClose').css('font-size', '0');
-		
+		$(this).css('width', '0');
+		$(this).css('font-size', '0');
 		$('#userInputText').focus();
 	});
 	$(document).keydown(function(e) {
@@ -681,7 +701,7 @@ $('#notifications').click(function() {
 	else {
 		$(this).attr('src', 'img/noNotifications.png');
 		$(this).attr('alt', 'Desktop Notifications Off');
-		$(this).attr('title', 'Desktop Notification Off');
+		$(this).attr('title', 'Desktop Notifications Off');
 		desktopNotifications = 0;
 	}
 });
@@ -717,7 +737,7 @@ $('#userInput').submit(function() {
 		else {
 			otrKeys[currentConversation].sendMsg(message);
 		}
-		addtoConversation(message, myNickname, currentConversation);
+		addToConversation(message, myNickname, currentConversation);
 	}
 	$('#userInputText').val('');
 	return false;
@@ -764,7 +784,7 @@ $('#loginForm').submit(function() {
 	}
 	// Check if we have an OTR key, if not, generate
 	else if (!myKey) {
-		worker.postMessage('generateDSA');
+		keyGenerator.postMessage('generateDSA');
 		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" '
 			+ 'alt="" /><p id="progressInfo"><span>Generating encryption keys...</span></p>';
 		dialogBox(progressForm, 0, function() {
@@ -880,6 +900,9 @@ function login(username, password) {
 							$('#conversationWindow').html('');
 							conversations = [];
 							loginCredentials = [];
+							conversationInfo = [];
+							currentConversation = 0;
+							coflictIsPossible = 1;
 							if (!loginError) {
 								$('#chatName').val('conversation name');
 							}
@@ -898,12 +921,8 @@ function login(username, password) {
 				});
 			});
 		}
-		else if (status === Strophe.Status.AUTHFAIL){
+		else if (status === Strophe.Status.AUTHFAIL) {
 			loginFail('Authentication failure.');
-			$('#chatName').select();
-		}
-		else if (status === Strophe.Status.ERROR) {
-			loginFail('Error ' + status);
 			$('#chatName').select();
 		}
 	});
