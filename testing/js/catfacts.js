@@ -35,7 +35,7 @@ var interestingFacts = [
 'Cats are more active during the evening hours.',
 'Cats have a field of vision of about 185 degrees.',
 'Cats have the AB blood type, which is also found in humans.',
-'Cats have a homing ability that uses its biological clock, the sun\'s angle and the Earth\'s magnetic field.',
+'Cats have a homing ability that uses their biological clock, the sun\'s angle and the Earth\'s magnetic field.',
 'A cat taken far from its home can return to it thanks to their remarkable homing instincts.',
 'Cats successfully catch mice in about one out of three attempts.'
 ];

@@ -119,11 +119,11 @@ function buildConversationInfo(conversation) {
 	$('#conversationInfo').html(
 		'<span class="chatName">' + chatName + '</span>'
 	);
-	if (conversation !== 'main-Conversation') {
-		$('#conversationInfo').append(
-			'<span class="fingerprint">' + DSA.fingerprint(otrKeys[conversation]) + '</span>'
-		);
-	}
+	//if (conversation !== 'main-Conversation') {
+	//	$('#conversationInfo').append(
+	//		'<span class="fingerprint">' + myKey.constructor.fingerprint(otrKeys[conversation]) + '</span>'
+	//	);
+	//}
 	conversationInfo[currentConversation] = $('#conversationInfo').html();
 }
 
@@ -399,7 +399,7 @@ function handlePresence(presence) {
 		if ($(presence).find('error').attr('code') === '409') {
 			loginError = 1;
 			logout();
-			loginFail('Nickname in use.');
+			loginFail('Error. Nickname may be in use.');
 			return false;
 		}
 		return true;
@@ -540,7 +540,12 @@ function bindBuddyClick(nickname) {
 // File is converted into a base64 Data URI which is then sent as an OTR message.
 function sendFile(nickname) {
 	var mime = new RegExp('(image.*)|(application/((x-compressed)|(x-zip-compressed)|(zip)))|(multipart/x-zip)');
-	var sendFileDialog = '<input type="file" id="fileSelector" name="file[]" />';
+	var sendFileDialog = '<div class="bar">send encrypted file</div>'
+	 + '<input type="file" id="fileSelector" name="file[]" />'
+	 + '<input type="button" id="fileSelectButton" class="button" value="Select file" />'
+	 + '<div id="fileErrorField"></div>'
+	 + 'Only .zip files and images are accepted.<br />'
+	 + 'Maximum file size: ' + fileSize + ' kilobytes';
 	dialogBox(sendFileDialog, 1);
 	$('#fileSelector').change(function() {
 		var file = event.target.files;
@@ -552,15 +557,18 @@ function sendFile(nickname) {
 		})(file[0]);
 		if (file[0].type.match(mime)) {
 			if (file[0].size > (fileSize * 1024)) {
-				console.log('filesize error');
+				$('#fileErrorField').text('File cannot be larger than' + fileSize + ' kilobytes');
 			}
 			else {
 				reader.readAsDataURL(file[0]);
 			}
 		}
 		else {
-			console.log('mimetype error');
+			$('#fileErrorField').text('Please make sure your file is a .zip file or an image.');
 		}
+	});
+	$('#fileSelectButton').click(function() {
+		$('#fileSelector').trigger('click');
 	});
 }
 
