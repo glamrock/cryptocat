@@ -304,7 +304,7 @@ function addLinks(message) {
 	return message;
 }
 
-// Add emoticons to a message line. Used internally.
+// Convert text emoticons to graphical emoticons.
 function addEmoticons(message) {
 	return message
 		.replace(/(\s|^)(:|(&#61;))-?3(?=(\s|$))/gi, ' <div class="emoticon" id="eCat">$&</div> ')
@@ -321,6 +321,22 @@ function addEmoticons(message) {
 		.replace(/(\s|^)\^(_|\.)?\^(?=(\s|$))/gi, ' <div class="emoticon" id="eYay">$&</div> ')
 		.replace(/(\s|^)(:|(&#61;))-?x\b(?=(\s|$))/gi, ' <div class="emoticon" id="eShut">$&</div> ')
 		.replace(/(\s|^)\&lt\;3\b(?=(\s|$))/g, ' <span class="monospace">&#9829;</span> ');
+}
+
+// Convert Data URI to viewable/downloadable file.
+function addFile(message) {
+	var mime = new RegExp('(data:(application\/((x-compressed)|(x-zip-compressed)|'
+		+ '(zip)))|(multipart\/x-zip))\;base64,(\\w|\\/|\\+|\\=|\\s)*$');
+		
+	if (match = message.match(/data:image\/\w+\;base64,(\w|\\|\/|\+|\=)*$/)) {
+		message = message.replace(/data:image\/\w+\;base64,(\w|\\|\/|\+|\=)*$/,
+			'<a href="' + match[0] + '" class="imageView" target="_blank">view encrypted image</a>');
+	}
+	else if (match = message.match(mime)) {
+		message = message.replace(mime,
+			'<a href="' + match[0] + '" class="fileView" target="_blank">download encrypted .zip file</a>');
+	}
+	return message;
 }
 
 // Add a `message` from `sender` to the `conversation` display and log.
@@ -341,6 +357,7 @@ function addtoConversation(message, sender, conversation) {
 		}
 	}
 	message = message.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/=/g, '&#61;');
+	message = addFile(message);
 	message = addLinks(message);
 	message = addEmoticons(message);
 	message = message.replace(/:/g, '&#58;');
@@ -354,7 +371,7 @@ function addtoConversation(message, sender, conversation) {
 	if (audioNotifications) {
 		playSound(audioNotification);
 	}
-	if (($('#conversationWindow')[0].scrollHeight - $('#conversationWindow').scrollTop()) < 800) {	
+	if (($('#conversationWindow')[0].scrollHeight - $('#conversationWindow').scrollTop()) < 1500) {	
 		scrollDown(600);
 	}
 }
@@ -393,6 +410,7 @@ function handleMessage(message) {
 
 // Handle incoming presence updates from the XMPP server.
 function handlePresence(presence) {
+	console.log(presence);
 	var nickname = $(presence).attr('from').match(/\/\w+/)[0].substring(1);
 	// Handle errors
 	if ($(presence).attr('type') === 'error') {
@@ -411,7 +429,11 @@ function handlePresence(presence) {
 	}
 	// Add to otrKeys if necessary
 	if (nickname !== 'main-Conversation' && otrKeys[nickname] === undefined) {
-		otrKeys[nickname] = new OTR(myKey, uicb(nickname), iocb(nickname));
+		var options = {
+			fragment_size: 10000,
+			send_interval: 300
+		}
+		otrKeys[nickname] = new OTR(myKey, uicb(nickname), iocb(nickname), options);
 		otrKeys[nickname].REQUIRE_ENCRYPTION = true;
 	}
 	// Handle buddy going offline
@@ -552,7 +574,9 @@ function sendFile(nickname) {
 		var reader = new FileReader();
 		reader.onload = (function(theFile) {
 			return function(e) {
-				otrKeys[nickname].sendMsg(event.target.result);
+				$('#userInputText').val(event.target.result);
+				$('#userInput').submit();
+				$('#dialogBoxClose').click();
 			};
 		})(file[0]);
 		if (file[0] && file[0].type.match(mime)) {

@@ -216,6 +216,7 @@ img.logo {
 	float: right;
 	cursor: pointer;
 	margin-top: 1px;
+	font-family: Helvetica, Arial, Verdana;
 	font-weight: bold;
 }
 #dialogBoxContent {
@@ -367,6 +368,20 @@ img.logo {
 #fileErrorField {
 	color: #F00;
 	margin: 20px 0;
+}
+
+.imageView, .fileView {
+	background-color: #97CEEC;
+	color: #FFF;
+	padding: 2px 2px 2px 21px;
+	box-shadow: 1px 1px #34BEED;
+	background-image: url("../img/fileBlue.png");
+	background-position: center left;
+	background-repeat: no-repeat;
+	font-family: monospace;
+}
+.imageView:hover, .fileView:hover {
+	text-decoration: none;
 }
 
 .emoticon {
