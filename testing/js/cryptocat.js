@@ -422,7 +422,7 @@ function handlePresence(presence) {
 	if (nickname !== 'main-Conversation' && otrKeys[nickname] === undefined) {
 		var options = {
 			fragment_size: 20000,
-			send_interval: 200
+			send_interval: 100
 		}
 		otrKeys[nickname] = new OTR(myKey, uicb(nickname), iocb(nickname), options);
 		otrKeys[nickname].REQUIRE_ENCRYPTION = true;
@@ -555,7 +555,7 @@ function sendFile(nickname) {
 	var sendFileDialog = '<div class="bar">send encrypted file</div>'
 	 + '<input type="file" id="fileSelector" name="file[]" />'
 	 + '<input type="button" id="fileSelectButton" class="button" value="select file" />'
-	 + '<div id="fileErrorField">THIS IS CURRENTLY VERY BUGGY AND MAY DISCONNECT YOU</div>'
+	 + '<div id="fileErrorField"></div>'
 	 + 'Only .zip files and images are accepted.<br />'
 	 + 'Maximum file size: ' + fileSize + ' kilobytes.';
 	dialogBox(sendFileDialog, 1);
