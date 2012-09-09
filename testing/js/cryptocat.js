@@ -399,7 +399,7 @@ function handlePresence(presence) {
 		if ($(presence).find('error').attr('code') === '409') {
 			loginError = 1;
 			logout();
-			loginFail('Error. Nickname may be in use.');
+			loginFail('Conflict error. Nickname may be in use.');
 			return false;
 		}
 		return true;
@@ -555,9 +555,9 @@ function sendFile(nickname) {
 				otrKeys[nickname].sendMsg(event.target.result);
 			};
 		})(file[0]);
-		if (file[0].type.match(mime)) {
+		if (file[0] && file[0].type.match(mime)) {
 			if (file[0].size > (fileSize * 1024)) {
-				$('#fileErrorField').text('File cannot be larger than' + fileSize + ' kilobytes');
+				$('#fileErrorField').text('File cannot be larger than ' + fileSize + ' kilobytes');
 			}
 			else {
 				reader.readAsDataURL(file[0]);
