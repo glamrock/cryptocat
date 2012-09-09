@@ -358,7 +358,7 @@ function addToConversation(message, sender, conversation) {
 	}
 	message = message.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 	message = addFile(message);
-	message = addLinks(message)
+	message = addLinks(message);
 	message = addEmoticons(message);
 	message = message.replace(/:/g, '&#58;');
 	var timeStamp = '<span class="timeStamp">' + currentTime(0) + '</span>';
