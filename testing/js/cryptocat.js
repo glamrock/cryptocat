@@ -21,7 +21,6 @@ var windowFocus = 1;
 var currentStatus = 'online';
 var soundEmbed = null;
 var conn, chatName, myNickname, myKey;
-$('.input[title]').qtip();
 $('.button[title]').qtip();
 if (!groupChat) {
 	$('#buddy-main-Conversation').remove();
@@ -308,19 +307,19 @@ function addLinks(message) {
 // Convert text emoticons to graphical emoticons.
 function addEmoticons(message) {
 	return message
-		.replace(/(\s|^)(:|(&#61;))-?3(?=(\s|$))/gi, ' <div class="emoticon" id="eCat">$&</div> ')
-		.replace(/(\s|^)(:|(&#61;))-?'\((?=(\s|$))/gi, ' <div class="emoticon" id="eCry">$&</div> ')
-		.replace(/(\s|^)(:|(&#61;))-?o(?=(\s|$))/gi, ' <div class="emoticon" id="eGasp">$&</div> ')
-		.replace(/(\s|^)(:|(&#61;))-?D(?=(\s|$))/gi, ' <div class="emoticon" id="eGrin">$&</div> ')
-		.replace(/(\s|^)(:|(&#61;))-?\((?=(\s|$))/gi, ' <div class="emoticon" id="eSad">$&</div> ')
-		.replace(/(\s|^)(:|(&#61;))-?\)(?=(\s|$))/gi, ' <div class="emoticon" id="eSmile">$&</div> ')
+		.replace(/(\s|^)(:|(=))-?3(?=(\s|$))/gi, ' <div class="emoticon" id="eCat">$&</div> ')
+		.replace(/(\s|^)(:|(=))-?'\((?=(\s|$))/gi, ' <div class="emoticon" id="eCry">$&</div> ')
+		.replace(/(\s|^)(:|(=))-?o(?=(\s|$))/gi, ' <div class="emoticon" id="eGasp">$&</div> ')
+		.replace(/(\s|^)(:|(=))-?D(?=(\s|$))/gi, ' <div class="emoticon" id="eGrin">$&</div> ')
+		.replace(/(\s|^)(:|(=))-?\((?=(\s|$))/gi, ' <div class="emoticon" id="eSad">$&</div> ')
+		.replace(/(\s|^)(:|(=))-?\)(?=(\s|$))/gi, ' <div class="emoticon" id="eSmile">$&</div> ')
 		.replace(/(\s|^)-_-(?=(\s|$))/gi, ' <div class="emoticon" id="eSquint">$&</div> ')
-		.replace(/(\s|^)(:|(&#61;))-?p(?=(\s|$))/gi, ' <div class="emoticon" id="eTongue">$&</div> ')
-		.replace(/(\s|^)(:|(&#61;))-?(\/|s)(?=(\s|$))/gi, ' <div class="emoticon" id="eUnsure">$&</div> ')
+		.replace(/(\s|^)(:|(=))-?p(?=(\s|$))/gi, ' <div class="emoticon" id="eTongue">$&</div> ')
+		.replace(/(\s|^)(:|(=))-?(\/|s)(?=(\s|$))/gi, ' <div class="emoticon" id="eUnsure">$&</div> ')
 		.replace(/(\s|^);-?\)(?=(\s|$))/gi, ' <div class="emoticon" id="eWink">$&</div> ')
 		.replace(/(\s|^);-?\p(?=(\s|$))/gi, ' <div class="emoticon" id="eWinkTongue">$&</div> ')
 		.replace(/(\s|^)\^(_|\.)?\^(?=(\s|$))/gi, ' <div class="emoticon" id="eYay">$&</div> ')
-		.replace(/(\s|^)(:|(&#61;))-?x\b(?=(\s|$))/gi, ' <div class="emoticon" id="eShut">$&</div> ')
+		.replace(/(\s|^)(:|(=))-?x\b(?=(\s|$))/gi, ' <div class="emoticon" id="eShut">$&</div> ')
 		.replace(/(\s|^)\&lt\;3\b(?=(\s|$))/g, ' <span class="monospace">&#9829;</span> ');
 }
 
@@ -357,9 +356,9 @@ function addToConversation(message, sender, conversation) {
 			}
 		}
 	}
-	message = message.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/=/g, '&#61;');
+	message = message.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 	message = addFile(message);
-	message = addLinks(message);
+	message = addLinks(message)
 	message = addEmoticons(message);
 	message = message.replace(/:/g, '&#58;');
 	var timeStamp = '<span class="timeStamp">' + currentTime(0) + '</span>';
@@ -555,14 +554,11 @@ function bindBuddyClick(nickname) {
 function sendFile(nickname) {
 	var sendFileDialog = '<div class="bar">send encrypted file</div>'
 	 + '<input type="file" id="fileSelector" name="file[]" />'
-	 + '<input type="button" id="fileSelectButton" class="button" value="Select file" />'
+	 + '<input type="button" id="fileSelectButton" class="button" value="select file" />'
 	 + '<div id="fileErrorField">THIS IS CURRENTLY VERY BUGGY AND MAY DISCONNECT YOU</div>'
 	 + 'Only .zip files and images are accepted.<br />'
 	 + 'Maximum file size: ' + fileSize + ' kilobytes.';
 	dialogBox(sendFileDialog, 1);
-	$('#fileSelector').click(function(event) {
-		event.stopPropagation();
-	});
 	$('#fileSelector').change(function(event) {
 		event.stopPropagation();
 		dataReader.onmessage = function(e) {
@@ -578,7 +574,9 @@ function sendFile(nickname) {
 				$('#dialogBoxClose').click();
 			}
 		};
-		dataReader.postMessage(this.files);
+		if (this.files) {
+			dataReader.postMessage(this.files);
+		}
 	});
 	$('#fileSelectButton').click(function() {
 		$('#fileSelector').click();
@@ -647,8 +645,10 @@ function dialogBox(data, closeable, onClose) {
 	}
 	$('#dialogBoxContent').html(data);
 	$('#dialogBox').animate({'top': '+=460px'}, 'fast').animate({'top': '-=10px'}, 'fast');
-	$('#dialogBoxClose').click(function() {
-		if ($('#dialogBoxClose').css('width') === '0') {
+	$('#dialogBoxClose').unbind('click');
+	$('#dialogBoxClose').click(function(event) {
+		event.stopPropagation();
+		if ($(this).css('width') === 0) {
 			return false;
 		}
 		$('#dialogBox').animate({'top': '+=10px'}, 'fast')
@@ -657,8 +657,8 @@ function dialogBox(data, closeable, onClose) {
 					onClose();
 				}
 			});
-		$('#dialogBoxClose').css('width', '0');
-		$('#dialogBoxClose').css('font-size', '0');
+		$(this).css('width', '0');
+		$(this).css('font-size', '0');
 		$('#userInputText').focus();
 	});
 	$(document).keydown(function(e) {
