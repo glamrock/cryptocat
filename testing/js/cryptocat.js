@@ -226,7 +226,7 @@ function seedRNG() {
 
 // Generates a random string of length `size` characters.
 // If `alpha = 1`, random string will contain alpha characters, and so on.
-function randomString(size, alpha, uppercase, numeric) {
+Cryptocat.randomString = function(size, alpha, uppercase, numeric) {
 	var keyspace = '';
 	var result = '';
 	if (alpha) {
@@ -276,6 +276,7 @@ function buildBuddy(buddyObject) {
 			$('#menu-' + buddyObject.nick).click();
 		});
 	}
+	conn.muc.message(chatName + '@' + conferenceServer, null, multiParty.sendPublicKeyRequest(buddyObject.nick), null);
 }
 
 // Remove buddy from buddy list
@@ -342,6 +343,9 @@ function addFile(message) {
 // Add a `message` from `sender` to the `conversation` display and log.
 // Used internally.
 function addToConversation(message, sender, conversation) {
+	if (!message) {
+		return false;
+	}
 	initiateConversation(conversation);
 	if (sender === myNickname) {
 		lineDecoration = 1;
@@ -393,7 +397,15 @@ function handleMessage(message) {
 		return true;
 	}
 	if (type === 'groupchat' && groupChat) {
-		addToConversation(body, nick, 'main-Conversation');
+		body = JSON.parse(body);
+		if (body[myNickname]) {
+			if (body[myNickname]['message'].match(multiParty.requestRegEx)) {
+				conn.muc.message(chatName + '@' + conferenceServer, null, multiParty.sendPublicKey(nick), null);
+			}
+			else {
+				addToConversation(multiParty.receiveMessage(nick, myNickname, JSON.stringify(body)), nick, 'main-Conversation');
+			}
+		}
 	}
 	else if (type === 'chat') {
 		otrKeys[nick].receiveMsg(body);
@@ -420,18 +432,15 @@ function handlePresence(presence) {
 	}
 	// Add to otrKeys if necessary
 	if (nickname !== 'main-Conversation' && otrKeys[nickname] === undefined) {
-		var options = {
-			fragment_size: 50000,
-			send_interval: 300
-		}
-		otrKeys[nickname] = new OTR(myKey, uicb(nickname), iocb(nickname), options);
+		otrKeys[nickname] = new OTR(myKey, uicb(nickname), iocb(nickname));
 		otrKeys[nickname].REQUIRE_ENCRYPTION = true;
 		otrKeys[nickname].sendQueryMsg();
 	}
 	// Handle buddy going offline
 	if ($(presence).attr('type') === 'unavailable') {
-		// Delete their OTR key
+		// Delete their encryption keys
 		delete otrKeys[nickname];
+		multiParty.removeKeys(nickname);
 		if ($('#buddy-' + nickname).length !== 0) {
 			if ($('#buddy-' + nickname).attr('status') !== 'offline') {
 				if ((currentConversation !== nickname)
@@ -733,7 +742,7 @@ $('#userInput').submit(function() {
 	var message = $.trim($('#userInputText').val());
 	if (message !== '') {
 		if (currentConversation === 'main-Conversation') {
-			conn.muc.message(chatName + '@' + conferenceServer, null, message, null);
+			conn.muc.message(chatName + '@' + conferenceServer, null, multiParty.sendMessage(message), null);
 		}
 		else {
 			otrKeys[currentConversation].sendMsg(message);
@@ -786,6 +795,9 @@ $('#loginForm').submit(function() {
 	// Check if we have an OTR key, if not, generate
 	else if (!myKey) {
 		keyGenerator.postMessage('generateDSA');
+		// Generate multiParty keys
+		multiParty.genPrivateKey();
+		multiParty.genPublicKey();
 		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" '
 			+ 'alt="" /><p id="progressInfo"><span>Generating encryption keys...</span></p>';
 		dialogBox(progressForm, 0, function() {
@@ -800,8 +812,8 @@ $('#loginForm').submit(function() {
 	else {
 		chatName = $('#chatName').val();
 		myNickname = $('#nickname').val();
-		loginCredentials[0] = randomString(256, 1, 1, 1);
-		loginCredentials[1] = randomString(256, 1, 1, 1);
+		loginCredentials[0] = Cryptocat.randomString(256, 1, 1, 1);
+		loginCredentials[1] = Cryptocat.randomString(256, 1, 1, 1);
 		registerXMPPUser(loginCredentials[0], loginCredentials[1]);
 	}
 	return false;
@@ -900,6 +912,8 @@ function login(username, password) {
 								}
 							});
 							$('#conversationWindow').html('');
+							otrKeys = {};
+							multiParty.resetKeys();
 							conversations = [];
 							loginCredentials = [];
 							conversationInfo = [];
