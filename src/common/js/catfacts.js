@@ -23,7 +23,7 @@ var interestingFacts = [
 'Nikola Tesla was inspired to study electricity after his cat static-shocked him in his youth.',
 'Isaac Newton invented the cat-flap.',
 'Cats use their tails for balance and have nearly 30 individual bones in them.',
-'Even though Napoleon conquered many countries, he was always very afraid of cats.',
+'Even though Napoleon was known as a ruthless conqueror, he was always very afraid of cats.',
 'A kitten\'s eyes are always blue at first.',
 'A cat can jump as high as seven times as it is tall.',
 'Kittens begin dreaming at just over one week old.',
@@ -31,12 +31,12 @@ var interestingFacts = [
 'The Pilgrims were the first to introduce cats to North America.',
 'Cats purr to communicate.',
 'A group of kittens is called a kindle.',
-'The British Government owns thousands of cats, deployed in government building to get rid of mice.',
+'The British Government owns thousands of cats, deployed in government buildings to get rid of mice.',
 'Cats are more active during the evening hours.',
 'Cats have a field of vision of about 185 degrees.',
 'Cats have the AB blood type, which is also found in humans.',
 'Cats have a homing ability that uses their biological clock, the sun\'s angle and the Earth\'s magnetic field.',
-'A cat taken far from its home can return to it thanks to their remarkable homing instincts.',
+'A cat taken far from its home can return to it thanks to remarkable homing instincts.',
 'Cats successfully catch mice in about one out of three attempts.'
 ];
 

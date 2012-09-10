@@ -22,7 +22,7 @@ var Curve25519 = function() {
 (function(){
 
 // p22519 is the curve25519 prime: 2^255 - 19
-var p25519 = BigInt.str2bigInt("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffed", 16);
+Curve25519.p25519 = BigInt.str2bigInt("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffed", 16);
 // p25519Minus2 = 2^255 - 21
 var p25519Minus2 = BigInt.str2bigInt("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffeb", 16);
 // a is a parameter of the elliptic curve
@@ -39,29 +39,29 @@ var two = BigInt.str2bigInt("2", 10);
 // groupAdd adds two elements of the elliptic curve group in Montgomery form.
 function groupAdd(x1, xn, zn, xm, zm) {
         // x₃ = 4(x·x′ - z·z′)² · z1
-        var xx = BigInt.multMod(xn, xm, p25519);
-        var zz = BigInt.multMod(zn, zm, p25519);
+        var xx = BigInt.multMod(xn, xm, Curve25519.p25519);
+        var zz = BigInt.multMod(zn, zm, Curve25519.p25519);
         var d;
         if (BigInt.greater(xx, zz)) {
                 d = BigInt.sub(xx, zz);
         } else {
                 d = BigInt.sub(zz, xx);
         }
-        var sq = BigInt.multMod(d, d, p25519);
-        var outx = BigInt.multMod(sq, four, p25519);
+        var sq = BigInt.multMod(d, d, Curve25519.p25519);
+        var outx = BigInt.multMod(sq, four, Curve25519.p25519);
 
         // z₃ = 4(x·z′ - z·x′)² · x1
-        var xz = BigInt.multMod(xm, zn, p25519);
-        var zx = BigInt.multMod(zm, xn, p25519);
+        var xz = BigInt.multMod(xm, zn, Curve25519.p25519);
+        var zx = BigInt.multMod(zm, xn, Curve25519.p25519);
         var d;
         if (BigInt.greater(xz, zx)) {
             d = BigInt.sub(xz, zx);
         } else {
             d = BigInt.sub(zx, xz);
         }
-        var sq = BigInt.multMod(d, d, p25519);
-        var sq2 = BigInt.multMod(sq, x1, p25519);
-        var outz = BigInt.multMod(sq2, four, p25519);
+        var sq = BigInt.multMod(d, d, Curve25519.p25519);
+        var sq2 = BigInt.multMod(sq, x1, Curve25519.p25519);
+        var outz = BigInt.multMod(sq2, four, Curve25519.p25519);
 
         return [outx, outz];
 }
@@ -69,23 +69,23 @@ function groupAdd(x1, xn, zn, xm, zm) {
 // groupDouble doubles a point in the elliptic curve group.
 function groupDouble(x, z) {
         // x₂ = (x² - z²)²
-        var xx = BigInt.multMod(x, x, p25519);
-        var zz = BigInt.multMod(z, z, p25519);
+        var xx = BigInt.multMod(x, x, Curve25519.p25519);
+        var zz = BigInt.multMod(z, z, Curve25519.p25519);
         var d;
         if (BigInt.greater(xx, zz)) {
           d = BigInt.sub(xx, zz);
         } else {
           d = BigInt.sub(zz, xx);
         }
-        var outx = BigInt.multMod(d, d, p25519);
+        var outx = BigInt.multMod(d, d, Curve25519.p25519);
 
         // z₂ = 4xz·(x² + Axz + z²)
         var s = BigInt.add(xx, zz);
-        var xz = BigInt.multMod(x, z, p25519);
+        var xz = BigInt.multMod(x, z, Curve25519.p25519);
         var axz = BigInt.mult(xz, a);
         s = BigInt.add(s, axz);
         var fourxz = BigInt.mult(xz, four);
-        var outz = BigInt.multMod(fourxz, s, p25519);
+        var outz = BigInt.multMod(fourxz, s, Curve25519.p25519);
 
         return [outx, outz];
 }
@@ -127,8 +127,8 @@ Curve25519.scalarMult = function(i, base) {
                 }
         }
 
-        var z1inv = BigInt.powMod(z1, p25519Minus2, p25519);
-        var x = BigInt.multMod(z1inv, x1, p25519);
+        var z1inv = BigInt.powMod(z1, p25519Minus2, Curve25519.p25519);
+        var x = BigInt.multMod(z1inv, x1, Curve25519.p25519);
 
         return x;
 }
