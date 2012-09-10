@@ -119,11 +119,11 @@ function buildConversationInfo(conversation) {
 	$('#conversationInfo').html(
 		'<span class="chatName">' + chatName + '</span>'
 	);
-	//if (conversation !== 'main-Conversation') {
-	//	$('#conversationInfo').append(
-	//		'<span class="fingerprint">' + myKey.constructor.fingerprint(otrKeys[conversation]) + '</span>'
-	//	);
-	//}
+	if (conversation !== 'main-Conversation') {
+		$('#conversationInfo').append(
+			'<span class="fingerprint">' + DSA.fingerprint(otrKeys[conversation].their_priv_pk).toUpperCase() + '</span>'
+		);
+	}
 	conversationInfo[currentConversation] = $('#conversationInfo').html();
 }
 
@@ -421,11 +421,12 @@ function handlePresence(presence) {
 	// Add to otrKeys if necessary
 	if (nickname !== 'main-Conversation' && otrKeys[nickname] === undefined) {
 		var options = {
-			fragment_size: 20000,
-			send_interval: 100
+			fragment_size: 50000,
+			send_interval: 300
 		}
 		otrKeys[nickname] = new OTR(myKey, uicb(nickname), iocb(nickname), options);
 		otrKeys[nickname].REQUIRE_ENCRYPTION = true;
+		otrKeys[nickname].sendQueryMsg();
 	}
 	// Handle buddy going offline
 	if ($(presence).attr('type') === 'unavailable') {
@@ -849,6 +850,7 @@ function login(username, password) {
 				$('#bubble').animate({'margin-top': '1.5%'}, function() {
 					$('#loginLinks').fadeOut();
 					$('#info').fadeOut();
+					$('#translations').fadeOut();
 					$('#loginForm').fadeOut();
 					$('#bubble').animate({'width': '900px'});
 					$('#bubble').animate({'height': '550px'}, function() {
@@ -912,6 +914,7 @@ function login(username, password) {
 							$('#newAccount').attr('checked', false);
 							$('#info').fadeIn();
 							$('#loginLinks').fadeIn();
+							$('#translations').fadeIn();
 							$('#loginForm').fadeIn('fast', function() {
 								$('#chatName').select();
 							});
