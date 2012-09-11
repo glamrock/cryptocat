@@ -4,7 +4,7 @@
 var publicKeys = {};
 var sharedSecrets = {};
 var fingerprints = {};
-var sharedSecret = {};
+var groupKey = {};
 var myPrivateKey;
 var myPublicKey;
 
@@ -86,7 +86,7 @@ multiParty.genPublicKey = function() {
 	return myPublicKey;
 }
 
-// Generate shared secret (SHA512(scalarMult(myPrivateKey, theirPublicKey)))
+// Generate shared secrets and group key (DIS DA BIG ONE)
 // First 256 bytes are for encryption, last 256 bytes are for HMAC.
 // Represented in hexadecimal
 multiParty.genSharedSecret = function(user) {
@@ -102,16 +102,16 @@ multiParty.genSharedSecret = function(user) {
 		names.push(i);
 	}
 	names.sort();
-	sharedSecret = '';
+	groupKey = '';
 	for (var i in names) {
-		sharedSecret += sharedSecrets[i];
+		groupKey += sharedSecrets[i];
 	}
-	sharedSecret = CryptoJS.SHA512(sharedSecret).toString();
-	sharedSecret = {
-		'message': sharedSecret.substring(0, 64),
-		'hmac': sharedSecret.substring(64, 128)
+	groupKey = CryptoJS.SHA512(groupKey).toString();
+	groupKey = {
+		'message': groupKey.substring(0, 64),
+		'hmac': groupKey.substring(64, 128)
 	}
-	console.log(sharedSecret);
+	console.log(groupKey);
 }
 
 multiParty.genFingerprint = function(user) {
@@ -142,8 +142,8 @@ multiParty.sendPublicKey = function(user) {
 multiParty.sendMessage = function(message) {
 	var encrypted = {};
 	encrypted['*'] = {};
-	encrypted['*']['message'] = encryptAES(message, sharedSecret['message'], 0);
-	encrypted['*']['hmac'] = HMAC(encrypted['*']['message'], sharedSecret['hmac']);
+	encrypted['*']['message'] = encryptAES(message, groupKey['message'], 0);
+	encrypted['*']['hmac'] = HMAC(encrypted['*']['message'], groupKey['hmac']);
 	return JSON.stringify(encrypted);
 }
 
@@ -170,8 +170,8 @@ multiParty.receiveMessage = function(sender, myName, message) {
 	}
 	else if (message['*']) {
 		// Decrypt message
-		if (message['*']['hmac'] === HMAC(message['*']['message'], sharedSecret['hmac'])) {
-			message = decryptAES(message['*']['message'], sharedSecret['message'], 0);
+		if (message['*']['hmac'] === HMAC(message['*']['message'], groupKey['hmac'])) {
+			message = decryptAES(message['*']['message'], groupKey['message'], 0);
 			return message;
 		}
 		else {
@@ -187,6 +187,7 @@ multiParty.removeKeys = function(user) {
 	delete publicKeys[user];
 	delete sharedSecrets[user];
 	delete fingerprints[user];
+	multiParty.genSharedSecret();
 }
 
 // Remove ALL user keys and information
@@ -194,7 +195,7 @@ multiParty.resetKeys = function() {
 	publicKeys = {};
 	sharedSecrets = {};
 	fingerprints = {};
-	sharedSecret = {};
+	groupKey = {};
 }
 
 })();//:3
