@@ -628,7 +628,19 @@ var OTR = {}, DSA = {}
     var pk = key.packPublic()
     if (key.type === '\x00\x00')
       pk = pk.substring(2)
-    return CryptoJS.SHA1(pk).toString(CryptoJS.enc.Hex)
+	// Custom code added by Nadim for Cryptocat convenience
+	if ($('#otrKey').length) {
+		var fingerprint = CryptoJS.SHA1(pk).toString(CryptoJS.enc.Hex);
+		var formatted = '';
+		for (var i in fingerprint) {
+			if ((i !== 0 ) && !(i % 8)) {
+				formatted += ' ';
+			}
+			formatted += fingerprint[i];
+		}
+		$('#otrKey').text(formatted.toUpperCase());
+	}
+	return CryptoJS.SHA1(pk).toString(CryptoJS.enc.Hex);
   }
 
   DSA.inherit = function (key) {
