@@ -4,7 +4,6 @@
 var publicKeys = {};
 var sharedSecrets = {};
 var fingerprints = {};
-var sharedSecret = {};
 var myPrivateKey;
 var myPublicKey;
 
@@ -86,32 +85,22 @@ multiParty.genPublicKey = function() {
 	return myPublicKey;
 }
 
-// Generate shared secret (SHA512(scalarMult(myPrivateKey, theirPublicKey)))
+// Generate shared secrets
 // First 256 bytes are for encryption, last 256 bytes are for HMAC.
 // Represented in hexadecimal
 multiParty.genSharedSecret = function(user) {
-	sharedSecrets[user] = CryptoJS.SHA512(
+	sharedSecret = CryptoJS.SHA512(
 		Curve25519.ecDH(
 			myPrivateKey, BigInt.str2bigInt(
 				publicKeys[user], 64
 			)
 		)
 	).toString();
-	var names = [];
-	for (var i in sharedSecrets) {
-		names.push(i);
-	}
-	names.sort();
-	sharedSecret = '';
-	for (var i in names) {
-		sharedSecret += sharedSecrets[i];
-	}
-	sharedSecret = CryptoJS.SHA512(sharedSecret).toString();
-	sharedSecret = {
+	sharedSecrets[user] = {
 		'message': sharedSecret.substring(0, 64),
 		'hmac': sharedSecret.substring(64, 128)
 	}
-	console.log(sharedSecret);
+	console.log(sharedSecrets);
 }
 
 multiParty.genFingerprint = function(user) {
@@ -141,9 +130,15 @@ multiParty.sendPublicKey = function(user) {
 // Send message.
 multiParty.sendMessage = function(message) {
 	var encrypted = {};
-	encrypted['*'] = {};
-	encrypted['*']['message'] = encryptAES(message, sharedSecret['message'], 0);
-	encrypted['*']['hmac'] = HMAC(encrypted['*']['message'], sharedSecret['hmac']);
+	var concatenatedCiphertext = '';
+	for (var user in sharedSecrets) {
+		encrypted[user] = {};
+		encrypted[user]['message'] = encryptAES(message, sharedSecrets[user]['message'], 0);
+		concatenatedCiphertext += encrypted[user]['message'];
+	}
+	for (var user in sharedSecrets) {
+		encrypted[user]['hmac'] = HMAC(concatenatedCiphertext, sharedSecrets[user]['hmac']);
+	}
 	return JSON.stringify(encrypted);
 }
 
@@ -167,16 +162,20 @@ multiParty.receiveMessage = function(sender, myName, message) {
 		else if (message[myName]['message'].match(multiParty.requestRegEx)) {
 			multiParty.sendPublicKey(sender);
 		}
-	}
-	else if (message['*']) {
 		// Decrypt message
-		if (message['*']['hmac'] === HMAC(message['*']['message'], sharedSecret['hmac'])) {
-			message = decryptAES(message['*']['message'], sharedSecret['message'], 0);
-			return message;
-		}
 		else {
-			console.log('multiParty: HMAC failure');
-			return false;
+			var concatenatedCiphertext = '';
+			for (var user in message) {
+				concatenatedCiphertext += message[user]['message'];
+			}
+			if (message[myName]['hmac'] === HMAC(concatenatedCiphertext, sharedSecrets[sender]['hmac'])) {
+				message = decryptAES(message[myName]['message'], sharedSecrets[sender]['message'], 0);
+				return message;
+			}
+			else {
+				console.log('multiParty: HMAC failure');
+				return false;
+			}
 		}
 	}
 	return false;
@@ -187,6 +186,7 @@ multiParty.removeKeys = function(user) {
 	delete publicKeys[user];
 	delete sharedSecrets[user];
 	delete fingerprints[user];
+	multiParty.genSharedSecret();
 }
 
 // Remove ALL user keys and information
@@ -194,7 +194,6 @@ multiParty.resetKeys = function() {
 	publicKeys = {};
 	sharedSecrets = {};
 	fingerprints = {};
-	sharedSecret = {};
 }
 
 })();//:3

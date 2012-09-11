@@ -116,11 +116,11 @@ var iocb = function(buddy) {
 // Creates a template for the conversation info bar at the top of each conversation.
 function buildConversationInfo(conversation) {
 	$('#conversationInfo').html(
-		'<span class="chatName">' + chatName + '</span>'
+		'<span class="chatName">' + myNickname + '@' + chatName + '</span>'
 	);
-	if (conversation !== 'main-Conversation') {
+	if (conversation === 'main-Conversation') {
 		$('#conversationInfo').append(
-			'<span class="fingerprint">' + DSA.fingerprint(otrKeys[conversation].their_priv_pk).toUpperCase() + '</span>'
+			'<span style="float:right">Group conversation. Click on a user for private chat.</span>'
 		);
 	}
 	conversationInfo[currentConversation] = $('#conversationInfo').html();
@@ -253,29 +253,25 @@ function shortenString(string, length) {
 }
 
 // Builds a buddy element to be added to the buddy list.
-function buildBuddy(buddyObject) {
-	if (buddyObject.nick.match(/^(\w|\s)+$/)) {
-		var nick = shortenString(buddyObject.nick, 19);
-	}
-	else {
-		var nick = shortenString(buddyObject.alias, 19);
-	}
-	$('<div class="buddy" title="' + buddyObject.nick + '" id="buddy-' 
-		+ buddyObject.nick + '" status="online">'
-		+ '<span>' + nick + '</span>' + '<div class="buddyMenu" id="menu-' + buddyObject.nick
-		+ '"></div></div>').insertAfter('#buddiesOnline').slideDown('fast');
-	$('#menu-' + buddyObject.nick).unbind('click');
-	bindBuddyMenu(buddyObject.nick);
-	$('#buddy-' + buddyObject.nick).unbind('click');
-	if (nick !== myNickname) {
-		bindBuddyClick(buddyObject.nick);
-	}
-	else {
-		$('#buddy-' + buddyObject.nick).click(function() {
-			$('#menu-' + buddyObject.nick).click();
-		});
-	}
-	conn.muc.message(chatName + '@' + conferenceServer, null, multiParty.sendPublicKeyRequest(buddyObject.nick), null);
+function buildBuddy(nickname) {
+	var buddyTemplate = '<div class="buddy" title="' + nickname + '" id="buddy-' 
+		+ nickname + '" status="online"><span>' + nickname + '</span>'
+		+ '<div class="buddyMenu" id="menu-' + nickname
+		+ '"></div></div>'
+	$(buddyTemplate).insertAfter('#buddiesOnline').slideDown(300, function() {
+		$('#menu-' + nickname).unbind('click');
+		bindBuddyMenu(nickname);
+		$('#buddy-' + nickname).unbind('click');
+		if (nickname !== myNickname) {
+			bindBuddyClick(nickname);
+			conn.muc.message(chatName + '@' + conferenceServer, null, multiParty.sendPublicKeyRequest(nickname), null);
+		}
+		else {
+			$('#buddy-' + nickname).click(function() {
+				$('#menu-' + nickname).click();
+			});
+		}
+	});
 }
 
 // Remove buddy from buddy list
@@ -283,6 +279,29 @@ function removeBuddy(nickname) {
 	$('#buddy-' + nickname).slideUp(500, function() {
 		$(this).remove();
 	});
+}
+
+// Get a fingerprint, formatted for readability
+function getFingerprint(buddy, OTR) {
+	if (OTR) {
+		if (buddy === myNickname) {
+			var fingerprint = DSA.fingerprint(myKey);
+		}
+		else {
+			var fingerprint = DSA.fingerprint(otrKeys[buddy].their_priv_pk);
+		}
+	}
+	else {
+		var fingerprint = multiParty.genFingerprint(buddy);
+	}
+	var formatted = '';
+	for (var i in fingerprint) {
+		if ((i !== 0 ) && !(i % 8)) {
+			formatted += ' ';
+		}
+		formatted += fingerprint[i];
+	}
+	return formatted.toUpperCase();
 }
 
 // Convert message URLs to links. Used internally.
@@ -396,16 +415,16 @@ function handleMessage(message) {
 		return true;
 	}
 	if (type === 'groupchat' && groupChat) {
-		body = JSON.parse(body);
-		if (body[myNickname]) {
-			if (body[myNickname]['message'].match(multiParty.requestRegEx)) {
-				conn.muc.message(chatName + '@' + conferenceServer, null, multiParty.sendPublicKey(nick), null);
-			}
-			else {
-				addToConversation(multiParty.receiveMessage(nick, myNickname, JSON.stringify(body)), nick, 'main-Conversation');
-			}
+		try {
+			body = JSON.parse(body);
 		}
-		else if (body['*']) {
+		catch (e) {
+			return true;
+		}
+		if (body[myNickname] && body[myNickname]['message'].match(multiParty.requestRegEx)) {
+			conn.muc.message(chatName + '@' + conferenceServer, null, multiParty.sendPublicKey(nick), null);
+		}
+		else if (body[myNickname] || body['*']) {
 			addToConversation(multiParty.receiveMessage(nick, myNickname, JSON.stringify(body)), nick, 'main-Conversation');
 		}
 	}
@@ -436,7 +455,7 @@ function handlePresence(presence) {
 	if (nickname !== 'main-Conversation' && otrKeys[nickname] === undefined) {
 		otrKeys[nickname] = new OTR(myKey, uicb(nickname), iocb(nickname));
 		otrKeys[nickname].REQUIRE_ENCRYPTION = true;
-		otrKeys[nickname].sendQueryMsg();
+		console.log(otrKeys[nickname]);
 	}
 	// Handle buddy going offline
 	if ($(presence).attr('type') === 'unavailable') {
@@ -471,7 +490,7 @@ function handlePresence(presence) {
 	}
 	// Create buddy element if buddy is new
 	else if ($('#buddy-' + nickname).length === 0) {
-		buildBuddy({nick: nickname, alias: ''});
+		buildBuddy(nickname);
 		if (audioNotifications) {
 			playSound('snd/userOnline.webm');
 		}
@@ -565,11 +584,11 @@ function bindBuddyClick(nickname) {
 // File is converted into a base64 Data URI which is then sent as an OTR message.
 function sendFile(nickname) {
 	var sendFileDialog = '<div class="bar">send encrypted file</div>'
-	 + '<input type="file" id="fileSelector" name="file[]" />'
-	 + '<input type="button" id="fileSelectButton" class="button" value="select file" />'
-	 + '<div id="fileErrorField"></div>'
-	 + 'Only .zip files and images are accepted.<br />'
-	 + 'Maximum file size: ' + fileSize + ' kilobytes.';
+		+ '<input type="file" id="fileSelector" name="file[]" />'
+		+ '<input type="button" id="fileSelectButton" class="button" value="select file" />'
+		+ '<div id="fileErrorField"></div>'
+		+ 'Only .zip files and images are accepted.<br />'
+		+ 'Maximum file size: ' + fileSize + ' kilobytes.';
 	dialogBox(sendFileDialog, 1);
 	$('#fileSelector').change(function(event) {
 		event.stopPropagation();
@@ -593,6 +612,22 @@ function sendFile(nickname) {
 	$('#fileSelectButton').click(function() {
 		$('#fileSelector').click();
 	});
+}
+
+// Display buddy information, including fingerprints etc.
+function displayInfo(nickname) {
+	var displayInfoDialog = '<div class="bar">' + nickname +'</div><div id="displayInfo">'
+		+ 'OTR fingerprint (for private conversations):<br /><span id="otrKey"></span><br />'
+		+ '<br />Group conversation fingerprint:<br /><span id="multiPartyKey"></span></div>';
+	dialogBox(displayInfoDialog, 1);
+	if (!otrKeys[nickname].msgstate) {
+		$('#otrKey').text('Generating...');
+		otrKeys[nickname].sendQueryMsg();
+	}
+	else {
+		$('#otrKey').text(getFingerprint(nickname, 1));
+	}
+	$('#multiPartyKey').text(getFingerprint(nickname, 0));
 }
 
 // Bind buddy menus for new buddies. Used internally.
@@ -619,7 +654,7 @@ function bindBuddyMenu(nickname) {
 					});
 					$('.option2').click(function(event) {
 						event.stopPropagation();
-						
+						displayInfo(nickname);
 					});
 				});
 			});
@@ -673,8 +708,9 @@ function dialogBox(data, closeable, onClose) {
 		$(this).css('font-size', '0');
 		$('#userInputText').focus();
 	});
-	$(document).keydown(function(e) {
-		if (e.keyCode === 27) {
+	$(document).keydown(function(event) {
+		if (event.keyCode === 27) {
+			event.stopPropagation();
 			$('#dialogBoxClose').click();
 		}
 	});
