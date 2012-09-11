@@ -138,7 +138,7 @@ img.logo {
 	background-color: #222;
 	color: #97CEEC;
 	font-size: 10px;
-	border: none;
+	border: 1px solid #222;
 	outline: none;
 	width: 100px;
 	float: right;
