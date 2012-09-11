@@ -122,8 +122,7 @@ multiParty.genFingerprint = function(user) {
 	return fingerprints[user];
 }
 
-// Send public key request string. Should cause clients to reply with 
-// their public keys.
+// Send public key request string.
 multiParty.sendPublicKeyRequest = function(user) {
 	var request = {};
 	request[user] = {};
