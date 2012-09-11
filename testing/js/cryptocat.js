@@ -397,15 +397,10 @@ function handleMessage(message) {
 	}
 	if (type === 'groupchat' && groupChat) {
 		body = JSON.parse(body);
-		if (body[myNickname]) {
-			if (body[myNickname]['message'].match(multiParty.requestRegEx)) {
-				conn.muc.message(chatName + '@' + conferenceServer, null, multiParty.sendPublicKey(nick), null);
-			}
-			else {
-				addToConversation(multiParty.receiveMessage(nick, myNickname, JSON.stringify(body)), nick, 'main-Conversation');
-			}
+		if (body[myNickname] && body[myNickname]['message'].match(multiParty.requestRegEx)) {
+			conn.muc.message(chatName + '@' + conferenceServer, null, multiParty.sendPublicKey(nick), null);
 		}
-		else if (body['*']) {
+		else if (body[myNickname] || body['*']) {
 			addToConversation(multiParty.receiveMessage(nick, myNickname, JSON.stringify(body)), nick, 'main-Conversation');
 		}
 	}
