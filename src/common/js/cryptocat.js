@@ -41,7 +41,6 @@ var dataReader = new Worker('js/datareader.js');
 keyGenerator.onmessage = function(e) {
 	myKey = e.data;
 	DSA.inherit(myKey);
-	console.log(myKey);
 	$('#dialogBoxClose').click();
 }
 
@@ -405,6 +404,9 @@ function handleMessage(message) {
 			else {
 				addToConversation(multiParty.receiveMessage(nick, myNickname, JSON.stringify(body)), nick, 'main-Conversation');
 			}
+		}
+		else if (body['*']) {
+			addToConversation(multiParty.receiveMessage(nick, myNickname, JSON.stringify(body)), nick, 'main-Conversation');
 		}
 	}
 	else if (type === 'chat') {

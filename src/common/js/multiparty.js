@@ -3,7 +3,8 @@
 
 var publicKeys = {};
 var sharedSecrets = {};
-var fingerprints = {}
+var fingerprints = {};
+var sharedSecret = {};
 var myPrivateKey;
 var myPublicKey;
 
@@ -56,6 +57,21 @@ HMAC = function (msg, key) {
 	).toString(CryptoJS.enc.Base64);
 }
 
+// Check if received public key is within safe size parameters
+checkSize = function(publicKey) {
+	var z = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4096, 0];
+	publicKey = BigInt.str2bigInt(publicKey, 64);
+	if ((BigInt.equals(publicKey, Curve25519.p25519)
+		|| BigInt.greater(publicKey, Curve25519.p25519)
+		|| BigInt.greater(z, publicKey))) {
+		console.log('multiParty: unsafe key size');
+		return false;
+	}
+	else {
+		return true;
+	}
+}
+
 // Generate private key (32 byte random number)
 // Represented in decimal
 multiParty.genPrivateKey = function() {
@@ -74,17 +90,28 @@ multiParty.genPublicKey = function() {
 // First 256 bytes are for encryption, last 256 bytes are for HMAC.
 // Represented in hexadecimal
 multiParty.genSharedSecret = function(user) {
-	var sharedSecret = CryptoJS.SHA512(
+	sharedSecrets[user] = CryptoJS.SHA512(
 		Curve25519.ecDH(
 			myPrivateKey, BigInt.str2bigInt(
 				publicKeys[user], 64
 			)
 		)
 	).toString();
-	sharedSecrets[user] = {};
-	sharedSecrets[user]['message'] = sharedSecret.substring(0, 64);
-	sharedSecrets[user]['hmac'] = sharedSecret.substring(64);
-	console.log(sharedSecrets);
+	var names = [];
+	for (var i in sharedSecrets) {
+		names.push(i);
+	}
+	names.sort();
+	sharedSecret = '';
+	for (var i in names) {
+		sharedSecret += sharedSecrets[i];
+	}
+	sharedSecret = CryptoJS.SHA512(sharedSecret).toString();
+	sharedSecret = {
+		'message': sharedSecret.substring(0, 64),
+		'hmac': sharedSecret.substring(64, 128)
+	}
+	console.log(sharedSecret);
 }
 
 multiParty.genFingerprint = function(user) {
@@ -95,28 +122,12 @@ multiParty.genFingerprint = function(user) {
 	return fingerprints[user];
 }
 
-// Send public key request string. Should cause clients to reply with 
-// their public keys.
+// Send public key request string.
 multiParty.sendPublicKeyRequest = function(user) {
 	var request = {};
 	request[user] = {};
 	request[user]['message'] = '?:3multiParty:3?:keyRequest';
 	return JSON.stringify(request);
-}
-
-// Check if received public key is within safe size parameters
-checkSize = function(publicKey) {
-	var z = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4096, 0];
-	publicKey = BigInt.str2bigInt(publicKey, 64);
-	if ((BigInt.equals(publicKey, Curve25519.p25519)
-		|| BigInt.greater(publicKey, Curve25519.p25519)
-		|| BigInt.greater(z, publicKey))) {
-		console.log('multiParty: unsafe key size');
-		return false;
-	}
-	else {
-		return true;
-	}
 }
 
 // Send my public key in response to a public key request.
@@ -130,11 +141,9 @@ multiParty.sendPublicKey = function(user) {
 // Send message.
 multiParty.sendMessage = function(message) {
 	var encrypted = {};
-	for (var user in sharedSecrets) {
-		encrypted[user] = {};
-		encrypted[user]['message'] = encryptAES(message, sharedSecrets[user]['message'], 0);
-		encrypted[user]['hmac'] = HMAC(encrypted[user]['message'], sharedSecrets[user]['hmac']);
-	}
+	encrypted['*'] = {};
+	encrypted['*']['message'] = encryptAES(message, sharedSecret['message'], 0);
+	encrypted['*']['hmac'] = HMAC(encrypted['*']['message'], sharedSecret['hmac']);
 	return JSON.stringify(encrypted);
 }
 
@@ -144,12 +153,13 @@ multiParty.receiveMessage = function(sender, myName, message) {
 	if (message[myName]) {
 		// Detect public key reception, store public key and generate shared secret
 		if (message[myName]['message'].match(multiParty.publicKeyRegEx)) {
-			var publicKey = message[myName]['message'].substring(27);
-			console.log(sender + ' ' + publicKey);
-			if (checkSize(publicKey)) {
-				publicKeys[sender] = publicKey;
-				multiParty.genFingerprint(sender);
-				multiParty.genSharedSecret(sender);
+			if (!publicKeys[sender]) {
+				var publicKey = message[myName]['message'].substring(27);
+				if (checkSize(publicKey)) {
+					publicKeys[sender] = publicKey;
+					multiParty.genFingerprint(sender);
+					multiParty.genSharedSecret(sender);
+				}
 			}
 			return false;
 		}
@@ -157,16 +167,16 @@ multiParty.receiveMessage = function(sender, myName, message) {
 		else if (message[myName]['message'].match(multiParty.requestRegEx)) {
 			multiParty.sendPublicKey(sender);
 		}
+	}
+	else if (message['*']) {
 		// Decrypt message
+		if (message['*']['hmac'] === HMAC(message['*']['message'], sharedSecret['hmac'])) {
+			message = decryptAES(message['*']['message'], sharedSecret['message'], 0);
+			return message;
+		}
 		else {
-			if (message[myName]['hmac'] === HMAC(message[myName]['message'], sharedSecrets[sender]['hmac'])) {
-				message = decryptAES(message[myName]['message'], sharedSecrets[sender]['message'], 0);
-				return message;
-			}
-			else {
-				console.log('multiParty: HMAC failure');
-				return false;
-			}
+			console.log('multiParty: HMAC failure');
+			return false;
 		}
 	}
 	return false;
@@ -184,6 +194,7 @@ multiParty.resetKeys = function() {
 	publicKeys = {};
 	sharedSecrets = {};
 	fingerprints = {};
+	sharedSecret = {};
 }
 
 })();//:3
