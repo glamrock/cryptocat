@@ -253,29 +253,25 @@ function shortenString(string, length) {
 }
 
 // Builds a buddy element to be added to the buddy list.
-function buildBuddy(buddyObject) {
-	if (buddyObject.nick.match(/^(\w|\s)+$/)) {
-		var nick = shortenString(buddyObject.nick, 19);
-	}
-	else {
-		var nick = shortenString(buddyObject.alias, 19);
-	}
-	$('<div class="buddy" title="' + buddyObject.nick + '" id="buddy-' 
-		+ buddyObject.nick + '" status="online">'
-		+ '<span>' + nick + '</span>' + '<div class="buddyMenu" id="menu-' + buddyObject.nick
-		+ '"></div></div>').insertAfter('#buddiesOnline').slideDown('fast');
-	$('#menu-' + buddyObject.nick).unbind('click');
-	bindBuddyMenu(buddyObject.nick);
-	$('#buddy-' + buddyObject.nick).unbind('click');
-	if (nick !== myNickname) {
-		bindBuddyClick(buddyObject.nick);
-	}
-	else {
-		$('#buddy-' + buddyObject.nick).click(function() {
-			$('#menu-' + buddyObject.nick).click();
-		});
-	}
-	conn.muc.message(chatName + '@' + conferenceServer, null, multiParty.sendPublicKeyRequest(buddyObject.nick), null);
+function buildBuddy(nickname) {
+	var buddyTemplate = '<div class="buddy" title="' + nickname + '" id="buddy-' 
+		+ nickname + '" status="online"><span>' + nickname + '</span>'
+		+ '<div class="buddyMenu" id="menu-' + nickname
+		+ '"></div></div>'
+	$(buddyTemplate).insertAfter('#buddiesOnline').slideDown(300, function() {
+		$('#menu-' + nickname).unbind('click');
+		bindBuddyMenu(nickname);
+		$('#buddy-' + nickname).unbind('click');
+		if (nickname !== myNickname) {
+			bindBuddyClick(nickname);
+			conn.muc.message(chatName + '@' + conferenceServer, null, multiParty.sendPublicKeyRequest(nickname), null);
+		}
+		else {
+			$('#buddy-' + nickname).click(function() {
+				$('#menu-' + nickname).click();
+			});
+		}
+	});
 }
 
 // Remove buddy from buddy list
@@ -396,7 +392,12 @@ function handleMessage(message) {
 		return true;
 	}
 	if (type === 'groupchat' && groupChat) {
-		body = JSON.parse(body);
+		try {
+			body = JSON.parse(body);
+		}
+		catch (e) {
+			return true;
+		}
 		if (body[myNickname] && body[myNickname]['message'].match(multiParty.requestRegEx)) {
 			conn.muc.message(chatName + '@' + conferenceServer, null, multiParty.sendPublicKey(nick), null);
 		}
@@ -431,7 +432,6 @@ function handlePresence(presence) {
 	if (nickname !== 'main-Conversation' && otrKeys[nickname] === undefined) {
 		otrKeys[nickname] = new OTR(myKey, uicb(nickname), iocb(nickname));
 		otrKeys[nickname].REQUIRE_ENCRYPTION = true;
-		otrKeys[nickname].sendQueryMsg();
 	}
 	// Handle buddy going offline
 	if ($(presence).attr('type') === 'unavailable') {
@@ -466,7 +466,7 @@ function handlePresence(presence) {
 	}
 	// Create buddy element if buddy is new
 	else if ($('#buddy-' + nickname).length === 0) {
-		buildBuddy({nick: nickname, alias: ''});
+		buildBuddy(nickname);
 		if (audioNotifications) {
 			playSound('snd/userOnline.webm');
 		}
