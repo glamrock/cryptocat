@@ -218,6 +218,7 @@ img.logo {
 	margin: 120px auto 0 -235px;
 	left: 50%;
 	z-index: 4;
+	font-size: 12px;
 	border: 1px solid #222;
 	border-right: none;
 	background-color: rgba(0, 0, 0, 0.94);
@@ -357,8 +358,10 @@ img.logo {
 }
 #progressForm {
 	text-align: left;
-	font-size: 13px;
 	margin-bottom: 0;
+}
+#progressInfo span {
+	font-size: 13px;
 }
 #progressForm img {
 	float: left;
@@ -374,9 +377,6 @@ img.logo {
 	bottom: 70px;
 	float: right;
 }
-#progressInfo span {
-	font-size: 13px;
-}
 #progressInfo #interestingFact {
 	font-size: 11px;
 }
@@ -390,6 +390,7 @@ img.logo {
 	margin-top: 0;
 	width: 255px;
 	box-shadow: 2px 2px #97CEEC;
+	font-size: 11px;
 }
 #fileSelector {
 	display: none;
