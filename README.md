@@ -9,7 +9,7 @@ Cryptocat is a browser-based XMPP client that provides multi-user (and private) 
 * Google Chrome: `src/chrome/`  
 * Mozilla Firefox: `src/firefox/`  
 
-## Documentation:
+## Documentation & Wiki:
 * [Threat Model](https://github.com/kaepora/cryptocat/wiki/Threat-Model)  
 * [Design and Functionality Overview](https://github.com/kaepora/cryptocat/wiki/Design-and-Functionality)  
 * [Architecture and Lifecycle](https://project.crypto.cat/documents/a&l.pdf)  
