@@ -181,12 +181,19 @@ multiParty.receiveMessage = function(sender, myName, message) {
 	return false;
 }
 
+// Rename keys (useful in case of nickname change)
+multiParty.renameKeys = function(oldName, newName) {
+	publicKeys[newName] = publicKeys[oldName];
+	sharedSecrets[newName] = sharedSecrets[oldName];
+	multiParty.genFingerprint(newName);
+	multiParty.removeKeys(oldName);
+}
+
 // Remove user keys and information
 multiParty.removeKeys = function(user) {
 	delete publicKeys[user];
 	delete sharedSecrets[user];
 	delete fingerprints[user];
-	multiParty.genSharedSecret();
 }
 
 // Remove ALL user keys and information

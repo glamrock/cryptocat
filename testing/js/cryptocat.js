@@ -135,7 +135,7 @@ function conversationSwitch(buddy) {
 	if (buddy !== 'main-Conversation') {
 		$('#buddy-' + buddy).css('background-image', 'none');
 	}
-	$('#conversationInfo').animate({'width': '750px'}, function() {
+	$('#conversationInfo').animate({'width': '750px'}, 'fast',  function() {
 		$('#conversationWindow').slideDown('fast', function() {
 			if (conversationInfo[currentConversation]) {
 				$('#conversationInfo').html(conversationInfo[currentConversation]);
@@ -156,7 +156,9 @@ function conversationSwitch(buddy) {
 		if (($(this).attr('title') !== currentConversation)
 			&& ($(this).css('background-image') === 'none')
 			&& ($(this).attr('status') === 'offline')) {
-			removeBuddy($(this).attr('title'));
+			$(this).slideUp(500, function() {
+				$(this).remove();
+			});
 		}
 	});
 }
@@ -271,13 +273,6 @@ function buildBuddy(nickname) {
 				$('#menu-' + nickname).click();
 			});
 		}
-	});
-}
-
-// Remove buddy from buddy list
-function removeBuddy(nickname) {
-	$('#buddy-' + nickname).slideUp(500, function() {
-		$(this).remove();
 	});
 }
 
@@ -405,6 +400,44 @@ function addToConversation(message, sender, conversation) {
 	}
 }
 
+// Handle nickname change (which may be done by non-Cryptocat XMPP clients)
+function changeNickname(oldNickname, newNickname) {
+	otrKeys[newNickname] = otrKeys[oldNickname];
+	multiParty.renameKeys(oldNickname, newNickname);
+	conversations[newNickname] = conversations[oldNickname];
+	conversationInfo[newNickname] = conversationInfo[oldNickname];
+	buddyGoOffline(oldNickname);
+}
+
+// Handle buddy going offline
+function buddyGoOffline(nickname) {
+	console.log(nickname);
+	// Delete their encryption keys
+	delete otrKeys[nickname];
+	multiParty.removeKeys(nickname);
+	if (($('#buddy-' + nickname).length !== 0)
+		&& ($('#buddy-' + nickname).attr('status') !== 'offline')) {
+		if ((currentConversation !== nickname)
+			&& ($('#buddy-' + nickname).css('background-image') === 'none')) {
+			$('#buddy-' + nickname).slideUp(500, function() {
+				$(this).remove();
+			});
+		}
+		else {
+			$('#buddy-' + nickname).attr('status', 'offline');
+			$('#buddy-' + nickname).animate({
+				'color': '#BBB',
+				'backgroundColor': '#222',
+				'borderLeftColor': '#111',
+				'borderBottom': 'none'
+			});
+		}
+	}
+	if (audioNotifications) {
+		playSound('snd/userOffline.webm');
+	}
+}
+
 // Handle incoming messages from the XMPP server.
 function handleMessage(message) {
 	var from = $(message).attr('from');
@@ -451,42 +484,23 @@ function handlePresence(presence) {
 	if (nickname === myNickname) {
 		return true;
 	}
+	// Detect nickname change (which may be done by non-Cryptocat XMPP clients)
+	if ($(presence).find('status').attr('code') === '303') {
+		var newNickname = $(presence).find('item').attr('nick');
+		console.log(nickname + ' changed nick to ' + newNickname);
+		changeNickname(nickname, newNickname);
+		return true;
+	}
 	// Add to otrKeys if necessary
 	if (nickname !== 'main-Conversation' && otrKeys[nickname] === undefined) {
 		otrKeys[nickname] = new OTR(myKey, uicb(nickname), iocb(nickname));
 		otrKeys[nickname].REQUIRE_ENCRYPTION = true;
 		console.log(otrKeys[nickname]);
 	}
-	// Handle buddy going offline
+	// Detect buddy going offline
 	if ($(presence).attr('type') === 'unavailable') {
-		// Delete their encryption keys
-		delete otrKeys[nickname];
-		multiParty.removeKeys(nickname);
-		if ($('#buddy-' + nickname).length !== 0) {
-			if ($('#buddy-' + nickname).attr('status') !== 'offline') {
-				if ((currentConversation !== nickname)
-					&& ($('#buddy-' + nickname).css('background-image') === 'none')) {
-					removeBuddy(nickname);
-				}
-				else {
-					$('#buddy-' + nickname).attr('status', 'offline');
-					$('#buddy-' + nickname).animate({
-						'color': '#BBB',
-						'backgroundColor': '#222',
-						'borderLeftColor': '#111',
-						'borderBottom': 'none'
-					});
-					if (audioNotifications) {
-						playSound('snd/userOffline.webm');
-					}
-					if (currentConversation !== nickname) {
-						$('#buddy-' + nickname).slideUp('fast', function() {
-							$(this).insertAfter('#buddiesOffline').slideDown('fast');
-						});
-					}
-				}
-			}
-		}
+		buddyGoOffline(nickname);
+		return true;
 	}
 	// Create buddy element if buddy is new
 	else if ($('#buddy-' + nickname).length === 0) {
@@ -548,11 +562,6 @@ function bindBuddyClick(nickname) {
 				var placement = '#buddiesAway';
 				var backgroundColor = '#5588A5';
 				var color = '#FFF';
-			}
-			else {
-				var placement = '#buddiesOffline';
-				var backgroundColor = '#222';
-				var color = '#BBB';
 			}
 			$('#buddy-' + oldConversation).slideUp('fast', function() {
 				$(this).css('background-color', backgroundColor);
@@ -932,9 +941,9 @@ function login(username, password) {
 		}
 		else if (status === Strophe.Status.DISCONNECTED) {
 			$('.button').fadeOut('fast');
+			$('#conversationInfo').animate({'width': '0'}, 'fast');
+			$('#conversationInfo').html('');
 			$('#userInput').fadeOut(function() {
-				$('#conversationInfo').animate({'width': '0'});
-				$('#conversationInfo').html('');
 				$('#conversationWindow').slideUp(function() {
 					$('#buddyWrapper').fadeOut();
 					if (!loginError) {
