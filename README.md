@@ -1,5 +1,6 @@
 #Cryptocat
 #### Browser Instant Messaging Platform with Accessible, Encrypted Messaging
+#### Experimental software: Don't trust with your life! Peer review appreciated.
 
 ## Description
 Cryptocat is a browser-based XMPP client that provides multi-user (and private) instant messaging inside chatrooms. It uses the [OTR](http://www.cypherpunks.ca/otr/) protocol for encrypted two-party chat and the (upcoming) mpOTR protocol for encrypted multi-party chat.  
@@ -9,8 +10,8 @@ Cryptocat is a browser-based XMPP client that provides multi-user (and private) 
 * Mozilla Firefox: `src/firefox/`  
 
 ## Documentation:
-* [Threat Model](https://github.com/kaepora/cryptocat/wiki/Cryptocat-2-Threat-Model)  
-* [Design and Functionality Overview](https://github.com/kaepora/cryptocat/wiki/Cryptocat-2-Design-and-Functionality)  
+* [Threat Model](https://github.com/kaepora/cryptocat/wiki/Threat-Model)  
+* [Design and Functionality Overview](https://github.com/kaepora/cryptocat/wiki/Design-and-Functionality)  
 * [Architecture and Lifecycle](https://project.crypto.cat/documents/a&l.pdf)  
 
 ## License
