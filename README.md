@@ -15,8 +15,8 @@ Cryptocat is a browser-based XMPP client that provides multi-user (and private) 
 * [Architecture and Lifecycle](https://project.crypto.cat/documents/a&l.pdf)  
 
 ## License
-#### Cryptocat is released under the [GNU Affero General Public License(AGPL3)](https://www.gnu.org/licenses/agpl-3.0.html):  
-Copyright `(C)` 2011, 2012  Nadim Kobeissi <nadim@nadim.cc>  
+#### Cryptocat is released under the [GNU Affero General Public License (AGPL3)](https://www.gnu.org/licenses/agpl-3.0.html):  
+Copyright `(C)` 2011, 2012 Nadim Kobeissi <nadim@nadim.cc>  
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -35,8 +35,7 @@ The full license text is included in `LICENSE.txt`.
 
 ## Notes:
 **Alpha codebase!**
-* Most recent changes in `testing/` directory, which is loadable in Chrome.
-* Firefox development has not yet begun.
+* Most recent changes in `testing/` which is loadable in Chrome.
 
 ## Goals:
 * XMPP **[DONE]** | [Discussion](https://github.com/kaepora/cryptocat/issues/83), [Library](http://strophe.im)
