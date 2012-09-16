@@ -1,5 +1,4 @@
 <?xml version="1.0"?>
-
 <RDF xmlns="http://www.w3.org/1999/02/22-RDF-syntax-ns#"
 	xmlns:em="http://www.mozilla.org/2004/em-RDF#">
 
@@ -21,7 +20,6 @@
 		<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
 		<em:minVersion>12.0</em:minVersion>
 		<em:maxVersion>18.0</em:maxVersion>
-
 		</Description>
 		</em:targetApplication>
 	</Description>

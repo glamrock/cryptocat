@@ -7,28 +7,22 @@
 
 	<prefpane label="Cryptocat Preferences">
 		<preferences>
-			<preference id="link-target-finder-autorun" name="extensions.linktargetfinder.autorun" type="bool"/>
-
+			<preference id="cryptocat-autorun" name="extensions.cryptocat.autorun" type="bool"/>
 		</preferences>
-
 		<groupbox>
 			<caption label="Settings"/>
 			<grid>
 				<columns>
 					<column flex="4"/>
-
 					<column flex="1"/>
 				</columns>
 				<rows>
 					<row>
 						<label control="autorun" value="Autorun"/>
-						<checkbox id="autorun" preference="link-target-finder-autorun"/>
-
+						<checkbox id="autorun" preference="cryptocat-autorun"/>
 					</row>
 				</rows>
 			</grid>
 		</groupbox>	
-
 	</prefpane>
-
 </prefwindow>

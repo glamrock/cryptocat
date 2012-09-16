@@ -1,0 +1,1 @@
+﻿pref("extensions.cryptocat.autorun", false);
