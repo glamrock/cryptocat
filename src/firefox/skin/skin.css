@@ -1,8 +1,12 @@
-﻿#firefoxStatusBarIcon {
+#firefoxToolbarButton {
+	list-style-image: url("chrome://cryptocat/skin/toolbar.png");
+}
+
+#firefoxStatusBarIcon {
 	width: 83px;
 	margin: 0 5px;
 }
 
-#firefoxToolbarIcon {
-	list-style-image: URL("chrome://cryptocat/skin/toolbar.png");
+.link-target-finder-selected {
+	outline: 2px solid red !important;
 }

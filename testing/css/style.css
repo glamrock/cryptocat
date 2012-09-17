@@ -392,6 +392,9 @@ img.logo {
 	box-shadow: 2px 2px #97CEEC;
 	font-size: 11px;
 }
+#otrFingerprint, #multiPartyFingerprint {
+	font-weight: bold;
+}
 #fileSelector {
 	display: none;
 }
@@ -405,7 +408,7 @@ img.logo {
 	color: #FFF;
 	padding: 2px 2px 2px 21px;
 	box-shadow: 1px 1px #34BEED;
-	background-image: url("../img/fileBlue.png");
+	background-image: url("../img/file.png");
 	background-position: center left;
 	background-repeat: no-repeat;
 	font-family: monospace;

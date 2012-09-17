@@ -280,14 +280,19 @@ function buildBuddy(nickname) {
 function getFingerprint(buddy, OTR) {
 	if (OTR) {
 		if (buddy === myNickname) {
-			var fingerprint = DSA.fingerprint(myKey);
+			var fingerprint = myKey.fingerprint();
 		}
 		else {
-			var fingerprint = DSA.fingerprint(otrKeys[buddy].their_priv_pk);
+			var fingerprint = otrKeys[buddy].their_priv_pk.fingerprint();
 		}
 	}
 	else {
-		var fingerprint = multiParty.genFingerprint(buddy);
+		if (buddy === myNickname) {
+			var fingerprint = multiParty.myFingerprint(myNickname);
+		}
+		else {
+			var fingerprint = multiParty.genFingerprint(buddy);
+		}
 	}
 	var formatted = '';
 	for (var i in fingerprint) {
@@ -626,17 +631,17 @@ function sendFile(nickname) {
 // Display buddy information, including fingerprints etc.
 function displayInfo(nickname) {
 	var displayInfoDialog = '<div class="bar">' + nickname +'</div><div id="displayInfo">'
-		+ 'OTR fingerprint (for private conversations):<br /><span id="otrKey"></span><br />'
-		+ '<br />Group conversation fingerprint:<br /><span id="multiPartyKey"></span></div>';
+		+ 'OTR fingerprint (for private conversations):<br /><span id="otrFingerprint"></span><br />'
+		+ '<br />Group conversation fingerprint:<br /><span id="multiPartyFingerprint"></span></div>';
 	dialogBox(displayInfoDialog, 1);
 	if (!otrKeys[nickname].msgstate) {
-		$('#otrKey').text('Generating...');
+		$('#otrFingerprint').text('Generating...');
 		otrKeys[nickname].sendQueryMsg();
 	}
 	else {
 		$('#otrKey').text(getFingerprint(nickname, 1));
 	}
-	$('#multiPartyKey').text(getFingerprint(nickname, 0));
+	$('#multiPartyFingerprint').text(getFingerprint(nickname, 0));
 }
 
 // Bind buddy menus for new buddies. Used internally.
@@ -745,23 +750,30 @@ $('#status').click(function() {
 });
 
 // Desktop notifications button
-$('#notifications').click(function() {
-	if ($(this).attr('title') === 'Desktop Notifications Off') {
-		$(this).attr('src', 'img/notifications.png');
-		$(this).attr('alt', 'Desktop Notifications On');
-		$(this).attr('title', 'Desktop Notifications On');
-		desktopNotifications = 1;
-		if (Notification.checkPermission()) {
-			Notification.requestPermission();
+// If not using Chrome, remove this button
+// (Since only Chrome supports desktop notifications)
+if (!navigator.userAgent.match('Chrome')) {
+	$('#notifications').remove();
+}
+else {
+	$('#notifications').click(function() {
+		if ($(this).attr('title') === 'Desktop Notifications Off') {
+			$(this).attr('src', 'img/notifications.png');
+			$(this).attr('alt', 'Desktop Notifications On');
+			$(this).attr('title', 'Desktop Notifications On');
+			desktopNotifications = 1;
+			if (Notification.checkPermission()) {
+				Notification.requestPermission();
+			}
 		}
-	}
-	else {
-		$(this).attr('src', 'img/noNotifications.png');
-		$(this).attr('alt', 'Desktop Notifications Off');
-		$(this).attr('title', 'Desktop Notifications Off');
-		desktopNotifications = 0;
-	}
-});
+		else {
+			$(this).attr('src', 'img/noNotifications.png');
+			$(this).attr('alt', 'Desktop Notifications Off');
+			$(this).attr('title', 'Desktop Notifications Off');
+			desktopNotifications = 0;
+		}
+	});
+}
 
 // Audio notifications button
 $('#audio').click(function() {

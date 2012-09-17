@@ -103,12 +103,21 @@ multiParty.genSharedSecret = function(user) {
 	console.log(sharedSecrets);
 }
 
+// Get another user's fingerprint
 multiParty.genFingerprint = function(user) {
 	fingerprints[user] = CryptoJS.SHA512(user + publicKeys[user])
 		.toString()
 		.substring(0, 40)
 		.toUpperCase();
 	return fingerprints[user];
+}
+
+// Get own fingerprint
+multiParty.myFingerprint = function(myNickname) {
+	return CryptoJS.SHA512(myNickname + myPublicKey)
+		.toString()
+		.substring(0, 40)
+		.toUpperCase();
 }
 
 // Send public key request string.
