@@ -634,7 +634,7 @@ function displayInfo(nickname) {
 		+ 'OTR fingerprint (for private conversations):<br /><span id="otrFingerprint"></span><br />'
 		+ '<br />Group conversation fingerprint:<br /><span id="multiPartyFingerprint"></span></div>';
 	dialogBox(displayInfoDialog, 1);
-	if (!otrKeys[nickname].msgstate) {
+	if ((nickname !== myNickname) && !otrKeys[nickname].msgstate) {
 		$('#otrFingerprint').text('Generating...');
 		otrKeys[nickname].sendQueryMsg();
 	}
@@ -747,6 +747,10 @@ $('#status').click(function() {
 		currentStatus = 'online';
 		sendStatus();
 	}
+});
+
+$('#myInfo').click(function() {
+	displayInfo(myNickname);
 });
 
 // Desktop notifications button
