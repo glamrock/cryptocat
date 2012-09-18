@@ -103,12 +103,21 @@ multiParty.genSharedSecret = function(user) {
 	console.log(sharedSecrets);
 }
 
+// Get another user's fingerprint
 multiParty.genFingerprint = function(user) {
 	fingerprints[user] = CryptoJS.SHA512(user + publicKeys[user])
 		.toString()
 		.substring(0, 40)
 		.toUpperCase();
 	return fingerprints[user];
+}
+
+// Get own fingerprint
+multiParty.myFingerprint = function(myNickname) {
+	return CryptoJS.SHA512(myNickname + myPublicKey)
+		.toString()
+		.substring(0, 40)
+		.toUpperCase();
 }
 
 // Send public key request string.
@@ -181,12 +190,19 @@ multiParty.receiveMessage = function(sender, myName, message) {
 	return false;
 }
 
+// Rename keys (useful in case of nickname change)
+multiParty.renameKeys = function(oldName, newName) {
+	publicKeys[newName] = publicKeys[oldName];
+	sharedSecrets[newName] = sharedSecrets[oldName];
+	multiParty.genFingerprint(newName);
+	multiParty.removeKeys(oldName);
+}
+
 // Remove user keys and information
 multiParty.removeKeys = function(user) {
 	delete publicKeys[user];
 	delete sharedSecrets[user];
 	delete fingerprints[user];
-	multiParty.genSharedSecret();
 }
 
 // Remove ALL user keys and information

@@ -135,7 +135,7 @@ function conversationSwitch(buddy) {
 	if (buddy !== 'main-Conversation') {
 		$('#buddy-' + buddy).css('background-image', 'none');
 	}
-	$('#conversationInfo').animate({'width': '750px'}, function() {
+	$('#conversationInfo').animate({'width': '750px'}, 'fast',  function() {
 		$('#conversationWindow').slideDown('fast', function() {
 			if (conversationInfo[currentConversation]) {
 				$('#conversationInfo').html(conversationInfo[currentConversation]);
@@ -156,7 +156,9 @@ function conversationSwitch(buddy) {
 		if (($(this).attr('title') !== currentConversation)
 			&& ($(this).css('background-image') === 'none')
 			&& ($(this).attr('status') === 'offline')) {
-			removeBuddy($(this).attr('title'));
+			$(this).slideUp(500, function() {
+				$(this).remove();
+			});
 		}
 	});
 }
@@ -274,25 +276,23 @@ function buildBuddy(nickname) {
 	});
 }
 
-// Remove buddy from buddy list
-function removeBuddy(nickname) {
-	$('#buddy-' + nickname).slideUp(500, function() {
-		$(this).remove();
-	});
-}
-
 // Get a fingerprint, formatted for readability
 function getFingerprint(buddy, OTR) {
 	if (OTR) {
 		if (buddy === myNickname) {
-			var fingerprint = DSA.fingerprint(myKey);
+			var fingerprint = myKey.fingerprint();
 		}
 		else {
-			var fingerprint = DSA.fingerprint(otrKeys[buddy].their_priv_pk);
+			var fingerprint = otrKeys[buddy].their_priv_pk.fingerprint();
 		}
 	}
 	else {
-		var fingerprint = multiParty.genFingerprint(buddy);
+		if (buddy === myNickname) {
+			var fingerprint = multiParty.myFingerprint(myNickname);
+		}
+		else {
+			var fingerprint = multiParty.genFingerprint(buddy);
+		}
 	}
 	var formatted = '';
 	for (var i in fingerprint) {
@@ -405,6 +405,44 @@ function addToConversation(message, sender, conversation) {
 	}
 }
 
+// Handle nickname change (which may be done by non-Cryptocat XMPP clients)
+function changeNickname(oldNickname, newNickname) {
+	otrKeys[newNickname] = otrKeys[oldNickname];
+	multiParty.renameKeys(oldNickname, newNickname);
+	conversations[newNickname] = conversations[oldNickname];
+	conversationInfo[newNickname] = conversationInfo[oldNickname];
+	buddyGoOffline(oldNickname);
+}
+
+// Handle buddy going offline
+function buddyGoOffline(nickname) {
+	console.log(nickname);
+	// Delete their encryption keys
+	delete otrKeys[nickname];
+	multiParty.removeKeys(nickname);
+	if (($('#buddy-' + nickname).length !== 0)
+		&& ($('#buddy-' + nickname).attr('status') !== 'offline')) {
+		if ((currentConversation !== nickname)
+			&& ($('#buddy-' + nickname).css('background-image') === 'none')) {
+			$('#buddy-' + nickname).slideUp(500, function() {
+				$(this).remove();
+			});
+		}
+		else {
+			$('#buddy-' + nickname).attr('status', 'offline');
+			$('#buddy-' + nickname).animate({
+				'color': '#BBB',
+				'backgroundColor': '#222',
+				'borderLeftColor': '#111',
+				'borderBottom': 'none'
+			});
+		}
+	}
+	if (audioNotifications) {
+		playSound('snd/userOffline.webm');
+	}
+}
+
 // Handle incoming messages from the XMPP server.
 function handleMessage(message) {
 	var from = $(message).attr('from');
@@ -451,42 +489,23 @@ function handlePresence(presence) {
 	if (nickname === myNickname) {
 		return true;
 	}
+	// Detect nickname change (which may be done by non-Cryptocat XMPP clients)
+	if ($(presence).find('status').attr('code') === '303') {
+		var newNickname = $(presence).find('item').attr('nick');
+		console.log(nickname + ' changed nick to ' + newNickname);
+		changeNickname(nickname, newNickname);
+		return true;
+	}
 	// Add to otrKeys if necessary
 	if (nickname !== 'main-Conversation' && otrKeys[nickname] === undefined) {
 		otrKeys[nickname] = new OTR(myKey, uicb(nickname), iocb(nickname));
 		otrKeys[nickname].REQUIRE_ENCRYPTION = true;
 		console.log(otrKeys[nickname]);
 	}
-	// Handle buddy going offline
+	// Detect buddy going offline
 	if ($(presence).attr('type') === 'unavailable') {
-		// Delete their encryption keys
-		delete otrKeys[nickname];
-		multiParty.removeKeys(nickname);
-		if ($('#buddy-' + nickname).length !== 0) {
-			if ($('#buddy-' + nickname).attr('status') !== 'offline') {
-				if ((currentConversation !== nickname)
-					&& ($('#buddy-' + nickname).css('background-image') === 'none')) {
-					removeBuddy(nickname);
-				}
-				else {
-					$('#buddy-' + nickname).attr('status', 'offline');
-					$('#buddy-' + nickname).animate({
-						'color': '#BBB',
-						'backgroundColor': '#222',
-						'borderLeftColor': '#111',
-						'borderBottom': 'none'
-					});
-					if (audioNotifications) {
-						playSound('snd/userOffline.webm');
-					}
-					if (currentConversation !== nickname) {
-						$('#buddy-' + nickname).slideUp('fast', function() {
-							$(this).insertAfter('#buddiesOffline').slideDown('fast');
-						});
-					}
-				}
-			}
-		}
+		buddyGoOffline(nickname);
+		return true;
 	}
 	// Create buddy element if buddy is new
 	else if ($('#buddy-' + nickname).length === 0) {
@@ -548,11 +567,6 @@ function bindBuddyClick(nickname) {
 				var placement = '#buddiesAway';
 				var backgroundColor = '#5588A5';
 				var color = '#FFF';
-			}
-			else {
-				var placement = '#buddiesOffline';
-				var backgroundColor = '#222';
-				var color = '#BBB';
 			}
 			$('#buddy-' + oldConversation).slideUp('fast', function() {
 				$(this).css('background-color', backgroundColor);
@@ -617,17 +631,17 @@ function sendFile(nickname) {
 // Display buddy information, including fingerprints etc.
 function displayInfo(nickname) {
 	var displayInfoDialog = '<div class="bar">' + nickname +'</div><div id="displayInfo">'
-		+ 'OTR fingerprint (for private conversations):<br /><span id="otrKey"></span><br />'
-		+ '<br />Group conversation fingerprint:<br /><span id="multiPartyKey"></span></div>';
+		+ 'OTR fingerprint (for private conversations):<br /><span id="otrFingerprint"></span><br />'
+		+ '<br />Group conversation fingerprint:<br /><span id="multiPartyFingerprint"></span></div>';
 	dialogBox(displayInfoDialog, 1);
 	if (!otrKeys[nickname].msgstate) {
-		$('#otrKey').text('Generating...');
+		$('#otrFingerprint').text('Generating...');
 		otrKeys[nickname].sendQueryMsg();
 	}
 	else {
 		$('#otrKey').text(getFingerprint(nickname, 1));
 	}
-	$('#multiPartyKey').text(getFingerprint(nickname, 0));
+	$('#multiPartyFingerprint').text(getFingerprint(nickname, 0));
 }
 
 // Bind buddy menus for new buddies. Used internally.
@@ -736,23 +750,30 @@ $('#status').click(function() {
 });
 
 // Desktop notifications button
-$('#notifications').click(function() {
-	if ($(this).attr('title') === 'Desktop Notifications Off') {
-		$(this).attr('src', 'img/notifications.png');
-		$(this).attr('alt', 'Desktop Notifications On');
-		$(this).attr('title', 'Desktop Notifications On');
-		desktopNotifications = 1;
-		if (Notification.checkPermission()) {
-			Notification.requestPermission();
+// If not using Chrome, remove this button
+// (Since only Chrome supports desktop notifications)
+if (!navigator.userAgent.match('Chrome')) {
+	$('#notifications').remove();
+}
+else {
+	$('#notifications').click(function() {
+		if ($(this).attr('title') === 'Desktop Notifications Off') {
+			$(this).attr('src', 'img/notifications.png');
+			$(this).attr('alt', 'Desktop Notifications On');
+			$(this).attr('title', 'Desktop Notifications On');
+			desktopNotifications = 1;
+			if (Notification.checkPermission()) {
+				Notification.requestPermission();
+			}
 		}
-	}
-	else {
-		$(this).attr('src', 'img/noNotifications.png');
-		$(this).attr('alt', 'Desktop Notifications Off');
-		$(this).attr('title', 'Desktop Notifications Off');
-		desktopNotifications = 0;
-	}
-});
+		else {
+			$(this).attr('src', 'img/noNotifications.png');
+			$(this).attr('alt', 'Desktop Notifications Off');
+			$(this).attr('title', 'Desktop Notifications Off');
+			desktopNotifications = 0;
+		}
+	});
+}
 
 // Audio notifications button
 $('#audio').click(function() {
@@ -932,9 +953,9 @@ function login(username, password) {
 		}
 		else if (status === Strophe.Status.DISCONNECTED) {
 			$('.button').fadeOut('fast');
+			$('#conversationInfo').animate({'width': '0'}, 'fast');
+			$('#conversationInfo').html('');
 			$('#userInput').fadeOut(function() {
-				$('#conversationInfo').animate({'width': '0'});
-				$('#conversationInfo').html('');
 				$('#conversationWindow').slideUp(function() {
 					$('#buddyWrapper').fadeOut();
 					if (!loginError) {
