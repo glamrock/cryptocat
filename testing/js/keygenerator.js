@@ -12,7 +12,7 @@ importScripts('crypto-js/hmac.js');
 importScripts('crypto-js/pad-nopadding.js');
 importScripts('crypto-js/mode-ctr.js');
 importScripts('bigint.js');
-importScripts('otr/otr.js');
+importScripts('otr.js');
 
 self.addEventListener('message', function(e) {
 	var cmd = e.data;

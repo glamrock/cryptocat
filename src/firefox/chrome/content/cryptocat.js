@@ -12,7 +12,7 @@ var cryptocat = function () {
 			
 		run: function () {
 			var tBrowser = document.getElementById('content');
-			var tab = tBrowser.addTab('chrome://cryptocat/content/data/main.html');
+			var tab = tBrowser.addTab('chrome://cryptocat/content/data/');
 			tBrowser.selectedTab = tab;
 		}
 	};
