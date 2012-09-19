@@ -3,18 +3,18 @@ var cryptocat = function () {
 	return {
 		init: function () {
 			gBrowser.addEventListener("load", function () {
-				var autoRun = prefManager.getBoolPref("extensions.linktargetfinder.autorun");
+				var autoRun = prefManager.getBoolPref("extensions.cryptocat.autorun");
 				if (autoRun) {
-					linkTargetFinder.run();
+					cryptocat.run();
 				}
 			}, false);
 		},
 			
 		run: function () {
 			var tBrowser = document.getElementById('content');
-			var tab = tBrowser.addTab('chrome://cryptocat/content/data/');
+			var tab = tBrowser.addTab('chrome://cryptocat/content/data/index.html');
 			tBrowser.selectedTab = tab;
 		}
 	};
 }();
-window.addEventListener("load", linkTargetFinder.init, false);
+window.addEventListener("load", cryptocat.init, false);
