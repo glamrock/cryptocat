@@ -130,7 +130,7 @@ var OTR = {}, DSA = {}
       , padding: CryptoJS.pad.NoPadding
     }
     var aesctr = CryptoJS.AES.encrypt(
-        CryptoJS.enc.Latin1.parse(msg)
+        CryptoJS.enc.Utf8.parse(msg)
       , CryptoJS.enc.Latin1.parse(c)
       , opts
     )
@@ -150,7 +150,7 @@ var OTR = {}, DSA = {}
       , CryptoJS.enc.Latin1.parse(c)
       , opts
     )
-    return aesctr.toString(CryptoJS.enc.Latin1)
+    return aesctr.toString(CryptoJS.enc.Utf8)
   }
 
   HLP.multPowMod = function (a, b, c, d, e) {
