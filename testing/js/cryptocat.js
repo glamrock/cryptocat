@@ -1,4 +1,4 @@
-var Cryptocat = function() {};
+﻿var Cryptocat = function() {};
 (function(){
 
 /* Configuration */
