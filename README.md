@@ -1,4 +1,4 @@
-#Cryptocat
+﻿#Cryptocat
 #### Browser Instant Messaging Platform with Accessible, Encrypted Messaging
 #### Experimental software: Don't trust with your life! Peer review appreciated.
 
