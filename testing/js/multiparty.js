@@ -12,7 +12,7 @@ multiParty.publicKeyRegEx = /^\?:3multiParty:3\?:PublicKey:(\w|=)+$/;
 
 // AES-CTR-256 encryption
 // No padding, starting IV of 0
-// Input: Latin1, Output: Base64
+// Input: UTF8, Output: Base64
 // Key input: hexademical
 encryptAES = function (msg, c, iv) {
 	var opts = {
@@ -21,7 +21,7 @@ encryptAES = function (msg, c, iv) {
 		padding: CryptoJS.pad.NoPadding
 	}
 	var aesctr = CryptoJS.AES.encrypt (
-		CryptoJS.enc.Latin1.parse(msg),
+		CryptoJS.enc.Utf8.parse(msg),
 		CryptoJS.enc.Hex.parse(c),
 		opts
 	)
@@ -30,7 +30,7 @@ encryptAES = function (msg, c, iv) {
 
 // AES-CTR-256 decryption
 // No padding, starting IV of 0
-// Input: Base64, Output: Latin1
+// Input: Base64, Output: UTF8
 // Key input: hexadecimal
 decryptAES = function (msg, c, iv) {
 	msg = CryptoJS.enc.Base64.parse(msg);
@@ -44,7 +44,7 @@ decryptAES = function (msg, c, iv) {
 		CryptoJS.enc.Hex.parse(c),
 		opts
 	)
-	return aesctr.toString(CryptoJS.enc.Latin1);
+	return aesctr.toString(CryptoJS.enc.Utf8);
 }
 
 // HMAC-SHA512
