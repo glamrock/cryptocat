@@ -136,6 +136,11 @@ multiParty.sendPublicKey = function(user) {
 	return JSON.stringify(answer);
 }
 
+// Return number of users
+multiParty.userCount = function() {
+	return Object.keys(sharedSecrets).length
+}
+
 // Send message.
 multiParty.sendMessage = function(message) {
 	var encrypted = {};

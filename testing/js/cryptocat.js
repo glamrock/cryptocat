@@ -805,7 +805,14 @@ $('#userInput').submit(function() {
 	var message = $.trim($('#userInputText').val());
 	if (message !== '') {
 		if (currentConversation === 'main-Conversation') {
-			conn.muc.message(chatName + '@' + conferenceServer, null, multiParty.sendMessage(message), null);
+			if (multiParty.userCount() >= 1) {
+				conn.muc.message(
+					chatName + '@' + conferenceServer,
+					null,
+					multiParty.sendMessage(message),
+					null
+				);
+			}
 		}
 		else {
 			otrKeys[currentConversation].sendMsg(message);
