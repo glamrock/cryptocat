@@ -653,11 +653,11 @@ function bindBuddyMenu(nickname) {
 			$(this).css('background-image', 'url("img/up.png")');
 			$('#buddy-' + nickname).delay(10).animate({'height': '45px'}, 180, function() {
 				$(this).append(buddyMenuContents);
-				if (nickname !== myNickname) {
-					$('#' + nickname + '-contents').append(
-						'<li class="option1">Send Encrypted File</li>'
-					);
-				}
+				// File sharing menu item
+				// (currently disabled)
+				// $('#' + nickname + '-contents').append(
+				//	'<li class="option1">Send Encrypted File</li>'
+				// );
 				$('#' + nickname + '-contents').append(
 					'<li class="option2">Display Info</li>'
 				);
