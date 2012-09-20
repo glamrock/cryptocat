@@ -7,4 +7,5 @@ firefox:
 	mv src/firefox/cryptocat-firefox.xpi .
 
 clean:
-
+	rm -f cryptocat-chrome.zip
+	rm -f cryptocat-firefox.xpi
