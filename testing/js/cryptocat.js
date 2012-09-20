@@ -418,7 +418,6 @@ function changeNickname(oldNickname, newNickname) {
 
 // Handle buddy going offline
 function buddyGoOffline(nickname) {
-	console.log(nickname);
 	// Delete their encryption keys
 	delete otrKeys[nickname];
 	multiParty.removeKeys(nickname);
@@ -502,7 +501,6 @@ function handlePresence(presence) {
 	if (nickname !== 'main-Conversation' && otrKeys[nickname] === undefined) {
 		otrKeys[nickname] = new OTR(myKey, uicb(nickname), iocb(nickname));
 		otrKeys[nickname].REQUIRE_ENCRYPTION = true;
-		console.log(otrKeys[nickname]);
 	}
 	// Detect buddy going offline
 	if ($(presence).attr('type') === 'unavailable') {
@@ -827,7 +825,7 @@ $('#userInput').submit(function() {
 
 // Custom server dialog
 $('#customServer').click(function() {
-	var customServerDialog = '<div class="bar">set custom server</div><br />'
+	var customServerDialog = '<div class="bar">custom server</div><br />'
 		+ '<input type="text" id="customDomain"></input>'
 		+ '<input type="text" id="customConferenceServer"></input>'
 		+ '<input type="text" id="customBOSH"></input>'

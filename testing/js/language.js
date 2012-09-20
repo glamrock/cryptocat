@@ -21,6 +21,7 @@ language.en = {
 		'project': 'Project',
 		'blog': 'Blog',
 		'source': 'Source',
+		'customServer': 'Custom server...',
 		'conversationName': 'conversation name',
 		'nickname': 'nickname',
 		'connect': 'connect',
