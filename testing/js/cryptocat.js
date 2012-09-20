@@ -827,7 +827,29 @@ $('#userInput').submit(function() {
 
 // Custom server dialog
 $('#customServer').click(function() {
-	dialogBox('hello', 1);
+	var customServerDialog = '<div class="bar">set custom server</div><br />'
+		+ '<input type="text" id="customDomain"></input>'
+		+ '<input type="text" id="customConferenceServer"></input>'
+		+ '<input type="text" id="customBOSH"></input>'
+		+ '<input type="button" class="button" id="customServerSubmit"></input>';
+	dialogBox(customServerDialog, 1);
+	$('#customDomain').val(domain)
+		.attr('title', 'Domain name')
+		.click(function() {$(this).select()});
+	$('#customConferenceServer').val(conferenceServer)
+		.attr('title', 'XMPP-MUC server')
+		.click(function() {$(this).select()});
+	$('#customBOSH').val(bosh)
+		.attr('title', 'BOSH relay')
+		.click(function() {$(this).select()});
+	$('#customServerSubmit').val('done').click(function() {
+		domain = $('#customDomain').val();
+		conferenceServer = $('#customConferenceServer').val();
+		bosh = $('#customBOSH').val();
+		$('#dialogBoxClose').click();
+	});
+	$('#customDomain').select();
+	$('input[title]').qtip();
 });
 
 // Login form
