@@ -126,12 +126,17 @@ img.logo {
 }
 #bubble #customServer {
 	background-color: #97CEEC;
-	color: #000;
+	color: #FFF;
 	text-align: center;
 	width: 212px;
 	display: block;
 	margin-left: 3px;
 	font-size: 10px;
+	border-bottom: 1px solid #97CEEC;
+}
+#bubble #customServer:hover {
+	text-decoration: none;
+	border-bottom: 1px dashed #FFF;
 }
 #bubble #options {
 	background-color: #222;
