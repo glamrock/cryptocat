@@ -1,14 +1,19 @@
 ﻿var Language = function() {};
 (function(){
-	
+
+var language = {};
+var defaultLanguage;
+
+Language.setDefault = function(lang) {
+	defaultLanguage = language[lang];
+}
+
 Language.set = function(lang) {
-	
+	return language[lang];
 }
 
 
-var language = {};
-
-language.en {
+language.en = {
 	'loginWindow': {
 		'introHeader': '﻿Private Conversations for Everyone.',
 		'introParagraph1': 'Cryptocat is an instant messaging platform that lets you easily have private conversations with friends. Messages are encrypted before leaving your screen and are protected from being viewed by any third party, even from us.',

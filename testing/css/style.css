@@ -106,10 +106,10 @@ img.logo {
 [type=submit]:hover {
 	cursor: pointer;
 	background-color: #97CEEC;
-	box-shadow: 2px 2px #333;
+	border: 1px solid #97CEEC;
 }
 [type=submit]:active {
-	border: none;
+	border: 1px solid #97CEEC;
 	box-shadow: 2px 2px #76BDE5;
 }
 #loginInfo {
@@ -124,7 +124,16 @@ img.logo {
 	font-family: Helvetica, Arial;
 	font-size: 18px;
 }
-#bubble #translations {
+#bubble #customServer {
+	background-color: #97CEEC;
+	color: #000;
+	text-align: center;
+	width: 212px;
+	display: block;
+	margin-left: 3px;
+	font-size: 10px;
+}
+#bubble #options {
 	background-color: #222;
 	width: 110px;
 	height: 20px;

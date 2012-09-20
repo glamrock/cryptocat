@@ -25,6 +25,8 @@ $('.button[title]').qtip();
 if (!groupChat) {
 	$('#buddy-main-Conversation').remove();
 }
+Language.setDefault('en');
+var language = Language.set('en');
 
 // Detect window focus
 window.onfocus = function() {
@@ -823,7 +825,12 @@ $('#userInput').submit(function() {
 	return false;
 });
 
-/* Login Form */
+// Custom server dialog
+$('#customServer').click(function() {
+	dialogBox('hello', 1);
+});
+
+// Login form
 $('#chatName').select();
 $('#chatName').click(function() {
 	$(this).select();
