@@ -865,7 +865,7 @@ $('#loginForm').submit(function() {
 	$('#nickname').val($.trim($('#nickname').val()));
 	chatName = $('#chatName').val();
 	if (($('#chatName').val() === '')
-		|| ($('#chatName').val() === lang['loginWindow']['conversationName'])) {
+		|| ($('#chatName').val() === language['loginWindow']['conversationName'])) {
 		loginFail(language['loginMessage']['enterConversation']);
 		$('#chatName').select();
 	}
@@ -874,7 +874,7 @@ $('#loginForm').submit(function() {
 		$('#chatName').select();
 	}
 	else if (($('#nickname').val() === '')
-		|| ($('#nickname').val() === lang['loginWindow']['nickname'])) {
+		|| ($('#nickname').val() === language['loginWindow']['nickname'])) {
 		loginFail(language['loginMessage']['enterNickname']);
 		$('#nickname').select();
 	}
