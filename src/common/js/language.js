@@ -10,6 +10,8 @@ Language.setDefault = function(lang) {
 
 Language.set = function(lang) {
 	lang = language[lang];
+	$('html').attr('dir', lang['direction']);
+	$('body').css('font-family', lang['font-family']);
 	$('#introHeader').html(lang['loginWindow']['introHeader']);
 	$('#introParagraph1').html(lang['loginWindow']['introParagraph1']);
 	$('#introParagraph2').html(lang['loginWindow']['introParagraph2']);
@@ -32,17 +34,13 @@ Language.set = function(lang) {
 	$('#status').attr('title', lang['chatWindow']['statusAvailable']);
 	$('#status').attr('alt', lang['chatWindow']['statusAvailable']);
 	$('#conversationTag').html(lang['chatWindow']['conversation']);
-	if (lang['language'] === 'ar') {
-		$('html').attr('dir', 'rtl');
-	}
-	else {
-		$('html').attr('dir', 'ltr');
-	}
 	return lang;
 }
 
 language.en = {
 	'language': 'en',
+	'direction': 'ltr',
+	'font-family': 'Helvetica, Arial, Verdana',
 	'loginWindow': {
 		'introHeader': '﻿Private Conversations for Everyone.',
 		'introParagraph1': 'Cryptocat is an instant messaging platform that lets you easily have private conversations with friends. Messages are encrypted before leaving your screen and are protected from being viewed by any third party, even from us.',
@@ -90,6 +88,8 @@ language.en = {
 
 language.ca = {
 	'language': 'ca',
+	'direction': 'ltr',
+	'font-family': 'Helvetica, Arial, Verdana',
 	'loginWindow': {
 		'introHeader': '﻿Converses privades per a tothom',
 		'introParagraph1': 'Cryptocat es una plataforma de missatgeria instantània que et permet mantenir converses privades fàcilment amb els amics. Els missatges es xifren abans de sortir de la teva pantalla i són protegits de ser vistos per terceres persones, incloses nosaltres.',
@@ -137,6 +137,8 @@ language.ca = {
 
 language.fr = {
 	'language': 'fr',
+	'direction': 'ltr',
+	'font-family': 'Helvetica, Arial, Verdana',
 	'loginWindow': {
 		'introHeader': '﻿Conversations Privées Pour Tout le Monde.',
 		'introParagraph1': 'Cryptocat est une plateforme de messagerie instantanée qui vous permet facilement d\'avoir des conversations privées avec des amis. Les messages sont cryptés avant de quitter votre écran et sont protégés contre leur lecture par un tiers, même de nous.',
@@ -184,6 +186,8 @@ language.fr = {
 
 language.ar = {
 	'language': 'ar',
+	'direction': 'rtl',
+	'font-family': 'Tahoma, DejaVu, Helvetica, Arial, Verdana',
 	'loginWindow': {
 		'introHeader': '﻿محادثات خصوصية وآمنة لجميع الأشخاص.',
 		'introParagraph1': 'كريبتوكات هو برنامج للتراسل اللحظي، يتيح لك القيام بالمحادثات الآمنة والخصوصية مع أصدقائك وذلك من خلال تعمية (تشفير) الرسائل قبل مغادرتها لشاشة حاسوبك فتبقى محميّة من التعرض للإختراق من قبل الآخرين أو حتى نحن.',
