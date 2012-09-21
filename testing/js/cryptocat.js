@@ -1022,7 +1022,7 @@ function login(username, password) {
 							currentConversation = 0;
 							coflictIsPossible = 1;
 							if (!loginError) {
-								$('#chatName').val(language['loginWindow']['enterConversation']);
+								$('#chatName').val(language['loginWindow']['conversationName']);
 							}
 							$('#chatName').removeAttr('readonly');
 							$('#nickname').val(language['loginWindow']['nickname']);
