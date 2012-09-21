@@ -648,7 +648,7 @@ function bindBuddyMenu(nickname) {
 		if ($('#buddy-' + nickname).height() === 15) {
 			var buddyMenuContents = '<div class="buddyMenuContents" id="' + nickname + '-contents">';
 			$(this).css('background-image', 'url("img/up.png")');
-			$('#buddy-' + nickname).delay(10).animate({'height': '45px'}, 180, function() {
+			$('#buddy-' + nickname).delay(10).animate({'height': '28px'}, 180, function() {
 				$(this).append(buddyMenuContents);
 				// File sharing menu item
 				// (currently disabled)
@@ -822,7 +822,7 @@ $('#userInput').submit(function() {
 
 // Custom server dialog
 $('#customServer').click(function() {
-	var customServerDialog = '<div class="bar">custom server</div><br />'
+	var customServerDialog = '<div class="bar">' + language['loginWindow']['customServer'] + '</div><br />'
 		+ '<input type="text" id="customDomain"></input>'
 		+ '<input type="text" id="customConferenceServer"></input>'
 		+ '<input type="text" id="customBOSH"></input>'

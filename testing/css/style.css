@@ -18,6 +18,7 @@ a:hover {
 img.logo {
 	display: inline;
 	padding-left: 10px;
+	float: left;
 }
 #bubble:before {
 	content: ' ';
@@ -184,6 +185,7 @@ img.logo {
 	position: relative;
 	border-left: 3px solid #97CEEC;
 	z-index: 1;
+	text-align: left;
 	cursor: pointer;
 }
 .buddyMenu {
