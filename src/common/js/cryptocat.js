@@ -632,7 +632,7 @@ function displayInfo(nickname) {
 		+ '<br />' + language['chatWindow']['groupFingerprint']  + '<br /><span id="multiPartyFingerprint"></span></div>';
 	dialogBox(displayInfoDialog, 1);
 	if ((nickname !== myNickname) && !otrKeys[nickname].msgstate) {
-		$('#otrFingerprint').text('Generating...');
+		$('#otrFingerprint').text('...');
 		otrKeys[nickname].sendQueryMsg();
 	}
 	else {
