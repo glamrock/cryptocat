@@ -380,5 +380,55 @@ language.es = {
 	}
 }
 
+language.fa = {
+	'language': 'fa',
+	'direction': 'rtl',
+	'font-family': 'Tahoma, DejaVu, Helvetica, Arial, Verdana',
+	'loginWindow': {
+		'introHeader': '﻿گفتگوی خصوصی برای تمامی افراد.',
+		'introParagraph1': 'کریپتوکت یک پیام‌سان فوری است که شما می‌توانید به راحتی با دوستان خود گفتگوی خصوصی داشته باشید. تمامی پیام‌ها قبل از ترک صفحه‌ی نمایش شما، کدگذاری می‌شوند و قابل مشاهده و خواندن توسط دیگر افراد، از جمله ما نخواهند بود.',
+		'introParagraph2': 'کریپتوکت یک نرم‌افزار آزاد بر مبانی استانداردهای باز است. فرآیند توسعه‌ی به صورت مستمر توسط افراد داوطلب و علاقه‌مند مورد آزمایش و بررسی قرار می‌گیرد.'
+		+ 'در مورد پروژه‌ی کریپتوکت بیشتر بدانید.',
+		'project': 'پروژه',
+		'blog': 'وبلاگ',
+		'source': 'منبع',
+		'customServer': 'سرور سفارشی...',
+		'conversationName': 'نام گفتگو',
+		'nickname': 'نام مستعار',
+		'connect': 'اتصال',
+		'enterConversation': 'نام مورد نظر خود برای پیوستن به گفتگو را وارد کنید.'
+	},
+	'loginMessage': {
+		'enterConversation': 'لطفا نام گفتگو را وارد کنید.',
+		'conversationAlphanumeric': 'نام گفتگو باید شامل حرف و عدد باشد.',
+		'enterNickname': 'لطفا نام مستعار را وارد کنید.',
+		'nicknameAlphanumeric': 'نام مستعار باید شامل حرف و عدد باشد.',
+		'nicknameInUse': 'این نام مستعار قبلا استفاده شده است.',
+		'authenticationFailure': 'تایید رد شده است.',
+		'connectionFailed': 'اتصال با مشکل مواجه شده است.',
+		'thankYouUsing': 'از شما بابت استفاده از کریپتوکت متشکریم.',
+		'registering': 'در حال ثبت‌نام...',
+		'connecting': 'در حال اتصال...',
+		'typeRandomly': 'لطفا به کمک صفحه کلید، به صورت تصادفی به مدت چند ثانیه تایپ کنید.',
+		'generatingKeys': 'در حال ایجاد کلیدهای کدگذاری شده...'
+	},
+	'chatWindow': {
+		'groupConversation': 'گفتگوی گروهی. برای گفتگوی خصوصی، لطفا بر روی نام کاربری کلیک کنید.',
+		'otrFingerprint': 'اثر انگشت محرمانه (برای گفتگوهای خصوصی):',
+		'groupFingerprint': 'اثر انگشت گفتگوی گروهی:',
+		'statusAvailable': 'وضعیت: در دسترس',
+		'statusAway': 'وضعیت: در دسترس نیست',
+		'myInfo': 'اطلاعات من',
+		'desktopNotificationsOn': 'پیغام‌رسان رومیزی فعال',
+		'desktopNotificationsOff': 'پیغام‌رسان رومیزی غیرفعال',
+		'audioNotificationsOn': 'پیغام‌رسان صوتی فعال',
+		'audioNotificationsOff': 'پیغام‌رسان صوتی غیرفعال',
+		'logout': 'خروج',
+		'displayInfo': 'نمایش اطلاعات',
+		'sendEncryptedFile': 'ارسال فایل کدگذاری شده',
+		'conversation': 'گفتگو'
+	}
+}
+
 
 })();
