@@ -1,1 +1,1 @@
-pref("extensions.linktargetfinder.autorun", false);
+pref("extensions.cryptocat.autorun", false);

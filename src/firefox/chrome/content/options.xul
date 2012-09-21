@@ -2,12 +2,12 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
  
 <prefwindow 
-     title="Link Target Finder Preferences"
+     title="Cryptocat Preferences"
      xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
  
-	<prefpane label="Link Target Finder Preferences">
-		<preferences>
-			<preference id="link-target-finder-autorun" name="extensions.cryptocat.autorun" type="bool"/>
+	<prefpane label="Cryptocat Preferences">
+		<!--<preferences>
+			<preference id="cryptocat-autorun" name="extensions.cryptocat.autorun" type="bool"/>
 		</preferences>
 		
 		<groupbox>
@@ -20,11 +20,11 @@
 				<rows>
 					<row>
 						<label control="autorun" value="Autorun"/>
-						<checkbox id="autorun" preference="link-target-finder-autorun"/>
+						<checkbox id="autorun" preference="cryptocat-autorun"/>
 					</row>
 				</rows>
 			</grid>
-		</groupbox>	
+		</groupbox>-->
 		
 	</prefpane>
  
