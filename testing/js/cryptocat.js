@@ -1022,10 +1022,10 @@ function login(username, password) {
 							currentConversation = 0;
 							coflictIsPossible = 1;
 							if (!loginError) {
-								$('#chatName').val(language['loginMessage']['enterConversation']);
+								$('#chatName').val(language['loginWindow']['enterConversation']);
 							}
 							$('#chatName').removeAttr('readonly');
-							$('#nickname').val(language['loginMessage']['nickname']);
+							$('#nickname').val(language['loginWindow']['nickname']);
 							$('#nickname').removeAttr('readonly');
 							$('#newAccount').attr('checked', false);
 							$('#info').fadeIn();
