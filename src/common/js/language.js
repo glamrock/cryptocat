@@ -430,5 +430,53 @@ language.fa = {
 	}
 }
 
+language.eu = {
+	'language': 'eu',
+	'direction': 'ltr',
+	'font-family': 'Helvetica, Arial, Verdana',
+	'loginWindow': {
+		'introHeader': '﻿Elkarrizketa pribatuak edonorentzat.',
+		'introParagraph1': 'Cryptocat berehalako mezularitza plataforma da, zeinak era errazean lagunekin elkarrizketa pribatuak izatea ahalbidetzen duen. Mezuak zifratu egiten dira ordenagailua utzi baino lehen eta kanpoko inork, gu barne, ikusi ezin ditzan babesten dira.',
+		'introParagraph2': 'Cryptocat software librea da, estandar irekien gainean eraikia. Gure garapen prozesua boluntario eta zalez osaturiko komunitate baten ikuskapen jarraitupean dago. <a href="https://project.crypto.cat" target="_blank">Cryptocat proiektuari buruz argibide gehiago</a>.',
+		'project': 'Proiektua',
+		'blog': 'Blog',
+		'source': 'Iturburua',
+		'customServer': 'zerbitzari pertsonalizatua...',
+		'conversationName': 'elkarrizketa-izena',
+		'nickname': 'goitizena',
+		'connect': 'konektatu',
+		'enterConversation': 'Sartu elkarrizketa baten izena bertara sartzeko. '
+	},
+	'loginMessage': {
+		'enterConversation': 'Sartu elkarrizketa-izena.',
+		'conversationAlphanumeric': 'Elkarrizketa-izena letraz eta zenbakiz bakarrik egon daiteke osatuta.',
+		'enterNickname': 'Sartu goitizena.',
+		'nicknameAlphanumeric': 'Goitizena letraz eta zenbakiz bakarrik egon daiteke osatuta.',
+		'nicknameInUse': 'Erabiltzen ari den goitizena.',
+		'authenticationFailure': 'Ezin izan da saioa hasi.',
+		'connectionFailed': 'Konexioak huts egin du.',
+		'thankYouUsing': 'Eskerrik asko Cryptocat erabiltzeagatik.',
+		'registering': 'Erregistratzen...',
+		'connecting': 'Konektatzen...',
+		'typeRandomly': 'Segundu batzuetan, tekleatu ahalik eta era ausazkoenean.',
+		'generatingKeys': 'Zifraketa-kodeak sortzen...'
+	},
+	'chatWindow': {
+		'groupConversation': 'Talde-elkarrizketa. Egin klik erabiltzaile baten gainean elkarrizketa pribatua izateko.',
+		'otrFingerprint': 'OTR hatz-aztarna (elkarrizketa pribatuetarako):',
+		'groupFingerprint': 'Talde elkarrizketaren hatz-aztarna:',
+		'statusAvailable': 'Egoera: eskuragarri',
+		'statusAway': 'Egoera: kanpoan',
+		'myInfo': 'Nire Informazioa',
+		'desktopNotificationsOn': 'Mahaigaineko jakinarazpenak gaituta',
+		'desktopNotificationsOff': 'Mahaigaineko jakinarazpenak desgaituta',
+		'audioNotificationsOn': 'Soinu jakinarazpenak gaituta',
+		'audioNotificationsOff': 'Soinu jakinarazpenak desgaituta',
+		'logout': 'Saioa itxi',
+		'displayInfo': 'Erakutsi informazioa',
+		'sendEncryptedFile': 'Bidali fitxategi zifratua',
+		'conversation': 'Elkarrizketa'
+	}
+}
 
 })();
