@@ -958,7 +958,7 @@ function login(username, password) {
 			$('#loginInfo').animate({'color': '#E93028'}, 'fast');
 		}
 		else if (status === Strophe.Status.CONNECTED) {
-			$('#loginInfo').html('Connected.');
+			$('#loginInfo').html(':3');
 			$('#loginInfo').animate({'color': '#0F0'}, 'fast');
 			$('#bubble').animate({'margin-top': '+=0.5%'}, function() {
 				$('#bubble').animate({'margin-top': '1.5%'}, function() {
