@@ -79,7 +79,7 @@ language.en = {
 		'desktopNotificationsOff': 'Desktop Notifications Off',
 		'audioNotificationsOn': 'Audio Notifications On',
 		'audioNotificationsOff': 'Audio Notifications Off',
-		'logout': 'Logout',
+		'logout': 'Disconnect',
 		'displayInfo': 'Display info',
 		'sendEncryptedFile': 'Send encrypted file',
 		'conversation': 'Conversation'
@@ -256,7 +256,7 @@ language.it = {
 		'enterNickname': 'Si prega di inserire un nickname.',
 		'nicknameAlphanumeric': 'Il nickname deve essere alfanumerico.',
 		'nicknameInUse': 'Nickname già in uso.',
-		'authenticationFailure': 'Autenticazione fallita,',
+		'authenticationFailure': 'Autenticazione fallita.',
 		'connectionFailed': 'Connessione fallita.',
 		'thankYouUsing': 'Grazie per aver scelto Cryptocat.',
 		'registering': 'Registrazione...',
@@ -279,6 +279,104 @@ language.it = {
 		'displayInfo': 'Mostra Info',
 		'sendEncryptedFile': 'Invio file cifrato',
 		'conversation': 'Conversazione'
+	}
+}
+
+language.da = {
+	'language': 'da',
+	'direction': 'ltr',
+	'font-family': 'Helvetica, Arial, Verdana',
+	'loginWindow': {
+		'introHeader': '﻿Privat Samtale for Alle.',
+		'introParagraph1': 'Cryptocat er en chat platform der giver dig nem adgang til private samtaler. Besked er krypteret før den forlader din skærm og beskyttet så ingen tredie part kan se dem, selv ikke os.',
+		'introParagraph2': 'Cryptocat er free software bygget på open standard. Udviklingsprocessen er under konstant eksaminering af et community af frivillige og entusiaster. <a href="https://project.crypto.cat" target="_blank">Lær mere om Cryptocat projektet.</a>.',
+		'project': 'Projekt',
+		'blog': 'Blog',
+		'source': 'Kildekode',
+		'customServer': 'brugerdefineret server...',
+		'conversationName': 'samtale navn',
+		'nickname': 'brugernavn',
+		'connect': 'forbind',
+		'enterConversation': 'Indtast navnet på en samtale'
+	},
+	'loginMessage': {
+		'enterConversation': 'Indtast et samtale navn',
+		'conversationAlphanumeric': 'Samtale navn skal være alfanumerisk.',
+		'enterNickname': 'Indtast bruger navn.',
+		'nicknameAlphanumeric': 'Bruger navn skal være alfanumerisk.',
+		'nicknameInUse': 'Bruger navn i brug.',
+		'authenticationFailure': 'Gofkendelse fejlede.',
+		'connectionFailed': 'Forbindelse fejlede.',
+		'thankYouUsing': 'Tak fordi du brugte Cryptocat.',
+		'registering': 'Registrering...',
+		'connecting': 'Forbinder...',
+		'typeRandomly': 'Tast så forskelligt taster som muligt i nogle sekunder.',
+		'generatingKeys': 'Genererer krypterings nøgle...'
+	},
+	'chatWindow': {
+		'groupConversation': 'Gruppe samtale. Klik på bruger navn for privat samtale.',
+		'otrFingerprint': 'OTR signatur (for privat samtale):',
+		'groupFingerprint': 'Gruppe samtale signatur:',
+		'statusAvailable': 'Status: Ledig',
+		'statusAway': 'Status: Ikke tilstede',
+		'myInfo': 'Min Info',
+		'desktopNotificationsOn': 'Desktop Besked On',
+		'desktopNotificationsOff': 'Desktop besked Off',
+		'audioNotificationsOn': 'Lyd Besked On',
+		'audioNotificationsOff': 'Lyd Besked Off',
+		'logout': 'Log ud',
+		'displayInfo': 'Vis Info',
+		'sendEncryptedFile': 'Send krypteret fil',
+		'conversation': 'Samtale'
+	}
+}
+
+language.es = {
+	'language': 'es',
+	'direction': 'ltr',
+	'font-family': 'Helvetica, Arial, Verdana',
+	'loginWindow': {
+		'introHeader': '﻿Conversaciones privadas para todos.',
+		'introParagraph1': 'Cryptocat es una plataforma de mensajería instantánea que te permite tener conversaciones privadas facilmente con tus amigos. Los mensajes son encriptados antes de dejar tu computador y son protegidos de ser vistos por alguna persona ajena, incluidos nosotros.',
+		'introParagraph2': 'Cryptocat es un software libre construido sobre estándares abiertos. Nuestro proceso de desarrollo esta en un continuo período de evaluación por una comunidad de voluntarios y entusiastas. <a href="https://project.crypto.cat" target="_blank">Descubre mas sobre el Proyecto Cryptocat</a>.',
+		'project': 'Proyecto',
+		'blog': 'Blog',
+		'source': 'Fuente',
+		'customServer': 'servidor personalizado...',
+		'conversationName': 'nombre de la conversación',
+		'nickname': 'nombre de usuario',
+		'connect': 'conectar',
+		'enterConversation': 'Introduce el nombre de una conversación.'
+	},
+	'loginMessage': {
+		'enterConversation': 'Por favor, introduce un nombre de conversación.',
+		'conversationAlphanumeric': 'El nombre de la conversación tiene que ser alfanumérico.',
+		'enterNickname': 'Por favor, introduce un nombre de usuario.',
+		'nicknameAlphanumeric': 'El nombre de usuario tiene que ser alfanumérico.',
+		'nicknameInUse': 'El nombre de usuario esta en uso.',
+		'authenticationFailure': 'Error de autenticación.',
+		'connectionFailed': 'Conexión Fallida.',
+		'thankYouUsing': 'Gracias por usar Cryptocat.',
+		'registering': 'Registrando...',
+		'connecting': 'Conectando...',
+		'typeRandomly': 'Por favor, escribe aleatoriamente en tu teclado durante unos segundos.',
+		'generatingKeys': 'Generando claves de encriptación...'
+	},
+	'chatWindow': {
+		'groupConversation': 'Conversación de grupo. Pincha en un usuario para una conversación privada.',
+		'otrFingerprint': 'Huella OTR (para conversaciones privadas):',
+		'groupFingerprint': 'Huella para conversaciones en grupo:',
+		'statusAvailable': 'Estado: Disponible',
+		'statusAway': 'Estado: Ausente',
+		'myInfo': 'Mi información',
+		'desktopNotificationsOn': 'Notificaciones de Escritorio activadas',
+		'desktopNotificationsOff': 'Notificaciones de Escritorio desactivadas',
+		'audioNotificationsOn': 'Notificaciones de audio activadas',
+		'audioNotificationsOff': 'Notificaciones de audio desactivadas',
+		'logout': 'Desconectarse',
+		'displayInfo': 'Mostrar información',
+		'sendEncryptedFile': 'Enviar archivo encriptado',
+		'conversation': 'Conversación'
 	}
 }
 
