@@ -1,4 +1,4 @@
-var Cryptocat = function() {};
+﻿var Cryptocat = function() {};
 (function(){
 
 /* Configuration */
@@ -21,6 +21,7 @@ var windowFocus = 1;
 var currentStatus = 'online';
 var soundEmbed = null;
 var conn, chatName, myNickname, myKey;
+var language = Language.set('en'); Language.setDefault('en');
 $('.button[title]').qtip();
 if (!groupChat) {
 	$('#buddy-main-Conversation').remove();
@@ -120,7 +121,7 @@ function buildConversationInfo(conversation) {
 	);
 	if (conversation === 'main-Conversation') {
 		$('#conversationInfo').append(
-			'<span style="float:right">Group conversation. Click on a user for private chat.</span>'
+			'<span style="float:right">' + language['chatWindow']['groupConversation'] + '</span>'
 		);
 	}
 	conversationInfo[currentConversation] = $('#conversationInfo').html();
@@ -190,9 +191,7 @@ function seedRNG() {
 	}
 	else {
 		var e, up, down;
-		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" alt="" />'
-			+ 'Please type on your keyboard'
-			+ ' as randomly as possible for a few seconds.</p>'
+		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" alt="" />' + language['loginMessage']['typeRandomly'] + '</p>'
 			+ '<input type="password" id="seedRNGInput" />';
 		dialogBox(progressForm, 0, function() {
 			$('#loginForm').submit();
@@ -416,7 +415,6 @@ function changeNickname(oldNickname, newNickname) {
 
 // Handle buddy going offline
 function buddyGoOffline(nickname) {
-	console.log(nickname);
 	// Delete their encryption keys
 	delete otrKeys[nickname];
 	multiParty.removeKeys(nickname);
@@ -480,7 +478,7 @@ function handlePresence(presence) {
 		if ($(presence).find('error').attr('code') === '409') {
 			loginError = 1;
 			logout();
-			loginFail('Nickname in use.');
+			loginFail(language['loginMessage']['nicknameInUse']);
 			return false;
 		}
 		return true;
@@ -500,7 +498,6 @@ function handlePresence(presence) {
 	if (nickname !== 'main-Conversation' && otrKeys[nickname] === undefined) {
 		otrKeys[nickname] = new OTR(myKey, uicb(nickname), iocb(nickname));
 		otrKeys[nickname].REQUIRE_ENCRYPTION = true;
-		console.log(otrKeys[nickname]);
 	}
 	// Detect buddy going offline
 	if ($(presence).attr('type') === 'unavailable') {
@@ -631,8 +628,8 @@ function sendFile(nickname) {
 // Display buddy information, including fingerprints etc.
 function displayInfo(nickname) {
 	var displayInfoDialog = '<div class="bar">' + nickname +'</div><div id="displayInfo">'
-		+ 'OTR fingerprint (for private conversations):<br /><span id="otrFingerprint"></span><br />'
-		+ '<br />Group conversation fingerprint:<br /><span id="multiPartyFingerprint"></span></div>';
+		+ language['chatWindow']['otrFingerprint'] + '<br /><span id="otrFingerprint"></span><br />'
+		+ '<br />' + language['chatWindow']['groupFingerprint']  + '<br /><span id="multiPartyFingerprint"></span></div>';
 	dialogBox(displayInfoDialog, 1);
 	if ((nickname !== myNickname) && !otrKeys[nickname].msgstate) {
 		$('#otrFingerprint').text('Generating...');
@@ -651,15 +648,15 @@ function bindBuddyMenu(nickname) {
 		if ($('#buddy-' + nickname).height() === 15) {
 			var buddyMenuContents = '<div class="buddyMenuContents" id="' + nickname + '-contents">';
 			$(this).css('background-image', 'url("img/up.png")');
-			$('#buddy-' + nickname).delay(10).animate({'height': '45px'}, 180, function() {
+			$('#buddy-' + nickname).delay(10).animate({'height': '28px'}, 180, function() {
 				$(this).append(buddyMenuContents);
-				if (nickname !== myNickname) {
-					$('#' + nickname + '-contents').append(
-						'<li class="option1">Send Encrypted File</li>'
-					);
-				}
+				// File sharing menu item
+				// (currently disabled)
+				// $('#' + nickname + '-contents').append(
+				//	'<li class="option1">' + language['chatWindow']['sendEncryptedFile']  + '</li>'
+				// );
 				$('#' + nickname + '-contents').append(
-					'<li class="option2">Display Info</li>'
+					'<li class="option2">' + language['chatWindow']['displayInfo'] + '</li>'
 				);
 				$('#' + nickname + '-contents').fadeIn('fast', function() {
 					$('.option1').click(function(event) {
@@ -733,17 +730,17 @@ function dialogBox(data, closeable, onClose) {
 // Buttons
 // Status button
 $('#status').click(function() {
-	if ($(this).attr('title') === 'Status: Available') {
+	if ($(this).attr('title') === language['chatWindow']['statusAvailable']) {
 		$(this).attr('src', 'img/away.png');
-		$(this).attr('alt', 'Status: Away');
-		$(this).attr('title', 'Status: Away');
+		$(this).attr('alt', language['chatWindow']['statusAway']);
+		$(this).attr('title', language['chatWindow']['statusAway']);
 		currentStatus = 'away';
 		sendStatus();
 	}
 	else {
 		$(this).attr('src', 'img/available.png');
-		$(this).attr('alt', 'Status: Available');
-		$(this).attr('title', 'Status: Available');
+		$(this).attr('alt', language['chatWindow']['statusAvailable']);
+		$(this).attr('title', language['chatWindow']['statusAvailable']);
 		currentStatus = 'online';
 		sendStatus();
 	}
@@ -761,10 +758,10 @@ if (!navigator.userAgent.match('Chrome')) {
 }
 else {
 	$('#notifications').click(function() {
-		if ($(this).attr('title') === 'Desktop Notifications Off') {
+		if ($(this).attr('title') === language['chatWindow']['desktopNotificationsOff']) {
 			$(this).attr('src', 'img/notifications.png');
-			$(this).attr('alt', 'Desktop Notifications On');
-			$(this).attr('title', 'Desktop Notifications On');
+			$(this).attr('alt', language['chatWindow']['desktopNotificationsOn']);
+			$(this).attr('title', language['chatWindow']['desktopNotificationsOn']);
 			desktopNotifications = 1;
 			if (Notification.checkPermission()) {
 				Notification.requestPermission();
@@ -772,8 +769,8 @@ else {
 		}
 		else {
 			$(this).attr('src', 'img/noNotifications.png');
-			$(this).attr('alt', 'Desktop Notifications Off');
-			$(this).attr('title', 'Desktop Notifications Off');
+			$(this).attr('alt', language['chatWindow']['desktopNotificationsOff']);
+			$(this).attr('title', language['chatWindow']['desktopNotificationsOff']);
 			desktopNotifications = 0;
 		}
 	});
@@ -781,16 +778,16 @@ else {
 
 // Audio notifications button
 $('#audio').click(function() {
-	if ($(this).attr('title') === 'Audio Notifications Off') {
+	if ($(this).attr('title') === language['chatWindow']['audioNotificationsOff']) {
 		$(this).attr('src', 'img/sound.png');
-		$(this).attr('alt', 'Audio Notifications On');
-		$(this).attr('title', 'Audio Notifications On');
+		$(this).attr('alt', language['chatWindow']['audioNotificationsOn']);
+		$(this).attr('title', language['chatWindow']['audioNotificationsOn']);
 		audioNotifications = 1;
 	}
 	else {
 		$(this).attr('src', 'img/noSound.png');
-		$(this).attr('alt', 'Audio Notifications Off');
-		$(this).attr('title', 'Audio Notifications Off');
+		$(this).attr('alt', language['chatWindow']['audioNotificationsOff']);
+		$(this).attr('title', language['chatWindow']['audioNotificationsOff']);
 		audioNotifications = 0;
 	}
 });
@@ -805,7 +802,14 @@ $('#userInput').submit(function() {
 	var message = $.trim($('#userInputText').val());
 	if (message !== '') {
 		if (currentConversation === 'main-Conversation') {
-			conn.muc.message(chatName + '@' + conferenceServer, null, multiParty.sendMessage(message), null);
+			if (multiParty.userCount() >= 1) {
+				conn.muc.message(
+					chatName + '@' + conferenceServer,
+					null,
+					multiParty.sendMessage(message),
+					null
+				);
+			}
 		}
 		else {
 			otrKeys[currentConversation].sendMsg(message);
@@ -816,7 +820,39 @@ $('#userInput').submit(function() {
 	return false;
 });
 
-/* Login Form */
+// Custom server dialog
+$('#customServer').click(function() {
+	var customServerDialog = '<div class="bar">' + language['loginWindow']['customServer'] + '</div><br />'
+		+ '<input type="text" id="customDomain"></input>'
+		+ '<input type="text" id="customConferenceServer"></input>'
+		+ '<input type="text" id="customBOSH"></input>'
+		+ '<input type="button" class="button" id="customServerSubmit"></input>';
+	dialogBox(customServerDialog, 1);
+	$('#customDomain').val(domain)
+		.attr('title', 'Domain name')
+		.click(function() {$(this).select()});
+	$('#customConferenceServer').val(conferenceServer)
+		.attr('title', 'XMPP-MUC server')
+		.click(function() {$(this).select()});
+	$('#customBOSH').val(bosh)
+		.attr('title', 'BOSH relay')
+		.click(function() {$(this).select()});
+	$('#customServerSubmit').val('done').click(function() {
+		domain = $('#customDomain').val();
+		conferenceServer = $('#customConferenceServer').val();
+		bosh = $('#customBOSH').val();
+		$('#dialogBoxClose').click();
+	});
+	$('#customDomain').select();
+	$('input[title]').qtip();
+});
+
+// Language selector
+$('#languages').change(function() {
+	language = Language.set($(this).val());
+});
+
+// Login form
 $('#chatName').select();
 $('#chatName').click(function() {
 	$(this).select();
@@ -829,21 +865,21 @@ $('#loginForm').submit(function() {
 	$('#nickname').val($.trim($('#nickname').val()));
 	chatName = $('#chatName').val();
 	if (($('#chatName').val() === '')
-		|| ($('#chatName').val() === 'conversation name')) {
-		loginFail('Please enter a conversation name.');
+		|| ($('#chatName').val() === language['loginWindow']['conversationName'])) {
+		loginFail(language['loginMessage']['enterConversation']);
 		$('#chatName').select();
 	}
 	else if (!$('#chatName').val().match(/^\w{1,20}$/)) {
-		loginFail('Conversation name must be alphanumeric.');
+		loginFail(language['loginMessage']['conversationAlphanumeric']);
 		$('#chatName').select();
 	}
 	else if (($('#nickname').val() === '')
-		|| ($('#nickname').val() === 'nickname')) {
-		loginFail('Please enter a nickname.');
+		|| ($('#nickname').val() === language['loginWindow']['nickname'])) {
+		loginFail(language['loginMessage']['enterNickname']);
 		$('#nickname').select();
 	}
 	else if (!$('#nickname').val().match(/^\w{1,16}$/)) {
-		loginFail('Nickname must be alphanumeric.');
+		loginFail(language['loginMessage']['nicknameAlphanumeric']);
 		$('#nickname').select();
 	}
 	// Don't process any login request unless RNG is seeded
@@ -862,15 +898,18 @@ $('#loginForm').submit(function() {
 		multiParty.genPrivateKey();
 		multiParty.genPublicKey();
 		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" '
-			+ 'alt="" /><p id="progressInfo"><span>Generating encryption keys...</span></p>';
+			+ 'alt="" /><p id="progressInfo"><span>'
+			+ language['loginMessage']['generatingKeys'] + '</span></p>';
 		dialogBox(progressForm, 0, function() {
 			$('#loginForm').submit();
 		});
-		$('#progressInfo').append(
-			'<br />Here is an interesting fact while you wait:'
-			+ '<br /><br /><span id="interestingFact">'
-			+ CatFacts.getFact() + '</span>'
-		);
+		if (language['language'] === 'en') {
+			$('#progressInfo').append(
+				'<br />Here is an interesting fact while you wait:'
+				+ '<br /><br /><span id="interestingFact">'
+				+ CatFacts.getFact() + '</span>'
+			);
+		}
 	}
 	else {
 		chatName = $('#chatName').val();
@@ -887,7 +926,7 @@ function registerXMPPUser(username, password) {
 	var registrationConnection = new Strophe.Connection(bosh);
 	registrationConnection.register.connect(domain, function(status) {
 		if (status === Strophe.Status.REGISTER) {
-			$('#loginInfo').html('Registering...');
+			$('#loginInfo').html(language['loginMessage']['registering']);
 			registrationConnection.register.fields.username = username;
 			registrationConnection.register.fields.password = password;
 			registrationConnection.register.submit();
@@ -910,22 +949,22 @@ function login(username, password) {
 	conn.connect(username + '@' + domain, password, function(status) {
 		if (status === Strophe.Status.CONNECTING) {
 			$('#loginInfo').animate({'color': '#999'}, 'fast');
-			$('#loginInfo').html('Connecting...');
+			$('#loginInfo').html(language['loginMessage']['connecting']);
 		}
 		else if (status === Strophe.Status.CONNFAIL) {
 			if (!loginError) {
-				$('#loginInfo').html('Connection failed.');
+				$('#loginInfo').html(language['loginMessage']['connectionFailed']);
 			}
 			$('#loginInfo').animate({'color': '#E93028'}, 'fast');
 		}
 		else if (status === Strophe.Status.CONNECTED) {
-			$('#loginInfo').html('Connected.');
+			$('#loginInfo').html(':3');
 			$('#loginInfo').animate({'color': '#0F0'}, 'fast');
 			$('#bubble').animate({'margin-top': '+=0.5%'}, function() {
 				$('#bubble').animate({'margin-top': '1.5%'}, function() {
 					$('#loginLinks').fadeOut();
 					$('#info').fadeOut();
-					$('#translations').fadeOut();
+					$('#options').fadeOut();
 					$('#loginForm').fadeOut();
 					$('#bubble').animate({'width': '900px'});
 					$('#bubble').animate({'height': '550px'}, function() {
@@ -964,7 +1003,7 @@ function login(username, password) {
 					$('#buddyWrapper').fadeOut();
 					if (!loginError) {
 						$('#loginInfo').animate({'color': '#999'}, 'fast');
-						$('#loginInfo').html('Thank you for using Cryptocat.');
+						$('#loginInfo').html(language['loginMessage']['thankYouUsing']);
 					}
 					$('#bubble').animate({'width': '680px'});
 					$('#bubble').animate({'height': '310px'})
@@ -983,15 +1022,15 @@ function login(username, password) {
 							currentConversation = 0;
 							coflictIsPossible = 1;
 							if (!loginError) {
-								$('#chatName').val('conversation name');
+								$('#chatName').val(language['loginWindow']['conversationName']);
 							}
 							$('#chatName').removeAttr('readonly');
-							$('#nickname').val('nickname');
+							$('#nickname').val(language['loginWindow']['nickname']);
 							$('#nickname').removeAttr('readonly');
 							$('#newAccount').attr('checked', false);
 							$('#info').fadeIn();
 							$('#loginLinks').fadeIn();
-							$('#translations').fadeIn();
+							$('#options').fadeIn();
 							$('#loginForm').fadeIn('fast', function() {
 								$('#chatName').select();
 							});
@@ -1002,7 +1041,7 @@ function login(username, password) {
 			});
 		}
 		else if (status === Strophe.Status.AUTHFAIL) {
-			loginFail('Authentication failure.');
+			loginFail(language['loginMessage']['authenticationFailure']);
 			$('#chatName').select();
 		}
 	});

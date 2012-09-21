@@ -18,6 +18,7 @@ a:hover {
 img.logo {
 	display: inline;
 	padding-left: 10px;
+	float: left;
 }
 #bubble:before {
 	content: ' ';
@@ -106,10 +107,10 @@ img.logo {
 [type=submit]:hover {
 	cursor: pointer;
 	background-color: #97CEEC;
-	box-shadow: 2px 2px #333;
+	border: 1px solid #97CEEC;
 }
 [type=submit]:active {
-	border: none;
+	border: 1px solid #97CEEC;
 	box-shadow: 2px 2px #76BDE5;
 }
 #loginInfo {
@@ -124,7 +125,21 @@ img.logo {
 	font-family: Helvetica, Arial;
 	font-size: 18px;
 }
-#bubble #translations {
+#bubble #customServer {
+	background-color: #97CEEC;
+	color: #FFF;
+	text-align: center;
+	width: 212px;
+	display: block;
+	margin-left: 3px;
+	font-size: 10px;
+	border-bottom: 1px solid #97CEEC;
+}
+#bubble #customServer:hover {
+	text-decoration: none;
+	border-bottom: 1px dashed #FFF;
+}
+#bubble #options {
 	background-color: #222;
 	width: 110px;
 	height: 20px;
@@ -170,6 +185,7 @@ img.logo {
 	position: relative;
 	border-left: 3px solid #97CEEC;
 	z-index: 1;
+	text-align: left;
 	cursor: pointer;
 }
 .buddyMenu {
@@ -267,11 +283,12 @@ img.logo {
 	border: none;
 	display: block;
 	box-sizing: content-box;
+	outline: none;
 	color: #FFF;
 }
 #dialogBox .button, #dialogBox .no {
 	cursor: pointer;
-	margin-top: 15px;
+	margin-top: 5px;
 }
 #dialogBox .button {
 	background-color: #97CEEC;
@@ -358,7 +375,7 @@ img.logo {
 }
 #progressForm {
 	text-align: left;
-	margin-bottom: 0;
+	font-size: 11px;
 }
 #progressInfo span {
 	font-size: 13px;
@@ -380,14 +397,14 @@ img.logo {
 #progressInfo #interestingFact {
 	font-size: 11px;
 }
-#seedRNGInput {
+#dialogBox input {
 	background-color: #000;
 	border: 1px solid #97CEEC;
 	color: #97CEEC;
 	box-shadow: none;
 	float: left;
 	text-align: left;
-	margin-top: 0;
+	margin: 0 5px 10px 5px;
 	width: 255px;
 	box-shadow: 2px 2px #97CEEC;
 	font-size: 11px;

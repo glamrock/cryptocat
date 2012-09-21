@@ -1,6 +1,6 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <head>
-	<meta charset="US-ASCII" />
+	<meta charset="UTF-8" />
 	<title>Cryptocat</title>
 	<link rel="stylesheet" href="css/style.css" type="text/css" />
 	<link rel="icon" type="image/gif" href="img/favicon.gif" />
@@ -29,6 +29,7 @@
 	<script type="text/javascript" src="js/elliptic.js"></script>
 	<script type="text/javascript" src="js/multiparty.js"></script>
 	<script type="text/javascript" src="js/catfacts.js"></script>
+	<script type="text/javascript" src="js/language.js"></script>
 </head>
 <body>
 	<div id="dialogBox">
@@ -38,51 +39,46 @@
 	<div id="bubble">
 		<div id="head">
 			<img src="img/cryptocat.png" alt="Cryptocat" class="logo" />
-			<img class="button" id="logout" src="img/logout.png" 
-				title="Logout" alt="Logout" />
-			<img class="button" id="audio" src="img/noSound.png" 
-				title="Audio Notifications Off" alt="Audio Notifications Off" />
-			<img class="button" id="notifications" src="img/noNotifications.png" 
-				title="Desktop Notifications Off" alt="Desktop Notifications Off" />
-			<img class="button" id="myInfo" src="img/key.png" 
-				title="My Info" alt="My Info" />
-			<img class="button" id="status" src="img/available.png" 
-				title="Status: Available" alt="Status: Available" />
+			<img class="button" id="logout" src="img/logout.png" alt="" />
+			<img class="button" id="audio" src="img/noSound.png" alt="" />
+			<img class="button" id="notifications" src="img/noNotifications.png" alt="" />
+			<img class="button" id="myInfo" src="img/key.png" alt="" />
+			<img class="button" id="status" src="img/available.png" alt="" />
 			<div id="loginLinks">
-				<a href="https://project.crypto.cat" target="_blank">Project</a>
-				<a href="https://blog.crypto.cat" target="_blank">Blog</a>
-				<a href="https://github.com/kaepora/cryptocat/" target="_blank">Source</a>
+				<a href="https://project.crypto.cat" target="_blank" id="project"></a>
+				<a href="https://blog.crypto.cat" target="_blank" id="blog"></a>
+				<a href="https://github.com/kaepora/cryptocat/" target="_blank" id="source"></a>
 			</div>
 		</div>
 		<div id="info">
-			<h1>Private Conversations for Everyone.</h1>
-			<p>Cryptocat is an instant messaging platform that lets you easily have private 
-				conversations with friends. Messages are encrypted before leaving your screen and 
-				are protected from being viewed by any third party, even from us.</p>
-			<p>Cryptocat is free software built on open standards. Our development process is under 
-				continuous examination by a community of volunteers and enthusiasts. 
-				<a href="https://project.crypto.cat" target="_blank">
-				Learn more about the Cryptocat Project</a>.</p>
+			<h1 id="introHeader"></h1>
+			<p id="introParagraph1"></p>
+			<p id="introParagraph2"></p>
 		</div>
 		<form id="loginForm">
-			<div id="loginInfo">Enter the name of a conversation to join.</div>
-			<input type="text" value="conversation name" id="chatName" maxlength="20" autocomplete="off" />
-			<input type="text" value="nickname" id="nickname" maxlength="16" autocomplete="off" />
+			<div id="loginInfo"></div>
+			<input type="text" value="conversation name" id="chatName" 
+				maxlength="20" autocomplete="off" />
+			<input type="text" value="nickname" id="nickname" 
+				maxlength="16" autocomplete="off" />
 			<input type="submit" value="connect" id="loginSubmit" />
+			<a href="#" id="customServer"></a>
 		</form>
-		<div id="translations">
+		<div id="options">
 			<select id="languages">
-				<option value="english">English</option>
-				<option value="catalan">Catal�n</option>
-				<option value="francais">Fran�ais</option>
+				<option value="en">English</option>
+				<option value="ca">Català</option>
+				<option value="ar">عربي</option>
+				<option value="fr">Français</option>
 			</select>
 		</div>
 		<div id="buddyWrapper">
 			<div id="buddyList">
 				<span id="currentConversation"></span>
 				<span id="buddiesOnline"></span>
-				<div class="buddy" title="main-Conversation" id="buddy-main-Conversation" style="display:block" status="online">
-					<span>Conversation</span>
+				<div class="buddy" title="main-Conversation" 
+					id="buddy-main-Conversation" style="display:block" status="online">
+					<span id="conversationTag"></span>
 				</div>
 				<span id="buddiesAway"></span>
 			</div>
