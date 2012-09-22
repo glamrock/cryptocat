@@ -20,8 +20,7 @@ var loginError = 0;
 var windowFocus = 1;
 var currentStatus = 'online';
 var soundEmbed = null;
-var conn, chatName, myNickname, myKey;
-$('.button[title]').qtip();
+var conn, conversationName, myNickname, myKey;
 if (!groupChat) {
 	$('#buddy-main-Conversation').remove();
 }
@@ -33,6 +32,7 @@ try {
 catch(err) {
 	language = Language.set('en');
 }
+$('.button[title]').qtip();
 
 // Detect window focus
 window.onfocus = function() {
@@ -117,14 +117,14 @@ var uicb = function(buddy) {
 // Handle outgoing messages
 var iocb = function(buddy) {
   return function(message) {
-    conn.muc.message(chatName + '@' + conferenceServer, buddy, message, null);
+    conn.muc.message(conversationName + '@' + conferenceServer, buddy, message, null);
   }
 }
 
 // Creates a template for the conversation info bar at the top of each conversation.
 function buildConversationInfo(conversation) {
 	$('#conversationInfo').html(
-		'<span class="chatName">' + myNickname + '@' + chatName + '</span>'
+		'<span class="conversationName">' + myNickname + '@' + conversationName + '</span>'
 	);
 	if (conversation === 'main-Conversation') {
 		$('#conversationInfo').append(
@@ -221,7 +221,7 @@ function seedRNG() {
 			}
 			else {
 				$('#seedRNGInput').unbind('keyup').unbind('keydown');
-				$('#chatName').attr('readonly', 'true');
+				$('#conversationName').attr('readonly', 'true');
 				$('#seedRNGInput').attr('readonly', 'true');
 				$('#dialogBoxClose').click();
 				Math.seedrandom(CryptoJS.Fortuna.RandomData(1024));				
@@ -272,7 +272,7 @@ function buildBuddy(nickname) {
 		$('#buddy-' + nickname).unbind('click');
 		if (nickname !== myNickname) {
 			bindBuddyClick(nickname);
-			conn.muc.message(chatName + '@' + conferenceServer, null, multiParty.sendPublicKeyRequest(nickname), null);
+			conn.muc.message(conversationName + '@' + conferenceServer, null, multiParty.sendPublicKeyRequest(nickname), null);
 		}
 		else {
 			$('#buddy-' + nickname).click(function() {
@@ -465,7 +465,7 @@ function handleMessage(message) {
 			return true;
 		}
 		if (body[myNickname] && body[myNickname]['message'].match(multiParty.requestRegEx)) {
-			conn.muc.message(chatName + '@' + conferenceServer, null, multiParty.sendPublicKey(nick), null);
+			conn.muc.message(conversationName + '@' + conferenceServer, null, multiParty.sendPublicKey(nick), null);
 		}
 		else if (body[myNickname] || body['*']) {
 			addToConversation(multiParty.receiveMessage(nick, myNickname, JSON.stringify(body)), nick, 'main-Conversation');
@@ -690,10 +690,10 @@ function bindBuddyMenu(nickname) {
 // Send your current status to the XMPP server.
 function sendStatus() {
 	if (currentStatus === 'away') {
-		conn.muc.setStatus(chatName + '@' + conferenceServer, myNickname, 'away', 'away');
+		conn.muc.setStatus(conversationName + '@' + conferenceServer, myNickname, 'away', 'away');
 	}
 	else {
-		conn.muc.setStatus(chatName + '@' + conferenceServer, myNickname, '', '');
+		conn.muc.setStatus(conversationName + '@' + conferenceServer, myNickname, '', '');
 	}
 }
 
@@ -811,7 +811,7 @@ $('#userInput').submit(function() {
 		if (currentConversation === 'main-Conversation') {
 			if (multiParty.userCount() >= 1) {
 				conn.muc.message(
-					chatName + '@' + conferenceServer,
+					conversationName + '@' + conferenceServer,
 					null,
 					multiParty.sendMessage(message),
 					null
@@ -857,28 +857,29 @@ $('#customServer').click(function() {
 // Language selector
 $('#languages').change(function() {
 	language = Language.set($(this).val());
+	$('#conversationName').select();
 });
 
 // Login form
-$('#chatName').select();
-$('#chatName').click(function() {
+$('#conversationName').select();
+$('#conversationName').click(function() {
 	$(this).select();
 });
 $('#nickname').click(function() {
 	$(this).select();
 });
 $('#loginForm').submit(function() {
-	$('#chatName').val($.trim($('#chatName').val()));
+	$('#conversationName').val($.trim($('#conversationName').val()));
 	$('#nickname').val($.trim($('#nickname').val()));
-	chatName = $('#chatName').val();
-	if (($('#chatName').val() === '')
-		|| ($('#chatName').val() === language['loginWindow']['conversationName'])) {
+	conversationName = $('#conversationName').val();
+	if (($('#conversationName').val() === '')
+		|| ($('#conversationName').val() === language['loginWindow']['conversationName'])) {
 		loginFail(language['loginMessage']['enterConversation']);
-		$('#chatName').select();
+		$('#conversationName').select();
 	}
-	else if (!$('#chatName').val().match(/^\w{1,20}$/)) {
+	else if (!$('#conversationName').val().match(/^\w{1,20}$/)) {
 		loginFail(language['loginMessage']['conversationAlphanumeric']);
-		$('#chatName').select();
+		$('#conversationName').select();
 	}
 	else if (($('#nickname').val() === '')
 		|| ($('#nickname').val() === language['loginWindow']['nickname'])) {
@@ -917,15 +918,13 @@ $('#loginForm').submit(function() {
 				+ CatFacts.getFact() + '</span>'
 			);
 		}
-		else {
-			$('#progressInfo').append(
-				'<div id="progressBar"><div id="fill"></div></div>'
-			);
-			$('#fill').animate({'width': '100%'}, 26000);
-		}
+		$('#progressInfo').append(
+			'<div id="progressBar"><div id="fill"></div></div>'
+		);
+		$('#fill').animate({'width': '100%'}, 26000, 'linear');
 	}
 	else {
-		chatName = $('#chatName').val();
+		conversationName = $('#conversationName').val();
 		myNickname = $('#nickname').val();
 		loginCredentials[0] = Cryptocat.randomString(256, 1, 1, 1);
 		loginCredentials[1] = Cryptocat.randomString(256, 1, 1, 1);
@@ -971,7 +970,7 @@ function login(username, password) {
 			$('#loginInfo').animate({'color': '#E93028'}, 'fast');
 		}
 		else if (status === Strophe.Status.CONNECTED) {
-			$('#loginInfo').html(':3');
+			$('#loginInfo').html('✓');
 			$('#loginInfo').animate({'color': '#0F0'}, 'fast');
 			$('#bubble').animate({'margin-top': '+=0.5%'}, function() {
 				$('#bubble').animate({'margin-top': '1.5%'}, function() {
@@ -991,7 +990,7 @@ function login(username, password) {
 							}
 						});
 						loginError = 0;
-						conn.muc.join(chatName + '@' + conferenceServer, myNickname, 
+						conn.muc.join(conversationName + '@' + conferenceServer, myNickname, 
 							function(message) {
 								if (handleMessage(message)) {
 									return true;
@@ -1035,9 +1034,9 @@ function login(username, password) {
 							currentConversation = 0;
 							coflictIsPossible = 1;
 							if (!loginError) {
-								$('#chatName').val(language['loginWindow']['conversationName']);
+								$('#conversationName').val(language['loginWindow']['conversationName']);
 							}
-							$('#chatName').removeAttr('readonly');
+							$('#conversationName').removeAttr('readonly');
 							$('#nickname').val(language['loginWindow']['nickname']);
 							$('#nickname').removeAttr('readonly');
 							$('#newAccount').attr('checked', false);
@@ -1045,7 +1044,7 @@ function login(username, password) {
 							$('#loginLinks').fadeIn();
 							$('#options').fadeIn();
 							$('#loginForm').fadeIn('fast', function() {
-								$('#chatName').select();
+								$('#conversationName').select();
 							});
 						});
 					$('.buddy').unbind('click');
@@ -1055,14 +1054,14 @@ function login(username, password) {
 		}
 		else if (status === Strophe.Status.AUTHFAIL) {
 			loginFail(language['loginMessage']['authenticationFailure']);
-			$('#chatName').select();
+			$('#conversationName').select();
 		}
 	});
 }
 
 // Logout function
 function logout() {
-	conn.muc.leave(chatName + '@' + conferenceServer);
+	conn.muc.leave(conversationName + '@' + conferenceServer);
 	conn.disconnect();
 }
 
