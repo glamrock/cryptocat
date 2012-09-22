@@ -10,6 +10,8 @@ Cryptocat is a browser-based XMPP client that provides multi-user (and private) 
 Run `make chrome` to build a Google Chrome-loadable .zip extension.
 ##### Mozilla Firefox: `src/firefox/`
 Run `make firefox` to build a Mozilla Firefox-loadable .xpi extension.
+##### Apple Safari: `src/cryptocat.safariplugin/`
+Apple's model makes an automated build process difficult.  
 
 ## Documentation & Wiki:
 * [Threat Model](https://github.com/kaepora/cryptocat/wiki/Threat-Model)  
@@ -37,7 +39,7 @@ The full license text is included in `LICENSE.txt`.
 
 ## Notes:
 **Alpha codebase!**
-* The Safari code directory `src/cryptocat.safariextension` doubles as a "testing" directory where code changes are made before being pushed to Chrome and Firefox (using `update.sh`). As such, the directory is also loadable in Google Chrome under developer mode.
+* The Safari code directory `src/cryptocat.safariextension/` doubles as a "testing" directory where code changes are made before being pushed to Chrome and Firefox (using `update.sh`). As such, the directory is also loadable in Google Chrome under developer mode.
 
 ## Goals:
 * XMPP **[DONE]** | [Discussion](https://github.com/kaepora/cryptocat/issues/83), [Library](http://strophe.im)
