@@ -583,8 +583,8 @@ language.el = {
 	'font-family': 'Helvetica, Arial, Verdana',
 	'loginWindow': {
 		'introHeader': '﻿Ιδιωτικές Συνομιλίες για Όλους.',
-		'introParagraph1': 'Το Cryptocat είναι μια πλατφόρμα άμεσων μηνυμάτων που σας επιτρέπει με εύκολο τρόπο να συνομιλείτε ιδιωτικά με φίλους. Τα μηνύματα κρυπτογραφούνται πριν εγκαταλείψουν την οθόνη σας και η θέασή τους προστατεύεται από τρίτους, ακόμα κι από εμάς.',
-		'introParagraph2': 'Το Cryptocat είναι ελεύθερο λογισμικό βασισμένο σε ανοιχτά πρότυπα. Η διαδικασία ανάπτυξης που ακολουθούμε εξετάζεται συνεχώς από μια κοινότητα εθελοντών και θιασωτών. <a href="https://project.crypto.cat" target="_blank">Μάθετε περισσότερα για το Cryptocat Project</a>.',
+		'introParagraph1': 'Cryptocat είναι μια πλατφόρμα άμεσων μηνυμάτων που σας επιτρέπει με εύκολο τρόπο να συνομιλείτε ιδιωτικά με φίλους. Τα μηνύματα κρυπτογραφούνται πριν εγκαταλείψουν την οθόνη σας και η θέασή τους προστατεύεται από τρίτους, ακόμα κι από εμάς.',
+		'introParagraph2': 'Cryptocat είναι ελεύθερο λογισμικό βασισμένο σε ανοιχτά πρότυπα. Η διαδικασία ανάπτυξης που ακολουθούμε εξετάζεται συνεχώς από μια κοινότητα εθελοντών και θιασωτών. <a href="https://project.crypto.cat" target="_blank">Μάθετε περισσότερα για το Cryptocat Project</a>.',
 		'project': 'Πρότζεκτ',
 		'blog': 'Blog',
 		'source': 'Πηγή',
@@ -721,6 +721,104 @@ language.pt = {
 		'displayInfo': 'Exibir informações',
 		'sendEncryptedFile': 'Enviar arquivo criptografado',
 		'conversation': 'Conversa'
+	}
+}
+
+language.ru = {
+	'language': 'ru',
+	'direction': 'ltr',
+	'font-family': 'Helvetica, Arial, Verdana',
+	'loginWindow': {
+		'introHeader': 'Частные беседы для всех.',
+		'introParagraph1': 'Cryptocat - это платформа обмена мнгновенными сообщениями, которая позволяет вам приватно общаться с вашими друзьями. Сообщения зашифрованы и защищены от просмотра посторонними людьми, даже разработчиками.',
+		'introParagraph2': 'Cryptocat - это свободное программное обеспечение, основанное на открытых стандартах. Наш процесс разработки ведется постоянным контролем сообщества добровольцев и энтузиастов. <a href="https://project.crypto.cat" target="_blank">Узнать больше про проект Cryptocat</a>.',
+		'project': 'Проект',
+		'blog': 'Блог',
+		'source': 'Источник',
+		'customServer': 'Подключиться к другому серверу...',
+		'conversationName': 'имя для разговора',
+		'nickname': 'имя пользователя',
+		'connect': 'соединиться',
+		'enterConversation': 'Введите название разговора, к которому нужно присоединиться.'
+	},
+	'loginMessage': {
+		'enterConversation': 'Пожалуйста, введите название разговора.',
+		'conversationAlphanumeric': 'Имя для разговора должно содержать только буквы или цифры.',
+		'enterNickname': 'Пожалуйста, введите имя пользователя.',
+		'nicknameAlphanumeric': 'Имя пользователя должно содержать только буквы или цифры.',
+		'nicknameInUse': 'Это имя пользователя уже используется.',
+		'authenticationFailure': 'Ошибка авторизации.',
+		'connectionFailed': 'Ошибка подключения.',
+		'thankYouUsing': 'Спасибо за использование Cryptocat.',
+		'registering': 'Регистрация...',
+		'connecting': 'Соединение...',
+		'typeRandomly': 'Пожалуйста, нажимайте случайные клавиши несколько секунд.',
+		'generatingKeys': 'Генерация ключей шифрования... '
+	},
+	'chatWindow': {
+		'groupConversation': 'Групповой разговор. Нажмите на имя пользователя для начала приватной беседы.',
+		'otrFingerprint': 'Отпечаток OTR (для приватных бесед)',
+		'groupFingerprint': 'Отпечаток многопользовательского чата',
+		'statusAvailable': 'Статус: Доступен',
+		'statusAway': 'Статус: Нет на месте',
+		'myInfo': 'Моя информация',
+		'desktopNotificationsOn': 'Браузерные уведомления включены',
+		'desktopNotificationsOff': 'Браузерные уведомления выключены',
+		'audioNotificationsOn': 'Аудио уведомления включены',
+		'audioNotificationsOff': 'Аудио уведомления выключены',
+		'logout': 'Выйти',
+		'displayInfo': 'Отобразить информацию',
+		'sendEncryptedFile': 'Отправить зашифрованный файл',
+		'conversation': 'Разговор'
+	}
+}
+
+language.sv = {
+	'language': 'sv',
+	'direction': 'ltr',
+	'font-family': 'Helvetica, Arial, Verdana',
+	'loginWindow': {
+		'introHeader': 'Privata konversationer för alla.',
+		'introParagraph1': 'Cryptocat är en plattform för direktkommunikation som enkelt ger dig möjlighet till privata konversationer med dina vänner. Meddelanden är krypterade innan de lämnar din skärm och är skyddade för insyn av all tredjepart, även oss.',
+		'introParagraph2': 'Cryptopcat är en öppen mjukvara byggd på öppna standarder. Vår utvecklingsprocess är under kontinuerlig övervakning av en community bestående av volontärer och entusiaster. <a href="https://project.crypto.cat" target="_blank">Lär dig mer om Cryptocat Projektet</a>.',
+		'project': 'Projekt',
+		'blog': 'Blogg',
+		'source': 'Källa',
+		'customServer': 'egen server...',
+		'conversationName': 'konversationsnamn',
+		'nickname': 'smeknamn',
+		'connect': 'ansluta',
+		'enterConversation': 'Skriv in namnet på den konversation du vill delta i.'
+	},
+	'loginMessage': {
+		'enterConversation': 'Vänligen skriv in ett konversationsnamn.',
+		'conversationAlphanumeric': 'Konversationsnamnet måste vara alfanumeriskt.',
+		'enterNickname': 'Vänligen skriv in ett smeknamn.',
+		'nicknameAlphanumeric': 'Smeknamnet måste vara alfanumeriskt.',
+		'nicknameInUse': 'Smeknamnet användas redan.',
+		'authenticationFailure': 'Autentiseringsfel.',
+		'connectionFailed': 'Anslutning misslyckades.',
+		'thankYouUsing': 'Tack för att du använder Cryptocat.',
+		'registering': 'Registrerar...',
+		'connecting': 'Ansluter...',
+		'typeRandomly': 'Vänligen skriv in slumpmässiga tecken på ditt tangentbord under ett par sekunder.',
+		'generatingKeys': 'Genererar krypteringsnycklar...'
+	},
+	'chatWindow': {
+		'groupConversation': 'Gruppkonversation. Klicka på en användare för privat chatt.',
+		'otrFingerprint': 'OTR fingeravtryck (för privata konversationer):',
+		'groupFingerprint': 'Gruppkonversation fingeravtryck:',
+		'statusAvailable': 'Status: Tillgänglig',
+		'statusAway': 'Status: Frånvarande',
+		'myInfo': 'Min information',
+		'desktopNotificationsOn': 'Skrivbordsnotifieringar På',
+		'desktopNotificationsOff': 'Skrivbordsnotifieringar Av',
+		'audioNotificationsOn': 'Ljudnotifikationer På',
+		'audioNotificationsOff': 'Ljudnotifikationer Av',
+		'logout': 'Logga ut',
+		'displayInfo': 'Visa information',
+		'sendEncryptedFile': 'Skicka krypterad fil',
+		'conversation': 'Konversation'
 	}
 }
 
