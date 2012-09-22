@@ -433,6 +433,17 @@ img.logo {
 .imageView:hover, .fileView:hover {
 	text-decoration: none;
 }
+#progressBar {
+	margin-top: 30px;
+	height: 17px;
+	width: 230px;
+	border: 1px solid #97CEEC;
+}
+#progressBar #fill {
+	height: 105%;
+	width: 0%;
+	background-color: #97CEEC;
+}
 
 .emoticon {
 	background: transparent url("../img/emoticat.png") no-repeat;
