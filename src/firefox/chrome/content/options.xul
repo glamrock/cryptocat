@@ -6,11 +6,12 @@
      xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
  
 	<prefpane label="Cryptocat Preferences">
-		<!--<preferences>
-			<preference id="cryptocat-autorun" name="extensions.cryptocat.autorun" type="bool"/>
+		<preferences>
+			<preference id="cryptocatFirstRun" name="extensions.cryptocat.firstRun" type="bool" />
+			<preference id="cryptocatAutoRun" name="extensions.cryptocat.autoRun" type="bool" />
 		</preferences>
 		
-		<groupbox>
+		<!--<groupbox>
 			<caption label="Settings"/>
 			<grid>
 				<columns>
@@ -20,12 +21,12 @@
 				<rows>
 					<row>
 						<label control="autorun" value="Autorun"/>
-						<checkbox id="autorun" preference="cryptocat-autorun"/>
+						<checkbox id="autorun" preference="cryptocatAutoRun"/>
 					</row>
 				</rows>
 			</grid>
 		</groupbox>-->
-		
+		This extension has no preferences.
 	</prefpane>
  
 </prefwindow>

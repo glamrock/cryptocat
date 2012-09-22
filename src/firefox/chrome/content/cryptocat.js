@@ -2,14 +2,16 @@ var cryptocat = function () {
 	var prefManager = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces.nsIPrefBranch);
 	return {
 		init: function () {
-			gBrowser.addEventListener("load", function () {
-				var autoRun = prefManager.getBoolPref("extensions.cryptocat.autorun");
-				if (autoRun) {
-					cryptocat.run();
-				}
-			}, false);
+			var firstRun = prefManager.getBoolPref('extensions.cryptocat.firstRun');
+			if (firstRun) {
+				Application.prefs.setValue('extensions.cryptocat.firstRun', false);
+				var navbar = document.getElementById('nav-bar');
+				var newset = navbar.currentSet + ',cryptocatToolbarButton';
+				navbar.currentSet = newset;
+				navbar.setAttribute('currentset', newset );
+				document.persist('nav-bar', 'currentset'); 
+			}
 		},
-			
 		run: function () {
 			var tBrowser = document.getElementById('content');
 			var tab = tBrowser.addTab('chrome://cryptocat/content/data/index.html');
@@ -17,4 +19,4 @@ var cryptocat = function () {
 		}
 	};
 }();
-window.addEventListener("load", cryptocat.init, false);
+window.addEventListener('load', cryptocat.init(), false);

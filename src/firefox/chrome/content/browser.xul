@@ -13,15 +13,15 @@
 		</keyset>
 		
 		<statusbar id="status-bar">
-			<statusbarpanel id="firefoxStatusbarIcon" class="statusbarpanel-iconic" src="chrome://cryptocat/skin/bar.png" tooltiptext="&opencryptocat;" onclick="cryptocat.run()" />
+			<statusbarpanel id="cryptocatStatusbarIcon" class="statusbarpanel-iconic" src="chrome://cryptocat/skin/bar.png" tooltiptext="&opencryptocat;" onclick="cryptocat.run()" />
 		</statusbar>
 		
 		<toolbarpalette id="BrowserToolbarPalette">
-			<toolbarbutton id="firefoxToolbarButton" label="Cryptocat" tooltiptext="&opencryptocat;" oncommand="cryptocat.run()"/>
+			<toolbarbutton id="cryptocatToolbarButton" label="Cryptocat" tooltiptext="&opencryptocat;" oncommand="cryptocat.run()"/>
 		</toolbarpalette>
 		
 		<vbox id="appmenuSecondaryPane">
-			<menuitem id="cryptocat-menu-item-2"
+			<menuitem id="cryptocatMenuItem"
 				label="Cryptocat"
 				accesskey="cryptocatRunKey"
 				oncommand="cryptocat.run()"
