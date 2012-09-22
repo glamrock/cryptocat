@@ -917,6 +917,12 @@ $('#loginForm').submit(function() {
 				+ CatFacts.getFact() + '</span>'
 			);
 		}
+		else {
+			$('#progressInfo').append(
+				'<div id="progressBar"><div id="fill"></div></div>'
+			);
+			$('#fill').animate({'width': '100%'}, 26000);
+		}
 	}
 	else {
 		chatName = $('#chatName').val();

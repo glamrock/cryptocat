@@ -55,6 +55,8 @@
 			<string>All</string>
 		</dict>
 	</dict>
+	<key>Update Manifest URL</key>
+	<string>https://crypto.cat/get/safari.update.plist</string>
 	<key>Website</key>
 	<string>https://project.crypto.cat</string>
 </dict>
