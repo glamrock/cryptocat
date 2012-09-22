@@ -445,7 +445,7 @@ language.eu = {
 		'conversationName': 'elkarrizketa-izena',
 		'nickname': 'goitizena',
 		'connect': 'konektatu',
-		'enterConversation': 'Sartu elkarrizketa baten izena bertara sartzeko. '
+		'enterConversation': 'Sartu elkarrizketa baten izena bertara sartzeko.'
 	},
 	'loginMessage': {
 		'enterConversation': 'Sartu elkarrizketa-izena.',
@@ -476,6 +476,153 @@ language.eu = {
 		'displayInfo': 'Erakutsi informazioa',
 		'sendEncryptedFile': 'Bidali fitxategi zifratua',
 		'conversation': 'Elkarrizketa'
+	}
+}
+
+language.cs = {
+	'language': 'cs',
+	'direction': 'ltr',
+	'font-family': 'Helvetica, Arial, Verdana',
+	'loginWindow': {
+		'introHeader': '﻿Soukromý pokec pro všechny.',
+		'introParagraph1': 'Cryptocat je instantní komunikační platforma, která umožňuje soukromé rozhovory s přáteli. Zprávy jsou šifrovány před odesláním z Vaší obrazovky a jsou chráněny před prohlížením jakoukoli třetí stranou, včetně nás.',
+		'introParagraph2': 'Cryptocat je gratis software postavený na standardech open software. Náš vývojový proces je pod konstantním dohledem společenstva dobrovolníků a nadšenců. <a href="https://project.crypto.cat" target="_blank">Přečtěte si více o projektu Cryptocat</a>.',
+		'project': 'Projekt',
+		'blog': 'Blog',
+		'source': 'Zdroj',
+		'customServer': 'vlastní server...',
+		'conversationName': 'jméno pokecu',
+		'nickname': 'přezdívka',
+		'connect': 'připojit',
+		'enterConversation': 'Zadejte jméno pokecu ke kterému se chcete připojit.'
+	},
+	'loginMessage': {
+		'enterConversation': 'Zadejte jméno pokecu.',
+		'conversationAlphanumeric': 'Jméno pokecu musí být alfanumerické.',
+		'enterNickname': 'Zadejte přezdívku.',
+		'nicknameAlphanumeric': 'Přezdívka musí být alfanumerická.',
+		'nicknameInUse': 'Přezdívka je již užita.',
+		'authenticationFailure': 'Ověření selhalo.',
+		'connectionFailed': 'Připojení selhalo.',
+		'thankYouUsing': 'Děkujeme, že používáte Cryptocat.',
+		'registering': 'Registruji...',
+		'connecting': 'Připojuji...',
+		'typeRandomly': 'Ťukejte na klávesnici mnoho náhodných znaků po dobu několika sekund.',
+		'generatingKeys': 'Generuji šifrovací klíče...'
+	},
+	'chatWindow': {
+		'groupConversation': 'Skupinový pokec. Klikněte na uživatele pro soukromý pokec.',
+		'otrFingerprint': 'OTR fingerprint (pro soukromý pokec):',
+		'groupFingerprint': 'Fingerprint skupinového pokecu:',
+		'statusAvailable': 'Status: k dispozici',
+		'statusAway': 'Status: pryčn',
+		'myInfo': 'Moje info',
+		'desktopNotificationsOn': 'Desktopová oznámení zapnuta',
+		'desktopNotificationsOff': 'Desktopová oznámení vypnuta',
+		'audioNotificationsOn': 'Zvuková oznámení zapnuta',
+		'audioNotificationsOff': 'Zvuková oznámení vypnuta',
+		'logout': 'Odhlásit',
+		'displayInfo': 'ukázat data',
+		'sendEncryptedFile': 'poslat šifrovaný soubor',
+		'conversation': 'Pokec'
+	}
+}
+
+language.de = {
+	'language': 'de',
+	'direction': 'ltr',
+	'font-family': 'Helvetica, Arial, Verdana',
+	'loginWindow': {
+		'introHeader': '﻿Privates Chatten für alle.',
+		'introParagraph1': 'Cryptocat ist eine Instant-Messaging Plattform, die dir erlaubt, private Konversationen mit Freunden zu führen. Die Nachrichten werden noch vor dem Absenden verschlüsselt und sind somit vor Fremden geschützt und nicht mal wir können sie lesen.',
+		'introParagraph2': 'Cryptocat ist Freie Software, die auf offenen Standards basiert. Unser Entwicklungsprozess wird ständig von einer Gemeinschaft freiwilliger Interessenten überprüft. <a href="https://project.crypto.cat" target="_blank">Finde mehr über das Cryptocat Projekt heraus</a>.',
+		'project': 'Projekt',
+		'blog': 'Blog',
+		'source': 'Quelltext',
+		'customServer': 'benutzerdefinierter server...',
+		'conversationName': 'name der konversation',
+		'nickname': 'nickname',
+		'connect': 'verbinden',
+		'enterConversation': 'Gib den Namen einer Konversation ein, um ihr beizutreten.'
+	},
+	'loginMessage': {
+		'enterConversation': 'Bitte gib einen Namen für die Konversation ein.',
+		'conversationAlphanumeric': 'Konversationsname muss alphanumerisch sein.',
+		'enterNickname': 'Gib bitte einen Nicknamen an.',
+		'nicknameAlphanumeric': 'Nickname muss alphanumerisch sein.',
+		'nicknameInUse': 'Nickname wird bereits verwendet.',
+		'authenticationFailure': 'Authentifikationsfehler',
+		'connectionFailed': 'Verbindung fehlgeschlagen',
+		'thankYouUsing': 'Danke, dass Sie Cryptocat verwenden.',
+		'registering': 'Registriere...',
+		'connecting': 'Verbinde...',
+		'typeRandomly': 'Schreibe bitte, einige Sekunden lang, möglichst wirres Zeug auf deiner Tastatur.',
+		'generatingKeys': 'Generiere Schlüssel...'
+	},
+	'chatWindow': {
+		'groupConversation': 'Gruppenchat. Klicke auf einen Nutzer, um privat zu chatten.',
+		'otrFingerprint': 'OTR Fingerabdruck (für private Konversationen):',
+		'groupFingerprint': 'Fingerabdruck des Gruppenchats',
+		'statusAvailable': 'Status: Verfügbar',
+		'statusAway': 'Status: Abwesend',
+		'myInfo': 'Meine Infos',
+		'desktopNotificationsOn': 'Desktop Benachrichtigungen: Ein',
+		'desktopNotificationsOff': 'Desktop Benachrichtigungen: Aus',
+		'audioNotificationsOn': 'Audio Benachrichtigungen: Ein',
+		'audioNotificationsOff': 'Audio Benachrichtigungen: Aus',
+		'logout': 'Ausloggen',
+		'displayInfo': 'Zeige Info',
+		'sendEncryptedFile': 'Datei verschlüsselt senden',
+		'conversation': 'Konversation'
+	}
+}
+
+language.el = {
+	'language': 'el',
+	'direction': 'ltr',
+	'font-family': 'Helvetica, Arial, Verdana',
+	'loginWindow': {
+		'introHeader': '﻿Ιδιωτικές Συνομιλίες για Όλους.',
+		'introParagraph1': 'Το Cryptocat είναι μια πλατφόρμα άμεσων μηνυμάτων που σας επιτρέπει με εύκολο τρόπο να συνομιλείτε ιδιωτικά με φίλους. Τα μηνύματα κρυπτογραφούνται πριν εγκαταλείψουν την οθόνη σας και η θέασή τους προστατεύεται από τρίτους, ακόμα κι από εμάς.',
+		'introParagraph2': 'Το Cryptocat είναι ελεύθερο λογισμικό βασισμένο σε ανοιχτά πρότυπα. Η διαδικασία ανάπτυξης που ακολουθούμε εξετάζεται συνεχώς από μια κοινότητα εθελοντών και θιασωτών. <a href="https://project.crypto.cat" target="_blank">Μάθετε περισσότερα για το Cryptocat Project</a>.',
+		'project': 'Πρότζεκτ',
+		'blog': 'Blog',
+		'source': 'Πηγή',
+		'customServer': 'Προσωπικός διακομιστής...',
+		'conversationName': 'όνομα συνομιλίας',
+		'nickname': 'ψευδώνυμο',
+		'connect': 'σύνδεση',
+		'enterConversation': 'Εισάγετε το όνομα μιας συνομιλίας για να συνδεθείτε.'
+	},
+	'loginMessage': {
+		'enterConversation': 'Παρακαλώ εισάγετε όνομα για τη συνομιλία.',
+		'conversationAlphanumeric': 'Το όνομα της συζήτησης πρέπει να αποτελείται απο αλφαριθμητικούς χαρακτήρες.',
+		'enterNickname': 'Παρακαλώ εισάγετε ένα ψευδώνυμο.',
+		'nicknameAlphanumeric': 'Το ψευδώνυμο πρέπει να αποτελείται απο αλφαριθμητικούς χαρακτήρες.',
+		'nicknameInUse': 'Το ψευδώνυμο χρησιμοποιείται ήδη.',
+		'authenticationFailure': 'Αποτυχία πιστοποίησης.',
+		'connectionFailed': 'Αποτυχία σύνδεσης.',
+		'thankYouUsing': 'Ευχαριστούμε που χρησιμοποιείτε το Cryptocat.',
+		'registering': 'Εγγραφή...',
+		'connecting': 'Σύνδεση...',
+		'typeRandomly': 'Παρακαλώ πληκτρολογήστε όσο το δυνατό πιο τυχαίους χαρακτήρες στο πληκτρολόγιό σας για λίγο.',
+		'generatingKeys': 'Δημιουργία κρυπτογραφικών κλειδιών...'
+	},
+	'chatWindow': {
+		'groupConversation': 'Ομαδική συνομιλία. Κάντε κλικ σε κάποιο χρήστη για ιδιωτική συζήτηση.',
+		'otrFingerprint': 'Αποτύπωμα OTR (για προσωπικές συνομιλίες):',
+		'groupFingerprint': 'Αποτύπωμα ομαδικής συνομιλίας:',
+		'statusAvailable': 'Κατάσταση: Διαθέσιμος/η',
+		'statusAway': 'Κατάσταση: Απομακρυσμένος/η',
+		'myInfo': 'Οι πληροφορίες μου',
+		'desktopNotificationsOn': 'Ειδοποιήσεις οθόνης Ενεργοποιημένες',
+		'desktopNotificationsOff': 'Ειδοποιήσεις οθόνης Απενεργοποιημένες',
+		'audioNotificationsOn': 'Ηχητικές ειδοποιήσεις Ενεργοποιημένες',
+		'audioNotificationsOff': 'Ηχητικές ειδοποιήσεις Απενεργοποιημένες',
+		'logout': 'Αποσύνδεση',
+		'displayInfo': 'Προβολή Πληροφοριών',
+		'sendEncryptedFile': 'Αποστολή κρυπτογραφημένου αρχείου',
+		'conversation': 'Συνομιλία'
 	}
 }
 
