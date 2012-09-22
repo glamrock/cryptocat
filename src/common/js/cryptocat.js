@@ -21,10 +21,17 @@ var windowFocus = 1;
 var currentStatus = 'online';
 var soundEmbed = null;
 var conn, chatName, myNickname, myKey;
-var language = Language.set('en'); Language.setDefault('en');
 $('.button[title]').qtip();
 if (!groupChat) {
 	$('#buddy-main-Conversation').remove();
+}
+var language = window.navigator.userLanguage
+	|| window.navigator.language;
+try {
+		language = Language.set(language);
+	}
+catch(err) {
+	language = Language.set('en');
 }
 
 // Detect window focus

@@ -143,7 +143,7 @@ img.logo {
 	background-color: #222;
 	width: 110px;
 	height: 20px;
-	padding: 2px;
+	padding: 1px 0 2px 2px;
 	position: absolute;
 	border-radius: 5px 0 12px 0;
 	right: 0;
@@ -152,7 +152,7 @@ img.logo {
 #bubble #languages {
 	background-color: #222;
 	color: #97CEEC;
-	font-size: 10px;
+	font-size: 11px;
 	border: 1px solid #222;
 	outline: none;
 	width: 100px;
