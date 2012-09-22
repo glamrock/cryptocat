@@ -10,7 +10,7 @@
 		<em:creator>the Cryptocat Project</em:creator>
 		<em:description>Cryptocat lets you instantly set up private conversations. It's an open source encrypted instant messaging alternative.</em:description>
 		<em:homepageURL>https://project.crypto.cat</em:homepageURL>
-		<em:optionsURL>chrome://cryptocat/content/options.xul</em:optionsURL>
+		<!-- This is the preferences/options button <em:optionsURL>chrome://cryptocat/content/options.xul</em:optionsURL> -->
 
 		<em:targetApplication>
 			<Description>
