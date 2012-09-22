@@ -37,7 +37,7 @@ The full license text is included in `LICENSE.txt`.
 
 ## Notes:
 **Alpha codebase!**
-* Most recent changes in `testing/` which is loadable in Chrome.
+* The Safari code directory `src/cryptocat.safariextension` doubles as a "testing" directory where code changes are made before being pushed to Chrome and Firefox (using `update.sh`). As such, the directory is also loadable in Google Chrome under developer mode.
 
 ## Goals:
 * XMPP **[DONE]** | [Discussion](https://github.com/kaepora/cryptocat/issues/83), [Library](http://strophe.im)
