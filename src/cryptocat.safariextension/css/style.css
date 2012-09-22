@@ -85,6 +85,9 @@ img.logo {
 	padding-right: 15px;
 	margin-top: 5px;
 }
+#bubble #loginForm input {
+	text-align: center;
+}
 [type=text], [type=password], [type=button], [type=submit] {
 	display: block;
 	background-color: #222;
@@ -93,7 +96,6 @@ img.logo {
 	color: #FFF;
 	border: none;
 	margin: 15px auto 0 auto;
-	text-align: center;
 	border: 1px solid #333;
 	width: 200px;
 	outline: none;
@@ -212,7 +214,7 @@ img.logo {
 .buddyMenuContents li {
 	list-style-type: none;
 	background-color: rgba(255, 255, 255, 0.15);
-	padding: 1px 0 1px 7px;
+	padding: 1px 0 1px 10px;
 	font-size: 10px;
 	cursor: pointer;
 }
@@ -258,11 +260,9 @@ img.logo {
 }
 #dialogBoxContent {
 	padding: 25px 0 0 0;
-	text-align: center;
 }
 #displayInfo {
 	font-size: 12px;
-	text-align: left;
 	padding: 20px;
 }
 #dialogBoxContent p {
@@ -276,7 +276,6 @@ img.logo {
 	padding: 6px;
 	font-size: 14px;
 	box-shadow: none;
-	text-align: left;
 	font-weight: bold;
 	font-family: Helvetica, Arial;
 	margin: 0;
@@ -317,6 +316,7 @@ img.logo {
 	width: 735px;
 	line-height: 20px;
 	word-wrap: break-word;
+	text-align: left;
 }
 #conversationInfo {
 	background-color: #97CEEC;
@@ -333,7 +333,7 @@ img.logo {
 #conversationInfo span {
 	margin: 0 10px 0 10px;
 }
-#conversationInfo .chatName {
+#conversationInfo .conversationName {
 	font-size: 11px;
 }
 #conversationWindow .Line2 {
@@ -360,7 +360,6 @@ img.logo {
 #userInputText {
 	background-color: #000;
 	width: 730px;
-	text-align: left;
 	float: left;
 	margin: 10px 0;
 	display: inline;
@@ -369,12 +368,12 @@ img.logo {
 	border-left: 6px solid #97CEEC;
 	box-shadow: none;
 	font-size: 12px;
+	text-align: left;
 }
 #userInputSubmit {
 	display: none;
 }
 #progressForm {
-	text-align: left;
 	font-size: 11px;
 }
 #progressInfo span {
@@ -389,7 +388,6 @@ img.logo {
 	border-left: 1px solid #97CEEC;
 	width: 320px;
 	font-size: 10px;
-	text-align: left;
 	position: relative;
 	bottom: 70px;
 	float: right;
@@ -414,7 +412,6 @@ img.logo {
 	color: #97CEEC;
 	box-shadow: none;
 	float: left;
-	text-align: left;
 	margin: 0 5px 10px 5px;
 	width: 255px;
 	box-shadow: 2px 2px #97CEEC;

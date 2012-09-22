@@ -19,7 +19,7 @@ Language.set = function(lang) {
 	$('#blog').html(lang['loginWindow']['blog']);
 	$('#source').html(lang['loginWindow']['source']);
 	$('#customServer').html(lang['loginWindow']['customServer']);
-	$('#chatName').val(lang['loginWindow']['conversationName']);
+	$('#conversationName').val(lang['loginWindow']['conversationName']);
 	$('#nickname').val(lang['loginWindow']['nickname']);
 	$('#loginSubmit').val(lang['loginWindow']['connect']);
 	$('#loginInfo').html(lang['loginWindow']['enterConversation']);
