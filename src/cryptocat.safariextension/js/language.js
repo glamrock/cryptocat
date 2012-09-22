@@ -626,4 +626,102 @@ language.el = {
 	}
 }
 
+language.nl = {
+	'language': 'nl',
+	'direction': 'ltr',
+	'font-family': 'Helvetica, Arial, Verdana',
+	'loginWindow': {
+		'introHeader': 'Privé Conversaties voor Iedereen.',
+		'introParagraph1': 'Cryptocat is een instant messaging platform welke u gemakkelijk privé conversaties met vrienden laat hebben. Berichten worden versleuteld voordat u uw scherm verlaat en zijn beschermd tegen het afluisteren door derden, zelfs door ons.',
+		'introParagraph2': 'Cryptocat is vrije software gebaseerd op open standaarden. De ontwikkeling van Cryptocat is onder voortdurend toezicht van een gemeenschap van vrijwilligers en enthousiastelingen. <a href="https://project.crypto.cat" target="_blank">Leer meer over het Cryptocat Project</a>.',
+		'project': 'Project',
+		'blog': 'Blog',
+		'source': 'Broncode',
+		'customServer': 'andere server...',
+		'conversationName': 'naam conversatie',
+		'nickname': 'gebruikersnaam',
+		'connect': 'verbind',
+		'enterConversation': 'Voer de naam in van de conversatie die u wilt betreden.'
+	},
+	'loginMessage': {
+		'enterConversation': 'Voer alstublieft een conversatie naam in.',
+		'conversationAlphanumeric': 'Conversatienaam moet alfanumeriek zijn.',
+		'enterNickname': 'Voer alstublieft een gebruikersnaam in.',
+		'nicknameAlphanumeric': 'Gebruikersnaam moet alfanumeriek zijn.',
+		'nicknameInUse': 'Gebruikersnaam in gebruik.',
+		'authenticationFailure': 'Authentificatie mislukt.',
+		'connectionFailed': 'Verbinding mislukt.',
+		'thankYouUsing': 'Bedankt voor het gebruiken van Cryptocat.',
+		'registering': 'Aan het registreren...',
+		'connecting': 'Aan het verbinden...',
+		'typeRandomly': 'Typt u alstublieft zo willekeurig mogelijk op uw toetsenbord gedurende enkele seconden.',
+		'generatingKeys': 'Encryptie sleutels aan het genereren...'
+	},
+	'chatWindow': {
+		'groupConversation': 'Groepsconversatie. Klik op een gebruiker voor een privé gesprek.',
+		'otrFingerprint': 'OTR vingerafdruk (voor privé conversaties):',
+		'groupFingerprint': 'Vingerafdruk groepsconversatie:',
+		'statusAvailable': 'Status: Beschikbaar',
+		'statusAway': 'Status: Afwezig',
+		'myInfo': 'Mijn Info',
+		'desktopNotificationsOn': 'Desktop Notificaties Aan',
+		'desktopNotificationsOff': 'Desktop Notificaties Uit',
+		'audioNotificationsOn': 'Audio Notificaties Aan',
+		'audioNotificationsOff': 'Audio Notificaties Uit',
+		'logout': 'Uitloggen',
+		'displayInfo': 'Toon Info',
+		'sendEncryptedFile': 'Verstuur versleuteld bestand',
+		'conversation': 'Conversatie'
+	}
+}
+
+language.pt = {
+	'language': 'pt',
+	'direction': 'ltr',
+	'font-family': 'Helvetica, Arial, Verdana',
+	'loginWindow': {
+		'introHeader': 'Conversa privada para todos.',
+		'introParagraph1': 'Cryptocat é uma plataforma de mensagens instantâneas que permite que você tenha conversas privadas com seus amigos. As mensagens são criptografadas antes de sair do seu computador e são protegidas de serem vistas por terceiros, até de nós.',
+		'introParagraph2': 'Cryptocat é software livre construído com padrões abertos. Nosso processo de desenvolvimento está sob examinação contínua por uma comunidade de voluntários e entusiastas. <a href="https://project.crypto.cat" target="_blank">Aprenda mais sobre o Projeto Cryptocat</a>.',
+		'project': 'Projeto',
+		'blog': 'Blog',
+		'source': 'Código',
+		'customServer': 'servidor personalizado...',
+		'conversationName': 'nome da conversa',
+		'nickname': 'nickname',
+		'connect': 'conectar',
+		'enterConversation': 'Digite o nome da conversa para participar.'
+	},
+	'loginMessage': {
+		'enterConversation': 'Digite um nome da conversa, por favor.',
+		'conversationAlphanumeric': 'O nome da conversa tem de ser alfa numérico.',
+		'enterNickname': 'Digite um nome, por favor.',
+		'nicknameAlphanumeric': 'O nickname tem de ser alfanumérico.',
+		'nicknameInUse': 'Nickname em uso.',
+		'authenticationFailure': 'A autenticação falhou.',
+		'connectionFailed': 'Coneção falhou.',
+		'thankYouUsing': 'Obrigado por ter usado Cryptocat.',
+		'registering': 'Registrando...',
+		'connecting': 'Conectando...',
+		'typeRandomly': 'Por favor, digite caracteres aleatórios no seu teclado por alguns segundos.',
+		'generatingKeys': 'Gerando chaves criptográficas...'
+	},
+	'chatWindow': {
+		'groupConversation': 'Conversa em grupo. Clique em um usuário para iniciar uma conversa privada.',
+		'otrFingerprint': 'Impressao digital OTR ( para conversas privadas):',
+		'groupFingerprint': 'Impressão digital de conversa de grupo:',
+		'statusAvailable': 'Status: Disponível',
+		'statusAway': 'Status: Ausente',
+		'myInfo': 'Minhas informações',
+		'desktopNotificationsOn': 'Notificações no desktop ligadas',
+		'desktopNotificationsOff': 'Notificações no desktop desligadas',
+		'audioNotificationsOn': 'Notificações por audio ligadas',
+		'audioNotificationsOff': 'Notificações por audio desligadas',
+		'logout': 'Sair',
+		'displayInfo': 'Exibir informações',
+		'sendEncryptedFile': 'Enviar arquivo criptografado',
+		'conversation': 'Conversa'
+	}
+}
+
 })();
