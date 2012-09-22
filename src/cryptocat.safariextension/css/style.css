@@ -257,7 +257,7 @@ img.logo {
 	font-weight: bold;
 }
 #dialogBoxContent {
-	padding: 35px 0 0 0;
+	padding: 25px 0 0 0;
 	text-align: center;
 }
 #displayInfo {
@@ -397,6 +397,17 @@ img.logo {
 #progressInfo #interestingFact {
 	font-size: 11px;
 }
+#progressBar {
+	margin-top: 10px;
+	height: 17px;
+	width: 240px;
+	border: 1px solid #97CEEC;
+}
+#progressBar #fill {
+	height: 104%;
+	width: 0%;
+	background-color: #97CEEC;
+}
 #dialogBox input {
 	background-color: #000;
 	border: 1px solid #97CEEC;
@@ -432,17 +443,6 @@ img.logo {
 }
 .imageView:hover, .fileView:hover {
 	text-decoration: none;
-}
-#progressBar {
-	margin-top: 30px;
-	height: 17px;
-	width: 230px;
-	border: 1px solid #97CEEC;
-}
-#progressBar #fill {
-	height: 105%;
-	width: 0%;
-	background-color: #97CEEC;
 }
 
 .emoticon {

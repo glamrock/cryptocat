@@ -917,12 +917,10 @@ $('#loginForm').submit(function() {
 				+ CatFacts.getFact() + '</span>'
 			);
 		}
-		else {
-			$('#progressInfo').append(
-				'<div id="progressBar"><div id="fill"></div></div>'
-			);
-			$('#fill').animate({'width': '100%'}, 26000);
-		}
+		$('#progressInfo').append(
+			'<div id="progressBar"><div id="fill"></div></div>'
+		);
+		$('#fill').animate({'width': '100%'}, 26000, 'linear');
 	}
 	else {
 		chatName = $('#chatName').val();
