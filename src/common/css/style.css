@@ -402,7 +402,8 @@ img.logo {
 	border: 1px solid #97CEEC;
 }
 #progressBar #fill {
-	height: 104%;
+	height: 100%;
+	border-bottom: 1px solid #97CEEC;
 	width: 0%;
 	background-color: #97CEEC;
 }
