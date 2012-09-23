@@ -543,16 +543,16 @@ language.de = {
 		'conversationName': 'name der konversation',
 		'nickname': 'nickname',
 		'connect': 'verbinden',
-		'enterConversation': 'Gib den Namen einer Konversation ein, um ihr beizutreten.'
+		'enterConversation': 'Tippe den Namen einer Konversation ein, um ihr beizutreten.'
 	},
 	'loginMessage': {
-		'enterConversation': 'Bitte gib einen Namen für die Konversation ein.',
+		'enterConversation': 'Bitte einen Namen für die Konversation eingeben.',
 		'conversationAlphanumeric': 'Konversationsname muss alphanumerisch sein.',
-		'enterNickname': 'Gib bitte einen Nicknamen an.',
+		'enterNickname': 'Bitte einen Nicknamen eingeben.',
 		'nicknameAlphanumeric': 'Nickname muss alphanumerisch sein.',
 		'nicknameInUse': 'Nickname wird bereits verwendet.',
-		'authenticationFailure': 'Authentifikationsfehler',
-		'connectionFailed': 'Verbindung fehlgeschlagen',
+		'authenticationFailure': 'Authentifikationsfehler.',
+		'connectionFailed': 'Verbindung fehlgeschlagen.',
 		'thankYouUsing': 'Danke, dass Sie Cryptocat verwenden.',
 		'registering': 'Registriere...',
 		'connecting': 'Verbinde...',
@@ -821,5 +821,109 @@ language.sv = {
 		'conversation': 'Konversation'
 	}
 }
+
+language.pl = {
+	'language': 'pl',
+	'direction': 'ltr',
+	'font-family': 'Helvetica, Arial, Verdana',
+	'loginWindow': {
+		'introHeader': 'Prywatne rozmowy dla każdego.',
+		'introParagraph1': 'Cryptocat jest platformą do błyskawicznej komunikacji, która pozwala prowadzić prywatne rozmowy z przyjaciółmi w prosty sposób. Wiadomości są szyfrowane jeszcze zanim je wyślesz i są chronione przed osobami trzecimi, nawet przed nami.',
+		'introParagraph2': 'Cryptocat jest darmowym oprogramowaniem opartym na otwartych standardach. Nasz proces rozwoju jest pod ciągłą kontrolą ochotników i entuzjastów. <a href="https://project.crypto.cat" target="_blank">Dowiedz się więcej o projekcie Cryptocat</a>.',
+		'project': 'Projekt',
+		'blog': 'Blog',
+		'source': 'Źródło',
+		'customServer': 'serwer klienta...',
+		'conversationName': 'nazwa rozmowy',
+		'nickname': 'pseudonim',
+		'connect': 'połącz',
+		'enterConversation': 'Wpisz nazwę rozmowy, do której chcesz dołączyć.'
+	},
+	'loginMessage': {
+		'enterConversation': 'Proszę wpisać nazwę rozmowy.',
+		'conversationAlphanumeric': 'Nazwa rozmowy może być tylko alfanumeryczna.',
+		'enterNickname': 'Proszę o podanie pseudonimu.',
+		'nicknameAlphanumeric': 'Pseudonim może być tylko alfanumeryczny.',
+		'nicknameInUse': 'Pseudonim jest w użyciu.',
+		'authenticationFailure': 'Błąd uwierzytelniania.',
+		'connectionFailed': 'Połączenie nieudane.',
+		'thankYouUsing': 'Dzięki, że  skorzystałeś z Cryptocata.',
+		'registering': 'Rejestruję...',
+		'connecting': 'Łączę...',
+		'typeRandomly': 'Proszę losowo pisać na klawiaturze przez kilka sekund.',
+		'generatingKeys': 'Generuję klucze szyfrujące...'
+	},
+	'chatWindow': {
+		'groupConversation': 'Rozmowa grupowa. Kliknij na użytkownika, aby porozmawiać prywatnie.',
+		'otrFingerprint': 'Klucz OTR (dla prywatnych rozmów):',
+		'groupFingerprint': 'Klucz rozmowy grupowej:',
+		'statusAvailable': 'Status: Dostępny',
+		'statusAway': 'Status: Nieobecny',
+		'myInfo': 'O mnie',
+		'desktopNotificationsOn': 'Powiadomienia ekranowe włączone',
+		'desktopNotificationsOff': 'Powiadomienia ekranowe wyłączone',
+		'audioNotificationsOn': 'Powiadomienia dźwiękowe włączone',
+		'audioNotificationsOff': 'Powiadomienia dźwiękowe wyłączone',
+		'logout': 'Wyloguj',
+		'displayInfo': 'Wyświetl informacje',
+		'sendEncryptedFile': 'Wyślij zaszyfrowany plik',
+		'conversation': 'Rozmowa'
+	}
+}
+
+language.zh = {
+	'language': 'zh',
+	'direction': 'ltr',
+	'font-family': 'Tahoma, "Microsoft Yahei","微软雅黑", Helvetica, Arial, sans-serif, STXihei, "华文细黑"',
+	'loginWindow': {
+		'introHeader': '为每个人的私人谈话',
+		'introParagraph1': 'Cryptocat是一個即時通訊平台，可以讓你輕鬆擁有朋友的私人談話，並會在你離開你的屏幕時對訊息進行加密，好讓防止任何第三者查看，包括我們。',
+		'introParagraph2': 'Cryptocat是建立在開放標準的免費軟件。我們的開發過程是由社區志願者和愛好者進行持續的檢測。了解更多 <a href="https://project.crypto.cat" target="_blank">Cryptocat的項目。</a>',
+		'project': '项目',
+		'blog': '博客',
+		'source': '源',
+		'customServer': '自定義服務器...',
+		'conversationName': '会话名称',
+		'nickname': '昵称',
+		'connect': '连接',
+		'enterConversation': '请输会话名称加入'
+	},
+	'loginMessage': {
+		'enterConversation': '请输一下会话名称',
+		'conversationAlphanumeric': '交谈必须是字母或数字',
+		'enterNickname': '请输一下请输',
+		'nicknameAlphanumeric': '昵称必须是字母或数字',
+		'nicknameInUse': '昵称已经用过了',
+		'authenticationFailure': '身份验证失败',
+		'connectionFailed': '驗證失敗。',
+		'thankYouUsing': '谢谢你用Cryptocat',
+		'registering': '注册。。。',
+		'connecting': '连接。。。',
+		'typeRandomly': '請隨意在鍵盤上按鍵幾秒鐘。',
+		'generatingKeys': '生成加密密鑰...'
+	},
+	'chatWindow': {
+		'groupConversation': '群組對話。請點擊一個私人聊天的用戶。',
+		'otrFingerprint': 'OTR指紋（私人對話）：',
+		'groupFingerprint': '群組對話紀錄：',
+		'statusAvailable': '状态：上线',
+		'statusAway': '状态：离开',
+		'myInfo': '我的信息',
+		'desktopNotificationsOn': '桌面通知开了',
+		'desktopNotificationsOff': '桌面通知关机了',
+		'audioNotificationsOn': '音频通知开了',
+		'audioNotificationsOff': '音频通知关机了',
+		'logout': '退出',
+		'displayInfo': '顯示信息',
+		'sendEncryptedFile': '发加密的文件',
+		'conversation': '交谈'
+	}
+}
+
+language['zh-tw'] = language.zh;
+language['zh-hk'] = language.zh;
+language['zh-cn'] = language.zh;
+language['zh-sg'] = language.zh;
+
 
 })();
