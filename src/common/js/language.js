@@ -86,6 +86,56 @@ language.en = {
 	}
 }
 
+language.lol = {
+	'language': 'lol',
+	'direction': 'ltr',
+	'font-family': 'Helvetica, Arial, Verdana',
+	'loginWindow': {
+		'introHeader': '﻿Private Conversashuns 4 Evrwun.',
+		'introParagraph1': 'Cryptocat iz an instant mesagin platform dat lets u easily has private conversashuns wif frenz. Mesagez r encryptd before leavin ur screen an r protectd frum bean viewd by any third party, even frum us.',
+		'introParagraph2': 'Cryptocat iz free software built on open standardz. R development proces iz undr continuous examinashun by community ov volunteers an enthusiasts. <a href="https://project.crypto.cat" target="_blank">Lern moar bout teh Cryptocat Project</a>.',
+		'project': 'Project',
+		'blog': 'Blog',
+		'source': 'Source',
+		'customServer': 'custom servr...',
+		'conversationName': 'conversashun naym',
+		'nickname': 'nickname',
+		'connect': 'connect',
+		'enterConversation': 'Entr teh naym ov conversashun 2 join.'
+	},
+	'loginMessage': {
+		'enterConversation': 'Plz entr conversashun naym.',
+		'conversationAlphanumeric': 'Conversashun naym must be alfanumeric.',
+		'enterNickname': 'Plz entr a nickname.',
+		'nicknameAlphanumeric': 'Nickname must be alfanumeric.',
+		'nicknameInUse': 'Nickname in use.',
+		'authenticationFailure': 'Authenticashun failure.',
+		'connectionFailed': 'Connecshun Faild.',
+		'thankYouUsing': 'Thank mew 4 usin Cryptocat.',
+		'registering': 'Registerin...',
+		'connecting': 'Connectin...',
+		'typeRandomly': 'Plz type on ur keybord as randomly as posible 4 few secondz.',
+		'generatingKeys': 'Generatin encrypshun keys...'
+	},
+	'chatWindow': {
+		'groupConversation': 'Group conversashun. Click on usr 4 private chat.',
+		'otrFingerprint': 'OTR fingerprint (4 private conversashuns):',
+		'groupFingerprint': 'Group conversashun fingerprint:',
+		'statusAvailable': 'Status: Available',
+		'statusAway': 'Status: Away',
+		'myInfo': 'My Info',
+		'desktopNotificationsOn': 'Desktop Notificashuns On',
+		'desktopNotificationsOff': 'Desktop Notificashuns Off',
+		'audioNotificationsOn': 'Audio Notificashuns On',
+		'audioNotificationsOff': 'Audio Notificashuns Off',
+		'logout': 'Disconnect',
+		'displayInfo': 'Display info',
+		'sendEncryptedFile': 'Send encryptd file',
+		'conversation': 'Conversashun'
+	}
+}
+
+
 language.ca = {
 	'language': 'ca',
 	'direction': 'ltr',
@@ -682,7 +732,7 @@ language.pt = {
 	'loginWindow': {
 		'introHeader': 'Conversa privada para todos.',
 		'introParagraph1': 'Cryptocat é uma plataforma de mensagens instantâneas que permite que você tenha conversas privadas com seus amigos. As mensagens são criptografadas antes de sair do seu computador e são protegidas de serem vistas por terceiros, até de nós.',
-		'introParagraph2': 'Cryptocat é software livre construído com padrões abertos. Nosso processo de desenvolvimento está sob examinação contínua por uma comunidade de voluntários e entusiastas. <a href="https://project.crypto.cat" target="_blank">Aprenda mais sobre o Projeto Cryptocat</a>.',
+		'introParagraph2': 'Cryptocat é um software livre construído com padrões abertos. Nosso processo de desenvolvimento está sob examinação contínua por uma comunidade de voluntários e entusiastas. <a href="https://project.crypto.cat" target="_blank">Aprenda mais sobre o Projeto Cryptocat</a>.',
 		'project': 'Projeto',
 		'blog': 'Blog',
 		'source': 'Código',
