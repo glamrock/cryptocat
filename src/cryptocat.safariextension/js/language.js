@@ -732,7 +732,7 @@ language.pt = {
 	'loginWindow': {
 		'introHeader': 'Conversa privada para todos.',
 		'introParagraph1': 'Cryptocat é uma plataforma de mensagens instantâneas que permite que você tenha conversas privadas com seus amigos. As mensagens são criptografadas antes de sair do seu computador e são protegidas de serem vistas por terceiros, até de nós.',
-		'introParagraph2': 'Cryptocat é software livre construído com padrões abertos. Nosso processo de desenvolvimento está sob examinação contínua por uma comunidade de voluntários e entusiastas. <a href="https://project.crypto.cat" target="_blank">Aprenda mais sobre o Projeto Cryptocat</a>.',
+		'introParagraph2': 'Cryptocat é um software livre construído com padrões abertos. Nosso processo de desenvolvimento está sob examinação contínua por uma comunidade de voluntários e entusiastas. <a href="https://project.crypto.cat" target="_blank">Aprenda mais sobre o Projeto Cryptocat</a>.',
 		'project': 'Projeto',
 		'blog': 'Blog',
 		'source': 'Código',
