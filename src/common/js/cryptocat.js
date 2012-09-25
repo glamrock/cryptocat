@@ -553,9 +553,11 @@ function handlePresence(presence) {
 			'backgroundColor': backgroundColor,
 			'borderLeftColor': '#97CEEC'
 		});
-		$('#buddy-' + nickname).slideUp('fast', function() {
-			$(this).insertAfter(placement).slideDown('fast');
-		});
+		if (currentConversation !== nickname) {
+			$('#buddy-' + nickname).slideUp('fast', function() {
+				$(this).insertAfter(placement).slideDown('fast');
+			});
+		}
 	}
 	return true;
 }
@@ -882,11 +884,8 @@ $('#nickname').click(function() {
 	$(this).select();
 });
 $('#loginForm').submit(function() {
-	$('#conversationName').val($('#conversationName').val().toLowerCase());
-	$('#nickname').val($('#nickname').val().toLowerCase());
-	$('#conversationName').val($.trim($('#conversationName').val()));
-	$('#nickname').val($.trim($('#nickname').val()));
-	conversationName = $('#conversationName').val();
+	$('#conversationName').val($.trim($('#conversationName').val().toLowerCase()));
+	$('#nickname').val($.trim($('#nickname').val().toLowerCase()));
 	if (($('#conversationName').val() === '')
 		|| ($('#conversationName').val() === language['loginWindow']['conversationName'])) {
 		loginFail(language['loginMessage']['enterConversation']);
@@ -938,6 +937,7 @@ $('#loginForm').submit(function() {
 		);
 		$('#fill').animate({'width': '100%'}, 20000, 'linear');
 	}
+	// If everything is okay, then register a randomly generated throwaway XMPP ID and log in.
 	else {
 		conversationName = $('#conversationName').val();
 		myNickname = $('#nickname').val();
