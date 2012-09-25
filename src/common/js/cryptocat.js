@@ -882,6 +882,8 @@ $('#nickname').click(function() {
 	$(this).select();
 });
 $('#loginForm').submit(function() {
+	$('#conversationName').val($('#conversationName').val().toLowerCase());
+	$('#nickname').val($('#nickname').val().toLowerCase());
 	$('#conversationName').val($.trim($('#conversationName').val()));
 	$('#nickname').val($.trim($('#nickname').val()));
 	conversationName = $('#conversationName').val();
