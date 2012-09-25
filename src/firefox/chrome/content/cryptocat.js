@@ -25,7 +25,6 @@ var cryptocat = function() {
 			WeaveCrypto.libName = ctypes.libraryName('nss3'); // platform specific library name
 			WeaveCrypto.path.append(WeaveCrypto.libName);
 			WeaveCrypto.initNSS(WeaveCrypto.path.path);
-
 			evt.target.setAttribute('randomValues', WeaveCrypto.generateRandomBytes(1024));
 			var doc = evt.target.ownerDocument;
 			var answerEvt = doc.createElement('extensionAnswer');
