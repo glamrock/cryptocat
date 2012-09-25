@@ -196,6 +196,19 @@ function seedRNG() {
 		delete seed;
 		return true;
 	}
+	else if (navigator.userAgent.match('Firefox')) {
+		var element = document.createElement('firefoxElement');
+		document.documentElement.appendChild(element);
+		var evt = document.createEvent('Events');
+		evt.initEvent('generateRandomBytes', true, false);
+		element.dispatchEvent(evt);
+		for (var i in element.getAttribute('randomValues')) {
+			CryptoJS.Fortuna.AddRandomEvent(element.getAttribute('randomValues')[i]);
+			console.log(element.getAttribute('randomValues')[i]);
+		}
+		delete element;
+		return true;
+	}
 	else {
 		var e, up, down;
 		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" alt="" />' + language['loginMessage']['typeRandomly'] + '</p>'
@@ -921,7 +934,7 @@ $('#loginForm').submit(function() {
 		$('#progressInfo').append(
 			'<div id="progressBar"><div id="fill"></div></div>'
 		);
-		$('#fill').animate({'width': '100%'}, 26000, 'linear');
+		$('#fill').animate({'width': '100%'}, 20000, 'linear');
 	}
 	else {
 		conversationName = $('#conversationName').val();

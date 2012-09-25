@@ -2,11 +2,10 @@ External sources
 ================
 These are convenience copies of externally maintained sources.
 
-
-jQuery
+BigInt
 ------
-Origin: http://jquery.org/
-License: MIT or GPL-2+
+Origin: http://leemon.com/crypto/BigInt.html
+License: PD
 
 Cordova (Phonegap)
 ------------------
@@ -18,37 +17,42 @@ Crypto-JS
 Origin: http://code.google.com/p/crypto-js/
 License: BSD-2-Clause
 
-BigInt
-------
-Origin: http://leemon.com/crypto/BigInt.html
-License: PD
-
-seedrandom
+fortuna.js
 ----------
-Origin: http://davidbau.com/encode/seedrandom.js
-License: BSD-3-Clause
+Origin: https://github.com/kaepora/fortunajs/
+License: WTFPL
+
+jQuery
+------
+Origin: http://jquery.org/
+License: MIT, GPL-2+
 
 Notification.js
 ---------------
 Origin: https://raw.github.com/MrSwitch/notification.js/
 License: MIT
 
-Strophe.js
+OTR.js
 ----------
-Origin: http://strophe.im
-License: MIT
+Origin: https://github.com/arlolra/otr/
+License: LGPL
 
 QTip2
 ----------
 Origin: https://github.com/Craga89/qTip2/
 License: MIT, GPL
 
-OTR.js
+seedrandom
 ----------
-Origin: https://github.com/arlolra/otr/
-License: LGPL
+Origin: http://davidbau.com/encode/seedrandom.js
+License: BSD-3-Clause
 
-fortuna.js
+Strophe.js
 ----------
-Origin: https://github.com/kaepora/fortunajs/
-License: WTFPL
+Origin: http://strophe.im
+License: MIT
+
+WeaveCrypto
+----------
+Origin: https://github.com/daviddahl/domcrypt
+License: MPL 1.1, GPL 2.0, LGPL 2.1

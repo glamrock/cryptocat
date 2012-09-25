@@ -2,7 +2,7 @@
 <?xml-stylesheet href="chrome://cryptocat/skin/skin.css" type="text/css"?> 
 <!DOCTYPE cryptocat SYSTEM "chrome://cryptocat/locale/translations.dtd">
 <overlay id="sample" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-		<script src="cryptocat.js" />
+		<script type="text/javascript" src="cryptocat.js" />
 		
 		<menupopup id="menu_ToolsPopup"> 
 			<menuitem label="Cryptocat" key="cryptocatRunKey" oncommand="cryptocat.run()"/> 
@@ -29,6 +29,4 @@
 				class="menuitem-iconic"
 				image="chrome://cryptocat/skin/menu.png" />
 		</vbox>
-
-
 </overlay>
