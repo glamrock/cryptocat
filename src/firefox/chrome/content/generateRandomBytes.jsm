@@ -1,1 +1,1 @@
-../../../../ext/WeaveCrypto/generateRandomBytes.jsm
+../../../../ext/weavecrypto/generateRandomBytes.jsm
