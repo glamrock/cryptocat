@@ -49,7 +49,7 @@ var dataReader = new Worker('js/datareader.js');
 keyGenerator.onmessage = function(e) {
 	myKey = e.data;
 	DSA.inherit(myKey);
-	$('#fill').stop().animate({'width': '100%'}, 400, 'linear', function() {
+	$('#fill').stop().animate({'width': '100%', 'opacity': '1'}, 400, 'linear', function() {
 		$('#dialogBoxClose').click();
 	});
 }
@@ -937,7 +937,7 @@ $('#loginForm').submit(function() {
 		$('#progressInfo').append(
 			'<div id="progressBar"><div id="fill"></div></div>'
 		);
-		$('#fill').animate({'width': '100%'}, 25555, 'linear');
+		$('#fill').animate({'width': '100%', 'opacity': '1'}, 25555, 'linear');
 	}
 	// If everything is okay, then register a randomly generated throwaway XMPP ID and log in.
 	else {

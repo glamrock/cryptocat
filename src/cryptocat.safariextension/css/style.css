@@ -398,14 +398,14 @@ img.logo {
 #progressBar {
 	margin-top: 10px;
 	height: 17px;
-	width: 290px;
-	border: 1px solid #97CEEC;
+	width: 305px;
 }
 #progressBar #fill {
 	height: 100%;
-	border-bottom: 1px solid #97CEEC;
 	width: 0%;
+	color: #000;
 	background-color: #97CEEC;
+	opacity: 0.8;
 }
 #dialogBox input {
 	background-color: #000;
