@@ -921,10 +921,59 @@ language.pl = {
 	}
 }
 
+language.he = {
+	'language': 'he',
+	'direction': 'rtl',
+	'font-family': 'Helvetica, Arial, Verdana',
+	'loginWindow': {
+		'introHeader': 'שיחות חופשיות לכולם.',
+		'introParagraph1': 'Cryptocat היא פלטפורמת מסרים מידיים שמאפשרת לך לנהל שיחות פרטיות עם חברים בקלות. ההודעות מוצפנות לפני עזיבת המסך שלך ומוגנות מצפיה על ידי צד שלישי, אפילו מאיתנו.',
+		'introParagraph2': 'Cryptocat היא תוכנה חופשית ובנויה על סטנדרטים פתוחים. תהליך הפיתוח שלנו נמצא תחת בקרה מתמשכת על ידי קהילה של מתנדבי <a href="https://project.crypto.cat" target="_blank">ם. קראו עוד על פרוייקט Cryptocat</a>.',
+		'project': 'פרוייקט',
+		'blog': 'בלוג',
+		'source': 'מקור',
+		'customServer': 'שרת מותאם אישית ...',
+		'conversationName': 'שם השיחה',
+		'nickname': 'כינוי',
+		'connect': 'התחבר',
+		'enterConversation': 'מלאו שם שיחה על מנת להצטרף'
+	},
+	'loginMessage': {
+		'enterConversation': 'נא למלא שם שיחה',
+		'conversationAlphanumeric': 'שם השיחה חייב לכלול אותיות ומספרים בלבד.',
+		'enterNickname': 'נא למלא כינוי',
+		'nicknameAlphanumeric': 'הכינוי חייב לכלול אותיות ומספרים בלבד.',
+		'nicknameInUse': 'הכינוי נמצא בשימוש.',
+		'authenticationFailure': 'שגיאה בהזדהות.',
+		'connectionFailed': 'חיבור נכשל.',
+		'thankYouUsing': 'תודה שהשתמשת בCryptocat.',
+		'registering': 'נרשם...',
+		'connecting': 'מתחבר...',
+		'typeRandomly': 'אנא הקלידו בצורה אקראית למשך מספר שניות.',
+		'generatingKeys': 'מייצר מפתחות הצפנה...'
+	},
+	'chatWindow': {
+		'groupConversation': 'שיחה קבוצתית. לחצו על משתמש לשיחה פרטית.',
+		'otrFingerprint': 'חתימת OTR (לשיחות פרטיות):',
+		'groupFingerprint': 'חתימת שיחה קבוצתית:',
+		'statusAvailable': 'מצב: זמין',
+		'statusAway': 'מצב: לא זמין',
+		'myInfo': 'הפרטים שלי',
+		'desktopNotificationsOn': 'התראות שולחן עבודה פעילות',
+		'desktopNotificationsOff': 'התראות שולחן עבודה מבוטלות',
+		'audioNotificationsOn': 'התראות קוליות פעילות',
+		'audioNotificationsOff': 'התראות קוליות מבוטלות',
+		'logout': 'יציאה',
+		'displayInfo': 'הצג מידע',
+		'sendEncryptedFile': 'שלח קובץ מוצפן',
+		'conversation': 'שיחה'
+	}
+}
+
 language.zh = {
 	'language': 'zh',
 	'direction': 'ltr',
-	'font-family': 'Tahoma, "Microsoft Yahei","微软雅黑", Helvetica, Arial, sans-serif, STXihei, "华文细黑"',
+	'font-family': '"Microsoft Yahei", "微软雅黑", Tahoma, Helvetica, Arial, sans-serif, STXihei, "华文细黑"',
 	'loginWindow': {
 		'introHeader': '为每个人的私人谈话',
 		'introParagraph1': 'Cryptocat是一個即時通訊平台，可以讓你輕鬆擁有朋友的私人談話，並會在你離開你的屏幕時對訊息進行加密，好讓防止任何第三者查看，包括我們。',
