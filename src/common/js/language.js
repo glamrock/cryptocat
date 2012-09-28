@@ -91,10 +91,10 @@ language.lol = {
 	'direction': 'ltr',
 	'font-family': 'Helvetica, Arial, Verdana',
 	'loginWindow': {
-		'introHeader': '﻿Private Conversashuns 4 Evrwun.',
-		'introParagraph1': 'Cryptocat iz an instant mesagin platform dat lets u easily has private conversashuns wif frenz. Mesagez r encryptd before leavin ur screen an r protectd frum bean viewd by any third party, even frum us.',
+		'introHeader': '﻿I Can Haz Private Conversashuns?',
+		'introParagraph1': 'Cryptocat iz an instant mesagin platform dat let u ezzily has private conversashuns wif frenz. Mesagez r encryptd befor leavin ur screen an r protectd frum bean viewd by any third party, even frum us.',
 		'introParagraph2': 'Cryptocat iz free software built on open standardz. R development proces iz undr continuous examinashun by community ov volunteers an enthusiasts. <a href="https://project.crypto.cat" target="_blank">Lern moar bout teh Cryptocat Project</a>.',
-		'project': 'Project',
+		'project': 'Purroject',
 		'blog': 'Blog',
 		'source': 'Source',
 		'customServer': 'custom servr...',
@@ -111,7 +111,7 @@ language.lol = {
 		'nicknameInUse': 'Nickname in use.',
 		'authenticationFailure': 'Authenticashun failure.',
 		'connectionFailed': 'Connecshun Faild.',
-		'thankYouUsing': 'Thank mew 4 usin Cryptocat.',
+		'thankYouUsing': 'Thank mew 4 usin Cryptocat :3',
 		'registering': 'Registerin...',
 		'connecting': 'Connectin...',
 		'typeRandomly': 'Plz type on ur keybord as randomly as posible 4 few secondz.',
@@ -921,59 +921,204 @@ language.pl = {
 	}
 }
 
-language.zh = {
-	'language': 'zh',
+language.vi = {
+	'language': 'vi',
 	'direction': 'ltr',
-	'font-family': 'Tahoma, "Microsoft Yahei","微软雅黑", Helvetica, Arial, sans-serif, STXihei, "华文细黑"',
+	'font-family': 'Helvetica, Arial, Verdana',
 	'loginWindow': {
-		'introHeader': '为每个人的私人谈话',
-		'introParagraph1': 'Cryptocat是一個即時通訊平台，可以讓你輕鬆擁有朋友的私人談話，並會在你離開你的屏幕時對訊息進行加密，好讓防止任何第三者查看，包括我們。',
-		'introParagraph2': 'Cryptocat是建立在開放標準的免費軟件。我們的開發過程是由社區志願者和愛好者進行持續的檢測。了解更多 <a href="https://project.crypto.cat" target="_blank">Cryptocat的項目。</a>',
-		'project': '项目',
-		'blog': '博客',
-		'source': '源',
-		'customServer': '自定義服務器...',
-		'conversationName': '会话名称',
-		'nickname': '昵称',
-		'connect': '连接',
-		'enterConversation': '请输会话名称加入'
+		'introHeader': 'Đối thoại riêng tư cho mọi người.',
+		'introParagraph1': 'Cryptocat là hệ thống tin nhắn nhanh để bạn dể dàng trao đổi thông tin với bạn bè. Các tin nhắn đều được mã hoá trước khi được gửi đi và được bảo vệ chặt chẽ, ngoài bạn và người nhận tin nhắn ra, không ai đọc được ngay cả chúng tôi.',
+		'introParagraph2': 'Cryptocat là chương trình miễn phí được thành lập theo dạng mở rộng. Quá trình phát triển của chúng tôi luôn được giám sát bởi một cộng đồng tình nguyện viên. <a href="https://project.crypto.cat" target="_blank">Hãy tìm hiểu thêm về Cryptocat Project</a>.',
+		'project': 'Dự Án',
+		'blog': 'Blog',
+		'source': 'Nguồn',
+		'customServer': 'Máy chủ tuỳ chỉnh...',
+		'conversationName': 'tên cuộc đối thoại',
+		'nickname': 'biệt hiệu',
+		'connect': 'kết nối',
+		'enterConversation': 'Đánh vào tên của cuộc đối thoại để tham gia.'
 	},
 	'loginMessage': {
-		'enterConversation': '请输一下会话名称',
-		'conversationAlphanumeric': '交谈必须是字母或数字',
-		'enterNickname': '请输一下请输',
-		'nicknameAlphanumeric': '昵称必须是字母或数字',
-		'nicknameInUse': '昵称已经用过了',
-		'authenticationFailure': '身份验证失败',
-		'connectionFailed': '驗證失敗。',
-		'thankYouUsing': '谢谢你用Cryptocat',
-		'registering': '注册。。。',
-		'connecting': '连接。。。',
-		'typeRandomly': '請隨意在鍵盤上按鍵幾秒鐘。',
-		'generatingKeys': '生成加密密鑰...'
+		'enterConversation': 'Đánh vào tên cho cuộc đối thoại.',
+		'conversationAlphanumeric': 'Tên của cuộc đối thoại phải theo dạng chữ số.',
+		'enterNickname': 'Đánh vào biệt hiệu.',
+		'nicknameAlphanumeric': 'Biệt hiệu phải theo dạng chữ số.',
+		'nicknameInUse': 'Biệt hiệu đang được dùng.',
+		'authenticationFailure': 'Xác thực bị thất bại.',
+		'connectionFailed': 'Kết nối không thành công.',
+		'thankYouUsing': 'Cám ơn bạn đã dùng Cryptocat.',
+		'registering': 'Đang ghi danh...',
+		'connecting': 'Đang kết nối...',
+		'typeRandomly': 'Hãy đánh những chữ bửa bải vào bàn phím của bạn trong thời gian một vài giây.',
+		'generatingKeys': 'Đang tạo ra chìa khoá mã hoá...'
 	},
 	'chatWindow': {
-		'groupConversation': '群組對話。請點擊一個私人聊天的用戶。',
-		'otrFingerprint': 'OTR指紋（私人對話）：',
-		'groupFingerprint': '群組對話紀錄：',
-		'statusAvailable': '状态：上线',
-		'statusAway': '状态：离开',
-		'myInfo': '我的信息',
-		'desktopNotificationsOn': '桌面通知开了',
-		'desktopNotificationsOff': '桌面通知关机了',
-		'audioNotificationsOn': '音频通知开了',
-		'audioNotificationsOff': '音频通知关机了',
-		'logout': '退出',
-		'displayInfo': '顯示信息',
-		'sendEncryptedFile': '发加密的文件',
-		'conversation': '交谈'
+		'groupConversation': 'Cuộc đối thoại nhóm. Nhấn vào một thành viên để đối thoại riêng.',
+		'otrFingerprint': 'Vân tay OTR (để dùng cho các cuộc đối thoại nhóm):',
+		'groupFingerprint': 'Vân tay của cuộc đối thoại nhóm:',
+		'statusAvailable': 'Trạng Thái: Sẵn sàng',
+		'statusAway': 'Trạng Thái: Xa máy',
+		'myInfo': 'Chi tiết của tôi',
+		'desktopNotificationsOn': 'Thông báo mở',
+		'desktopNotificationsOff': 'Thông báo tắt',
+		'audioNotificationsOn': 'Thông Báo Âm Thanh Mở',
+		'audioNotificationsOff': 'Thông Báo Âm Thanh Tắt ',
+		'logout': 'Đăng xuất',
+		'displayInfo': 'Thông tin hiển thị',
+		'sendEncryptedFile': 'Gữi tập tin mã hoá',
+		'conversation': 'Cuộc đối thoại'
 	}
 }
 
-language['zh-tw'] = language.zh;
-language['zh-hk'] = language.zh;
-language['zh-cn'] = language.zh;
-language['zh-sg'] = language.zh;
+language.he = {
+	'language': 'he',
+	'direction': 'rtl',
+	'font-family': 'Helvetica, Arial, Verdana',
+	'loginWindow': {
+		'introHeader': 'שיחות חופשיות לכולם.',
+		'introParagraph1': 'Cryptocat היא פלטפורמת מסרים מידיים שמאפשרת לך לנהל שיחות פרטיות עם חברים בקלות. ההודעות מוצפנות לפני עזיבת המסך שלך ומוגנות מצפיה על ידי צד שלישי, אפילו מאיתנו.',
+		'introParagraph2': 'Cryptocat היא תוכנה חופשית ובנויה על סטנדרטים פתוחים. תהליך הפיתוח שלנו נמצא תחת בקרה מתמשכת על ידי קהילה של מתנדבי <a href="https://project.crypto.cat" target="_blank">ם. קראו עוד על פרוייקט Cryptocat</a>.',
+		'project': 'פרוייקט',
+		'blog': 'בלוג',
+		'source': 'מקור',
+		'customServer': 'שרת מותאם אישית ...',
+		'conversationName': 'שם השיחה',
+		'nickname': 'כינוי',
+		'connect': 'התחבר',
+		'enterConversation': 'מלאו שם שיחה על מנת להצטרף'
+	},
+	'loginMessage': {
+		'enterConversation': 'נא למלא שם שיחה',
+		'conversationAlphanumeric': 'שם השיחה חייב לכלול אותיות ומספרים בלבד.',
+		'enterNickname': 'נא למלא כינוי',
+		'nicknameAlphanumeric': 'הכינוי חייב לכלול אותיות ומספרים בלבד.',
+		'nicknameInUse': 'הכינוי נמצא בשימוש.',
+		'authenticationFailure': 'שגיאה בהזדהות.',
+		'connectionFailed': 'חיבור נכשל.',
+		'thankYouUsing': 'תודה שהשתמשת בCryptocat.',
+		'registering': 'נרשם...',
+		'connecting': 'מתחבר...',
+		'typeRandomly': 'אנא הקלידו בצורה אקראית למשך מספר שניות.',
+		'generatingKeys': 'מייצר מפתחות הצפנה...'
+	},
+	'chatWindow': {
+		'groupConversation': 'שיחה קבוצתית. לחצו על משתמש לשיחה פרטית.',
+		'otrFingerprint': 'חתימת OTR (לשיחות פרטיות):',
+		'groupFingerprint': 'חתימת שיחה קבוצתית:',
+		'statusAvailable': 'מצב: זמין',
+		'statusAway': 'מצב: לא זמין',
+		'myInfo': 'הפרטים שלי',
+		'desktopNotificationsOn': 'התראות שולחן עבודה פעילות',
+		'desktopNotificationsOff': 'התראות שולחן עבודה מבוטלות',
+		'audioNotificationsOn': 'התראות קוליות פעילות',
+		'audioNotificationsOff': 'התראות קוליות מבוטלות',
+		'logout': 'יציאה',
+		'displayInfo': 'הצג מידע',
+		'sendEncryptedFile': 'שלח קובץ מוצפן',
+		'conversation': 'שיחה'
+	}
+}
+
+language['zh-cn'] = {
+	'language': 'zh-cn',
+	'direction': 'ltr',
+	'font-family': '"Microsoft Yahei", "微软雅黑", Tahoma, Helvetica, Arial, sans-serif, STXihei, "华文细黑"',
+	'loginWindow': {
+		'introHeader': '属于每个人的私人对话。',
+		'introParagraph1': 'Cryptocat是一个即时通讯平台，可以让你轻松地与朋友拥有的私人对话。讯息在离开你的屏幕画面前进行加密及保护，好让防止任何第三者查看，包括我们。',
+		'introParagraph2': 'Cryptocat是建于开放规格上的免​​费软件。我们的开发过程是由公众志愿者和爱好者进行持续的检测。了解更多 <a href="https://project.crypto.cat" target="_blank">Cryptocat的项目。</a>',
+		'project': '项目',
+		'blog': '博客',
+		'source': '源代码',
+		'customServer': '自定义服务器...',
+		'conversationName': '通话名称',
+		'nickname': '昵称',
+		'connect': '连接',
+		'enterConversation': '输入名称加入对话。'
+	},
+	'loginMessage': {
+		'enterConversation': '请输入对话名称。',
+		'conversationAlphanumeric': '通话名称必须是字母或数字。',
+		'enterNickname': '请输入昵称。',
+		'nicknameAlphanumeric': '昵称必须是字母或数字。',
+		'nicknameInUse': '昵称已在使用。',
+		'authenticationFailure': '验证失败。',
+		'connectionFailed': '连接失败。',
+		'thankYouUsing': '感谢您使用Cryptocat。',
+		'registering': '注册中...',
+		'connecting': '连接中...',
+		'typeRandomly': '请随意在键盘上按键几秒钟。',
+		'generatingKeys': '生产加密密钥...'
+	},
+	'chatWindow': {
+		'groupConversation': '群组对话。点击一个用户进行私人聊天。',
+		'otrFingerprint': 'OTR指纹（私人对话）：',
+		'groupFingerprint': '群组对话纪录：',
+		'statusAvailable': '状态：有空',
+		'statusAway': '状态：离开',
+		'myInfo': '我的信息',
+		'desktopNotificationsOn': '桌面通知开启',
+		'desktopNotificationsOff': '桌面通知关闭',
+		'audioNotificationsOn': '音效通知开启',
+		'audioNotificationsOff': '音效通知关闭',
+		'logout': '登出',
+		'displayInfo': '显示信息',
+		'sendEncryptedFile': '发送已加密的文件',
+		'conversation': '对话'
+	}
+}
+
+language['zh-hk'] = {
+	'language': 'zh-hk',
+	'direction': 'ltr',
+	'font-family': '"Microsoft Yahei", "微软雅黑", Tahoma, Helvetica, Arial, sans-serif, STXihei, "华文细黑"',
+	'loginWindow': {
+		'introHeader': '屬於每個人的私人對話。',
+		'introParagraph1': 'Cryptocat是一個即時通訊平台，可以讓你輕鬆地與朋友擁有的私人對話。訊息在離開你的屏幕畫面前進行加密及保護，好讓防止任何第三者查看，包括我們。',
+		'introParagraph2': 'Cryptocat是建於開放規格上的免費軟件。我們的開發過程是由公眾志願者和愛好者進行持續的檢測。了解更多 <a href="https://project.crypto.cat" target="_blank">Cryptocat的項目。</a>',
+		'project': '項目',
+		'blog': '博客',
+		'source': '源代碼',
+		'customServer': '自定義服務器...',
+		'conversationName': '通話名稱',
+		'nickname': '暱稱',
+		'connect': '連接',
+		'enterConversation': '輸入名稱加入對話。'
+	},
+	'loginMessage': {
+		'enterConversation': '請輸入對話名稱。',
+		'conversationAlphanumeric': '通話名稱必須是字母或數字。',
+		'enterNickname': '請輸入暱稱。',
+		'nicknameAlphanumeric': '暱稱必須是字母或數字。',
+		'nicknameInUse': '暱稱已在使用。',
+		'authenticationFailure': '驗證失敗。',
+		'connectionFailed': '連接失敗。',
+		'thankYouUsing': '感謝您使用Cryptocat。',
+		'registering': '註冊中...',
+		'connecting': '連接中...',
+		'typeRandomly': '請隨意在鍵盤上按鍵幾秒鐘。',
+		'generatingKeys': '生產加密密鑰...'
+	},
+	'chatWindow': {
+		'groupConversation': '群組對話。點擊一個用戶進行私人聊天。',
+		'otrFingerprint': 'OTR指紋（私人對話）：',
+		'groupFingerprint': '群組對話紀錄：',
+		'statusAvailable': '狀態：有空',
+		'statusAway': '狀態：離開',
+		'myInfo': '我的信息',
+		'desktopNotificationsOn': '桌面通知開啟',
+		'desktopNotificationsOff': '桌面通知關閉',
+		'audioNotificationsOn': '音效通知開啟',
+		'audioNotificationsOff': '音效通知關閉',
+		'logout': '登出',
+		'displayInfo': '顯示信息',
+		'sendEncryptedFile': '發送已加密的文件',
+		'conversation': '對話'
+	}
+}
+
+language['zh-tw'] = language['zh-hk'];
+language['zh-sg'] = language['zh-cn'];
 
 
 })();

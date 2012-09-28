@@ -49,7 +49,9 @@ var dataReader = new Worker('js/datareader.js');
 keyGenerator.onmessage = function(e) {
 	myKey = e.data;
 	DSA.inherit(myKey);
-	$('#dialogBoxClose').click();
+	$('#fill').stop().animate({'width': '100%', 'opacity': '1'}, 400, 'linear', function() {
+		$('#dialogBoxClose').click();
+	});
 }
 
 // Outputs the current hh:mm.
@@ -135,7 +137,7 @@ function buildConversationInfo(conversation) {
 }
 
 // Switches the currently active conversation to `buddy`
-function conversationSwitch(buddy) {
+function switchConversation(buddy) {
 	if ($('#buddy-' + buddy).attr('status') !== 'offline') {
 		$('#' + buddy).animate({'background-color': '#97CEEC'});
 		$('#buddy-' + buddy).css('border-bottom', '1px dashed #76BDE5');
@@ -143,7 +145,7 @@ function conversationSwitch(buddy) {
 	if (buddy !== 'main-Conversation') {
 		$('#buddy-' + buddy).css('background-image', 'none');
 	}
-	$('#conversationInfo').animate({'width': '750px'}, 'fast',  function() {
+	$('#conversationInfo').animate({'width': '750px'}, function() {
 		$('#conversationWindow').slideDown('fast', function() {
 			if (conversationInfo[currentConversation]) {
 				$('#conversationInfo').html(conversationInfo[currentConversation]);
@@ -161,7 +163,7 @@ function conversationSwitch(buddy) {
 	});
 	// Clean up finished conversations
 	$('#buddyList div').each(function() {
-		if (($(this).attr('title') !== currentConversation)
+		if (($(this).attr('id') !== ('buddy-' + currentConversation))
 			&& ($(this).css('background-image') === 'none')
 			&& ($(this).attr('status') === 'offline')) {
 			$(this).slideUp(500, function() {
@@ -594,19 +596,19 @@ function bindBuddyClick(nickname) {
 				$(this).insertAfter(placement).slideDown('fast');
 			});
 		}
-		currentConversation = $(this).attr('title');
+		currentConversation = nickname;
 		initiateConversation(currentConversation);
 		$('#conversationWindow').html(conversations[currentConversation]);
 		if (($(this).prev().attr('id') === 'buddiesOnline')
 			|| (($(this).prev().attr('id') === 'buddiesAway')
 			&& $('#buddiesOnline').next().attr('id') === 'buddiesAway')) {
 			$(this).insertAfter('#currentConversation');
-			conversationSwitch(nickname);
+			switchConversation(nickname);
 		}
 		else {
 			$(this).slideUp('fast', function() {
 				$(this).insertAfter('#currentConversation').slideDown('fast', function() {
-					conversationSwitch(nickname);
+					switchConversation(nickname);
 				});
 			});
 		}
@@ -935,7 +937,7 @@ $('#loginForm').submit(function() {
 		$('#progressInfo').append(
 			'<div id="progressBar"><div id="fill"></div></div>'
 		);
-		$('#fill').animate({'width': '100%'}, 20000, 'linear');
+		$('#fill').animate({'width': '100%', 'opacity': '1'}, 25555, 'linear');
 	}
 	// If everything is okay, then register a randomly generated throwaway XMPP ID and log in.
 	else {
@@ -1001,7 +1003,7 @@ function login(username, password) {
 							$('#buddyList').css('width', (150 + scrollWidth) + 'px');
 							if (groupChat) {
 								bindBuddyClick('main-Conversation');
-								$('#buddy-main-Conversation').delay(2000).click();
+								$('#buddy-main-Conversation').delay(1000).click();
 							}
 						});
 						loginError = 0;
@@ -1023,7 +1025,7 @@ function login(username, password) {
 		}
 		else if (status === Strophe.Status.DISCONNECTED) {
 			$('.button').fadeOut('fast');
-			$('#conversationInfo').animate({'width': '0'}, 'fast');
+			$('#conversationInfo').animate({'width': '0'});
 			$('#conversationInfo').html('');
 			$('#userInput').fadeOut(function() {
 				$('#conversationWindow').slideUp(function() {
@@ -1048,13 +1050,13 @@ function login(username, password) {
 							conversationInfo = [];
 							currentConversation = 0;
 							coflictIsPossible = 1;
+							conn = null;
 							if (!loginError) {
 								$('#conversationName').val(language['loginWindow']['conversationName']);
 							}
 							$('#conversationName').removeAttr('readonly');
 							$('#nickname').val(language['loginWindow']['nickname']);
 							$('#nickname').removeAttr('readonly');
-							$('#newAccount').attr('checked', false);
 							$('#info').fadeIn();
 							$('#loginLinks').fadeIn();
 							$('#options').fadeIn();
@@ -1064,6 +1066,7 @@ function login(username, password) {
 						});
 					$('.buddy').unbind('click');
 					$('.buddyMenu').unbind('click');
+					$('#buddy-main-Conversation').insertAfter('#buddiesOnline');
 				});
 			});
 		}
