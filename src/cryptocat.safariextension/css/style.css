@@ -101,7 +101,7 @@ img.logo {
 	outline: none;
 }
 #bubble #loginSubmit {
-	width: 210px;
+	width: 211px;
 }
 [type=submit] {
 	box-shadow: 2px 2px #97CEEC;
@@ -127,19 +127,25 @@ img.logo {
 	font-family: Helvetica, Arial;
 	font-size: 18px;
 }
-#bubble #customServer {
+#bubble .loginOption {
 	background-color: #97CEEC;
 	color: #FFF;
-	text-align: center;
-	width: 212px;
+	padding: 0 6px;
+	width: 201px;
 	display: block;
-	margin-left: 3px;
+	margin-left: 2px;
 	font-size: 10px;
-	border-bottom: 1px solid #97CEEC;
+	height: 15px;
 }
-#bubble #customServer:hover {
+#bubble .loginOption:hover {
 	text-decoration: none;
-	border-bottom: 1px dashed #FFF;
+}
+#bubble .loginOption span {
+	position: relative;
+	bottom: 5px;
+}
+#customServerSubmit {
+	text-align: left;
 }
 #bubble #options {
 	background-color: #222;
@@ -263,7 +269,8 @@ img.logo {
 }
 #displayInfo {
 	font-size: 12px;
-	padding: 20px;
+	padding: 10px 20px;
+	height: 80px;
 }
 #dialogBoxContent p {
 	padding: 10px;
@@ -273,8 +280,8 @@ img.logo {
 #dialogBox .bar, #dialogBox .button, #dialogBox .no {
 	width: 458px;
 	background-color: #333;
-	padding: 6px;
-	font-size: 14px;
+	padding: 5px 6px;
+	font-size: 11px;
 	box-shadow: none;
 	font-weight: bold;
 	font-family: Helvetica, Arial;
@@ -407,16 +414,29 @@ img.logo {
 	background-color: #97CEEC;
 	opacity: 0.8;
 }
-#dialogBox input {
+#dialogBox [type=text], #dialogBox [type=password], #dialogBox [type=submit] {
 	background-color: #000;
 	border: 1px solid #97CEEC;
 	color: #97CEEC;
-	box-shadow: none;
 	float: left;
 	margin: 0 5px 10px 5px;
 	width: 255px;
 	box-shadow: 2px 2px #97CEEC;
 	font-size: 11px;
+}
+#dialogBox #resetKeysOK {
+	background-color: #000;
+	border: 1px solid #97CEEC;
+	color: #97CEEC;
+	margin: 0 auto;
+	width: 100px;
+	box-shadow: 2px 2px #97CEEC;
+	font-size: 12px;
+	cursor: pointer;
+}
+#dialogBox [type=checkbox] {
+	width: 10px;
+	height: 10px;
 }
 #otrFingerprint, #multiPartyFingerprint {
 	font-weight: bold;

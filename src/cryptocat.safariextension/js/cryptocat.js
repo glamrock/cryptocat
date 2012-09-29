@@ -24,15 +24,43 @@ var conn, conversationName, myNickname, myKey;
 if (!groupChat) {
 	$('#buddy-main-Conversation').remove();
 }
-var language = window.navigator.userLanguage
-	|| window.navigator.language;
-try {
+
+// Initialize language settings
+var language = window.navigator.language;
+if (localStorage.getItem('language')) {
+	language = Language.set(localStorage.getItem('language'));
+	$('#languages').val(localStorage.getItem('language'));
+}
+else {
+	try {
 		language = Language.set(language.toLowerCase());
 	}
-catch(err) {
-	language = Language.set('en');
+	catch(err) {
+		language = Language.set('en');
+	}
 }
+
+// Initialize nickname settings
+if (localStorage.getItem('rememberNickname') === 'rememberNickname') {
+	$('#nickname').val(localStorage.getItem('myNickname'));
+}
+else {
+	localStorage.setItem('rememberNickname', 'doNotRememberNickname');
+	localStorage.removeItem('myNickname');
+}
+
+// Intialize pre-existing encryption keys
+if (localStorage.getItem('myKey')) {
+	myKey = JSON.parse(localStorage.getItem('myKey'));
+	DSA.inherit(myKey);
+	multiParty.setPrivateKey(localStorage.getItem('multiPartyKey'));
+	multiParty.genPublicKey();
+}
+
+// Initialize qTips
 $('.button[title]').qtip();
+
+// Set previously used nickname
 
 // Detect window focus
 window.onfocus = function() {
@@ -48,6 +76,7 @@ var keyGenerator = new Worker('js/keygenerator.js');
 var dataReader = new Worker('js/datareader.js');
 keyGenerator.onmessage = function(e) {
 	myKey = e.data;
+	localStorage.setItem('myKey', JSON.stringify(myKey));
 	DSA.inherit(myKey);
 	$('#fill').stop().animate({'width': '100%', 'opacity': '1'}, 400, 'linear', function() {
 		$('#dialogBoxClose').click();
@@ -175,7 +204,7 @@ function switchConversation(buddy) {
 
 // Handles login failures
 function loginFail(message) {
-	$('#loginInfo').html(message);
+	$('#loginInfo').text(message);
 	$('#bubble').animate({'left': '+=5px'}, 130)
 		.animate({'left': '-=10px'}, 130)
 		.animate({'left': '+=5px'}, 130);
@@ -186,7 +215,10 @@ function loginFail(message) {
 // If the browser supports window.crypto.getRandomValues(), then that is used.
 // Otherwise, the built-in Fortuna RNG is used.
 function seedRNG() {
-	if ((window.crypto !== undefined) && (typeof window.crypto.getRandomValues === 'function')) {
+	if (CryptoJS.Fortuna.Ready()) {
+		return true;
+	}
+	else if ((window.crypto !== undefined) && (typeof window.crypto.getRandomValues === 'function')) {
 		var buffer = new Uint8Array(1024);
 		window.crypto.getRandomValues(buffer);
 		var seed = '';
@@ -199,17 +231,18 @@ function seedRNG() {
 		return true;
 	}
 	else if (navigator.userAgent.match('Firefox')) {
-		var element = document.createElement('firefoxElement');
+		var element = document.createElement('cryptocatFirefoxElement');
 		document.documentElement.appendChild(element);
-		var evt = document.createEvent('Events');
-		evt.initEvent('generateRandomBytes', true, false);
+		var evt = document.createEvent('cryptocatEvent');
+		evt.initEvent('cryptocatGenerateRandomBytes', true, false);
 		element.dispatchEvent(evt);
-		for (var i in element.getAttribute('randomValues')) {
-			CryptoJS.Fortuna.AddRandomEvent(element.getAttribute('randomValues')[i]);
-			console.log(element.getAttribute('randomValues')[i]);
-		}
-		delete element;
-		return true;
+		window.addEventListener('cryptocatAnswerEvent', function(evt) {
+			for (var i in element.getAttribute('randomValues')) {
+				CryptoJS.Fortuna.AddRandomEvent(element.getAttribute('randomValues')[i]);
+			}
+			delete element;
+			seedRNG();
+		}, false);
 	}
 	else {
 		var e, up, down;
@@ -309,7 +342,7 @@ function getFingerprint(buddy, OTR) {
 	}
 	else {
 		if (buddy === myNickname) {
-			var fingerprint = multiParty.myFingerprint(myNickname);
+			var fingerprint = multiParty.genFingerprint();
 		}
 		else {
 			var fingerprint = multiParty.genFingerprint(buddy);
@@ -468,7 +501,7 @@ function handleMessage(message) {
 	var from = $(message).attr('from');
 	var nick = from.match(/\/\w+/)[0].substring(1);
 	var type = $(message).attr('type');
-	var body = $(message).find('body').text();
+	var body = $(message).find('body').text().replace(/\&quot;/g, '"');
 	if (nick === myNickname) {
 		return true;
 	}
@@ -654,12 +687,54 @@ function displayInfo(nickname) {
 	var displayInfoDialog = '<div class="bar">' + nickname +'</div><div id="displayInfo">'
 		+ language['chatWindow']['otrFingerprint'] + '<br /><span id="otrFingerprint"></span><br />'
 		+ '<br />' + language['chatWindow']['groupFingerprint']  + '<br /><span id="multiPartyFingerprint"></span></div>';
+	if (nickname === myNickname) {
+		displayInfoDialog += '<div class="button" id="rememberNickname"></div>'
+			+ '<div class="button" id="resetKeys">' 
+			+ language['chatWindow']['resetKeys'] + '</div>';
+	}
 	dialogBox(displayInfoDialog, 1);
 	if ((nickname !== myNickname) && !otrKeys[nickname].msgstate) {
 		$('#otrFingerprint').text('...');
 		otrKeys[nickname].sendQueryMsg();
 	}
 	else {
+		if (localStorage.getItem('rememberNickname') === 'doNotRememberNickname') {
+			$('#rememberNickname').text(language['chatWindow']['doNotRememberNickname']);
+			$('#rememberNickname').css('background-color', '#F00');
+		}
+		else {
+			$('#rememberNickname').text(language['chatWindow']['rememberNickname']);
+		}
+		$('#rememberNickname').click(function() {
+			if ($(this).text() === language['chatWindow']['doNotRememberNickname']) {
+				$(this).text(language['chatWindow']['rememberNickname']);
+				$(this).animate({'background-color': '#97CEEC'});
+				localStorage.setItem('rememberNickname', 'rememberNickname');
+				localStorage.setItem('myNickname', myNickname);
+			}
+			else {
+				$(this).text(language['chatWindow']['doNotRememberNickname']);
+				$(this).animate({'background-color': '#F00'});
+				localStorage.setItem('rememberNickname', 'doNotRememberNickname');
+			}
+		});
+		$('#resetKeys').click(function() {
+			$('#displayInfo').fadeOut(function() {
+				$(this).html(
+					'<p>' + language['chatWindow']['resetKeysWarn'] + '</p>'
+					+ '<input type="button" class="typeButton" id="resetKeysOK" />'
+				);
+				$('#resetKeysOK').val(language['chatWindow']['continue']);
+				$('#resetKeysOK').click(function() {
+					localStorage.removeItem('myKey');
+					localStorage.removeItem('multiPartyKey');
+					myKey = null;
+					$('#dialogBoxClose').click();
+					logout();
+				});
+				$(this).fadeIn();
+			});
+		});
 		$('#otrKey').text(getFingerprint(nickname, 1));
 	}
 	$('#multiPartyFingerprint').text(getFingerprint(nickname, 0));
@@ -861,7 +936,7 @@ $('#customServer').click(function() {
 	$('#customBOSH').val(bosh)
 		.attr('title', 'BOSH relay')
 		.click(function() {$(this).select()});
-	$('#customServerSubmit').val('done').click(function() {
+	$('#customServerSubmit').val(language['chatWindow']['continue']).click(function() {
 		domain = $('#customDomain').val();
 		conferenceServer = $('#customConferenceServer').val();
 		bosh = $('#customBOSH').val();
@@ -874,6 +949,7 @@ $('#customServer').click(function() {
 // Language selector
 $('#languages').change(function() {
 	language = Language.set($(this).val());
+	localStorage.setItem('language', $(this).val());
 	$('#conversationName').select();
 });
 
@@ -915,11 +991,10 @@ $('#loginForm').submit(function() {
 			$('#loginForm').submit();
 		}
 	}
-	// Check if we have an OTR key, if not, generate
+	// If no encryption keys, generate
 	else if (!myKey) {
 		keyGenerator.postMessage('generateDSA');
-		// Generate multiParty keys
-		multiParty.genPrivateKey();
+		localStorage.setItem('multiPartyKey', multiParty.genPrivateKey());
 		multiParty.genPublicKey();
 		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" '
 			+ 'alt="" /><p id="progressInfo"><span>'
@@ -955,7 +1030,7 @@ function registerXMPPUser(username, password) {
 	var registrationConnection = new Strophe.Connection(bosh);
 	registrationConnection.register.connect(domain, function(status) {
 		if (status === Strophe.Status.REGISTER) {
-			$('#loginInfo').html(language['loginMessage']['registering']);
+			$('#loginInfo').text(language['loginMessage']['registering']);
 			registrationConnection.register.fields.username = username;
 			registrationConnection.register.fields.password = password;
 			registrationConnection.register.submit();
@@ -978,16 +1053,17 @@ function login(username, password) {
 	conn.connect(username + '@' + domain, password, function(status) {
 		if (status === Strophe.Status.CONNECTING) {
 			$('#loginInfo').animate({'color': '#999'}, 'fast');
-			$('#loginInfo').html(language['loginMessage']['connecting']);
+			$('#loginInfo').text(language['loginMessage']['connecting']);
 		}
 		else if (status === Strophe.Status.CONNFAIL) {
 			if (!loginError) {
-				$('#loginInfo').html(language['loginMessage']['connectionFailed']);
+				$('#loginInfo').text(language['loginMessage']['connectionFailed']);
 			}
 			$('#loginInfo').animate({'color': '#E93028'}, 'fast');
 		}
 		else if (status === Strophe.Status.CONNECTED) {
-			$('#loginInfo').html('✓');
+			localStorage.setItem('myNickname', myNickname);
+			$('#loginInfo').text('✓');
 			$('#loginInfo').animate({'color': '#0F0'}, 'fast');
 			$('#bubble').animate({'margin-top': '+=0.5%'}, function() {
 				$('#bubble').animate({'margin-top': '1.5%'}, function() {
@@ -1026,13 +1102,13 @@ function login(username, password) {
 		else if (status === Strophe.Status.DISCONNECTED) {
 			$('.button').fadeOut('fast');
 			$('#conversationInfo').animate({'width': '0'});
-			$('#conversationInfo').html('');
+			$('#conversationInfo').text('');
 			$('#userInput').fadeOut(function() {
 				$('#conversationWindow').slideUp(function() {
 					$('#buddyWrapper').fadeOut();
 					if (!loginError) {
 						$('#loginInfo').animate({'color': '#999'}, 'fast');
-						$('#loginInfo').html(language['loginMessage']['thankYouUsing']);
+						$('#loginInfo').text(language['loginMessage']['thankYouUsing']);
 					}
 					$('#bubble').animate({'width': '680px'});
 					$('#bubble').animate({'height': '310px'})
@@ -1042,7 +1118,7 @@ function login(username, password) {
 									$(this).remove();
 								}
 							});
-							$('#conversationWindow').html('');
+							$('#conversationWindow').text('');
 							otrKeys = {};
 							multiParty.resetKeys();
 							conversations = [];

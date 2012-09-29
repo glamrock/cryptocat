@@ -2,27 +2,24 @@
 (function(){
 
 var language = {};
-var defaultLanguage;
-
-Language.setDefault = function(lang) {
-	defaultLanguage = language[lang];
-}
 
 Language.set = function(lang) {
 	lang = language[lang];
 	$('html').attr('dir', lang['direction']);
 	$('body').css('font-family', lang['font-family']);
-	$('#introHeader').html(lang['loginWindow']['introHeader']);
-	$('#introParagraph1').html(lang['loginWindow']['introParagraph1']);
+	$('#introHeader').text(lang['loginWindow']['introHeader']);
+	$('#introParagraph1').text(lang['loginWindow']['introParagraph1']);
 	$('#introParagraph2').html(lang['loginWindow']['introParagraph2']);
-	$('#project').html(lang['loginWindow']['project']);
-	$('#blog').html(lang['loginWindow']['blog']);
-	$('#source').html(lang['loginWindow']['source']);
-	$('#customServer').html(lang['loginWindow']['customServer']);
+	$('#project').text(lang['loginWindow']['project']);
+	$('#blog').text(lang['loginWindow']['blog']);
+	$('#source').text(lang['loginWindow']['source']);
+	$('#customServer').text(lang['loginWindow']['customServer']);
 	$('#conversationName').val(lang['loginWindow']['conversationName']);
-	$('#nickname').val(lang['loginWindow']['nickname']);
+	if (localStorage.getItem('rememberNickname') === 'doNotRemember') {
+		$('#nickname').val(lang['loginWindow']['nickname']);
+	}
 	$('#loginSubmit').val(lang['loginWindow']['connect']);
-	$('#loginInfo').html(lang['loginWindow']['enterConversation']);
+	$('#loginInfo').text(lang['loginWindow']['enterConversation']);
 	$('#logout').attr('title', lang['chatWindow']['logout']);
 	$('#logout').attr('alt', lang['chatWindow']['logout']);
 	$('#audio').attr('title', lang['chatWindow']['audioNotificationsOff']);
@@ -33,7 +30,7 @@ Language.set = function(lang) {
 	$('#myInfo').attr('alt', lang['chatWindow']['myInfo']);
 	$('#status').attr('title', lang['chatWindow']['statusAvailable']);
 	$('#status').attr('alt', lang['chatWindow']['statusAvailable']);
-	$('#conversationTag').html(lang['chatWindow']['conversation']);
+	$('#conversationTag').text(lang['chatWindow']['conversation']);
 	return lang;
 }
 
@@ -65,6 +62,7 @@ language.en = {
 		'thankYouUsing': 'Thank you for using Cryptocat.',
 		'registering': 'Registering...',
 		'connecting': 'Connecting...',
+		'connected': 'Connected.',
 		'typeRandomly': 'Please type on your keyboard as randomly as possible for a few seconds.',
 		'generatingKeys': 'Generating encryption keys...'
 	},
@@ -72,6 +70,9 @@ language.en = {
 		'groupConversation': 'Group conversation. Click on a user for private chat.',
 		'otrFingerprint': 'OTR fingerprint (for private conversations):',
 		'groupFingerprint': 'Group conversation fingerprint:',
+		'resetKeys': 'Reset my encryption keys',
+		'resetKeysWarn': 'Resetting your encryption keys will disconnect you. Your fingerprints will also change.',
+		'continue': 'Continue',
 		'statusAvailable': 'Status: Available',
 		'statusAway': 'Status: Away',
 		'myInfo': 'My Info',
@@ -79,6 +80,8 @@ language.en = {
 		'desktopNotificationsOff': 'Desktop Notifications Off',
 		'audioNotificationsOn': 'Audio Notifications On',
 		'audioNotificationsOff': 'Audio Notifications Off',
+		'rememberNickname': 'Remember my nickname',
+		'doNotRememberNickname': 'Don\'t remember my nickname',
 		'logout': 'Disconnect',
 		'displayInfo': 'Display info',
 		'sendEncryptedFile': 'Send encrypted file',
@@ -213,13 +216,17 @@ language.fr = {
 		'thankYouUsing': 'Merci d\'avoir utilisé Cryptocat.',
 		'registering': 'Enregistrement...',
 		'connecting': 'Connexion...',
+		'connected': 'Connecté.',
 		'typeRandomly': 'Veuillez taper sur votre clavier d\'une manière aléatoire pendant quelques secondes.',
-		'generatingKeys': 'Génération de clés de cryptage...'
+		'generatingKeys': 'Génération de clés de chiffrement...'
 	},
 	'chatWindow': {
 		'groupConversation': 'Conversation de groupe. Cliquez sur un utilisateur pour commencer une conversation privée.',
 		'otrFingerprint': 'Signature OTR (pour les conversations privées):',
 		'groupFingerprint': 'Signature de la conversation de groupe:',
+		'resetKeys': 'Réinitialiser mes clés de chiffrement',
+		'resetKeysWarn': 'Réinitialiser vos clés de cryptage va vous déconnecter. Vos empreintes digitales seront également changées.',
+		'continue': 'Continuer',
 		'statusAvailable': 'Statut: Disponible',
 		'statusAway': 'Statut: Non Disponible',
 		'myInfo': 'Mes Informations',
@@ -227,6 +234,8 @@ language.fr = {
 		'desktopNotificationsOff': 'Pas de Notifications Visibles',
 		'audioNotificationsOn': 'Notifications Audio',
 		'audioNotificationsOff': 'Pas de Notifications Audio',
+		'rememberNickname': 'Sauveguarder mon pseudonyme',
+		'doNotRememberNickname': 'Ne pas sauveguarder mon pseudonyme',
 		'logout': 'Déconnexion',
 		'displayInfo': 'Afficher Info',
 		'sendEncryptedFile': 'Envoyer un fichier crypté',
@@ -249,7 +258,7 @@ language.ar = {
 		'conversationName': 'اسم المحادثة',
 		'nickname': 'الاسم المستعار',
 		'connect': 'اتصل',
-		'enterConversation': 'ادخل اسم محادثة للأنضمام.'
+		'enterConversation': 'ادخل اسم محادثة للأنضمام.',
 	},
 	'loginMessage': {
 		'enterConversation': 'الرجاء ادخال اسم محادثة.',
@@ -262,6 +271,7 @@ language.ar = {
 		'thankYouUsing': 'شكرا لكم لاستخدام كريبتوكات.',
 		'registering': 'جاري التسجيل...',
 		'connecting': 'جاري الاتصال...',
+		'connected': 'موصول.',
 		'typeRandomly': 'الرجاء الطباعة على لوحة مفاتيحك بكل ما يمكن من عشوائية لبضعة ثوان.',
 		'generatingKeys': 'جاري توليد مفاتيح التشفير...'
 	},
@@ -269,6 +279,9 @@ language.ar = {
 		'groupConversation': 'محادثة جماعية. اضغط على مستخدم لمحادثة خاصة.',
 		'otrFingerprint': 'بصمة OTR (للمحادثات الخاصة):',
 		'groupFingerprint': 'بصمة المحادثة الجماعية:',
+		'resetKeys': 'إعادة تعين مفاتيح التشفير',
+		'resetKeysWarn': 'إعادة مفاتيحك سوف يفصلك من هذه المحادثة. بصماتك أيضاً ستتغير.',
+		'continue': 'موافق',
 		'statusAvailable': 'الحالة: متواجد',
 		'statusAway': 'الحالة: غير متواجد',
 		'myInfo': 'معلوماتي',
@@ -276,6 +289,8 @@ language.ar = {
 		'desktopNotificationsOff': 'اخطارات سطح المكتب غير مفعلة',
 		'audioNotificationsOn': 'اخطارات صوتية مفعلة',
 		'audioNotificationsOff': 'اخطارات صوتية غير مفعلة',
+		'rememberNickname': 'إحفظ إسمي المستعار',
+		'doNotRememberNickname': 'لا تحفظ إسمي المستعار',
 		'logout': 'تسجيل الخروج',
 		'displayInfo': 'عرض المعلومات',
 		'sendEncryptedFile': 'ارسل ملف مشفر',
@@ -998,6 +1013,7 @@ language.he = {
 		'thankYouUsing': 'תודה שהשתמשת בCryptocat.',
 		'registering': 'נרשם...',
 		'connecting': 'מתחבר...',
+		'connected': 'מחובר.',
 		'typeRandomly': 'אנא הקלידו בצורה אקראית למשך מספר שניות.',
 		'generatingKeys': 'מייצר מפתחות הצפנה...'
 	},
@@ -1005,6 +1021,9 @@ language.he = {
 		'groupConversation': 'שיחה קבוצתית. לחצו על משתמש לשיחה פרטית.',
 		'otrFingerprint': 'חתימת OTR (לשיחות פרטיות):',
 		'groupFingerprint': 'חתימת שיחה קבוצתית:',
+		'resetKeys': 'ייצר מחדש את מפתחות ההצפנה שלי',
+		'resetKeysWarn': 'ייצור מחדש של מפתחת ההצפנה שלך יגרום לניתוק. החתימות שלך תשתננה בהתאם.',
+		'continue': 'המשך',
 		'statusAvailable': 'מצב: זמין',
 		'statusAway': 'מצב: לא זמין',
 		'myInfo': 'הפרטים שלי',
@@ -1012,6 +1031,8 @@ language.he = {
 		'desktopNotificationsOff': 'התראות שולחן עבודה מבוטלות',
 		'audioNotificationsOn': 'התראות קוליות פעילות',
 		'audioNotificationsOff': 'התראות קוליות מבוטלות',
+		'rememberNickname': 'זכור את שם המשתמש שלי',
+		'doNotRememberNickname': 'זכור את שם המשתמש שלי',
 		'logout': 'יציאה',
 		'displayInfo': 'הצג מידע',
 		'sendEncryptedFile': 'שלח קובץ מוצפן',
