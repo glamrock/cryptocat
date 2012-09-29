@@ -2,13 +2,16 @@
 (function(){
 
 /* Configuration */
-var domain = 'crypto.cat'; // Domain name to connect to for XMPP.
-var conferenceServer = 'conference.crypto.cat'; // Address of the XMPP MUC server.
-var bosh = 'https://crypto.cat/http-bind'; // BOSH is served over an HTTPS proxy for better security and availability.
+var defaultDomain = 'crypto.cat'; // Domain name to connect to for XMPP.
+var defaultConferenceServer = 'conference.crypto.cat'; // Address of the XMPP MUC server.
+var defaultBOSH = 'https://crypto.cat/http-bind'; // BOSH is served over an HTTPS proxy for better security and availability.
 var fileSize = 700; // Maximum encrypted file sharing size, in kilobytes. Also needs to be defined in datareader.js
 var groupChat = 1; // Enable/disable group chat client functionality.
 
 /* Initialization */
+var domain = defaultDomain;
+var conferenceServer = defaultConferenceServer;
+var bosh = defaultBOSH;
 var otrKeys = {};
 var conversations = [];
 var conversationInfo = [];
@@ -537,7 +540,9 @@ function handleMessage(message) {
 			conn.muc.message(conversationName + '@' + conferenceServer, null, multiParty.sendPublicKey(nick), null);
 		}
 		else if (body[myNickname] || body['*']) {
-			addToConversation(multiParty.receiveMessage(nick, myNickname, JSON.stringify(body)), nick, 'main-Conversation');
+			addToConversation(
+				multiParty.receiveMessage(nick, myNickname, JSON.stringify(body)
+			), nick, 'main-Conversation');
 		}
 	}
 	else if (type === 'chat') {
@@ -962,9 +967,9 @@ $('#customServer').click(function() {
 		.attr('title', 'BOSH relay')
 		.click(function() {$(this).select()});
 	$('#customServerReset').val(language['loginWindow']['reset']).click(function() {
-		$('#customDomain').val('crypto.cat');
-		$('#customCoferenceServer').val('conference.crypto.cat');
-		$('#customBOSH').val('https://crypto.cat/http-bind');
+		$('#customDomain').val(defaultDomain);
+		$('#customConferenceServer').val(defaultConferenceServer);
+		$('#customBOSH').val(defaultBOSH);
 		if (localStorageExists) {
 			localStorage.removeItem('domain');
 			localStorage.removeItem('conferenceServer');
