@@ -1,5 +1,6 @@
 var cryptocat = function() {
-	var prefManager = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces.nsIPrefBranch);
+	var prefManager = Components.classes['@mozilla.org/preferences-service;1']
+		.getService(Components.interfaces.nsIPrefBranch);
 	return {
 		init: function() {
 			var firstRun = prefManager.getBoolPref('extensions.cryptocat.firstRun');
@@ -16,7 +17,9 @@ var cryptocat = function() {
 			var tBrowser = document.getElementById('content');
 			var tab = tBrowser.addTab('chrome://cryptocat/content/data/index.html');
 			tBrowser.selectedTab = tab;
-			window.addEventListener('cryptocatGenerateRandomBytes', function(evt) {cryptocat.generateRandomBytes(evt)}, false, true);
+			window.addEventListener('cryptocatGenerateRandomBytes', function(evt) {
+				cryptocat.generateRandomBytes(evt)
+			}, false, true);
 		},
 		generateRandomBytes: function(evt) {
 			Components.utils.import('resource://gre/modules/ctypes.jsm');

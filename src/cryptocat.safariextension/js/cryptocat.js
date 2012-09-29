@@ -6,6 +6,7 @@ var defaultDomain = 'crypto.cat'; // Domain name to connect to for XMPP.
 var defaultConferenceServer = 'conference.crypto.cat'; // Address of the XMPP MUC server.
 var defaultBOSH = 'https://crypto.cat/http-bind'; // BOSH is served over an HTTPS proxy for better security and availability.
 var fileSize = 700; // Maximum encrypted file sharing size, in kilobytes. Also needs to be defined in datareader.js
+var localStorageOn = 0; // Disabling localStorage features until Firefox bug #795615 is fixed
 var groupChat = 1; // Enable/disable group chat client functionality.
 
 /* Initialization */
@@ -19,16 +20,12 @@ var loginCredentials = [];
 var currentConversation = 0;
 var audioNotifications = 0;
 var desktopNotifications = 0;
-// Disabling localStorage features until Firefox bug #795615 is fixed
-var localStorageExists = 0;
 var loginError = 0;
 var windowFocus = 1;
 var currentStatus = 'online';
 var soundEmbed = null;
 var conn, conversationName, myNickname, myKey;
-if (!groupChat) {
-	$('#buddy-main-Conversation').remove();
-}
+if (!groupChat) { $('#buddy-main-Conversation').remove(); }
 
 // Initialize language settings
 var language = window.navigator.language;
@@ -44,11 +41,11 @@ try {
 	localStorage.getItem('test');
 }
 catch(err) {
-	localStorageExists = 0;
+	localStorageOn = 0;
 }
 
 // If localStorage is implemented, load saved settings
-if (localStorageExists) {
+if (localStorageOn) {
 	// Load language settings
 	if (localStorage.getItem('language') !== null) {
 		language = Language.set(localStorage.getItem('language'));
@@ -100,7 +97,7 @@ var keyGenerator = new Worker('js/keygenerator.js');
 var dataReader = new Worker('js/datareader.js');
 keyGenerator.onmessage = function(e) {
 	myKey = e.data;
-	if (localStorageExists) {
+	if (localStorageOn) {
 		localStorage.setItem('myKey', JSON.stringify(myKey));
 	}
 	DSA.inherit(myKey);
@@ -131,10 +128,10 @@ function currentTime(seconds) {
 function playSound(audio) {
 	function createSound(audio) {
 		soundEmbed = document.createElement('audio');
-		soundEmbed.setAttribute('type', 'audio/webm');
-		soundEmbed.setAttribute('src', audio);
-		soundEmbed.setAttribute('style', 'display: none;');
-		soundEmbed.setAttribute('autoplay', true);
+		soundEmbed.setAttribute('type', 'audio/webm')
+			.setAttribute('src', audio)
+			.setAttribute('style', 'display: none;')
+			.setAttribute('autoplay', true);
 	}
 	if (!soundEmbed) {
 		createSound(audio);
@@ -266,11 +263,14 @@ function seedRNG() {
 			CryptoJS.Fortuna.AddRandomEvent(element.getAttribute('randomValues')[i]);
 		}
 		delete element;
-		return true;
+		if (CryptoJS.Fortuna.Ready()) {
+			return true;
+		}
 	}
 	else {
 		var e, up, down;
-		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" alt="" />' + language['loginMessage']['typeRandomly'] + '</p>'
+		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" alt="" />'
+			+ language['loginMessage']['typeRandomly'] + '</p>'
 			+ '<input type="password" id="seedRNGInput" />';
 		dialogBox(progressForm, 0, function() {
 			$('#loginForm').submit();
@@ -332,12 +332,18 @@ function shortenString(string, length) {
 	return string;
 }
 
+// Sanitize HTML (used sparingly, don't worry!)
+function escapeHTML(str) {
+	escapeHTML.replacements = { '&': '&amp;', '"': '&quot', '<': '&lt;', '>': '&gt;' };
+	return str.replace(/[&"<>]/g, function (m) { escapeHTML.replacements[m] });
+}
+
 // Builds a buddy element to be added to the buddy list.
 function buildBuddy(nickname) {
+	nickname = escapeHTML(nickname);
 	var buddyTemplate = '<div class="buddy" title="' + nickname + '" id="buddy-' 
 		+ nickname + '" status="online"><span>' + nickname + '</span>'
-		+ '<div class="buddyMenu" id="menu-' + nickname
-		+ '"></div></div>'
+		+ '<div class="buddyMenu" id="menu-' + nickname + '"></div></div>'
 	$(buddyTemplate).insertAfter('#buddiesOnline').slideDown(300, function() {
 		$('#menu-' + nickname).unbind('click');
 		bindBuddyMenu(nickname);
@@ -456,13 +462,13 @@ function addToConversation(message, sender, conversation) {
 			}
 		}
 	}
-	message = message.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+	message = escapeHTML(message);
 	message = addFile(message);
 	message = addLinks(message);
 	message = addEmoticons(message);
 	message = message.replace(/:/g, '&#58;');
 	var timeStamp = '<span class="timeStamp">' + currentTime(0) + '</span>';
-	var sender = '<span class="sender">' + shortenString(sender, 16) + '</span>';
+	var sender = '<span class="sender">' + escapeHTML(shortenString(sender, 16)) + '</span>';
 	message = '<div class="Line' + lineDecoration + '">' + timeStamp + sender + message + '</div>';
 	conversations[conversation] += message;
 	if (conversation === currentConversation) {
@@ -710,10 +716,11 @@ function sendFile(nickname) {
 
 // Display buddy information, including fingerprints etc.
 function displayInfo(nickname) {
+	nickname = escapeHTML(nickname);
 	var displayInfoDialog = '<div class="bar">' + nickname +'</div><div id="displayInfo">'
 		+ language['chatWindow']['otrFingerprint'] + '<br /><span id="otrFingerprint"></span><br />'
 		+ '<br />' + language['chatWindow']['groupFingerprint']  + '<br /><span id="multiPartyFingerprint"></span></div>';
-	if (localStorageExists && (nickname === myNickname)) {
+	if (localStorageOn && (nickname === myNickname)) {
 		displayInfoDialog += '<div class="button" id="rememberNickname"></div>'
 			+ '<div class="button" id="resetKeys">' 
 			+ language['chatWindow']['resetKeys'] + '</div>';
@@ -723,7 +730,7 @@ function displayInfo(nickname) {
 		$('#otrFingerprint').text('...');
 		otrKeys[nickname].sendQueryMsg();
 	}
-	else if (localStorageExists) {
+	else if (localStorageOn) {
 		if (localStorage.getItem('rememberNickname') === 'doNotRememberNickname') {
 			$('#rememberNickname').text(language['chatWindow']['doNotRememberNickname']);
 			$('#rememberNickname').css('background-color', '#F00');
@@ -771,6 +778,7 @@ function displayInfo(nickname) {
 
 // Bind buddy menus for new buddies. Used internally.
 function bindBuddyMenu(nickname) {
+	nickname = escapeHTML(nickname);
 	$('#menu-' + nickname).click(function(event) {
 		event.stopPropagation();
 		if ($('#buddy-' + nickname).height() === 15) {
@@ -950,6 +958,9 @@ $('#userInput').submit(function() {
 
 // Custom server dialog
 $('#customServer').click(function() {
+	bosh = escapeHTML(bosh);
+	conferenceServer = escapeHTML(conferenceServer);
+	domain = escapeHTML(domain);
 	var customServerDialog = '<div class="bar">' + language['loginWindow']['customServer'] + '</div><br />'
 		+ '<input type="text" id="customDomain"></input>'
 		+ '<input type="text" id="customConferenceServer"></input>'
@@ -970,7 +981,7 @@ $('#customServer').click(function() {
 		$('#customDomain').val(defaultDomain);
 		$('#customConferenceServer').val(defaultConferenceServer);
 		$('#customBOSH').val(defaultBOSH);
-		if (localStorageExists) {
+		if (localStorageOn) {
 			localStorage.removeItem('domain');
 			localStorage.removeItem('conferenceServer');
 			localStorage.removeItem('bosh');
@@ -981,7 +992,7 @@ $('#customServer').click(function() {
 		conferenceServer = $('#customConferenceServer').val();
 		bosh = $('#customBOSH').val();
 		$('#dialogBoxClose').click();
-		if (localStorageExists) {
+		if (localStorageOn) {
 			localStorage.setItem('domain', domain);
 			localStorage.setItem('conferenceServer', conferenceServer);
 			localStorage.setItem('bosh', bosh);
@@ -994,7 +1005,7 @@ $('#customServer').click(function() {
 // Language selector
 $('#languages').change(function() {
 	language = Language.set($(this).val());
-	if (localStorageExists) {
+	if (localStorageOn) {
 		localStorage.setItem('language', $(this).val());
 	}
 	$('#conversationName').select();
@@ -1041,7 +1052,7 @@ $('#loginForm').submit(function() {
 	// If no encryption keys, generate
 	else if (!myKey) {
 		keyGenerator.postMessage('generateDSA');
-		if (localStorageExists) {
+		if (localStorageOn) {
 			localStorage.setItem('multiPartyKey', multiParty.genPrivateKey());
 		}
 		else {
@@ -1114,7 +1125,7 @@ function login(username, password) {
 			$('#loginInfo').animate({'color': '#E93028'}, 'fast');
 		}
 		else if (status === Strophe.Status.CONNECTED) {
-			if (localStorageExists) {
+			if (localStorageOn) {
 				localStorage.setItem('myNickname', myNickname);
 			}
 			$('#loginInfo').text('✓');
