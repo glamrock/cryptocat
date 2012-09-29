@@ -1,1 +1,1 @@
-../../../../../../../ext/qtip2/jquery.qtip.js
+../../../../../../../ext/jquery/jquery.qtip.js

@@ -27,6 +27,16 @@ jQuery
 Origin: http://jquery.org/
 License: MIT, GPL-2+
 
+jQuery.color
+----------
+Origin: https://github.com/jquery/jquery-color
+License: MIT
+
+jQuery.QTip2
+----------
+Origin: https://github.com/Craga89/qTip2/
+License: MIT, GPL
+
 Notification.js
 ---------------
 Origin: https://raw.github.com/MrSwitch/notification.js/
@@ -36,11 +46,6 @@ OTR.js
 ----------
 Origin: https://github.com/arlolra/otr/
 License: LGPL
-
-QTip2
-----------
-Origin: https://github.com/Craga89/qTip2/
-License: MIT, GPL
 
 seedrandom
 ----------
