@@ -1,4 +1,8 @@
-﻿var Language = function() {};
+﻿// Unfinished strings:
+// reset, connected, continue, rememberNickname, doNotRememberNickname,
+// resetKeys, resetKeysWarn
+
+var Language = function() {};
 (function(){
 
 var language = {};
