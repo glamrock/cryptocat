@@ -15,7 +15,7 @@ Language.set = function(lang) {
 	$('#source').text(lang['loginWindow']['source']);
 	$('#customServer').text(lang['loginWindow']['customServer']);
 	$('#conversationName').val(lang['loginWindow']['conversationName']);
-	if (localStorage.getItem('rememberNickname') === 'doNotRemember') {
+	if (localStorage.getItem('rememberNickname') === 'doNotRememberNickname') {
 		$('#nickname').val(lang['loginWindow']['nickname']);
 	}
 	$('#loginSubmit').val(lang['loginWindow']['connect']);
@@ -46,6 +46,7 @@ language.en = {
 		'blog': 'Blog',
 		'source': 'Source',
 		'customServer': 'custom server...',
+		'reset': 'Reset',
 		'conversationName': 'conversation name',
 		'nickname': 'nickname',
 		'connect': 'connect',
@@ -70,7 +71,7 @@ language.en = {
 		'groupConversation': 'Group conversation. Click on a user for private chat.',
 		'otrFingerprint': 'OTR fingerprint (for private conversations):',
 		'groupFingerprint': 'Group conversation fingerprint:',
-		'resetKeys': 'Reset my encryption keys',
+		'resetKeys': 'Reset my encryption keys...',
 		'resetKeysWarn': 'Resetting your encryption keys will disconnect you. Your fingerprints will also change.',
 		'continue': 'Continue',
 		'statusAvailable': 'Status: Available',
@@ -117,6 +118,7 @@ language.lol = {
 		'thankYouUsing': 'Thank mew 4 usin Cryptocat :3',
 		'registering': 'Registerin...',
 		'connecting': 'Connectin...',
+		'connected': 'Haz Connecshun!',
 		'typeRandomly': 'Plz type on ur keybord as randomly as posible 4 few secondz.',
 		'generatingKeys': 'Generatin encrypshun keys...'
 	},
@@ -124,6 +126,9 @@ language.lol = {
 		'groupConversation': 'Group conversashun. Click on usr 4 private chat.',
 		'otrFingerprint': 'OTR fingerprint (4 private conversashuns):',
 		'groupFingerprint': 'Group conversashun fingerprint:',
+		'resetKeys': 'Reset mah encrypshun keyz...',
+		'continue': 'Continue',
+		'resetKeysWarn': 'Resettin yur encrypshun keyz will disconnect mew. Yur fingerprints will also chaeng!',
 		'statusAvailable': 'Status: Available',
 		'statusAway': 'Status: Away',
 		'myInfo': 'My Info',
@@ -131,6 +136,8 @@ language.lol = {
 		'desktopNotificationsOff': 'Desktop Notificashuns Off',
 		'audioNotificationsOn': 'Audio Notificashuns On',
 		'audioNotificationsOff': 'Audio Notificashuns Off',
+		'rememberNickname': 'Remember mah nickname',
+		'doNotRememberNickname': 'Don\'t remember mah nickname',
 		'logout': 'Disconnect',
 		'displayInfo': 'Display info',
 		'sendEncryptedFile': 'Send encryptd file',
@@ -224,7 +231,7 @@ language.fr = {
 		'groupConversation': 'Conversation de groupe. Cliquez sur un utilisateur pour commencer une conversation privée.',
 		'otrFingerprint': 'Signature OTR (pour les conversations privées):',
 		'groupFingerprint': 'Signature de la conversation de groupe:',
-		'resetKeys': 'Réinitialiser mes clés de chiffrement',
+		'resetKeys': 'Réinitialiser mes clés de chiffrement...',
 		'resetKeysWarn': 'Réinitialiser vos clés de cryptage va vous déconnecter. Vos empreintes digitales seront également changées.',
 		'continue': 'Continuer',
 		'statusAvailable': 'Statut: Disponible',
@@ -279,7 +286,7 @@ language.ar = {
 		'groupConversation': 'محادثة جماعية. اضغط على مستخدم لمحادثة خاصة.',
 		'otrFingerprint': 'بصمة OTR (للمحادثات الخاصة):',
 		'groupFingerprint': 'بصمة المحادثة الجماعية:',
-		'resetKeys': 'إعادة تعين مفاتيح التشفير',
+		'resetKeys': 'إعادة تعين مفاتيح التشفير...',
 		'resetKeysWarn': 'إعادة مفاتيحك سوف يفصلك من هذه المحادثة. بصماتك أيضاً ستتغير.',
 		'continue': 'موافق',
 		'statusAvailable': 'الحالة: متواجد',
@@ -1021,7 +1028,7 @@ language.he = {
 		'groupConversation': 'שיחה קבוצתית. לחצו על משתמש לשיחה פרטית.',
 		'otrFingerprint': 'חתימת OTR (לשיחות פרטיות):',
 		'groupFingerprint': 'חתימת שיחה קבוצתית:',
-		'resetKeys': 'ייצר מחדש את מפתחות ההצפנה שלי',
+		'resetKeys': 'ייצר מחדש את מפתחות ההצפנה שלי...',
 		'resetKeysWarn': 'ייצור מחדש של מפתחת ההצפנה שלך יגרום לניתוק. החתימות שלך תשתננה בהתאם.',
 		'continue': 'המשך',
 		'statusAvailable': 'מצב: זמין',
