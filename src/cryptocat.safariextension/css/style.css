@@ -275,7 +275,7 @@ img.logo {
 	margin: 0 auto;
 }
 #dialogBox .bar, #dialogBox .button, #dialogBox .no {
-	width: 458px;
+	width: 100%;
 	background-color: #333;
 	padding: 5px 6px;
 	font-size: 11px;

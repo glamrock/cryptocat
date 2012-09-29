@@ -717,7 +717,7 @@ function sendFile(nickname) {
 // Display buddy information, including fingerprints etc.
 function displayInfo(nickname) {
 	nickname = escapeHTML(nickname);
-	var displayInfoDialog = '<div class="bar">' + nickname +'</div><div id="displayInfo">'
+	var displayInfoDialog = '<input type="button" class="bar" value="' + nickname + '"/><div id="displayInfo">'
 		+ language['chatWindow']['otrFingerprint'] + '<br /><span id="otrFingerprint"></span><br />'
 		+ '<br />' + language['chatWindow']['groupFingerprint']  + '<br /><span id="multiPartyFingerprint"></span></div>';
 	if (localStorageOn && (nickname === myNickname)) {
@@ -961,7 +961,7 @@ $('#customServer').click(function() {
 	bosh = escapeHTML(bosh);
 	conferenceServer = escapeHTML(conferenceServer);
 	domain = escapeHTML(domain);
-	var customServerDialog = '<div class="bar">' + language['loginWindow']['customServer'] + '</div><br />'
+	var customServerDialog = '<input type="button" class="bar" value="' + language['loginWindow']['customServer'] + '"/><br />'
 		+ '<input type="text" id="customDomain"></input>'
 		+ '<input type="text" id="customConferenceServer"></input>'
 		+ '<input type="text" id="customBOSH"></input>'
