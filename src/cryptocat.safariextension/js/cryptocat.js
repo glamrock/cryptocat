@@ -16,6 +16,8 @@ var loginCredentials = [];
 var currentConversation = 0;
 var audioNotifications = 0;
 var desktopNotifications = 0;
+// Disabling localStorage features until Firefox bug #795615 is fixed
+var localStorageExists = 0;
 var loginError = 0;
 var windowFocus = 1;
 var currentStatus = 'online';
@@ -27,34 +29,53 @@ if (!groupChat) {
 
 // Initialize language settings
 var language = window.navigator.language;
-if (localStorage.getItem('language')) {
-	language = Language.set(localStorage.getItem('language'));
-	$('#languages').val(localStorage.getItem('language'));
+try {
+	language = Language.set(language.toLowerCase());
 }
-else {
-	try {
-		language = Language.set(language.toLowerCase());
-	}
-	catch(err) {
-		language = Language.set('en');
-	}
+catch(err) {
+	language = Language.set('en');
 }
 
-// Initialize nickname settings
-if (localStorage.getItem('rememberNickname') === 'rememberNickname') {
-	$('#nickname').val(localStorage.getItem('myNickname'));
+// Check if localStorage is implemented
+try {
+	localStorage.getItem('test');
 }
-else {
-	localStorage.setItem('rememberNickname', 'doNotRememberNickname');
-	localStorage.removeItem('myNickname');
+catch(err) {
+	localStorageExists = 0;
 }
 
-// Intialize pre-existing encryption keys
-if (localStorage.getItem('myKey')) {
-	myKey = JSON.parse(localStorage.getItem('myKey'));
-	DSA.inherit(myKey);
-	multiParty.setPrivateKey(localStorage.getItem('multiPartyKey'));
-	multiParty.genPublicKey();
+// If localStorage is implemented, load saved settings
+if (localStorageExists) {
+	// Load language settings
+	if (localStorage.getItem('language') !== null) {
+		language = Language.set(localStorage.getItem('language'));
+		$('#languages').val(localStorage.getItem('language'));
+	}
+	// Load nickname settings
+	if (localStorage.getItem('rememberNickname') === 'rememberNickname') {
+		$('#nickname').val(localStorage.getItem('myNickname'));
+	}
+	else {
+		localStorage.getItem('rememberNickname', 'doNotRememberNickname');
+		localStorage.getItem('myNickname');
+	}
+	// Load custom server settings
+	if (localStorage.getItem('domain')) {
+		domain = localStorage.getItem('domain');
+	}
+	if (localStorage.getItem('conferenceServer')) {
+		conferenceServer = localStorage.getItem('conferenceServer');
+	}
+	if (localStorage.getItem('bosh')) {
+		bosh = localStorage.getItem('bosh');
+	}
+	// Load pre-existing encryption keys
+	if (localStorage.getItem('myKey') !== null) {
+		myKey = JSON.parse(localStorage.getItem('myKey'));
+		DSA.inherit(myKey);
+		multiParty.setPrivateKey(localStorage.getItem('multiPartyKey'));
+		multiParty.genPublicKey();
+	}
 }
 
 // Initialize qTips
@@ -76,7 +97,9 @@ var keyGenerator = new Worker('js/keygenerator.js');
 var dataReader = new Worker('js/datareader.js');
 keyGenerator.onmessage = function(e) {
 	myKey = e.data;
-	localStorage.setItem('myKey', JSON.stringify(myKey));
+	if (localStorageExists) {
+		localStorage.setItem('myKey', JSON.stringify(myKey));
+	}
 	DSA.inherit(myKey);
 	$('#fill').stop().animate({'width': '100%', 'opacity': '1'}, 400, 'linear', function() {
 		$('#dialogBoxClose').click();
@@ -233,16 +256,14 @@ function seedRNG() {
 	else if (navigator.userAgent.match('Firefox')) {
 		var element = document.createElement('cryptocatFirefoxElement');
 		document.documentElement.appendChild(element);
-		var evt = document.createEvent('cryptocatEvent');
+		var evt = document.createEvent('Events');
 		evt.initEvent('cryptocatGenerateRandomBytes', true, false);
 		element.dispatchEvent(evt);
-		window.addEventListener('cryptocatAnswerEvent', function(evt) {
-			for (var i in element.getAttribute('randomValues')) {
-				CryptoJS.Fortuna.AddRandomEvent(element.getAttribute('randomValues')[i]);
-			}
-			delete element;
-			seedRNG();
-		}, false);
+		for (var i in element.getAttribute('randomValues')) {
+			CryptoJS.Fortuna.AddRandomEvent(element.getAttribute('randomValues')[i]);
+		}
+		delete element;
+		return true;
 	}
 	else {
 		var e, up, down;
@@ -687,7 +708,7 @@ function displayInfo(nickname) {
 	var displayInfoDialog = '<div class="bar">' + nickname +'</div><div id="displayInfo">'
 		+ language['chatWindow']['otrFingerprint'] + '<br /><span id="otrFingerprint"></span><br />'
 		+ '<br />' + language['chatWindow']['groupFingerprint']  + '<br /><span id="multiPartyFingerprint"></span></div>';
-	if (nickname === myNickname) {
+	if (localStorageExists && (nickname === myNickname)) {
 		displayInfoDialog += '<div class="button" id="rememberNickname"></div>'
 			+ '<div class="button" id="resetKeys">' 
 			+ language['chatWindow']['resetKeys'] + '</div>';
@@ -697,7 +718,7 @@ function displayInfo(nickname) {
 		$('#otrFingerprint').text('...');
 		otrKeys[nickname].sendQueryMsg();
 	}
-	else {
+	else if (localStorageExists) {
 		if (localStorage.getItem('rememberNickname') === 'doNotRememberNickname') {
 			$('#rememberNickname').text(language['chatWindow']['doNotRememberNickname']);
 			$('#rememberNickname').css('background-color', '#F00');
@@ -735,6 +756,9 @@ function displayInfo(nickname) {
 				$(this).fadeIn();
 			});
 		});
+		$('#otrKey').text(getFingerprint(nickname, 1));
+	}
+	else {
 		$('#otrKey').text(getFingerprint(nickname, 1));
 	}
 	$('#multiPartyFingerprint').text(getFingerprint(nickname, 0));
@@ -925,6 +949,7 @@ $('#customServer').click(function() {
 		+ '<input type="text" id="customDomain"></input>'
 		+ '<input type="text" id="customConferenceServer"></input>'
 		+ '<input type="text" id="customBOSH"></input>'
+		+ '<input type="button" class="button" id="customServerReset"></input>'
 		+ '<input type="button" class="button" id="customServerSubmit"></input>';
 	dialogBox(customServerDialog, 1);
 	$('#customDomain').val(domain)
@@ -936,11 +961,26 @@ $('#customServer').click(function() {
 	$('#customBOSH').val(bosh)
 		.attr('title', 'BOSH relay')
 		.click(function() {$(this).select()});
+	$('#customServerReset').val(language['loginWindow']['reset']).click(function() {
+		$('#customDomain').val('crypto.cat');
+		$('#customCoferenceServer').val('conference.crypto.cat');
+		$('#customBOSH').val('https://crypto.cat/http-bind');
+		if (localStorageExists) {
+			localStorage.removeItem('domain');
+			localStorage.removeItem('conferenceServer');
+			localStorage.removeItem('bosh');
+		}
+	});
 	$('#customServerSubmit').val(language['chatWindow']['continue']).click(function() {
 		domain = $('#customDomain').val();
 		conferenceServer = $('#customConferenceServer').val();
 		bosh = $('#customBOSH').val();
 		$('#dialogBoxClose').click();
+		if (localStorageExists) {
+			localStorage.setItem('domain', domain);
+			localStorage.setItem('conferenceServer', conferenceServer);
+			localStorage.setItem('bosh', bosh);
+		}
 	});
 	$('#customDomain').select();
 	$('input[title]').qtip();
@@ -949,7 +989,9 @@ $('#customServer').click(function() {
 // Language selector
 $('#languages').change(function() {
 	language = Language.set($(this).val());
-	localStorage.setItem('language', $(this).val());
+	if (localStorageExists) {
+		localStorage.setItem('language', $(this).val());
+	}
 	$('#conversationName').select();
 });
 
@@ -994,7 +1036,12 @@ $('#loginForm').submit(function() {
 	// If no encryption keys, generate
 	else if (!myKey) {
 		keyGenerator.postMessage('generateDSA');
-		localStorage.setItem('multiPartyKey', multiParty.genPrivateKey());
+		if (localStorageExists) {
+			localStorage.setItem('multiPartyKey', multiParty.genPrivateKey());
+		}
+		else {
+			multiParty.genPrivateKey();
+		}
 		multiParty.genPublicKey();
 		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" '
 			+ 'alt="" /><p id="progressInfo"><span>'
@@ -1062,7 +1109,9 @@ function login(username, password) {
 			$('#loginInfo').animate({'color': '#E93028'}, 'fast');
 		}
 		else if (status === Strophe.Status.CONNECTED) {
-			localStorage.setItem('myNickname', myNickname);
+			if (localStorageExists) {
+				localStorage.setItem('myNickname', myNickname);
+			}
 			$('#loginInfo').text('✓');
 			$('#loginInfo').animate({'color': '#0F0'}, 'fast');
 			$('#bubble').animate({'margin-top': '+=0.5%'}, function() {
