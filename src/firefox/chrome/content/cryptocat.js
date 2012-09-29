@@ -16,7 +16,7 @@ var cryptocat = function() {
 			var tBrowser = document.getElementById('content');
 			var tab = tBrowser.addTab('chrome://cryptocat/content/data/index.html');
 			tBrowser.selectedTab = tab;
-			window.addEventListener('generateRandomBytes', function(evt) {cryptocat.generateRandomBytes(evt)}, false, true);
+			window.addEventListener('cryptocatGenerateRandomBytes', function(evt) {cryptocat.generateRandomBytes(evt)}, false, true);
 		},
 		generateRandomBytes: function(evt) {
 			Components.utils.import('resource://gre/modules/ctypes.jsm');
@@ -27,10 +27,10 @@ var cryptocat = function() {
 			WeaveCrypto.initNSS(WeaveCrypto.path.path);
 			evt.target.setAttribute('randomValues', WeaveCrypto.generateRandomBytes(1024));
 			var doc = evt.target.ownerDocument;
-			var answerEvt = doc.createElement('extensionAnswer');
+			var answerEvt = doc.createElement('cryptocatExtensionAnswer');
 			doc.documentElement.appendChild(answerEvt);
-			var event = doc.createEvent('AnswerEvent');
-			event.initEvent('AnswerEvent', true, false);
+			var event = doc.createEvent('cryptocatAnswerEvent');
+			event.initEvent('cryptocatAnswerEvent', true, false);
 			answerEvt.dispatchEvent(event);	
 		}
 	};
