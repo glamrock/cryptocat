@@ -128,10 +128,10 @@ function currentTime(seconds) {
 function playSound(audio) {
 	function createSound(audio) {
 		soundEmbed = document.createElement('audio');
-		soundEmbed.setAttribute('type', 'audio/webm')
-			.setAttribute('src', audio)
-			.setAttribute('style', 'display: none;')
-			.setAttribute('autoplay', true);
+		soundEmbed.setAttribute('type', 'audio/webm');
+		soundEmbed.setAttribute('src', audio);
+		soundEmbed.setAttribute('style', 'display: none;');
+		soundEmbed.setAttribute('autoplay', true);
 	}
 	if (!soundEmbed) {
 		createSound(audio);
