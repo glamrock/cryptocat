@@ -2,13 +2,17 @@
 (function(){
 
 /* Configuration */
-var domain = 'crypto.cat'; // Domain name to connect to for XMPP.
-var conferenceServer = 'conference.crypto.cat'; // Address of the XMPP MUC server.
-var bosh = 'https://crypto.cat/http-bind'; // BOSH is served over an HTTPS proxy for better security and availability.
+var defaultDomain = 'crypto.cat'; // Domain name to connect to for XMPP.
+var defaultConferenceServer = 'conference.crypto.cat'; // Address of the XMPP MUC server.
+var defaultBOSH = 'https://crypto.cat/http-bind'; // BOSH is served over an HTTPS proxy for better security and availability.
 var fileSize = 700; // Maximum encrypted file sharing size, in kilobytes. Also needs to be defined in datareader.js
+var localStorageOn = 0; // Disabling localStorage features until Firefox bug #795615 is fixed
 var groupChat = 1; // Enable/disable group chat client functionality.
 
 /* Initialization */
+var domain = defaultDomain;
+var conferenceServer = defaultConferenceServer;
+var bosh = defaultBOSH;
 var otrKeys = {};
 var conversations = [];
 var conversationInfo = [];
@@ -21,18 +25,63 @@ var windowFocus = 1;
 var currentStatus = 'online';
 var soundEmbed = null;
 var conn, conversationName, myNickname, myKey;
-if (!groupChat) {
-	$('#buddy-main-Conversation').remove();
-}
-var language = window.navigator.userLanguage
-	|| window.navigator.language;
+if (!groupChat) { $('#buddy-main-Conversation').remove(); }
+
+// Initialize language settings
+var language = window.navigator.language;
 try {
-		language = Language.set(language.toLowerCase());
-	}
+	language = Language.set(language.toLowerCase());
+}
 catch(err) {
 	language = Language.set('en');
 }
+
+// Check if localStorage is implemented
+try {
+	localStorage.getItem('test');
+}
+catch(err) {
+	localStorageOn = 0;
+}
+
+// If localStorage is implemented, load saved settings
+if (localStorageOn) {
+	// Load language settings
+	if (localStorage.getItem('language') !== null) {
+		language = Language.set(localStorage.getItem('language'));
+		$('#languages').val(localStorage.getItem('language'));
+	}
+	// Load nickname settings
+	if (localStorage.getItem('rememberNickname') === 'rememberNickname') {
+		$('#nickname').val(localStorage.getItem('myNickname'));
+	}
+	else {
+		localStorage.getItem('rememberNickname', 'doNotRememberNickname');
+		localStorage.getItem('myNickname');
+	}
+	// Load custom server settings
+	if (localStorage.getItem('domain')) {
+		domain = localStorage.getItem('domain');
+	}
+	if (localStorage.getItem('conferenceServer')) {
+		conferenceServer = localStorage.getItem('conferenceServer');
+	}
+	if (localStorage.getItem('bosh')) {
+		bosh = localStorage.getItem('bosh');
+	}
+	// Load pre-existing encryption keys
+	if (localStorage.getItem('myKey') !== null) {
+		myKey = JSON.parse(localStorage.getItem('myKey'));
+		DSA.inherit(myKey);
+		multiParty.setPrivateKey(localStorage.getItem('multiPartyKey'));
+		multiParty.genPublicKey();
+	}
+}
+
+// Initialize qTips
 $('.button[title]').qtip();
+
+// Set previously used nickname
 
 // Detect window focus
 window.onfocus = function() {
@@ -48,6 +97,9 @@ var keyGenerator = new Worker('js/keygenerator.js');
 var dataReader = new Worker('js/datareader.js');
 keyGenerator.onmessage = function(e) {
 	myKey = e.data;
+	if (localStorageOn) {
+		localStorage.setItem('myKey', JSON.stringify(myKey));
+	}
 	DSA.inherit(myKey);
 	$('#fill').stop().animate({'width': '100%', 'opacity': '1'}, 400, 'linear', function() {
 		$('#dialogBoxClose').click();
@@ -76,10 +128,10 @@ function currentTime(seconds) {
 function playSound(audio) {
 	function createSound(audio) {
 		soundEmbed = document.createElement('audio');
-		soundEmbed.setAttribute('type', 'audio/webm');
-		soundEmbed.setAttribute('src', audio);
-		soundEmbed.setAttribute('style', 'display: none;');
-		soundEmbed.setAttribute('autoplay', true);
+		soundEmbed.setAttribute('type', 'audio/webm')
+			.setAttribute('src', audio)
+			.setAttribute('style', 'display: none;')
+			.setAttribute('autoplay', true);
 	}
 	if (!soundEmbed) {
 		createSound(audio);
@@ -175,7 +227,7 @@ function switchConversation(buddy) {
 
 // Handles login failures
 function loginFail(message) {
-	$('#loginInfo').html(message);
+	$('#loginInfo').text(message);
 	$('#bubble').animate({'left': '+=5px'}, 130)
 		.animate({'left': '-=10px'}, 130)
 		.animate({'left': '+=5px'}, 130);
@@ -186,7 +238,10 @@ function loginFail(message) {
 // If the browser supports window.crypto.getRandomValues(), then that is used.
 // Otherwise, the built-in Fortuna RNG is used.
 function seedRNG() {
-	if ((window.crypto !== undefined) && (typeof window.crypto.getRandomValues === 'function')) {
+	if (CryptoJS.Fortuna.Ready()) {
+		return true;
+	}
+	else if ((window.crypto !== undefined) && (typeof window.crypto.getRandomValues === 'function')) {
 		var buffer = new Uint8Array(1024);
 		window.crypto.getRandomValues(buffer);
 		var seed = '';
@@ -199,21 +254,23 @@ function seedRNG() {
 		return true;
 	}
 	else if (navigator.userAgent.match('Firefox')) {
-		var element = document.createElement('firefoxElement');
+		var element = document.createElement('cryptocatFirefoxElement');
 		document.documentElement.appendChild(element);
 		var evt = document.createEvent('Events');
-		evt.initEvent('generateRandomBytes', true, false);
+		evt.initEvent('cryptocatGenerateRandomBytes', true, false);
 		element.dispatchEvent(evt);
 		for (var i in element.getAttribute('randomValues')) {
 			CryptoJS.Fortuna.AddRandomEvent(element.getAttribute('randomValues')[i]);
-			console.log(element.getAttribute('randomValues')[i]);
 		}
 		delete element;
-		return true;
+		if (CryptoJS.Fortuna.Ready()) {
+			return true;
+		}
 	}
 	else {
 		var e, up, down;
-		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" alt="" />' + language['loginMessage']['typeRandomly'] + '</p>'
+		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" alt="" />'
+			+ language['loginMessage']['typeRandomly'] + '</p>'
 			+ '<input type="password" id="seedRNGInput" />';
 		dialogBox(progressForm, 0, function() {
 			$('#loginForm').submit();
@@ -275,12 +332,18 @@ function shortenString(string, length) {
 	return string;
 }
 
+// Sanitize HTML (used sparingly, don't worry!)
+function escapeHTML(str) {
+	escapeHTML.replacements = { '&': '&amp;', '"': '&quot', '<': '&lt;', '>': '&gt;' };
+	return str.replace(/[&"<>]/g, function (m) { escapeHTML.replacements[m] });
+}
+
 // Builds a buddy element to be added to the buddy list.
 function buildBuddy(nickname) {
+	nickname = escapeHTML(nickname);
 	var buddyTemplate = '<div class="buddy" title="' + nickname + '" id="buddy-' 
 		+ nickname + '" status="online"><span>' + nickname + '</span>'
-		+ '<div class="buddyMenu" id="menu-' + nickname
-		+ '"></div></div>'
+		+ '<div class="buddyMenu" id="menu-' + nickname + '"></div></div>'
 	$(buddyTemplate).insertAfter('#buddiesOnline').slideDown(300, function() {
 		$('#menu-' + nickname).unbind('click');
 		bindBuddyMenu(nickname);
@@ -309,7 +372,7 @@ function getFingerprint(buddy, OTR) {
 	}
 	else {
 		if (buddy === myNickname) {
-			var fingerprint = multiParty.myFingerprint(myNickname);
+			var fingerprint = multiParty.genFingerprint();
 		}
 		else {
 			var fingerprint = multiParty.genFingerprint(buddy);
@@ -399,13 +462,13 @@ function addToConversation(message, sender, conversation) {
 			}
 		}
 	}
-	message = message.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+	message = escapeHTML(message);
 	message = addFile(message);
 	message = addLinks(message);
 	message = addEmoticons(message);
 	message = message.replace(/:/g, '&#58;');
 	var timeStamp = '<span class="timeStamp">' + currentTime(0) + '</span>';
-	var sender = '<span class="sender">' + shortenString(sender, 16) + '</span>';
+	var sender = '<span class="sender">' + escapeHTML(shortenString(sender, 16)) + '</span>';
 	message = '<div class="Line' + lineDecoration + '">' + timeStamp + sender + message + '</div>';
 	conversations[conversation] += message;
 	if (conversation === currentConversation) {
@@ -468,7 +531,7 @@ function handleMessage(message) {
 	var from = $(message).attr('from');
 	var nick = from.match(/\/\w+/)[0].substring(1);
 	var type = $(message).attr('type');
-	var body = $(message).find('body').text();
+	var body = $(message).find('body').text().replace(/\&quot;/g, '"');
 	if (nick === myNickname) {
 		return true;
 	}
@@ -483,7 +546,9 @@ function handleMessage(message) {
 			conn.muc.message(conversationName + '@' + conferenceServer, null, multiParty.sendPublicKey(nick), null);
 		}
 		else if (body[myNickname] || body['*']) {
-			addToConversation(multiParty.receiveMessage(nick, myNickname, JSON.stringify(body)), nick, 'main-Conversation');
+			addToConversation(
+				multiParty.receiveMessage(nick, myNickname, JSON.stringify(body)
+			), nick, 'main-Conversation');
 		}
 	}
 	else if (type === 'chat') {
@@ -651,13 +716,59 @@ function sendFile(nickname) {
 
 // Display buddy information, including fingerprints etc.
 function displayInfo(nickname) {
+	nickname = escapeHTML(nickname);
 	var displayInfoDialog = '<div class="bar">' + nickname +'</div><div id="displayInfo">'
 		+ language['chatWindow']['otrFingerprint'] + '<br /><span id="otrFingerprint"></span><br />'
 		+ '<br />' + language['chatWindow']['groupFingerprint']  + '<br /><span id="multiPartyFingerprint"></span></div>';
+	if (localStorageOn && (nickname === myNickname)) {
+		displayInfoDialog += '<div class="button" id="rememberNickname"></div>'
+			+ '<div class="button" id="resetKeys">' 
+			+ language['chatWindow']['resetKeys'] + '</div>';
+	}
 	dialogBox(displayInfoDialog, 1);
 	if ((nickname !== myNickname) && !otrKeys[nickname].msgstate) {
 		$('#otrFingerprint').text('...');
 		otrKeys[nickname].sendQueryMsg();
+	}
+	else if (localStorageOn) {
+		if (localStorage.getItem('rememberNickname') === 'doNotRememberNickname') {
+			$('#rememberNickname').text(language['chatWindow']['doNotRememberNickname']);
+			$('#rememberNickname').css('background-color', '#F00');
+		}
+		else {
+			$('#rememberNickname').text(language['chatWindow']['rememberNickname']);
+		}
+		$('#rememberNickname').click(function() {
+			if ($(this).text() === language['chatWindow']['doNotRememberNickname']) {
+				$(this).text(language['chatWindow']['rememberNickname']);
+				$(this).animate({'background-color': '#97CEEC'});
+				localStorage.setItem('rememberNickname', 'rememberNickname');
+				localStorage.setItem('myNickname', myNickname);
+			}
+			else {
+				$(this).text(language['chatWindow']['doNotRememberNickname']);
+				$(this).animate({'background-color': '#F00'});
+				localStorage.setItem('rememberNickname', 'doNotRememberNickname');
+			}
+		});
+		$('#resetKeys').click(function() {
+			$('#displayInfo').fadeOut(function() {
+				$(this).html(
+					'<p>' + language['chatWindow']['resetKeysWarn'] + '</p>'
+					+ '<input type="button" class="typeButton" id="resetKeysOK" />'
+				);
+				$('#resetKeysOK').val(language['chatWindow']['continue']);
+				$('#resetKeysOK').click(function() {
+					localStorage.removeItem('myKey');
+					localStorage.removeItem('multiPartyKey');
+					myKey = null;
+					$('#dialogBoxClose').click();
+					logout();
+				});
+				$(this).fadeIn();
+			});
+		});
+		$('#otrKey').text(getFingerprint(nickname, 1));
 	}
 	else {
 		$('#otrKey').text(getFingerprint(nickname, 1));
@@ -667,6 +778,7 @@ function displayInfo(nickname) {
 
 // Bind buddy menus for new buddies. Used internally.
 function bindBuddyMenu(nickname) {
+	nickname = escapeHTML(nickname);
 	$('#menu-' + nickname).click(function(event) {
 		event.stopPropagation();
 		if ($('#buddy-' + nickname).height() === 15) {
@@ -846,10 +958,14 @@ $('#userInput').submit(function() {
 
 // Custom server dialog
 $('#customServer').click(function() {
+	bosh = escapeHTML(bosh);
+	conferenceServer = escapeHTML(conferenceServer);
+	domain = escapeHTML(domain);
 	var customServerDialog = '<div class="bar">' + language['loginWindow']['customServer'] + '</div><br />'
 		+ '<input type="text" id="customDomain"></input>'
 		+ '<input type="text" id="customConferenceServer"></input>'
 		+ '<input type="text" id="customBOSH"></input>'
+		+ '<input type="button" class="button" id="customServerReset"></input>'
 		+ '<input type="button" class="button" id="customServerSubmit"></input>';
 	dialogBox(customServerDialog, 1);
 	$('#customDomain').val(domain)
@@ -861,11 +977,26 @@ $('#customServer').click(function() {
 	$('#customBOSH').val(bosh)
 		.attr('title', 'BOSH relay')
 		.click(function() {$(this).select()});
-	$('#customServerSubmit').val('done').click(function() {
+	$('#customServerReset').val(language['loginWindow']['reset']).click(function() {
+		$('#customDomain').val(defaultDomain);
+		$('#customConferenceServer').val(defaultConferenceServer);
+		$('#customBOSH').val(defaultBOSH);
+		if (localStorageOn) {
+			localStorage.removeItem('domain');
+			localStorage.removeItem('conferenceServer');
+			localStorage.removeItem('bosh');
+		}
+	});
+	$('#customServerSubmit').val(language['chatWindow']['continue']).click(function() {
 		domain = $('#customDomain').val();
 		conferenceServer = $('#customConferenceServer').val();
 		bosh = $('#customBOSH').val();
 		$('#dialogBoxClose').click();
+		if (localStorageOn) {
+			localStorage.setItem('domain', domain);
+			localStorage.setItem('conferenceServer', conferenceServer);
+			localStorage.setItem('bosh', bosh);
+		}
 	});
 	$('#customDomain').select();
 	$('input[title]').qtip();
@@ -874,6 +1005,9 @@ $('#customServer').click(function() {
 // Language selector
 $('#languages').change(function() {
 	language = Language.set($(this).val());
+	if (localStorageOn) {
+		localStorage.setItem('language', $(this).val());
+	}
 	$('#conversationName').select();
 });
 
@@ -915,11 +1049,15 @@ $('#loginForm').submit(function() {
 			$('#loginForm').submit();
 		}
 	}
-	// Check if we have an OTR key, if not, generate
+	// If no encryption keys, generate
 	else if (!myKey) {
 		keyGenerator.postMessage('generateDSA');
-		// Generate multiParty keys
-		multiParty.genPrivateKey();
+		if (localStorageOn) {
+			localStorage.setItem('multiPartyKey', multiParty.genPrivateKey());
+		}
+		else {
+			multiParty.genPrivateKey();
+		}
 		multiParty.genPublicKey();
 		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" '
 			+ 'alt="" /><p id="progressInfo"><span>'
@@ -955,7 +1093,7 @@ function registerXMPPUser(username, password) {
 	var registrationConnection = new Strophe.Connection(bosh);
 	registrationConnection.register.connect(domain, function(status) {
 		if (status === Strophe.Status.REGISTER) {
-			$('#loginInfo').html(language['loginMessage']['registering']);
+			$('#loginInfo').text(language['loginMessage']['registering']);
 			registrationConnection.register.fields.username = username;
 			registrationConnection.register.fields.password = password;
 			registrationConnection.register.submit();
@@ -978,16 +1116,19 @@ function login(username, password) {
 	conn.connect(username + '@' + domain, password, function(status) {
 		if (status === Strophe.Status.CONNECTING) {
 			$('#loginInfo').animate({'color': '#999'}, 'fast');
-			$('#loginInfo').html(language['loginMessage']['connecting']);
+			$('#loginInfo').text(language['loginMessage']['connecting']);
 		}
 		else if (status === Strophe.Status.CONNFAIL) {
 			if (!loginError) {
-				$('#loginInfo').html(language['loginMessage']['connectionFailed']);
+				$('#loginInfo').text(language['loginMessage']['connectionFailed']);
 			}
 			$('#loginInfo').animate({'color': '#E93028'}, 'fast');
 		}
 		else if (status === Strophe.Status.CONNECTED) {
-			$('#loginInfo').html('✓');
+			if (localStorageOn) {
+				localStorage.setItem('myNickname', myNickname);
+			}
+			$('#loginInfo').text('✓');
 			$('#loginInfo').animate({'color': '#0F0'}, 'fast');
 			$('#bubble').animate({'margin-top': '+=0.5%'}, function() {
 				$('#bubble').animate({'margin-top': '1.5%'}, function() {
@@ -1026,13 +1167,13 @@ function login(username, password) {
 		else if (status === Strophe.Status.DISCONNECTED) {
 			$('.button').fadeOut('fast');
 			$('#conversationInfo').animate({'width': '0'});
-			$('#conversationInfo').html('');
+			$('#conversationInfo').text('');
 			$('#userInput').fadeOut(function() {
 				$('#conversationWindow').slideUp(function() {
 					$('#buddyWrapper').fadeOut();
 					if (!loginError) {
 						$('#loginInfo').animate({'color': '#999'}, 'fast');
-						$('#loginInfo').html(language['loginMessage']['thankYouUsing']);
+						$('#loginInfo').text(language['loginMessage']['thankYouUsing']);
 					}
 					$('#bubble').animate({'width': '680px'});
 					$('#bubble').animate({'height': '310px'})
@@ -1042,7 +1183,7 @@ function login(username, password) {
 									$(this).remove();
 								}
 							});
-							$('#conversationWindow').html('');
+							$('#conversationWindow').text('');
 							otrKeys = {};
 							multiParty.resetKeys();
 							conversations = [];

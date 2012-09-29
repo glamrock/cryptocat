@@ -78,6 +78,12 @@ multiParty.genPrivateKey = function() {
 	return myPrivateKey;
 }
 
+// Set a previously generated private key (32 byte random number)
+// Represented in decimal
+multiParty.setPrivateKey = function(privateKey) {
+	myPrivateKey = privateKey;
+}
+
 // Generate public key (Curve 25519 Diffie-Hellman with basePoint 9)
 // Represented in Base64
 multiParty.genPublicKey = function() {
@@ -103,18 +109,16 @@ multiParty.genSharedSecret = function(user) {
 	console.log(sharedSecrets);
 }
 
-// Get another user's fingerprint
+// Get fingerprint fingerprint
+// If user is null, returns own fingerprint
 multiParty.genFingerprint = function(user) {
-	fingerprints[user] = CryptoJS.SHA512(user + publicKeys[user])
-		.toString()
-		.substring(0, 40)
-		.toUpperCase();
-	return fingerprints[user];
-}
-
-// Get own fingerprint
-multiParty.myFingerprint = function(myNickname) {
-	return CryptoJS.SHA512(myNickname + myPublicKey)
+	if (!user) {
+		var key = myPublicKey;
+	}
+	else {
+		var key = publicKeys[user];
+	}
+	return fingerprints[user] = CryptoJS.SHA512(key)
 		.toString()
 		.substring(0, 40)
 		.toUpperCase();
