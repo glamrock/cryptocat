@@ -20,18 +20,11 @@ var cryptocat = function() {
 		},
 		generateRandomBytes: function(evt) {
 			Components.utils.import('resource://gre/modules/ctypes.jsm');
-			Components.utils.import('chrome://cryptocat/content/generateRandomBytes.jsm');
-			WeaveCrypto.path = Services.dirsvc.get('GreD', Ci.nsILocalFile);
-			WeaveCrypto.libName = ctypes.libraryName('nss3'); // platform specific library name
-			WeaveCrypto.path.append(WeaveCrypto.libName);
-			WeaveCrypto.initNSS(WeaveCrypto.path.path);
-			evt.target.setAttribute('randomValues', WeaveCrypto.generateRandomBytes(1024));
-			var doc = evt.target.ownerDocument;
-			var answerEvt = doc.createElement('cryptocatExtensionAnswer');
-			doc.documentElement.appendChild(answerEvt);
-			var event = doc.createEvent('cryptocatAnswerEvent');
-			event.initEvent('cryptocatAnswerEvent', true, false);
-			answerEvt.dispatchEvent(event);	
+			var cryptocatRandom = Components.utils.import('chrome://cryptocat/content/generateRandomBytes.jsm');
+			cryptocatRandom.WeaveCrypto.path = Services.dirsvc.get('GreD', Ci.nsILocalFile);
+			cryptocatRandom.WeaveCrypto.path.append(ctypes.libraryName('nss3')); // platform specific library name
+			cryptocatRandom.WeaveCrypto.initNSS(WeaveCrypto.path.path);
+			evt.target.setAttribute('randomValues', cryptocatRandom.WeaveCrypto.generateRandomBytes(1024));
 		}
 	};
 }();

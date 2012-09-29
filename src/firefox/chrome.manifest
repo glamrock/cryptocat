@@ -1,5 +1,5 @@
-content     cryptocat    chrome/content/
+content cryptocat chrome/content/
 overlay chrome://browser/content/browser.xul chrome://cryptocat/content/browser.xul
-locale	cryptocat	en-US	locale/en-US/
-skin	cryptocat	classic/1.0	skin/
-style	chrome://global/content/customizeToolbar.xul	chrome://cryptocat/skin/skin.css
+locale cryptocat en-US locale/en-US/
+skin cryptocat classic/1.0 skin/
+style chrome://global/content/customizeToolbar.xul chrome://cryptocat/skin/skin.css

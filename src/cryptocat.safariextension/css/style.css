@@ -144,9 +144,6 @@ img.logo {
 	position: relative;
 	bottom: 5px;
 }
-#customServerSubmit {
-	text-align: left;
-}
 #bubble #options {
 	background-color: #222;
 	width: 110px;
@@ -291,6 +288,7 @@ img.logo {
 	box-sizing: content-box;
 	outline: none;
 	color: #FFF;
+	text-align: left;
 }
 #dialogBox .button, #dialogBox .no {
 	cursor: pointer;
