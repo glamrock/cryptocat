@@ -19,9 +19,7 @@ Language.set = function(lang) {
 	$('#source').text(lang['loginWindow']['source']);
 	$('#customServer').text(lang['loginWindow']['customServer']);
 	$('#conversationName').val(lang['loginWindow']['conversationName']);
-	if (localStorage.getItem('rememberNickname') === 'doNotRememberNickname') {
-		$('#nickname').val(lang['loginWindow']['nickname']);
-	}
+	$('#nickname').val(lang['loginWindow']['nickname']);
 	$('#loginSubmit').val(lang['loginWindow']['connect']);
 	$('#loginInfo').text(lang['loginWindow']['enterConversation']);
 	$('#logout').attr('title', lang['chatWindow']['logout']);
