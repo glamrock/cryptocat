@@ -24,9 +24,14 @@ var cryptocat = function() {
 		generateRandomBytes: function(evt) {
 			Components.utils.import('resource://gre/modules/ctypes.jsm');
 			var cryptocatRandom = Components.utils.import('chrome://cryptocat/content/generateRandomBytes.jsm');
-			cryptocatRandom.WeaveCrypto.path = Services.dirsvc.get('GreD', Ci.nsILocalFile);
-			cryptocatRandom.WeaveCrypto.path.append(ctypes.libraryName('nss3')); // platform specific library name
-			cryptocatRandom.WeaveCrypto.initNSS(WeaveCrypto.path.path);
+			try {
+				cryptocatRandom.WeaveCrypto.initNSS(ctypes.libraryName('nss3'));
+			}
+			catch(err) {
+				cryptocatRandom.WeaveCrypto.path = Services.dirsvc.get('GreD', Ci.nsILocalFile);
+				cryptocatRandom.WeaveCrypto.path.append(ctypes.libraryName('nss3'));
+				cryptocatRandom.WeaveCrypto.initNSS(WeaveCrypto.path.path);
+			}
 			evt.target.setAttribute('randomValues', cryptocatRandom.WeaveCrypto.generateRandomBytes(1024));
 		}
 	};
