@@ -15,16 +15,16 @@ Apple's model makes an automated build process difficult.
 
 ## Compatibility Status
 ```
----------------------------------------
-           Windows   Mac      Linux    |
----------------------------------------|
-Chrome |   Yes       Yes      Yes      |
---------                               |
-Firefox|   Yes       Yes      Yes      |
---------                               |
-Safari |   Yes       Yes               |
---------                               |
----------------------------------------
+  -----------------------------------------
+ |             Windows   Mac      Linux    |
+ |-----------------------------------------|
+ | Chrome  |   Yes       Yes      Yes      |
+ |---------                                |
+ | Firefox |   Yes       Yes      Yes      |
+ |---------                                |
+ | Safari  |   Yes       Yes               |
+ |---------                                |
+  -----------------------------------------
 ```  
 
 ## Documentation & Wiki
