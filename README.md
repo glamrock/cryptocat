@@ -13,21 +13,19 @@ Run `make firefox` to build a Mozilla Firefox-loadable .xpi extension.
 ##### Apple Safari: `src/cryptocat.safariplugin/`
 Apple's model makes an automated build process difficult.  
 
-## Compatibility Chart
+## Compatibility Status
 ```
--------------------------------------
-          Windows   Mac     Linux    |
--------------------------------------|
-Chrome |  Yes       Yes     Yes      |
---------                             |
-Firefox|  Yes       Yes     Mostly   |
---------                             |
-Safari |  Yes       Yes     N/A      |
---------                             |
--------------------------------------
+---------------------------------------
+           Windows   Mac      Linux    |
+---------------------------------------|
+Chrome |   Yes       Yes      Yes      |
+--------                               |
+Firefox|   Yes       Yes      Yes      |
+--------                               |
+Safari |   Yes       Yes               |
+--------                               |
+---------------------------------------
 ```  
-**Cryptocat seems to not work on Firefox under Fedora Linux.**  
-This is being [investigated here](https://github.com/kaepora/cryptocat/issues/124).
 
 ## Documentation & Wiki
 * [Threat Model](https://github.com/kaepora/cryptocat/wiki/Threat-Model)  
