@@ -5,7 +5,7 @@
 ## Description
 Cryptocat is a browser-based XMPP client that provides multi-user (and private) instant messaging inside chatrooms. It uses the [OTR](http://www.cypherpunks.ca/otr/) protocol for encrypted two-party chat and the (upcoming) mpOTR protocol for encrypted multi-party chat.  
 
-## Target platforms:
+## Target Platforms
 ##### Google Chrome: `src/chrome/`
 Run `make chrome` to build a Google Chrome-loadable .zip extension.
 ##### Mozilla Firefox: `src/firefox/`
@@ -13,7 +13,21 @@ Run `make firefox` to build a Mozilla Firefox-loadable .xpi extension.
 ##### Apple Safari: `src/cryptocat.safariplugin/`
 Apple's model makes an automated build process difficult.  
 
-## Documentation & Wiki:
+## Compatibility Chart
+```
+-----------------------------------
+          Windows   Mac     Linux  |
+-----------------------------------|
+Chrome |  Yes       Yes     Yes    |
+--------                           |
+Firefox|  Yes       Yes     No     |
+--------                           |
+Safari |  Yes       Yes            |
+--------                           |
+-----------------------------------
+```
+
+## Documentation & Wiki
 * [Threat Model](https://github.com/kaepora/cryptocat/wiki/Threat-Model)  
 * [Design and Functionality Overview](https://github.com/kaepora/cryptocat/wiki/Design-and-Functionality)  
 * [Architecture and Lifecycle](https://project.crypto.cat/documents/a&l.pdf)  
@@ -37,16 +51,16 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 The full license text is included in `LICENSE.txt`.  
 
-## Notes:
+## Notes
 * The Safari code directory `src/cryptocat.safariextension/` doubles as a "testing" directory where code changes are made before being pushed to Chrome and Firefox (using `update.sh`). As such, the directory is also loadable in Google Chrome under developer mode.  
 * Test builds are available in `release/`.
 
-## Goals:
+## Goals
 * XMPP **[DONE]** | [Discussion](https://github.com/kaepora/cryptocat/issues/83), [Library](http://strophe.im)
 * OTR **[DONE]** | [Discussion](https://github.com/kaepora/cryptocat/issues/84), [Library](https://github.com/arlolra/otr)
 * mpOTR | [Discussion](https://github.com/kaepora/cryptocat/issues/82), Spec in progress
 
-## Discussion:
+## Discussion
 We have [a million issues worth discussing here!](https://github.com/kaepora/cryptocat/issues)
 
 ## Contributors
