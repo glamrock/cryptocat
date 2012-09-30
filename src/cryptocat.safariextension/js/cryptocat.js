@@ -250,7 +250,7 @@ function seedRNG() {
 	else if (navigator.userAgent.match('Firefox')) {
 		var element = document.createElement('cryptocatFirefoxElement');
 		document.documentElement.appendChild(element);
-		var evt = document.createEvent('Events');
+		var evt = document.createEvent('HTMLEvents');
 		evt.initEvent('cryptocatGenerateRandomBytes', true, false);
 		element.dispatchEvent(evt);
 		if (element.getAttribute('randomValues').length > 512) {
