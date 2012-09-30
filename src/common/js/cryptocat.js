@@ -332,15 +332,9 @@ function shortenString(string, length) {
 	return string;
 }
 
-// Sanitize HTML (used sparingly, don't worry!)
-function escapeHTML(str) {
-	escapeHTML.replacements = { '&': '&amp;', '"': '&quot', '<': '&lt;', '>': '&gt;' };
-	return str.replace(/[&"<>]/g, function (m) { escapeHTML.replacements[m] });
-}
-
 // Builds a buddy element to be added to the buddy list.
 function buildBuddy(nickname) {
-	nickname = escapeHTML(nickname);
+	nickname = Strophe.xmlescape(nickname);
 	var buddyTemplate = '<div class="buddy" title="' + nickname + '" id="buddy-' 
 		+ nickname + '" status="online"><span>' + nickname + '</span>'
 		+ '<div class="buddyMenu" id="menu-' + nickname + '"></div></div>'
@@ -462,13 +456,13 @@ function addToConversation(message, sender, conversation) {
 			}
 		}
 	}
-	message = escapeHTML(message);
+	message = Strophe.xmlescape(message);
 	message = addFile(message);
 	message = addLinks(message);
 	message = addEmoticons(message);
 	message = message.replace(/:/g, '&#58;');
 	var timeStamp = '<span class="timeStamp">' + currentTime(0) + '</span>';
-	var sender = '<span class="sender">' + escapeHTML(shortenString(sender, 16)) + '</span>';
+	var sender = '<span class="sender">' + Strophe.xmlescape(shortenString(sender, 16)) + '</span>';
 	message = '<div class="Line' + lineDecoration + '">' + timeStamp + sender + message + '</div>';
 	conversations[conversation] += message;
 	if (conversation === currentConversation) {
@@ -716,7 +710,7 @@ function sendFile(nickname) {
 
 // Display buddy information, including fingerprints etc.
 function displayInfo(nickname) {
-	nickname = escapeHTML(nickname);
+	nickname = Strophe.xmlescape(nickname);
 	var displayInfoDialog = '<input type="button" class="bar" value="' + nickname + '"/><div id="displayInfo">'
 		+ language['chatWindow']['otrFingerprint'] + '<br /><span id="otrFingerprint"></span><br />'
 		+ '<br />' + language['chatWindow']['groupFingerprint']  + '<br /><span id="multiPartyFingerprint"></span></div>';
@@ -778,7 +772,7 @@ function displayInfo(nickname) {
 
 // Bind buddy menus for new buddies. Used internally.
 function bindBuddyMenu(nickname) {
-	nickname = escapeHTML(nickname);
+	nickname = Strophe.xmlescape(nickname);
 	$('#menu-' + nickname).click(function(event) {
 		event.stopPropagation();
 		if ($('#buddy-' + nickname).height() === 15) {
@@ -958,9 +952,9 @@ $('#userInput').submit(function() {
 
 // Custom server dialog
 $('#customServer').click(function() {
-	bosh = escapeHTML(bosh);
-	conferenceServer = escapeHTML(conferenceServer);
-	domain = escapeHTML(domain);
+	bosh = Strophe.xmlescape(bosh);
+	conferenceServer = Strophe.xmlescape(conferenceServer);
+	domain = Strophe.xmlescape(domain);
 	var customServerDialog = '<input type="button" class="bar" value="' + language['loginWindow']['customServer'] + '"/><br />'
 		+ '<input type="text" id="customDomain"></input>'
 		+ '<input type="text" id="customConferenceServer"></input>'

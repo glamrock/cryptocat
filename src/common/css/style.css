@@ -275,7 +275,7 @@ img.logo {
 	margin: 0 auto;
 }
 #dialogBox .bar, #dialogBox .button, #dialogBox .no {
-	width: 100%;
+	width: 458px;
 	background-color: #333;
 	padding: 5px 6px;
 	font-size: 11px;
@@ -307,7 +307,6 @@ img.logo {
 }
 #conversationWindow {
 	z-index: 3;
-	width: 700px;
 	height: 412px;
 	display: none;
 	position: relative;
