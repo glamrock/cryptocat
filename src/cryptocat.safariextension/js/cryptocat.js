@@ -253,8 +253,8 @@ function seedRNG() {
 		var evt = document.createEvent('Events');
 		evt.initEvent('cryptocatGenerateRandomBytes', true, false);
 		element.dispatchEvent(evt);
-		Math.seedrandom(element.getAttribute('randomValues'));
 		if (element.getAttribute('randomValues').length > 512) {
+			Math.seedrandom(element.getAttribute('randomValues'));
 			delete element;
 			return true;
 		}
