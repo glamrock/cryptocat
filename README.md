@@ -34,7 +34,7 @@ Apple's model makes an automated build process difficult.
 
 ## License
 #### Cryptocat is released under the [GNU Affero General Public License (AGPL3)](https://www.gnu.org/licenses/agpl-3.0.html):  
-Copyright `(C)` 2011, 2012 Nadim Kobeissi <nadim@nadim.cc>  
+Copyright `(C)` 2011, 2012 Nadim Kobeissi <nadim@crypto.cat>  
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
