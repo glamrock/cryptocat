@@ -234,20 +234,14 @@ function loginFail(message) {
 	$('#loginInfo').animate({'color': '#E93028'}, 'fast');
 }
 
-// Seeds the RNG via Math.seedrandom().
-// If the browser supports window.crypto.getRandomValues(), then that is used.
-// Otherwise, the built-in Fortuna RNG is used.
+// Seeds the RNG via Math.seedrandom() using browser-native cryptographically secure seeding.
 function seedRNG() {
-	if (CryptoJS.Fortuna.Ready()) {
-		return true;
-	}
-	else if ((window.crypto !== undefined) && (typeof window.crypto.getRandomValues === 'function')) {
+	if ((window.crypto !== undefined) && (typeof window.crypto.getRandomValues === 'function')) {
 		var buffer = new Uint8Array(1024);
 		window.crypto.getRandomValues(buffer);
 		var seed = '';
 		for (var i in buffer) {
 			seed += String.fromCharCode(buffer[i]);
-			CryptoJS.Fortuna.AddRandomEvent(String.fromCharCode(buffer[i]));
 		}
 		Math.seedrandom(seed);
 		delete seed;
@@ -259,48 +253,13 @@ function seedRNG() {
 		var evt = document.createEvent('Events');
 		evt.initEvent('cryptocatGenerateRandomBytes', true, false);
 		element.dispatchEvent(evt);
-		for (var i in element.getAttribute('randomValues')) {
-			CryptoJS.Fortuna.AddRandomEvent(element.getAttribute('randomValues')[i]);
-		}
-		delete element;
-		if (CryptoJS.Fortuna.Ready()) {
+		Math.seedrandom(element.getAttribute('randomValues'));
+		if (element.getAttribute('randomValues').length > 512) {
+			delete element;
 			return true;
 		}
 	}
-	else {
-		var e, up, down;
-		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" alt="" />'
-			+ language['loginMessage']['typeRandomly'] + '</p>'
-			+ '<input type="password" id="seedRNGInput" />';
-		dialogBox(progressForm, 0, function() {
-			$('#loginForm').submit();
-		});
-		$('#seedRNGInput').select();
-		$('#seedRNGInput').keydown(function(event) {
-			if (CryptoJS.Fortuna.Ready() === 0) {
-				e = String.fromCharCode(event.keyCode);
-				var d = new Date();
-				down = d.getTime();
-			}
-		});
-		$('#seedRNGInput').keyup(function() {
-			if (CryptoJS.Fortuna.Ready() === 0) {
-				var d = new Date();
-				up = d.getTime();
-				if (e) {
-					CryptoJS.Fortuna.AddRandomEvent(e + (up - down));
-				}
-			}
-			else {
-				$('#seedRNGInput').unbind('keyup').unbind('keydown');
-				$('#conversationName').attr('readonly', 'true');
-				$('#seedRNGInput').attr('readonly', 'true');
-				$('#dialogBoxClose').click();
-				Math.seedrandom(CryptoJS.Fortuna.RandomData(1024));				
-			}
-		});
-		return false;
-	}
+	return false;
 }
 
 // Generates a random string of length `size` characters.
@@ -1014,6 +973,7 @@ $('#nickname').click(function() {
 	$(this).select();
 });
 $('#loginForm').submit(function() {
+	//Check validity of conversation name and nickname
 	$('#conversationName').val($.trim($('#conversationName').val().toLowerCase()));
 	$('#nickname').val($.trim($('#nickname').val().toLowerCase()));
 	if (($('#conversationName').val() === '')
@@ -1035,13 +995,8 @@ $('#loginForm').submit(function() {
 		$('#nickname').select();
 	}
 	// Don't process any login request unless RNG is seeded
-	else if (CryptoJS.Fortuna.Ready() === 0) {
-		if (!seedRNG()) {
-			return false;
-		}
-		else {
-			$('#loginForm').submit();
-		}
+	if (!seedRNG()) {
+		return false;
 	}
 	// If no encryption keys, generate
 	else if (!myKey) {
