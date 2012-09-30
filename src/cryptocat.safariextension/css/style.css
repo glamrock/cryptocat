@@ -307,7 +307,6 @@ img.logo {
 }
 #conversationWindow {
 	z-index: 3;
-	width: 700px;
 	height: 412px;
 	display: none;
 	position: relative;
