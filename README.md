@@ -15,17 +15,19 @@ Apple's model makes an automated build process difficult.
 
 ## Compatibility Chart
 ```
------------------------------------
-          Windows   Mac     Linux  |
------------------------------------|
-Chrome |  Yes       Yes     Yes    |
---------                           |
-Firefox|  Yes       Yes     No     |
---------                           |
-Safari |  Yes       Yes            |
---------                           |
------------------------------------
-```
+-------------------------------------
+          Windows   Mac     Linux    |
+-------------------------------------|
+Chrome |  Yes       Yes     Yes      |
+--------                             |
+Firefox|  Yes       Yes     Mostly   |
+--------                             |
+Safari |  Yes       Yes     N/A      |
+--------                             |
+-------------------------------------
+```  
+**Cryptocat seems to not work on Firefox under Fedora Linux.**  
+This is being [investigated here](https://github.com/kaepora/cryptocat/issues/124).
 
 ## Documentation & Wiki
 * [Threat Model](https://github.com/kaepora/cryptocat/wiki/Threat-Model)  
