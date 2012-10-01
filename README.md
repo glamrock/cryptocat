@@ -58,7 +58,7 @@ The full license text is included in `LICENSE.txt`.
 ## Goals
 * XMPP **[DONE]** | [Discussion](https://github.com/kaepora/cryptocat/issues/83), [Library](http://strophe.im)
 * OTR **[DONE]** | [Discussion](https://github.com/kaepora/cryptocat/issues/84), [Library](https://github.com/arlolra/otr)
-* mpOTR | [Discussion](https://github.com/kaepora/cryptocat/issues/82), Spec in progress
+* mpOTR | [Discussion](https://github.com/kaepora/cryptocat/issues/82), Spec in progress. Current mutli-party encryption is handled using [Cryptocat Protocol 2.0](https://project.crypto.cat/documents/)
 
 ## Discussion
 We have [a million issues worth discussing here!](https://github.com/kaepora/cryptocat/issues)
