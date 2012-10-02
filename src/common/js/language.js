@@ -147,7 +147,6 @@ language.lol = {
 	}
 }
 
-
 language.ca = {
 	'language': 'ca',
 	'direction': 'ltr',

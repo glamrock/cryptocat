@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"name": "Cryptocat",
 	"description": "Cryptocat lets you instantly set up private conversations. It's an open source encrypted instant messaging alternative.",
-	"version": "2.0.8",
+	"version": "2.0.9",
 	"app": {
 		"launch": {
 			"local_path": "index.html"

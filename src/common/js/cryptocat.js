@@ -995,7 +995,7 @@ $('#loginForm').submit(function() {
 		$('#nickname').select();
 	}
 	// Don't process any login request unless RNG is seeded
-	if (!seedRNG()) {
+	else if (!seedRNG()) {
 		return false;
 	}
 	// If no encryption keys, generate
