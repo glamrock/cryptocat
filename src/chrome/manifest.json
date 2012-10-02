@@ -17,6 +17,6 @@
 		"img/keygen.gif"
 	],
 	"permissions": [
-		"https://crypto.cat/"
+		"*"
 	]
 }
