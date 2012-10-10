@@ -88,7 +88,7 @@ img.logo {
 #bubble #loginForm input {
 	text-align: center;
 }
-[type=text], [type=password], [type=button], [type=submit] {
+[type=text], [type=password], [type=button], [type=submit], textarea {
 	display: block;
 	background-color: #222;
 	font-size: 14px;
@@ -371,11 +371,9 @@ img.logo {
 	border: none;
 	border-left: 6px solid #97CEEC;
 	box-shadow: none;
+	font-family: Helvetica, Arial, Verdana;
 	font-size: 12px;
 	text-align: left;
-}
-#userInputSubmit {
-	display: none;
 }
 #progressForm {
 	font-size: 11px;

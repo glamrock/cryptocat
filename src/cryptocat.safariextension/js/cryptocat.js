@@ -887,6 +887,12 @@ $('#logout').click(function() {
 });
 
 // Submit user input
+$('#userInputText').keyup(function(e) {
+	var code = (e.keyCode ? e.keyCode : e.which);
+	if (code === 13) {
+		$('#userInput').submit();
+	}
+});
 $('#userInput').submit(function() {
 	var message = $.trim($('#userInputText').val());
 	if (message !== '') {
