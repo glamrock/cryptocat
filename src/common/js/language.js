@@ -1054,35 +1054,35 @@ language['zh-cn'] = {
 	'font-family': '"Microsoft Yahei", "微软雅黑", Tahoma, Helvetica, Arial, sans-serif, STXihei, "华文细黑"',
 	'loginWindow': {
 		'introHeader': '属于每个人的私人对话。',
-		'introParagraph1': 'Cryptocat是一个即时通讯平台，可以让你轻松地与朋友拥有的私人对话。讯息在离开你的屏幕画面前进行加密及保护，好让防止任何第三者查看，包括我们。',
-		'introParagraph2': 'Cryptocat是建于开放规格上的免​​费软件。我们的开发过程是由公众志愿者和爱好者进行持续的检测。了解更多 <a href="https://project.crypto.cat" target="_blank">Cryptocat的项目。</a>',
+		'introParagraph1': 'Cryptocat 是一个即时通讯平台，可以让您轻松地与朋友拥有私人的对话。信息在离开您的屏幕画面前就被加密和保护，防止任何第三方查看，甚至是我们。',
+		'introParagraph2': 'Cryptocat 是基于开放规范的免​​费软件。我们的开发过程是由公众志愿者和爱好者进行的。<a href="https://project.crypto.cat" target="_blank">了解更多 Cryptocat 项目的信息</a>。',
 		'project': '项目',
 		'blog': '博客',
 		'source': '源代码',
 		'customServer': '自定义服务器...',
-		'conversationName': '通话名称',
+		'conversationName': '会话名称',
 		'nickname': '昵称',
 		'connect': '连接',
-		'enterConversation': '输入名称加入对话。'
+		'enterConversation': '输入您想要加入会话的名称。'
 	},
 	'loginMessage': {
-		'enterConversation': '请输入对话名称。',
-		'conversationAlphanumeric': '通话名称必须是字母或数字。',
+		'enterConversation': '请输入会话名称。',
+		'conversationAlphanumeric': '会话名称必须是字母或数字。',
 		'enterNickname': '请输入昵称。',
 		'nicknameAlphanumeric': '昵称必须是字母或数字。',
-		'nicknameInUse': '昵称已在使用。',
+		'nicknameInUse': '昵称已被使用。',
 		'authenticationFailure': '验证失败。',
 		'connectionFailed': '连接失败。',
 		'thankYouUsing': '感谢您使用Cryptocat。',
 		'registering': '注册中...',
 		'connecting': '连接中...',
-		'typeRandomly': '请随意在键盘上按键几秒钟。',
-		'generatingKeys': '生产加密密钥...'
+		'typeRandomly': '请随意在键盘上按几个键。',
+		'generatingKeys': '生成加密密钥...'
 	},
 	'chatWindow': {
-		'groupConversation': '群组对话。点击一个用户进行私人聊天。',
-		'otrFingerprint': 'OTR指纹（私人对话）：',
-		'groupFingerprint': '群组对话纪录：',
+		'groupConversation': '群组对话。点击某个用户进行私人聊天。',
+		'otrFingerprint': 'OTR指纹（私人会话）：',
+		'groupFingerprint': '群组会话纪录：',
 		'statusAvailable': '状态：有空',
 		'statusAway': '状态：离开',
 		'myInfo': '我的信息',
@@ -1090,10 +1090,10 @@ language['zh-cn'] = {
 		'desktopNotificationsOff': '桌面通知关闭',
 		'audioNotificationsOn': '音效通知开启',
 		'audioNotificationsOff': '音效通知关闭',
-		'logout': '登出',
+		'logout': '退出登录',
 		'displayInfo': '显示信息',
 		'sendEncryptedFile': '发送已加密的文件',
-		'conversation': '对话'
+		'conversation': '会话'
 	}
 }
 
