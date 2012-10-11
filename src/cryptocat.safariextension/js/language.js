@@ -1146,8 +1146,15 @@ language['zh-hk'] = {
 	}
 }
 
+//Language Aliases
+language['de-de'] = language['de'];
+language['es-es'] = language['es'];
+language['es-mx'] = language['es'];
+language['es-ar'] = language['es'];
+language['pt-pt'] = language['pt'];
+language['pt-br'] = language['pt'];
+language['sv-se'] = language['sv'];
 language['zh-tw'] = language['zh-hk'];
 language['zh-sg'] = language['zh-cn'];
-
 
 })();
