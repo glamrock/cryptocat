@@ -364,6 +364,7 @@ img.logo {
 #userInputText {
 	background-color: #000;
 	width: 730px;
+	height: 28px;
 	float: left;
 	margin: 10px 0;
 	display: inline;
@@ -374,6 +375,8 @@ img.logo {
 	font-family: Helvetica, Arial, Verdana;
 	font-size: 12px;
 	text-align: left;
+	resize: none;
+	overflow: hidden;
 }
 #progressForm {
 	font-size: 11px;

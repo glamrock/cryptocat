@@ -887,12 +887,6 @@ $('#logout').click(function() {
 });
 
 // Submit user input
-$('#userInputText').keyup(function(e) {
-	var code = (e.keyCode ? e.keyCode : e.which);
-	if (code === 13) {
-		$('#userInput').submit();
-	}
-});
 $('#userInput').submit(function() {
 	var message = $.trim($('#userInputText').val());
 	if (message !== '') {
@@ -913,6 +907,13 @@ $('#userInput').submit(function() {
 	}
 	$('#userInputText').val('');
 	return false;
+});
+// Detect user input submit on enter keypress
+$('#userInputText').keyup(function(e) {
+	var code = (e.keyCode ? e.keyCode : e.which);
+	if (code === 13) {
+		$('#userInput').submit();
+	}
 });
 
 // Custom server dialog
