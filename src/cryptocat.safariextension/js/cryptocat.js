@@ -81,16 +81,14 @@ if (localStorageOn) {
 // Initialize qTips
 $('.button[title]').qtip();
 
-// Set previously used nickname
-
-// Detect window focus
-window.onfocus = function() {
+// Handle window focus/blur
+$(window).blur(function() {
+	windowFocus = 0;
+});
+$(window).focus(function() {
 	windowFocus = 1;
 	document.title = 'Cryptocat';
-};
-window.onblur = function() {
-	windowFocus = 0;
-};
+});
 
 // Initialize workers
 var keyGenerator = new Worker('js/keygenerator.js');
@@ -410,7 +408,7 @@ function addToConversation(message, sender, conversation) {
 		lineDecoration = 2;
 		audioNotification = 'snd/msgGet.webm';
 		if (desktopNotifications) {
-			if ((sender !== currentConversation) || (!windowFocus)) {
+			if ((conversation !== currentConversation) || (!windowFocus)) {
 				Notification.createNotification('img/keygen.gif', sender, message);
 			}
 		}
