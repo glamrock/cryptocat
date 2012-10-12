@@ -28,6 +28,7 @@ Apple's model makes an automated build process difficult.
 ```  
 
 ## Documentation & Wiki
+* [Server Deployment Instructions](https://github.com/kaepora/cryptocat/wiki/Server-Deployment-Instructions)  
 * [Threat Model](https://github.com/kaepora/cryptocat/wiki/Threat-Model)  
 * [Design and Functionality Overview](https://github.com/kaepora/cryptocat/wiki/Design-and-Functionality)  
 * [Architecture and Lifecycle](https://project.crypto.cat/documents/a&l.pdf)  
