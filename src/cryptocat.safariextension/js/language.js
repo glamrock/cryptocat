@@ -27,7 +27,7 @@ function handleAliases(locale) {
 	}
 }
 
-// Get locale file
+// Get locale file, call other functions
 Language.set = function(locale) {
 	locale = handleAliases(locale);
 	$.ajax({
@@ -108,6 +108,7 @@ Language.buildObject = function(locale, language) {
 	Language.refresh(languageObject);
 }
 
+// Deliver new strings and refresh login page
 Language.refresh = function(languageObject) {
 	Cryptocat.language = languageObject;
 	$('html').attr('dir', languageObject['direction']);
