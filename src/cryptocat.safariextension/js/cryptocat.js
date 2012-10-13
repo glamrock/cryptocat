@@ -529,6 +529,10 @@ function handlePresence(presence) {
 	}
 	// Add to otrKeys if necessary
 	if (nickname !== 'main-Conversation' && otrKeys[nickname] === undefined) {
+		// var options = {
+		// 	fragment_size: 8192,
+		// 	send_interval: 400,
+		// }
 		otrKeys[nickname] = new OTR(myKey, uicb(nickname), iocb(nickname));
 		otrKeys[nickname].REQUIRE_ENCRYPTION = true;
 	}
@@ -629,7 +633,7 @@ function bindBuddyClick(nickname) {
 // Send encrypted file
 // File is converted into a base64 Data URI which is then sent as an OTR message.
 function sendFile(nickname) {
-	var sendFileDialog = '<div class="bar">send encrypted file</div>'
+	var sendFileDialog = '<div class="bar">' + Cryptocat.language['chatWindow']['sendEncryptedFile'] + '</div>'
 		+ '<input type="file" id="fileSelector" name="file[]" />'
 		+ '<input type="button" id="fileSelectButton" class="button" value="select file" />'
 		+ '<div id="fileErrorField"></div>'
@@ -735,7 +739,7 @@ function bindBuddyMenu(nickname) {
 				// File sharing menu item
 				// (currently disabled)
 				// $('#' + nickname + '-contents').append(
-				//	'<li class="option1">' + Cryptocat.language['chatWindow']['sendEncryptedFile']  + '</li>'
+				// 	'<li class="option1">' + Cryptocat.language['chatWindow']['sendEncryptedFile']  + '</li>'
 				// );
 				$('#' + nickname + '-contents').append(
 					'<li class="option2">' + Cryptocat.language['chatWindow']['displayInfo'] + '</li>'
