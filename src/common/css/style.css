@@ -88,7 +88,7 @@ img.logo {
 #bubble #loginForm input {
 	text-align: center;
 }
-[type=text], [type=password], [type=button], [type=submit] {
+[type=text], [type=password], [type=button], [type=submit], textarea {
 	display: block;
 	background-color: #222;
 	font-size: 14px;
@@ -351,7 +351,7 @@ img.logo {
 }
 #conversationWindow .sender {
 	color: #97CEEC;
-	padding: 6px 6px 6px 0;
+	padding: 6px 3px 6px 0;
 	width: 100px;
 	margin: 0 10px;
 	display: inline;
@@ -364,6 +364,7 @@ img.logo {
 #userInputText {
 	background-color: #000;
 	width: 730px;
+	height: 28px;
 	float: left;
 	margin: 10px 0;
 	display: inline;
@@ -371,11 +372,11 @@ img.logo {
 	border: none;
 	border-left: 6px solid #97CEEC;
 	box-shadow: none;
+	font-family: Helvetica, Arial, Verdana;
 	font-size: 12px;
 	text-align: left;
-}
-#userInputSubmit {
-	display: none;
+	resize: none;
+	overflow: hidden;
 }
 #progressForm {
 	font-size: 11px;

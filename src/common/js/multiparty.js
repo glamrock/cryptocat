@@ -106,7 +106,6 @@ multiParty.genSharedSecret = function(user) {
 		'message': sharedSecret.substring(0, 64),
 		'hmac': sharedSecret.substring(64, 128)
 	}
-	console.log(sharedSecrets);
 }
 
 // Get fingerprint fingerprint

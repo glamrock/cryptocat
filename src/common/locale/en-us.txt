@@ -1,0 +1,48 @@
+﻿ltr
+Helvetica, Arial, Verdana
+Private Conversations for Everyone.
+Cryptocat is an instant messaging platform that lets you easily have private conversations with friends. Messages are encrypted before leaving your screen and are protected from being viewed by any third party, even from us.
+Cryptocat is free software built on open standards. Our development process is under continuous examination by a community of volunteers and enthusiasts. <a href="https://project.crypto.cat" target="_blank">Learn more about the Cryptocat Project</a>.
+Project
+Blog
+Source
+Custom server...
+Reset
+conversation name
+nickname
+connect
+Enter the name of a conversation to join.
+Please enter a conversation name.
+Conversation name must be alphanumeric.
+Please enter a nickname.
+Nickname must be alphanumeric.
+Nickname in use.
+Authentication failure.
+Connection failed.
+Thank you for using Cryptocat.
+Registering...
+Connecting...
+Connected.
+Please type on your keyboard as randomly as possible for a few seconds.
+Generating encryption keys...
+Group conversation. Click on a user for private chat.
+OTR fingerprint (for private conversations):
+Group conversation fingerprint:
+Reset my encryption keys
+Resetting your encryption keys will disconnect you. Your fingerprints will also change.
+Continue
+Status: Available
+Status: Away
+My Info
+Desktop Notifications On
+Desktop Notifications Off
+Audio Notifications On
+Audio Notifications Off
+Remember my nickname
+Don't remember my nickname
+Logout
+Display Info
+Send encrypted file
+view image
+download file
+Conversation

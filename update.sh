@@ -9,4 +9,5 @@ cp -f src/cryptocat.safariextension/js/datareader.js src/common/js/datareader.js
 cp -f src/cryptocat.safariextension/js/elliptic.js src/common/js/elliptic.js
 cp -f src/cryptocat.safariextension/js/multiparty.js src/common/js/multiparty.js
 cp -f src/cryptocat.safariextension/js/language.js src/common/js/language.js
+rm -f src/common/locale/* && cp src/cryptocat.safariextension/locale/* src/common/locale/
 rm -f src/common/img/* && cp src/cryptocat.safariextension/img/* src/common/img/

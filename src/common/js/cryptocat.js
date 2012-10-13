@@ -28,13 +28,8 @@ var conn, conversationName, myNickname, myKey;
 if (!groupChat) { $('#buddy-main-Conversation').remove(); }
 
 // Initialize language settings
-var language = window.navigator.language;
-try {
-	language = Language.set(language.toLowerCase());
-}
-catch(err) {
-	language = Language.set('en');
-}
+var language = window.navigator.language.toLowerCase();
+Language.set(language);
 
 // Check if localStorage is implemented
 try {
@@ -48,7 +43,7 @@ catch(err) {
 if (localStorageOn) {
 	// Load language settings
 	if (localStorage.getItem('language') !== null) {
-		language = Language.set(localStorage.getItem('language'));
+		Language.set(localStorage.getItem('language'));
 		$('#languages').val(localStorage.getItem('language'));
 	}
 	// Load nickname settings
@@ -81,16 +76,14 @@ if (localStorageOn) {
 // Initialize qTips
 $('.button[title]').qtip();
 
-// Set previously used nickname
-
-// Detect window focus
-window.onfocus = function() {
+// Handle window focus/blur
+$(window).blur(function() {
+	windowFocus = 0;
+});
+$(window).focus(function() {
 	windowFocus = 1;
 	document.title = 'Cryptocat';
-};
-window.onblur = function() {
-	windowFocus = 0;
-};
+});
 
 // Initialize workers
 var keyGenerator = new Worker('js/keygenerator.js');
@@ -182,7 +175,7 @@ function buildConversationInfo(conversation) {
 	);
 	if (conversation === 'main-Conversation') {
 		$('#conversationInfo').append(
-			'<span style="float:right">' + language['chatWindow']['groupConversation'] + '</span>'
+			'<span style="float:right">' + Cryptocat.language['chatWindow']['groupConversation'] + '</span>'
 		);
 	}
 	conversationInfo[currentConversation] = $('#conversationInfo').html();
@@ -386,11 +379,11 @@ function addFile(message) {
 		
 	if (match = message.match(/data:image\/\w+\;base64,(\w|\\|\/|\+|\=)*$/)) {
 		message = message.replace(/data:image\/\w+\;base64,(\w|\\|\/|\+|\=)*$/,
-			'<a href="' + match[0] + '" class="imageView" target="_blank">view encrypted image</a>');
+			'<a href="' + match[0] + '" class="imageView" target="_blank">' + Cryptocat.language['chatWindow']['viewImage'] + '</a>');
 	}
 	else if (match = message.match(mime)) {
 		message = message.replace(mime,
-			'<a href="' + match[0] + '" class="fileView" target="_blank">download encrypted .zip file</a>');
+			'<a href="' + match[0] + '" class="fileView" target="_blank">' + Cryptocat.language['chatWindow']['downloadFile'] + '</a>');
 	}
 	return message;
 }
@@ -410,7 +403,7 @@ function addToConversation(message, sender, conversation) {
 		lineDecoration = 2;
 		audioNotification = 'snd/msgGet.webm';
 		if (desktopNotifications) {
-			if ((sender !== currentConversation) || (!windowFocus)) {
+			if ((conversation !== currentConversation) || (!windowFocus)) {
 				Notification.createNotification('img/keygen.gif', sender, message);
 			}
 		}
@@ -492,7 +485,7 @@ function handleMessage(message) {
 		try {
 			body = JSON.parse(body);
 		}
-		catch (e) {
+		catch(err) {
 			return true;
 		}
 		if (body[myNickname] && body[myNickname]['message'].match(multiParty.requestRegEx)) {
@@ -518,7 +511,7 @@ function handlePresence(presence) {
 		if ($(presence).find('error').attr('code') === '409') {
 			loginError = 1;
 			logout();
-			loginFail(language['loginMessage']['nicknameInUse']);
+			loginFail(Cryptocat.language['loginMessage']['nicknameInUse']);
 			return false;
 		}
 		return true;
@@ -671,12 +664,12 @@ function sendFile(nickname) {
 function displayInfo(nickname) {
 	nickname = Strophe.xmlescape(nickname);
 	var displayInfoDialog = '<input type="button" class="bar" value="' + nickname + '"/><div id="displayInfo">'
-		+ language['chatWindow']['otrFingerprint'] + '<br /><span id="otrFingerprint"></span><br />'
-		+ '<br />' + language['chatWindow']['groupFingerprint']  + '<br /><span id="multiPartyFingerprint"></span></div>';
+		+ Cryptocat.language['chatWindow']['otrFingerprint'] + '<br /><span id="otrFingerprint"></span><br />'
+		+ '<br />' + Cryptocat.language['chatWindow']['groupFingerprint']  + '<br /><span id="multiPartyFingerprint"></span></div>';
 	if (localStorageOn && (nickname === myNickname)) {
 		displayInfoDialog += '<div class="button" id="rememberNickname"></div>'
 			+ '<div class="button" id="resetKeys">' 
-			+ language['chatWindow']['resetKeys'] + '</div>';
+			+ Cryptocat.language['chatWindow']['resetKeys'] + '</div>';
 	}
 	dialogBox(displayInfoDialog, 1);
 	if ((nickname !== myNickname) && !otrKeys[nickname].msgstate) {
@@ -685,21 +678,21 @@ function displayInfo(nickname) {
 	}
 	else if (localStorageOn) {
 		if (localStorage.getItem('rememberNickname') === 'doNotRememberNickname') {
-			$('#rememberNickname').text(language['chatWindow']['doNotRememberNickname']);
+			$('#rememberNickname').text(Cryptocat.language['chatWindow']['doNotRememberNickname']);
 			$('#rememberNickname').css('background-color', '#F00');
 		}
 		else {
-			$('#rememberNickname').text(language['chatWindow']['rememberNickname']);
+			$('#rememberNickname').text(Cryptocat.language['chatWindow']['rememberNickname']);
 		}
 		$('#rememberNickname').click(function() {
-			if ($(this).text() === language['chatWindow']['doNotRememberNickname']) {
-				$(this).text(language['chatWindow']['rememberNickname']);
+			if ($(this).text() === Cryptocat.language['chatWindow']['doNotRememberNickname']) {
+				$(this).text(Cryptocat.language['chatWindow']['rememberNickname']);
 				$(this).animate({'background-color': '#97CEEC'});
 				localStorage.setItem('rememberNickname', 'rememberNickname');
 				localStorage.setItem('myNickname', myNickname);
 			}
 			else {
-				$(this).text(language['chatWindow']['doNotRememberNickname']);
+				$(this).text(Cryptocat.language['chatWindow']['doNotRememberNickname']);
 				$(this).animate({'background-color': '#F00'});
 				localStorage.setItem('rememberNickname', 'doNotRememberNickname');
 			}
@@ -707,10 +700,10 @@ function displayInfo(nickname) {
 		$('#resetKeys').click(function() {
 			$('#displayInfo').fadeOut(function() {
 				$(this).html(
-					'<p>' + language['chatWindow']['resetKeysWarn'] + '</p>'
+					'<p>' + Cryptocat.language['chatWindow']['resetKeysWarn'] + '</p>'
 					+ '<input type="button" class="typeButton" id="resetKeysOK" />'
 				);
-				$('#resetKeysOK').val(language['chatWindow']['continue']);
+				$('#resetKeysOK').val(Cryptocat.language['chatWindow']['continue']);
 				$('#resetKeysOK').click(function() {
 					localStorage.removeItem('myKey');
 					localStorage.removeItem('multiPartyKey');
@@ -742,10 +735,10 @@ function bindBuddyMenu(nickname) {
 				// File sharing menu item
 				// (currently disabled)
 				// $('#' + nickname + '-contents').append(
-				//	'<li class="option1">' + language['chatWindow']['sendEncryptedFile']  + '</li>'
+				//	'<li class="option1">' + Cryptocat.language['chatWindow']['sendEncryptedFile']  + '</li>'
 				// );
 				$('#' + nickname + '-contents').append(
-					'<li class="option2">' + language['chatWindow']['displayInfo'] + '</li>'
+					'<li class="option2">' + Cryptocat.language['chatWindow']['displayInfo'] + '</li>'
 				);
 				$('#' + nickname + '-contents').fadeIn('fast', function() {
 					$('.option1').click(function(event) {
@@ -819,17 +812,17 @@ function dialogBox(data, closeable, onClose) {
 // Buttons
 // Status button
 $('#status').click(function() {
-	if ($(this).attr('title') === language['chatWindow']['statusAvailable']) {
+	if ($(this).attr('title') === Cryptocat.language['chatWindow']['statusAvailable']) {
 		$(this).attr('src', 'img/away.png');
-		$(this).attr('alt', language['chatWindow']['statusAway']);
-		$(this).attr('title', language['chatWindow']['statusAway']);
+		$(this).attr('alt', Cryptocat.language['chatWindow']['statusAway']);
+		$(this).attr('title', Cryptocat.language['chatWindow']['statusAway']);
 		currentStatus = 'away';
 		sendStatus();
 	}
 	else {
 		$(this).attr('src', 'img/available.png');
-		$(this).attr('alt', language['chatWindow']['statusAvailable']);
-		$(this).attr('title', language['chatWindow']['statusAvailable']);
+		$(this).attr('alt', Cryptocat.language['chatWindow']['statusAvailable']);
+		$(this).attr('title', Cryptocat.language['chatWindow']['statusAvailable']);
 		currentStatus = 'online';
 		sendStatus();
 	}
@@ -847,10 +840,10 @@ if (!navigator.userAgent.match('Chrome')) {
 }
 else {
 	$('#notifications').click(function() {
-		if ($(this).attr('title') === language['chatWindow']['desktopNotificationsOff']) {
+		if ($(this).attr('title') === Cryptocat.language['chatWindow']['desktopNotificationsOff']) {
 			$(this).attr('src', 'img/notifications.png');
-			$(this).attr('alt', language['chatWindow']['desktopNotificationsOn']);
-			$(this).attr('title', language['chatWindow']['desktopNotificationsOn']);
+			$(this).attr('alt', Cryptocat.language['chatWindow']['desktopNotificationsOn']);
+			$(this).attr('title', Cryptocat.language['chatWindow']['desktopNotificationsOn']);
 			desktopNotifications = 1;
 			if (Notification.checkPermission()) {
 				Notification.requestPermission();
@@ -858,8 +851,8 @@ else {
 		}
 		else {
 			$(this).attr('src', 'img/noNotifications.png');
-			$(this).attr('alt', language['chatWindow']['desktopNotificationsOff']);
-			$(this).attr('title', language['chatWindow']['desktopNotificationsOff']);
+			$(this).attr('alt', Cryptocat.language['chatWindow']['desktopNotificationsOff']);
+			$(this).attr('title', Cryptocat.language['chatWindow']['desktopNotificationsOff']);
 			desktopNotifications = 0;
 		}
 	});
@@ -867,16 +860,16 @@ else {
 
 // Audio notifications button
 $('#audio').click(function() {
-	if ($(this).attr('title') === language['chatWindow']['audioNotificationsOff']) {
+	if ($(this).attr('title') === Cryptocat.language['chatWindow']['audioNotificationsOff']) {
 		$(this).attr('src', 'img/sound.png');
-		$(this).attr('alt', language['chatWindow']['audioNotificationsOn']);
-		$(this).attr('title', language['chatWindow']['audioNotificationsOn']);
+		$(this).attr('alt', Cryptocat.language['chatWindow']['audioNotificationsOn']);
+		$(this).attr('title', Cryptocat.language['chatWindow']['audioNotificationsOn']);
 		audioNotifications = 1;
 	}
 	else {
 		$(this).attr('src', 'img/noSound.png');
-		$(this).attr('alt', language['chatWindow']['audioNotificationsOff']);
-		$(this).attr('title', language['chatWindow']['audioNotificationsOff']);
+		$(this).attr('alt', Cryptocat.language['chatWindow']['audioNotificationsOff']);
+		$(this).attr('title', Cryptocat.language['chatWindow']['audioNotificationsOff']);
 		audioNotifications = 0;
 	}
 });
@@ -908,13 +901,20 @@ $('#userInput').submit(function() {
 	$('#userInputText').val('');
 	return false;
 });
+// Detect user input submit on enter keypress
+$('#userInputText').keyup(function(e) {
+	var code = (e.keyCode ? e.keyCode : e.which);
+	if (code === 13) {
+		$('#userInput').submit();
+	}
+});
 
 // Custom server dialog
 $('#customServer').click(function() {
 	bosh = Strophe.xmlescape(bosh);
 	conferenceServer = Strophe.xmlescape(conferenceServer);
 	domain = Strophe.xmlescape(domain);
-	var customServerDialog = '<input type="button" class="bar" value="' + language['loginWindow']['customServer'] + '"/><br />'
+	var customServerDialog = '<input type="button" class="bar" value="' + Cryptocat.language['loginWindow']['customServer'] + '"/><br />'
 		+ '<input type="text" id="customDomain"></input>'
 		+ '<input type="text" id="customConferenceServer"></input>'
 		+ '<input type="text" id="customBOSH"></input>'
@@ -930,7 +930,7 @@ $('#customServer').click(function() {
 	$('#customBOSH').val(bosh)
 		.attr('title', 'BOSH relay')
 		.click(function() {$(this).select()});
-	$('#customServerReset').val(language['loginWindow']['reset']).click(function() {
+	$('#customServerReset').val(Cryptocat.language['loginWindow']['reset']).click(function() {
 		$('#customDomain').val(defaultDomain);
 		$('#customConferenceServer').val(defaultConferenceServer);
 		$('#customBOSH').val(defaultBOSH);
@@ -940,7 +940,7 @@ $('#customServer').click(function() {
 			localStorage.removeItem('bosh');
 		}
 	});
-	$('#customServerSubmit').val(language['chatWindow']['continue']).click(function() {
+	$('#customServerSubmit').val(Cryptocat.language['chatWindow']['continue']).click(function() {
 		domain = $('#customDomain').val();
 		conferenceServer = $('#customConferenceServer').val();
 		bosh = $('#customBOSH').val();
@@ -965,7 +965,6 @@ $('#languages').change(function() {
 });
 
 // Login form
-$('#conversationName').select();
 $('#conversationName').click(function() {
 	$(this).select();
 });
@@ -977,21 +976,21 @@ $('#loginForm').submit(function() {
 	$('#conversationName').val($.trim($('#conversationName').val().toLowerCase()));
 	$('#nickname').val($.trim($('#nickname').val().toLowerCase()));
 	if (($('#conversationName').val() === '')
-		|| ($('#conversationName').val() === language['loginWindow']['conversationName'])) {
-		loginFail(language['loginMessage']['enterConversation']);
+		|| ($('#conversationName').val() === Cryptocat.language['loginWindow']['conversationName'])) {
+		loginFail(Cryptocat.language['loginMessage']['enterConversation']);
 		$('#conversationName').select();
 	}
 	else if (!$('#conversationName').val().match(/^\w{1,20}$/)) {
-		loginFail(language['loginMessage']['conversationAlphanumeric']);
+		loginFail(Cryptocat.language['loginMessage']['conversationAlphanumeric']);
 		$('#conversationName').select();
 	}
 	else if (($('#nickname').val() === '')
-		|| ($('#nickname').val() === language['loginWindow']['nickname'])) {
-		loginFail(language['loginMessage']['enterNickname']);
+		|| ($('#nickname').val() === Cryptocat.language['loginWindow']['nickname'])) {
+		loginFail(Cryptocat.language['loginMessage']['enterNickname']);
 		$('#nickname').select();
 	}
 	else if (!$('#nickname').val().match(/^\w{1,16}$/)) {
-		loginFail(language['loginMessage']['nicknameAlphanumeric']);
+		loginFail(Cryptocat.language['loginMessage']['nicknameAlphanumeric']);
 		$('#nickname').select();
 	}
 	// Don't process any login request unless RNG is seeded
@@ -1010,11 +1009,11 @@ $('#loginForm').submit(function() {
 		multiParty.genPublicKey();
 		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" '
 			+ 'alt="" /><p id="progressInfo"><span>'
-			+ language['loginMessage']['generatingKeys'] + '</span></p>';
+			+ Cryptocat.language['loginMessage']['generatingKeys'] + '</span></p>';
 		dialogBox(progressForm, 0, function() {
 			$('#loginForm').submit();
 		});
-		if (language['language'] === 'en') {
+		if (Cryptocat.language['language'] === 'en-us') {
 			$('#progressInfo').append(
 				'<br />Here is an interesting fact while you wait:'
 				+ '<br /><br /><span id="interestingFact">'
@@ -1042,7 +1041,7 @@ function registerXMPPUser(username, password) {
 	var registrationConnection = new Strophe.Connection(bosh);
 	registrationConnection.register.connect(domain, function(status) {
 		if (status === Strophe.Status.REGISTER) {
-			$('#loginInfo').text(language['loginMessage']['registering']);
+			$('#loginInfo').text(Cryptocat.language['loginMessage']['registering']);
 			registrationConnection.register.fields.username = username;
 			registrationConnection.register.fields.password = password;
 			registrationConnection.register.submit();
@@ -1065,11 +1064,11 @@ function login(username, password) {
 	conn.connect(username + '@' + domain, password, function(status) {
 		if (status === Strophe.Status.CONNECTING) {
 			$('#loginInfo').animate({'color': '#999'}, 'fast');
-			$('#loginInfo').text(language['loginMessage']['connecting']);
+			$('#loginInfo').text(Cryptocat.language['loginMessage']['connecting']);
 		}
 		else if (status === Strophe.Status.CONNFAIL) {
 			if (!loginError) {
-				$('#loginInfo').text(language['loginMessage']['connectionFailed']);
+				$('#loginInfo').text(Cryptocat.language['loginMessage']['connectionFailed']);
 			}
 			$('#loginInfo').animate({'color': '#E93028'}, 'fast');
 		}
@@ -1122,7 +1121,7 @@ function login(username, password) {
 					$('#buddyWrapper').fadeOut();
 					if (!loginError) {
 						$('#loginInfo').animate({'color': '#999'}, 'fast');
-						$('#loginInfo').text(language['loginMessage']['thankYouUsing']);
+						$('#loginInfo').text(Cryptocat.language['loginMessage']['thankYouUsing']);
 					}
 					$('#bubble').animate({'width': '680px'});
 					$('#bubble').animate({'height': '310px'})
@@ -1142,10 +1141,10 @@ function login(username, password) {
 							coflictIsPossible = 1;
 							conn = null;
 							if (!loginError) {
-								$('#conversationName').val(language['loginWindow']['conversationName']);
+								$('#conversationName').val(Cryptocat.language['loginWindow']['conversationName']);
 							}
 							$('#conversationName').removeAttr('readonly');
-							$('#nickname').val(language['loginWindow']['nickname']);
+							$('#nickname').val(Cryptocat.language['loginWindow']['nickname']);
 							$('#nickname').removeAttr('readonly');
 							$('#info').fadeIn();
 							$('#loginLinks').fadeIn();
@@ -1161,7 +1160,7 @@ function login(username, password) {
 			});
 		}
 		else if (status === Strophe.Status.AUTHFAIL) {
-			loginFail(language['loginMessage']['authenticationFailure']);
+			loginFail(Cryptocat.language['loginMessage']['authenticationFailure']);
 			$('#conversationName').select();
 		}
 	});
