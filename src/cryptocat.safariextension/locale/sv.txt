@@ -1,0 +1,48 @@
+ltr
+Helvetica, Arial, Verdana
+Privata konversationer för alla.
+Cryptocat är en plattform för direktkommunikation som enkelt ger dig möjlighet till privata konversationer med dina vänner. Meddelanden är krypterade innan de lämnar din skärm och är skyddade för insyn av all tredjepart, även oss. 
+Cryptopcat är en öppen mjukvara byggd på öppna standarder. Vår utvecklingsprocess är under kontinuerlig övervakning av en stark community bestående av volontärer och entusiaster. <a href="https://project.crypto.cat" target="_blank">Lär dig mer om Cryptocat Projektet</a>. 
+Projekt
+Blogg
+Källa
+Egen server...
+Återställ
+Konversationsnamn
+smeknamn
+anslut
+Skriv in namnet på den konversation du vill delta i.
+Vänligen skriv in ett konversationsnamn. 
+Konversationsnamnet måste vara alfanumeriskt.
+Vänligen skriv in ett smeknamn.
+Smeknamnet måste vara alfanumeriskt.
+Smeknamnet användas redan.
+Autentiseringsfel.
+Anslutning misslyckades.
+Tack för att du använder Cryptocat!
+Registrerar...
+Ansluter...
+Upkopplad
+Vänligen skriv in slumpmässiga tecken på ditt tangentbord under ett par sekunder.
+Genererar krypteringsnycklar...
+Gruppkonversation. Klicka på en användare för privat chatt.
+OTR fingeravtryck (för privata konversationer):
+Gruppkonversation fingeravtryck:
+återställa mitt krypteringsnyckel
+Återställning av dina krypterad nycklar kommer att avkoppla dej. Dit fingeravtryck kommer att också ändras.
+Fortsätta
+Status: Tillgänglig
+Status: Frånvarande
+Min information
+Skrivbordsnotifieringar På
+Skrivbordsnotifieringar Av
+Ljudnotifikationer På
+Ljudnotifikationer Av
+Kom ihåg mitt smeknamn
+Glöm kom ihåg mitt smeknamn
+Logga ut
+Visa information
+Skicka krypterad fil
+Visa bild
+Ladda ner fil
+Konversation
