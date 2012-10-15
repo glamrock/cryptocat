@@ -1,6 +1,6 @@
 ltr
 Helvetica, Arial, Verdana
-Converses privades per a tothom
+Converses privades per a tothom.
 Cryptocat es una plataforma de missatgeria instantània que et permet mantenir converses privades fàcilment amb els amics. Els missatges es xifren abans de sortir de la teva pantalla i són protegits de ser vistos per terceres persones, incloses nosaltres.
 Cryptocat és free software construït sobre estàndards oberts. El nostre procés de desenvolupament està en període d'evaluació continuada per part d'una comunitat de voluntaris i entusiastes. <a href="https://project.crypto.cat" target="_blank">Descobreix més sobre el Projecte Cryptocat</a>.
 Projecte

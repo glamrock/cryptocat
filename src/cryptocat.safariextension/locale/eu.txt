@@ -1,0 +1,48 @@
+ltr
+Helvetica, Arial, Verdana
+Elkarrizketa pribatuak edonorentzat.
+Cryptocat berehalako mezularitza plataforma da, zeinak era errazean lagunekin elkarrizketa pribatuak izatea ahalbidetzen duen. Mezuak zifratu egiten dira ordenagailua utzi baino lehen eta kanpoko inork, gu barne, ikusi ezin ditzan babesten dira.
+Cryptocat software librea da, estandar irekien gainean eraikia. Gure garapen prozesua boluntario eta zalez osaturiko komunitate baten ikuskapen jarraitupean dago. <a href="https://project.crypto.cat" target="_blank">Cryptocat proiektuari buruz argibide gehiago</a>.
+Proiektua
+Bloga
+Iturburua
+Zerbitzari pertsonalizatua...
+Berrezarri
+elkarrizketa-izena
+goitizena
+konektatu
+Sartu elkarrizketa baten izena bertara sartzeko. 
+Sartu elkarrizketa-izena.
+Elkarrizketa-izena letraz eta zenbakiz bakarrik egon daiteke osatuta.
+Sartu goitizena.
+Goitizena letraz eta zenbakiz bakarrik egon daiteke osatuta.
+Erabiltzen ari den goitizena.
+Ezin izan da saioa hasi.
+Konexioak huts egin du.
+Eskerrik asko Cryptocat erabiltzeagatik.
+Erregistratzen...
+Konektatzen...
+Konektatuta.
+Segundu batzuetan, tekleatu ahalik eta era ausazkoenean.
+Zifraketa-kodeak sortzen...
+Talde-elkarrizketa. Egin klik erabiltzaile baten gainean elkarrizketa pribatua izateko.
+OTR hatz-aztarna (elkarrizketa pribatuetarako)
+Talde elkarrizketaren hatz-aztarna:
+Berrezarri nire zifraketa-kodeak..
+Zifraketa-kodeak berrezartzeak deskonektatu egingo zaitu. Zure hatz-aztarnak ere aldatuko dira.
+Jarraitu
+Egoera: eskuragarri
+Egoera: kanpoan
+Nire Informazioa
+Mahaigaineko jakinarazpenak gaituta
+Mahaigaineko jakinarazpenak desgaituta
+Soinu jakinarazpenak gaituta
+Soinu jakinarazpenak desgaituta
+Nire goititzena gogoratu
+Ez gogoratu nire goitizena
+Saioa itxi
+Erakutsi informazioa
+Bidali fitxategi zifratua
+ikusi irudia
+deskargatu fitxategia
+Elkarrizketa

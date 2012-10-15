@@ -7,13 +7,13 @@ function handleAliases(locale) {
 		case 'de-de':
 			return 'de';
 			break;
-		case ('es-es' || 'es-mx' || 'es-ar'):
+		case ('es-ar' || 'es-es' || 'es-mx'):
 			return 'es';
 			break;
-		case 'pt-pt':
+		case ('pt-br' || 'pt-pt'):
 			return 'pt';
 			break;
-		case 'sv-se':
+		case ('sv-se' || 'sv-sv'):
 			return 'sv';
 			break;
 		case 'zh-tw':
