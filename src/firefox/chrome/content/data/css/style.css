@@ -1,1 +1,522 @@
-../../../../../common/css/style.css
+body {
+	height: 100%;
+	background-color: #c7e5f5;
+	margin: 0;
+	font-family: Helvetica, Arial, Verdana;
+	font-size: 11px;
+	color: #FFF;
+	background-image: url("../img/bg.png");
+	line-height: 1.37em;
+}
+a {
+	color: #97CEEC;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+img.logo {
+	display: inline;
+	padding-left: 10px;
+	float: left;
+}
+#bubble:before {
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+	left: 307px;
+	top: 310px;
+	border: 25px solid;
+	border-color: #000 transparent transparent #000;
+	z-index: 0;
+}
+#bubble {
+	position: relative;
+	z-index: 1;
+	width: 680px;
+	height: 310px;
+	margin: 5% auto 0 auto;
+	background-color: #000;
+	border-radius: 12px 0 12px 12px;
+	box-shadow: 4px 4px #76BDE5;
+}
+#bubble:after {
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+	left: 315px;
+	top: 310px;
+	border: 15px solid;
+	border-color: #000 transparent transparent #000;
+	z-index: 0;
+}
+#bubble #head {
+	background-color: #222;
+	width: 100%;
+	padding: 5px 0;
+	height: 35px;
+	border-radius: 15px 0 0 0;
+}
+#bubble #loginLinks {
+	float: right;
+	word-spacing: 10px;
+	margin: 10px 10px 0 0;
+	font-weight: bold;
+}
+#bubble .button {
+	display: none;
+	cursor: pointer;
+	float: right;
+	margin: 9px 10px 0 0;
+	box-shadow: 2px 2px #111;
+}
+#bubble #info {
+	float: left;
+	padding-left: 15px;
+	width: 380px;
+	font-size: 12px;
+	line-height: 20px;
+	margin-top: 5px;
+}
+#bubble #loginForm {
+	float: right;
+	padding-right: 15px;
+	margin-top: 5px;
+}
+#bubble #loginForm input {
+	text-align: center;
+}
+[type=text], [type=password], [type=button], [type=submit], textarea {
+	display: block;
+	background-color: #222;
+	font-size: 14px;
+	padding: 5px;
+	color: #FFF;
+	border: none;
+	margin: 15px auto 0 auto;
+	border: 1px solid #333;
+	width: 200px;
+	outline: none;
+}
+#bubble #loginSubmit {
+	width: 211px;
+}
+[type=submit] {
+	box-shadow: 2px 2px #97CEEC;
+}
+[type=submit]:hover {
+	cursor: pointer;
+	background-color: #97CEEC;
+	border: 1px solid #97CEEC;
+}
+[type=submit]:active {
+	border: 1px solid #97CEEC;
+	box-shadow: 2px 2px #76BDE5;
+}
+#loginInfo {
+	color: #999;
+	background-color: #222;
+	padding: 2px 5px;
+	width: 204px;
+	margin: 10px 0 0 1px;
+	font-size: 11;
+}
+#bubble h1 {
+	font-family: Helvetica, Arial;
+	font-size: 18px;
+}
+#bubble .loginOption {
+	background-color: #97CEEC;
+	color: #FFF;
+	padding: 0 6px;
+	width: 201px;
+	display: block;
+	margin-left: 2px;
+	font-size: 10px;
+	height: 15px;
+}
+#bubble .loginOption:hover {
+	text-decoration: none;
+}
+#bubble .loginOption span {
+	position: relative;
+	bottom: 5px;
+}
+#bubble #options {
+	background-color: #222;
+	width: 110px;
+	height: 20px;
+	padding: 1px 0 2px 2px;
+	position: absolute;
+	border-radius: 5px 0 12px 0;
+	right: 0;
+	bottom: 0;
+}
+#bubble #languages {
+	background-color: #222;
+	color: #97CEEC;
+	font-size: 11px;
+	border: 1px solid #222;
+	outline: none;
+	width: 100px;
+	float: right;
+	margin-right: 9px;
+}
+#buddyWrapper {
+	overflow: hidden;
+	width: 150px;
+	float: right;
+	height: 495px;
+	display: none;
+}
+#buddyList {
+	height: 495px;
+	width: 160px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+.buddy {
+	background-color: #76BDE5;
+	background-position: 85% 7px;
+	background-repeat: no-repeat;
+	color: #FFF;
+	font-weight: bold;
+	padding: 7px;
+	font-size: 10px;
+	width: 133px;
+	display: none;
+	position: relative;
+	border-left: 3px solid #97CEEC;
+	z-index: 1;
+	text-align: left;
+	cursor: pointer;
+}
+.buddyMenu {
+	position: relative;
+	z-index: 2;
+	float: right;
+	margin: 0;
+	background-image: url("../img/down.png");
+	width: 14px;
+	height: 14px;
+	cursor: pointer;
+	border-radius: 3px 0 3px 3px;
+	opacity: 0.8;
+}
+.buddyMenu:hover {
+	background-color: #222;
+	box-shadow: 2px 2px #111;
+}
+.buddyMenuContents {
+	display: none;
+	margin-left: -7px;
+	width: 147px;
+}
+.buddyMenuContents li {
+	list-style-type: none;
+	background-color: rgba(255, 255, 255, 0.15);
+	padding: 1px 0 1px 10px;
+	font-size: 10px;
+	cursor: pointer;
+}
+.buddyMenuContents li:hover {
+	background-color: rgba(255, 255, 255, 0.4);
+}
+.buddyMenu:active {
+	background-color: #000;
+}
+#buddy-main-Conversation {
+	background-image: url("../img/groupChat.png");
+	background-position: 96% 7px;
+}
+#dialogBox {
+	position: absolute;
+	width: 470px;
+	height: 240px;
+	border-radius: 10px 0 10px 10px;
+	margin: 120px auto 0 -235px;
+	left: 50%;
+	z-index: 4;
+	font-size: 12px;
+	border: 1px solid #222;
+	border-right: none;
+	background-color: rgba(0, 0, 0, 0.94);
+	box-shadow: 2px 2px #E93028;
+	top: -450px;
+	color: #97CEEC;
+	font-family: monospace;
+}
+#dialogBoxClose {
+	height: 18px;
+	width: 0;
+	font-size: 0;
+	text-align: center;
+	color: #FFF;
+	background-color: #E93028;
+	float: right;
+	cursor: pointer;
+	margin-top: 1px;
+	font-family: Helvetica, Arial, Verdana;
+	font-weight: bold;
+}
+#dialogBoxContent {
+	padding: 25px 0 0 0;
+}
+#displayInfo {
+	font-size: 12px;
+	padding: 10px 20px;
+	height: 80px;
+}
+#dialogBoxContent p {
+	padding: 10px;
+	max-width: 340px;
+	margin: 0 auto;
+}
+#dialogBox .bar, #dialogBox .button, #dialogBox .no {
+	width: 458px;
+	background-color: #333;
+	padding: 5px 6px;
+	font-size: 11px;
+	box-shadow: none;
+	font-weight: bold;
+	font-family: Helvetica, Arial;
+	margin: 0;
+	border: none;
+	display: block;
+	box-sizing: content-box;
+	outline: none;
+	color: #FFF;
+	text-align: left;
+}
+#dialogBox .button, #dialogBox .no {
+	cursor: pointer;
+	margin-top: 5px;
+}
+#dialogBox .button {
+	background-color: #97CEEC;
+}
+#dialogBox .no {
+	background-color: #E93028;
+}
+#conversationWrapper {
+	width: 750px;
+	overflow: hidden;
+	float: left;
+}
+#conversationWindow {
+	z-index: 3;
+	height: 412px;
+	display: none;
+	position: relative;
+	font-size: 12px;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+#conversationInfo, #conversationWindow .Line1, #conversationWindow .Line2 {
+	background-color: #111;
+	padding: 5px 10px 5px 5px;
+	width: 735px;
+	line-height: 20px;
+	word-wrap: break-word;
+	text-align: left;
+}
+#conversationInfo {
+	background-color: #97CEEC;
+	text-align: left;
+	font-size: 10px;
+	padding: 6px 0 10px 0;
+	width: 0;
+	float: right;
+	height: 13px;
+	font-family: 'Helvetica', 'Arial', 'Verdana';
+	border-bottom: 1px dashed #111;
+	font-weight: bold;
+}
+#conversationInfo span {
+	margin: 0 10px 0 10px;
+}
+#conversationInfo .conversationName {
+	font-size: 11px;
+}
+#conversationWindow .Line2 {
+	background-color: #000;
+}
+#conversationWindow .timeStamp {
+	color: #CCC;
+	font-size: 10px;
+	font-family: monospace;
+	text-shadow: 1px 1px #555;
+}
+#conversationWindow .sender {
+	color: #97CEEC;
+	padding: 6px 3px 6px 0;
+	width: 100px;
+	margin: 0 10px;
+	display: inline;
+	text-align: right;
+	font-weight: bold;
+}
+#userInput {
+	display: none;
+}
+#userInputText {
+	background-color: #000;
+	width: 730px;
+	height: 28px;
+	float: left;
+	margin: 10px 0;
+	display: inline;
+	padding: 10px 4px;
+	border: none;
+	border-left: 6px solid #97CEEC;
+	box-shadow: none;
+	font-family: Helvetica, Arial, Verdana;
+	font-size: 12px;
+	text-align: left;
+	resize: none;
+	overflow: hidden;
+}
+#progressForm {
+	font-size: 11px;
+}
+#progressInfo span {
+	font-size: 13px;
+}
+#progressForm img {
+	float: left;
+	margin: 8px 20px 0 0;
+	box-shadow: 2px 2px #97CEEC;
+}
+#progressInfo {
+	border-left: 1px solid #97CEEC;
+	width: 320px;
+	font-size: 10px;
+	position: relative;
+	bottom: 70px;
+	float: right;
+}
+#progressInfo #interestingFact {
+	font-size: 11px;
+}
+#progressBar {
+	margin-top: 10px;
+	height: 17px;
+	width: 305px;
+}
+#progressBar #fill {
+	height: 100%;
+	width: 0%;
+	color: #000;
+	background-color: #97CEEC;
+	opacity: 0.8;
+}
+#dialogBox [type=text], #dialogBox [type=password], #dialogBox [type=submit] {
+	background-color: #000;
+	border: 1px solid #97CEEC;
+	color: #97CEEC;
+	float: left;
+	margin: 0 5px 10px 5px;
+	width: 255px;
+	box-shadow: 2px 2px #97CEEC;
+	font-size: 11px;
+}
+#dialogBox #resetKeysOK {
+	background-color: #000;
+	border: 1px solid #97CEEC;
+	color: #97CEEC;
+	margin: 0 auto;
+	width: 100px;
+	box-shadow: 2px 2px #97CEEC;
+	font-size: 12px;
+	cursor: pointer;
+}
+#dialogBox [type=checkbox] {
+	width: 10px;
+	height: 10px;
+}
+#otrFingerprint, #multiPartyFingerprint {
+	font-weight: bold;
+}
+#fileSelector {
+	display: none;
+}
+#fileErrorField {
+	color: #F00;
+	margin: 20px 0;
+	font-weight: bold;
+}
+.imageView, .fileView {
+	background-color: #97CEEC;
+	color: #FFF;
+	padding: 2px 2px 2px 21px;
+	box-shadow: 1px 1px #34BEED;
+	background-image: url("../img/file.png");
+	background-position: center left;
+	background-repeat: no-repeat;
+	font-family: monospace;
+}
+.imageView:hover, .fileView:hover {
+	text-decoration: none;
+}
+
+.emoticon {
+	background: transparent url("../img/emoticat.png") no-repeat;
+	height: 13px;
+	width: 13px;
+	display: inline-block;
+	vertical-align: 4%;
+	margin: 0 3px;
+	font-size: 2px;
+	color: transparent;
+}
+#eCat { background-position: 0 0; }
+#eCry { background-position: -13px 0; }
+#eGasp { background-position: -26px 0; }
+#eGrin { background-position: -39px 0; }
+#eSad { background-position: -52px 0; }
+#eSmile { background-position: -65px 0; }
+#eSquint { background-position: -78px 0; }
+#eTongue { background-position: -91px 0; }
+#eUnsure { background-position: -104px 0; }
+#eWink { background-position: -117px 0; }
+#eWinkTongue { background-position: -130px 0; }
+#eYay { background-position: -143px 0; }
+#eShut { background-position: -156px 0; }
+
+.ui-tooltip, .qtip{
+	position: absolute;
+	left: -28000px;
+	top: -28000px;
+	display: none;
+	max-width: 280px;
+	min-width: 50px;
+	font-size: 11px;
+	line-height: 12px;
+	border: 2px solid #97CEEC;
+	box-shadow: 1px 1px 3px #5588A5;
+	background-color: rgba(0, 0, 0, 0.75);
+	color: #EEE;
+	padding: 6px;
+	border-radius: 4px 0 4px 4px;
+	text-align: center;
+}
+.ui-tooltip .ui-tooltip-tip{
+	margin: 0 auto;
+	overflow: hidden;
+	z-index: 10;
+}
+.ui-tooltip .ui-tooltip-tip,
+.ui-tooltip .ui-tooltip-tip *{
+	position: absolute;
+	line-height: 0.1px !important;
+	font-size: 0.1px !important;
+	background: transparent;
+	border: 0 dashed transparent;
+	box-shadow: none;
+}
+.ui-tooltip .ui-tooltip-tip canvas { 
+	top: 0;
+	left: 0;
+}

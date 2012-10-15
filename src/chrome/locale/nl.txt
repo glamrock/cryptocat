@@ -1,0 +1,48 @@
+ltr
+Helvetica, Arial, Verdana
+Privé Conversaties voor Iedereen.
+Cryptocat is een instant messaging platform waarmee u gemakkelijk privé conversaties met vrienden kunt hebben. Berichten worden versleuteld voordat u uw scherm verlaat en zijn beschermd tegen het afluisteren door derden, zelfs door ons.
+Cryptocat is vrije software gebaseerd op open standaarden. De ontwikkeling van Cryptocat is onder voortdurend toezicht van een gemeenschap van vrijwilligers en enthousiastelingen.  <a href="https://project.crypto.cat" target="_blank">Lees meer over het Cryptocat Project</a>.
+Project
+Blog
+Broncode
+Andere server...
+Reset
+naam conversatie
+gebruikersnaam
+verbind
+Voer de naam in van de conversatie die u wilt betreden.
+Voer alstublieft een conversatie naam in.
+Conversatienaam moet alfanumeriek zijn.
+Voer alstublieft een gebruikersnaam in.
+Gebruikersnaam moet alfanumeriek zijn.
+Gebruikersnaam in gebruik.
+Authentificatie mislukt.
+Verbinding mislukt.
+Bedankt voor het gebruiken van Cryptocat.
+Aan het registreren...
+Aan het verbinden...
+Verbonden.
+Typt u alstublieft zo willekeurig mogelijk op uw toetsenbord gedurende enkele seconden.
+Encryptie sleutels aan het genereren...
+Groepsconversatie. Klik op een gebruiker voor een privé gesprek.
+OTR vingerafdruk (voor privé conversaties):
+Vingerafdruk groepsconversatie:
+Reset mijn encryptiesleutels
+Het resetten van uw encryptiesleutels verbreekt de verbinding. Uw vingerafdrukken worden ook gewijzigd.
+Doorgaan
+Status: Beschikbaar
+Status: Afwezig
+Mijn Info
+Desktop Notificaties Aan
+Desktop Notificaties Uit
+Audio Notificaties Aan
+Audio Notificaties Uit
+Mijn gebruikersnaam onthouden
+Mijn gebruikersnaam niet onthouden
+Uitloggen
+Toon Info
+Verstuur versleuteld bestand
+Afbeelding bekijken
+Bestand downloaden
+Conversatie

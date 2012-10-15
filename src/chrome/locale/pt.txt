@@ -1,0 +1,48 @@
+ltr
+Helvetica, Arial, Verdana
+Conversa privada para todos.
+Cryptocat é uma plataforma de mensagens instantâneas que permite que você tenha conversas privadas com seus amigos. As mensagens são encriptadas antes de sair do seu computador e são protegidas de serem vistas por terceiros, até de nós.
+Cryptocat é software livre construído com padrões abertos. Nosso processo de desenvolvimento está sob examinação contínua por uma comunidade de voluntários e entusiastas. <a href="https://project.crypto.cat" target="_blank">Aprenda mais sobre o Projeto Cryptocat</a>.
+Projeto
+Blog
+Fonte
+Servidor personalizado...
+Reset
+nome da conversa
+nome
+conectar
+Digite o nome da conversa para participar.
+Digite um nome da conversa, por favor.
+O nome da conversa tem de ser alfa numérico
+Digite um nome, por favor.
+O nickname tem de ser alfanumérico
+Nickname em uso.
+A autenticação falhou.
+Coneção falhou.
+Obrigado por ter usado Cryptocat.
+Registrando...
+Conectando...
+Conectado.
+Por favor, digite o mais aleatoriamente possível no seu teclado por alguns segundos.
+Gerando chaves criptográficas...
+Conversa em grupo. Clique em um usuário para iniciar uma conversa privada.
+Impressao digital OTR ( para conversas privadas):
+Impressão digital de conversa de grupo:
+dar um reset em minhas chaves de encriptação.
+Dar um reset nas suas chaves de encriptação irá desconectá-lo. As suas impressões digitais mudarão também.
+Continuar.
+Status: Disponível
+Status: Ausente
+Minhas informações
+Notificações no desktop ligadas
+Notificações no desktop desligadas
+Notificações por audio ligadas
+Notificações por audio desligadas
+Lembrar meu nome.
+Não recordo o meu nome.
+Sair
+Exibir informações
+Enviar arquivo criptografado
+Ver imagem
+baixar documento
+Conversa

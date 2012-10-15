@@ -1,0 +1,48 @@
+ltr
+Helvetica, Arial, Verdana
+Converses privades per a tothom.
+Cryptocat es una plataforma de missatgeria instantània que et permet mantenir converses privades fàcilment amb els amics. Els missatges es xifren abans de sortir de la teva pantalla i són protegits de ser vistos per terceres persones, incloses nosaltres.
+Cryptocat és free software construït sobre estàndards oberts. El nostre procés de desenvolupament està en període d'evaluació continuada per part d'una comunitat de voluntaris i entusiastes. <a href="https://project.crypto.cat" target="_blank">Descobreix més sobre el Projecte Cryptocat</a>.
+Projecte
+Bloc
+Font
+Servidor personalitzat...
+Reinicia
+nom de la conversa
+nom d'usuari
+connecta
+Introdueix el nom de la conversa.
+Si us plau, introdueix el nom de la conversa.
+El nom de la conversa ha de ser alfanumèric.
+Si us plau, introdueix un nom d'usuari
+El nom d'usuari ha de ser alfanumèric.
+El nom d'usuari no està disponible.
+Error d'identificació.
+Error de connexió.
+Gràcies per utilitzar Cryptocat.
+Registrant...
+Connectant...
+Connectat.
+Si us plau, escriu aleatòriament amb el teclat durant uns segons.
+Generant claus de xifrat...
+Conversa de grup. Clica a un usuari per a una conversa privada.
+Empremta OTR (per a converses privades):
+Empremta de conversa de grup:
+Reinicia les meves claus de xifrat
+Reiniciar les teves claus de xifrat et desconnectarà. La teva emprempta digital també canviarà.
+Continua
+Estatus: Disponible
+Estatus: Absent
+La meva informació
+Notificacions d'Escriptori Activades
+Notificacions d'Escriptori Desactivades
+Notificacions d'Àudio Activades
+Notificacions d'Àudio Desactivades
+Recorda el meu nom d'usuari
+No recordis el meu nom d'usuari
+Desconnectar-se
+Mostra informació
+Envia fitxer xifrat
+Veure Imatge
+Desar fitxer
+Conversa

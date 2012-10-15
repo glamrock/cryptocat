@@ -1,0 +1,48 @@
+ltr
+Helvetica, Arial, Verdana
+Soukromý chat pro každého.
+Cryptocat je pohotová komunikační platforma, která Vám umožňuje vést soukromý chat s přáteli. Zprávy jsou bezpečně zašifrovány již před odesláním z Vaší obrazovky a jsou chráněny před špehováním třetí stranou, včetně nás.
+Cryptocat je gratis software postavený na standardu open software. Náš vývojový proces je pod konstantním dohledem společenstva dobrovolníků a nadšenců. <a href="https://project.crypto.cat" target="_blank">Přečtěte si více o projektu Cryptocat</a>.
+Projekt
+Blog
+Zdrojový kód
+Vlastní server ...
+obnovit
+jméno chatu
+přezdívka
+připojit
+Zadejte jméno chatu ke kterému se chcete připojit.
+Zadejte jméno chatu.
+Jméno chatu musí být alfanumerické.
+Zadejte přezdívku.
+Přezdívka musí být alfanumerická.
+Přezdívka již není k dispozici.
+Ověření selhalo.
+Připojení selhalo.
+Děkujeme za použití Cryptocatu.
+Registruji ...
+Připojuji ...
+Jste připojeni.
+Ťukejte na klávesnici mnoho náhodných znaků po dobu několika sekund.
+Generuji šifrovací klíče ...
+Skupinový chat. Klikněte na uživatele pro soukromý chat.
+OTR fingerprint (pro soukromý chat):
+Fingerprint skupinového chatu:
+obnovit moje šifrovací klíče
+Jakmile obnovíte šifrovací klíče, budete odpojeni. Váš fingerprint se také změní.
+pokračovat
+Status: k dispozici
+Status: pryč
+Moje info
+Desktopová oznámení zapnuta
+Desktopová oznámení vypnuta
+Zvuková oznámení zapnuta
+Zvuková oznámení vypnuta
+Pamatovat si mou přezdívku
+nepamatovat přezdívku
+odhlásit
+ukázat data
+poslat šifrovaný soubor
+zobrazit obrázek
+stáhnout soubor
+Chat

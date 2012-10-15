@@ -1,0 +1,48 @@
+ltr
+Helvetica, Arial, Verdana
+Conversazioni Private per Tutti.
+Cryptocat è una piattaforma di messaggistica istantanea che ti permette facilmente di avere conversazioni private con amici. I messaggi sono cifrati prima di lasciare il tuo schermo e protetti dall'essere visti da terzi, compresi noi.
+Cryptocat è un software free sviluppato su standard aperti. Il nostro processo di sviluppo è sotto continuo esame da una comunità di volontari e appassionati. <a href="https://project.crypto.cat" target="_blank">Impara di più sul Cryptocat Project</a>.
+Progetto
+Blog
+Codice
+Server personalizzato...
+Azzera
+nome conversazione
+nickname
+connetti
+Inserisci il nome di una conversazione a cui partecipare
+Inserisci un nome conversazione.
+Il nome della conversazione deve essere alfanumerico
+Si prega di inserire un nickname.
+Il nickname deve essere alfanumerico
+Nickname già in uso
+Autenticazione fallita
+Connessione fallita.
+Grazie per aver scelto Cryptocat.
+Registrazione...
+Connessione...
+Connesso.
+Si prega di scrivere sulla propria tastiera il più casualmente possibile per pochi secondi.
+Generazione chiavi di cifratura...
+Conversazione di gruppo. Clicca su un utente per una chat privata.
+OTR fingerprint (per conversazioni private):
+Fingerprint di gruppo di conversazione:
+Azzera e ricrea le mie chiavi di cifratura.
+L'azzeramento e ricreazione delle chiavi di cifratura di scollegheranno. Anche le tue firme cambieranno.
+Continua
+Stato: Disponibile
+Stato: Non al computer
+Mie Info
+Notifiche Desktop Attive
+Notifiche Desktop Disattivate
+Notifiche Audio Attive
+Notifiche Audio Disattivate
+Ricorda il mio nickname
+Non ricordare il mio nickname
+Scollegati
+Mostra Info
+Invio file cifrato
+vedi immagine
+scarica file
+Conversazione

@@ -1,0 +1,48 @@
+ltr
+Helvetica, Arial, Verdana
+Privat Samtale for Alle.
+Cryptocat er en chat platform der giver dig nem adgang til private samtaler. Besked er krypteret før den forlader din skærm og beskyttet så ingen tredie part kan se dem, selv ikke os
+Cryptocat er free software bygget på open standard. Udviklingsprocessen er under konstant eksaminering af et community af frivillige og entusiaster. <a href="https://project.crypto.cat" target="_blank">Lær mere om Cryptocat projektet</a>.
+Projekt
+Blog
+Kildekode
+Brugerdefineret server...
+Nulstille
+samtale navn
+brugernavn
+forbind
+Indtast navnet på en samtale du vil forbindes til
+Indtast et samtale navn
+Samtale navn skal være alfanumerisk
+Indtast bruger navn
+Bruger navn skal være alfanumerisk
+Bruger navn i brug
+Gofkendelse fejlede
+Forbindelse fejlede.
+Tak fordi du brugte Cryptocat.
+Registrering...
+Forbinder...
+Forbundet.
+Tast så forskelligt taster som muligt i nogle sekunder.
+Genererer krypterings nøgle...
+Gruppe samtale. Klik på bruger navn for privat samtale.
+OTR signatur (for privat samtale):
+Gruppe samtale signatur:
+Nulstil mine krypterings nøgler
+Nulstilling af dine krypteringsnøgler vil afbryde samtalen. Din bruger indstilling vil også ændres
+Fortsæt
+Status: Ledig
+Status: Ikke tilstede
+Min Info
+Desktop Besked On
+Desktop besked Off
+Lyd Besked On
+Lyd Besked Off
+Husk mit brugernavn
+Husk ikke mit brugernavn
+Log ud
+Vis Info
+Send krypteret fil
+Se billede
+Download fil
+Samtale

@@ -1,0 +1,48 @@
+﻿ltr
+Helvetica, Arial, Verdana
+Prywatne rozmowy dla każdego.
+Cryptocat jest platformą do błyskawicznej komunikacji, która pozwala prowadzić prywatne rozmowy z przyjaciółmi w prosty sposób. Wiadomości są szyfrowane jeszcze zanim je wyślesz i są chronione przed osobami trzecimi, nawet przed nami.
+Cryptocat jest darmowym oprogramowaniem opartym na otwartych standardach. Nasz proces rozwoju jest pod ciągłą kontrolą ochotników i entuzjastów. <a href="https://project.crypto.cat">Dowiedz się więcej o projekcie Cryptocat</a>.
+Projekt
+Blog
+Źródło
+Serwer klienta...
+Resetuj
+nazwa rozmowy
+pseudonim
+połącz
+Wpisz nazwę rozmowy, do której chcesz dołączyć.
+Proszę wpisać nazwę rozmowy.
+Nazwa rozmowy może być tylko alfanumeryczna.
+Proszę o podanie pseudonimu.
+Pseudonim może być tylko alfanumeryczny.
+Pseudonim jest w użyciu.
+Błąd uwierzytelniania.
+Połączenie nieudane.
+Dzięki, że  skorzystałeś z Cryptocata.
+Rejestruję...
+Łączę...
+Połączony
+Proszę losowo pisać na klawiaturze przez kilka sekund.
+Generuję klucze szyfrujące...
+Rozmowa grupowa. Kliknij na użytkownika, aby porozmawiać prywatnie.
+Klucz identyfikacyjny OTR (dla prywatnych rozmów):
+Klucz identyfikacyjny rozmowy grupowej:
+Skasuj moje klucze szyfrujące
+Skasowanie kluczy szyfrujących spowoduje utratę połączenia i zmianę kluczy identyfikacyjnych.
+Dalej
+Status: Dostępny
+Status: Nieobecny
+O mnie
+Powiadomienia ekranowe włączone
+Powiadomienia ekranowe wyłączone
+Powiadomienia dźwiękowe włączone
+Powiadomienia dźwiękowe wyłączone
+Pamiętaj mój pseudonim
+Nie zapamiętuj mojego pseudonimu
+Wyloguj
+Wyświetl informacje
+Wyślij zaszyfrowany plik
+Pokaż obrazek
+Pobierz plik
+Rozmowa

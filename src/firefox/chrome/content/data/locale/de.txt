@@ -1,0 +1,48 @@
+﻿ltr
+Helvetica, Arial, Verdana
+Privates Chatten für alle.
+Cryptocat ist eine Instant-Messaging Plattform, die dir erlaubt, private Konversationen mit Freunden zu führen. Die Nachrichten werden noch vor dem Absenden verschlüsselt und sind so vor Fremden geschützt, nicht einmal wir können sie lesen.
+Cryptocat ist Freie Software, die auf offenen Standards basiert. Unser Entwicklungsprozess wird ständig von einer Gemeinschaft freiwilliger Interessenten überprüft. <a href="https://project.crypto.cat" target="_blank">Finde mehr über das Cryptocat Projekt heraus</a>.
+Projekt
+Blog
+Quelltext
+Benutzerdefinierter Server...
+Zurücksetzen
+Name der Konversation
+Nickname
+Verbinden
+Tippe den Namen einer Konversation ein, um ihr beizutreten.
+Bitte einen Namen für die Konversation eingeben.
+Konversationsname muss alphanumerisch sein.
+Bitte einen Nickname eingeben.
+Nickname muss alphanumerisch sein.
+Nickname wird bereits verwendet.
+Authentifizierungsfehler.
+Verbindung fehlgeschlagen.
+Danke, dass Sie Cryptocat verwenden.
+Registriere...
+Verbinde...
+Verbunden.
+Schreibe bitte, einige Sekunden lang, möglichst wirres Zeug auf deiner Tastatur.
+Generiere Schlüssel...
+Gruppenchat. Klicke auf einen Nutzer, um privat zu chatten.
+OTR Fingerabdruck (für private Konversationen):
+Fingerabdruck des Gruppenchats:
+Meine Schlüssel zurücksetzen
+Das Zurücksetzen deiner Schlüssel wird die Verbindung beenden. Deine Fingerabdrücke werden sich dadurch auch ändern.
+Fortsetzen
+Status: Verfügbar
+Status: Abwesend
+Meine Infos
+Desktop-Benachrichtigungen: Ein
+Desktop-Benachrichtigungen: Aus
+Audio-Benachrichtigungen: Ein
+Audio-Benachrichtigungen: Aus
+Meinen Nickname merken
+Meinen Nickname nicht merken
+Ausloggen
+Zeige Info
+Datei verschlüsselt senden
+Bild anzeigen
+Datei herunterladen
+Konversation
