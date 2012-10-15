@@ -11,7 +11,7 @@ Reinicia
 nom de la conversa
 nom d'usuari
 connecta
-Introdueix el nom de la conversa per a unir-te.
+Introdueix el nom de la conversa.
 Si us plau, introdueix el nom de la conversa.
 El nom de la conversa ha de ser alfanumèric.
 Si us plau, introdueix un nom d'usuari
