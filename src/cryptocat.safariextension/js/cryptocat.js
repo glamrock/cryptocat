@@ -73,9 +73,6 @@ if (localStorageOn) {
 	}
 }
 
-// Initialize qTips
-$('.button[title]').qtip();
-
 // Handle window focus/blur
 $(window).blur(function() {
 	windowFocus = 0;
