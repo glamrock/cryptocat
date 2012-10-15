@@ -17,6 +17,7 @@
 		"img/keygen.gif"
 	],
 	"permissions": [
-		"*"
+		"http://*/*",
+		"https://*/*"
 	]
 }
