@@ -92,6 +92,7 @@ keyGenerator.onmessage = function(e) {
 	}
 	DSA.inherit(myKey);
 	$('#fill').stop().animate({'width': '100%', 'opacity': '1'}, 400, 'linear', function() {
+		$('#loginInfo').text(Cryptocat.language['loginMessage']['connecting']);
 		$('#dialogBoxClose').click();
 	});
 }
@@ -182,7 +183,7 @@ function buildConversationInfo(conversation) {
 function switchConversation(buddy) {
 	if ($('#buddy-' + buddy).attr('status') !== 'offline') {
 		$('#' + buddy).animate({'background-color': '#97CEEC'});
-		$('#buddy-' + buddy).css('border-bottom', '1px dashed #76BDE5');
+		$('#buddy-' + buddy).css('border-bottom', '1px solid #76BDE5');
 	}
 	if (buddy !== 'main-Conversation') {
 		$('#buddy-' + buddy).css('background-image', 'none');
@@ -615,11 +616,13 @@ function bindBuddyClick(nickname) {
 			|| (($(this).prev().attr('id') === 'buddiesAway')
 			&& $('#buddiesOnline').next().attr('id') === 'buddiesAway')) {
 			$(this).insertAfter('#currentConversation');
+			$(this).animate({'background-color': '#97CEEC'});
 			switchConversation(nickname);
 		}
 		else {
 			$(this).slideUp('fast', function() {
 				$(this).insertAfter('#currentConversation').slideDown('fast', function() {
+					$(this).animate({'background-color': '#97CEEC'});
 					switchConversation(nickname);
 				});
 			});
