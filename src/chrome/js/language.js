@@ -31,7 +31,7 @@ function handleAliases(locale) {
 Language.set = function(locale) {
 	locale = handleAliases(locale);
 	$.ajax({
-		url : '../locale/' + locale + '.txt',
+		url : '/locale/' + locale + '.txt',
 		dataType: 'text',
 		success: function(data) {
 			language = data.split('\n');
