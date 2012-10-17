@@ -347,7 +347,7 @@ img.logo {
 }
 #conversationWindow .timeStamp {
 	color: #CCC;
-	font-size: 0.9em;
+	font-size: 0.8em;
 	font-family: monospace;
 	text-shadow: 1px 1px #555;
 }
@@ -406,7 +406,7 @@ img.logo {
 #progressBar {
 	margin-top: 10px;
 	height: 17px;
-	width: 305px;
+	width: 308px;
 }
 #progressBar #fill {
 	height: 100%;
