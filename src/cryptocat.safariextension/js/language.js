@@ -1,4 +1,4 @@
-﻿var Language = function() {};
+var Language = function() {};
 (function(){
 
 // Handle aliases
@@ -31,17 +31,21 @@ function handleAliases(locale) {
 Language.set = function(locale) {
 	locale = handleAliases(locale);
 	$.ajax({
-		url : '/locale/' + locale + '.txt',
+		url : 'locale/' + locale + '.txt',
 		dataType: 'text',
-		success: function(data) {
-			language = data.split('\n');
+		accepts: 'text/html',
+		contentType: 'text/html',
+		complete: function(data) {
+			language = data.responseText.split('\n');
+			if (language.length < 5) {
+				// Something's wrong, reset to English and exit
+				Language.set('en-us');
+				return false;
+			}
 			for (var i in language) {
 				language[i] = $.trim(language[i]);
 			}
 			Language.buildObject(locale, language);
-		},
-		error: function() {
-			Language.set('en-us');
 		}
 	});
 }
