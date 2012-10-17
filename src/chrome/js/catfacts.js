@@ -37,7 +37,19 @@ var interestingFacts = [
 'Cats have the AB blood type, which is also found in humans.',
 'Cats have a homing ability that uses their biological clock, the sun\'s angle and the Earth\'s magnetic field.',
 'A cat taken far from its home can return to it thanks to remarkable homing instincts.',
-'Cats successfully catch mice in about one out of three attempts.'
+'Cats successfully catch mice in about one out of three attempts.',
+'Female cats tend to be right pawed, while male cats are more often left pawed.',
+'The first cat in space was a French cat named Felicette, sent in 1963. She survived the trip.',
+'A cat can travel at a top speed of approximately 31 mph (49 km/h) over a short distance.',
+'Ancient Egyptians worshipped the goddess Bast, who had a woman\'s body and a cat\'s head.',
+'Cats almost never meow at each other, and mostly do so only to communicate with humans.',
+'Approximately one third of cat owners think their pets are able to read their minds.',
+'In Japan, cats are thought to have the power to turn into powerful spirits when they die.',
+'According to Buddhist legend, the body of the cat is the temporary resting place of spiritual people.',
+'A cat\'s heart beats nearly twice as fast as a human heart.',
+'Cats sweat only through their paws.',
+'When cats are happy or pleased, they momentarily squeeze their eyes shut.',
+'Cats can make over one hundred different vocalizations.'
 ];
 
 CatFacts.getFact = function() {
