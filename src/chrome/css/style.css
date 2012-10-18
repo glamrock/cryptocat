@@ -316,8 +316,8 @@ img.logo {
 	overflow-x: hidden;
 	overflow-y: scroll;
 }
-#conversationInfo, #conversationWindow .Line1, #conversationWindow .Line2 {
-	background-color: #111;
+#conversationInfo, .Line1, .Line2, .Line3 {
+	background-color: rgba(151, 206, 236, 0.12);
 	padding: 5px 10px 5px 5px;
 	width: 735px;
 	line-height: 20px;
@@ -345,6 +345,9 @@ img.logo {
 #conversationWindow .Line2 {
 	background-color: #000;
 }
+#conversationWindow .Line3 {
+	background-color: rgba(151, 206, 236, 0.2);
+}
 #conversationWindow .timeStamp {
 	color: #CCC;
 	font-size: 0.8em;
@@ -359,6 +362,10 @@ img.logo {
 	display: inline;
 	text-align: right;
 	font-weight: bold;
+}
+#conversationWindow .nickHighlight {
+	font-weight: bold;
+	color: #97CEEC;
 }
 #userInput {
 	display: none;

@@ -180,7 +180,7 @@ multiParty.receiveMessage = function(sender, myName, message) {
 			multiParty.sendPublicKey(sender);
 		}
 		// Decrypt message
-		else {
+		else if (sharedSecrets[sender]) {
 			var concatenatedCiphertext = '';
 			for (var user in message) {
 				concatenatedCiphertext += message[user]['message'];

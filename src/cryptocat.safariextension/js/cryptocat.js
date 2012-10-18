@@ -393,12 +393,18 @@ function addToConversation(message, sender, conversation) {
 		return false;
 	}
 	initiateConversation(conversation);
+	message = Strophe.xmlescape(message);
 	if (sender === myNickname) {
 		lineDecoration = 1;
 		audioNotification = 'snd/msgSend.webm';
 	}
 	else {
 		lineDecoration = 2;
+		if (message.match(myNickname)) {
+			var nickRegEx = new RegExp(myNickname, 'g');
+			message = message.replace(nickRegEx, '<span class="nickHighlight">$&</span>');
+			lineDecoration = 3;
+		}
 		audioNotification = 'snd/msgGet.webm';
 		if (desktopNotifications) {
 			if ((conversation !== currentConversation) || (!windowFocus)) {
@@ -406,7 +412,6 @@ function addToConversation(message, sender, conversation) {
 			}
 		}
 	}
-	message = Strophe.xmlescape(message);
 	message = addFile(message);
 	message = addLinks(message);
 	message = addEmoticons(message);
@@ -503,7 +508,7 @@ function handleMessage(message) {
 
 // Handle incoming presence updates from the XMPP server.
 function handlePresence(presence) {
-	console.log(presence);
+	//console.log(presence);
 	var nickname = $(presence).attr('from').match(/\/\w+/)[0].substring(1);
 	if ($(presence).attr('type') === 'error') {
 		if ($(presence).find('error').attr('code') === '409') {
@@ -640,8 +645,8 @@ function sendFile(nickname) {
 		+ 'Only .zip files and images are accepted.<br />'
 		+ 'Maximum file size: ' + fileSize + ' kilobytes.';
 	dialogBox(sendFileDialog, 1);
-	$('#fileSelector').change(function(event) {
-		event.stopPropagation();
+	$('#fileSelector').change(function(e) {
+		e.stopPropagation();
 		dataReader.onmessage = function(e) {
 			if (e.data === 'typeError') {
 				$('#fileErrorField').text('Please make sure your file is a .zip file or an image.');
@@ -729,8 +734,8 @@ function displayInfo(nickname) {
 // Bind buddy menus for new buddies. Used internally.
 function bindBuddyMenu(nickname) {
 	nickname = Strophe.xmlescape(nickname);
-	$('#menu-' + nickname).click(function(event) {
-		event.stopPropagation();
+	$('#menu-' + nickname).click(function(e) {
+		e.stopPropagation();
 		if ($('#buddy-' + nickname).height() === 15) {
 			var buddyMenuContents = '<div class="buddyMenuContents" id="' + nickname + '-contents">';
 			$(this).css('background-image', 'url("img/up.png")');
@@ -745,12 +750,12 @@ function bindBuddyMenu(nickname) {
 					'<li class="option2">' + Cryptocat.language['chatWindow']['displayInfo'] + '</li>'
 				);
 				$('#' + nickname + '-contents').fadeIn('fast', function() {
-					$('.option1').click(function(event) {
-						event.stopPropagation();
+					$('.option1').click(function(e) {
+						e.stopPropagation();
 						sendFile(nickname);
 					});
-					$('.option2').click(function(event) {
-						event.stopPropagation();
+					$('.option2').click(function(e) {
+						e.stopPropagation();
 						displayInfo(nickname);
 					});
 				});
@@ -790,8 +795,8 @@ function dialogBox(data, closeable, onClose) {
 	$('#dialogBoxContent').html(data);
 	$('#dialogBox').animate({'top': '+=460px'}, 'fast').animate({'top': '-=10px'}, 'fast');
 	$('#dialogBoxClose').unbind('click');
-	$('#dialogBoxClose').click(function(event) {
-		event.stopPropagation();
+	$('#dialogBoxClose').click(function(e) {
+		e.stopPropagation();
 		if ($(this).css('width') === 0) {
 			return false;
 		}
@@ -805,9 +810,9 @@ function dialogBox(data, closeable, onClose) {
 		$(this).css('font-size', '0');
 		$('#userInputText').focus();
 	});
-	$(document).keydown(function(event) {
-		if (event.keyCode === 27) {
-			event.stopPropagation();
+	$(document).keydown(function(e) {
+		if (e.keyCode === 27) {
+			e.stopPropagation();
 			$('#dialogBoxClose').click();
 		}
 	});
@@ -905,10 +910,22 @@ $('#userInput').submit(function() {
 	$('#userInputText').val('');
 	return false;
 });
+
+// Nick completion
+$('#userInputText').keydown(function(e) {
+	if (e.keyCode === 9) {
+		e.preventDefault();
+		for (var nickname in otrKeys) {
+			if (match = nickname.match($(this).val().match(/(\S)+$/)[0])) {
+				$(this).val($(this).val().replace(match, nickname + ': '));
+			}
+		}
+	}
+});
+
 // Detect user input submit on enter keypress
 $('#userInputText').keyup(function(e) {
-	var code = (e.keyCode ? e.keyCode : e.which);
-	if (code === 13) {
+	if (e.keyCode === 13) {
 		$('#userInput').submit();
 	}
 });
@@ -918,7 +935,8 @@ $('#customServer').click(function() {
 	bosh = Strophe.xmlescape(bosh);
 	conferenceServer = Strophe.xmlescape(conferenceServer);
 	domain = Strophe.xmlescape(domain);
-	var customServerDialog = '<input type="button" class="bar" value="' + Cryptocat.language['loginWindow']['customServer'] + '"/><br />'
+	var customServerDialog = '<input type="button" class="bar" value="'
+		+ Cryptocat.language['loginWindow']['customServer'] + '"/><br />'
 		+ '<input type="text" id="customDomain"></input>'
 		+ '<input type="text" id="customConferenceServer"></input>'
 		+ '<input type="text" id="customBOSH"></input>'
