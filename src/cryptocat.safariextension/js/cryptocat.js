@@ -393,23 +393,24 @@ function addToConversation(message, sender, conversation) {
 		return false;
 	}
 	initiateConversation(conversation);
-	message = Strophe.xmlescape(message);
 	if (sender === myNickname) {
 		lineDecoration = 1;
 		audioNotification = 'snd/msgSend.webm';
+		message = Strophe.xmlescape(message);
 	}
 	else {
 		lineDecoration = 2;
-		if (message.match(myNickname)) {
-			var nickRegEx = new RegExp(myNickname, 'g');
-			message = message.replace(nickRegEx, '<span class="nickHighlight">$&</span>');
-			lineDecoration = 3;
-		}
 		audioNotification = 'snd/msgGet.webm';
 		if (desktopNotifications) {
 			if ((conversation !== currentConversation) || (!windowFocus)) {
 				Notification.createNotification('img/keygen.gif', sender, message);
 			}
+		}
+		message = Strophe.xmlescape(message);
+		if (message.match(myNickname)) {
+			var nickRegEx = new RegExp(myNickname, 'g');
+			message = message.replace(nickRegEx, '<span class="nickHighlight">$&</span>');
+			lineDecoration = 3;
 		}
 	}
 	message = addFile(message);
