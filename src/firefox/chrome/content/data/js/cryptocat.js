@@ -355,7 +355,7 @@ function addLinks(message) {
 function addEmoticons(message) {
 	return message
 		.replace(/(\s|^)(:|(=))-?3(?=(\s|$))/gi, ' <div class="emoticon" id="eCat">$&</div> ')
-		.replace(/(\s|^)(:|(=))-?'\((?=(\s|$))/gi, ' <div class="emoticon" id="eCry">$&</div> ')
+		.replace(/(\s|^)(:|(=))-?\&apos;\((?=(\s|$))/gi, ' <div class="emoticon" id="eCry">$&</div> ')
 		.replace(/(\s|^)(:|(=))-?o(?=(\s|$))/gi, ' <div class="emoticon" id="eGasp">$&</div> ')
 		.replace(/(\s|^)(:|(=))-?D(?=(\s|$))/gi, ' <div class="emoticon" id="eGrin">$&</div> ')
 		.replace(/(\s|^)(:|(=))-?\((?=(\s|$))/gi, ' <div class="emoticon" id="eSad">$&</div> ')
