@@ -449,6 +449,15 @@ img.logo {
 #otrFingerprint, #multiPartyFingerprint {
 	font-weight: bold;
 }
+#otrColorprint, #multiPartyColorprint {
+	height: 20px;
+	margin-top: 2px;
+}
+.colorprint {
+	width: 71px;
+	height: 12px;
+	display: inline-block;
+}
 #fileSelector {
 	display: none;
 }

@@ -673,9 +673,14 @@ function sendFile(nickname) {
 // Display buddy information, including fingerprints etc.
 function displayInfo(nickname) {
 	nickname = Strophe.xmlescape(nickname);
-	var displayInfoDialog = '<input type="button" class="bar" value="' + nickname + '"/><div id="displayInfo">'
-		+ Cryptocat.language['chatWindow']['otrFingerprint'] + '<br /><span id="otrFingerprint"></span><br />'
-		+ '<br />' + Cryptocat.language['chatWindow']['groupFingerprint']  + '<br /><span id="multiPartyFingerprint"></span></div>';
+	var displayInfoDialog = '<input type="button" class="bar" value="'
+		+ nickname + '"/><div id="displayInfo">'
+		+ Cryptocat.language['chatWindow']['otrFingerprint']
+		+ '<br /><span id="otrFingerprint"></span><br />'
+		+ '<div id="otrColorprint"></div><br />'
+		+ '<br />' + Cryptocat.language['chatWindow']['groupFingerprint']
+		+ '<br /><span id="multiPartyFingerprint"></span><br />'
+		+ '<div id="multiPartyColorprint"></div><br /></div>';
 	if (localStorageOn && (nickname === myNickname)) {
 		displayInfoDialog += '<div class="button" id="rememberNickname"></div>'
 			+ '<div class="button" id="resetKeys">' 
@@ -724,12 +729,25 @@ function displayInfo(nickname) {
 				$(this).fadeIn();
 			});
 		});
-		$('#otrKey').text(getFingerprint(nickname, 1));
 	}
-	else {
-		$('#otrKey').text(getFingerprint(nickname, 1));
-	}
+	$('#otrKey').text(getFingerprint(nickname, 1));
 	$('#multiPartyFingerprint').text(getFingerprint(nickname, 0));
+	var otrColorprint = getFingerprint(nickname, 1).split(' ');
+	otrColorprint.splice(0, 1);
+	for (var color in otrColorprint) {
+		$('#otrColorprint').append(
+			'<div class="colorprint" style="background:#' 
+			+ otrColorprint[color].substring(0, 6) + '"></div>'
+		);
+	}
+	var multiPartyColorprint = getFingerprint(nickname, 0).split(' ');
+	multiPartyColorprint.splice(0, 1);
+	for (var color in multiPartyColorprint) {
+		$('#multiPartyColorprint').append(
+			'<div class="colorprint" style="background:#' 
+			+ multiPartyColorprint[color].substring(0, 6) + '"></div>'
+		);
+	}
 }
 
 // Bind buddy menus for new buddies. Used internally.
