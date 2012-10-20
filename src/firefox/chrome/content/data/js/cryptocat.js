@@ -324,7 +324,7 @@ function getFingerprint(buddy, OTR) {
 	}
 	var formatted = '';
 	for (var i in fingerprint) {
-		if ((i !== 0 ) && !(i % 8)) {
+		if ((i !== 0) && !(i % 8)) {
 			formatted += ' ';
 		}
 		formatted += fingerprint[i];
@@ -681,72 +681,48 @@ function displayInfo(nickname) {
 		+ '<br />' + Cryptocat.language['chatWindow']['groupFingerprint']
 		+ '<br /><span id="multiPartyFingerprint"></span><br />'
 		+ '<div id="multiPartyColorprint"></div><br /></div>';
-	if (localStorageOn && (nickname === myNickname)) {
-		displayInfoDialog += '<div class="button" id="rememberNickname"></div>'
-			+ '<div class="button" id="resetKeys">' 
-			+ Cryptocat.language['chatWindow']['resetKeys'] + '</div>';
-	}
-	dialogBox(displayInfoDialog, 1);
+	// If OTR fingerprints have not been generated, show a progress bar and generate them.
 	if ((nickname !== myNickname) && !otrKeys[nickname].msgstate) {
-		$('#otrFingerprint').text('...');
+		var progressDialog = '<div id="progressBar"><div id="fill"></div></div>';
+		dialogBox(progressDialog, 1);
+		$('#progressBar').css('margin', '70px auto 0 auto');
+		$('#fill').animate({'width': '100%', 'opacity': '1'}, 7000, 'linear');
 		otrKeys[nickname].sendQueryMsg();
-	}
-	else if (localStorageOn) {
-		if (localStorage.getItem('rememberNickname') === 'doNotRememberNickname') {
-			$('#rememberNickname').text(Cryptocat.language['chatWindow']['doNotRememberNickname']);
-			$('#rememberNickname').css('background-color', '#F00');
-		}
-		else {
-			$('#rememberNickname').text(Cryptocat.language['chatWindow']['rememberNickname']);
-		}
-		$('#rememberNickname').click(function() {
-			if ($(this).text() === Cryptocat.language['chatWindow']['doNotRememberNickname']) {
-				$(this).text(Cryptocat.language['chatWindow']['rememberNickname']);
-				$(this).animate({'background-color': '#97CEEC'});
-				localStorage.setItem('rememberNickname', 'rememberNickname');
-				localStorage.setItem('myNickname', myNickname);
-			}
-			else {
-				$(this).text(Cryptocat.language['chatWindow']['doNotRememberNickname']);
-				$(this).animate({'background-color': '#F00'});
-				localStorage.setItem('rememberNickname', 'doNotRememberNickname');
-			}
-		});
-		$('#resetKeys').click(function() {
-			$('#displayInfo').fadeOut(function() {
-				$(this).html(
-					'<p>' + Cryptocat.language['chatWindow']['resetKeysWarn'] + '</p>'
-					+ '<input type="button" class="typeButton" id="resetKeysOK" />'
-				);
-				$('#resetKeysOK').val(Cryptocat.language['chatWindow']['continue']);
-				$('#resetKeysOK').click(function() {
-					localStorage.removeItem('myKey');
-					localStorage.removeItem('multiPartyKey');
-					myKey = null;
-					$('#dialogBoxClose').click();
-					logout();
+		$(document).bind('otrFingerprintReady', function() {
+			$('#fill').stop().animate({'width': '100%', 'opacity': '1'}, 400, 'linear', function() {
+				$('#dialogBoxContent').fadeOut(function() {
+					$(this).html(displayInfoDialog);
+					showFingerprints(nickname);
+					$(this).fadeIn();
+					$(document).unbind('otrFingerprintReady');
 				});
-				$(this).fadeIn();
 			});
 		});
 	}
-	$('#otrKey').text(getFingerprint(nickname, 1));
-	$('#multiPartyFingerprint').text(getFingerprint(nickname, 0));
-	var otrColorprint = getFingerprint(nickname, 1).split(' ');
-	otrColorprint.splice(0, 1);
-	for (var color in otrColorprint) {
-		$('#otrColorprint').append(
-			'<div class="colorprint" style="background:#' 
-			+ otrColorprint[color].substring(0, 6) + '"></div>'
-		);
+	else {
+		dialogBox(displayInfoDialog, 1);
+		showFingerprints(nickname);
 	}
-	var multiPartyColorprint = getFingerprint(nickname, 0).split(' ');
-	multiPartyColorprint.splice(0, 1);
-	for (var color in multiPartyColorprint) {
-		$('#multiPartyColorprint').append(
-			'<div class="colorprint" style="background:#' 
-			+ multiPartyColorprint[color].substring(0, 6) + '"></div>'
-		);
+	// Show fingerprints internal function
+	function showFingerprints(nickname) {
+		$('#otrFingerprint').text(getFingerprint(nickname, 1));
+		$('#multiPartyFingerprint').text(getFingerprint(nickname, 0));
+		var otrColorprint = getFingerprint(nickname, 1).split(' ');
+		otrColorprint.splice(0, 1);
+		for (var color in otrColorprint) {
+			$('#otrColorprint').append(
+				'<div class="colorprint" style="background:#' 
+				+ otrColorprint[color].substring(0, 6) + '"></div>'
+			);
+		}
+		var multiPartyColorprint = getFingerprint(nickname, 0).split(' ');
+		multiPartyColorprint.splice(0, 1);
+		for (var color in multiPartyColorprint) {
+			$('#multiPartyColorprint').append(
+				'<div class="colorprint" style="background:#' 
+				+ multiPartyColorprint[color].substring(0, 6) + '"></div>'
+			);
+		}
 	}
 }
 
@@ -829,12 +805,15 @@ function dialogBox(data, closeable, onClose) {
 		$(this).css('font-size', '0');
 		$('#userInputText').focus();
 	});
-	$(document).keydown(function(e) {
-		if (e.keyCode === 27) {
-			e.stopPropagation();
-			$('#dialogBoxClose').click();
-		}
-	});
+	if (closeable) {
+		$(document).keydown(function(e) {
+			if (e.keyCode === 27) {
+				e.stopPropagation();
+				$('#dialogBoxClose').click();
+				$(document).unbind('keydown');
+			}
+		});
+	}
 }
 
 // Buttons

@@ -722,22 +722,10 @@ var OTR = {}, DSA = {}
 
     fingerprint: function () {
       var pk = this.packPublic()
-      if (this.type === '\x00\x00')
-        pk = pk.substring(2)
+      if (this.type === KEY_TYPE) pk = pk.substring(2)
       pk = CryptoJS.enc.Latin1.parse(pk)
-	  // Custom code added by Nadim for Cryptocat convenience
-      if ($('#otrFingerprint').length) {
-        var fingerprint = CryptoJS.SHA1(pk).toString(CryptoJS.enc.Hex);
-        var formatted = '';
-        for (var i in fingerprint) {
-          if ((i !== 0 ) && !(i % 8)) {
-            formatted += ' ';
-          }
-          formatted += fingerprint[i];
-        }
-		$('#otrFingerprint').text(formatted.toUpperCase());
-      }
-	  return CryptoJS.SHA1(pk).toString(CryptoJS.enc.Hex);
+      $(document).trigger('otrFingerprintReady'); // Added by Nadim for Cryptocat use
+      return CryptoJS.SHA1(pk).toString(CryptoJS.enc.Hex)
     }
 
   }
