@@ -225,8 +225,35 @@ function loginFail(message) {
 	$('#loginInfo').animate({'color': '#E93028'}, 'fast');
 }
 
+// Test that Math.random() is successfully overridden with seedable RNG
+function testRandomSeeding() {
+	Math.seedrandom('TQCTuPu3xC0s6HBdH20Eha1DHIhPxAWj');
+	var testOutput = [];
+	var knownOutput = [
+		0.7187543503806374, 0.15835384745309103,
+		0.9213736583117047, 0.028043341079865263,
+		0.9140410131991745, 0.7024144623611892,
+		0.48414616486791684, 0.017293412063468575,
+		0.2881403482284484, 0.8269847382484025,
+		0.07333028913722613, 0.624319587122554,
+		0.803362616074601, 0.9267048656074462,
+		0.2907022693349928, 0.3957262999947329
+	]
+	for (var i = 0; i != 16; i++) {
+		testOutput.push(Math.random());
+	}
+	if (testOutput.toString() === knownOutput.toString()) {
+		return true;
+	}
+	return false;
+}
+
 // Seeds the RNG via Math.seedrandom() using browser-native cryptographically secure seeding.
 function seedRNG() {
+	if (!testRandomSeeding()) {
+		alert('A critical security self-check has failed. For your safety, Cryptocat cannot continue.');
+		return false;
+	}
 	if ((window.crypto !== undefined) && (typeof window.crypto.getRandomValues === 'function')) {
 		var buffer = new Uint8Array(1024);
 		window.crypto.getRandomValues(buffer);
@@ -748,10 +775,12 @@ function bindBuddyMenu(nickname) {
 					$('.option1').click(function(e) {
 						e.stopPropagation();
 						sendFile(nickname);
+						$('#menu-' + nickname).click();
 					});
 					$('.option2').click(function(e) {
 						e.stopPropagation();
 						displayInfo(nickname);
+						$('#menu-' + nickname).click();
 					});
 				});
 			});
