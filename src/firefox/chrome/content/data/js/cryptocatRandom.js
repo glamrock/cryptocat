@@ -26,12 +26,16 @@ Cryptocat.random = function() {
 	// Firefox
 	if (navigator.userAgent.match('Firefox')) {
 		var buffer = firefoxRandomBytes();
-		for (var i in buffer) {
+		for (var i = 0; i < buffer.length; i++) {
 			if (buffer[i] < 250) {
 				output += buffer[i] % 10;
 			}
 			if (output.length >= 16) {
 				break;
+			}
+			if (i === buffer.length) {
+				var buffer = firefoxRandomBytes();
+				i = 0;
 			}
 		}
 	}
