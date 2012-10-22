@@ -1,5 +1,4 @@
-﻿var Cryptocat = function() {};
-(function(){
+﻿$(window).ready(function() {
 
 /* Configuration */
 var defaultDomain = 'crypto.cat'; // Domain name to connect to for XMPP.
@@ -179,7 +178,7 @@ function buildConversationInfo(conversation) {
 	conversationInfo[currentConversation] = $('#conversationInfo').html();
 }
 
-// Switches the currently active conversation to `buddy`
+// Switches the currently active conversation to `buddy'
 function switchConversation(buddy) {
 	if ($('#buddy-' + buddy).attr('status') !== 'offline') {
 		$('#' + buddy).animate({'background-color': '#97CEEC'});
@@ -225,61 +224,6 @@ function loginFail(message) {
 	$('#loginInfo').animate({'color': '#E93028'}, 'fast');
 }
 
-// Test that Math.random() is successfully overridden with seedable RNG
-function testRandomSeeding() {
-	Math.seedrandom('TQCTuPu3xC0s6HBdH20Eha1DHIhPxAWj');
-	var testOutput = [];
-	var knownOutput = [
-		0.7187543503806374, 0.15835384745309103,
-		0.9213736583117047, 0.028043341079865263,
-		0.9140410131991745, 0.7024144623611892,
-		0.48414616486791684, 0.017293412063468575,
-		0.2881403482284484, 0.8269847382484025,
-		0.07333028913722613, 0.624319587122554,
-		0.803362616074601, 0.9267048656074462,
-		0.2907022693349928, 0.3957262999947329
-	]
-	for (var i = 0; i != 16; i++) {
-		testOutput.push(Math.random());
-	}
-	if (testOutput.toString() === knownOutput.toString()) {
-		return true;
-	}
-	return false;
-}
-
-// Seeds the RNG via Math.seedrandom() using browser-native cryptographically secure seeding.
-function seedRNG() {
-	if (!testRandomSeeding()) {
-		alert('A critical security self-check has failed. For your safety, Cryptocat cannot continue.');
-		return false;
-	}
-	if ((window.crypto !== undefined) && (typeof window.crypto.getRandomValues === 'function')) {
-		var buffer = new Uint8Array(1024);
-		window.crypto.getRandomValues(buffer);
-		var seed = '';
-		for (var i in buffer) {
-			seed += String.fromCharCode(buffer[i]);
-		}
-		Math.seedrandom(seed);
-		delete seed;
-		return true;
-	}
-	else if (navigator.userAgent.match('Firefox')) {
-		var element = document.createElement('cryptocatFirefoxElement');
-		document.documentElement.appendChild(element);
-		var evt = document.createEvent('HTMLEvents');
-		evt.initEvent('cryptocatGenerateRandomBytes', true, false);
-		element.dispatchEvent(evt);
-		if (element.getAttribute('randomValues').length > 512) {
-			Math.seedrandom(element.getAttribute('randomValues'));
-			delete element;
-			return true;
-		}
-	}
-	return false;
-}
-
 // Generates a random string of length `size` characters.
 // If `alpha = 1`, random string will contain alpha characters, and so on.
 Cryptocat.randomString = function(size, alpha, uppercase, numeric) {
@@ -295,7 +239,7 @@ Cryptocat.randomString = function(size, alpha, uppercase, numeric) {
 		keyspace += '0123456789';
 	}
 	for (var i = 0; i !== size; i++) {
-		result += keyspace[Math.floor(Math.random()*keyspace.length)];
+		result += keyspace[Math.floor(Cryptocat.random()*keyspace.length)];
 	}
 	return result;
 }
@@ -509,6 +453,7 @@ function handleMessage(message) {
 	var nick = from.match(/\/\w+/)[0].substring(1);
 	var type = $(message).attr('type');
 	var body = $(message).find('body').text().replace(/\&quot;/g, '"');
+	
 	if (nick === myNickname) {
 		return true;
 	}
@@ -519,10 +464,10 @@ function handleMessage(message) {
 		catch(err) {
 			return true;
 		}
-		if (body[myNickname] && body[myNickname]['message'].match(multiParty.requestRegEx)) {
+		if (body[myNickname].toString() && body[myNickname]['message'].match(multiParty.requestRegEx)) {
 			conn.muc.message(conversationName + '@' + conferenceServer, null, multiParty.sendPublicKey(nick), null);
 		}
-		else if (body[myNickname] || body['*']) {
+		else if (body[myNickname].toString()) {
 			addToConversation(
 				multiParty.receiveMessage(nick, myNickname, JSON.stringify(body)
 			), nick, 'main-Conversation');
@@ -536,7 +481,7 @@ function handleMessage(message) {
 
 // Handle incoming presence updates from the XMPP server.
 function handlePresence(presence) {
-	//console.log(presence);
+	// console.log(presence);
 	var nickname = $(presence).attr('from').match(/\/\w+/)[0].substring(1);
 	if ($(presence).attr('type') === 'error') {
 		if ($(presence).find('error').attr('code') === '409') {
@@ -1021,6 +966,10 @@ $('#nickname').click(function() {
 	$(this).select();
 });
 $('#loginForm').submit(function() {
+	// Don't submit if form is already being processed
+	if (($('#loginSubmit').attr('readonly') === 'readonly')) {
+		return false;
+	}
 	//Check validity of conversation name and nickname
 	$('#conversationName').val($.trim($('#conversationName').val().toLowerCase()));
 	$('#nickname').val($.trim($('#nickname').val().toLowerCase()));
@@ -1042,13 +991,14 @@ $('#loginForm').submit(function() {
 		loginFail(Cryptocat.language['loginMessage']['nicknameAlphanumeric']);
 		$('#nickname').select();
 	}
-	// Don't process any login request unless RNG is seeded
-	else if (!seedRNG()) {
-		return false;
-	}
 	// If no encryption keys, generate
 	else if (!myKey) {
-		keyGenerator.postMessage('generateDSA');
+		// We need to pass the web worker some pre-generated random values
+		var randomReserve = [];
+		for (var i = 0; i < 512; i++) {
+			randomReserve.push(Cryptocat.random());
+		}
+		keyGenerator.postMessage(randomReserve.join(','));
 		if (localStorageOn) {
 			localStorage.setItem('multiPartyKey', multiParty.genPrivateKey());
 		}
@@ -1060,7 +1010,9 @@ $('#loginForm').submit(function() {
 			+ 'alt="" /><p id="progressInfo"><span>'
 			+ Cryptocat.language['loginMessage']['generatingKeys'] + '</span></p>';
 		dialogBox(progressForm, 0, function() {
+			$('#loginSubmit').removeAttr('readonly')
 			$('#loginForm').submit();
+			$('#loginSubmit').attr('readonly', 'readonly');
 		});
 		if (Cryptocat.language['language'] === 'en-us') {
 			$('#progressInfo').append(
@@ -1082,6 +1034,7 @@ $('#loginForm').submit(function() {
 		loginCredentials[1] = Cryptocat.randomString(256, 1, 1, 1);
 		registerXMPPUser(loginCredentials[0], loginCredentials[1]);
 	}
+	$('#loginSubmit').attr('readonly', 'readonly');
 	return false;
 });
 
@@ -1187,19 +1140,17 @@ function login(username, password) {
 							loginCredentials = [];
 							conversationInfo = [];
 							currentConversation = 0;
-							coflictIsPossible = 1;
 							conn = null;
 							if (!loginError) {
 								$('#conversationName').val(Cryptocat.language['loginWindow']['conversationName']);
 							}
-							$('#conversationName').removeAttr('readonly');
 							$('#nickname').val(Cryptocat.language['loginWindow']['nickname']);
-							$('#nickname').removeAttr('readonly');
 							$('#info').fadeIn();
 							$('#loginLinks').fadeIn();
 							$('#options').fadeIn();
 							$('#loginForm').fadeIn('fast', function() {
 								$('#conversationName').select();
+								$('#loginSubmit').removeAttr('readonly');
 							});
 						});
 					$('.buddy').unbind('click');
@@ -1211,6 +1162,7 @@ function login(username, password) {
 		else if (status === Strophe.Status.AUTHFAIL) {
 			loginFail(Cryptocat.language['loginMessage']['authenticationFailure']);
 			$('#conversationName').select();
+			$('#loginSubmit').removeAttr('readonly');
 		}
 	});
 }
@@ -1226,4 +1178,4 @@ $(window).unload(function() {
 	logout();
 });
 
-})();//:3
+});//:3

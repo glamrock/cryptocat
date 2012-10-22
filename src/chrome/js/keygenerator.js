@@ -1,5 +1,5 @@
-﻿(function(){
-
+﻿var randomReserve;
+(function(){
 importScripts('crypto-js/core.js');
 importScripts('crypto-js/enc-base64.js');
 importScripts('crypto-js/cipher-core.js');
@@ -11,16 +11,13 @@ importScripts('crypto-js/sha512.js');
 importScripts('crypto-js/hmac.js');
 importScripts('crypto-js/pad-nopadding.js');
 importScripts('crypto-js/mode-ctr.js');
+importScripts('cryptocatRandom.js');
 importScripts('bigint.js');
 importScripts('otr.js');
 
 self.addEventListener('message', function(e) {
-	var cmd = e.data;
-	switch (cmd) {
-		case 'generateDSA':
-			self.postMessage(new DSA());
-		break;
-	};
+	randomReserve = e.data.split(',');
+	self.postMessage(new DSA());
 }, false);
 
 })();

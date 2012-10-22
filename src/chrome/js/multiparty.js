@@ -162,7 +162,7 @@ multiParty.sendMessage = function(message) {
 // Receive message. Detects requests/reception of public keys.
 multiParty.receiveMessage = function(sender, myName, message) {
 	message = JSON.parse(message);
-	if (message[myName]) {
+	if (message[myName].toString()) {
 		// Detect public key reception, store public key and generate shared secret
 		if (message[myName]['message'].match(multiParty.publicKeyRegEx)) {
 			if (!publicKeys[sender]) {

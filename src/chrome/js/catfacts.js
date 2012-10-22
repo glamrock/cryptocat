@@ -53,7 +53,7 @@ var interestingFacts = [
 ];
 
 CatFacts.getFact = function() {
-	return interestingFacts[Math.floor(Math.random() * interestingFacts.length)];
+	return interestingFacts[Math.floor(Cryptocat.random() * interestingFacts.length)];
 }
 
 })();

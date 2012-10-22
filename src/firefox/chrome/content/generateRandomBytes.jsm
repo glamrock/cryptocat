@@ -121,22 +121,18 @@ var WeaveCrypto = {
     var scratch = new ctypes.ArrayType(ctypes.unsigned_char, byteCount)();
     if (this.nss.PK11_GenerateRandom(scratch, byteCount))
       throw new Error("PK11_GenrateRandom failed");
-
-    return this.encodeBase64(scratch.address(), scratch.length);
+    return this.returnArray(scratch.address(), scratch.length);
   },
 
   //
   // Utility functions
   //
 
-  encodeBase64 : function (data, len) {
-    // Byte-expand the buffer, so we can treat it as a UCS-2 string
-    // consisting of u0000 - u00FF.
-    var expanded = "";
+  returnArray : function (data, len) {
+    var expanded = [];
     var intData = ctypes.cast(data, ctypes.uint8_t.array(len).ptr).contents;
-    for (var i = 0; i < len; i++)
-      expanded += String.fromCharCode(intData[i]);
-
-    return btoa(expanded);
+	for (var i = 0; i < len; i++)
+      expanded.push(intData[i]);
+    return expanded;
   }
 };
