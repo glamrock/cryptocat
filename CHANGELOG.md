@@ -1,6 +1,12 @@
 ﻿## Changelog
 
 #### Cryptocat 2.0.13
+** Oct. 22 2012**
+- Refactoring of random number generation.
+- Fix bug where buddy context menu would not open under certain circumstances.
+- Numerous other bug fixes.
+
+#### Cryptocat 2.0.13
 **Oct. 20 2012**  
 - Various bug fixes and improvements related to fingerprint generation and display.  
 
