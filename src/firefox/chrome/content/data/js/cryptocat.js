@@ -644,6 +644,10 @@ function sendFile(nickname) {
 
 // Display buddy information, including fingerprints etc.
 function displayInfo(nickname) {
+	// Do nothing if a dialog already exists
+	if ($('#displayInfo').length) {
+		return false;
+	}
 	nickname = Strophe.xmlescape(nickname);
 	var displayInfoDialog = '<input type="button" class="bar" value="'
 		+ nickname + '"/><div id="displayInfo">'
@@ -658,7 +662,7 @@ function displayInfo(nickname) {
 		var progressDialog = '<div id="progressBar"><div id="fill"></div></div>';
 		dialogBox(progressDialog, 1);
 		$('#progressBar').css('margin', '70px auto 0 auto');
-		$('#fill').animate({'width': '100%', 'opacity': '1'}, 7000, 'linear');
+		$('#fill').animate({'width': '100%', 'opacity': '1'}, 8000, 'linear');
 		otrKeys[nickname].sendQueryMsg();
 		$(document).bind('otrFingerprintReady', function() {
 			$('#fill').stop().animate({'width': '100%', 'opacity': '1'}, 400, 'linear', function() {
@@ -672,7 +676,9 @@ function displayInfo(nickname) {
 		});
 	}
 	else {
-		dialogBox(displayInfoDialog, 1);
+		dialogBox(displayInfoDialog, 1, null, function() {
+			$('#displayInfo').remove();
+		});
 		showFingerprints(nickname);
 	}
 	// Show fingerprints internal function
@@ -1009,7 +1015,7 @@ $('#loginForm').submit(function() {
 		dialogBox(progressForm, 0, function() {
 			// We need to pass the web worker some pre-generated random values
 			var randomReserve = [];
-			for (var i = 0; i < 2048; i++) { // Yes, we actually need that many
+			for (var i = 0; i < 3072; i++) { // Yes, we actually need that many
 				randomReserve.push(Cryptocat.random());
 			}
 			keyGenerator.postMessage(randomReserve.join(','));
