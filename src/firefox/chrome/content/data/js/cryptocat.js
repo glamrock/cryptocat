@@ -993,19 +993,6 @@ $('#loginForm').submit(function() {
 	}
 	// If no encryption keys, generate
 	else if (!myKey) {
-		// We need to pass the web worker some pre-generated random values
-		var randomReserve = [];
-		for (var i = 0; i < 512; i++) {
-			randomReserve.push(Cryptocat.random());
-		}
-		keyGenerator.postMessage(randomReserve.join(','));
-		if (localStorageOn) {
-			localStorage.setItem('multiPartyKey', multiParty.genPrivateKey());
-		}
-		else {
-			multiParty.genPrivateKey();
-		}
-		multiParty.genPublicKey();
 		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" '
 			+ 'alt="" /><p id="progressInfo"><span>'
 			+ Cryptocat.language['loginMessage']['generatingKeys'] + '</span></p>';
@@ -1024,6 +1011,19 @@ $('#loginForm').submit(function() {
 		$('#progressInfo').append(
 			'<div id="progressBar"><div id="fill"></div></div>'
 		);
+		// We need to pass the web worker some pre-generated random values
+		var randomReserve = [];
+		for (var i = 0; i < 2048; i++) { // Yes, we actually need that many
+			randomReserve.push(Cryptocat.random());
+		}
+		keyGenerator.postMessage(randomReserve.join(','));
+		if (localStorageOn) {
+			localStorage.setItem('multiPartyKey', multiParty.genPrivateKey());
+		}
+		else {
+			multiParty.genPrivateKey();
+		}
+		multiParty.genPublicKey();
 		$('#fill').animate({'width': '100%', 'opacity': '1'}, 25555, 'linear');
 	}
 	// If everything is okay, then register a randomly generated throwaway XMPP ID and log in.

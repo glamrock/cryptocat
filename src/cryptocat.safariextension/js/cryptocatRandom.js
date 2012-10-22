@@ -3,8 +3,11 @@ var Cryptocat = function() {};
 Cryptocat.random = function() {
 	// If called from inside a web worker, just return from web worker reserve
 	if (typeof(window) === 'undefined') {
+		if (randomReserve.length < 1) {
+			throw('Reserve empty!');
+		}
 		randomReserve.splice(0, 1);
-		return randomReserve[0];
+		return parseFloat(randomReserve[0]);
 	}
 	var output = '';
 	// The following incredibly ugly Firefox hack is completely the fault of 
@@ -26,6 +29,9 @@ Cryptocat.random = function() {
 		for (var i in buffer) {
 			if (buffer[i] < 250) {
 				output += buffer[i] % 10;
+			}
+			if (output.length >= 16) {
+				break;
 			}
 		}
 	}
