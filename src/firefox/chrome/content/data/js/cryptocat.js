@@ -752,8 +752,9 @@ function sendStatus() {
 
 // Displays a pretty dialog box with `data` as the content HTML.
 // If `closeable = 1`, then the dialog box has a close button on the top right.
+// onAppear may be defined as a callback function to execute on dialog box appear.
 // onClose may be defined as a callback function to execute on dialog box close.
-function dialogBox(data, closeable, onClose) {
+function dialogBox(data, closeable, onAppear, onClose) {
 	if ($('#dialogBox').css('top') !== '-450px') {
 		return false;
 	}
@@ -762,7 +763,13 @@ function dialogBox(data, closeable, onClose) {
 		$('#dialogBoxClose').css('font-size', '12px');
 	}
 	$('#dialogBoxContent').html(data);
-	$('#dialogBox').animate({'top': '+=460px'}, 'fast').animate({'top': '-=10px'}, 'fast');
+	$('#dialogBox').animate({'top': '+=460px'}, 'fast').animate({
+		'top': '-=10px'
+	}, 'fast', function() {
+		if (onAppear) {
+			onAppear();
+		}
+	});
 	$('#dialogBoxClose').unbind('click');
 	$('#dialogBoxClose').click(function(e) {
 		e.stopPropagation();
@@ -997,6 +1004,20 @@ $('#loginForm').submit(function() {
 			+ 'alt="" /><p id="progressInfo"><span>'
 			+ Cryptocat.language['loginMessage']['generatingKeys'] + '</span></p>';
 		dialogBox(progressForm, 0, function() {
+			// We need to pass the web worker some pre-generated random values
+			var randomReserve = [];
+			for (var i = 0; i < 1536; i++) { // Yes, we actually need that many
+				randomReserve.push(Cryptocat.random());
+			}
+			keyGenerator.postMessage(randomReserve.join(','));
+			if (localStorageOn) {
+				localStorage.setItem('multiPartyKey', multiParty.genPrivateKey());
+			}
+			else {
+				multiParty.genPrivateKey();
+			}
+			multiParty.genPublicKey();
+		}, function() {
 			$('#loginSubmit').removeAttr('readonly')
 			$('#loginForm').submit();
 			$('#loginSubmit').attr('readonly', 'readonly');
@@ -1011,19 +1032,6 @@ $('#loginForm').submit(function() {
 		$('#progressInfo').append(
 			'<div id="progressBar"><div id="fill"></div></div>'
 		);
-		// We need to pass the web worker some pre-generated random values
-		var randomReserve = [];
-		for (var i = 0; i < 2048; i++) { // Yes, we actually need that many
-			randomReserve.push(Cryptocat.random());
-		}
-		keyGenerator.postMessage(randomReserve.join(','));
-		if (localStorageOn) {
-			localStorage.setItem('multiPartyKey', multiParty.genPrivateKey());
-		}
-		else {
-			multiParty.genPrivateKey();
-		}
-		multiParty.genPublicKey();
 		$('#fill').animate({'width': '100%', 'opacity': '1'}, 25555, 'linear');
 	}
 	// If everything is okay, then register a randomly generated throwaway XMPP ID and log in.
