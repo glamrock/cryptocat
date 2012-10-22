@@ -1,5 +1,10 @@
 ﻿## Changelog
 
+#### Cryptocat 2.0.14
+** Oct. 22 2012 **
+- Fix bug where login would never complete (in extremely rare cases.)
+- Minor UI bug fix.
+
 #### Cryptocat 2.0.13
 ** Oct. 22 2012**
 - Refactoring of random number generation.
