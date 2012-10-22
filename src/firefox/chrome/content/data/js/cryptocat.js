@@ -701,9 +701,11 @@ function displayInfo(nickname) {
 // Bind buddy menus for new buddies. Used internally.
 function bindBuddyMenu(nickname) {
 	nickname = Strophe.xmlescape(nickname);
+	$('#menu-' + nickname).attr('status', 'inactive');
 	$('#menu-' + nickname).click(function(e) {
 		e.stopPropagation();
-		if ($('#buddy-' + nickname).height() === 15) {
+		if ($('#menu-' + nickname).attr('status') === 'inactive') {
+			$('#menu-' + nickname).attr('status', 'active');
 			var buddyMenuContents = '<div class="buddyMenuContents" id="' + nickname + '-contents">';
 			$(this).css('background-image', 'url("img/up.png")');
 			$('#buddy-' + nickname).delay(10).animate({'height': '28px'}, 180, function() {
@@ -731,6 +733,7 @@ function bindBuddyMenu(nickname) {
 			});
 		}
 		else {
+			$('#menu-' + nickname).attr('status', 'inactive');
 			$(this).css('background-image', 'url("img/down.png")');
 			$('#buddy-' + nickname).animate({'height': '15px'}, 190);
 			$('#' + nickname + '-contents').fadeOut('fast', function() {
@@ -1006,7 +1009,7 @@ $('#loginForm').submit(function() {
 		dialogBox(progressForm, 0, function() {
 			// We need to pass the web worker some pre-generated random values
 			var randomReserve = [];
-			for (var i = 0; i < 1536; i++) { // Yes, we actually need that many
+			for (var i = 0; i < 2048; i++) { // Yes, we actually need that many
 				randomReserve.push(Cryptocat.random());
 			}
 			keyGenerator.postMessage(randomReserve.join(','));
