@@ -8,7 +8,7 @@ var myPrivateKey;
 var myPublicKey;
 
 multiParty.requestRegEx = /^\?:3multiParty:3\?:keyRequest$/;
-multiParty.publicKeyRegEx = /^\?:3multiParty:3\?:PublicKey:(\w|=)+$/;
+multiParty.publicKeyRegEx = /^\?:3multiParty:3\?:publicKey:(\w|=)+$/;
 
 // AES-CTR-256 encryption
 // No padding, starting IV of 0
@@ -106,6 +106,8 @@ multiParty.genSharedSecret = function(user) {
 		'message': sharedSecret.substring(0, 64),
 		'hmac': sharedSecret.substring(64, 128)
 	}
+	console.log(sharedSecrets);
+	$(document).dequeue();
 }
 
 // Get fingerprint fingerprint
@@ -135,7 +137,7 @@ multiParty.sendPublicKeyRequest = function(user) {
 multiParty.sendPublicKey = function(user) {
 	var answer = {};
 	answer[user] = {};
-	answer[user]['message'] = '?:3multiParty:3?:PublicKey:' + myPublicKey;
+	answer[user]['message'] = '?:3multiParty:3?:publicKey:' + myPublicKey;
 	return JSON.stringify(answer);
 }
 
@@ -161,10 +163,19 @@ multiParty.sendMessage = function(message) {
 
 // Receive message. Detects requests/reception of public keys.
 multiParty.receiveMessage = function(sender, myName, message) {
-	message = JSON.parse(message);
-	if (message[myName].toString()) {
+	try {
+		JSON.parse(message);
+	}
+	catch(err) {
+		console.log('multiParty: failed to parse message object');
+		return false;
+	}
+	console.log('premessage(' + nickname + '): ' + body);
+	if (message[myName]['message'].toString().length > 0) {
+		console.log('message(' + nickname + '): ' + body);
 		// Detect public key reception, store public key and generate shared secret
 		if (message[myName]['message'].match(multiParty.publicKeyRegEx)) {
+			console.log(sender);
 			if (!publicKeys[sender]) {
 				var publicKey = message[myName]['message'].substring(27);
 				if (checkSize(publicKey)) {

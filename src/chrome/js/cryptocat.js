@@ -253,28 +253,6 @@ function shortenString(string, length) {
 	return string;
 }
 
-// Builds a buddy element to be added to the buddy list.
-function buildBuddy(nickname) {
-	nickname = Strophe.xmlescape(nickname);
-	var buddyTemplate = '<div class="buddy" title="' + nickname + '" id="buddy-' 
-		+ nickname + '" status="online"><span>' + nickname + '</span>'
-		+ '<div class="buddyMenu" id="menu-' + nickname + '"></div></div>'
-	$(buddyTemplate).insertAfter('#buddiesOnline').slideDown(300, function() {
-		$('#menu-' + nickname).unbind('click');
-		bindBuddyMenu(nickname);
-		$('#buddy-' + nickname).unbind('click');
-		if (nickname !== myNickname) {
-			bindBuddyClick(nickname);
-			conn.muc.message(conversationName + '@' + conferenceServer, null, multiParty.sendPublicKeyRequest(nickname), null);
-		}
-		else {
-			$('#buddy-' + nickname).click(function() {
-				$('#menu-' + nickname).click();
-			});
-		}
-	});
-}
-
 // Get a fingerprint, formatted for readability
 function getFingerprint(buddy, OTR) {
 	if (OTR) {
@@ -419,6 +397,30 @@ function changeNickname(oldNickname, newNickname) {
 	buddyGoOffline(oldNickname);
 }
 
+// Build new buddy
+function newBuddy(nickname) {
+	$(document).queue(function() {
+		console.log('new buddy: ' + nickname);
+		var buddyTemplate = '<div class="buddy" title="' + nickname + '" id="buddy-' 
+			+ nickname + '" status="online"><span>' + nickname + '</span>'
+			+ '<div class="buddyMenu" id="menu-' + nickname + '"></div></div>'
+		$(buddyTemplate).insertAfter('#buddiesOnline').slideDown(500, function() {
+			$('#buddy-' + nickname).unbind('click');
+			$('#menu-' + nickname).unbind('click');
+			bindBuddyMenu(nickname);
+			bindBuddyClick(nickname);
+			conn.muc.message(
+				conversationName + '@' + conferenceServer, null,
+				multiParty.sendPublicKey(nickname), null
+			);
+			console.log('sent my public key: ' + multiParty.sendPublicKey(nickname));
+		});
+		if (audioNotifications) {
+			playSound('snd/userOnline.webm');
+		}
+	});
+}
+
 // Handle buddy going offline
 function buddyGoOffline(nickname) {
 	// Delete their encryption keys
@@ -449,32 +451,25 @@ function buddyGoOffline(nickname) {
 
 // Handle incoming messages from the XMPP server.
 function handleMessage(message) {
-	var from = $(message).attr('from');
-	var nick = from.match(/\/\w+/)[0].substring(1);
-	var type = $(message).attr('type');
+	var nickname = $(message).attr('from').match(/\/\w+/)[0].substring(1);
 	var body = $(message).find('body').text().replace(/\&quot;/g, '"');
-	
-	if (nick === myNickname) {
+	var type = $(message).attr('type');
+	// If message is from me, ignore.
+	if (nickname === myNickname) {
+		return true;
+	}
+	// If message is from someone not on buddy list, ignore.
+	if ($('#buddy-' + nickname).length === 0) {
 		return true;
 	}
 	if (type === 'groupchat' && groupChat) {
-		try {
-			body = JSON.parse(body);
-		}
-		catch(err) {
-			return true;
-		}
-		if (body[myNickname].toString() && body[myNickname]['message'].match(multiParty.requestRegEx)) {
-			conn.muc.message(conversationName + '@' + conferenceServer, null, multiParty.sendPublicKey(nick), null);
-		}
-		else if (body[myNickname].toString()) {
-			addToConversation(
-				multiParty.receiveMessage(nick, myNickname, JSON.stringify(body)
-			), nick, 'main-Conversation');
-		}
+		console.log('message(' + nickname + '): ' + body);
+		addToConversation(
+			multiParty.receiveMessage(nickname, myNickname, body
+		), nickname, 'main-Conversation');
 	}
 	else if (type === 'chat') {
-		otrKeys[nick].receiveMsg(body);
+		otrKeys[nickname].receiveMsg(body);
 	}
 	return true;
 }
@@ -482,7 +477,7 @@ function handleMessage(message) {
 // Handle incoming presence updates from the XMPP server.
 function handlePresence(presence) {
 	// console.log(presence);
-	var nickname = $(presence).attr('from').match(/\/\w+/)[0].substring(1);
+	var nickname = Strophe.xmlescape($(presence).attr('from').match(/\/\w+/)[0].substring(1));
 	if ($(presence).attr('type') === 'error') {
 		if ($(presence).find('error').attr('code') === '409') {
 			loginError = 1;
@@ -519,10 +514,7 @@ function handlePresence(presence) {
 	}
 	// Create buddy element if buddy is new
 	else if ($('#buddy-' + nickname).length === 0) {
-		buildBuddy(nickname);
-		if (audioNotifications) {
-			playSound('snd/userOnline.webm');
-		}
+		newBuddy(nickname);
 	}
 	// Handle buddy status change to 'available'
 	else if ($(presence).find('show').text() === '' || $(presence).find('show').text() === 'chat') {
@@ -883,10 +875,8 @@ $('#userInput').submit(function() {
 		if (currentConversation === 'main-Conversation') {
 			if (multiParty.userCount() >= 1) {
 				conn.muc.message(
-					conversationName + '@' + conferenceServer,
-					null,
-					multiParty.sendMessage(message),
-					null
+					conversationName + '@' + conferenceServer, null,
+					multiParty.sendMessage(message), null
 				);
 			}
 		}
@@ -1092,6 +1082,19 @@ function login(username, password) {
 			$('#loginInfo').animate({'color': '#E93028'}, 'fast');
 		}
 		else if (status === Strophe.Status.CONNECTED) {
+			conn.muc.join(
+				conversationName + '@' + conferenceServer, myNickname, 
+				function(message) {
+					if (handleMessage(message)) {
+						return true;
+					}
+				},
+				function (presence) {
+					if (handlePresence(presence)) {
+						return true;
+					}
+				}
+			);
 			if (localStorageOn) {
 				localStorage.setItem('myNickname', myNickname);
 			}
@@ -1114,22 +1117,10 @@ function login(username, password) {
 								$('#buddy-main-Conversation').delay(1000).click();
 							}
 						});
-						loginError = 0;
-						conn.muc.join(conversationName + '@' + conferenceServer, myNickname, 
-							function(message) {
-								if (handleMessage(message)) {
-									return true;
-								}
-							}, 
-							function(presence) {
-								if (handlePresence(presence)) {
-									return true;
-								}
-							}
-						);
 					});
 				});
 			});
+			loginError = 0;
 		}
 		else if (status === Strophe.Status.DISCONNECTED) {
 			$('.button').fadeOut('fast');
