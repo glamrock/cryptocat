@@ -164,15 +164,15 @@ multiParty.sendMessage = function(message) {
 // Receive message. Detects requests/reception of public keys.
 multiParty.receiveMessage = function(sender, myName, message) {
 	try {
-		JSON.parse(message);
+		message = JSON.parse(message);
 	}
 	catch(err) {
 		console.log('multiParty: failed to parse message object');
 		return false;
 	}
-	console.log('premessage(' + nickname + '): ' + body);
+	console.log('premessage(' + sender + '): ' + message[myName]['message'].toString().length);
 	if (message[myName]['message'].toString().length > 0) {
-		console.log('message(' + nickname + '): ' + body);
+		console.log('message(' + sender + '): ' + message[myName]['message']);
 		// Detect public key reception, store public key and generate shared secret
 		if (message[myName]['message'].match(multiParty.publicKeyRegEx)) {
 			console.log(sender);

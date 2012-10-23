@@ -463,7 +463,6 @@ function handleMessage(message) {
 		return true;
 	}
 	if (type === 'groupchat' && groupChat) {
-		console.log('message(' + nickname + '): ' + body);
 		addToConversation(
 			multiParty.receiveMessage(nickname, myNickname, body
 		), nickname, 'main-Conversation');
@@ -1005,7 +1004,7 @@ $('#loginForm').submit(function() {
 		dialogBox(progressForm, 0, function() {
 			// We need to pass the web worker some pre-generated random values
 			var randomReserve = [];
-			for (var i = 0; i < 3072; i++) { // Yes, we actually need that many
+			for (var i = 0; i < 4096; i++) { // Yes, we actually need that many
 				randomReserve.push(Cryptocat.random());
 			}
 			keyGenerator.postMessage(randomReserve.join(','));
