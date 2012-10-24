@@ -106,8 +106,6 @@ multiParty.genSharedSecret = function(user) {
 		'message': sharedSecret.substring(0, 64),
 		'hmac': sharedSecret.substring(64, 128)
 	}
-	console.log(sharedSecrets);
-	$(document).dequeue();
 }
 
 // Get fingerprint fingerprint
@@ -170,12 +168,10 @@ multiParty.receiveMessage = function(sender, myName, message) {
 		console.log('multiParty: failed to parse message object');
 		return false;
 	}
-	console.log('premessage(' + sender + '): ' + message[myName]['message'].toString().length);
-	if (message[myName]['message'].toString().length > 0) {
-		console.log('message(' + sender + '): ' + message[myName]['message']);
+	if (typeof(message[myName]) === 'object' &&
+		typeof(message[myName]['message']) === 'string') {
 		// Detect public key reception, store public key and generate shared secret
 		if (message[myName]['message'].match(multiParty.publicKeyRegEx)) {
-			console.log(sender);
 			if (!publicKeys[sender]) {
 				var publicKey = message[myName]['message'].substring(27);
 				if (checkSize(publicKey)) {

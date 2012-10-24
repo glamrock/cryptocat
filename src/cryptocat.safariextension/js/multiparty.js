@@ -8,7 +8,7 @@ var myPrivateKey;
 var myPublicKey;
 
 multiParty.requestRegEx = /^\?:3multiParty:3\?:keyRequest$/;
-multiParty.publicKeyRegEx = /^\?:3multiParty:3\?:PublicKey:(\w|=)+$/;
+multiParty.publicKeyRegEx = /^\?:3multiParty:3\?:publicKey:(\w|=)+$/;
 
 // AES-CTR-256 encryption
 // No padding, starting IV of 0
@@ -135,7 +135,7 @@ multiParty.sendPublicKeyRequest = function(user) {
 multiParty.sendPublicKey = function(user) {
 	var answer = {};
 	answer[user] = {};
-	answer[user]['message'] = '?:3multiParty:3?:PublicKey:' + myPublicKey;
+	answer[user]['message'] = '?:3multiParty:3?:publicKey:' + myPublicKey;
 	return JSON.stringify(answer);
 }
 
@@ -161,8 +161,15 @@ multiParty.sendMessage = function(message) {
 
 // Receive message. Detects requests/reception of public keys.
 multiParty.receiveMessage = function(sender, myName, message) {
-	message = JSON.parse(message);
-	if (message[myName].toString()) {
+	try {
+		message = JSON.parse(message);
+	}
+	catch(err) {
+		console.log('multiParty: failed to parse message object');
+		return false;
+	}
+	if (typeof(message[myName]) === 'object' &&
+		typeof(message[myName]['message']) === 'string') {
 		// Detect public key reception, store public key and generate shared secret
 		if (message[myName]['message'].match(multiParty.publicKeyRegEx)) {
 			if (!publicKeys[sender]) {

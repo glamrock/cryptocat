@@ -399,26 +399,26 @@ function changeNickname(oldNickname, newNickname) {
 
 // Build new buddy
 function newBuddy(nickname) {
-	$(document).queue(function() {
-		console.log('new buddy: ' + nickname);
+	$('#buddyList').queue(function() {
 		var buddyTemplate = '<div class="buddy" title="' + nickname + '" id="buddy-' 
 			+ nickname + '" status="online"><span>' + nickname + '</span>'
 			+ '<div class="buddyMenu" id="menu-' + nickname + '"></div></div>'
-		$(buddyTemplate).insertAfter('#buddiesOnline').slideDown(500, function() {
+		$(buddyTemplate).insertAfter('#buddiesOnline').slideDown(100, function() {
 			$('#buddy-' + nickname).unbind('click');
 			$('#menu-' + nickname).unbind('click');
 			bindBuddyMenu(nickname);
 			bindBuddyClick(nickname);
+			var sendPublicKey = multiParty.sendPublicKey(nickname);
 			conn.muc.message(
 				conversationName + '@' + conferenceServer, null,
-				multiParty.sendPublicKey(nickname), null
+				sendPublicKey, null
 			);
-			console.log('sent my public key: ' + multiParty.sendPublicKey(nickname));
 		});
 		if (audioNotifications) {
 			playSound('snd/userOnline.webm');
 		}
 	});
+	$('#buddyList').dequeue();
 }
 
 // Handle buddy going offline
@@ -454,18 +454,23 @@ function handleMessage(message) {
 	var nickname = $(message).attr('from').match(/\/\w+/)[0].substring(1);
 	var body = $(message).find('body').text().replace(/\&quot;/g, '"');
 	var type = $(message).attr('type');
+	// If old message, ignore.
+	if ($(message).find('delay').length !== 0) {
+		return true;
+	}
 	// If message is from me, ignore.
 	if (nickname === myNickname) {
 		return true;
 	}
 	// If message is from someone not on buddy list, ignore.
-	if ($('#buddy-' + nickname).length === 0) {
+	if (!$('#buddy-' + nickname).length) {
 		return true;
 	}
 	if (type === 'groupchat' && groupChat) {
-		addToConversation(
-			multiParty.receiveMessage(nickname, myNickname, body
-		), nickname, 'main-Conversation');
+		body = multiParty.receiveMessage(nickname, myNickname, body);
+		if (typeof(body) === 'string') {
+			addToConversation(body, nickname, 'main-Conversation');
+		}
 	}
 	else if (type === 'chat') {
 		otrKeys[nickname].receiveMsg(body);
@@ -512,7 +517,7 @@ function handlePresence(presence) {
 		return true;
 	}
 	// Create buddy element if buddy is new
-	else if ($('#buddy-' + nickname).length === 0) {
+	else if (!$('#buddy-' + nickname).length) {
 		newBuddy(nickname);
 	}
 	// Handle buddy status change to 'available'
@@ -1039,8 +1044,8 @@ $('#loginForm').submit(function() {
 		loginCredentials[0] = Cryptocat.randomString(256, 1, 1, 1);
 		loginCredentials[1] = Cryptocat.randomString(256, 1, 1, 1);
 		registerXMPPUser(loginCredentials[0], loginCredentials[1]);
+		$('#loginSubmit').attr('readonly', 'readonly');
 	}
-	$('#loginSubmit').attr('readonly', 'readonly');
 	return false;
 });
 
@@ -1100,7 +1105,7 @@ function login(username, password) {
 			$('#loginInfo').text('✓');
 			$('#loginInfo').animate({'color': '#0F0'}, 'fast');
 			$('#bubble').animate({'margin-top': '+=0.5%'}, function() {
-				$('#bubble').animate({'margin-top': '1.5%'}, function() {
+				$('#bubble').animate({'margin-top': '1%'}, function() {
 					$('#loginLinks').fadeOut();
 					$('#info').fadeOut();
 					$('#options').fadeOut();
