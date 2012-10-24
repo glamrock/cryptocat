@@ -1,5 +1,9 @@
 ﻿## Changelog
 
+#### Cryptocat 2.0.17
+**Oct. 23 2012**
+- A bug fix was not pushed in the previous update by mistake.  
+
 #### Cryptocat 2.0.16
 **Oct. 23 2012**
 - Fixed major multiparty messaging bug.  

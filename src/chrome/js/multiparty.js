@@ -8,7 +8,7 @@ var myPrivateKey;
 var myPublicKey;
 
 multiParty.requestRegEx = /^\?:3multiParty:3\?:keyRequest$/;
-multiParty.publicKeyRegEx = /^\?:3multiParty:3\?:publicKey:(\w|=)+$/;
+multiParty.publicKeyRegEx = /^\?:3multiParty:3\?:PublicKey:(\w|=)+$/;
 
 // AES-CTR-256 encryption
 // No padding, starting IV of 0
@@ -135,7 +135,7 @@ multiParty.sendPublicKeyRequest = function(user) {
 multiParty.sendPublicKey = function(user) {
 	var answer = {};
 	answer[user] = {};
-	answer[user]['message'] = '?:3multiParty:3?:publicKey:' + myPublicKey;
+	answer[user]['message'] = '?:3multiParty:3?:PublicKey:' + myPublicKey;
 	return JSON.stringify(answer);
 }
 
