@@ -1,5 +1,9 @@
 ﻿## Changelog
 
+#### Cryptocat 2.0.16
+**Oct. 23 2012**
+- Fixed major multiparty messaging bug.  
+
 #### Cryptocat 2.0.15
 **Oct. 22 2012**
 - Fix bug where login would never complete (in extremely rare cases.)
