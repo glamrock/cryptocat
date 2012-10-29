@@ -5,10 +5,10 @@
 	<Description about="urn:mozilla:install-manifest">
 		<em:id>cryptocat@crypto.cat</em:id>
 		<em:name>Cryptocat</em:name>
-		<em:version>2.0.17.2</em:version>
+		<em:version>2.0.18</em:version>
 		<em:type>2</em:type>
 		<em:creator>the Cryptocat Project</em:creator>
-		<em:description>Cryptocat lets you instantly set up private conversations. It's an open source encrypted instant messaging alternative.</em:description>
+		<em:description>Have encrypted, private conversations. Cryptocat is an open source encrypted instant messaging platform.</em:description>
 		<em:homepageURL>https://project.crypto.cat</em:homepageURL>
 		<em:optionsURL>chrome://cryptocat/content/options.xul</em:optionsURL>
 		<em:iconURL>chrome://cryptocat/content/data/icon-48.png</em:iconURL>

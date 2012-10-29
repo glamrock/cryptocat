@@ -1,5 +1,9 @@
 ﻿## Changelog
 
+#### Cryptocat 2.0.18
+**Oct. 29 2012**
+- Fixed a bug where the fingerprint dialog would sometimes not show.
+
 #### Cryptocat 2.0.17
 **Oct. 23 2012**
 - A bug fix was not pushed in the previous update by mistake.  
