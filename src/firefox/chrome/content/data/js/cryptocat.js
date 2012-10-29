@@ -656,7 +656,9 @@ function displayInfo(nickname) {
 	// If OTR fingerprints have not been generated, show a progress bar and generate them.
 	if ((nickname !== myNickname) && !otrKeys[nickname].msgstate) {
 		var progressDialog = '<div id="progressBar"><div id="fill"></div></div>';
-		dialogBox(progressDialog, 1);
+		dialogBox(progressDialog, 1, null, function() {
+			$('#displayInfo').remove();
+		});
 		$('#progressBar').css('margin', '70px auto 0 auto');
 		$('#fill').animate({'width': '100%', 'opacity': '1'}, 8000, 'linear');
 		otrKeys[nickname].sendQueryMsg();
