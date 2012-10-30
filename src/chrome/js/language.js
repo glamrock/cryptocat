@@ -3,31 +3,16 @@ var Language = function() {};
 
 // Handle aliases
 function handleAliases(locale) {
-	switch (locale) {
-		case 'de-de':
-			return 'de';
-			break;
-		case ('es-ar' || 'es-es' || 'es-mx'):
-			return 'es';
-			break;
-		case 'fr-fr':
-			return 'fr';
-			break;
-		case ('pt-br' || 'pt-pt'):
-			return 'pt';
-			break;
-		case ('sv-se' || 'sv-sv'):
-			return 'sv';
-			break;
-		case 'zh-tw':
-			return 'zh-hk';
-			break;
-		case 'zh-sg':
-			return 'zh-cn';
-			break;
-		default:
-			return locale;
+	if (locale === ('zh-hk' || 'zh-tw')) {
+		return 'zh-hk';
 	}
+	else if (locale === ('zh-cn' || 'zh-sg')) {
+		return 'zh-cn';
+	}
+	else if (locale.match('-')) {
+		return locale.match(/[a-z]+/)[0];
+	}
+	return locale;
 }
 
 // Get locale file, call other functions
@@ -42,7 +27,7 @@ Language.set = function(locale) {
 			language = data.responseText.split('\n');
 			if (language.length < 5) {
 				// Something's wrong, reset to English and exit
-				Language.set('en-us');
+				Language.set('en');
 				return false;
 			}
 			for (var i in language) {
