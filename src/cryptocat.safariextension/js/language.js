@@ -10,6 +10,9 @@ function handleAliases(locale) {
 		case ('es-ar' || 'es-es' || 'es-mx'):
 			return 'es';
 			break;
+		case 'fr-fr':
+			return 'fr';
+			break;
 		case ('pt-br' || 'pt-pt'):
 			return 'pt';
 			break;
@@ -52,61 +55,62 @@ Language.set = function(locale) {
 
 // Build and deliver language object
 Language.buildObject = function(locale, language) {
+	var i = 0;
 	languageObject = {
 		'language': locale,
-		'direction': language[0],
-		'font-family': language[1],
+		'direction': language[i++],
+		'font-family': language[i++],
 		'loginWindow': {
-			'introHeader': language[2],
-			'introParagraph1': language[3],
-			'introParagraph2': language[4],
-			'project': language[5],
-			'blog': language[6],
-			'source': language[7],
-			'customServer': language[8],
-			'reset': language[9],
-			'conversationName': language[10],
-			'nickname': language[11],
-			'connect': language[12],
-			'enterConversation': language[13]
+			'introHeader': language[i++],
+			'introParagraph1': language[i++],
+			'introParagraph2': language[i++],
+			'project': language[i++],
+			'blog': language[i++],
+			'source': language[i++],
+			'customServer': language[i++],
+			'reset': language[i++],
+			'conversationName': language[i++],
+			'nickname': language[i++],
+			'connect': language[i++],
+			'enterConversation': language[i++]
 		},
 		'loginMessage': {
-			'enterConversation': language[14],
-			'conversationAlphanumeric': language[15],
-			'enterNickname': language[16],
-			'nicknameAlphanumeric': language[17],
-			'nicknameInUse': language[18],
-			'authenticationFailure': language[19],
-			'connectionFailed': language[20],
-			'thankYouUsing': language[21],
-			'registering': language[22],
-			'connecting': language[23],
-			'connected': language[24],
-			'typeRandomly': language[25],
-			'generatingKeys': language[26]
+			'enterConversation': language[i++],
+			'conversationAlphanumeric': language[i++],
+			'enterNickname': language[i++],
+			'nicknameAlphanumeric': language[i++],
+			'nicknameInUse': language[i++],
+			'authenticationFailure': language[i++],
+			'connectionFailed': language[i++],
+			'thankYouUsing': language[i++],
+			'registering': language[i++],
+			'connecting': language[i++],
+			'connected': language[i++],
+			'typeRandomly': language[i++],
+			'generatingKeys': language[i++]
 		},
 		'chatWindow': {
-			'groupConversation': language[27],
-			'otrFingerprint': language[28],
-			'groupFingerprint': language[29],
-			'resetKeys': language[30],
-			'resetKeysWarn': language[31],
-			'continue': language[32],
-			'statusAvailable': language[33],
-			'statusAway': language[34],
-			'myInfo': language[35],
-			'desktopNotificationsOn': language[36],
-			'desktopNotificationsOff': language[37],
-			'audioNotificationsOn': language[38],
-			'audioNotificationsOff': language[39],
-			'rememberNickname': language[40],
-			'doNotRememberNickname': language[41],
-			'logout': language[42],
-			'displayInfo': language[43],
-			'sendEncryptedFile': language[44],
-			'viewImage': language[45],
-			'downloadFile': language[46],
-			'conversation': language[47]
+			'groupConversation': language[i++],
+			'otrFingerprint': language[i++],
+			'groupFingerprint': language[i++],
+			'resetKeys': language[i++],
+			'resetKeysWarn': language[i++],
+			'continue': language[i++],
+			'statusAvailable': language[i++],
+			'statusAway': language[i++],
+			'myInfo': language[i++],
+			'desktopNotificationsOn': language[i++],
+			'desktopNotificationsOff': language[i++],
+			'audioNotificationsOn': language[i++],
+			'audioNotificationsOff': language[i++],
+			'rememberNickname': language[i++],
+			'doNotRememberNickname': language[i++],
+			'logout': language[i++],
+			'displayInfo': language[i++],
+			'sendEncryptedFile': language[i++],
+			'viewImage': language[i++],
+			'downloadFile': language[i++],
+			'conversation': language[i++]
 		}
 	}
 	Language.refresh(languageObject);
