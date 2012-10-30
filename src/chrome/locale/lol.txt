@@ -29,8 +29,8 @@ Group conversashun. Click on usr 4 private chat.
 OTR fingerprint (4 private conversashuns):
 Group conversashun fingerprint:
 Reset mah encrypshun keyz...
-Continue
 Resettin yur encrypshun keyz will disconnect mew. Yur fingerprints will also chaeng!
+Continue
 Status: Available
 Status: Away
 My Info
@@ -42,7 +42,7 @@ Remember mah nicknaem
 Don\'t remember mah nicknaem
 Disconnect
 Display info
-Send encryptd file
+Send encryptd filez
 show meh picturz
 download teh file
 Conversashun
