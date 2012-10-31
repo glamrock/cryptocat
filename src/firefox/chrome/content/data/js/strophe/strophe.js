@@ -1769,7 +1769,7 @@ Strophe.Connection = function (service)
     /* The connected JID. */
     this.jid = "";
     /* request id for body tags */
-    this.rid = Math.floor(Math.random() * 4294967295);
+    this.rid = Math.floor(Cryptocat.random() * 4294967295);
     /* The current session ID. */
     this.sid = null;
     this.streamId = null;
@@ -1806,7 +1806,7 @@ Strophe.Connection = function (service)
 
     this._data = [];
     this._requests = [];
-    this._uniqueId = Math.round(Math.random() * 10000);
+    this._uniqueId = Math.round(Cryptocat.random() * 10000);
 
     this._sasl_success_handler = null;
     this._sasl_failure_handler = null;
@@ -1837,7 +1837,7 @@ Strophe.Connection.prototype = {
      */
     reset: function ()
     {
-        this.rid = Math.floor(Math.random() * 4294967295);
+        this.rid = Math.floor(Cryptocat.random() * 4294967295);
 
         this.sid = null;
         this.streamId = null;
@@ -1861,7 +1861,7 @@ Strophe.Connection.prototype = {
         this.errors = 0;
 
         this._requests = [];
-        this._uniqueId = Math.round(Math.random()*10000);
+        this._uniqueId = Math.round(Cryptocat.random()*10000);
     },
 
     /** Function: pause
@@ -2744,7 +2744,7 @@ Strophe.Connection.prototype = {
         this.disconnecting = false;
         this.sid = null;
         this.streamId = null;
-        this.rid = Math.floor(Math.random() * 4294967295);
+        this.rid = Math.floor(Cryptocat.random() * 4294967295);
 
         // tell the parent we disconnected
         if (this.connected) {
@@ -3067,7 +3067,7 @@ Strophe.Connection.prototype = {
         var attribMatch = /([a-z]+)=("[^"]+"|[^,"]+)(?:,|$)/;
 
         var challenge = Base64.decode(Strophe.getText(elem));
-        var cnonce = MD5.hexdigest("" + (Math.random() * 1234567890));
+        var cnonce = MD5.hexdigest("" + (Cryptocat.random() * 1234567890));
         var realm = "";
         var host = null;
         var nonce = "";
