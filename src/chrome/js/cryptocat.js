@@ -1027,7 +1027,7 @@ $('#loginForm').submit(function() {
 			$('#loginForm').submit();
 			$('#loginSubmit').attr('readonly', 'readonly');
 		});
-		if (Cryptocat.language['language'] === 'en-us') {
+		if (Cryptocat.language['language'] === 'en') {
 			$('#progressInfo').append(
 				'<br />Here is an interesting fact while you wait:'
 				+ '<br /><br /><span id="interestingFact">'
@@ -1037,7 +1037,7 @@ $('#loginForm').submit(function() {
 		$('#progressInfo').append(
 			'<div id="progressBar"><div id="fill"></div></div>'
 		);
-		$('#fill').animate({'width': '100%', 'opacity': '1'}, 25555, 'linear');
+		$('#fill').animate({'width': '100%', 'opacity': '1'}, 26000, 'linear');
 	}
 	// If everything is okay, then register a randomly generated throwaway XMPP ID and log in.
 	else {
