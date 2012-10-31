@@ -1041,8 +1041,8 @@ $('#loginForm').submit(function() {
 	}
 	// If everything is okay, then register a randomly generated throwaway XMPP ID and log in.
 	else {
-		conversationName = $('#conversationName').val();
-		myNickname = $('#nickname').val();
+		conversationName = Strophe.xmlescape($('#conversationName').val());
+		myNickname = Strophe.xmlescape($('#nickname').val());
 		loginCredentials[0] = Cryptocat.randomString(256, 1, 1, 1);
 		loginCredentials[1] = Cryptocat.randomString(256, 1, 1, 1);
 		registerXMPPUser(loginCredentials[0], loginCredentials[1]);
