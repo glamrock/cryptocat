@@ -34,6 +34,14 @@ Apple's model makes an automated build process difficult.
 * [Design and Functionality Overview](https://github.com/kaepora/cryptocat/wiki/Design-and-Functionality)  
 * [Architecture and Lifecycle](https://project.crypto.cat/documents/a&l.pdf)  
 
+## Goals
+* XMPP **[DONE]** | [Discussion](https://github.com/kaepora/cryptocat/issues/83), [Library](http://strophe.im)
+* OTR **[DONE]** | [Discussion](https://github.com/kaepora/cryptocat/issues/84), [Library](https://github.com/arlolra/otr)
+* mpOTR | [Discussion](https://github.com/kaepora/cryptocat/issues/82), Spec in progress. Current mutli-party encryption is handled using [Cryptocat Protocol 2.0](https://project.crypto.cat/documents/)
+
+## Discussion
+We have [a million issues worth discussing here!](https://github.com/kaepora/cryptocat/issues)
+
 ## License
 #### Cryptocat is released under the [GNU Affero General Public License (AGPL3)](https://www.gnu.org/licenses/agpl-3.0.html):  
 Copyright `(C)` 2011, 2012 Nadim Kobeissi <nadim@crypto.cat>  
@@ -55,14 +63,6 @@ The full license text is included in `LICENSE.txt`.
 
 ## Notes
 * Builds are available in `release/`.
-
-## Goals
-* XMPP **[DONE]** | [Discussion](https://github.com/kaepora/cryptocat/issues/83), [Library](http://strophe.im)
-* OTR **[DONE]** | [Discussion](https://github.com/kaepora/cryptocat/issues/84), [Library](https://github.com/arlolra/otr)
-* mpOTR | [Discussion](https://github.com/kaepora/cryptocat/issues/82), Spec in progress. Current mutli-party encryption is handled using [Cryptocat Protocol 2.0](https://project.crypto.cat/documents/)
-
-## Discussion
-We have [a million issues worth discussing here!](https://github.com/kaepora/cryptocat/issues)
 
 ## Contributors
 * **Lead Developer**: Nadim Kobeissi  
