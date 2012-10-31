@@ -28,6 +28,7 @@ Apple's model makes an automated build process difficult.
 ```  
 
 ## Documentation & Wiki
+* [Multiparty Protocol Specification](https://github.com/kaepora/cryptocat/wiki/Multiparty-Protocol-Specification)  
 * [Server Deployment Instructions](https://github.com/kaepora/cryptocat/wiki/Server-Deployment-Instructions)  
 * [Threat Model](https://github.com/kaepora/cryptocat/wiki/Threat-Model)  
 * [Design and Functionality Overview](https://github.com/kaepora/cryptocat/wiki/Design-and-Functionality)  
