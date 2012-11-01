@@ -1104,6 +1104,7 @@ function login(username, password) {
 			if (localStorageOn) {
 				localStorage.setItem('myNickname', myNickname);
 			}
+			$('#buddy-main-Conversation').attr('status', 'online');
 			$('#loginInfo').text('✓');
 			$('#loginInfo').animate({'color': '#0F0'}, 'fast');
 			$('#bubble').animate({'margin-top': '+=0.5%'}, function() {
