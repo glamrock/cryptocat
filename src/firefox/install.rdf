@@ -10,7 +10,6 @@
 		<em:creator>the Cryptocat Project</em:creator>
 		<em:description>Have encrypted, private conversations. Cryptocat is an open source encrypted instant messaging platform.</em:description>
 		<em:homepageURL>https://project.crypto.cat</em:homepageURL>
-		<em:optionsURL>chrome://cryptocat/content/options.xul</em:optionsURL>
 		<em:iconURL>chrome://cryptocat/content/data/icon-48.png</em:iconURL>
 
 		<em:targetApplication>
