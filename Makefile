@@ -5,13 +5,9 @@ changes:
 	cd src/chrome/ && cp -R css img js locale snd index.html ../firefox/chrome/content/data/
 
 chrome:
-	cd src/chrome/ && zip -r9 cryptocat-chrome.zip *
-	mv src/chrome/cryptocat-chrome.zip .
+	cd src/chrome/ && zip -r9 cryptocat-chrome.zip * -x "*/\.*" -x "\.*"
+	mv src/chrome/cryptocat-chrome.zip release
 
 firefox:
-	cd src/firefox/ && zip -r9 cryptocat-firefox.xpi *
-	mv src/firefox/cryptocat-firefox.xpi .
-
-clean:
-	rm -f cryptocat-chrome.zip
-	rm -f cryptocat-firefox.xpi
+	cd src/firefox/ && zip -r9 cryptocat-firefox.xpi * -x "*/\.*" -x "\.*"
+	mv src/firefox/cryptocat-firefox.xpi release
