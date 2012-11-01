@@ -1,5 +1,11 @@
 ﻿## Changelog
 
+#### Cryptocat 2.0.19
+**Nov. 1 2012**
+- Language detection bug fixes.
+- Minor security fixes.
+- Other minor bug fixes.
+
 #### Cryptocat 2.0.18
 **Oct. 29 2012**
 - Fixed a bug where the fingerprint dialog would sometimes not show.
