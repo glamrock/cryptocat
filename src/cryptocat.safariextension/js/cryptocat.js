@@ -362,7 +362,7 @@ function addToConversation(message, sender, conversation) {
 			lineDecoration = 3;
 		}
 	}
-	message = addFile(message);
+	// message = addFile(message); <--- This function is disabled for being unused and of questionable security
 	message = addLinks(message);
 	message = addEmoticons(message);
 	message = message.replace(/:/g, '&#58;');
