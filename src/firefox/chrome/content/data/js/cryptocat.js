@@ -1037,6 +1037,14 @@ $('#loginForm').submit(function() {
 		$('#progressInfo').append(
 			'<div id="progressBar"><div id="fill"></div></div>'
 		);
+		var catFactInterval = window.setInterval(function() {
+			$('#interestingFact').fadeOut(function() {
+				$(this).text(CatFacts.getFact()).fadeIn();
+			});
+			if (myKey) {
+				clearInterval(catFactInterval);
+			}
+		}, 10000);
 		$('#fill').animate({'width': '100%', 'opacity': '1'}, 26000, 'linear');
 	}
 	// If everything is okay, then register a randomly generated throwaway XMPP ID and log in.
