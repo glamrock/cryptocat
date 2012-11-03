@@ -1,5 +1,10 @@
 ﻿## Changelog
 
+#### Cryptocat 2.0.20
+**Nov. 3 2012**
+- Bug fixes.
+- Updated Chinese translation.
+
 #### Cryptocat 2.0.19
 **Nov. 1 2012**
 - Language detection bug fixes.

@@ -13,8 +13,8 @@ var domain = defaultDomain;
 var conferenceServer = defaultConferenceServer;
 var bosh = defaultBOSH;
 var otrKeys = {};
-var conversations = [];
-var conversationInfo = [];
+var conversations = {};
+var conversationInfo = {};
 var loginCredentials = [];
 var currentConversation = 0;
 var audioNotifications = 0;
@@ -1151,9 +1151,9 @@ function login(username, password) {
 							$('#conversationWindow').text('');
 							otrKeys = {};
 							multiParty.resetKeys();
-							conversations = [];
+							conversations = {};
+							conversationInfo = {};
 							loginCredentials = [];
-							conversationInfo = [];
 							currentConversation = 0;
 							conn = null;
 							if (!loginError) {
