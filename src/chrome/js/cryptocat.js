@@ -454,7 +454,7 @@ function handleMessage(message) {
 	var nickname = $(message).attr('from').match(/\/\w+/)[0].substring(1);
 	var body = $(message).find('body').text().replace(/\&quot;/g, '"');
 	var type = $(message).attr('type');
-	// If old message, ignore.
+	// If archived message, ignore.
 	if ($(message).find('delay').length !== 0) {
 		return true;
 	}
@@ -1129,7 +1129,9 @@ function login(username, password) {
 							$('#buddyList').css('width', (150 + scrollWidth) + 'px');
 							if (groupChat) {
 								bindBuddyClick('main-Conversation');
-								$('#buddy-main-Conversation').delay(1000).click();
+								window.setTimeout(function() {
+									$('#buddy-main-Conversation').click();
+								}, 500);
 							}
 						});
 					});
