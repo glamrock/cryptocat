@@ -19,6 +19,7 @@ var loginCredentials = [];
 var currentConversation = 0;
 var audioNotifications = 0;
 var desktopNotifications = 0;
+var buddyNotifications = 0;
 var loginError = 0;
 var windowFocus = 1;
 var currentStatus = 'online';
@@ -336,7 +337,6 @@ function addFile(message) {
 }
 
 // Add a `message` from `sender` to the `conversation` display and log.
-// Used internally.
 function addToConversation(message, sender, conversation) {
 	if (!message) {
 		return false;
@@ -388,13 +388,36 @@ function addToConversation(message, sender, conversation) {
 	}
 }
 
-// Handle nickname change (which may be done by non-Cryptocat XMPP clients)
-function changeNickname(oldNickname, newNickname) {
-	otrKeys[newNickname] = otrKeys[oldNickname];
-	multiParty.renameKeys(oldNickname, newNickname);
-	conversations[newNickname] = conversations[oldNickname];
-	conversationInfo[newNickname] = conversationInfo[oldNickname];
-	buddyGoOffline(oldNickname);
+// Add a join/part notification to the main conversation window.
+// If 'join === 1', shows join notification, otherwise shows part
+function addBuddyNotification(buddy, join) {
+	var timeStamp = '<span class="timeStamp">' + currentTime(0) + '</span>';
+	if (join) {
+		var status = '<div class="userJoin"><strong>+</strong>'
+			+ buddy + ' has joined the conversation</div>';
+		var audioNotification = 'snd/userOnline.webm';
+	}
+	else {
+		var status = '<div class="userLeave"><strong>-</strong>'
+			+ buddy + ' has left the conversation</div>';
+		var audioNotification = 'snd/userOffline.webm';
+	}
+	var message = '<div class="Line2">' + timeStamp + status + '</div>';
+	conversations['main-Conversation'] += message;
+	if (currentConversation === 'main-Conversation') {
+		$('#conversationWindow').append(message);
+	}
+	if (($('#conversationWindow')[0].scrollHeight - $('#conversationWindow').scrollTop()) < 1500) {	
+		scrollDown(600);
+	}
+	//if (desktopNotifications) {
+	//	if ((currentConversation !== 'main-Conversation') || (!windowFocus)) {
+	//		Notification.createNotification('img/keygen.gif', buddy, status);
+	//	}
+	//}
+	if (audioNotifications) {
+		playSound(audioNotification);
+	}
 }
 
 // Build new buddy
@@ -414,8 +437,8 @@ function newBuddy(nickname) {
 				sendPublicKey, null
 			);
 		});
-		if (audioNotifications) {
-			playSound('snd/userOnline.webm');
+		if (buddyNotifications) {
+			addBuddyNotification(nickname, 1);
 		}
 	});
 	$('#buddyList').dequeue();
@@ -444,9 +467,18 @@ function buddyGoOffline(nickname) {
 			});
 		}
 	}
-	if (audioNotifications) {
-		playSound('snd/userOffline.webm');
+	if (buddyNotifications) {
+		addBuddyNotification(nickname, 0);
 	}
+}
+
+// Handle nickname change (which may be done by non-Cryptocat XMPP clients)
+function changeNickname(oldNickname, newNickname) {
+	otrKeys[newNickname] = otrKeys[oldNickname];
+	multiParty.renameKeys(oldNickname, newNickname);
+	conversations[newNickname] = conversations[oldNickname];
+	conversationInfo[newNickname] = conversationInfo[oldNickname];
+	buddyGoOffline(oldNickname);
 }
 
 // Handle incoming messages from the XMPP server.
@@ -1137,6 +1169,9 @@ function login(username, password) {
 					});
 				});
 			});
+			window.setTimeout(function() {
+				buddyNotifications = 1;
+			}, 10000);
 			loginError = 0;
 		}
 		else if (status === Strophe.Status.DISCONNECTED) {
