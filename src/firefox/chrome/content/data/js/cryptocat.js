@@ -393,13 +393,11 @@ function addToConversation(message, sender, conversation) {
 function addBuddyNotification(buddy, join) {
 	var timeStamp = '<span class="timeStamp">' + currentTime(0) + '</span>';
 	if (join) {
-		var status = '<div class="userJoin"><strong>+</strong>'
-			+ buddy + ' has joined the conversation</div>';
+		var status = '<div class="userJoin"><strong>+</strong>' + buddy + '</div>';
 		var audioNotification = 'snd/userOnline.webm';
 	}
 	else {
-		var status = '<div class="userLeave"><strong>-</strong>'
-			+ buddy + ' has left the conversation</div>';
+		var status = '<div class="userLeave"><strong>-</strong>' + buddy + '</div>';
 		var audioNotification = 'snd/userOffline.webm';
 	}
 	var message = '<div class="Line2">' + timeStamp + status + '</div>';
@@ -933,7 +931,12 @@ $('#userInputText').keydown(function(e) {
 		e.preventDefault();
 		for (var nickname in otrKeys) {
 			if (match = nickname.match($(this).val().match(/(\S)+$/)[0])) {
-				$(this).val($(this).val().replace(match, nickname + ': '));
+				if ($(this).val().match(/\s/)) {
+					$(this).val($(this).val().replace(match, nickname + ' '));
+				}
+				else {
+					$(this).val($(this).val().replace(match, nickname + ': '));
+				}
 			}
 		}
 	}

@@ -469,7 +469,7 @@ img.logo {
 .imageView, .fileView, .userJoin, .userLeave {
 	background-color: #97CEEC;
 	color: #FFF;
-	padding: 0 2px 0 5px;
+	padding: 0 2px 0 21px;
 	margin-left: 10px;
 	box-shadow: 1px 1px #34BEED;
 	font-size: 0.9em;
@@ -480,6 +480,7 @@ img.logo {
 	display: inline-block;
 }
 .userJoin, .userLeave {
+	padding: 0 2px 0 5px;
 	background-image: none;
 }
 .userLeave {
@@ -488,7 +489,7 @@ img.logo {
 }
 .userJoin strong, .userLeave strong {
 	padding-right: 10px;
-	font-size: 1.3em;
+	font-size: 1.4em;
 }
 .imageView:hover, .fileView:hover {
 	text-decoration: none;
