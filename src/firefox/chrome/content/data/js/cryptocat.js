@@ -321,6 +321,7 @@ function addEmoticons(message) {
 }
 
 // Convert Data URI to viewable/downloadable file.
+// Warning: This function is currently unused and is probably not secure for use.
 function addFile(message) {
 	var mime = new RegExp('(data:(application\/((x-compressed)|(x-zip-compressed)|'
 		+ '(zip)))|(multipart\/x-zip))\;base64,(\\w|\\/|\\+|\\=|\\s)*$');
@@ -362,7 +363,7 @@ function addToConversation(message, sender, conversation) {
 			lineDecoration = 3;
 		}
 	}
-	// message = addFile(message); <--- This function is disabled for being unused and of questionable security
+	// message = addFile(message); Function disabled
 	message = addLinks(message);
 	message = addEmoticons(message);
 	message = message.replace(/:/g, '&#58;');
