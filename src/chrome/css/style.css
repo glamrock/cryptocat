@@ -484,7 +484,7 @@ img.logo {
 }
 .userLeave {
 	background-color: #F00;
-	box-shadow: 1px 1px #F99;
+	box-shadow: 1px 1px #900;
 }
 .userJoin strong, .userLeave strong {
 	padding-right: 10px;
