@@ -1,5 +1,11 @@
 ﻿## Changelog
 
+#### Cryptocat 2.0.21
+**Nov. 4 2012**
+- Join/part notifications.
+- Improved nickname completion.
+- Small UX tweaks.
+
 #### Cryptocat 2.0.20
 **Nov. 3 2012**
 - Bug fixes.
