@@ -19,6 +19,7 @@ var interestingFacts = [
 'In Siam, a cat rode in a chariot at the head of a parade celebrating the new king.',
 'Most cats adore sardines.',
 'Cats use their whiskers to measure distances and changes in air pressure.',
+'Cat whiskers are very sensitive to touch.',
 'Abraham Lincoln kept four cats at the White House during his presidency.',
 'Cats purr at the same frequency as an idling diesel engine.',
 'Nikola Tesla was inspired to study electricity after his cat static-shocked him in his youth.',
