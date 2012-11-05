@@ -416,7 +416,7 @@ function buddyNotification(buddy, join) {
 
 // Update user count for display in conversation info bar.
 function updateUserCount() {
-	if ($('.conversationUserCount') !== $('.buddy').length.toString()) {
+	if ($('.conversationUserCount').text() !== $('.buddy').length.toString()) {
 		$('.conversationUserCount').animate({'color': '#222'}, function() {
 			$(this).text($('.buddy').length);
 			$(this).animate({'color': '#97CEEC'});
