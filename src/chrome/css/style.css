@@ -519,38 +519,27 @@ img.logo {
 #eYay { background-position: -143px 0; }
 #eShut { background-position: -156px 0; }
 
-.ui-tooltip, .qtip{
+.qtip {
 	position: absolute;
 	left: -28000px;
 	top: -28000px;
 	display: none;
-	max-width: 280px;
+	max-width: 200px;
 	min-width: 50px;
 	font-size: 1em;
 	line-height: 12px;
 	border: 2px solid #97CEEC;
 	box-shadow: 1px 1px 3px #5588A5;
-	background-color: rgba(0, 0, 0, 0.75);
+	background-color: rgba(0, 0, 0, 0.8);
 	color: #EEE;
 	padding: 6px;
 	border-radius: 4px 0 4px 4px;
-	text-align: center;
 }
-.ui-tooltip .ui-tooltip-tip{
-	margin: 0 auto;
-	overflow: hidden;
-	z-index: 10;
-}
-.ui-tooltip .ui-tooltip-tip,
-.ui-tooltip .ui-tooltip-tip *{
+.ui-tooltip .ui-tooltip-tip {
 	position: absolute;
 	line-height: 0.1px !important;
 	font-size: 0.1px !important;
 	background: transparent;
 	border: 0 dashed transparent;
 	box-shadow: none;
-}
-.ui-tooltip .ui-tooltip-tip canvas { 
-	top: 0;
-	left: 0;
 }

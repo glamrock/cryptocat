@@ -957,9 +957,9 @@ $('#customServer').click(function() {
 	domain = Strophe.xmlescape(domain);
 	var customServerDialog = '<input type="button" class="bar" value="'
 		+ Cryptocat.language['loginWindow']['customServer'] + '"/><br />'
-		+ '<input type="text" id="customDomain"></input>'
-		+ '<input type="text" id="customConferenceServer"></input>'
-		+ '<input type="text" id="customBOSH"></input>'
+		+ '<input type="text" class="customServer" id="customDomain"></input>'
+		+ '<input type="text" class="customServer" id="customConferenceServer"></input>'
+		+ '<input type="text" class="customServer" id="customBOSH"></input>'
 		+ '<input type="button" class="button" id="customServerReset"></input>'
 		+ '<input type="button" class="button" id="customServerSubmit"></input>';
 	dialogBox(customServerDialog, 1);
@@ -994,7 +994,12 @@ $('#customServer').click(function() {
 		}
 	});
 	$('#customDomain').select();
-	$('input[title]').qtip();
+	$('.customServer').qtip({
+		position: {
+			my: 'center left',
+			at: 'center right'
+		}
+	});
 });
 
 // Language selector
