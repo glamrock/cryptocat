@@ -14,7 +14,6 @@ var conferenceServer = defaultConferenceServer;
 var bosh = defaultBOSH;
 var otrKeys = {};
 var conversations = {};
-var conversationInfo = {};
 var loginCredentials = [];
 var currentConversation = 0;
 var audioNotifications = 0;
@@ -169,14 +168,14 @@ var iocb = function(buddy) {
 // Creates a template for the conversation info bar at the top of each conversation.
 function buildConversationInfo(conversation) {
 	$('#conversationInfo').html(
-		'<span class="conversationName">' + myNickname + '@' + conversationName + '</span>'
+		'<span class="conversationUserCount">' + $('.buddy').length + '</span>'
+		+ '<span class="conversationName">' + myNickname + '@' + conversationName + '</span>'
 	);
 	if (conversation === 'main-Conversation') {
 		$('#conversationInfo').append(
 			'<span style="float:right">' + Cryptocat.language['chatWindow']['groupConversation'] + '</span>'
 		);
 	}
-	conversationInfo[currentConversation] = $('#conversationInfo').html();
 }
 
 // Switches the currently active conversation to `buddy'
@@ -190,12 +189,7 @@ function switchConversation(buddy) {
 	}
 	$('#conversationInfo').animate({'width': '750px'}, function() {
 		$('#conversationWindow').slideDown('fast', function() {
-			if (conversationInfo[currentConversation]) {
-				$('#conversationInfo').html(conversationInfo[currentConversation]);
-			}
-			else {
-				buildConversationInfo(currentConversation);
-			}
+			buildConversationInfo(currentConversation);
 			$('#userInput').fadeIn('fast', function() {
 				$('#userInputText').focus();
 			});
@@ -211,6 +205,7 @@ function switchConversation(buddy) {
 			&& ($(this).attr('status') === 'offline')) {
 			$(this).slideUp(500, function() {
 				$(this).remove();
+				updateUserCount();
 			});
 		}
 	});
@@ -391,7 +386,7 @@ function addToConversation(message, sender, conversation) {
 
 // Add a join/part notification to the main conversation window.
 // If 'join === 1', shows join notification, otherwise shows part
-function addBuddyNotification(buddy, join) {
+function buddyNotification(buddy, join) {
 	var timeStamp = '<span class="timeStamp">' + currentTime(0) + '</span>';
 	if (join) {
 		var status = '<div class="userJoin"><strong>+</strong>' + buddy + '</div>';
@@ -419,8 +414,18 @@ function addBuddyNotification(buddy, join) {
 	}
 }
 
+// Update user count for display in conversation info bar.
+function updateUserCount() {
+	if ($('.conversationUserCount') !== $('.buddy').length.toString()) {
+		$('.conversationUserCount').animate({'color': '#222'}, function() {
+			$(this).text($('.buddy').length);
+			$(this).animate({'color': '#97CEEC'});
+		});	
+	}
+}
+
 // Build new buddy
-function newBuddy(nickname) {
+function addBuddy(nickname) {
 	$('#buddyList').queue(function() {
 		var buddyTemplate = '<div class="buddy" title="' + nickname + '" id="buddy-' 
 			+ nickname + '" status="online"><span>' + nickname + '</span>'
@@ -430,6 +435,7 @@ function newBuddy(nickname) {
 			$('#menu-' + nickname).unbind('click');
 			bindBuddyMenu(nickname);
 			bindBuddyClick(nickname);
+			updateUserCount();
 			var sendPublicKey = multiParty.sendPublicKey(nickname);
 			conn.muc.message(
 				conversationName + '@' + conferenceServer, null,
@@ -437,14 +443,14 @@ function newBuddy(nickname) {
 			);
 		});
 		if (buddyNotifications) {
-			addBuddyNotification(nickname, 1);
+			buddyNotification(nickname, 1);
 		}
 	});
 	$('#buddyList').dequeue();
 }
 
 // Handle buddy going offline
-function buddyGoOffline(nickname) {
+function removeBuddy(nickname) {
 	// Delete their encryption keys
 	delete otrKeys[nickname];
 	multiParty.removeKeys(nickname);
@@ -454,6 +460,7 @@ function buddyGoOffline(nickname) {
 			&& ($('#buddy-' + nickname).css('background-image') === 'none')) {
 			$('#buddy-' + nickname).slideUp(500, function() {
 				$(this).remove();
+				updateUserCount();
 			});
 		}
 		else {
@@ -467,7 +474,7 @@ function buddyGoOffline(nickname) {
 		}
 	}
 	if (buddyNotifications) {
-		addBuddyNotification(nickname, 0);
+		buddyNotification(nickname, 0);
 	}
 }
 
@@ -476,8 +483,7 @@ function changeNickname(oldNickname, newNickname) {
 	otrKeys[newNickname] = otrKeys[oldNickname];
 	multiParty.renameKeys(oldNickname, newNickname);
 	conversations[newNickname] = conversations[oldNickname];
-	conversationInfo[newNickname] = conversationInfo[oldNickname];
-	buddyGoOffline(oldNickname);
+	removeBuddy(oldNickname);
 }
 
 // Handle incoming messages from the XMPP server.
@@ -544,12 +550,12 @@ function handlePresence(presence) {
 	}
 	// Detect buddy going offline
 	if ($(presence).attr('type') === 'unavailable') {
-		buddyGoOffline(nickname);
+		removeBuddy(nickname);
 		return true;
 	}
 	// Create buddy element if buddy is new
 	else if (!$('#buddy-' + nickname).length) {
-		newBuddy(nickname);
+		addBuddy(nickname);
 	}
 	// Handle buddy status change to 'available'
 	else if ($(presence).find('show').text() === '' || $(presence).find('show').text() === 'chat') {
@@ -1206,7 +1212,6 @@ function login(username, password) {
 							otrKeys = {};
 							multiParty.resetKeys();
 							conversations = {};
-							conversationInfo = {};
 							loginCredentials = [];
 							currentConversation = 0;
 							conn = null;

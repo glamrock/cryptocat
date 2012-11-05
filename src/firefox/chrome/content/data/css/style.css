@@ -336,8 +336,15 @@ img.logo {
 	border-bottom: 1px solid #76BDE5;
 	font-weight: bold;
 }
-#conversationInfo span {
-	margin: 0 10px 0 10px;
+#conversationInfo .conversationUserCount {
+	background-color: #222;
+	border-radius: 0 4px 4px 0;
+	color: #97CEEC;
+	font-weight: bold;
+	text-align: center;
+	font-size: 16px;
+	margin: 0 10px 0 0;
+	padding: 5px;
 }
 #conversationInfo .conversationName {
 	font-size: 1em;
