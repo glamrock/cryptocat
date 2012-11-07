@@ -523,9 +523,9 @@ function handleMessage(message) {
 // Handle incoming presence updates from the XMPP server.
 function handlePresence(presence) {
 	// console.log(presence);
-	var nickname = Strophe.xmlescape($(presence).attr('from'));
+	var nickname = Strophe.xmlescape($(presence).attr('from').match(/\/\w+/)[0].substring(1));
 	// If invalid nickname, do not process
-	if (nickname.match(/\W/)) {
+	if ($(presence).attr('from').match(/\/\w+/).length > 1) {
 		return true;
 	}
 	if ($(presence).attr('type') === 'error') {
