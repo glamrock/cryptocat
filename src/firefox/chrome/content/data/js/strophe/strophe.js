@@ -1914,7 +1914,7 @@ Strophe.Connection.prototype = {
         if (typeof(suffix) == "string" || typeof(suffix) == "number") {
             return Cryptocat.randomString(64, 1, 1, 1, 0) + ":" + suffix;
         } else {
-            return ++this._uniqueId + "";
+            return Cryptocat.randomString(64, 1, 1, 1, 0) + "";
         }
     },
 
