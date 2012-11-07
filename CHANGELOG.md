@@ -1,5 +1,10 @@
 ﻿## Changelog
 
+#### Cryptocat 2.0.22
+**Nov. 7 2012**
+- This version pushes many important security fixes, detailed here on the Cryptocat Development Blog: https://blog.crypto.cat/2012/11/security-update-our-first-full-audit/
+- Added a user counter.
+
 #### Cryptocat 2.0.21
 **Nov. 4 2012**
 - Join/part notifications.

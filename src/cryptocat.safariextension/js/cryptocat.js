@@ -146,7 +146,7 @@ function scrollDown(speed) {
 
 // Initiates a conversation. Internal use.
 function initiateConversation(conversation) {
-	if (!conversations.hasOwnProperty([conversation])) {
+	if (!conversations.hasOwnProperty(conversation)) {
 		conversations[conversation] = '';
 	}
 }

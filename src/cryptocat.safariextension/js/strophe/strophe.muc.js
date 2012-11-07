@@ -773,18 +773,18 @@ XmppRoom = (function() {
       case 'unavailable':
         if (newnick) {
           data.nick = newnick;
-          if (this.roster[nick] && this.roster[newnick]) {
+          if (this.roster.hasOwnProperty(nick) && this.roster.hasOwnProperty(newnick)) {
             this.roster[nick].update(this.roster[newnick]);
             this.roster[newnick] = this.roster[nick];
           }
-          if (this.roster[nick] && !this.roster[newnick]) {
+          if (this.roster.hasOwnProperty(nick) && !this.roster.hasOwnProperty(newnick)) {
             this.roster[newnick] = this.roster[nick].update(data);
           }
         }
         delete this.roster[nick];
         break;
       default:
-        if (this.roster[nick]) {
+        if (this.roster.hasOwnProperty(nick)) {
           this.roster[nick].update(data);
         } else {
           this._addOccupant(data);

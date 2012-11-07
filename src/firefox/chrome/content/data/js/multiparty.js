@@ -175,7 +175,7 @@ multiParty.receiveMessage = function(sender, myName, message) {
 		typeof(message[myName]['message']) === 'string') {
 		// Detect public key reception, store public key and generate shared secret
 		if (message[myName]['message'].match(multiParty.publicKeyRegEx)) {
-			if (!publicKeys.hasOwnProperty([sender])) {
+			if (!publicKeys.hasOwnProperty(sender)) {
 				var publicKey = message[myName]['message'].substring(27);
 				if (checkSize(publicKey)) {
 					publicKeys[sender] = publicKey;
@@ -190,7 +190,7 @@ multiParty.receiveMessage = function(sender, myName, message) {
 			multiParty.sendPublicKey(sender);
 		}
 		// Decrypt message
-		else if (sharedSecrets[sender]) {
+		else if (sharedSecrets.hasOwnProperty(sender)) {
 			var concatenatedCiphertext = '';
 			var sortedUsers = Object.keys(message).sort();
 			for (var i = 0; i !== sortedUsers.length; i++) {
