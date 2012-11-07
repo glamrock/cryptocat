@@ -17,7 +17,7 @@ function handleAliases(locale) {
 
 // Get locale file, call other functions
 Language.set = function(locale) {
-	locale = handleAliases(locale);
+	locale = handleAliases(locale.toLowerCase());
 	$.ajax({
 		url : 'locale/' + locale + '.txt',
 		dataType: 'text',
