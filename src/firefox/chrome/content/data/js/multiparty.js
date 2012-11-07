@@ -8,7 +8,7 @@ var myPrivateKey;
 var myPublicKey;
 
 multiParty.requestRegEx = /^\?:3multiParty:3\?:keyRequest$/;
-multiParty.publicKeyRegEx = /^\?:3multiParty:3\?:PublicKey:(\w|=)+$/;
+multiParty.publicKeyRegEx = /^\?:3multiParty:3\?:publicKey:(\w|=)+$/;
 
 // AES-CTR-256 encryption
 // No padding, starting IV of 0
@@ -17,7 +17,7 @@ multiParty.publicKeyRegEx = /^\?:3multiParty:3\?:PublicKey:(\w|=)+$/;
 encryptAES = function (msg, c, iv) {
 	var opts = {
 		mode: CryptoJS.mode.CTR,
-		iv: CryptoJS.enc.Latin1.parse(iv),
+		iv: CryptoJS.enc.Base64.parse(iv),
 		padding: CryptoJS.pad.NoPadding
 	}
 	var aesctr = CryptoJS.AES.encrypt (
@@ -36,7 +36,7 @@ decryptAES = function (msg, c, iv) {
 	msg = CryptoJS.enc.Base64.parse(msg);
 	var opts = {
 		mode: CryptoJS.mode.CTR,
-		iv: CryptoJS.enc.Latin1.parse(iv),
+		iv: CryptoJS.enc.Base64.parse(iv),
 		padding: CryptoJS.pad.NoPadding
 	}
 	var aesctr = CryptoJS.AES.decrypt(
@@ -135,23 +135,27 @@ multiParty.sendPublicKeyRequest = function(user) {
 multiParty.sendPublicKey = function(user) {
 	var answer = {};
 	answer[user] = {};
-	answer[user]['message'] = '?:3multiParty:3?:PublicKey:' + myPublicKey;
+	answer[user]['message'] = '?:3multiParty:3?:publicKey:' + myPublicKey;
 	return JSON.stringify(answer);
 }
 
 // Return number of users
 multiParty.userCount = function() {
-	return Object.keys(sharedSecrets).length
+	return Object.keys(sharedSecrets).length;
 }
 
 // Send message.
 multiParty.sendMessage = function(message) {
 	var encrypted = {};
 	var concatenatedCiphertext = '';
-	for (var user in sharedSecrets) {
-		encrypted[user] = {};
-		encrypted[user]['message'] = encryptAES(message, sharedSecrets[user]['message'], 0);
-		concatenatedCiphertext += encrypted[user]['message'];
+	var sortedUsers = Object.keys(sharedSecrets).sort();
+	console.log(sharedSecrets);
+	for (var i = 0; i !== sortedUsers.length; i++) {
+		var iv = CryptoJS.enc.Hex.parse(Cryptocat.randomString(64, 0, 0, 0, 1)).toString(CryptoJS.enc.Base64);
+		encrypted[sortedUsers[i]] = {};
+		encrypted[sortedUsers[i]]['message'] = encryptAES(message, sharedSecrets[sortedUsers[i]]['message'], iv);
+		encrypted[sortedUsers[i]]['iv'] = iv;
+		concatenatedCiphertext += encrypted[sortedUsers[i]]['message'];
 	}
 	for (var user in sharedSecrets) {
 		encrypted[user]['hmac'] = HMAC(concatenatedCiphertext, sharedSecrets[user]['hmac']);
@@ -172,7 +176,7 @@ multiParty.receiveMessage = function(sender, myName, message) {
 		typeof(message[myName]['message']) === 'string') {
 		// Detect public key reception, store public key and generate shared secret
 		if (message[myName]['message'].match(multiParty.publicKeyRegEx)) {
-			if (!publicKeys[sender]) {
+			if (!publicKeys.hasOwnProperty([sender])) {
 				var publicKey = message[myName]['message'].substring(27);
 				if (checkSize(publicKey)) {
 					publicKeys[sender] = publicKey;
@@ -189,11 +193,12 @@ multiParty.receiveMessage = function(sender, myName, message) {
 		// Decrypt message
 		else if (sharedSecrets[sender]) {
 			var concatenatedCiphertext = '';
-			for (var user in message) {
-				concatenatedCiphertext += message[user]['message'];
+			var sortedUsers = Object.keys(message).sort();
+			for (var i = 0; i !== sortedUsers.length; i++) {
+				concatenatedCiphertext += message[sortedUsers[i]]['message'];
 			}
 			if (message[myName]['hmac'] === HMAC(concatenatedCiphertext, sharedSecrets[sender]['hmac'])) {
-				message = decryptAES(message[myName]['message'], sharedSecrets[sender]['message'], 0);
+				message = decryptAES(message[myName]['message'], sharedSecrets[sender]['message'], message[myName]['iv']);
 				return message;
 			}
 			else {

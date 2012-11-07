@@ -13,9 +13,6 @@
 		"48": "img/icon-48.png",
 		"128": "img/icon-128.png"
 	},
-	"web_accessible_resources": [
-		"img/keygen.gif"
-	],
 	"permissions": [
 		"http://*/*",
 		"https://*/*"

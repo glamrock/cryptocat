@@ -146,7 +146,7 @@ function scrollDown(speed) {
 
 // Initiates a conversation. Internal use.
 function initiateConversation(conversation) {
-	if (!conversations[conversation]) {
+	if (!conversations.hasOwnProperty([conversation])) {
 		conversations[conversation] = '';
 	}
 }
@@ -222,7 +222,8 @@ function loginFail(message) {
 
 // Generates a random string of length `size` characters.
 // If `alpha = 1`, random string will contain alpha characters, and so on.
-Cryptocat.randomString = function(size, alpha, uppercase, numeric) {
+// If 'hex = 1', all other settings are overridden.
+Cryptocat.randomString = function(size, alpha, uppercase, numeric, hex) {
 	var keyspace = '';
 	var result = '';
 	if (alpha) {
@@ -233,6 +234,9 @@ Cryptocat.randomString = function(size, alpha, uppercase, numeric) {
 	}
 	if (numeric) {
 		keyspace += '0123456789';
+	}
+	if (hex) {
+		keyspace = '0123456789abcdef';
 	}
 	for (var i = 0; i !== size; i++) {
 		result += keyspace[Math.floor(Cryptocat.random()*keyspace.length)];
@@ -417,9 +421,9 @@ function buddyNotification(buddy, join) {
 // Update user count for display in conversation info bar.
 function updateUserCount() {
 	if ($('.conversationUserCount').text() !== $('.buddy').length.toString()) {
-		$('.conversationUserCount').animate({'color': '#222'}, function() {
+		$('.conversationUserCount').animate({'color': '#70B9E0'}, function() {
 			$(this).text($('.buddy').length);
-			$(this).animate({'color': '#97CEEC'});
+			$(this).animate({'color': '#FFF'});
 		});	
 	}
 }
@@ -504,6 +508,7 @@ function handleMessage(message) {
 		return true;
 	}
 	if (type === 'groupchat' && groupChat) {
+		console.log(body);
 		body = multiParty.receiveMessage(nickname, myNickname, body);
 		if (typeof(body) === 'string') {
 			addToConversation(body, nickname, 'main-Conversation');
@@ -518,7 +523,11 @@ function handleMessage(message) {
 // Handle incoming presence updates from the XMPP server.
 function handlePresence(presence) {
 	// console.log(presence);
-	var nickname = Strophe.xmlescape($(presence).attr('from').match(/\/\w+/)[0].substring(1));
+	var nickname = Strophe.xmlescape($(presence).attr('from');
+	// If invalid nickname, do not process
+	if (nickname.match(/\W/)) {
+		return true;
+	}
 	if ($(presence).attr('type') === 'error') {
 		if ($(presence).find('error').attr('code') === '409') {
 			loginError = 1;
@@ -534,13 +543,13 @@ function handlePresence(presence) {
 	}
 	// Detect nickname change (which may be done by non-Cryptocat XMPP clients)
 	if ($(presence).find('status').attr('code') === '303') {
-		var newNickname = $(presence).find('item').attr('nick');
+		var newNickname = Strophe.xmlescape($(presence).find('item').attr('nick') .match(/\w+/)[0]);
 		console.log(nickname + ' changed nick to ' + newNickname);
 		changeNickname(nickname, newNickname);
 		return true;
 	}
 	// Add to otrKeys if necessary
-	if (nickname !== 'main-Conversation' && otrKeys[nickname] === undefined) {
+	if (nickname !== 'main-Conversation' && !otrKeys.hasOwnProperty(nickname)) {
 		// var options = {
 		// 	fragment_size: 8192,
 		// 	send_interval: 400,
@@ -1098,8 +1107,8 @@ $('#loginForm').submit(function() {
 	else {
 		conversationName = Strophe.xmlescape($('#conversationName').val());
 		myNickname = Strophe.xmlescape($('#nickname').val());
-		loginCredentials[0] = Cryptocat.randomString(256, 1, 1, 1);
-		loginCredentials[1] = Cryptocat.randomString(256, 1, 1, 1);
+		loginCredentials[0] = Cryptocat.randomString(256, 1, 1, 1, 0);
+		loginCredentials[1] = Cryptocat.randomString(256, 1, 1, 1, 0);
 		registerXMPPUser(loginCredentials[0], loginCredentials[1]);
 		$('#loginSubmit').attr('readonly', 'readonly');
 	}
