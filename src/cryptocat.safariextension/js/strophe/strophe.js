@@ -1912,7 +1912,7 @@ Strophe.Connection.prototype = {
     getUniqueId: function (suffix)
     {
         if (typeof(suffix) == "string" || typeof(suffix) == "number") {
-            return ++this._uniqueId + ":" + suffix;
+            return Cryptocat.randomString(64, 1, 1, 1, 0) + ":" + suffix;
         } else {
             return ++this._uniqueId + "";
         }
