@@ -554,7 +554,7 @@ function handlePresence(presence) {
 	}
 	// Detect nickname change (which may be done by non-Cryptocat XMPP clients)
 	if ($(presence).find('status').attr('code') === '303') {
-		var newNickname = cleanNickname($(presence).find('item').attr('nick'));
+		var newNickname = cleanNickname('/' + $(presence).find('item').attr('nick'));
 		console.log(nickname + ' changed nick to ' + newNickname);
 		changeNickname(nickname, newNickname);
 		return true;
