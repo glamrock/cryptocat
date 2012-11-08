@@ -1,5 +1,9 @@
 ﻿## Changelog
 
+#### Cryptocat 2.0.23
+**Nov. 8 2012**
+- Fixed a bug where URLs would not display properly in messages.
+
 #### Cryptocat 2.0.22
 **Nov. 7 2012**
 - This version pushes many important security fixes, detailed here on the Cryptocat Development Blog: https://blog.crypto.cat/2012/11/security-update-our-first-full-audit/
