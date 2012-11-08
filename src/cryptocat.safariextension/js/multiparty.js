@@ -14,7 +14,7 @@ multiParty.publicKeyRegEx = /^\?:3multiParty:3\?:publicKey:(\w|=)+$/;
 // No padding, starting IV of 0
 // Input: UTF8, Output: Base64
 // Key input: hexademical
-encryptAES = function (msg, c, iv) {
+encryptAES = function(msg, c, iv) {
 	var opts = {
 		mode: CryptoJS.mode.CTR,
 		iv: CryptoJS.enc.Base64.parse(iv),
@@ -32,7 +32,7 @@ encryptAES = function (msg, c, iv) {
 // No padding, starting IV of 0
 // Input: Base64, Output: UTF8
 // Key input: hexadecimal
-decryptAES = function (msg, c, iv) {
+decryptAES = function(msg, c, iv) {
 	msg = CryptoJS.enc.Base64.parse(msg);
 	var opts = {
 		mode: CryptoJS.mode.CTR,
