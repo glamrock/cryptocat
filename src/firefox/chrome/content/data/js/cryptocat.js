@@ -253,6 +253,21 @@ function shortenString(string, length) {
 	return string;
 }
 
+// Clean nickname so that it's safe to use.
+function cleanNickname(nickname) {
+	var clean;
+	if (clean = nickname.match(/\/([\s\S]+)/)) {
+		clean = Strophe.xmlescape(clean[1]);
+	}
+	else {
+		return false;
+	}
+	if (clean.match(/\W/)) {
+		return false;
+	}
+	return clean;
+}
+
 // Get a fingerprint, formatted for readability
 function getFingerprint(buddy, OTR) {
 	if (OTR) {
@@ -292,9 +307,8 @@ function addLinks(message) {
 				}
 			}
 			sanitize = sanitize.join('');
-			message = message.replace(
-				sanitize, '<a target="_blank" href="' + sanitize + '">' + URLs[i] + '</a>'
-			);
+			var processed = sanitize.replace(':','&colon;');
+			message = message.replace(sanitize, '<a target="_blank" href="' + processed + '">' + processed + '</a>');		
 		}
 	}
 	return message;
@@ -492,7 +506,7 @@ function changeNickname(oldNickname, newNickname) {
 
 // Handle incoming messages from the XMPP server.
 function handleMessage(message) {
-	var nickname = $(message).attr('from').match(/\/\w+/)[0].substring(1);
+	var nickname = cleanNickname($(message).attr('from'));
 	var body = $(message).find('body').text().replace(/\&quot;/g, '"');
 	var type = $(message).attr('type');
 	// If archived message, ignore.
@@ -508,7 +522,6 @@ function handleMessage(message) {
 		return true;
 	}
 	if (type === 'groupchat' && groupChat) {
-		console.log(body);
 		body = multiParty.receiveMessage(nickname, myNickname, body);
 		if (typeof(body) === 'string') {
 			addToConversation(body, nickname, 'main-Conversation');
@@ -523,11 +536,9 @@ function handleMessage(message) {
 // Handle incoming presence updates from the XMPP server.
 function handlePresence(presence) {
 	// console.log(presence);
-	var nickname = Strophe.xmlescape($(presence).attr('from').match(/\/\w+/)[0].substring(1));
+	var nickname = cleanNickname($(presence).attr('from'));
 	// If invalid nickname, do not process
-	if ($(presence).attr('from').match(/\/\w+/).length > 1) {
-		return true;
-	}
+
 	if ($(presence).attr('type') === 'error') {
 		if ($(presence).find('error').attr('code') === '409') {
 			loginError = 1;
@@ -543,7 +554,7 @@ function handlePresence(presence) {
 	}
 	// Detect nickname change (which may be done by non-Cryptocat XMPP clients)
 	if ($(presence).find('status').attr('code') === '303') {
-		var newNickname = Strophe.xmlescape($(presence).find('item').attr('nick') .match(/\w+/)[0]);
+		var newNickname = cleanNickname($(presence).find('item').attr('nick'));
 		console.log(nickname + ' changed nick to ' + newNickname);
 		changeNickname(nickname, newNickname);
 		return true;
