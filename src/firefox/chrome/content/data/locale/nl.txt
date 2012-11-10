@@ -11,6 +11,7 @@ Reset
 naam conversatie
 gebruikersnaam
 verbind
+Voer een naam in voor uw groepsconversatie en deel die met degenen met wie u wilt spreken.
 Voer de naam in van de conversatie die u wilt betreden.
 Voer alstublieft een conversatie naam in.
 Conversatienaam moet alfanumeriek zijn.

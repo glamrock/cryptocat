@@ -10,8 +10,9 @@ Servidor personalitzat...
 Reinicia
 nom de la conversa
 nom d'usuari
-connecta
-Introdueix el nom de la conversa.
+Connecta
+Escriu un nom per a la teva conversa i comparteix-la amb gent amb qui t'agradaria parlar.
+Introdueix el nom de la conversa per a unir-te.
 Si us plau, introdueix el nom de la conversa.
 El nom de la conversa ha de ser alfanumèric.
 Si us plau, introdueix un nom d'usuari

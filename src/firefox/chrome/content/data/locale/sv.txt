@@ -11,6 +11,7 @@ Egen server...
 Konversationsnamn
 smeknamn
 anslut
+Ange ett namn för konversationen och delge det till dem du önskar prata med.
 Skriv in namnet på den konversation du vill delta i.
 Vänligen skriv in ett konversationsnamn. 
 Konversationsnamnet måste vara alfanumeriskt.
@@ -22,13 +23,13 @@ Anslutning misslyckades.
 Tack för att du använder Cryptocat!
 Registrerar...
 Ansluter...
-Upkopplad
+Uppkopplad
 Vänligen skriv in slumpmässiga tecken på ditt tangentbord under ett par sekunder.
 Genererar krypteringsnycklar...
 Gruppkonversation. Klicka på en användare för privat chatt.
 OTR fingeravtryck (för privata konversationer):
-Gruppkonversation fingeravtryck:
-återställa mitt krypteringsnyckel
+Gruppkonversationens fingeravtryck:
+återställ min krypteringsnyckel
 Återställning av dina krypterad nycklar kommer att avkoppla dej. Dit fingeravtryck kommer att också ändras.
 Fortsätta
 Status: Tillgänglig
@@ -39,10 +40,10 @@ Skrivbordsnotifieringar Av
 Ljudnotifikationer På
 Ljudnotifikationer Av
 Kom ihåg mitt smeknamn
-Glöm kom ihåg mitt smeknamn
+Kom inte ihåg mitt smeknamn
 Logga ut
 Visa information
 Skicka krypterad fil
-Visa bild
-Ladda ner fil
+visa bild
+ladda ner fil
 Konversation

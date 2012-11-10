@@ -11,6 +11,7 @@ Berrezarri
 elkarrizketa-izena
 goitizena
 konektatu
+Sar ezazu izen bat elkarrizketarako eta parteka ezazu berau hitz egin nahiko zenukeen jendearekin
 Sartu elkarrizketa baten izena bertara sartzeko. 
 Sartu elkarrizketa-izena.
 Elkarrizketa-izena letraz eta zenbakiz bakarrik egon daiteke osatuta.

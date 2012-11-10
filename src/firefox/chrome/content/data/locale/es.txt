@@ -11,6 +11,7 @@ Reiniciar
 nombre de la conversación
 nombre de usuario
 conectar
+Introduce un nombre para tu conversación y compártelo con la gente con la que quieres hablar.
 Introduce el nombre de una conversación para unirse.
 Por favor, introduce un nombre de conversación.
 El nombre de la conversación tiene que ser alfanumérico.

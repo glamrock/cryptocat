@@ -11,7 +11,8 @@ Remonter
 nom de la conversation
 pseudonyme
 connexion
-Entrez le nom d'une conversation.
+Entrez un nom pour votre conversation et partagez-le avec les personnes dont vous souhaitez parler.
+Entrez le nom d'une conversation à rejoindre.
 S'il vous plaît entrez un nom de conversation.
 La conversation doit être au format alphanumérique.
 S'il vous plaît entrez un pseudonyme.

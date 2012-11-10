@@ -11,6 +11,7 @@ Nulstille
 samtale navn
 brugernavn
 forbind
+Intast et navn på din samtale og del den med dem du gerne vil tale med
 Indtast navnet på en samtale du vil forbindes til
 Indtast et samtale navn
 Samtale navn skal være alfanumerisk

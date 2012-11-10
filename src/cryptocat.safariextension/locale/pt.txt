@@ -11,6 +11,7 @@ Reset
 nome da conversa
 nome
 conectar
+Introduza um nome para a sua conversa e compartilhe-o com as pessoas com quem gostaria de falar.
 Digite o nome da conversa para participar.
 Digite um nome da conversa, por favor.
 O nome da conversa tem de ser alfa numérico

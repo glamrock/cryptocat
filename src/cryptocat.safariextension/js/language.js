@@ -57,6 +57,7 @@ Language.buildObject = function(locale, language) {
 			'conversationName': language[i++],
 			'nickname': language[i++],
 			'connect': language[i++],
+			'conversationNameTooltip': language[i++],
 			'enterConversation': language[i++]
 		},
 		'loginMessage': {
@@ -128,6 +129,7 @@ Language.refresh = function(languageObject) {
 	$('#status').attr('title', languageObject['chatWindow']['statusAvailable']);
 	$('#status').attr('alt', languageObject['chatWindow']['statusAvailable']);
 	$('#conversationTag').text(languageObject['chatWindow']['conversation']);
+	$('#conversationName').attr('title', languageObject['loginWindow']['conversationNameTooltip']);
 	$('[title]').qtip({
 		position: {
 			my: 'top left',
