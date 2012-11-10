@@ -5,12 +5,13 @@ Cryptocat è una piattaforma di messaggistica istantanea che ti permette facilme
 Cryptocat è un software free sviluppato su standard aperti. Il nostro processo di sviluppo è sotto continuo esame da una comunità di volontari e appassionati. <a href="https://project.crypto.cat" target="_blank">Impara di più sul Cryptocat Project</a>.
 Progetto
 Blog
-Codice
+Codice sorgente
 Server personalizzato...
 Azzera
 nome conversazione
 nickname
 connetti
+Inserisci un nome per la tua conversazione e condividila con le persone con cui ti piacerebbe parlare.
 Inserisci il nome di una conversazione a cui partecipare
 Inserisci un nome conversazione.
 Il nome della conversazione deve essere alfanumerico

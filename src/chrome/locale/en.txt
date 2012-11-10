@@ -11,6 +11,7 @@ Reset
 conversation name
 nickname
 connect
+Enter a name for your conversation and share it with people you'd like to talk to.
 Enter the name of a conversation to join.
 Please enter a conversation name.
 Conversation name must be alphanumeric.

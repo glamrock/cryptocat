@@ -11,6 +11,7 @@ Zurücksetzen
 Name der Konversation
 Nickname
 Verbinden
+Gib einen Namen für das Gespräch an und teile ihn mit den Menschen, mit denen Du gerne sprechen möchtest.
 Tippe den Namen einer Konversation ein, um ihr beizutreten.
 Bitte einen Namen für die Konversation eingeben.
 Konversationsname muss alphanumerisch sein.

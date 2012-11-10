@@ -11,6 +11,7 @@ Reset
 conversashun naym
 nicknaem
 connect
+Entar a naem fur ur conversashun n share et wiz ppl u'd liek to talk to.
 Entr teh naym ov conversashun 2 join.
 Plz entr conversashun naym.'
 Conversashun naym must be alfanumeric.

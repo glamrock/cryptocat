@@ -11,6 +11,7 @@ obnovit
 jméno chatu
 přezdívka
 připojit
+Zadejte jméno vašeho chatu. Pak toto jméno dejte lidem, s kterými chcete chatovat.
 Zadejte jméno chatu ke kterému se chcete připojit.
 Zadejte jméno chatu.
 Jméno chatu musí být alfanumerické.
