@@ -538,12 +538,14 @@ function handlePresence(presence) {
 	// console.log(presence);
 	var nickname = cleanNickname($(presence).attr('from'));
 	// If invalid nickname, do not process
-
 	if ($(presence).attr('type') === 'error') {
 		if ($(presence).find('error').attr('code') === '409') {
-			loginError = 1;
-			logout();
-			loginFail(Cryptocat.language['loginMessage']['nicknameInUse']);
+			// Delay logout in order to avoid race condition with window animation
+			window.setTimeout(function() {
+				loginError = 1;
+				logout();
+				loginFail(Cryptocat.language['loginMessage']['nicknameInUse']);
+			}, 3000);
 			return false;
 		}
 		return true;
