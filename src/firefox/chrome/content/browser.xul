@@ -12,9 +12,9 @@
 			<key id="cryptocatRunKey" modifiers="alt shift" key="C" oncommand="cryptocat.run()"/>
 		</keyset>
 		
-		<statusbar id="status-bar">
+		<addonbar id="status-bar">
 			<statusbarpanel id="cryptocatStatusbarIcon" class="statusbarpanel-iconic" src="chrome://cryptocat/skin/bar.png" tooltiptext="&opencryptocat;" onclick="cryptocat.run()" />
-		</statusbar>
+		</addonbar>
 		
 		<toolbarpalette id="BrowserToolbarPalette">
 			<toolbarbutton id="cryptocatToolbarButton" label="Cryptocat" tooltiptext="&opencryptocat;" oncommand="cryptocat.run()"/>
