@@ -150,7 +150,7 @@ multiParty.sendMessage = function(message) {
 	var concatenatedCiphertext = '';
 	var sortedUsers = Object.keys(sharedSecrets).sort();
 	for (var i = 0; i !== sortedUsers.length; i++) {
-		var iv = CryptoJS.enc.Hex.parse(Cryptocat.randomString(128, 0, 0, 0, 1)).toString(CryptoJS.enc.Base64);
+		var iv = CryptoJS.enc.Hex.parse(Cryptocat.randomString(24, 0, 0, 0, 1)).toString(CryptoJS.enc.Base64);
 		encrypted[sortedUsers[i]] = {};
 		encrypted[sortedUsers[i]]['message'] = encryptAES(message, sharedSecrets[sortedUsers[i]]['message'], iv);
 		encrypted[sortedUsers[i]]['iv'] = iv;
