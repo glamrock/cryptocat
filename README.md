@@ -28,19 +28,19 @@ Apple's model makes an automated build process difficult.
 ```  
 
 ## Documentation & Wiki
-* [Multiparty Protocol Specification](https://github.com/kaepora/cryptocat/wiki/Multiparty-Protocol-Specification)  
-* [Server Deployment Instructions](https://github.com/kaepora/cryptocat/wiki/Server-Deployment-Instructions)  
-* [Threat Model](https://github.com/kaepora/cryptocat/wiki/Threat-Model)  
-* [Design and Functionality Overview](https://github.com/kaepora/cryptocat/wiki/Design-and-Functionality)  
+* [Multiparty Protocol Specification](https://github.com/cryptocat/cryptocat/wiki/Multiparty-Protocol-Specification)  
+* [Server Deployment Instructions](https://github.com/cryptocat/cryptocat/wiki/Server-Deployment-Instructions)  
+* [Threat Model](https://github.com/cryptocat/cryptocat/wiki/Threat-Model)  
+* [Design and Functionality Overview](https://github.com/cryptocat/cryptocat/wiki/Design-and-Functionality)  
 * [Architecture and Lifecycle](https://project.crypto.cat/documents/a&l.pdf)  
 
 ## Goals
-* XMPP **[DONE]** | [Discussion](https://github.com/kaepora/cryptocat/issues/83), [Library](http://strophe.im)
-* OTR **[DONE]** | [Discussion](https://github.com/kaepora/cryptocat/issues/84), [Library](https://github.com/arlolra/otr)
-* mpOTR | [Discussion](https://github.com/kaepora/cryptocat/issues/82), Spec in progress. Currently relying on the [Cryptocat Multiparty Protocol](https://github.com/kaepora/cryptocat/wiki/Multiparty-Protocol-Specification)  
+* XMPP **[DONE]** | [Discussion](https://github.com/cryptocat/cryptocat/issues/83), [Library](http://strophe.im)
+* OTR **[DONE]** | [Discussion](https://github.com/cryptocat/cryptocat/issues/84), [Library](https://github.com/arlolra/otr)
+* mpOTR | [Discussion](https://github.com/cryptocat/cryptocat/issues/82), Spec in progress. Currently relying on the [Cryptocat Multiparty Protocol](https://github.com/cryptocat/cryptocat/wiki/Multiparty-Protocol-Specification)  
 
 ## Discussion
-We have [a million issues worth discussing here!](https://github.com/kaepora/cryptocat/issues)
+We have [a million issues worth discussing here!](https://github.com/cryptocat/cryptocat/issues)
 
 ## License
 #### Cryptocat is released under the [GNU Affero General Public License (AGPL3)](https://www.gnu.org/licenses/agpl-3.0.html):  
