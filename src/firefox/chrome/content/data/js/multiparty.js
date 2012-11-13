@@ -106,6 +106,7 @@ multiParty.genSharedSecret = function(user) {
 		'message': sharedSecret.substring(0, 64),
 		'hmac': sharedSecret.substring(64, 128)
 	}
+	// console.log(sharedSecrets);
 }
 
 // Get fingerprint fingerprint
@@ -126,16 +127,17 @@ multiParty.genFingerprint = function(user) {
 // Send public key request string.
 multiParty.sendPublicKeyRequest = function(user) {
 	var request = {};
-	request[user] = {};
-	request[user]['message'] = '?:3multiParty:3?:keyRequest';
+	request['text'][user] = {};
+	request['text'][user]['message'] = '?:3multiParty:3?:keyRequest';
 	return JSON.stringify(request);
 }
 
 // Send my public key in response to a public key request.
 multiParty.sendPublicKey = function(user) {
 	var answer = {};
-	answer[user] = {};
-	answer[user]['message'] = '?:3multiParty:3?:publicKey:' + myPublicKey;
+	answer['text'] = {}
+	answer['text'][user] = {};
+	answer['text'][user]['message'] = '?:3multiParty:3?:publicKey:' + myPublicKey;
 	return JSON.stringify(answer);
 }
 
@@ -144,21 +146,34 @@ multiParty.userCount = function() {
 	return Object.keys(sharedSecrets).length;
 }
 
+// Generate messasge hash
+multiParty.messageHash = function(message) {
+	for (var i = 0; i !== 32; i++) {
+		message = CryptoJS.SHA512(message);
+	}
+	return message.toString(CryptoJS.enc.Base64);
+}
+
 // Send message.
 multiParty.sendMessage = function(message) {
 	var encrypted = {};
+	encrypted['text'] = {};
+	encrypted['hash'] = message;
 	var concatenatedCiphertext = '';
-	var sortedUsers = Object.keys(sharedSecrets).sort();
-	for (var i = 0; i !== sortedUsers.length; i++) {
+	var sortedRecipients = Object.keys(sharedSecrets).sort();
+	for (var i = 0; i !== sortedRecipients.length; i++) {
 		var iv = CryptoJS.enc.Hex.parse(Cryptocat.randomString(24, 0, 0, 0, 1)).toString(CryptoJS.enc.Base64);
-		encrypted[sortedUsers[i]] = {};
-		encrypted[sortedUsers[i]]['message'] = encryptAES(message, sharedSecrets[sortedUsers[i]]['message'], iv);
-		encrypted[sortedUsers[i]]['iv'] = iv;
-		concatenatedCiphertext += encrypted[sortedUsers[i]]['message'];
+		encrypted['text'][sortedRecipients[i]] = {};
+		encrypted['text'][sortedRecipients[i]]['message'] = encryptAES(message, sharedSecrets[sortedRecipients[i]]['message'], iv);
+		encrypted['text'][sortedRecipients[i]]['iv'] = iv;
+		concatenatedCiphertext += encrypted['text'][sortedRecipients[i]]['message'] + encrypted['text'][sortedRecipients[i]]['iv'];
 	}
-	for (var user in sharedSecrets) {
-		encrypted[user]['hmac'] = HMAC(concatenatedCiphertext, sharedSecrets[user]['hmac']);
+	for (var i = 0; i !== sortedRecipients.length; i++) {
+		encrypted['text'][sortedRecipients[i]]['hmac'] = HMAC(concatenatedCiphertext, sharedSecrets[sortedRecipients[i]]['hmac']);
+		encrypted['hash'] += encrypted['text'][sortedRecipients[i]]['hmac'];
 	}
+	encrypted['hash'] = multiParty.messageHash(encrypted['hash']);
+	// console.log(encrypted);
 	return JSON.stringify(encrypted);
 }
 
@@ -171,12 +186,12 @@ multiParty.receiveMessage = function(sender, myName, message) {
 		console.log('multiParty: failed to parse message object');
 		return false;
 	}
-	if (typeof(message[myName]) === 'object' &&
-		typeof(message[myName]['message']) === 'string') {
+	if (typeof(message['text'][myName]) === 'object' &&
+		typeof(message['text'][myName]['message']) === 'string') {
 		// Detect public key reception, store public key and generate shared secret
-		if (message[myName]['message'].match(multiParty.publicKeyRegEx)) {
+		if (message['text'][myName]['message'].match(multiParty.publicKeyRegEx)) {
 			if (!publicKeys.hasOwnProperty(sender)) {
-				var publicKey = message[myName]['message'].substring(27);
+				var publicKey = message['text'][myName]['message'].substring(27);
 				if (checkSize(publicKey)) {
 					publicKeys[sender] = publicKey;
 					multiParty.genFingerprint(sender);
@@ -186,19 +201,30 @@ multiParty.receiveMessage = function(sender, myName, message) {
 			return false;
 		}
 		// Detect public key request and send public key
-		else if (message[myName]['message'].match(multiParty.requestRegEx)) {
+		else if (message['text'][myName]['message'].match(multiParty.requestRegEx)) {
 			multiParty.sendPublicKey(sender);
 		}
 		// Decrypt message
 		else if (sharedSecrets.hasOwnProperty(sender)) {
+			// console.log(message);
 			var concatenatedCiphertext = '';
-			var sortedUsers = Object.keys(message).sort();
-			for (var i = 0; i !== sortedUsers.length; i++) {
-				concatenatedCiphertext += message[sortedUsers[i]]['message'];
+			var sortedRecipients = Object.keys(message['text']).sort();
+			for (var i = 0; i !== sortedRecipients.length; i++) {
+				concatenatedCiphertext += message['text'][sortedRecipients[i]]['message'] + message['text'][sortedRecipients[i]]['iv'];
 			}
-			if (message[myName]['hmac'] === HMAC(concatenatedCiphertext, sharedSecrets[sender]['hmac'])) {
-				message = decryptAES(message[myName]['message'], sharedSecrets[sender]['message'], message[myName]['iv']);
-				return message;
+			if (message['text'][myName]['hmac'] === HMAC(concatenatedCiphertext, sharedSecrets[sender]['hmac'])) {
+				var plaintext = decryptAES(message['text'][myName]['message'], sharedSecrets[sender]['message'], message['text'][myName]['iv']);
+				var messageHash = plaintext;
+				for (var i = 0; i !== sortedRecipients.length; i++) {
+					messageHash += message['text'][sortedRecipients[i]]['hmac'];
+				}
+				if (multiParty.messageHash(messageHash) === message['hash']) {
+					return plaintext;
+				}
+				else {
+					console.log('multiParty: message hash failure');
+					return false;
+				}
 			}
 			else {
 				console.log('multiParty: HMAC failure');
