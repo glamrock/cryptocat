@@ -156,6 +156,7 @@ multiParty.messageHash = function(message) {
 
 // Send message.
 multiParty.sendMessage = function(message) {
+	message += Cryptocat.randomString(64, 1, 1, 1, 0);
 	var encrypted = {};
 	encrypted['text'] = {};
 	encrypted['hash'] = message;
@@ -219,7 +220,7 @@ multiParty.receiveMessage = function(sender, myName, message) {
 					messageHash += message['text'][sortedRecipients[i]]['hmac'];
 				}
 				if (multiParty.messageHash(messageHash) === message['hash']) {
-					return plaintext;
+					return plaintext.substring(0, plaintext.length - 64);
 				}
 				else {
 					console.log('multiParty: message hash failure');
