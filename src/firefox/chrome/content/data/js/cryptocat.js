@@ -34,7 +34,7 @@ Language.set(language);
 try {
 	localStorage.getItem('test');
 }
-catch(err) {
+catch(error) {
 	localStorageOn = 0;
 }
 
@@ -154,15 +154,19 @@ function initiateConversation(conversation) {
 // OTR functions
 // Handle incoming messages
 var uicb = function(buddy) {
-  return function(message) {
-	addToConversation(message, buddy, buddy);
-  }
+	return function(error, message) {
+		if (error) {
+			return console.log('OTR error: ' + error);
+		}
+		addToConversation(message, buddy, buddy);
+	}
 }
+
 // Handle outgoing messages
 var iocb = function(buddy) {
-  return function(message) {
-    conn.muc.message(conversationName + '@' + conferenceServer, buddy, message, null);
-  }
+	return function(message) {
+		conn.muc.message(conversationName + '@' + conferenceServer, buddy, message, null);
+	}
 }
 
 // Creates a template for the conversation info bar at the top of each conversation.
