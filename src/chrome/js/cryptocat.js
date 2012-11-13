@@ -213,6 +213,7 @@ function switchConversation(buddy) {
 
 // Handles login failures
 function loginFail(message) {
+	buddyNotifications = 0;
 	$('#loginInfo').text(message);
 	$('#bubble').animate({'left': '+=5px'}, 130)
 		.animate({'left': '-=10px'}, 130)
@@ -1200,15 +1201,13 @@ function login(username, password) {
 								bindBuddyClick('main-Conversation');
 								window.setTimeout(function() {
 									$('#buddy-main-Conversation').click();
+									buddyNotifications = 1;
 								}, 500);
 							}
 						});
 					});
 				});
 			});
-			window.setTimeout(function() {
-				buddyNotifications = 1;
-			}, 10000);
 			loginError = 0;
 		}
 		else if (status === Strophe.Status.DISCONNECTED) {
@@ -1265,6 +1264,7 @@ function login(username, password) {
 
 // Logout function
 function logout() {
+	buddyNotifications = 0;
 	conn.muc.leave(conversationName + '@' + conferenceServer);
 	conn.disconnect();
 }
