@@ -220,7 +220,13 @@ multiParty.receiveMessage = function(sender, myName, message) {
 					messageHash += message['text'][sortedRecipients[i]]['hmac'];
 				}
 				if (multiParty.messageHash(messageHash) === message['hash']) {
-					return plaintext.substring(0, plaintext.length - 64);
+					if (plaintext.length >= 64) {
+						return plaintext.substring(0, plaintext.length - 64);
+					}
+					else {
+						console.log('multiParty: invalid plaintext size');
+						return false;
+					}
 				}
 				else {
 					console.log('multiParty: message hash failure');
