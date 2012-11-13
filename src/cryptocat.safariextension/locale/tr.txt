@@ -1,0 +1,49 @@
+ltr
+Helvetica, Arial, Verdana
+Herkes için Güvenli İletişim.
+Cryptocat, arkadaşlarınızla kolayca özel sohbetler yapabileceğiniz biranlık mesajlaşma platformudur. Mesajlar ekranınızdan gönderilmeden önce şifrelenir ve böylece herhangi bir üçüncü şahıs tarafından hatta bizim tarafımızdan bile görülmesi engellenir.
+Cryptocat açık kaynak standartları üzerine kurulu ücretsiz bir yazılımdır. Bizim geliştirme sürecimiz, gönüllü ve heyecanlı bir topluluk tarafından sürekli denenme altındadır. <a href="https://project.crypto.cat" target="_blank">Cryptocat Projesi hakkında daha fazla bilgi edinin</a>.
+Proje
+Blog
+Kaynak
+Özel sunucu
+Yeniden kur
+sohbet adı
+takma ad
+bağlan
+Konuşma için bir isim girin ve konuşmak istediğiniz insanlarla bu ismi paylaşın.
+Katılmak için bir sohbet adı girin
+Lütfen bir sohbet adı girin
+Sohbet adı alfasayısal olmalıdır. 
+Lütfen bir kullanıcı ismi girin.
+Takma ad alfasayısal olmalıdır.
+Kulanımda olan takma ad.
+Doğrulama hatası
+Bağlantı başarısız oldu
+Cryptocat kullandığınız için teşekkür ederiz.
+Kayıt ediliyor
+BağlanıyorLütfen bir kaç saniye mümkün olduğunca rastgele tuşlara basın...
+Bağlandı.
+Lütfen bir kaç saniye mümkün olduğunca rastgele tuşlara basın.
+Şifreleme anahtarları oluşturuluyor...
+Grup sohbeti. Özel sohbet için bir kullanıcı üzerine tıklayınız.
+OTR parmak izi (özel konuşmalar için):
+Grup sohbeti parmak izi 
+Benim şifreleme anahtarlarımı yeniden kur.
+Şifreleme anahtarlarını yeniden kurmak için bağlantınız kesilecektir. Parmak izleriniz de değişecektir.
+Devam et
+Durum: Mevcut
+Durup: Uzakta
+Bilgilerim
+Masaüstü bildirimleri açık
+Masaüstü bildirimleri kapalı
+Ses bildirimleri açık
+Ses bildirimleri kapalı
+Benim takma adımı hatırla.
+Takma adımı hatırlama
+Çıkış
+Bilgi ekranı
+Şifrelenmiş dosya gönder
+Resmi görüntüle
+Bilgi indir
+Sohbet
