@@ -4,6 +4,7 @@
 var publicKeys = {};
 var sharedSecrets = {};
 var fingerprints = {};
+var usedIVs = [];
 var myPrivateKey;
 var myPublicKey;
 
@@ -146,9 +147,9 @@ multiParty.userCount = function() {
 	return Object.keys(sharedSecrets).length;
 }
 
-// Generate messasge hash
-multiParty.messageHash = function(message) {
-	for (var i = 0; i !== 32; i++) {
+// Generate messasge tag
+multiParty.messageTag = function(message) {
+	for (var i = 0; i !== 8; i++) {
 		message = CryptoJS.SHA512(message);
 	}
 	return message.toString(CryptoJS.enc.Base64);
@@ -159,11 +160,16 @@ multiParty.sendMessage = function(message) {
 	message += Cryptocat.randomString(64, 1, 1, 1, 0);
 	var encrypted = {};
 	encrypted['text'] = {};
-	encrypted['hash'] = message;
+	encrypted['tag'] = message;
 	var concatenatedCiphertext = '';
 	var sortedRecipients = Object.keys(sharedSecrets).sort();
 	for (var i = 0; i !== sortedRecipients.length; i++) {
 		var iv = CryptoJS.enc.Hex.parse(Cryptocat.randomString(24, 0, 0, 0, 1)).toString(CryptoJS.enc.Base64);
+		// Do not reuse IVs
+		while (usedIVs.indexOf(iv) >= 0) {
+			var iv = CryptoJS.enc.Hex.parse(Cryptocat.randomString(24, 0, 0, 0, 1)).toString(CryptoJS.enc.Base64);
+		}
+		usedIVs.push(iv);
 		encrypted['text'][sortedRecipients[i]] = {};
 		encrypted['text'][sortedRecipients[i]]['message'] = encryptAES(message, sharedSecrets[sortedRecipients[i]]['message'], iv);
 		encrypted['text'][sortedRecipients[i]]['iv'] = iv;
@@ -171,9 +177,9 @@ multiParty.sendMessage = function(message) {
 	}
 	for (var i = 0; i !== sortedRecipients.length; i++) {
 		encrypted['text'][sortedRecipients[i]]['hmac'] = HMAC(concatenatedCiphertext, sharedSecrets[sortedRecipients[i]]['hmac']);
-		encrypted['hash'] += encrypted['text'][sortedRecipients[i]]['hmac'];
+		encrypted['tag'] += encrypted['text'][sortedRecipients[i]]['hmac'];
 	}
-	encrypted['hash'] = multiParty.messageHash(encrypted['hash']);
+	encrypted['tag'] = multiParty.messageTag(encrypted['tag']);
 	// console.log(encrypted);
 	return JSON.stringify(encrypted);
 }
@@ -214,12 +220,17 @@ multiParty.receiveMessage = function(sender, myName, message) {
 				concatenatedCiphertext += message['text'][sortedRecipients[i]]['message'] + message['text'][sortedRecipients[i]]['iv'];
 			}
 			if (message['text'][myName]['hmac'] === HMAC(concatenatedCiphertext, sharedSecrets[sender]['hmac'])) {
-				var plaintext = decryptAES(message['text'][myName]['message'], sharedSecrets[sender]['message'], message['text'][myName]['iv']);
-				var messageHash = plaintext;
-				for (var i = 0; i !== sortedRecipients.length; i++) {
-					messageHash += message['text'][sortedRecipients[i]]['hmac'];
+				if (usedIVs.indexOf(message['text'][myName]['iv']) >= 0) {
+					console.log('multiParty: IV reuse detected, possible replay attack');
+					return false;
 				}
-				if (multiParty.messageHash(messageHash) === message['hash']) {
+				usedIVs.push(message['text'][myName]['iv']);
+				var plaintext = decryptAES(message['text'][myName]['message'], sharedSecrets[sender]['message'], message['text'][myName]['iv']);
+				var messageTag = plaintext;
+				for (var i = 0; i !== sortedRecipients.length; i++) {
+					messageTag += message['text'][sortedRecipients[i]]['hmac'];
+				}
+				if (multiParty.messageTag(messageTag) === message['tag']) {
 					if (plaintext.length >= 64) {
 						return plaintext.substring(0, plaintext.length - 64);
 					}
@@ -229,7 +240,7 @@ multiParty.receiveMessage = function(sender, myName, message) {
 					}
 				}
 				else {
-					console.log('multiParty: message hash failure');
+					console.log('multiParty: message tag failure');
 					return false;
 				}
 			}
@@ -257,11 +268,12 @@ multiParty.removeKeys = function(user) {
 	delete fingerprints[user];
 }
 
-// Remove ALL user keys and information
-multiParty.resetKeys = function() {
+// Reset everything except my own key pair
+multiParty.reset = function() {
 	publicKeys = {};
 	sharedSecrets = {};
 	fingerprints = {};
+	usedIVs = [];
 }
 
 })();//:3
