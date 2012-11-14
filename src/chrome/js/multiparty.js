@@ -268,11 +268,12 @@ multiParty.removeKeys = function(user) {
 	delete fingerprints[user];
 }
 
-// Remove ALL user keys and information
-multiParty.resetKeys = function() {
+// Reset everything except my own key pair
+multiParty.reset = function() {
 	publicKeys = {};
 	sharedSecrets = {};
 	fingerprints = {};
+	usedIVs = [];
 }
 
 })();//:3
