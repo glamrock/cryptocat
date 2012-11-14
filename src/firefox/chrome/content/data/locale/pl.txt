@@ -11,7 +11,8 @@ Resetuj
 Nazwa rozmowy
 Pseudonim
 Połącz
-Wpisz nazwę kanału i podziel się nią z ludźmi, z którymi chcesz porozmawiać.
+Wpisz tytuł konwersacji i udostępnij ją osobom, z którymi zamierzasz
+rozmawiać.
 Wpisz nazwę rozmowy, do której chcesz dołączyć.
 Proszę wpisać nazwę rozmowy.
 Nazwa rozmowy może być tylko alfanumeryczna.
