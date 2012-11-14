@@ -1235,7 +1235,7 @@ function login(username, password) {
 							});
 							$('#conversationWindow').text('');
 							otrKeys = {};
-							multiParty.resetKeys();
+							multiParty.reset();
 							conversations = {};
 							loginCredentials = [];
 							currentConversation = 0;
