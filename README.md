@@ -7,9 +7,11 @@ Cryptocat is a browser-based XMPP client that provides multi-user (and private) 
 
 ## Target Platforms
 ##### Google Chrome: `src/chrome/`
-Run `make chrome` to build a Google Chrome-loadable .zip extension (or just .zip the directory.)
+Run `make chrome` to build a Google Chrome-loadable .zip extension (or just .zip the directory.)  
+Also available from the [Chrome Web Store](https://chrome.google.com/webstore/detail/cryptocat/gonbigodpnfghidmnphnadhepmbabhij).  
 ##### Mozilla Firefox: `src/firefox/`
 Run `make firefox` to build a Mozilla Firefox-loadable .xpi extension (or just .zip the directory and change the extension to .xpi.)
+Also available from [Mozilla Firefox Addons](https://addons.mozilla.org/en-US/firefox/addon/cryptocat/).  
 ##### Apple Safari: `src/cryptocat.safariplugin/`
 Apple's model makes an automated build process difficult.  
 
@@ -61,12 +63,15 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 The full license text is included in `LICENSE.txt`.  
 
-## Notes
-* Builds are available in `release/`.
+## Builds
+* Builds are available in `release/`.  
+
+## Changelog
+Please review `CHANGELOG.md` for an account of the changes made with each version update.  
 
 ## Contributors
 * **Lead Developer**: Nadim Kobeissi  
-* **Development Contributors**: Jacob Appelbaum, Joseph Bonneau, Arlo Breault, Arturo Filasto, Fabio Pietrosanti  
+* **Development Contributors**: Jacob Appelbaum, Joseph Bonneau, Arlo Breault, Daniel "koolfy" Faucon, Arturo Filasto, Fabio Pietrosanti  
 * **Multimedia Contributors**: A.J. Korkidakis, P.J. Onori, Rich Vreeland  
   
 With a warm thanks to the hard-working contributors who wish to remain anonymous.
