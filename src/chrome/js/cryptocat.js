@@ -117,27 +117,16 @@ function currentTime(seconds) {
 // Plays the audio file defined by the `audio` variable.
 // Plays .webm files for Chrome and Firefox, .mp3 for Safari
 function playSound(audio) {
-	function createSound(audio) {
-		soundEmbed = document.createElement('audio');
-		soundEmbed.setAttribute('style', 'display: none;');
-		soundEmbed.setAttribute('autoplay', true);
-		if (navigator.userAgent.match(/(Chrome)|(Firefox)/)) {
-			soundEmbed.setAttribute('src', 'snd/' + audio + '.webm');
-			soundEmbed.setAttribute('type', 'audio/webm');
-		}
-		else {
-			soundEmbed.setAttribute('src', 'snd/' + audio + '.mp3');
-			soundEmbed.setAttribute('type', 'audio/mp3');
-		}
-	}
-	if (!soundEmbed) {
-		createSound(audio);
+	var soundEmbed = document.createElement('audio');
+	soundEmbed.setAttribute('style', 'display: none;');
+	soundEmbed.setAttribute('autoplay', true);
+	if (navigator.userAgent.match(/(Chrome)|(Firefox)/)) {
+		soundEmbed.setAttribute('src', 'snd/' + audio + '.webm');
 	}
 	else {
-		document.body.removeChild(soundEmbed);
-		soundEmbed = null;
-		createSound(audio);
+		soundEmbed.setAttribute('src', 'snd/' + audio + '.mp3');
 	}
+	$('audio').remove();
 	document.body.appendChild(soundEmbed);
 }
 
@@ -934,6 +923,7 @@ $('#audio').click(function() {
 		$(this).attr('src', 'img/noSound.png');
 		$(this).attr('alt', Cryptocat.language['chatWindow']['audioNotificationsOff']);
 		$(this).attr('title', Cryptocat.language['chatWindow']['audioNotificationsOff']);
+		$('audio').remove();
 		audioNotifications = 0;
 	}
 });
