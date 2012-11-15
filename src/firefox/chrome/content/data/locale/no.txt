@@ -24,8 +24,7 @@ Takk for at du bruker Cryptocat.
 Registrerer...
 Kobler til...
 Tilkoblet.
-Vennligst utfør tastetrykk på tastaturet så tilfeldig som mulig i noen sekunder. 
-
+Vennligst utfør tastetrykk på tastaturet så tilfeldig som mulig i noen sekunder.
 Genererer krypteringsnøkler...
 Gruppesamtale. Klikk på en bruker for å snakke privat.
 OTR fingeravtrykk (for private samtaler):
