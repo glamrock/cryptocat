@@ -1,5 +1,10 @@
 ﻿## Changelog
 
+#### Cryptocat 2.0.25
+**Nov. 15 2012**
+- Fixed inaccuracies in Turkish, Norwegian and Polish.
+- Updated OTR.js library to version 0.0.11.
+
 #### Cryptocat 2.0.24
 **Nov. 14 2012**
 - Added Urdu, Turkish and Norwegian translations.
