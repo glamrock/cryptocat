@@ -1,5 +1,19 @@
 ﻿## Changelog
 
+#### Cryptocat 2.0.24
+**Nov. 14 2012**
+- Added Urdu, Turkish and Norwegian translations.
+- Added a tooltip-based tutorial.
+- Multiparty protocol improvements:
+	* Added replay attack prevention.
+	* Added message tags to ensure all participants receive same plaintext per message.
+	* Improved multiparty protocol specification details.
+- Firefox performance improvements.
+- Fixed bug that would cause "nickname in use" error to show improperly.
+- Updated source code repository links.
+- Updated OTR.js library to version 0.0.10.
+- Fixed a buddy notification aesthetic bug.
+
 #### Cryptocat 2.0.23
 **Nov. 8 2012**
 - Fixed a bug where URLs would not display properly in messages.
