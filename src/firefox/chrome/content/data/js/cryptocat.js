@@ -115,24 +115,29 @@ function currentTime(seconds) {
 }
 
 // Plays the audio file defined by the `audio` variable.
+// Plays .webm files for Chrome and Firefox, .mp3 for Safari
 function playSound(audio) {
 	function createSound(audio) {
 		soundEmbed = document.createElement('audio');
-		soundEmbed.setAttribute('type', 'audio/webm');
-		soundEmbed.setAttribute('src', audio);
 		soundEmbed.setAttribute('style', 'display: none;');
 		soundEmbed.setAttribute('autoplay', true);
+		if (navigator.userAgent.match(/(Chrome)|(Firefox)/)) {
+			soundEmbed.setAttribute('src', 'snd/' + audio + '.webm');
+			soundEmbed.setAttribute('type', 'audio/webm');
+		}
+		else {
+			soundEmbed.setAttribute('src', 'snd/' + audio + '.mp3');
+			soundEmbed.setAttribute('type', 'audio/mp3');
+		}
 	}
 	if (!soundEmbed) {
 		createSound(audio);
 	}
 	else {
 		document.body.removeChild(soundEmbed);
-		soundEmbed.removed = true;
 		soundEmbed = null;
 		createSound(audio);
 	}
-	soundEmbed.removed = false;
 	document.body.appendChild(soundEmbed);
 }
 
@@ -363,12 +368,12 @@ function addToConversation(message, sender, conversation) {
 	initiateConversation(conversation);
 	if (sender === myNickname) {
 		lineDecoration = 1;
-		audioNotification = 'snd/msgSend.webm';
+		audioNotification = 'msgSend';
 		message = Strophe.xmlescape(message);
 	}
 	else {
 		lineDecoration = 2;
-		audioNotification = 'snd/msgGet.webm';
+		audioNotification = 'msgGet';
 		if (desktopNotifications) {
 			if ((conversation !== currentConversation) || (!windowFocus)) {
 				Notification.createNotification('img/keygen.gif', sender, message);
@@ -413,11 +418,11 @@ function buddyNotification(buddy, join) {
 	var timeStamp = '<span class="timeStamp">' + currentTime(0) + '</span>';
 	if (join) {
 		var status = '<div class="userJoin"><strong>+</strong>' + buddy + '</div>';
-		var audioNotification = 'snd/userOnline.webm';
+		var audioNotification = 'userOnline';
 	}
 	else {
 		var status = '<div class="userLeave"><strong>-</strong>' + buddy + '</div>';
-		var audioNotification = 'snd/userOffline.webm';
+		var audioNotification = 'userOffline';
 	}
 	var message = '<div class="Line2">' + timeStamp + status + '</div>';
 	conversations['main-Conversation'] += message;
