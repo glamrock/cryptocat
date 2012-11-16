@@ -2,7 +2,7 @@ ltr
 Helvetica, Arial, Verdana
 Conversations Privées Pour Tout le Monde.
 Cryptocat est une plateforme de messagerie instantanée qui vous permet facilement d'avoir des conversations privées avec des amis. Les messages sont cryptés avant de quitter votre écran et sont protégés contre leur lecture par un tiers, même de nous.
-Cryptocat est un logiciel libre construit sur ​​des standards ouverts. Notre processus de développement est en cours d\'examen continu par une communauté de bénévoles et de passionnés. <a href="https://project.crypto.cat" target="_blank">Apprenez plus sur le projet Cryptocat</a>.
+Cryptocat est un logiciel libre construit sur ​​des standards ouverts. Notre processus de développement est en cours d'examen continu par une communauté de bénévoles et de passionnés. <a href="https://project.crypto.cat" target="_blank">Apprenez-en plus sur le projet Cryptocat</a>.
 Projet
 Blog
 Source
