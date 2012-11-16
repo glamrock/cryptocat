@@ -115,19 +115,8 @@ function currentTime(seconds) {
 }
 
 // Plays the audio file defined by the `audio` variable.
-// Plays .webm files for Chrome and Firefox, .mp3 for Safari
 function playSound(audio) {
-	var soundEmbed = document.createElement('audio');
-	soundEmbed.setAttribute('style', 'display: none;');
-	soundEmbed.setAttribute('autoplay', true);
-	if (navigator.userAgent.match(/(Chrome)|(Firefox)/)) {
-		soundEmbed.setAttribute('src', 'snd/' + audio + '.webm');
-	}
-	else {
-		soundEmbed.setAttribute('src', 'snd/' + audio + '.mp3');
-	}
-	$('audio').remove();
-	document.body.appendChild(soundEmbed);
+	(new Audio('snd/' + audio + '.webm')).play();
 }
 
 // Scrolls down the chat window to the bottom in a smooth animation.
@@ -912,6 +901,11 @@ else {
 }
 
 // Audio notifications button
+// If using Safari, remove this button
+// (Since Safari does not support audio notifications)
+if (!navigator.userAgent.match(/(Chrome)|(Firefox)/)) {
+	$('#audio').remove();
+}
 $('#audio').click(function() {
 	if ($(this).attr('title') === Cryptocat.language['chatWindow']['audioNotificationsOff']) {
 		$(this).attr('src', 'img/sound.png');
@@ -923,7 +917,6 @@ $('#audio').click(function() {
 		$(this).attr('src', 'img/noSound.png');
 		$(this).attr('alt', Cryptocat.language['chatWindow']['audioNotificationsOff']);
 		$(this).attr('title', Cryptocat.language['chatWindow']['audioNotificationsOff']);
-		$('audio').remove();
 		audioNotifications = 0;
 	}
 });
