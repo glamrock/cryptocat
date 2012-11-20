@@ -1,5 +1,10 @@
 ﻿## Changelog
 
+#### Cryptocat 2.0.26
+**Nov. 20 2012**
+- Fixed bug where fingerprints would sometimes not appear.
+- Version number is now displayed on login screen.
+
 #### Cryptocat 2.0.25
 **Nov. 15 2012**
 - Fixed inaccuracies in Turkish, Norwegian and Polish.
