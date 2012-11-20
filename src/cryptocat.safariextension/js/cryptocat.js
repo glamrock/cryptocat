@@ -1,5 +1,9 @@
 ﻿$(window).ready(function() {
 
+/* Version number */
+Cryptocat.version = '2.0.26';
+$('#version').text(Cryptocat.version);
+
 /* Configuration */
 var defaultDomain = 'crypto.cat'; // Domain name to connect to for XMPP.
 var defaultConferenceServer = 'conference.crypto.cat'; // Address of the XMPP MUC server.
@@ -1181,6 +1185,7 @@ function login(username, password) {
 				$('#bubble').animate({'margin-top': '1%'}, function() {
 					$('#loginLinks').fadeOut();
 					$('#info').fadeOut();
+					$('#version').fadeOut();
 					$('#options').fadeOut();
 					$('#loginForm').fadeOut();
 					$('#bubble').animate({'width': '900px'});
@@ -1234,6 +1239,7 @@ function login(username, password) {
 							$('#nickname').val(Cryptocat.language['loginWindow']['nickname']);
 							$('#info').fadeIn();
 							$('#loginLinks').fadeIn();
+							$('#version').fadeIn();
 							$('#options').fadeIn();
 							$('#loginForm').fadeIn('fast', function() {
 								$('#conversationName').select();

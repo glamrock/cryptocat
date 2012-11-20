@@ -154,6 +154,14 @@ img.logo {
 	right: 0;
 	bottom: 0;
 }
+#bubble #version {
+	position: absolute;
+	left: 14px;
+	bottom: 0px;
+	font-size: 7px;
+	font-family: monospace;
+	color: #888;
+}
 #bubble #languages {
 	background-color: #222;
 	color: #97CEEC;
