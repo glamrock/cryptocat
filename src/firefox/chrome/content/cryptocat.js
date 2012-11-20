@@ -26,7 +26,7 @@ var cryptocat = function() {
 				cryptocatRandom.WeaveCrypto.initNSS(ctypes.libraryName('nss3'));
 			}
 			catch(err) {
-				cryptocatRandom.WeaveCrypto.path = Services.dirsvc.get('GreD', Ci.nsILocalFile);
+				cryptocatRandom.WeaveCrypto.path = Services.dirsvc.get('GreD', Ci.nsIFile);
 				cryptocatRandom.WeaveCrypto.path.append(ctypes.libraryName('nss3'));
 				cryptocatRandom.WeaveCrypto.initNSS(WeaveCrypto.path.path);
 			}

@@ -6,6 +6,7 @@
 - Version number is now displayed on login screen.
 - Fix French translation typos.
 - Update jQuery to 1.8.3.
+- Replaced call to nsILocalFile with nsIFile (Firefox-specific).
 
 #### Cryptocat 2.0.25
 **Nov. 15 2012**
