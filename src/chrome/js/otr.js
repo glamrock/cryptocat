@@ -557,7 +557,7 @@ var OTR = {}, DSA = {}
     for (i = 0; i < repeat; i++) {
 
       // Pick bases at random, instead of starting at 2
-      a = lowprimes[Math.floor(Math.random() * lowprimes.length)]
+      a = lowprimes[Math.floor(Cryptocat.random() * lowprimes.length)]
       a = BigInt.int2bigInt(a, 0)
 
       y = BigInt.powMod(a, r, x)
@@ -739,6 +739,7 @@ var OTR = {}, DSA = {}
       var pk = this.packPublic()
       if (this.type === KEY_TYPE) pk = pk.substring(2)
       pk = CryptoJS.enc.Latin1.parse(pk)
+      $(document).trigger('otrFingerprintReady'); // Added by Nadim for Cryptocat
       return CryptoJS.SHA1(pk).toString(CryptoJS.enc.Hex)
     }
 
