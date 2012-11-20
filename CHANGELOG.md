@@ -4,6 +4,8 @@
 **Nov. 20 2012**
 - Fixed bug where fingerprints would sometimes not appear.
 - Version number is now displayed on login screen.
+- Fix French translation typos.
+- Update jQuery to 1.8.3.
 
 #### Cryptocat 2.0.25
 **Nov. 15 2012**
