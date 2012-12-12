@@ -1,4 +1,4 @@
-﻿ltr
+ltr
 Helvetica, Arial, Verdana
 Private Conversations for Everyone.
 Cryptocat is an instant messaging platform that lets you easily have private conversations with friends. Messages are encrypted before leaving your screen and are protected from being viewed by any third party, even from us.

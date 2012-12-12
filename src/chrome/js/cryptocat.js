@@ -1,4 +1,4 @@
-﻿$(window).ready(function() {
+$(window).ready(function() {
 
 /* Version number */
 Cryptocat.version = '2.0.26';
