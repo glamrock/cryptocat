@@ -1,4 +1,4 @@
-﻿#Cryptocat
+#Cryptocat
 #### Browser Instant Messaging Platform with Accessible, Encrypted Messaging
 #### Experimental software: Don't trust with your life! Peer review appreciated.
 
@@ -46,7 +46,7 @@ We have [a million issues worth discussing here!](https://github.com/cryptocat/c
 
 ## License
 #### Cryptocat is released under the [GNU Affero General Public License (AGPL3)](https://www.gnu.org/licenses/agpl-3.0.html):  
-Copyright `(C)` 2011, 2012 Nadim Kobeissi <nadim@crypto.cat>  
+Copyright `(C)` 2011 - 2013 Nadim Kobeissi <nadim@crypto.cat>  
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
