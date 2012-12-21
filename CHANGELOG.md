@@ -1,4 +1,9 @@
-﻿## Changelog
+## Changelog
+
+#### Cryptocat 2.0.27
+**Dec. 12 2012**
+- Added Estonian, Esperanto, Japanese, Korean, Latvian and Khmer
+translations.
 
 #### Cryptocat 2.0.26
 **Nov. 20 2012**
