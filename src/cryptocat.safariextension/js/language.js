@@ -105,6 +105,8 @@ Language.buildObject = function(locale, language) {
 // Deliver new strings and refresh login page
 Language.refresh = function(languageObject) {
 	Cryptocat.language = languageObject;
+	if (languageObject['language'] === 'bo') { $('body').css('font-size', '12px') }
+	else { $('body').css('font-size', '11px') }
 	$('html').attr('dir', languageObject['direction']);
 	$('body').css('font-family', languageObject['font-family']);
 	$('#introHeader').text(languageObject['loginWindow']['introHeader']);
