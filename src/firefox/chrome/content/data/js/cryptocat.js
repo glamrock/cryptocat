@@ -24,7 +24,6 @@ var audioNotifications = 0;
 var desktopNotifications = 0;
 var buddyNotifications = 0;
 var loginError = 0;
-var windowFocus = 1;
 var currentStatus = 'online';
 var soundEmbed = null;
 var conn, conversationName, myNickname, myKey;
@@ -75,15 +74,6 @@ if (localStorageOn) {
 		multiParty.genPublicKey();
 	}
 }
-
-// Handle window focus/blur
-$(window).blur(function() {
-	windowFocus = 0;
-});
-$(window).focus(function() {
-	windowFocus = 1;
-	document.title = 'Cryptocat';
-});
 
 // Initialize workers
 var keyGenerator = new Worker('js/keygenerator.js');
@@ -356,10 +346,8 @@ function addToConversation(message, sender, conversation) {
 	else {
 		lineDecoration = 2;
 		audioNotification = 'msgGet';
-		if (desktopNotifications) {
-			if ((conversation !== currentConversation) || (!windowFocus)) {
-				Notification.createNotification('img/keygen.gif', sender, message);
-			}
+		if (!document.hasFocus()) {
+			desktopNotification('img/keygen.gif', sender, message);
 		}
 		message = Strophe.xmlescape(message);
 		if (message.match(myNickname)) {
@@ -394,6 +382,12 @@ function addToConversation(message, sender, conversation) {
 	}
 }
 
+function desktopNotification(image, title, body) {
+	if (desktopNotifications) {
+		(window.webkitNotifications.createNotification(image, title, body)).show();
+	}
+}
+
 // Add a join/part notification to the main conversation window.
 // If 'join === 1', shows join notification, otherwise shows part
 function buddyNotification(buddy, join) {
@@ -414,11 +408,9 @@ function buddyNotification(buddy, join) {
 	if (($('#conversationWindow')[0].scrollHeight - $('#conversationWindow').scrollTop()) < 1500) {	
 		scrollDown(600);
 	}
-	//if (desktopNotifications) {
-	//	if ((currentConversation !== 'main-Conversation') || (!windowFocus)) {
-	//		Notification.createNotification('img/keygen.gif', buddy, status);
-	//	}
-	//}
+	if (!document.hasFocus()) {
+		desktopNotification('img/keygen.gif', buddy, '');
+	}
 	if (audioNotifications) {
 		playSound(audioNotification);
 	}
@@ -879,9 +871,7 @@ $('#myInfo').click(function() {
 });
 
 // Desktop notifications button
-// If not using Chrome, remove this button
-// (Since only Chrome supports desktop notifications)
-if (!navigator.userAgent.match('Chrome')) {
+if (!window.webkitNotifications) {
 	$('#notifications').remove();
 }
 else {
@@ -891,8 +881,8 @@ else {
 			$(this).attr('alt', Cryptocat.language['chatWindow']['desktopNotificationsOn']);
 			$(this).attr('title', Cryptocat.language['chatWindow']['desktopNotificationsOn']);
 			desktopNotifications = 1;
-			if (Notification.checkPermission()) {
-				Notification.requestPermission();
+			if (window.webkitNotifications.checkPermission()) {
+				window.webkitNotifications.requestPermission(function() {});
 			}
 		}
 		else {
