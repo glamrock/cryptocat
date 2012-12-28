@@ -1,4 +1,4 @@
-﻿var CatFacts = function() {};
+var CatFacts = function() {};
 (function(){
 var lastCatFact;
 
@@ -52,7 +52,8 @@ var interestingFacts = [
 'Cats sweat only through their paws.',
 'When cats are happy or pleased, they momentarily squeeze their eyes shut.',
 'Cryptocat\'s lead developer lives with a cat named Sprite. She is super cute and awesome!',
-'Cats can make over one hundred different vocalizations.'
+'Cats can make over one hundred different vocalizations.',
+'Cats purr at a frequency that promotes bone density and helps with bone healing.'
 ];
 
 CatFacts.getFact = function() {
