@@ -73,7 +73,7 @@ var WeaveCrypto = {
 
   shutdown : function WC_shutdown()
   {
-    this.log("closing nsslib");
+    // this.log("closing nsslib");
     this.nsslib.close();
   },
 
@@ -87,7 +87,7 @@ var WeaveCrypto = {
     nsslib = ctypes.open(this.fullPathToLib);
 
     this.nsslib = nsslib;
-    this.log("Initializing NSS types and function declarations...");
+    // this.log("Initializing NSS types and function declarations...");
 
     this.nss = {};
     this.nss_t = {};
@@ -115,7 +115,7 @@ var WeaveCrypto = {
   },
 
   generateRandomBytes : function(byteCount) {
-    this.log("generateRandomBytes() called");
+    // this.log("generateRandomBytes() called");
 
     // Temporary buffer to hold the generated data.
     var scratch = new ctypes.ArrayType(ctypes.unsigned_char, byteCount)();
