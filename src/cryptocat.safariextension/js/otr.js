@@ -1,6 +1,6 @@
 /*!
 
-  otr.js v0.0.12 - 2013-01-06
+  otr.js v0.0.12-go - 2013-01-11
   (c) 2013 - Arlo Breault <arlolra@gmail.com>
   Freely distributed under the MPL v2.0 license.
 
@@ -603,52 +603,29 @@ var OTR = {}, DSA = {}
     var repeat = bit_lengths[bit_length].repeat
 
     var N = bit_lengths[bit_length].N
-    var TN = HLP.twotothe(N)
 
-    var n = Math.floor((bit_length - 1) / N)
-    var b = (bit_length - 1) % N
-
+    var LM1 = HLP.twotothe(bit_length - 1)
     var bl4 = 4 * bit_length
     var brk = false
 
-    var q, p, seed, u, tmp, counter, offset, k, cspo, V, W, X, LM1, c
+    // go lang http://golang.org/src/pkg/crypto/dsa/dsa.go
+
+    var q, p, rem, counter
     for (;;) {
 
-      seed = BigInt.randBigInt(N)
-
-      tmp = BigInt.dup(seed)
-      inc_(tmp, TN)
-      tmp = SHAbigInt(tmp)
-
-      u = SHAbigInt(seed)
-      u = HLP.bigBitWise('XOR', u, tmp)
-
-      q = HLP.bigBitWise('OR', u, HLP.twotothe(N - 1))
+      q = BigInt.randBigInt(N, 1)
       q[0] |= 1
 
       if (!isProbablePrime(q, repeat)) continue
-
       t('q')
-      offset = BigInt.dup(seed)
-      inc_(offset, TN)
 
       for (counter = 0; counter < bl4; counter++) {
-        W = ZERO
-        cspo = BigInt.addInt(seed, offset)
+        p = BigInt.randBigInt(bit_length, 1)
+        p[0] |= 1
 
-        for (k = 0; k < (n + 1); k ++) {
-          inc_(offset, TN)
-          V = SHAbigInt(offset)
-          if (k === n) V = BigInt.mod(V, HLP.twotothe(b))
-          V = BigInt.mult(V, HLP.twotothe(N * k))
-          W = BigInt.add(W, V)
-        }
-
-        LM1 = HLP.twotothe(bit_length - 1)
-        X = BigInt.add(W, LM1)
-
-        c = BigInt.mod(X, BigInt.mult(q, TWO))
-        p = BigInt.sub(X, BigInt.sub(c, ONE))
+        rem = BigInt.mod(p, q)
+        rem = BigInt.sub(rem, ONE)
+        p = BigInt.sub(p, rem)
 
         if (BigInt.greater(LM1, p)) continue
         if (!isProbablePrime(p, repeat)) continue
@@ -755,7 +732,7 @@ var OTR = {}, DSA = {}
       var pk = this.packPublic()
       if (this.type === KEY_TYPE) pk = pk.substring(2)
       pk = CryptoJS.enc.Latin1.parse(pk)
-      $(document).trigger('otrFingerprintReady'); // Added by Nadim for Cryptocat
+      $(document).trigger('otrFingerprintReady') // Added by Nadim for Cryptocat
       return CryptoJS.SHA1(pk).toString(CryptoJS.enc.Hex)
     }
 
