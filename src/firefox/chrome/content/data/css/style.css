@@ -62,9 +62,10 @@ img.logo {
 #bubble #loginLinks {
 	float: right;
 	word-spacing: 10px;
-	margin: 10px 0 0 0;
+	margin: 10px 17px 0 0;
 	font-weight: bold;
-	width: 145px;
+	text-align: right;
+	width: 200px;
 }
 #bubble .button {
 	display: none;
