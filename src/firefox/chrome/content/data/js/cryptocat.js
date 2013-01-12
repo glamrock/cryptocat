@@ -1067,7 +1067,7 @@ $('#loginForm').submit(function() {
 		dialogBox(progressForm, 0, function() {
 			// We need to pass the web worker some pre-generated random values
 			var randomReserve = [];
-			for (var i = 0; i < 4096; i++) { // Yes, we actually need that many
+			for (var i = 0; i < 50960; i++) { // Yes, we actually need that many
 				randomReserve.push(Cryptocat.random());
 			}
 			keyGenerator.postMessage(randomReserve.join(','));
@@ -1101,7 +1101,7 @@ $('#loginForm').submit(function() {
 				clearInterval(catFactInterval);
 			}
 		}, 10000);
-		$('#fill').animate({'width': '100%', 'opacity': '1'}, 26000, 'linear');
+		$('#fill').animate({'width': '100%', 'opacity': '1'}, 18000, 'linear');
 	}
 	// If everything is okay, then register a randomly generated throwaway XMPP ID and log in.
 	else {
