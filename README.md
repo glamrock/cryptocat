@@ -71,7 +71,7 @@ Please review `CHANGELOG.md` for an account of the changes made with each versio
 
 ## Contributors
 * **Lead Developer**: Nadim Kobeissi  
-* **Development Contributors**: Jacob Appelbaum, Joseph Bonneau, Arlo Breault, Daniel "koolfy" Faucon, Arturo Filasto, Fabio Pietrosanti  
+* **Development Contributors**: Jacob Appelbaum, Joseph Bonneau, Arlo Breault, David Dahl, Daniel "koolfy" Faucon, Arturo Filasto, Tom Lowenthal, Fabio Pietrosanti  
 * **Multimedia Contributors**: A.J. Korkidakis, P.J. Onori, Rich Vreeland  
   
 With a warm thanks to the hard-working contributors who wish to remain anonymous.
