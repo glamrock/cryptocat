@@ -1,5 +1,14 @@
 ## Changelog
 
+#### Cryptocat 2.0.28
+**Jan. 17 2012**
+- Key generation speed improved by over 33%.
+- Desktop notifications are now available in Safari.
+- Korean translation fixes.
+- Tibetan text is now more readable.
+- Added a cat fact.
+- Some aesthetic bug fixes.
+
 #### Cryptocat 2.0.27
 **Dec. 12 2012**
 - Added Estonian, Esperanto, Japanese, Korean, Latvian and Khmer
