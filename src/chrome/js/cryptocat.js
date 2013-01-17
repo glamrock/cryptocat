@@ -1100,7 +1100,7 @@ $('#loginForm').submit(function() {
 				clearInterval(catFactInterval);
 			}
 		}, 10000);
-		$('#fill').animate({'width': '100%', 'opacity': '1'}, 18000, 'linear');
+		$('#fill').animate({'width': '100%', 'opacity': '1'}, 10000, 'linear');
 	}
 	// If everything is okay, then register a randomly generated throwaway XMPP ID and log in.
 	else {
