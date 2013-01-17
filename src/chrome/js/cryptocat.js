@@ -29,6 +29,9 @@ var soundEmbed = null;
 var conn, conversationName, myNickname, myKey;
 if (!groupChat) { $('#buddy-main-Conversation').remove(); }
 
+// Seed RNG
+Math.seedrandom(Cryptocat.generateSeed());
+
 // Initialize language settings
 var language = window.navigator.language.toLowerCase();
 Language.set(language);
@@ -1065,12 +1068,8 @@ $('#loginForm').submit(function() {
 			+ 'alt="" /><p id="progressInfo"><span>'
 			+ Cryptocat.language['loginMessage']['generatingKeys'] + '</span></p>';
 		dialogBox(progressForm, 0, function() {
-			// We need to pass the web worker some pre-generated random values
-			var randomReserve = [];
-			for (var i = 0; i < 50960; i++) { // Yes, we actually need that many
-				randomReserve.push(Cryptocat.random());
-			}
-			keyGenerator.postMessage(randomReserve.join(','));
+			// We need to pass the web worker a pre-generated seed
+			keyGenerator.postMessage(Cryptocat.generateSeed());
 			if (localStorageOn) {
 				localStorage.setItem('multiPartyKey', multiParty.genPrivateKey());
 			}
