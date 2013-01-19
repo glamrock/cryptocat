@@ -32,4 +32,28 @@ Cryptocat.generateSeed = function() {
 	return output;
 }
 
+// Generates a random string of length `size` characters.
+// If `alpha = 1`, random string will contain alpha characters, and so on.
+// If 'hex = 1', all other settings are overridden.
+Cryptocat.randomString = function(size, alpha, uppercase, numeric, hex) {
+	var keyspace = '';
+	var result = '';
+	if (alpha) {
+		keyspace += 'abcdefghijklmnopqrstuvwxyz';
+	}
+	if (uppercase) {
+		keyspace += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	}
+	if (numeric) {
+		keyspace += '0123456789';
+	}
+	if (hex) {
+		keyspace = '0123456789abcdef';
+	}
+	for (var i = 0; i !== size; i++) {
+		result += keyspace[Math.floor(Cryptocat.random()*keyspace.length)];
+	}
+	return result;
+}
+
 })();//:3
