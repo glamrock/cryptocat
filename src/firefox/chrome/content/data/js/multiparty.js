@@ -1,4 +1,4 @@
-﻿var multiParty = function() {};
+var multiParty = function() {};
 (function(){
 
 var publicKeys = {};
@@ -15,7 +15,7 @@ multiParty.publicKeyRegEx = /^\?:3multiParty:3\?:publicKey:(\w|=)+$/;
 // No padding, starting IV of 0
 // Input: UTF8, Output: Base64
 // Key input: hexademical
-encryptAES = function(msg, c, iv) {
+function encryptAES(msg, c, iv) {
 	var opts = {
 		mode: CryptoJS.mode.CTR,
 		iv: CryptoJS.enc.Base64.parse(iv),
@@ -33,7 +33,7 @@ encryptAES = function(msg, c, iv) {
 // No padding, starting IV of 0
 // Input: Base64, Output: UTF8
 // Key input: hexadecimal
-decryptAES = function(msg, c, iv) {
+function decryptAES(msg, c, iv) {
 	msg = CryptoJS.enc.Base64.parse(msg);
 	var opts = {
 		mode: CryptoJS.mode.CTR,
@@ -51,14 +51,14 @@ decryptAES = function(msg, c, iv) {
 // HMAC-SHA512
 // Output: Base64
 // Key input: Hexademical
-HMAC = function (msg, key) {
+function HMAC(msg, key) {
 	return CryptoJS.HmacSHA512(
 		msg, CryptoJS.enc.Hex.parse(key)
 	).toString(CryptoJS.enc.Base64);
 }
 
 // Check if received public key is within safe size parameters
-checkSize = function(publicKey) {
+function checkSize(publicKey) {
 	var z = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4096, 0];
 	publicKey = BigInt.str2bigInt(publicKey, 64);
 	if ((BigInt.equals(publicKey, Curve25519.p25519)

@@ -205,30 +205,6 @@ function loginFail(message) {
 	$('#loginInfo').animate({'color': '#E93028'}, 'fast');
 }
 
-// Generates a random string of length `size` characters.
-// If `alpha = 1`, random string will contain alpha characters, and so on.
-// If 'hex = 1', all other settings are overridden.
-Cryptocat.randomString = function(size, alpha, uppercase, numeric, hex) {
-	var keyspace = '';
-	var result = '';
-	if (alpha) {
-		keyspace += 'abcdefghijklmnopqrstuvwxyz';
-	}
-	if (uppercase) {
-		keyspace += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	}
-	if (numeric) {
-		keyspace += '0123456789';
-	}
-	if (hex) {
-		keyspace = '0123456789abcdef';
-	}
-	for (var i = 0; i !== size; i++) {
-		result += keyspace[Math.floor(Cryptocat.random()*keyspace.length)];
-	}
-	return result;
-}
-
 // Simply shortens a string `string` to length `length.
 // Adds '..' to delineate that string was shortened.
 function shortenString(string, length) {
@@ -944,7 +920,8 @@ $('#userInput').submit(function() {
 	return false;
 });
 
-// Nick completion
+// User input key event detection.
+// (Message submission, nick completion...)
 $('#userInputText').keydown(function(e) {
 	if (e.keyCode === 9) {
 		e.preventDefault();
@@ -959,12 +936,14 @@ $('#userInputText').keydown(function(e) {
 			}
 		}
 	}
+	if (e.keyCode === 13) {
+		e.preventDefault();
+		$('#userInput').submit();
+	}
 });
-
-// Detect user input submit on enter keypress
 $('#userInputText').keyup(function(e) {
 	if (e.keyCode === 13) {
-		$('#userInput').submit();
+		e.preventDefault();
 	}
 });
 
@@ -1100,7 +1079,7 @@ $('#loginForm').submit(function() {
 				clearInterval(catFactInterval);
 			}
 		}, 10000);
-		$('#fill').animate({'width': '100%', 'opacity': '1'}, 18000, 'linear');
+		$('#fill').animate({'width': '100%', 'opacity': '1'}, 10000, 'linear');
 	}
 	// If everything is okay, then register a randomly generated throwaway XMPP ID and log in.
 	else {
