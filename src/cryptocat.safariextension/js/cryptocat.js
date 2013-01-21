@@ -30,7 +30,7 @@ var conn, conversationName, myNickname, myKey;
 if (!groupChat) { $('#buddy-main-Conversation').remove(); }
 
 // Seed RNG
-Math.seedrandom(Cryptocat.generateSeed());
+Cryptocat.setSeed(Cryptocat.generateSeed());
 
 // Initialize language settings
 var language = window.navigator.language.toLowerCase();

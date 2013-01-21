@@ -30,7 +30,7 @@ var cryptocat = function() {
 				cryptocatRandom.WeaveCrypto.path.append(ctypes.libraryName('nss3'));
 				cryptocatRandom.WeaveCrypto.initNSS(WeaveCrypto.path.path);
 			}
-			evt.target.setAttribute('randomValues', cryptocatRandom.WeaveCrypto.generateRandomBytes(1024));
+			evt.target.setAttribute('randomValues', cryptocatRandom.WeaveCrypto.generateRandomBytes(40));
 		}
 	};
 }();

@@ -10,13 +10,13 @@ importScripts('crypto-js/sha512.js');
 importScripts('crypto-js/hmac.js');
 importScripts('crypto-js/pad-nopadding.js');
 importScripts('crypto-js/mode-ctr.js');
+importScripts('salsa20.js');
 importScripts('cryptocatRandom.js');
-importScripts('seedrandom.js');
 importScripts('bigint.js');
 importScripts('otr.js');
 
 self.addEventListener('message', function(e) {
-	Math.seedrandom(e.data);
+	Cryptocat.setSeed(e.data);
 	self.postMessage(new DSA());
 }, false);
 

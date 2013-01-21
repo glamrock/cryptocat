@@ -1,9 +1,10 @@
 var Cryptocat = function() {};
 
 (function(){
+	
+var state;
 
 Cryptocat.generateSeed = function() {
-	var output = '';
 	// The following incredibly ugly Firefox hack is completely the fault of 
 	// Firefox developers sucking and it taking them four years+ to implement
 	// window.crypto.getRandomValues().
@@ -23,13 +24,35 @@ Cryptocat.generateSeed = function() {
 	}
 	// Browsers that don't require shitty workarounds
 	else {
-		var buffer = new Uint8Array(1024);
+		var buffer = new Uint8Array(40);
 		window.crypto.getRandomValues(buffer);
 	}
-	for (var i in buffer) {
-		output += String.fromCharCode(buffer[i]);
+	return buffer;
+}
+
+Cryptocat.setSeed = function(s) {
+	state = new Salsa20(
+		[
+			s[00],s[01],s[02],s[03],s[04],s[05],s[06],s[07],
+			s[08],s[09],s[10],s[11],s[12],s[13],s[14],s[15],
+			s[16],s[17],s[18],s[19],s[20],s[21],s[22],s[23],
+			s[24],s[25],s[26],s[27],s[28],s[29],s[30],s[31]
+		],
+		[
+			s[32],s[33],s[34],s[35],s[36],s[37],s[38],s[39]
+		]
+	);
+}
+
+Cryptocat.random = function() {
+	o = '';
+	while (o.length < 16) {
+		x = state.getBytes(1);
+		if (x[0] <= 250) {
+			o += x[0] % 10;
+		}
 	}
-	return output;
+	return parseFloat('0.' + o);
 }
 
 // Generates a random string of length `size` characters.
@@ -38,17 +61,19 @@ Cryptocat.generateSeed = function() {
 Cryptocat.randomString = function(size, alpha, uppercase, numeric, hex) {
 	var keyspace = '';
 	var result = '';
-	if (alpha) {
-		keyspace += 'abcdefghijklmnopqrstuvwxyz';
-	}
-	if (uppercase) {
-		keyspace += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	}
-	if (numeric) {
-		keyspace += '0123456789';
-	}
 	if (hex) {
 		keyspace = '0123456789abcdef';
+	}
+	else {
+		if (alpha) {
+			keyspace += 'abcdefghijklmnopqrstuvwxyz';
+		}
+		if (uppercase) {
+			keyspace += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		}
+		if (numeric) {
+			keyspace += '0123456789';
+		}
 	}
 	for (var i = 0; i !== size; i++) {
 		result += keyspace[Math.floor(Cryptocat.random()*keyspace.length)];
