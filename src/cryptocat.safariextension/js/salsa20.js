@@ -1,3 +1,7 @@
+// Salsa20 implementation
+// Contributed by Dmitry Chestnykh
+// 21-01-2013
+
 var Salsa20 = (function () {
 
     function Salsa20(key, nonce) {
