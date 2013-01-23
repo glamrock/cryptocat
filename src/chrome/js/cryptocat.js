@@ -1185,6 +1185,7 @@ function login(username, password) {
 			$('.button').fadeOut('fast');
 			$('#conversationInfo').animate({'width': '0'});
 			$('#conversationInfo').text('');
+			$('#buddy-main-Conversation').attr('status', 'offline');
 			$('#userInput').fadeOut(function() {
 				$('#conversationWindow').slideUp(function() {
 					$('#buddyWrapper').fadeOut();
@@ -1235,6 +1236,7 @@ function login(username, password) {
 			loginFail(Cryptocat.language['loginMessage']['authenticationFailure']);
 			$('#conversationName').select();
 			$('#loginSubmit').removeAttr('readonly');
+			conn = null;
 		}
 	});
 }
@@ -1242,13 +1244,14 @@ function login(username, password) {
 // On browser resize, also resize Cryptocat window
 // (This can be done with CSS for width, but not really for height)
 $(window).resize(function() {
-	var width = $(window).width() - $('#buddyWrapper').width();
-	if (conn) {
+	if ($('#buddy-main-Conversation').attr('status') === 'online') {
+		var width = $(window).width() - $('#buddyWrapper').width();
 		$('#bubble').css('height', $(window).height());
 		$('#conversationWrapper').css('width', width);
 		$('#userInputText').css('width', width);
 		$('#conversationWindow').css('height', $('#bubble').height() - 130);
-		$('#conversationInfo, .Line1, .Line2, .Line3').css('width', width);
+		$('#conversationInfo').css({'width': width});
+		$('.Line1, .Line2, .Line3').css('width', width);
 	}
 });
 

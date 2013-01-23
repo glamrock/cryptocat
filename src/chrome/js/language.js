@@ -138,6 +138,12 @@ Language.refresh = function(languageObject) {
 			at: 'bottom left'
 		}
 	});
+	$('#conversationName').qtip({
+		position: {
+			my: 'top left',
+			at: 'bottom left'
+		}
+	});
 	$('#conversationName').select();
 }
 
