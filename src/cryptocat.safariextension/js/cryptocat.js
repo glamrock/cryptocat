@@ -157,7 +157,7 @@ function buildConversationInfo(conversation) {
 	);
 	if (conversation === 'main-Conversation') {
 		$('#conversationInfo').append(
-			'<span style="float:right">' + Cryptocat.language['chatWindow']['groupConversation'] + '</span>'
+			'<span id="groupConversation">' + Cryptocat.language['chatWindow']['groupConversation'] + '</span>'
 		);
 	}
 }

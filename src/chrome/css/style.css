@@ -79,6 +79,14 @@ img.logo {
 	line-height: 20px;
 	margin-top: 5px;
 }
+#bubble #info #introParagraph {
+	color: #CCCCD0;
+	
+}
+#bubble #info li {
+	list-style-type: square;
+	margin-left: -22px;
+}
 #bubble #loginForm {
 	float: right;
 	padding-right: 15px;
@@ -364,6 +372,11 @@ img.logo {
 }
 #conversationInfo .conversationName {
 	font-size: 1em;
+}
+#conversationInfo #groupConversation {
+	position: absolute;
+	right: 150px;
+	font-size: 0.9em;
 }
 #conversationWindow .timeStamp {
 	color: #CCC;

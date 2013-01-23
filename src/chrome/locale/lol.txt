@@ -1,8 +1,8 @@
-﻿ltr
+ltr
 Helvetica, Arial, Verdana
 ﻿I Can Haz Private Conversashuns?
-Cryptocat iz an instant mesagin platform dat let u ezzily has private conversashuns wif frenz. Mesagez r encryptd befor leavin ur screen an r protectd frum bean viewd by any third party, even frum us.
-Cryptocat iz free software built on open standardz. R development proces iz undr continuous examinashun by community ov volunteers an enthusiasts. <a href="https://project.crypto.cat" target="_blank">Lern moar bout teh Cryptocat Project</a>.
+O hai. Herez som helpful tips fur usin Cryptocat: <ul><li>Cryptocat iz not ceiling cat. Dunt trust it with ur lief!.</li><li>Cryptocat can't protect u gainst evil pplz, keyloggarz and duz nut anonymize u (iz cat, not onion.)</li></ul>
+
 Purroject
 Blog
 Source

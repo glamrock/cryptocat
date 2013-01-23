@@ -47,8 +47,8 @@ Language.buildObject = function(locale, language) {
 		'font-family': language[i++],
 		'loginWindow': {
 			'introHeader': language[i++],
-			'introParagraph1': language[i++],
-			'introParagraph2': language[i++],
+			'introParagraph': language[i++],
+			'introParagraph2': language[i++], // to be phased out
 			'project': language[i++],
 			'blog': language[i++],
 			'source': language[i++],
@@ -110,8 +110,7 @@ Language.refresh = function(languageObject) {
 	$('html').attr('dir', languageObject['direction']);
 	$('body').css('font-family', languageObject['font-family']);
 	$('#introHeader').text(languageObject['loginWindow']['introHeader']);
-	$('#introParagraph1').text(languageObject['loginWindow']['introParagraph1']);
-	$('#introParagraph2').html(languageObject['loginWindow']['introParagraph2']);
+	$('#introParagraph').html(languageObject['loginWindow']['introParagraph']);
 	$('#project').text(languageObject['loginWindow']['project']);
 	$('#blog').text(languageObject['loginWindow']['blog']);
 	$('#source').text(languageObject['loginWindow']['source']);
