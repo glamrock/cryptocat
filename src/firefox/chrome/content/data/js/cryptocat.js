@@ -171,7 +171,7 @@ function switchConversation(buddy) {
 	if (buddy !== 'main-Conversation') {
 		$('#buddy-' + buddy).css('background-image', 'none');
 	}
-	$('#conversationInfo').animate({'width': '750px'}, function() {
+	$('#conversationInfo').animate({'width': $(window).width() - $('#buddyWrapper').width()}, function() {
 		$('#conversationWindow').slideDown('fast', function() {
 			buildConversationInfo(currentConversation);
 			$('#userInput').fadeIn('fast', function() {
@@ -299,7 +299,7 @@ function addEmoticons(message) {
 function addFile(message) {
 	var mime = new RegExp('(data:(application\/((x-compressed)|(x-zip-compressed)|'
 		+ '(zip)))|(multipart\/x-zip))\;base64,(\\w|\\/|\\+|\\=|\\s)*$');
-		
+
 	if (match = message.match(/data:image\/\w+\;base64,(\w|\\|\/|\+|\=)*$/)) {
 		message = message.replace(/data:image\/\w+\;base64,(\w|\\|\/|\+|\=)*$/,
 			'<a href="' + match[0] + '" class="imageView" target="_blank">' + Cryptocat.language['chatWindow']['viewImage'] + '</a>');
@@ -345,6 +345,7 @@ function addToConversation(message, sender, conversation) {
 	conversations[conversation] += message;
 	if (conversation === currentConversation) {
 		$('#conversationWindow').append(message);
+		$(window).resize();
 	}
 	else {
 		var backgroundColor = $('#buddy-' + conversation).css('background-color');
@@ -608,6 +609,7 @@ function bindBuddyClick(nickname) {
 		currentConversation = nickname;
 		initiateConversation(currentConversation);
 		$('#conversationWindow').html(conversations[currentConversation]);
+		$(window).resize();
 		if (($(this).prev().attr('id') === 'buddiesOnline')
 			|| (($(this).prev().attr('id') === 'buddiesAway')
 			&& $('#buddiesOnline').next().attr('id') === 'buddiesAway')) {
@@ -1148,7 +1150,7 @@ function login(username, password) {
 			}
 			$('#buddy-main-Conversation').attr('status', 'online');
 			$('#loginInfo').text('✓');
-			$('#loginInfo').animate({'color': '#0F0'}, 'fast');
+			$('#loginInfo').animate({'color': '#97CEEC'}, 'fast');
 			$('#bubble').animate({'margin-top': '+=0.5%'}, function() {
 				$('#bubble').animate({'margin-top': '1%'}, function() {
 					$('#loginLinks').fadeOut();
@@ -1156,10 +1158,14 @@ function login(username, password) {
 					$('#version').fadeOut();
 					$('#options').fadeOut();
 					$('#loginForm').fadeOut();
-					$('#bubble').animate({'width': '900px'});
-					$('#bubble').animate({'height': '550px'}, function() {
+					$('#bubble').animate({
+						'width': '100%',
+						'margin': '0'
+					}).animate({'height': $(window).height()}, 'slow', function() {
+						$(this).animate({'border-radius': '0'}, 'slow');
 						$('.button').fadeIn();
 						$('#buddyWrapper').fadeIn('fast', function() {
+							$(window).resize();
 							var scrollWidth = document.getElementById('buddyList').scrollWidth;
 							$('#buddyList').css('width', (150 + scrollWidth) + 'px');
 							if (groupChat) {
@@ -1186,34 +1192,39 @@ function login(username, password) {
 						$('#loginInfo').animate({'color': '#999'}, 'fast');
 						$('#loginInfo').text(Cryptocat.language['loginMessage']['thankYouUsing']);
 					}
-					$('#bubble').animate({'width': '680px'});
-					$('#bubble').animate({'height': '310px'})
-						.animate({'margin-top': '5%'}, function() {
-							$('#buddyList div').each(function() {
-								if ($(this).attr('id') !== 'buddy-main-Conversation') {
-									$(this).remove();
-								}
-							});
-							$('#conversationWindow').text('');
-							otrKeys = {};
-							multiParty.reset();
-							conversations = {};
-							loginCredentials = [];
-							currentConversation = 0;
-							conn = null;
-							if (!loginError) {
-								$('#conversationName').val(Cryptocat.language['loginWindow']['conversationName']);
+					$('#bubble').css({
+						'border-radius': '12px 0 12px 12px',
+						'margin': '0 auto'
+					});
+					$('#bubble').animate({
+						'margin-top': '5%',
+						'height': '310px'
+					}).animate({'width': '680px'}, 'slow', function() {
+						$('#buddyList div').each(function() {
+							if ($(this).attr('id') !== 'buddy-main-Conversation') {
+								$(this).remove();
 							}
-							$('#nickname').val(Cryptocat.language['loginWindow']['nickname']);
-							$('#info').fadeIn();
-							$('#loginLinks').fadeIn();
-							$('#version').fadeIn();
-							$('#options').fadeIn();
-							$('#loginForm').fadeIn('fast', function() {
-								$('#conversationName').select();
-								$('#loginSubmit').removeAttr('readonly');
-							});
 						});
+						$('#conversationWindow').text('');
+						otrKeys = {};
+						multiParty.reset();
+						conversations = {};
+						loginCredentials = [];
+						currentConversation = 0;
+						conn = null;
+						if (!loginError) {
+							$('#conversationName').val(Cryptocat.language['loginWindow']['conversationName']);
+						}
+						$('#nickname').val(Cryptocat.language['loginWindow']['nickname']);
+						$('#info').fadeIn();
+						$('#loginLinks').fadeIn();
+						$('#version').fadeIn();
+						$('#options').fadeIn();
+						$('#loginForm').fadeIn('fast', function() {
+							$('#conversationName').select();
+							$('#loginSubmit').removeAttr('readonly');
+						});
+					});
 					$('.buddy').unbind('click');
 					$('.buddyMenu').unbind('click');
 					$('#buddy-main-Conversation').insertAfter('#buddiesOnline');
@@ -1227,6 +1238,19 @@ function login(username, password) {
 		}
 	});
 }
+
+// On browser resize, also resize Cryptocat window
+// (This can be done with CSS for width, but not really for height)
+$(window).resize(function() {
+	var width = $(window).width() - $('#buddyWrapper').width();
+	if (conn) {
+		$('#bubble').css('height', $(window).height());
+		$('#conversationWrapper').css('width', width);
+		$('#userInputText').css('width', width);
+		$('#conversationWindow').css('height', $('#bubble').height() - 130);
+		$('#conversationInfo, .Line1, .Line2, .Line3').css('width', width);
+	}
+});
 
 // Logout function
 function logout() {

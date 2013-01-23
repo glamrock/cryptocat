@@ -134,7 +134,7 @@ Language.refresh = function(languageObject) {
 	$('#conversationName').attr('title', languageObject['loginWindow']['conversationNameTooltip']);
 	$('[title]').qtip({
 		position: {
-			my: 'top left',
+			my: 'top right',
 			at: 'bottom left'
 		}
 	});

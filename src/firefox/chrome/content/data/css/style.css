@@ -1,9 +1,17 @@
+@font-face {
+	font-family: 'Monda';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Monda Regular'), local('Monda-Regular'), url('Monda.woff') format('woff');
+	-webkit-font-smoothing: antialiased;
+}
+
 body {
 	height: 100%;
 	background-color: #c7e5f5;
 	margin: 0;
-	font-family: Helvetica, Arial, Verdana;
-	font-size: 11px;
+	font-family: 'Helvetica Neue', Helvetica, Arial, Verdana;
+	font-size: 12px;
 	color: #FFF;
 	background-image: url("../img/bg.png");
 	line-height: 1.37em;
@@ -20,24 +28,13 @@ img.logo {
 	padding-left: 10px;
 	float: left;
 }
-#bubble:before {
-	content: ' ';
-	position: absolute;
-	width: 0;
-	height: 0;
-	left: 307px;
-	top: 310px;
-	border: 25px solid;
-	border-color: #000 transparent transparent #000;
-	z-index: 0;
-}
 #bubble {
 	position: relative;
 	z-index: 1;
 	width: 680px;
 	height: 310px;
 	margin: 5% auto 0 auto;
-	background-color: #000;
+	background: #080812;
 	border-radius: 12px 0 12px 12px;
 	box-shadow: 4px 4px #76BDE5;
 }
@@ -48,12 +45,12 @@ img.logo {
 	height: 0;
 	left: 315px;
 	top: 310px;
-	border: 15px solid;
-	border-color: #000 transparent transparent #000;
+	border: 25px solid;
+	border-color: #080812 transparent transparent #080816;
 	z-index: 0;
 }
 #bubble #head {
-	background-color: #222;
+	background: #111;
 	width: 100%;
 	padding: 5px 0;
 	height: 35px;
@@ -92,7 +89,7 @@ img.logo {
 }
 [type=text], [type=password], [type=button], [type=submit], textarea {
 	display: block;
-	background-color: #222;
+	background: #151520;
 	font-size: 1.4em;
 	padding: 5px;
 	color: #FFF;
@@ -110,7 +107,7 @@ img.logo {
 }
 [type=submit]:hover {
 	cursor: pointer;
-	background-color: #97CEEC;
+	background: #97CEEC;
 	border: 1px solid #97CEEC;
 }
 [type=submit]:active {
@@ -119,7 +116,7 @@ img.logo {
 }
 #loginInfo {
 	color: #999;
-	background-color: #222;
+	background: #151520;
 	padding: 2px 5px;
 	width: 204px;
 	margin: 10px 0 0 1px;
@@ -130,7 +127,7 @@ img.logo {
 	font-size: 1.5em;
 }
 #bubble .loginOption {
-	background-color: #97CEEC;
+	background: #97CEEC;
 	color: #FFF;
 	padding: 0 6px;
 	width: 201px;
@@ -147,7 +144,7 @@ img.logo {
 	bottom: 5px;
 }
 #bubble #options {
-	background-color: #222;
+	background: #222;
 	width: 110px;
 	height: 20px;
 	padding: 1px 0 2px 2px;
@@ -165,7 +162,7 @@ img.logo {
 	color: #888;
 }
 #bubble #languages {
-	background-color: #222;
+	background: #222;
 	color: #97CEEC;
 	font-size: 0.9em;
 	border: 1px solid #222;
@@ -180,6 +177,8 @@ img.logo {
 	float: right;
 	height: 495px;
 	display: none;
+	position: absolute;
+	right: 0;
 }
 #buddyList {
 	height: 495px;
@@ -188,12 +187,13 @@ img.logo {
 	overflow-x: hidden;
 }
 .buddy {
-	background-color: #76BDE5;
+	background: #76BDE5;
 	background-position: 85% 7px;
 	background-repeat: no-repeat;
 	color: #FFF;
 	padding: 8px 7px 6px 7px;
-	font-size: 1em;
+	font-family: 'Monda', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+	font-size: 1.1em;
 	font-weight: bold;
 	width: 133px;
 	height: 15px;
@@ -218,7 +218,7 @@ img.logo {
 	opacity: 0.8;
 }
 .buddyMenu:hover {
-	background-color: #222;
+	background: #222;
 	box-shadow: 2px 2px #111;
 }
 .buddyMenuContents {
@@ -228,16 +228,16 @@ img.logo {
 }
 .buddyMenuContents li {
 	list-style-type: none;
-	background-color: rgba(255, 255, 255, 0.15);
+	background: rgba(255, 255, 255, 0.15);
 	padding: 1px 0 1px 10px;
 	font-size: 0.9em;
 	cursor: pointer;
 }
 .buddyMenuContents li:hover {
-	background-color: rgba(255, 255, 255, 0.4);
+	background: rgba(255, 255, 255, 0.4);
 }
 .buddyMenu:active {
-	background-color: #000;
+	background: #000;
 }
 #buddy-main-Conversation {
 	background-image: url("../img/groupChat.png");
@@ -254,7 +254,7 @@ img.logo {
 	font-size: 1.1em;
 	border: 1px solid #222;
 	border-right: none;
-	background-color: rgba(0, 0, 0, 0.94);
+	background: rgba(0, 0, 0, 0.94);
 	box-shadow: 2px 2px #E93028;
 	top: -450px;
 	color: #97CEEC;
@@ -266,7 +266,7 @@ img.logo {
 	font-size: 0;
 	text-align: center;
 	color: #FFF;
-	background-color: #E93028;
+	background: #E93028;
 	float: right;
 	cursor: pointer;
 	margin-top: 1px;
@@ -288,7 +288,7 @@ img.logo {
 }
 #dialogBox .bar, #dialogBox .button, #dialogBox .no {
 	width: 458px;
-	background-color: #333;
+	background: #333;
 	padding: 5px 6px;
 	font-size: 1em;
 	box-shadow: none;
@@ -307,10 +307,10 @@ img.logo {
 	margin-top: 5px;
 }
 #dialogBox .button {
-	background-color: #97CEEC;
+	background: #97CEEC;
 }
 #dialogBox .no {
-	background-color: #E93028;
+	background: #E93028;
 }
 #conversationWrapper {
 	width: 750px;
@@ -321,49 +321,49 @@ img.logo {
 	z-index: 3;
 	height: 412px;
 	display: none;
+	font-family: 'Monda', 'Helvetica Neue', Arial, Helvetica, sans-serif;
 	position: relative;
-	font-size: 1.2em;
+	font-size: 1.25em;
 	overflow-x: hidden;
 	overflow-y: scroll;
 }
 #conversationInfo, .Line1, .Line2, .Line3 {
-	background-color: rgba(151, 206, 236, 0.12);
-	padding: 5px 10px 5px 5px;
-	width: 735px;
+	background: rgba(151, 206, 236, 0.05);
+	padding: 7px 10px 7px 5px;
 	line-height: 20px;
 	word-wrap: break-word;
 	text-align: left;
 }
+#conversationWindow .Line2 {
+	background: #080812;
+}
+#conversationWindow .Line3 {
+	background: rgba(151, 206, 236, 0.12);
+}
 #conversationInfo {
-	background-color: #97CEEC;
+	background: #97CEEC;
 	text-align: left;
 	font-size: 1em;
 	padding: 5px 0 11px 0;
 	width: 0;
-	float: right;
+	float: left;
 	height: 13px;
-	font-family: 'Helvetica', 'Arial', 'Verdana';
+	font-family: 'Monda', 'Helvetica', 'Arial', 'Verdana';
 	border-bottom: 1px solid #76BDE5;
 	font-weight: bold;
 }
 #conversationInfo .conversationUserCount {
-	background-color: #70B9E0;
+	background: #70B9E0;
 	border-radius: 0 4px 4px 0;
 	color: #FFF;
 	font-weight: bold;
 	text-align: center;
-	font-size: 16px;
+	font-size: 12px;
 	margin: 0 10px 0 0;
 	padding: 5px;
 }
 #conversationInfo .conversationName {
 	font-size: 1em;
-}
-#conversationWindow .Line2 {
-	background-color: #000;
-}
-#conversationWindow .Line3 {
-	background-color: rgba(151, 206, 236, 0.2);
 }
 #conversationWindow .timeStamp {
 	color: #CCC;
@@ -388,9 +388,9 @@ img.logo {
 	display: none;
 }
 #userInputText {
-	background-color: #000;
-	width: 730px;
-	height: 28px;
+	background: #080812;
+	width: 100%;
+	height: 32px;
 	float: left;
 	margin: 10px 0;
 	display: inline;
@@ -398,11 +398,14 @@ img.logo {
 	border: none;
 	border-left: 6px solid #97CEEC;
 	box-shadow: none;
-	font-family: Helvetica, Arial, Verdana;
-	font-size: 1.2em;
+	font-family: 'Monda', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+	font-size: 1.25em;
 	text-align: left;
 	resize: none;
 	overflow: hidden;
+	position: absolute;
+	bottom: 0;
+	left: 0;
 }
 #progressForm {
 	font-size: 0.9em;
@@ -436,11 +439,11 @@ img.logo {
 	height: 100%;
 	width: 0%;
 	color: #000;
-	background-color: #97CEEC;
+	background: #97CEEC;
 	opacity: 0.8;
 }
 #dialogBox [type=text], #dialogBox [type=password], #dialogBox [type=submit] {
-	background-color: #000;
+	background: #000;
 	border: 1px solid #97CEEC;
 	color: #97CEEC;
 	float: left;
@@ -450,7 +453,7 @@ img.logo {
 	font-size: 1em;
 }
 #dialogBox #resetKeysOK {
-	background-color: #000;
+	background: #000;
 	border: 1px solid #97CEEC;
 	color: #97CEEC;
 	margin: 0 auto;
@@ -501,7 +504,7 @@ img.logo {
 	background-image: none;
 }
 .userLeave {
-	background-color: #F00;
+	background: #F00;
 	box-shadow: 1px 1px #900;
 }
 .userJoin strong, .userLeave strong {
@@ -547,7 +550,7 @@ img.logo {
 	line-height: 12px;
 	border: 2px solid #97CEEC;
 	box-shadow: 1px 1px 3px #5588A5;
-	background-color: rgba(0, 0, 0, 0.8);
+	background: rgba(0, 0, 0, 0.8);
 	color: #EEE;
 	padding: 6px;
 	border-radius: 4px 0 4px 4px;
