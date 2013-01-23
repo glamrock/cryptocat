@@ -15,9 +15,5 @@
 	},
 	"web_accessible_resources": [
 		"img/keygen.gif"
-	],
-	"permissions": [
-		"http://*/*",
-		"https://*/*"
 	]
 }
