@@ -1160,9 +1160,9 @@ function login(username, password) {
 					$('#loginForm').fadeOut();
 					$('#bubble').animate({
 						'width': '100%',
-						'margin': '0'
+						'margin-top': '0'
 					}).animate({'height': $(window).height()}, 'slow', function() {
-						$(this).animate({'border-radius': '0'}, 'slow');
+						$(this).animate({'margin': '0', 'border-radius': '0'}, 'slow');
 						$('.button').fadeIn();
 						$('#buddyWrapper').fadeIn('fast', function() {
 							$(window).resize();
