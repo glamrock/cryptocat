@@ -1,5 +1,13 @@
 ## Changelog
 
+#### Cryptocat 2.0.30
+**Jan. 23 2013**
+- Comprehensive user interface overhaul with:
+	- A full-screen, fluid interface.
+	- New fonts.
+	- An improved color scheme.
+- Usage tips and warnings now included on sign-in screen.
+
 #### Cryptocat 2.0.29
 **Jan. 22 2013**
 - Removed unnecessary permission demands from Chrome.
