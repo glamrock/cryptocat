@@ -1,5 +1,11 @@
 ## Changelog
 
+#### Cryptocat 2.0.29
+**Jan. 22 2013**
+- Removed unnecessary permission demands from Chrome.
+- Improved random number generation mechanics (thanks to Dmitry Chestnykh).
+- Some aesthetic and other bug fixes.
+
 #### Cryptocat 2.0.28
 **Jan. 17 2013**
 - Key generation speed improved by over 33%.
