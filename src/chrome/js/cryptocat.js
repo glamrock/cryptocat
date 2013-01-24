@@ -1249,7 +1249,7 @@ $(window).resize(function() {
 		$('#bubble').css('height', $(window).height());
 		$('#conversationWrapper').css('width', width);
 		$('#userInputText').css('width', width);
-		$('#conversationWindow').css('height', $('#bubble').height() - 130);
+		$('#conversationWindow').css('height', $('#bubble').height() - 133);
 		$('#conversationInfo').css({'width': width});
 		$('.Line1, .Line2, .Line3').css('width', width);
 	}
