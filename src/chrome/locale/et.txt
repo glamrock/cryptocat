@@ -1,8 +1,8 @@
 ltr
 Helvetica, Arial, Verdana
 Privaatvestlus kõigile.
-Cryptocat on kiirsõnumite platvorm mis laseb sul kergelt sõpradega privaatseid vestlusi pidada. Sõnumid on krüpteeritud enne su ekraanilt lahkumist ning on kaitstud kolmandate isikute pilkude, isegi meie omade eest.
-Cryptocat on tasuta tarkvara mis on ehitatud avatud standarditele. Meie arendusprotsess on vabatahtlike ja entusiastide pideva uurimise all. <a href="https://project.crypto.cat" target="_blank">Õpi veel Cryptocat'i Projekti kohta</a>.
+Teretulemast Cryptocat'i. Paar abistavat nõuannet: <ul><li>Cryptocat ei ole hõbekuul. Ära kunagi usalda oma elu tarkvara kätesse.</li><li>Cryptocat ei saa sind kaitsta ebausaldusväärsete inimeste ega nuhkvara eest ning ei anonümiseeri sinu ühendust.</li></ul>
+
 Projekt
 Blogi
 Lähtekood

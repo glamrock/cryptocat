@@ -1,8 +1,8 @@
-﻿ltr
+ltr
 Helvetica, Arial, Verdana
 Prywatne rozmowy dla każdego.
-Cryptocat jest platformą do błyskawicznej komunikacji, która pozwala prowadzić prywatne rozmowy z przyjaciółmi w prosty sposób. Wiadomości są szyfrowane jeszcze zanim je wyślesz i są chronione przed osobami trzecimi, nawet przed nami.
-Cryptocat jest darmowym oprogramowaniem opartym na otwartych standardach. Nasz proces rozwoju jest pod ciągłą kontrolą ochotników i entuzjastów. <a href="https://project.crypto.cat">Dowiedz się więcej o projekcie Cryptocat</a>.
+Witaj w Cryptocat. Oto kilka pomocnych wskazówek:  <ul><li>Cryptocat nie jest receptą na wszystko. Nigdy nie ufaj żadnemu oprogramowaniu, jeśli stawką jest twoje życie.</li><li>Cryptocat nie ochroni cię przed ludźmi niegodnymi zaufania, oprogramowaniem szpiegującym i nie ukryje twoich połączeń.</li></ul>
+
 Projekt
 Blog
 Źródło

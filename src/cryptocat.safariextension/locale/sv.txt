@@ -1,8 +1,8 @@
 ltr
 Helvetica, Arial, Verdana
 Privata konversationer för alla.
-Cryptocat är en plattform för direktkommunikation som enkelt ger dig möjlighet till privata konversationer med dina vänner. Meddelanden är krypterade innan de lämnar din skärm och är skyddade för insyn av all tredjepart, även oss. 
-Cryptopcat är en öppen mjukvara byggd på öppna standarder. Vår utvecklingsprocess är under kontinuerlig övervakning av en stark community bestående av volontärer och entusiaster. <a href="https://project.crypto.cat" target="_blank">Lär dig mer om Cryptocat Projektet</a>. 
+Välkommen till Cryptocat. Här följer några användbara tips: <ul><li>Cryptocat är ingen universallösning. Du bör inte anförtro ditt liv åt någon mjukvara.</li><li>Cryptocat kan inte skydda dig mot otillförlitliga människor eller key logers och anonymiserar inte din anslutning.</li></ul>
+
 Projekt
 Blogg
 Källa

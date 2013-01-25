@@ -1,8 +1,8 @@
 ltr
 Helvetica, Arial, Verdana
 Elkarrizketa pribatuak edonorentzat.
-Cryptocat berehalako mezularitza plataforma da, zeinak era errazean lagunekin elkarrizketa pribatuak izatea ahalbidetzen duen. Mezuak zifratu egiten dira ordenagailua utzi baino lehen eta kanpoko inork, gu barne, ikusi ezin ditzan babesten dira.
-Cryptocat software librea da, estandar irekien gainean eraikia. Gure garapen prozesua boluntario eta zalez osaturiko komunitate baten ikuskapen jarraitupean dago. <a href="https://project.crypto.cat" target="_blank">Cryptocat proiektuari buruz argibide gehiago</a>.
+Ongi etorri Crytocat-era. Hona hemen aholku erabilgarri batzuk:<ul><li>Cryptocat ez da konponbide perfektua. Ez ezazu inoiz jarri zure bizitza software baten esku.</li><li>Cryptocat-ek ezin zaitu babestu pertsona ez fidagarri edo key logger-en aurka eta ez du zure konexioa anonimo bihurtzen</li></ul>
+
 Proiektua
 Bloga
 Iturburua

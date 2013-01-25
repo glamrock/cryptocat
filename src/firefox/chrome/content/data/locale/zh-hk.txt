@@ -1,8 +1,8 @@
 ltr
 "Microsoft Yahei", "微软雅黑", Tahoma, Helvetica, Arial, sans-serif, STXihei, "华文细黑"
 屬於每個人的私人對話。
-Cryptocat是一個即時通訊平台，可以讓你輕鬆地與朋友擁有的私人對話。訊息在離開你的屏幕畫面前進行加密及保護，好讓防止任何第三者查看，包括我們。
-Cryptocat是建於開放規格上的免費軟件。我們的開發過程是由公眾志願者和愛好者進行持續的檢測。了解更多<a href="https://project.crypto.cat" target="_blank">Cryptocat的項目。</a>
+欢迎来到 Cryptocat。这里有一些有用的提示：  <ul> <li> Cryptocat 不是灵丹妙药。你应该永远不会信任任何一个软件与您的生活。 </li> <li> Cryptocat 不能保护您免遭不可信任的人，关键的记录器，并不会不彻头彻尾的谎言您连接。 </li> </ul>
+
 項目
 博客
 源代碼

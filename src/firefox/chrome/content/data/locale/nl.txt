@@ -1,8 +1,8 @@
 ltr
 Helvetica, Arial, Verdana
 Privé Conversaties voor Iedereen.
-Cryptocat is een instant messaging platform waarmee u gemakkelijk privé conversaties met vrienden kunt hebben. Berichten worden versleuteld voordat u uw scherm verlaat en zijn beschermd tegen het afluisteren door derden, zelfs door ons.
-Cryptocat is vrije software gebaseerd op open standaarden. De ontwikkeling van Cryptocat is onder voortdurend toezicht van een gemeenschap van vrijwilligers en enthousiastelingen.  <a href="https://project.crypto.cat" target="_blank">Lees meer over het Cryptocat Project</a>.
+Welkom bij Cryptocat. Hier zijn wat tips: <ul><li>Cryptocat biedt geen magische oplossing. U moet software nooit uw leven toevertrouwen.</li><li>Cryptocat kan u niet beschermen tegen onbetrouwbare personen en key loggers, en anonimiseert uw verbinding niet.</li></ul>
+
 Project
 Blog
 Broncode

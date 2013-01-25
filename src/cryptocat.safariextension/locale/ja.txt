@@ -1,8 +1,8 @@
 ltr
 "Microsoft Yahei", "微软雅黑", Tahoma, Helvetica, Arial, sans-serif, STXihei, "华文细黑"
 みんなにプライベートな会話
-Cryptocatとは友達と簡単にプライベートな会話をさせるインスタントメッセージのプラットフォームです。全てのメッセージは送信の前に暗号化されて、第三者（我々でも）の閲覧から守られています。
-Cryptocatはオープンスタンダードに準拠するフリーソフトウェアです。我々の開発プロセスはボランティアや熱狂社のコミュニティーに連続観察されています。<a href="https://project.crypto.cat" target="_blank">Cryptocatプロジェクトの詳細はこちらです</a>。
+Cryptocatへようこそ。これは有益なアドバイスです：<ul><li>Cryptocatは特効薬ではありません。自分の人生をどんなソフトでもに任してはいけません。</li><li>Cryptocatは信用出来ない人やキーロガーから守れなくて、接続を匿名にすることも出来ません。</li><ul>
+
 プロジェクト
 ブログ
 ソース

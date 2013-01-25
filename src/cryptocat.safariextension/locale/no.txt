@@ -1,8 +1,8 @@
 ltr
 Helvetica, Arial, Verdana
 Private samtaler for alle.
-Cryptocat er en direktemeldings-plattform som enkelt lar deg ha private samtaler med venner. Samtalene krypteres før de forlater skjermen din og er beskyttet mot å bli sett av en tredjepart, til og med oss.
-Cryptocat er gratis programvare bygd på åpne standarder. Utviklingsprosessen undersøkes kontinuerlig av et samfunn av frivillige og entusiaster. <a href="https://project.crypto.cat" target="_blank">Lær mer om Cryptocatprosjektet</a>.
+Velkommen til Cryptocat. Her er noen gode tips: <ul><li>Cryptocat er ikke en universalløsning. Du bør aldri legge livet ditt i hendene på noen programvare.</li><li> Cryptocat kan ikke beskytte deg mot upålitelige personer, keyloggere og anonymiserer ikke forbindelsen din. </li></ul>
+
 Prosjekt
 Blogg
 Kildekode
