@@ -1251,7 +1251,7 @@ $(window).resize(function() {
 		$('#userInputText').css('width', width);
 		$('#conversationWindow').css('height', $('#bubble').height() - 133);
 		$('#conversationInfo').css({'width': width});
-		$('.Line1, .Line2, .Line3').css('width', width);
+		$('.Line1, .Line2, .Line3').css('width', width - 10);
 	}
 });
 
