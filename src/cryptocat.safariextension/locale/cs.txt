@@ -1,5 +1,5 @@
 ltr
-Helvetica, Arial, Verdana
+"Helvetica Neue", Helvetica, Arial, Verdana
 Soukromý chat pro každého.
 Cryptocat je pohotová komunikační platforma, která Vám umožňuje vést soukromý chat s přáteli. Zprávy jsou bezpečně zašifrovány již před odesláním z Vaší obrazovky a jsou chráněny před špehováním třetí stranou, včetně nás.
 Cryptocat je gratis software postavený na standardu open software. Náš vývojový proces je pod konstantním dohledem společenstva dobrovolníků a nadšenců. <a href="https://project.crypto.cat" target="_blank">Přečtěte si více o projektu Cryptocat</a>.

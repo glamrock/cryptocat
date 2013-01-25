@@ -1,5 +1,5 @@
 ltr
-"Microsoft Yahei", "微软雅黑", Tahoma, Helvetica, Arial, sans-serif, STXihei, "华文细黑"
+"Microsoft Yahei", "微软雅黑", Tahoma, "Helvetica Neue", Helvetica, Arial, sans-serif, STXihei, "华文细黑"
 屬於每個人的私人對話。
 欢迎来到 Cryptocat。这里有一些有用的提示：  <ul> <li> Cryptocat 不是灵丹妙药。你应该永远不会信任任何一个软件与您的生活。 </li> <li> Cryptocat 不能保护您免遭不可信任的人，关键的记录器，并不会不彻头彻尾的谎言您连接。 </li> </ul>
 

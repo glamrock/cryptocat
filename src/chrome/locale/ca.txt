@@ -1,5 +1,5 @@
 ltr
-Helvetica, Arial, Verdana
+"Helvetica Neue", Helvetica, Arial, Verdana
 Converses privades per a tothom.
 Benvingut a Cryptocat. Aquests són alguns consells útils:<ul><li>Cryptocat no és una solució màgica. Vostè hauria never trust qualsevol peça de programari amb el seu vida. </li> <li> Cryptocat no pot protegir-se contra les persones dignes de confiança, loggers clau i no anonymize la connexió.</li></ul>
 

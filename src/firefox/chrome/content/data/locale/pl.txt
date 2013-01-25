@@ -1,5 +1,5 @@
 ltr
-Helvetica, Arial, Verdana
+"Helvetica Neue", Helvetica, Arial, Verdana
 Prywatne rozmowy dla każdego.
 Witaj w Cryptocat. Oto kilka pomocnych wskazówek:  <ul><li>Cryptocat nie jest receptą na wszystko. Nigdy nie ufaj żadnemu oprogramowaniu, jeśli stawką jest twoje życie.</li><li>Cryptocat nie ochroni cię przed ludźmi niegodnymi zaufania, oprogramowaniem szpiegującym i nie ukryje twoich połączeń.</li></ul>
 

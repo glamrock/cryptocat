@@ -1,5 +1,5 @@
 ltr
-Helvetica, Arial, Verdana
+"Helvetica Neue", Helvetica, Arial, Verdana
 Privaatvestlus kõigile.
 Teretulemast Cryptocat'i. Paar abistavat nõuannet: <ul><li>Cryptocat ei ole hõbekuul. Ära kunagi usalda oma elu tarkvara kätesse.</li><li>Cryptocat ei saa sind kaitsta ebausaldusväärsete inimeste ega nuhkvara eest ning ei anonümiseeri sinu ühendust.</li></ul>
 
