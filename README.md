@@ -5,7 +5,7 @@
 ## Description
 Cryptocat is a browser-based XMPP client that provides multi-user (and private) instant messaging inside chatrooms. It uses the [OTR](http://www.cypherpunks.ca/otr/) protocol for encrypted two-party chat and the (upcoming) mpOTR protocol for encrypted multi-party chat.  
 
-## Target Platforms
+## Platforms
 ##### Google Chrome: `src/chrome/`
 Run `make chrome` to build a Google Chrome-loadable .zip extension (or just .zip the directory.)  
 Also available from the [Chrome Web Store](https://chrome.google.com/webstore/detail/cryptocat/gonbigodpnfghidmnphnadhepmbabhij).  
@@ -54,7 +54,8 @@ Please review `CHANGELOG.md` for an account of the changes made with each versio
 
 ## License
 ##### Cryptocat is released under the [GNU Affero General Public License (AGPL3)](https://www.gnu.org/licenses/agpl-3.0.html):  
-```Copyright (C) 2011 - 2013 Nadim Kobeissi <nadim@crypto.cat>  
+```
+Copyright (C) 2011 - 2013 Nadim Kobeissi <nadim@crypto.cat>  
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -67,7 +68,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU Affero General Public License for more details.  
 
 You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <http://www.gnu.org/licenses/>.```  
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+```  
 
 The full license text is included in `LICENSE.txt`.  
 
