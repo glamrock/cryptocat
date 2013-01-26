@@ -1,5 +1,5 @@
 #Cryptocat
-#### Browser Instant Messaging Platform with Accessible, Encrypted Messaging
+#### Web Instant Messaging App With Accessible Encryption.
 #### Experimental software: Don't trust with your life! Peer review appreciated.
 
 ## Description
@@ -14,6 +14,7 @@ Run `make firefox` to build a Mozilla Firefox-loadable .xpi extension (or just .
 Also available from [Mozilla Firefox Addons](https://addons.mozilla.org/en-US/firefox/addon/cryptocat/).  
 ##### Apple Safari: `src/cryptocat.safariplugin/`
 Apple's model makes an automated build process difficult.  
+Also available from [Cryptocat](https://crypto.cat/get/cryptocat.safariextz)
 
 ## Compatibility Status
 ```
