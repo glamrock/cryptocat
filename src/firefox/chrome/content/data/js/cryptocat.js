@@ -1165,7 +1165,9 @@ function login(username, password) {
 						$(this).animate({'margin': '0', 'border-radius': '0'}, 'slow');
 						$('.button').fadeIn();
 						$('#buddyWrapper').fadeIn('fast', function() {
-							$(window).resize();
+							$('#conversationInfo').animate({'width': $(window).width()}, function() {
+								$(window).resize();
+							});
 							var scrollWidth = document.getElementById('buddyList').scrollWidth;
 							$('#buddyList').css('width', (150 + scrollWidth) + 'px');
 							if (groupChat) {
@@ -1246,7 +1248,9 @@ function login(username, password) {
 $(window).resize(function() {
 	if ($('#buddy-main-Conversation').attr('status') === 'online') {
 		var width = $(window).width() - $('#buddyWrapper').width();
-		$('#bubble').css('height', $(window).height());
+		if ($(window).height() > 525) {
+			$('#bubble').css('height', $(window).height());
+		}
 		$('#conversationWrapper').css('width', width);
 		$('#userInputText').css('width', width);
 		$('#conversationWindow').css('height', $('#bubble').height() - 133);
