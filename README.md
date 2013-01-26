@@ -1,4 +1,4 @@
-#Cryptocat
+#[Cryptocat](https://crypto.cat)
 #### Web Instant Messaging App With Accessible Encryption.
 #### Experimental software: Don't trust with your life! Peer review appreciated.
 
@@ -14,7 +14,7 @@ Run `make firefox` to build a Mozilla Firefox-loadable .xpi extension (or just .
 Also available from [Mozilla Firefox Addons](https://addons.mozilla.org/en-US/firefox/addon/cryptocat/).  
 ##### Apple Safari: `src/cryptocat.safariplugin/`
 Apple's model makes an automated build process difficult.  
-Also available from [Cryptocat](https://crypto.cat/get/cryptocat.safariextz)
+Also available from [Cryptocat](https://crypto.cat/get/cryptocat.safariextz).
 
 ## Compatibility Status
 ```
@@ -30,6 +30,11 @@ Also available from [Cryptocat](https://crypto.cat/get/cryptocat.safariextz)
   -----------------------------------------
 ```  
 
+## Goals
+* XMPP **[DONE]** | [Discussion](https://github.com/cryptocat/cryptocat/issues/83), [Library](http://strophe.im)
+* OTR **[DONE]** | [Discussion](https://github.com/cryptocat/cryptocat/issues/84), [Library](https://github.com/arlolra/otr)
+* mpOTR | [Discussion](https://github.com/cryptocat/cryptocat/issues/82), Spec in progress. Currently relying on the [Cryptocat Multiparty Protocol](https://github.com/cryptocat/cryptocat/wiki/Multiparty-Protocol-Specification)  
+
 ## Documentation & Wiki
 * [Multiparty Protocol Specification](https://github.com/cryptocat/cryptocat/wiki/Multiparty-Protocol-Specification)  
 * [Server Deployment Instructions](https://github.com/cryptocat/cryptocat/wiki/Server-Deployment-Instructions)  
@@ -37,17 +42,19 @@ Also available from [Cryptocat](https://crypto.cat/get/cryptocat.safariextz)
 * [Design and Functionality Overview](https://github.com/cryptocat/cryptocat/wiki/Design-and-Functionality)  
 * [Architecture and Lifecycle](https://project.crypto.cat/documents/a&l.pdf)  
 
-## Goals
-* XMPP **[DONE]** | [Discussion](https://github.com/cryptocat/cryptocat/issues/83), [Library](http://strophe.im)
-* OTR **[DONE]** | [Discussion](https://github.com/cryptocat/cryptocat/issues/84), [Library](https://github.com/arlolra/otr)
-* mpOTR | [Discussion](https://github.com/cryptocat/cryptocat/issues/82), Spec in progress. Currently relying on the [Cryptocat Multiparty Protocol](https://github.com/cryptocat/cryptocat/wiki/Multiparty-Protocol-Specification)  
+## Discussion & Blog
+* [Issue tracker](https://github.com/cryptocat/cryptocat/issues)
+* [Development Blog](https://blog.crypto.cat)  
 
-## Discussion
-We have [a million issues worth discussing here!](https://github.com/cryptocat/cryptocat/issues)
+## Builds
+* Builds are available in `release/`.  
+
+## Changelog
+Please review `CHANGELOG.md` for an account of the changes made with each version update.  
 
 ## License
-#### Cryptocat is released under the [GNU Affero General Public License (AGPL3)](https://www.gnu.org/licenses/agpl-3.0.html):  
-Copyright `(C)` 2011 - 2013 Nadim Kobeissi <nadim@crypto.cat>  
+##### Cryptocat is released under the [GNU Affero General Public License (AGPL3)](https://www.gnu.org/licenses/agpl-3.0.html):  
+```Copyright (C) 2011 - 2013 Nadim Kobeissi <nadim@crypto.cat>  
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -60,15 +67,10 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU Affero General Public License for more details.  
 
 You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <http://www.gnu.org/licenses/>.  
+along with this program. If not, see <http://www.gnu.org/licenses/>.```  
 
 The full license text is included in `LICENSE.txt`.  
 
-## Builds
-* Builds are available in `release/`.  
-
-## Changelog
-Please review `CHANGELOG.md` for an account of the changes made with each version update.  
 
 ## Contributors
 * **Lead Developer**: Nadim Kobeissi  
