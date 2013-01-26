@@ -10,7 +10,6 @@ var defaultConferenceServer = 'conference.crypto.cat'; // Address of the XMPP MU
 var defaultBOSH = 'https://crypto.cat/http-bind'; // BOSH is served over an HTTPS proxy for better security and availability.
 var fileSize = 700; // Maximum encrypted file sharing size, in kilobytes. Also needs to be defined in datareader.js
 var localStorageOn = 0; // Disabling localStorage features until Firefox bug #795615 is fixed
-var groupChat = 1; // Enable/disable group chat client functionality.
 
 /* Initialization */
 var domain = defaultDomain;
@@ -27,7 +26,6 @@ var loginError = 0;
 var currentStatus = 'online';
 var soundEmbed = null;
 var conn, conversationName, myNickname, myKey;
-if (!groupChat) { $('#buddy-main-Conversation').remove(); }
 
 // Seed RNG
 Cryptocat.setSeed(Cryptocat.generateSeed());
@@ -485,7 +483,7 @@ function handleMessage(message) {
 	if (!$('#buddy-' + nickname).length) {
 		return true;
 	}
-	if (type === 'groupchat' && groupChat) {
+	if (type === 'groupchat') {
 		body = multiParty.receiveMessage(nickname, myNickname, body);
 		if (typeof(body) === 'string') {
 			addToConversation(body, nickname, 'main-Conversation');
@@ -1152,16 +1150,14 @@ function login(username, password) {
 			$('#loginInfo').text('✓');
 			$('#loginInfo').animate({'color': '#97CEEC'}, 'fast');
 			$('#bubble').animate({'margin-top': '+=0.5%'}, function() {
-				$('#bubble').animate({'margin-top': '1%'}, function() {
+				$('#bubble').animate({'margin-top': '0'}, function() {
 					$('#loginLinks').fadeOut();
 					$('#info').fadeOut();
 					$('#version').fadeOut();
 					$('#options').fadeOut();
 					$('#loginForm').fadeOut();
-					$('#bubble').animate({
-						'width': '100%',
-						'margin-top': '0'
-					}).animate({'height': $(window).height()}, 'slow', function() {
+					$('#bubble').animate({'width': '100%'})
+					.animate({'height': $(window).height()}, 'slow', function() {
 						$(this).animate({'margin': '0', 'border-radius': '0'}, 'slow');
 						$('.button').fadeIn();
 						$('#buddyWrapper').fadeIn('fast', function() {
@@ -1170,13 +1166,9 @@ function login(username, password) {
 							});
 							var scrollWidth = document.getElementById('buddyList').scrollWidth;
 							$('#buddyList').css('width', (150 + scrollWidth) + 'px');
-							if (groupChat) {
-								bindBuddyClick('main-Conversation');
-								window.setTimeout(function() {
-									$('#buddy-main-Conversation').click();
-									buddyNotifications = 1;
-								}, 500);
-							}
+							bindBuddyClick('main-Conversation');
+							$('#buddy-main-Conversation').click();
+							buddyNotifications = 1;
 						});
 					});
 				});
