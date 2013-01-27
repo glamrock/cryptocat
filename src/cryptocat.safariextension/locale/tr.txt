@@ -1,8 +1,8 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Herkes için Güvenli İletişim.
-Cryptocat, arkadaşlarınızla kolayca özel sohbetler yapabileceğiniz biranlık mesajlaşma platformudur. Mesajlar ekranınızdan gönderilmeden önce şifrelenir ve böylece herhangi bir üçüncü şahıs tarafından hatta bizim tarafımızdan bile görülmesi engellenir.
-Cryptocat açık kaynak standartları üzerine kurulu ücretsiz bir yazılımdır. Bizim geliştirme sürecimiz, gönüllü ve heyecanlı bir topluluk tarafından sürekli denenme altındadır. <a href="https://project.crypto.cat" target="_blank">Cryptocat Projesi hakkında daha fazla bilgi edinin</a>.
+Cryptocat’e hoşgeldiniz. Yararlı öneriler burada bulunur:<ul><li>Cryptocat sihirli bir değnek değildir. Körü körüne hiç bir zaman her hangi bir software’e güvenmeyin.</li><li>Cryptocat sizi ne güvenilmez insanlardan nede tuş kaydedicilerinden koruyabilir, ve sizin bağlantınızı anonimleştirmez.</li></ul>
+
 Proje
 Blog
 Kaynak
