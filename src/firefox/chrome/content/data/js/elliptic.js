@@ -231,7 +231,7 @@ function addJacobian(x1, y1, z1, x2, y2, z2) {
         var h = subMod(u2, u1, p256);
         var i = BigInt.mult(h, two);
         i = BigInt.multMod(i, i, p256);
-        j = BigInt.multMod(h, i, p256)
+        j = BigInt.multMod(h, i, p256);
 
         var r = subMod(s2, s1, p256);
         r = BigInt.mult(r, two);
@@ -405,10 +405,10 @@ Curve25519.ecdsaVerify = function(publicKey, signature, message) {
 
 Curve25519.ecDH = function(priv, pub) {
 	if (typeof pub === "undefined") {
-		return Curve25519.scalarMult(priv, basePoint);
+    return Curve25519.scalarMult(priv, basePoint);
 	}
 	else {
-        return BigInt.bigInt2str(Curve25519.scalarMult(priv, pub), 64);
+    return BigInt.bigInt2str(Curve25519.scalarMult(priv, pub), 64);
 	}
 }
 })();
