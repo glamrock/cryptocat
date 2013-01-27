@@ -568,6 +568,9 @@ img.logo {
 	padding: 6px;
 	border-radius: 4px 0 4px 4px;
 }
+.qtip strong {
+	color: #97CEEC;
+}
 .ui-tooltip .ui-tooltip-tip {
 	position: absolute;
 	line-height: 0.1px !important;
