@@ -27,4 +27,4 @@ changes:
 	@/bin/echo -n "[Cryptocat] Pushing changes to Opera... "
 	@cd src/opera/ && rm -rf css img js locale index.html
 	@cd src/chrome/ && cp -R css img js locale index.html ../opera/
-	@/bin/echo "done"
+	@/bin/echo "  done"

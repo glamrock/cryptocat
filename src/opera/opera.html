@@ -2,23 +2,18 @@
 <html lang="en">
 <head>
 	<script type="application/javascript">
-		//var filter = opera.extension.urlfilter;
-		var cryptocatButton;
-		
-		//filter.allow.add('index.html');
-		
 		window.addEventListener("load", function(){
-		var buttonProperties = {
-			title: 'Cryptocat',
-			icon: 'icon.png',
-			onclick: function() {
-				var tab = opera.extension.tabs.create({url: 'index.html'});
-				tab.focus();
+			var buttonProperties = {
+				title: 'Cryptocat',
+				icon: 'icon.png',
+				onclick: function() {
+					var tab = opera.extension.tabs.create({url: 'index.html'});
+					tab.focus();
+				}
 			}
-		}
-		cryptocatButton = opera.contexts.toolbar.createItem(buttonProperties);
-		opera.contexts.toolbar.addItem(cryptocatButton);
-	  }, false);
+			var cryptocatButton = opera.contexts.toolbar.createItem(buttonProperties);
+			opera.contexts.toolbar.addItem(cryptocatButton);
+		}, false);
 	</script>
   </head>
   <body>

@@ -1,10 +1,12 @@
 var Cryptocat = function() {};
 
 (function(){
-	
+
 var state;
 
 Cryptocat.generateSeed = function() {
+	// If Opera, do not seed (see Cryptocat.random() comments for explanation).
+	if (navigator.userAgent.match('Opera')) { return false }
 	// The following incredibly ugly Firefox hack is completely the fault of 
 	// Firefox developers sucking and it taking them four years+ to implement
 	// window.crypto.getRandomValues().
@@ -31,6 +33,7 @@ Cryptocat.generateSeed = function() {
 }
 
 Cryptocat.setSeed = function(s) {
+	if (!s) { return false }
 	state = new Salsa20(
 		[
 			s[00],s[01],s[02],s[03],s[04],s[05],s[06],s[07],
@@ -44,15 +47,25 @@ Cryptocat.setSeed = function(s) {
 	);
 }
 
-Cryptocat.random = function() {
-	o = '';
-	while (o.length < 16) {
-		x = state.getBytes(1);
-		if (x[0] <= 250) {
-			o += x[0] % 10;
+// In Opera, Math.random() is a cryptographically secure
+// random number generator. Opera is the only browser
+// in which this is the case. Therefore, it is safe to use
+// Math.random() instead of implementing our own CSPRNG
+// if Cryptocat is running on top of Opera.
+if (navigator.userAgent.match('Opera')) {
+	Cryptocat.random = Math.random;
+}
+else {
+	Cryptocat.random = function() {
+		o = '';
+		while (o.length < 16) {
+			x = state.getBytes(1);
+			if (x[0] <= 250) {
+				o += x[0] % 10;
+			}
 		}
+		return parseFloat('0.' + o);
 	}
-	return parseFloat('0.' + o);
 }
 
 // Generates a random string of length `size` characters.
