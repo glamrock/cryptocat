@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" id="https://crypto.cat/">
+	<name>Cryptocat</name>
+	<description>
+		Have encrypted, private conversations. Cryptocat is an open source encrypted instant messaging platform.
+	</description>
+  	<author href="https://crypto.cat" email="opera@crypto.cat">the Cryptocat Project</author>
+	<icon src="opera/icon.png" />
+	<content src="opera/opera.html" />
+</widget>

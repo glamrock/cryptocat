@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<script>
+		window.addEventListener("load", function(){
+		var cryptocatButton;
+		var buttonProperties = {
+			title: 'Cryptocat',
+			icon: 'opera/icon.png',
+			onclick: function() {
+				var tab = opera.extension.tabs.create({url: 'index.html'});
+			}
+		}
+		cryptocatButton = opera.contexts.toolbar.createItem(buttonProperties);
+		opera.contexts.toolbar.addItem(cryptocatButton);
+	  }, false);
+	</script>
+  </head>
+  <body>
+  </body>
+</html>
