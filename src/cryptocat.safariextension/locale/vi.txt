@@ -1,8 +1,8 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Đối thoại riêng tư cho mọi người.
-Cryptocat là hệ thống tin nhắn nhanh để bạn dể dàng trao đổi thông tin với bạn bè. Các tin nhắn đều được mã hoá trước khi được gửi đi và được bảo vệ chặt chẽ, ngoài bạn và người nhận tin nhắn ra, không ai đọc được ngay cả chúng tôi.
-Cryptocat là chương trình miễn phí được thành lập theo dạng mở rộng. Quá trình phát triển của chúng tôi luôn được giám sát bởi một cộng đồng tình nguyện viên. <a href="https://project.crypto.cat" target="_blank">Hãy tìm hiểu thêm về Cryptocat Project</a>.
+Chào bạn đến với Cryptocat. Bạn lưu ý một số điểm sau đây:<ul><li>Cryptocat không phải là một liều thần dược. Đừng cậy nhờ sự an nguy của bạn vào bất cứ phần mềm nào.</li><li>Cryptocat không thể bảo vệ bạn chống lại kẻ gian, keyloggers, và không giúp làm ẩn danh đường nối kết.</li></ul>
+
 Dự Án
 Blog
 Nguồn
