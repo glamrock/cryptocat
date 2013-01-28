@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="UTF-8" />
+	<title>Cryptocat</title>
+	<link rel="stylesheet" href="css/style.css" type="text/css" />
+	<link rel="icon" type="image/gif" href="img/favicon.gif" />
+	<script type="application/javascript" src="js/jquery/jquery.js"></script>
+	<script type="application/javascript" src="js/jquery/jquery.color.js"></script>
+	<script type="application/javascript" src="js/jquery/jquery.qtip.js"></script>
+	<script type="application/javascript" src="js/strophe/strophe.js"></script>
+	<script type="application/javascript" src="js/strophe/strophe.register.js"></script>
+	<script type="application/javascript" src="js/strophe/strophe.muc.js"></script>
+	<script type="application/javascript" src="js/crypto-js/core.js"></script>
+	<script type="application/javascript" src="js/crypto-js/enc-base64.js"></script>
+	<script type="application/javascript" src="js/crypto-js/cipher-core.js"></script>
+	<script type="application/javascript" src="js/crypto-js/x64-core.js"></script>
+	<script type="application/javascript" src="js/crypto-js/aes.js"></script>
+	<script type="application/javascript" src="js/crypto-js/sha1.js"></script>
+	<script type="application/javascript" src="js/crypto-js/sha256.js"></script>
+	<script type="application/javascript" src="js/crypto-js/sha512.js"></script>
+	<script type="application/javascript" src="js/crypto-js/hmac.js"></script>
+	<script type="application/javascript" src="js/crypto-js/pad-nopadding.js"></script>
+	<script type="application/javascript" src="js/crypto-js/mode-ctr.js"></script>
+	<script type="application/javascript" src="js/salsa20.js"></script>
+	<script type="application/javascript" src="js/cryptocatRandom.js"></script>
+	<script type="application/javascript" src="js/multiparty.js"></script>
+	<script type="application/javascript" src="js/catfacts.js"></script>
+	<script type="application/javascript" src="js/language.js"></script>
+	<script type="application/javascript" src="js/bigint.js"></script>
+	<script type="application/javascript" src="js/otr.js"></script>
+	<script type="application/javascript" src="js/elliptic.js"></script>
+	<script type="application/javascript" src="js/cryptocat.js"></script>
+</head>
+<body>
+	<div id="dialogBox">
+		<div id="dialogBoxClose">x</div>
+		<div id="dialogBoxContent"></div>
+	</div>
+	<div id="bubble">
+		<div id="head">
+			<img src="img/cryptocat.png" alt="Cryptocat" class="logo" />
+			<img class="button" id="logout" src="img/logout.png" alt="" />
+			<img class="button" id="audio" src="img/noSound.png" alt="" />
+			<img class="button" id="notifications" src="img/noNotifications.png" alt="" />
+			<img class="button" id="myInfo" src="img/key.png" alt="" />
+			<img class="button" id="status" src="img/available.png" alt="" />
+			<div id="loginLinks">
+				<a href="https://crypto.cat" target="_blank" id="project"></a>
+				<a href="https://blog.crypto.cat" target="_blank" id="blog"></a>
+				<a href="https://github.com/cryptocat/cryptocat/" target="_blank" id="source"></a>
+			</div>
+		</div>
+		<div id="info">
+			<h1 id="introHeader"></h1>
+			<p id="introParagraph"></p>
+		</div>
+		<form id="loginForm">
+			<div id="loginInfo"></div>
+			<input type="text" id="conversationName" maxlength="20" autocomplete="off" />
+			<input type="text" id="nickname" maxlength="16" autocomplete="off" />
+			<input type="submit" id="loginSubmit" />
+			<a href="#" class="loginOption" id="customServer"></a>
+		</form>
+		<div id="version"></div>
+		<div id="options">
+			<select id="languages">
+				<option value="en">English</option>
+				<option value="ca">Català</option>
+				<option value="ar">عربي</option>
+				<option value="zh-cn">简体</option>
+				<option value="zh-hk">繁體</option>
+				<option value="ur">اُردُو</option>
+				<option value="bo">བོད་སྐད།</option>
+				<option value="et">Eesty</option>
+				<option value="cs">česky</option>
+				<option value="da">Dansk</option>
+				<option value="de">Deutsch</option>
+				<option value="es">Español</option>
+				<option value="eu">Euskara</option>
+				<option value="el">ελληνικά</option>
+				<option value="fa">فارسی</option>
+				<option value="fr">Français</option>
+				<option value="ja">日本語</option>
+				<option value="he">עִבְרִית</option>
+				<option value="it">Italiano</option>
+				<option value="km">ភាសាខ្មែរ</option>
+				<option value="ko">한국어</option>
+				<option value="lv">Latviešu</option>
+				<option value="lol">Lolcat</option>
+				<option value="nl">Nederlands</option>
+				<option value="no">Norsk</option>
+				<option value="pl">Polski</option>
+				<option value="pt">Português</option>
+				<option value="ru">русский</option>
+				<option value="sv">Svenska</option>
+				<option value="tr">Türkçe</option>
+				<option value="vi">Tiếng Việt</option>
+				<option value="ug">Uyghur</option>
+			</select>
+		</div>
+		<div id="buddyWrapper">
+			<div id="buddyList">
+				<span id="currentConversation"></span>
+				<span id="buddiesOnline"></span>
+				<div class="buddy" id="buddy-main-Conversation" style="display:block">
+					<span id="conversationTag"></span>
+				</div>
+				<span id="buddiesAway"></span>
+			</div>
+		</div>
+		<div id="conversationInfo"></div>
+		<div id="conversationWrapper">
+			<div id="conversationWindow">
+			</div>
+		</div>
+		<form id="userInput">
+			<textarea id="userInputText"></textarea>
+		</form>
+	</div>
+</body>
+</html>

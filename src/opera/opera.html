@@ -1,14 +1,19 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-	<script>
-		window.addEventListener("load", function(){
+	<script type="application/javascript">
+		//var filter = opera.extension.urlfilter;
 		var cryptocatButton;
+		
+		//filter.allow.add('index.html');
+		
+		window.addEventListener("load", function(){
 		var buttonProperties = {
 			title: 'Cryptocat',
-			icon: 'opera/icon.png',
+			icon: 'icon.png',
 			onclick: function() {
 				var tab = opera.extension.tabs.create({url: 'index.html'});
+				tab.focus();
 			}
 		}
 		cryptocatButton = opera.contexts.toolbar.createItem(buttonProperties);

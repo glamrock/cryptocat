@@ -5,6 +5,6 @@
 		Have encrypted, private conversations. Cryptocat is an open source encrypted instant messaging platform.
 	</description>
   	<author href="https://crypto.cat" email="opera@crypto.cat">the Cryptocat Project</author>
-	<icon src="opera/icon.png" />
-	<content src="opera/opera.html" />
+	<icon src="icon.png" />
+	<content src="opera.html" />
 </widget>
