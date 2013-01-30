@@ -169,9 +169,9 @@ function switchConversation(buddy) {
 	if (buddy !== 'main-Conversation') {
 		$('#buddy-' + buddy).css('background-image', 'none');
 	}
-	$('#conversationInfo').animate({'width': $(window).width() - $('#buddyWrapper').width()}, function() {
+	$('#conversationInfo').slideDown(function() {
+		buildConversationInfo(currentConversation);
 		$('#conversationWindow').slideDown('fast', function() {
-			buildConversationInfo(currentConversation);
 			$('#userInput').fadeIn('fast', function() {
 				$('#userInputText').focus();
 			});
@@ -179,6 +179,7 @@ function switchConversation(buddy) {
 			$('#conversationWindow').css('width', (712 + scrollWidth) + 'px');
 			scrollDown(600);
 		});
+		$(window).resize();
 	});
 	// Clean up finished conversations
 	$('#buddyList div').each(function() {
@@ -1087,151 +1088,150 @@ $('#loginForm').submit(function() {
 		myNickname = Strophe.xmlescape($('#nickname').val());
 		loginCredentials[0] = Cryptocat.randomString(256, 1, 1, 1, 0);
 		loginCredentials[1] = Cryptocat.randomString(256, 1, 1, 1, 0);
-		registerXMPPUser(loginCredentials[0], loginCredentials[1]);
+		connectXMPP(loginCredentials[0], loginCredentials[1]);
 		$('#loginSubmit').attr('readonly', 'readonly');
 	}
 	return false;
 });
 
-// Registers a new user on the XMPP server.
-function registerXMPPUser(username, password) {
-	var registrationConnection = new Strophe.Connection(bosh);
-	registrationConnection.register.connect(domain, function(status) {
+// Registers a new user on the XMPP server, connects and join conversation.
+function connectXMPP(username, password) {
+	conn = new Strophe.Connection(bosh);
+	conn.register.connect(domain, function(status) {
 		if (status === Strophe.Status.REGISTER) {
 			$('#loginInfo').text(Cryptocat.language['loginMessage']['registering']);
-			registrationConnection.register.fields.username = username;
-			registrationConnection.register.fields.password = password;
-			registrationConnection.register.submit();
+			conn.register.fields.username = username;
+			conn.register.fields.password = password;
+			conn.register.submit();
 		}
 		else if (status === Strophe.Status.REGISTERED) {
-			registrationConnection.disconnect();
-			delete registrationConnection;
-			login(loginCredentials[0], loginCredentials[1]);
-			return true;
+			console.log('registered');
+			conn = new Strophe.Connection(bosh);
+			conn.connect(username + '@' + domain, password, function(status) {
+				console.log(status);
+				if (status === Strophe.Status.CONNECTING) {
+					$('#loginInfo').animate({'color': '#999'}, 'fast');
+					$('#loginInfo').text(Cryptocat.language['loginMessage']['connecting']);
+				}
+				else if (status === Strophe.Status.CONNECTED) {
+					connected();
+				}
+				else if (status === Strophe.Status.CONNFAIL) {
+					if (!loginError) {
+						$('#loginInfo').text(Cryptocat.language['loginMessage']['connectionFailed']);
+					}
+					$('#loginInfo').animate({'color': '#E93028'}, 'fast');
+				}
+			});
 		}
 		else if (status === Strophe.Status.SBMTFAIL) {
+			loginFail(Cryptocat.language['loginMessage']['authenticationFailure']);
+			$('#conversationName').select();
+			$('#loginSubmit').removeAttr('readonly');
+			conn = null;
 			return false;
 		}
 	});
 }
 
-// Logs into the XMPP server, creating main connection/disconnection handlers.
-function login(username, password) {
-	conn = new Strophe.Connection(bosh);
-	conn.connect(username + '@' + domain, password, function(status) {
-		if (status === Strophe.Status.CONNECTING) {
-			$('#loginInfo').animate({'color': '#999'}, 'fast');
-			$('#loginInfo').text(Cryptocat.language['loginMessage']['connecting']);
+// Executes on XMPP connection.
+function connected() {
+	conn.muc.join(
+		conversationName + '@' + conferenceServer, myNickname, 
+		function(message) {
+			if (handleMessage(message)) {
+				return true;
+			}
+		},
+		function (presence) {
+			if (handlePresence(presence)) {
+				return true;
+			}
 		}
-		else if (status === Strophe.Status.CONNFAIL) {
+	);
+	if (localStorageOn) {
+		localStorage.setItem('myNickname', myNickname);
+	}
+	$('#buddy-main-Conversation').attr('status', 'online');
+	$('#loginInfo').text('✓');
+	$('#loginInfo').animate({'color': '#97CEEC'}, 'fast');
+	$('#bubble').animate({'margin-top': '+=0.5%'}, function() {
+		$('#bubble').animate({'margin-top': '0'}, function() {
+			$('#loginLinks').fadeOut();
+			$('#info').fadeOut();
+			$('#version').fadeOut();
+			$('#options').fadeOut();
+			$('#loginForm').fadeOut();
+			$('#bubble').animate({'width': '100%'})
+			.animate({'height': $(window).height()}, function() {
+				$(this).animate({'margin': '0', 'border-radius': '0'});
+				$('.button').fadeIn();
+				$('#buddyWrapper').slideDown('fast', function() {
+					var scrollWidth = document.getElementById('buddyList').scrollWidth;
+					$('#buddyList').css('width', (150 + scrollWidth) + 'px');
+					bindBuddyClick('main-Conversation');
+					$('#buddy-main-Conversation').click();
+					buddyNotifications = 1;
+				});
+			});
+		});
+	});
+	loginError = 0;
+}
+
+// Executes on user logout.
+function logout() {
+	buddyNotifications = 0;
+	conn.muc.leave(conversationName + '@' + conferenceServer);
+	conn.disconnect();
+	$('.button').fadeOut('fast');
+	$('#conversationInfo').slideUp();
+	$('#conversationInfo').text('');
+	$('#buddy-main-Conversation').attr('status', 'offline');
+	$('#userInput').fadeOut(function() {
+		$('#conversationWindow').slideUp(function() {
+			$('#buddyWrapper').slideUp();
 			if (!loginError) {
-				$('#loginInfo').text(Cryptocat.language['loginMessage']['connectionFailed']);
+				$('#loginInfo').animate({'color': '#999'}, 'fast');
+				$('#loginInfo').text(Cryptocat.language['loginMessage']['thankYouUsing']);
 			}
-			$('#loginInfo').animate({'color': '#E93028'}, 'fast');
-		}
-		else if (status === Strophe.Status.CONNECTED) {
-			conn.muc.join(
-				conversationName + '@' + conferenceServer, myNickname, 
-				function(message) {
-					if (handleMessage(message)) {
-						return true;
+			$('#bubble').css({
+				'border-radius': '12px 0 12px 12px',
+				'margin': '0 auto'
+			});
+			$('#bubble').animate({
+				'margin-top': '5%',
+				'height': '310px'
+			}).animate({'width': '680px'}, function() {
+				$('#buddyList div').each(function() {
+					if ($(this).attr('id') !== 'buddy-main-Conversation') {
+						$(this).remove();
 					}
-				},
-				function (presence) {
-					if (handlePresence(presence)) {
-						return true;
-					}
+				});
+				$('#conversationWindow').text('');
+				otrKeys = {};
+				multiParty.reset();
+				conversations = {};
+				loginCredentials = [];
+				currentConversation = 0;
+				conn = null;
+				if (!loginError) {
+					$('#conversationName').val(Cryptocat.language['loginWindow']['conversationName']);
 				}
-			);
-			if (localStorageOn) {
-				localStorage.setItem('myNickname', myNickname);
-			}
-			$('#buddy-main-Conversation').attr('status', 'online');
-			$('#loginInfo').text('✓');
-			$('#loginInfo').animate({'color': '#97CEEC'}, 'fast');
-			$('#bubble').animate({'margin-top': '+=0.5%'}, function() {
-				$('#bubble').animate({'margin-top': '0'}, function() {
-					$('#loginLinks').fadeOut();
-					$('#info').fadeOut();
-					$('#version').fadeOut();
-					$('#options').fadeOut();
-					$('#loginForm').fadeOut();
-					$('#bubble').animate({'width': '100%'})
-					.animate({'height': $(window).height()}, 'slow', function() {
-						$(this).animate({'margin': '0', 'border-radius': '0'}, 'slow');
-						$('.button').fadeIn();
-						$('#buddyWrapper').fadeIn('fast', function() {
-							$('#conversationInfo').animate({'width': $(window).width()}, function() {
-								$(window).resize();
-							});
-							var scrollWidth = document.getElementById('buddyList').scrollWidth;
-							$('#buddyList').css('width', (150 + scrollWidth) + 'px');
-							bindBuddyClick('main-Conversation');
-							$('#buddy-main-Conversation').click();
-							buddyNotifications = 1;
-						});
-					});
+				$('#nickname').val(Cryptocat.language['loginWindow']['nickname']);
+				$('#info').fadeIn();
+				$('#loginLinks').fadeIn();
+				$('#version').fadeIn();
+				$('#options').fadeIn();
+				$('#loginForm').fadeIn('fast', function() {
+					$('#conversationName').select();
+					$('#loginSubmit').removeAttr('readonly');
 				});
 			});
-			loginError = 0;
-		}
-		else if (status === Strophe.Status.DISCONNECTED) {
-			$('.button').fadeOut('fast');
-			$('#conversationInfo').animate({'width': '0'});
-			$('#conversationInfo').text('');
-			$('#buddy-main-Conversation').attr('status', 'offline');
-			$('#userInput').fadeOut(function() {
-				$('#conversationWindow').slideUp(function() {
-					$('#buddyWrapper').fadeOut();
-					if (!loginError) {
-						$('#loginInfo').animate({'color': '#999'}, 'fast');
-						$('#loginInfo').text(Cryptocat.language['loginMessage']['thankYouUsing']);
-					}
-					$('#bubble').css({
-						'border-radius': '12px 0 12px 12px',
-						'margin': '0 auto'
-					});
-					$('#bubble').animate({
-						'margin-top': '5%',
-						'height': '310px'
-					}).animate({'width': '680px'}, 'slow', function() {
-						$('#buddyList div').each(function() {
-							if ($(this).attr('id') !== 'buddy-main-Conversation') {
-								$(this).remove();
-							}
-						});
-						$('#conversationWindow').text('');
-						otrKeys = {};
-						multiParty.reset();
-						conversations = {};
-						loginCredentials = [];
-						currentConversation = 0;
-						conn = null;
-						if (!loginError) {
-							$('#conversationName').val(Cryptocat.language['loginWindow']['conversationName']);
-						}
-						$('#nickname').val(Cryptocat.language['loginWindow']['nickname']);
-						$('#info').fadeIn();
-						$('#loginLinks').fadeIn();
-						$('#version').fadeIn();
-						$('#options').fadeIn();
-						$('#loginForm').fadeIn('fast', function() {
-							$('#conversationName').select();
-							$('#loginSubmit').removeAttr('readonly');
-						});
-					});
-					$('.buddy').unbind('click');
-					$('.buddyMenu').unbind('click');
-					$('#buddy-main-Conversation').insertAfter('#buddiesOnline');
-				});
-			});
-		}
-		else if (status === Strophe.Status.AUTHFAIL) {
-			loginFail(Cryptocat.language['loginMessage']['authenticationFailure']);
-			$('#conversationName').select();
-			$('#loginSubmit').removeAttr('readonly');
-			conn = null;
-		}
+			$('.buddy').unbind('click');
+			$('.buddyMenu').unbind('click');
+			$('#buddy-main-Conversation').insertAfter('#buddiesOnline');
+		});
 	});
 }
 
@@ -1250,13 +1250,6 @@ $(window).resize(function() {
 		$('.Line1, .Line2, .Line3').css('width', width - 10);
 	}
 });
-
-// Logout function
-function logout() {
-	buddyNotifications = 0;
-	conn.muc.leave(conversationName + '@' + conferenceServer);
-	conn.disconnect();
-}
 
 // Logout on browser close
 $(window).unload(function() {

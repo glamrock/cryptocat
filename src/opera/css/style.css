@@ -359,6 +359,7 @@ img.logo {
 	font-family: 'Monda', 'Helvetica', 'Arial', 'Verdana';
 	border-bottom: 1px solid #76BDE5;
 	font-weight: bold;
+	display: none;
 }
 #conversationInfo .conversationUserCount {
 	background: #70B9E0;
