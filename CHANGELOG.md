@@ -1,5 +1,16 @@
 ## Changelog
 
+#### Cryptocat 2.0.31
+**Jan. 30 2013**
+- More than a dozen bug fixes and tweaks related to the redesigned UI which was pushed last version.
+- Logging in/logging out is now faster.
+- Fixed a bug that could prohibit desktop notifications from appearing in Google Chrome.
+- Fixed a bug that could prevent notification sounds from being played in Google Chrome.
+- Warnings have been added to all translations except Tibetan, Korean, Latvian and Urdu (will be updated in an upcoming version.)
+- New: Uyghur translation.
+- Esperanto translation removed.
+- Font family tweaks.
+
 #### Cryptocat 2.0.30
 **Jan. 23 2013**
 - Comprehensive user interface overhaul with:
