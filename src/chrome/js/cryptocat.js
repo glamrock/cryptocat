@@ -1105,10 +1105,8 @@ function connectXMPP(username, password) {
 			conn.register.submit();
 		}
 		else if (status === Strophe.Status.REGISTERED) {
-			console.log('registered');
 			conn = new Strophe.Connection(bosh);
 			conn.connect(username + '@' + domain, password, function(status) {
-				console.log(status);
 				if (status === Strophe.Status.CONNECTING) {
 					$('#loginInfo').animate({'color': '#999'}, 'fast');
 					$('#loginInfo').text(Cryptocat.language['loginMessage']['connecting']);
