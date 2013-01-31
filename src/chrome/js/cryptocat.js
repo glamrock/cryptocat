@@ -111,7 +111,7 @@ function currentTime(seconds) {
 
 // Plays the audio file defined by the `audio` variable.
 function playSound(audio) {
-	(new Audio('snd/' + audio + '.webm')).play();
+	(new Audio('snd/' + audio + '.wav')).play();
 }
 
 // Scrolls down the chat window to the bottom in a smooth animation.

@@ -17,14 +17,14 @@ opera:
 	@/bin/echo "[Cryptocat] Opera build available in release/"
 changes:
 	@/bin/echo -n "[Cryptocat] Pushing changes to Safari...  "
-	@cd src/cryptocat.safariextension/ && rm -rf css img js locale index.html
-	@cd src/chrome/ && cp -R css img js locale index.html ../cryptocat.safariextension/
+	@cd src/cryptocat.safariextension/ && rm -rf css img js locale snd index.html
+	@cd src/chrome/ && cp -R css img js locale snd index.html ../cryptocat.safariextension/
 	@/bin/echo "done"
 	@/bin/echo -n "[Cryptocat] Pushing changes to Firefox... "
-	@cd src/firefox/chrome/content/data/ && rm -rf css img js locale index.html
-	@cd src/chrome/ && cp -R css img js locale index.html ../firefox/chrome/content/data/
+	@cd src/firefox/chrome/content/data/ && rm -rf css img js locale snd index.html
+	@cd src/chrome/ && cp -R css img js locale snd index.html ../firefox/chrome/content/data/
 	@/bin/echo "done"
 	@/bin/echo -n "[Cryptocat] Pushing changes to Opera... "
-	@cd src/opera/ && rm -rf css img js locale index.html
-	@cd src/chrome/ && cp -R css img js locale index.html ../opera/
+	@cd src/opera/ && rm -rf css img js locale snd index.html
+	@cd src/chrome/ && cp -R css img js locale snd index.html ../opera/
 	@/bin/echo "  done"

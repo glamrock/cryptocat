@@ -111,7 +111,7 @@ function currentTime(seconds) {
 
 // Plays the audio file defined by the `audio` variable.
 function playSound(audio) {
-	(new Audio('snd/' + audio + '.webm')).play();
+	(new Audio('snd/' + audio + '.wav')).play();
 }
 
 // Scrolls down the chat window to the bottom in a smooth animation.
@@ -1105,10 +1105,8 @@ function connectXMPP(username, password) {
 			conn.register.submit();
 		}
 		else if (status === Strophe.Status.REGISTERED) {
-			console.log('registered');
 			conn = new Strophe.Connection(bosh);
 			conn.connect(username + '@' + domain, password, function(status) {
-				console.log(status);
 				if (status === Strophe.Status.CONNECTING) {
 					$('#loginInfo').animate({'color': '#999'}, 'fast');
 					$('#loginInfo').text(Cryptocat.language['loginMessage']['connecting']);
