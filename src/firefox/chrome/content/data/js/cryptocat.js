@@ -875,6 +875,11 @@ else {
 }
 
 // Audio notifications button
+// If using Safari, remove this button
+// (Since Safari does not support audio notifications)
+if (!navigator.userAgent.match(/(Chrome)|(Firefox)/)) {
+	$('#audio').remove();
+}
 $('#audio').click(function() {
 	if ($(this).attr('title') === Cryptocat.language['chatWindow']['audioNotificationsOff']) {
 		$(this).attr('src', 'img/sound.png');
