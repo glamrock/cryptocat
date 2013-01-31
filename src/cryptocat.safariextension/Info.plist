@@ -13,9 +13,9 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.0.30</string>
+	<string>2.0.31</string>
 	<key>CFBundleVersion</key>
-	<string>2.0.30</string>
+	<string>2.0.31</string>
 	<key>Chrome</key>
 	<dict>
 		<key>Global Page</key>
@@ -58,6 +58,6 @@
 	<key>Update Manifest URL</key>
 	<string>https://crypto.cat/get/safari.update.plist</string>
 	<key>Website</key>
-	<string>https://project.crypto.cat</string>
+	<string>https://crypto.cat</string>
 </dict>
 </plist>
