@@ -22,6 +22,7 @@ var currentConversation = 0;
 var audioNotifications = 0;
 var desktopNotifications = 0;
 var buddyNotifications = 0;
+var timeoutNotification = 0x1337; // ~5 sec
 var loginError = 0;
 var currentStatus = 'online';
 var soundEmbed = null;
@@ -325,7 +326,7 @@ function addToConversation(message, sender, conversation) {
 		lineDecoration = 2;
 		audioNotification = 'msgGet';
 		if (!document.hasFocus()) {
-			desktopNotification('img/keygen.gif', sender, message);
+			desktopNotification('img/keygen.gif', sender, message, timeoutNotification);
 		}
 		message = Strophe.xmlescape(message);
 		if (message.match(myNickname)) {
@@ -361,9 +362,13 @@ function addToConversation(message, sender, conversation) {
 	}
 }
 
-function desktopNotification(image, title, body) {
+function desktopNotification(image, title, body, timeout) {
 	if (desktopNotifications) {
-		(window.webkitNotifications.createNotification(image, title, body)).show();
+		var noty = window.webkitNotifications.createNotification(image, title, body);
+		noty.show();
+		if (timeout > 0) {
+			setTimeout(function(){noty.cancel()}, timeout);
+		}
 	}
 }
 
@@ -388,7 +393,7 @@ function buddyNotification(buddy, join) {
 		scrollDown(600);
 	}
 	if (!document.hasFocus()) {
-		desktopNotification('img/keygen.gif', buddy, '');
+		desktopNotification('img/keygen.gif', buddy, '', timeoutNotification);
 	}
 	if (audioNotifications) {
 		playSound(audioNotification);
