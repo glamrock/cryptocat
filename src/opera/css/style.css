@@ -56,9 +56,11 @@ img.logo {
 	height: 35px;
 	border-radius: 15px 0 0 0;
 }
+#bubble #loginLinks a {
+	margin-left:10px;
+}
 #bubble #loginLinks {
 	float: right;
-	word-spacing: 10px;
 	margin: 10px 17px 0 0;
 	font-weight: bold;
 	text-align: right;
