@@ -14,6 +14,7 @@ body {
 	font-size: 12px;
 	color: #FFF;
 	background-image: url("../img/bg.png");
+	background-size: 6px 6px;
 	line-height: 1.37em;
 }
 a {
@@ -73,6 +74,8 @@ img.logo {
 	float: right;
 	margin: 9px 10px 0 0;
 	box-shadow: 2px 2px #111;
+	width: 18px;
+	height: 18px;
 }
 #bubble #info {
 	float: left;
@@ -201,6 +204,7 @@ img.logo {
 	background: #76BDE5;
 	background-position: 85% 7px;
 	background-repeat: no-repeat;
+	background-size: 16px 16px;
 	color: #FFF;
 	padding: 8px 7px 6px 7px;
 	font-family: 'Monda', 'Helvetica Neue', Arial, Helvetica, sans-serif;
@@ -222,6 +226,7 @@ img.logo {
 	margin: 0;
 	font-size: 0.9em;
 	background-image: url("../img/down.png");
+	background-size: 14px 14px;
 	width: 14px;
 	height: 14px;
 	cursor: pointer;
@@ -229,7 +234,7 @@ img.logo {
 	opacity: 0.8;
 }
 .buddyMenu:hover {
-	background: #111;
+	background-color: #111;
 	box-shadow: 2px 2px #111;
 }
 .buddyMenuContents {
@@ -533,28 +538,29 @@ img.logo {
 }
 
 .emoticon {
-	background: transparent url("../img/emoticat.png") no-repeat;
-	height: 13px;
-	width: 13px;
+	background-repeat: no-repeat;
+	height: 14px;
+	width: 14px;
 	display: inline-block;
-	vertical-align: 4%;
+	vertical-align: 10%;
 	margin: 0 3px;
+	background-size: 100% 100%;
 	font-size: 2px;
 	color: transparent;
 }
-#eCat { background-position: 0 0; }
-#eCry { background-position: -13px 0; }
-#eGasp { background-position: -26px 0; }
-#eGrin { background-position: -39px 0; }
-#eSad { background-position: -52px 0; }
-#eSmile { background-position: -65px 0; }
-#eSquint { background-position: -78px 0; }
-#eTongue { background-position: -91px 0; }
-#eUnsure { background-position: -104px 0; }
-#eWink { background-position: -117px 0; }
-#eWinkTongue { background-position: -130px 0; }
-#eYay { background-position: -143px 0; }
-#eShut { background-position: -156px 0; }
+#eCat { background-image: url('../img/emoticon/cat.png') }
+#eCry { background-image: url('../img/emoticon/cry.png') }
+#eGasp { background-image: url('../img/emoticon/gasp.png') }
+#eGrin { background-image: url('../img/emoticon/grin.png') }
+#eSad { background-image: url('../img/emoticon/sad.png') }
+#eSmile { background-image: url('../img/emoticon/smile.png') }
+#eSquint { background-image: url('../img/emoticon/squint.png') }
+#eTongue { background-image: url('../img/emoticon/tongue.png') }
+#eUnsure { background-image: url('../img/emoticon/unsure.png') }
+#eWink { background-image: url('../img/emoticon/wink.png') }
+#eWinkTongue { background-image: url('../img/emoticon/winkTongue.png') }
+#eHappy { background-image: url('../img/emoticon/happy.png') }
+#eShut { background-image: url('../img/emoticon/shut.png') }
 
 .qtip {
 	position: absolute;
