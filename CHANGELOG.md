@@ -1,5 +1,10 @@
 ## Changelog
 
+#### Cryptocat 2.0.32
+**Feb. 2 2013**
+- "Retina-ready" graphics — high definition interface graphics for high resolution displays.
+- Improved Catalan translation.
+
 #### Cryptocat 2.0.31
 **Jan. 30 2013**
 - More than a dozen bug fixes and tweaks related to the redesigned UI which was pushed last version.
