@@ -26,9 +26,16 @@ a:hover {
 }
 img.logo {
 	display: inline;
-	padding: 1px 0 0 7px;
+	padding: 1px 0 0 6px;
 	float: left;
-	height: 33px;
+	height: 34px;
+}
+#logoText {
+	display: inline-block;
+	margin: 10px 0 0 10px;
+	color: #97CEEC;
+	font-family: 'Monda', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+	font-size: 16px;
 }
 #bubble {
 	position: relative;
