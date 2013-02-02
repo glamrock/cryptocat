@@ -3,6 +3,7 @@
 #### Cryptocat 2.0.32
 **Feb. 2 2013**
 - "Retina-ready" graphics — high definition interface graphics for high resolution displays.
+- Prevent desktop notifications from lasting more than 5 seconds.
 - Improved Catalan translation.
 
 #### Cryptocat 2.0.31
