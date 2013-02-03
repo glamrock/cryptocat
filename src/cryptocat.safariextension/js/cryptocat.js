@@ -1,7 +1,7 @@
 $(window).ready(function() {
 
 /* Version number */
-Cryptocat.version = '2.0.32';
+Cryptocat.version = '2.0.33';
 $('#version').text(Cryptocat.version);
 
 /* Configuration */
@@ -340,13 +340,21 @@ function addToConversation(message, sender, conversation) {
 	message = message.replace(/:/g, '&#58;');
 	var timeStamp = '<span class="timeStamp">' + currentTime(0) + '</span>';
 	var sender = '<span class="sender">' + Strophe.xmlescape(shortenString(sender, 16)) + '</span>';
-	message = '<div class="Line' + lineDecoration + '">' + timeStamp + sender + message + '</div>';
-	conversations[conversation] += message;
 	if (conversation === currentConversation) {
+		message = '<div class="Line' + lineDecoration + '">' + timeStamp + sender + message + '</div>';
+		conversations[conversation] += message;
+		var width = $(window).width() - $('#buddyWrapper').width();
 		$('#conversationWindow').append(message);
-		$(window).resize();
+		$('.Line' + lineDecoration).last()
+			.css('width', width - 60)
+			.animate({'margin-top': '20px', 'opacity': '1'}, 'fast');
+		if (($('#conversationWindow')[0].scrollHeight - $('#conversationWindow').scrollTop()) < 1500) {	
+			scrollDown(400);
+		}
 	}
 	else {
+		message = '<div class="Line' + lineDecoration + '">' + timeStamp + sender + message + '</div>';
+		conversations[conversation] += message;
 		var backgroundColor = $('#buddy-' + conversation).css('background-color');
 		$('#buddy-' + conversation).css('background-image', 'url("img/newMessage.png")');
 		$('#buddy-' + conversation)
@@ -356,9 +364,7 @@ function addToConversation(message, sender, conversation) {
 	if (audioNotifications) {
 		playSound(audioNotification);
 	}
-	if (($('#conversationWindow')[0].scrollHeight - $('#conversationWindow').scrollTop()) < 1500) {	
-		scrollDown(600);
-	}
+	
 }
 
 function desktopNotification(image, title, body, timeout) {
@@ -376,7 +382,6 @@ function desktopNotification(image, title, body, timeout) {
 // Add a join/part notification to the main conversation window.
 // If 'join === 1', shows join notification, otherwise shows part
 function buddyNotification(buddy, join) {
-	var timeStamp = '<span class="timeStamp">' + currentTime(0) + '</span>';
 	if (join) {
 		var status = '<div class="userJoin"><strong>+</strong>' + buddy + '</div>';
 		var audioNotification = 'userOnline';
@@ -385,13 +390,12 @@ function buddyNotification(buddy, join) {
 		var status = '<div class="userLeave"><strong>-</strong>' + buddy + '</div>';
 		var audioNotification = 'userOffline';
 	}
-	var message = '<div class="Line2">' + timeStamp + status + '</div>';
-	conversations['main-Conversation'] += message;
+	conversations['main-Conversation'] += status;
 	if (currentConversation === 'main-Conversation') {
-		$('#conversationWindow').append(message);
+		$('#conversationWindow').append(status);
 	}
 	if (($('#conversationWindow')[0].scrollHeight - $('#conversationWindow').scrollTop()) < 1500) {	
-		scrollDown(600);
+		scrollDown(400);
 	}
 	if (!document.hasFocus()) {
 		desktopNotification('img/keygen.gif', buddy, '', 0x1337);
@@ -614,6 +618,7 @@ function bindBuddyClick(nickname) {
 		currentConversation = nickname;
 		initiateConversation(currentConversation);
 		$('#conversationWindow').html(conversations[currentConversation]);
+		$('.Line1, .Line2, .Line3').addClass('visibleLine');
 		$(window).resize();
 		if (($(this).prev().attr('id') === 'buddiesOnline')
 			|| (($(this).prev().attr('id') === 'buddiesAway')
@@ -1248,10 +1253,10 @@ $(window).resize(function() {
 			$('#bubble').css('height', $(window).height());
 		}
 		$('#conversationWrapper').css('width', width);
-		$('#userInputText').css('width', width);
+		$('#userInputText').css('width', width - 35);
 		$('#conversationWindow').css('height', $('#bubble').height() - 133);
 		$('#conversationInfo').css({'width': width});
-		$('.Line1, .Line2, .Line3').css('width', width - 10);
+		$('.Line1, .Line2, .Line3').css('width', width - 60);
 	}
 });
 

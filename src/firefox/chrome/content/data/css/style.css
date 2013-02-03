@@ -94,7 +94,7 @@ img.logo {
 }
 #bubble #info #introParagraph {
 	color: #CCCCD0;
-	
+
 }
 #bubble #info li {
 	list-style-type: square;
@@ -351,22 +351,55 @@ img.logo {
 	overflow-y: scroll;
 }
 #conversationInfo, .Line1, .Line2, .Line3 {
-	background: rgba(151, 206, 236, 0.05);
-	padding: 7px 10px 7px 5px;
+	background: #161B26;
+	padding: 10px;
 	line-height: 20px;
 	word-wrap: break-word;
 	text-align: left;
+	position: relative;
+	margin: 30px 0 16px 20px;
+	opacity: 0;
+	border-radius: 5px 0 5px 5px;
 }
-#conversationWindow .Line2 {
-	background: #080812;
+.Line2 {
+	background: #11141E;
 }
-#conversationWindow .Line3 {
-	background: rgba(151, 206, 236, 0.12);
+.Line3 {
+	background: #1B232F;
+}
+.Line1:before {
+	top: 100%;
+}
+.Line1:after, .Line2:after, .Line3:after {
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+	top: 100%;
+	border: 7px solid;
+}
+.Line1:after {
+	left: 15px;
+	border-color: #161B26 transparent transparent #161B26;
+}
+.Line2:after {
+	right: 15px;
+	border-color: #11141E #11141E transparent transparent;
+}
+.Line3:after {
+	right: 15px;
+	border-color: #1B232F #1B232F transparent transparent;	
+}
+.visibleLine {
+	opacity: 1;
+	margin-top: 20px;
 }
 #conversationInfo {
 	background: #97CEEC;
 	text-align: left;
 	font-size: 1em;
+	margin: 0;
+	border-radius: 0;
 	padding: 5px 0 11px 0;
 	width: 0;
 	float: left;
@@ -375,6 +408,7 @@ img.logo {
 	border-bottom: 1px solid #76BDE5;
 	font-weight: bold;
 	display: none;
+	opacity: 1;
 }
 #conversationInfo .conversationUserCount {
 	background: #70B9E0;
@@ -391,7 +425,7 @@ img.logo {
 }
 #conversationInfo #groupConversation {
 	position: absolute;
-	right: 150px;
+	right: 10px;
 	font-size: 0.9em;
 }
 #conversationWindow .timeStamp {
@@ -515,7 +549,7 @@ img.logo {
 	margin: 20px 0;
 	font-weight: bold;
 }
-.imageView, .fileView, .userJoin, .userLeave {
+.imageView, .fileView {
 	background-color: #97CEEC;
 	color: #FFF;
 	padding: 0 2px 0 21px;
@@ -529,16 +563,24 @@ img.logo {
 	display: inline-block;
 }
 .userJoin, .userLeave {
-	padding: 0 2px 0 5px;
-	background-image: none;
+	background-color: #97CEEC;
+	width: 200px;
+	padding: 10px;
+	margin: 20px;
+	opacity: 0.9;
+	text-align: center;
+	border-radius: 5px 0 5px 5px;
+	font-size: 1.2em;
 }
 .userLeave {
 	background: #F00;
-	box-shadow: 1px 1px #900;
+
 }
 .userJoin strong, .userLeave strong {
 	padding-right: 10px;
 	font-size: 1.4em;
+	vertical-align: -4px;
+
 }
 .imageView:hover, .fileView:hover {
 	text-decoration: none;

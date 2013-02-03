@@ -1,5 +1,9 @@
 ## Changelog
 
+#### Cryptocat 2.0.33
+**Feb. 2 2013**
+- Redesigned message display: Now with speech bubbles, better colours and more!
+
 #### Cryptocat 2.0.32
 **Feb. 2 2013**
 - "Retina-ready" graphics — high definition interface graphics for high resolution displays.
