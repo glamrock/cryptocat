@@ -1076,8 +1076,8 @@ $('#loginForm').submit(function() {
 		if (Cryptocat.language['language'] === 'en') {
 			$('#progressInfo').append(
 				'<br />Here is an interesting fact while you wait:'
-				+ '<br /><br /><span id="interestingFact">'
-				+ CatFacts.getFact() + '</span>'
+				+ '<br /><br /><div id="interestingFact">'
+				+ CatFacts.getFact() + '</div>'
 			);
 		}
 		$('#progressInfo').append(

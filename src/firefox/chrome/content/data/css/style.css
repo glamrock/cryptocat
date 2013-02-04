@@ -492,6 +492,7 @@ img.logo {
 }
 #progressInfo #interestingFact {
 	font-size: 1em;
+	height: 55px;
 }
 #progressBar {
 	margin-top: 10px;
