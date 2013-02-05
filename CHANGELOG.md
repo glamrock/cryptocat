@@ -1,5 +1,10 @@
 ## Changelog
 
+#### Cryptocat 2.0.34
+**Feb. 5 2013**
+- Updated Korean, Latvian and Urdu translations.
+- User interface minor bug fixes and improvements.
+
 #### Cryptocat 2.0.33
 **Feb. 2 2013**
 - Redesigned message display: Now with speech bubbles, better colours and more!
