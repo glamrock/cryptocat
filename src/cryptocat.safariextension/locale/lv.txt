@@ -1,8 +1,8 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Privātas sarunas ikvienam.
-Cryptocat ir ziņojumu tūlītējas apmaiņas platforma, kas ļauj veikt privātas sarunas ar draugiem. Ziņojumi tiek šifrēti pirms tie pamet ekrānu un ir pasargāti no tā, ka kāda trešā puse, pat mēs, varētu tos nolasīt.
-Cryptocat ir brīvā programmatūra, kas būvēta atbilstoši atvērtajiem standartiem. Mūsu izstrādes procesu pastāvīgi uzrauga entuziastu un brīvprātīgo sabiedrība. <a href="https://project.crypto.cat" target="_blank">Uzzini vairāk par Cryptocat projektu</a>.
+Esi sveicināts Cryptocat. Šeit būs daži noderīgi padomi: <ul><li>Cryptocat nav maģiska lode. Tev nekad nevajadzētu uzticēt savu dzīvi nevienai programmatūrai.</li><li>Cryptocat nevar tevi aizsargāt pret neuzticamiem cilvēkiem, taustiņspiedienu pierakstītājiem, kā arī tas nepadara tavu pieslēgumu anonīmu.</li></ul>
+
 Projekts
 Blogs
 Avots
@@ -14,9 +14,9 @@ savienoties
 Levadiet nosaukumu jūsu saruna un dalīties tajā ar cilvēkiem, jūs gribētu runāt ar.
 Ievadi sarunas nosaukumu, kuram pievienoties.
 Lūdzu, ievadi sarunas nosaukumu.
-Sarunas nosaukumā var būt cipari un burti.
+Sarunas nosaukumā var būt tikai burti un cipari.
 Lūdzu, ievadi pseidonīmu.
-Pseidonīms var būt no cipariem un burtiem.
+Pseidonīms var būt tikai no burtiem un cipariem.
 Pseidonīms jau tiek lietots.
 Autentificēšanās kļūda.
 Savienojums neizdevās.
@@ -24,7 +24,7 @@ Paldies, ka lieto Cryptocat.
 Rēģistrējas...
 Savienojas...
 Savienojums nodibināts.
-Lūdzu padrukā ar klaviatūru pēc iespējas neprognozējamāk turpmākās dažas sekundes.
+Lūdzu paraksti ar klaviatūru pēc iespējas neprognozējamāki turpmākās dažas sekundes.
 Ģenerē šifrēšanas atslēgas...
 Grupas saruna. Noklikšķini uz lietotāja, lai sāktu privātu sarunu.
 OTR kontrolsumma (privātai sarunai):
