@@ -1,5 +1,9 @@
 ## Changelog
 
+#### Cryptocat 2.0.35
+**Feb. 6 2013**
+- Update Tibetan translation and improve language display semantics.
+
 #### Cryptocat 2.0.34
 **Feb. 5 2013**
 - Updated Korean, Latvian and Urdu translations.
