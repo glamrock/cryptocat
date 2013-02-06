@@ -2,7 +2,6 @@ ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Privat Samtale for Alle.
 Velkommen til Cryptocat. Her er nogle brugbare tips:<ul><li>Cryptocat er ikke et universal værktøj. Du skal aldrig lægge dit liv i hænderne på et stykke software, slet ikke hvis det afhænger af det.</li><li>Cryptocat kan ikke beskytte dig mod upålidelige mennesker, keyloggere og Cryptocat anonymiserer ikke din forbindelse</li></ul>
-
 Projekt
 Blog
 Kildekode

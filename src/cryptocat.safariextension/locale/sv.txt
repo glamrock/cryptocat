@@ -2,7 +2,6 @@ ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Privata konversationer för alla.
 Välkommen till Cryptocat. Här följer några användbara tips: <ul><li>Cryptocat är ingen universallösning. Du bör inte anförtro ditt liv åt någon mjukvara.</li><li>Cryptocat kan inte skydda dig mot otillförlitliga människor eller key logers och anonymiserar inte din anslutning.</li></ul>
-
 Projekt
 Blogg
 Källa

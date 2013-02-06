@@ -2,7 +2,6 @@ ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Private Conversations for Everyone.
 Welcome to Cryptocat. Here are some helpful tips: <ul><li>Cryptocat is not a magic bullet. You should never trust any piece of software with your life.</li><li>Cryptocat can't protect you against untrustworthy people, key loggers, and does not anonymize your connection.</li></ul>
-
 Project
 Blog
 Source

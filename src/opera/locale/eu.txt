@@ -2,7 +2,6 @@ ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Elkarrizketa pribatuak edonorentzat.
 Ongi etorri Crytocat-era. Hona hemen aholku erabilgarri batzuk:<ul><li>Cryptocat ez da konponbide perfektua. Ez ezazu inoiz jarri zure bizitza software baten esku.</li><li>Cryptocat-ek ezin zaitu babestu pertsona ez fidagarri edo key logger-en aurka eta ez du zure konexioa anonimo bihurtzen</li></ul>
-
 Proiektua
 Bloga
 Iturburua

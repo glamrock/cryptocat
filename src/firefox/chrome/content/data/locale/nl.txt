@@ -2,7 +2,6 @@ ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Privé Conversaties voor Iedereen.
 Welkom bij Cryptocat. Hier zijn wat tips: <ul><li>Cryptocat biedt geen magische oplossing. U moet software nooit uw leven toevertrouwen.</li><li>Cryptocat kan u niet beschermen tegen onbetrouwbare personen en key loggers, en anonimiseert uw verbinding niet.</li></ul>
-
 Project
 Blog
 Broncode

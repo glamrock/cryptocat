@@ -2,7 +2,6 @@ ltr
 "Microsoft Yahei", "微软雅黑", Tahoma, "Helvetica Neue", Helvetica, Arial, sans-serif, STXihei, "华文细黑"
 属于每个人的私人对话。
 欢迎使用Cryptocat。这里是几条有用的帮助: <ul><li>Cryptocat并不是神奇子弹. 你永远不能完全相信一生中遇到的任何软件。</li><li>Cryptocat不能保护你不受可疑人物或键盘记录软件的攻击，它也不能让你的连接匿名。</li></ul>
-
 项目
 博客
 源代码

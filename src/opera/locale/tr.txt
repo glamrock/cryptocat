@@ -2,7 +2,6 @@ ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Herkes için Güvenli İletişim.
 Cryptocat’e hoşgeldiniz. Yararlı öneriler burada bulunur:<ul><li>Cryptocat sihirli bir değnek değildir. Körü körüne hiç bir zaman her hangi bir software’e güvenmeyin.</li><li>Cryptocat sizi ne güvenilmez insanlardan nede tuş kaydedicilerinden koruyabilir, ve sizin bağlantınızı anonimleştirmez.</li></ul>
-
 Proje
 Blog
 Kaynak

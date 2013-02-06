@@ -1,7 +1,7 @@
 $(window).ready(function() {
 
 /* Version number */
-Cryptocat.version = '2.0.33';
+Cryptocat.version = '2.0.34';
 $('#version').text(Cryptocat.version);
 
 /* Configuration */
@@ -683,8 +683,8 @@ function displayInfo(nickname) {
 		+ nickname + '"/><div id="displayInfo">'
 		+ Cryptocat.language['chatWindow']['otrFingerprint']
 		+ '<br /><span id="otrFingerprint"></span><br />'
-		+ '<div id="otrColorprint"></div><br />'
-		+ '<br />' + Cryptocat.language['chatWindow']['groupFingerprint']
+		+ '<div id="otrColorprint"></div>'
+		+ Cryptocat.language['chatWindow']['groupFingerprint']
 		+ '<br /><span id="multiPartyFingerprint"></span><br />'
 		+ '<div id="multiPartyColorprint"></div><br /></div>';
 	// If OTR fingerprints have not been generated, show a progress bar and generate them.

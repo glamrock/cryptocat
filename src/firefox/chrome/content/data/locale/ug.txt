@@ -2,7 +2,6 @@ ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Hemmige Shexsi Parang
 Cryptocatke xush keldingiz. Töwendikiler sizge paydiliq uchurlardur:<ul><li>Cryptocat hemmige qadir emes. Siz héchqachan birer yumshaq détalgha  pütünley ishinip ketmeng.</li><li>Cryptocat sizni ishenchsiz ademlerdin, konupka taxtisi közetküchiliridin saqliyalmaydu, tor ulinishingizni namsizlashturalmaydu.</li></ul>
-
 Layihe
 Blog
 Menbe

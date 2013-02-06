@@ -11,11 +11,9 @@ body {
 	background-color: #c7e5f5;
 	margin: 0;
 	font-family: 'Helvetica Neue', Helvetica, Arial, Verdana;
-	font-size: 12px;
 	color: #FFF;
 	background-image: url("../img/bg.png");
 	background-size: 6px 6px;
-	line-height: 1.37em;
 }
 a {
 	color: #97CEEC;
@@ -39,7 +37,7 @@ img.logo {
 }
 #logoText {
 	display: inline-block;
-	margin: 10px 0 0 10px;
+	margin: 6px 0 0 10px;
 	color: #97CEEC;
 	font-family: 'Monda', 'Helvetica Neue', Arial, Helvetica, sans-serif;
 	font-size: 16px;
@@ -73,11 +71,11 @@ img.logo {
 	border-radius: 15px 0 0 0;
 }
 #bubble #loginLinks a {
-	margin-left:10px;
+	margin-left: 10px;
 }
 #bubble #loginLinks {
 	float: right;
-	margin: 10px 17px 0 0;
+	margin: 6px 17px 0 0;
 	font-weight: bold;
 	text-align: right;
 	width: 200px;
@@ -96,7 +94,6 @@ img.logo {
 	padding-left: 15px;
 	width: 380px;
 	font-size: 1.1em;
-	line-height: 20px;
 	margin-top: 5px;
 }
 #bubble #info #introParagraph {
@@ -156,12 +153,13 @@ img.logo {
 }
 #bubble .loginOption {
 	background: #97CEEC;
-	color: #FFF;
-	padding: 0 6px;
+	color: #000;
+	padding: 0 6px 4px 6px;
 	width: 201px;
 	display: block;
 	margin-left: 2px;
 	font-size: 0.9em;
+	font-weight: bold;
 	height: 15px;
 }
 #bubble .loginOption:hover {
@@ -298,8 +296,9 @@ img.logo {
 	color: #FFF;
 	background: #E93028;
 	float: right;
-	cursor: pointer;
 	margin-top: 1px;
+	padding-bottom: 4px;
+	cursor: pointer;
 	font-family: Helvetica, Arial, Verdana;
 	font-weight: bold;
 }
@@ -360,7 +359,6 @@ img.logo {
 #conversationInfo, .Line1, .Line2, .Line3 {
 	background: #161B26;
 	padding: 10px;
-	line-height: 20px;
 	word-wrap: break-word;
 	text-align: left;
 	position: relative;
@@ -500,6 +498,7 @@ img.logo {
 #progressInfo #interestingFact {
 	font-size: 1em;
 	height: 55px;
+	line-height: 1.6em;
 }
 #progressBar {
 	margin-top: 10px;
@@ -539,10 +538,11 @@ img.logo {
 }
 #otrFingerprint, #multiPartyFingerprint {
 	font-weight: bold;
+	font-size: 14px;
 }
 #otrColorprint, #multiPartyColorprint {
 	height: 20px;
-	margin-top: 2px;
+	margin: 2px 0 10px 0;
 }
 .colorprint {
 	width: 71px;

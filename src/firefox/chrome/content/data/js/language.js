@@ -48,7 +48,6 @@ Language.buildObject = function(locale, language) {
 		'loginWindow': {
 			'introHeader': language[i++],
 			'introParagraph': language[i++],
-			'introParagraph2': language[i++], // to be phased out
 			'project': language[i++],
 			'blog': language[i++],
 			'source': language[i++],
@@ -105,8 +104,12 @@ Language.buildObject = function(locale, language) {
 // Deliver new strings and refresh login page
 Language.refresh = function(languageObject) {
 	Cryptocat.language = languageObject;
-	if (languageObject['language'] === 'bo') { $('body').css('font-size', '12px') }
-	else { $('body').css('font-size', '11px') }
+	if (languageObject['language'] === 'bo') {
+		$('body').css({'font-size': '13px'});
+	}
+	else {
+		$('body').css({'font-size': '11px'});
+	}
 	$('html').attr('dir', languageObject['direction']);
 	$('body').css('font-family', languageObject['font-family']);
 	$('#introHeader').text(languageObject['loginWindow']['introHeader']);
