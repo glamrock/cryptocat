@@ -1,5 +1,9 @@
 ## Changelog
 
+#### Cryptocat 2.0.36
+**Feb. 8 2013**
+- New and improved language selection interface.
+
 #### Cryptocat 2.0.35
 **Feb. 6 2013**
 - Update Tibetan translation and improve language display semantics.
