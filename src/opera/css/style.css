@@ -58,9 +58,9 @@ img.logo {
 	position: absolute;
 	width: 0;
 	height: 0;
-	left: 315px;
+	left: 305px;
 	top: 310px;
-	border: 25px solid;
+	border: 30px solid;
 	border-color: #080812 transparent transparent #080812;
 	z-index: 0;
 }
@@ -172,7 +172,7 @@ img.logo {
 	bottom: 5px;
 }
 #bubble #options {
-	background: #111;
+	background: #202020;
 	width: 110px;
 	height: 20px;
 	padding: 1px 0 2px 2px;

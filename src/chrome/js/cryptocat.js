@@ -1024,8 +1024,9 @@ $('#languageSelect').click(function() {
 			$(this).animate({'color': '#FFF'}, 'fast');
 		});
 		$('#languages li').click(function() {
-			Language.set($(this).attr('id'));
+			var lang = $(this).attr('id');
 			$('#languages').fadeOut(function() {
+				Language.set(lang);
 				$('#introParagraph').fadeIn();
 			});
 		});
