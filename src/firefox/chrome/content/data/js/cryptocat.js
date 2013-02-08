@@ -1012,12 +1012,24 @@ $('#customServer').click(function() {
 });
 
 // Language selector
-$('#languages').change(function() {
-	language = Language.set($(this).val());
-	if (localStorageOn) {
-		localStorage.setItem('language', $(this).val());
-	}
-	$('#conversationName').select();
+$('#languageSelect').click(function() {
+	$('#introParagraph').fadeOut(function() {
+		$('#languages li').css({'color': '#FFF', 'font-weight': 'normal'});
+		$('#' + Cryptocat.language['language']).css({'color': '#97CEEC', 'font-weight': 'bold'});
+		$('#languages').fadeIn();
+		$('#languages li').mouseenter(function() {
+			$(this).animate({'color': '#97CEEC'}, 'fast');
+		});
+		$('#languages li').mouseleave(function() {
+			$(this).animate({'color': '#FFF'}, 'fast');
+		});
+		$('#languages li').click(function() {
+			Language.set($(this).attr('id'));
+			$('#languages').fadeOut(function() {
+				$('#introParagraph').fadeIn();
+			});
+		});
+	});
 });
 
 // Login form

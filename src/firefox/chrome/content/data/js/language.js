@@ -134,6 +134,7 @@ Language.refresh = function(languageObject) {
 	$('#status').attr('alt', languageObject['chatWindow']['statusAvailable']);
 	$('#conversationTag').text(languageObject['chatWindow']['conversation']);
 	$('#conversationName').attr('title', languageObject['loginWindow']['conversationNameTooltip']);
+	$('#languageSelect').text($('#' + Cryptocat.language['language']).text());
 	$('[title]').qtip({
 		position: {
 			my: 'top right',

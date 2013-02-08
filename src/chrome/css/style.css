@@ -145,8 +145,9 @@ img.logo {
 	background: #151520;
 	padding: 2px 5px;
 	width: 204px;
-	margin: 10px 0 0 1px;
+	margin: 14px 0 0 1px;
 	font-size: 1em;
+	line-height: 16px;
 }
 #bubble h1 {
 	font-family: Helvetica, Arial;
@@ -188,15 +189,25 @@ img.logo {
 	font-family: monospace;
 	color: #888;
 }
-#bubble #languages {
-	background: #111;
+#bubble #languageSelect {
 	color: #97CEEC;
-	font-size: 0.9em;
-	border: 1px solid #111;
-	outline: none;
-	width: 100px;
-	float: right;
-	margin-right: 9px;
+	margin: 0 10px;
+	font-weight: bold;
+}
+#bubble #languageSelect:hover {
+	text-decoration: none;
+}
+#bubble #languages {
+	-webkit-column-count: 4;
+	-moz-column-count: 4;
+	column-count: 4;
+	width: 425px;
+	display: none;
+	margin: 0 -40px;
+}
+#bubble #languages li {
+	margin-left: 20px;
+	cursor: pointer;
 }
 #buddyWrapper {
 	overflow: hidden;
