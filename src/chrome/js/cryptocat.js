@@ -1011,7 +1011,7 @@ $('#customServer').click(function() {
 	});
 });
 
-// Language selector
+// Language selector.
 $('#languageSelect').click(function() {
 	$('#introParagraph').fadeOut(function() {
 		$('#languages li').css({'color': '#FFF', 'font-weight': 'normal'});
@@ -1033,7 +1033,7 @@ $('#languageSelect').click(function() {
 	});
 });
 
-// Login form
+// Login form.
 $('#conversationName').click(function() {
 	$(this).select();
 });
@@ -1041,11 +1041,11 @@ $('#nickname').click(function() {
 	$(this).select();
 });
 $('#loginForm').submit(function() {
-	// Don't submit if form is already being processed
+	// Don't submit if form is already being processed.
 	if (($('#loginSubmit').attr('readonly') === 'readonly')) {
 		return false;
 	}
-	//Check validity of conversation name and nickname
+	//Check validity of conversation name and nickname.
 	$('#conversationName').val($.trim($('#conversationName').val().toLowerCase()));
 	$('#nickname').val($.trim($('#nickname').val().toLowerCase()));
 	if (($('#conversationName').val() === '')
@@ -1066,13 +1066,13 @@ $('#loginForm').submit(function() {
 		loginFail(Cryptocat.language['loginMessage']['nicknameAlphanumeric']);
 		$('#nickname').select();
 	}
-	// If no encryption keys, generate
+	// If no encryption keys, generate.
 	else if (!myKey) {
 		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" '
 			+ 'alt="" /><p id="progressInfo"><span>'
 			+ Cryptocat.language['loginMessage']['generatingKeys'] + '</span></p>';
 		dialogBox(progressForm, 0, function() {
-			// We need to pass the web worker a pre-generated seed
+			// We need to pass the web worker a pre-generated seed.
 			keyGenerator.postMessage(Cryptocat.generateSeed());
 			if (localStorageOn) {
 				localStorage.setItem('multiPartyKey', multiParty.genPrivateKey());
@@ -1089,7 +1089,7 @@ $('#loginForm').submit(function() {
 		if (Cryptocat.language['language'] === 'en') {
 			$('#progressInfo').append(
 				'<br />Here is an interesting fact while you wait:'
-				+ '<br /><br /><div id="interestingFact">'
+				+ '<br /><div id="interestingFact">'
 				+ CatFacts.getFact() + '</div>'
 			);
 		}
@@ -1257,8 +1257,15 @@ function logout() {
 	});
 }
 
-// On browser resize, also resize Cryptocat window
-// (This can be done with CSS for width, but not really for height)
+// On window focus, select text input field automatically if we are chatting.
+$(window).focus(function() {
+	if ($('#buddy-main-Conversation').attr('status') === 'online') {
+		$('#userInputText').focus();
+	}
+});
+
+// On browser resize, also resize Cryptocat window.
+// (This can be done with CSS for width, but not really for height.)
 $(window).resize(function() {
 	if ($('#buddy-main-Conversation').attr('status') === 'online') {
 		var width = $(window).width() - $('#buddyWrapper').width();
@@ -1273,7 +1280,7 @@ $(window).resize(function() {
 	}
 });
 
-// Logout on browser close
+// Logout on browser close.
 $(window).unload(function() {
 	logout();
 });
