@@ -1,6 +1,6 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
-Private samtaler for alle.
+Private sampler for alle. 
 Velkommen til Cryptocat. Her er noen gode tips: <ul><li>Cryptocat er ikke en universalløsning. Du bør aldri legge livet ditt i hendene på noen programvare.</li><li> Cryptocat kan ikke beskytte deg mot upålitelige personer, keyloggere og anonymiserer ikke forbindelsen din. </li></ul>
 Prosjekt
 Blogg
@@ -26,7 +26,7 @@ Tilkoblet.
 Vennligst utfør tastetrykk på tastaturet så tilfeldig som mulig i noen sekunder.
 Genererer krypteringsnøkler...
 Gruppesamtale. Klikk på en bruker for å snakke privat.
-OTR fingeravtrykk (for private samtaler):
+OTR fingeravtrykk (for private sampler):
 Gruppesamtale fingeravtrykk:
 Tilbakestill krypteringsnøklene mine
 Tilbakestilling av krypteringsnøklene dine vil koble deg av. Fingeravtrykkene dine vil også forandres.
