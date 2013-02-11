@@ -1,5 +1,11 @@
 ## Changelog
 
+#### Cryptocat 2.0.37
+**Feb. 11 2013**
+- Added Bengali and Bulgarian translations.
+- Minor German translation corrections.
+- Small usability improvements.
+
 #### Cryptocat 2.0.36
 **Feb. 8 2013**
 - New and improved language selection interface.
