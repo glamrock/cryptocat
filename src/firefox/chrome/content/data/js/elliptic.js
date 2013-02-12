@@ -21,7 +21,7 @@ var Curve25519 = function() {
 
 (function(){
 
-// p22519 is the curve25519 prime: 2^255 - 19
+// p25519 is the curve25519 prime: 2^255 - 19
 Curve25519.p25519 = BigInt.str2bigInt("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffed", 16);
 // p25519Minus2 = 2^255 - 21
 var p25519Minus2 = BigInt.str2bigInt("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffeb", 16);
