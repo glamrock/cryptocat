@@ -371,13 +371,13 @@ img.logo {
 }
 #conversationInfo, .Line1, .Line2, .Line3 {
 	background: #161B26;
-	padding: 8px 10px;
+	border-radius: 5px 0 5px 5px;
+	padding: 7px 10px;
 	word-wrap: break-word;
 	text-align: left;
 	position: relative;
 	margin: 30px 0 16px 20px;
 	opacity: 0;
-	border-radius: 5px 0 5px 5px;
 }
 .Line2 {
 	background: #11141E;
@@ -457,7 +457,7 @@ img.logo {
 }
 #conversationWindow .sender {
 	color: #97CEEC;
-	padding: 6px 3px 6px 0;
+	padding: 7px 3px 6px 0;
 	width: 100px;
 	margin: 0 10px;
 	display: inline;
@@ -472,13 +472,13 @@ img.logo {
 	display: none;
 }
 #userInputText {
-	background: #080812;
-	width: 100%;
+	background: #161B26;
+	border-radius: 5px 0 5px 5px;
+	padding: 8px 10px;
 	height: 32px;
 	float: left;
-	margin: 10px 0 5px 0;
+	margin: 0 0 7px 14px;
 	display: inline;
-	padding: 10px 14px;
 	border: none;
 	border-left: 6px solid #97CEEC;
 	box-shadow: none;

@@ -804,7 +804,7 @@ function dialogBox(data, closeable, onAppear, onClose) {
 		$('#dialogBoxClose').css('font-size', '12px');
 	}
 	$('#dialogBoxContent').html(data);
-	$('#dialogBox').animate({'top': '+=460px'}, 'fast').animate({
+	$('#dialogBox').animate({'top': '+=440px'}, 'fast').animate({
 		'top': '-=10px'
 	}, 'fast', function() {
 		if (onAppear) {
@@ -857,6 +857,7 @@ $('#status').click(function() {
 	}
 });
 
+// My info button
 $('#myInfo').click(function() {
 	displayInfo(myNickname);
 });
@@ -1273,7 +1274,7 @@ $(window).resize(function() {
 			$('#bubble').css('height', $(window).height());
 		}
 		$('#conversationWrapper').css('width', width);
-		$('#userInputText').css('width', width - 35);
+		$('#userInputText').css('width', width - 61);
 		$('#conversationWindow').css('height', $('#bubble').height() - 133);
 		$('#conversationInfo').css({'width': width});
 		$('.Line1, .Line2, .Line3').css('width', width - 60);
