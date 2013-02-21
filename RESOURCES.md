@@ -20,17 +20,9 @@ License: MIT
 Origin: https://github.com/Craga89/qTip2/  
 License: MIT, GPL  
 
-### Notification.js
-Origin: https://raw.github.com/MrSwitch/notification.js/  
-License: MIT  
-
 ### OTR.js
 Origin: https://github.com/arlolra/otr/  
 License: LGPL  
-
-### seedrandom
-Origin: http://davidbau.com/encode/seedrandom.js  
-License: BSD-3-Clause  
 
 ### Strophe.js
 Origin: http://strophe.im  
