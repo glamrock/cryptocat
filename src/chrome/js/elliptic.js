@@ -406,11 +406,11 @@ Curve25519.ecdsaVerify = function(publicKey, signature, message) {
 }
 
 Curve25519.ecDH = function(priv, pub) {
-	if (typeof pub === "undefined") {
-    return Curve25519.scalarMult(priv, basePoint);
-	}
-	else {
-    return BigInt.bigInt2str(Curve25519.scalarMult(priv, pub), 64);
-	}
+        if (typeof pub === "undefined") {
+                return Curve25519.scalarMult(priv, basePoint);
+        }
+        else {
+                return BigInt.bigInt2str(Curve25519.scalarMult(priv, pub), 64);
+        }
 }
 })();
