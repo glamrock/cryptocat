@@ -35,6 +35,8 @@ var eight = BigInt.str2bigInt("8", 10);
 var four = BigInt.str2bigInt("4", 10);
 var three = BigInt.str2bigInt("3", 10);
 var two = BigInt.str2bigInt("2", 10);
+var one = BigInt.str2bigInt("1", 10);
+var zero = BigInt.str2bigInt("0", 10);
 
 // groupAdd adds two elements of the elliptic curve group in Montgomery form.
 function groupAdd(x1, xn, zn, xm, zm) {
@@ -222,6 +224,12 @@ function subMod(a, b, m) {
 
 // addJacobian adds two elliptic curve points in Jacobian form.
 function addJacobian(x1, y1, z1, x2, y2, z2) {
+        if (isZero(z1)) {
+                return [x2, y2, z2];
+        }
+        if (isZero(z2)) {
+                return [x1, y1, z1];
+        }
         var z1z1 = BigInt.multMod(z1, z1, p256);
         var z2z2 = BigInt.multMod(z2, z2, p256);
         var u1 = BigInt.multMod(x1, z2z2, p256);
@@ -229,11 +237,16 @@ function addJacobian(x1, y1, z1, x2, y2, z2) {
         var s1 = BigInt.multMod(y1, BigInt.multMod(z2, z2z2, p256), p256);
         var s2 = BigInt.multMod(y2, BigInt.multMod(z1, z1z1, p256), p256);
         var h = subMod(u2, u1, p256);
+        var xEqual = isZero(h)
         var i = BigInt.mult(h, two);
         i = BigInt.multMod(i, i, p256);
         j = BigInt.multMod(h, i, p256);
 
         var r = subMod(s2, s1, p256);
+        var yEqual = isZero(r);
+        if (xEqual && yEqual) {
+                return doubleJacobian(x1, y1, z1);
+        }
         r = BigInt.mult(r, two);
 
         var v = BigInt.multMod(u1, i, p256);
@@ -276,6 +289,9 @@ function doubleJacobian(x, y, z) {
 // affineFromJacobian returns the affine point corresponding to the given
 // Jacobian point.
 function affineFromJacobian(x, y, z) {
+        if (isZero(z)) {
+                return [null, null];
+        }
         var zinv = BigInt.inverseMod(z, p256);
         var zinvsq = BigInt.multMod(zinv, zinv, p256);
 
@@ -291,37 +307,24 @@ function scalarMultP256(bx, by, in_k) {
         var bz = [1, 0];
         var k = BigInt.dup(in_k);
 
-        // The Jacobian functions don't work with the point at infinity so we
-        // start with 1, not zero.
-        var x = bx;
-        var y = by;
-        var z = bz;
+        var x = zero;
+        var y = one;
+        var z = zero;
 
-        var seenFirstTrue = false;
         for (var i = k.length-1; i >= 0; i--) {
                 for (var j = 14; j >= 0; j--) {
-                  if (seenFirstTrue) {
-                          var point = doubleJacobian(x, y, z);
+                  var point = doubleJacobian(x, y, z);
+                  x = point[0];
+                  y = point[1];
+                  z = point[2];
+                  if (k[i]&0x4000) {
+                          var point = addJacobian(bx, by, bz, x, y, z);
                           x = point[0];
                           y = point[1];
                           z = point[2];
                   }
-                  if (k[i]&0x4000) {
-                          if (!seenFirstTrue) {
-                                  seenFirstTrue = true;
-                          } else {
-                                  var point = addJacobian(bx, by, bz, x, y, z);
-                                  x = point[0];
-                                  y = point[1];
-                                  z = point[2];
-                          }
-                  }
                   k[i] <<= 1;
                 }
-        }
-
-        if (!seenFirstTrue) {
-                return [[0], [0]];
         }
 
         return affineFromJacobian(x, y, z);
@@ -390,16 +393,15 @@ Curve25519.ecdsaVerify = function(publicKey, signature, message) {
         var u1 = BigInt.multMod(m, w, n256);
         var u2 = BigInt.multMod(r, w, n256);
 
+        var one = [1, 0];
         var point1 = scalarMultP256(p256Gx, p256Gy, u1);
         var point2 = scalarMultP256(pub[0], pub[1], u2);
-        if (BigInt.equals(point1[0], point2[0])) {
-                return false;
-        }
-
-        var one = [1, 0];
         var point3 = addJacobian(point1[0], point1[1], one, point2[0], point2[1], one);
         var point4 = affineFromJacobian(point3[0], point3[1], point3[2]);
-        BigInt.mod(point3, n256);
+        if (point4[0] == null) {
+                return false;
+        }
+        BigInt.mod(point4[0], n256);
         return BigInt.equals(point4[0], r);
 }
 
