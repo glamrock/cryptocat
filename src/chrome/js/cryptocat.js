@@ -1142,6 +1142,7 @@ function connectXMPP(username, password) {
 				else if (status === Strophe.Status.CONNFAIL) {
 					if (!loginError) {
 						$('#loginInfo').text(Cryptocat.language['loginMessage']['connectionFailed']);
+						logout();
 					}
 					$('#loginInfo').animate({'color': '#E93028'}, 'fast');
 				}
