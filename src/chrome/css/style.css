@@ -531,7 +531,7 @@ img.logo {
 #dialogBox [type=text], #dialogBox [type=password], #dialogBox [type=submit] {
 	background: #000;
 	border: 1px solid #222;
-	color: #FFF
+	color: #FFF;
 	float: left;
 	margin: 0 5px 10px 5px;
 	width: 255px;
