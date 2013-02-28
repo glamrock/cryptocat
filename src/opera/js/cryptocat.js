@@ -1220,7 +1220,7 @@ function logout() {
 				$('#loginInfo').text(Cryptocat.language['loginMessage']['thankYouUsing']);
 			}
 			$('#bubble').css({
-				'border-radius': '12px 0 12px 12px',
+				'border-radius': '8px 0 8px 8px',
 				'margin': '0 auto'
 			});
 			$('#bubble').animate({

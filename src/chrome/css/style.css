@@ -50,7 +50,7 @@ img.logo {
 	height: 310px;
 	margin: 5% auto 0 auto;
 	background: #080812;
-	border-radius: 12px 0 12px 12px;
+	border-radius: 8px 0 8px 8px;
 	box-shadow: 4px 4px #76BDE5;
 }
 #bubble:after {
@@ -176,7 +176,7 @@ img.logo {
 	height: 20px;
 	padding: 1px 0 2px 2px;
 	position: absolute;
-	border-radius: 5px 0 12px 0;
+	border-radius: 5px 0 8px 0;
 	right: 0;
 	bottom: 0;
 }
@@ -287,7 +287,7 @@ img.logo {
 	position: absolute;
 	width: 470px;
 	height: 240px;
-	border-radius: 10px 0 10px 10px;
+	border-radius: 8px 0 8px 8px;
 	margin: 120px auto 0 -235px;
 	left: 50%;
 	z-index: 4;
