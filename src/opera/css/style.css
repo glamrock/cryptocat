@@ -121,8 +121,11 @@ img.logo {
 	border: none;
 	margin: 15px auto 0 auto;
 	border: 1px solid #222;
-	width: 200px;
+	width: 205px;
 	outline: none;
+}
+#bubble #conversationName, #bubble #nickname {
+	margin-left: 2px;
 }
 #bubble #loginSubmit {
 	width: 211px;
