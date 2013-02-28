@@ -318,12 +318,13 @@ function addToConversation(message, sender, conversation) {
 	initiateConversation(conversation);
 	if (sender === myNickname) {
 		lineDecoration = 1;
-		audioNotification = 'msgSend';
 		message = Strophe.xmlescape(message);
 	}
 	else {
 		lineDecoration = 2;
-		audioNotification = 'msgGet';
+		if (audioNotifications) {
+			playSound('msgGet');
+		}
 		if (!document.hasFocus()) {
 			desktopNotification('img/keygen.gif', sender, message, 0x1337);
 		}
@@ -361,10 +362,6 @@ function addToConversation(message, sender, conversation) {
 			.animate({'backgroundColor': '#A7D8F7'})
 			.animate({'backgroundColor': backgroundColor});
 	}
-	if (audioNotifications) {
-		playSound(audioNotification);
-	}
-	
 }
 
 function desktopNotification(image, title, body, timeout) {
