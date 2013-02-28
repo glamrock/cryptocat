@@ -8,6 +8,10 @@ License: PD
 Origin: http://code.google.com/p/crypto-js/  
 License: BSD-2-Clause  
 
+### IndexedDBShim
+Origin: https://github.com/axemclion/IndexedDBShim  
+License: GPL2, BSD
+
 ### jQuery
 Origin: http://jquery.org/  
 License: MIT, GPL-2+  
