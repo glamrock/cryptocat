@@ -135,17 +135,9 @@ Language.refresh = function(languageObject) {
 	$('#conversationTag').text(languageObject['chatWindow']['conversation']);
 	$('#conversationName').attr('title', languageObject['loginWindow']['conversationNameTooltip']);
 	$('#languageSelect').text($('#' + Cryptocat.language['language']).text());
-	$('[title]').qtip({
-		position: {
-			my: 'top right',
-			at: 'bottom left'
-		}
-	});
-	$('#conversationName').qtip({
-		position: {
-			my: 'top left',
-			at: 'bottom left'
-		}
+	$('[title],#conversationName').tipTip({
+		defaultPosition: 'bottom',
+		delay: 100
 	});
 	$('#conversationName').select();
 }

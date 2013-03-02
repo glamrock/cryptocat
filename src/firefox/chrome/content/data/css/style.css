@@ -636,31 +636,3 @@ img.logo {
 #eWinkTongue { background-image: url('../img/emoticon/winkTongue.png') }
 #eHappy { background-image: url('../img/emoticon/happy.png') }
 #eShut { background-image: url('../img/emoticon/shut.png') }
-
-.qtip {
-	position: absolute;
-	left: -28000px;
-	top: -28000px;
-	display: none;
-	max-width: 200px;
-	min-width: 50px;
-	font-size: 1em;
-	line-height: 12px;
-	border: 2px solid #97CEEC;
-	box-shadow: 1px 1px 3px #5588A5;
-	background: rgba(0, 0, 0, 0.8);
-	color: #EEE;
-	padding: 6px;
-	border-radius: 4px 0 4px 4px;
-}
-.qtip strong {
-	color: #97CEEC;
-}
-.ui-tooltip .ui-tooltip-tip {
-	position: absolute;
-	line-height: 0.1px !important;
-	font-size: 0.1px !important;
-	background: transparent;
-	border: 0 dashed transparent;
-	box-shadow: none;
-}
