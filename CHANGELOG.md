@@ -1,5 +1,17 @@
 ## Changelog
 
+#### Cryptocat 2.0.38
+**Mar. 2 2013**
+- Cryptocat will now save your language, server and nickname preferences automatically. This feature does not work yet on Firefox.
+- Cryptocat will now automatically log out on connection failure.
+- Improved message input interface.
+- Many small user interface tweaks and improvements.
+- Removed unused libraries, replaced some libraries.
+- Updated jQuery to version 1.9.1.
+- Minor bug fix in elliptic curve cryptography library.
+- Russian translation improvements.
+- Czech translation improvements.
+
 #### Cryptocat 2.0.37
 **Feb. 11 2013**
 - Added Bengali and Bulgarian translations.
