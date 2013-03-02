@@ -9,7 +9,12 @@ var defaultDomain = 'crypto.cat'; // Domain name to connect to for XMPP.
 var defaultConferenceServer = 'conference.crypto.cat'; // Address of the XMPP MUC server.
 var defaultBOSH = 'https://crypto.cat/http-bind'; // BOSH is served over an HTTPS proxy for better security and availability.
 var fileSize = 700; // Maximum encrypted file sharing size, in kilobytes. Also needs to be defined in datareader.js
-var localStorageOn = 0; // Disabling localStorage features until Firefox bug #795615 is fixed
+var localStorageEnabled = 1; 
+if (navigator.userAgent.match('Firefox')) {
+	// Local storage features are disabled in Firefox until we migrate to a packaged web app
+	// (Scheduled for Firefox 21 or 22)
+	localStorageEnabled = 0;
+}
 
 /* Initialization */
 var domain = defaultDomain;
@@ -31,31 +36,27 @@ var conn, conversationName, myNickname, myKey;
 Cryptocat.setSeed(Cryptocat.generateSeed());
 
 // Initialize language settings
-var language = window.navigator.language.toLowerCase();
-Language.set(language);
-
-// Check if localStorage is implemented
-try {
-	localStorage.getItem('test');
-}
-catch(error) {
-	localStorageOn = 0;
+if (!localStorageEnabled) {
+	Language.set(window.navigator.language.toLowerCase());
 }
 
 // If localStorage is implemented, load saved settings
-if (localStorageOn) {
+if (localStorageEnabled) {
 	// Load language settings
-	if (localStorage.getItem('language') !== null) {
+	if (localStorage.getItem('language')) {
 		Language.set(localStorage.getItem('language'));
-		$('#languages').val(localStorage.getItem('language'));
-	}
-	// Load nickname settings
-	if (localStorage.getItem('rememberNickname') === 'rememberNickname') {
-		$('#nickname').val(localStorage.getItem('myNickname'));
 	}
 	else {
-		localStorage.getItem('rememberNickname', 'doNotRememberNickname');
-		localStorage.getItem('myNickname');
+		Language.set(window.navigator.language.toLowerCase());
+	}
+	// Load nickname settings
+	if (localStorage.getItem('myNickname')) {
+		window.setTimeout(function() {
+			$('#nickname').animate({'color': 'transparent'}, function() {
+				$(this).val(localStorage.getItem('myNickname'));
+				$(this).animate({'color': '#FFF'});
+			});
+		}, 0);
 	}
 	// Load custom server settings
 	if (localStorage.getItem('domain')) {
@@ -68,12 +69,13 @@ if (localStorageOn) {
 		bosh = localStorage.getItem('bosh');
 	}
 	// Load pre-existing encryption keys
-	if (localStorage.getItem('myKey') !== null) {
+	// Key storage currently disabled as we are not yet sure if this is safe to do.
+	/* if (localStorage.getItem('myKey') !== null) {
 		myKey = JSON.parse(localStorage.getItem('myKey'));
 		DSA.inherit(myKey);
 		multiParty.setPrivateKey(localStorage.getItem('multiPartyKey'));
 		multiParty.genPublicKey();
-	}
+	} */
 }
 
 // Initialize workers
@@ -81,9 +83,10 @@ var keyGenerator = new Worker('js/keygenerator.js');
 var dataReader = new Worker('js/datareader.js');
 keyGenerator.onmessage = function(e) {
 	myKey = e.data;
-	if (localStorageOn) {
-		localStorage.setItem('myKey', JSON.stringify(myKey));
-	}
+	// Key storage currently disabled as we are not yet sure if this is safe to do.
+	//if (localStorageEnabled) {
+	//	localStorage.setItem('myKey', JSON.stringify(myKey));
+	//}
 	DSA.inherit(myKey);
 	$('#fill').stop().animate({'width': '100%', 'opacity': '1'}, 400, 'linear', function() {
 		$('#loginInfo').text(Cryptocat.language['loginMessage']['connecting']);
@@ -132,11 +135,11 @@ function initiateConversation(conversation) {
 // OTR functions
 // Handle incoming messages
 var uicb = function(buddy) {
-	return function(error, message) {
-		if (error) {
-			return console.log('OTR error: ' + error);
+	return function(err, msg) {
+		if (err) {
+			return console.log('OTR error: ' + err);
 		}
-		addToConversation(message, buddy, buddy);
+		addToConversation(msg, buddy, buddy);
 	}
 }
 
@@ -983,7 +986,7 @@ $('#customServer').click(function() {
 		$('#customDomain').val(defaultDomain);
 		$('#customConferenceServer').val(defaultConferenceServer);
 		$('#customBOSH').val(defaultBOSH);
-		if (localStorageOn) {
+		if (localStorageEnabled) {
 			localStorage.removeItem('domain');
 			localStorage.removeItem('conferenceServer');
 			localStorage.removeItem('bosh');
@@ -994,18 +997,16 @@ $('#customServer').click(function() {
 		conferenceServer = $('#customConferenceServer').val();
 		bosh = $('#customBOSH').val();
 		$('#dialogBoxClose').click();
-		if (localStorageOn) {
+		if (localStorageEnabled) {
 			localStorage.setItem('domain', domain);
 			localStorage.setItem('conferenceServer', conferenceServer);
 			localStorage.setItem('bosh', bosh);
 		}
 	});
 	$('#customDomain').select();
-	$('.customServer').qtip({
-		position: {
-			my: 'center left',
-			at: 'center right'
-		}
+	$('.customServer').tipTip({
+		defaultPosition: 'right',
+		delay: 100
 	});
 });
 
@@ -1025,6 +1026,9 @@ $('#languageSelect').click(function() {
 			var lang = $(this).attr('id');
 			$('#languages').fadeOut(function() {
 				Language.set(lang);
+				if (localStorageEnabled) {
+					localStorage.setItem('language', lang);
+				}
 				$('#introParagraph').fadeIn();
 			});
 		});
@@ -1072,12 +1076,13 @@ $('#loginForm').submit(function() {
 		dialogBox(progressForm, 0, function() {
 			// We need to pass the web worker a pre-generated seed.
 			keyGenerator.postMessage(Cryptocat.generateSeed());
-			if (localStorageOn) {
-				localStorage.setItem('multiPartyKey', multiParty.genPrivateKey());
-			}
-			else {
+			// Key storage currently disabled as we are not yet sure if this is safe to do.
+			//if (localStorageEnabled) {
+			//	localStorage.setItem('multiPartyKey', multiParty.genPrivateKey());
+			//}
+			//else {
 				multiParty.genPrivateKey();
-			}
+			//}
 			multiParty.genPublicKey();
 		}, function() {
 			$('#loginSubmit').removeAttr('readonly')
@@ -1170,7 +1175,7 @@ function connected() {
 			}
 		}
 	);
-	if (localStorageOn) {
+	if (localStorageEnabled) {
 		localStorage.setItem('myNickname', myNickname);
 	}
 	$('#buddy-main-Conversation').attr('status', 'online');
