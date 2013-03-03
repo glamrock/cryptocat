@@ -1,5 +1,9 @@
 ## Changelog
 
+### Cryptocat 2.0.40
+** Mar. 3 2013**
+- More substantial color scheme and UI improvements.  
+
 #### Cryptocat 2.0.39
 ** Mar. 3 2013**
 - User interface bug fixes.  
