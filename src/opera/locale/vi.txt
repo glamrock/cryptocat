@@ -2,9 +2,7 @@ ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Đối thoại riêng tư cho mọi người.
 Chào bạn đến với Cryptocat. Bạn lưu ý một số điểm sau đây:<ul><li>Cryptocat không phải là một liều thần dược. Đừng cậy nhờ sự an nguy của bạn vào bất cứ phần mềm nào.</li><li>Cryptocat không thể bảo vệ bạn chống lại kẻ gian, keyloggers, và không giúp làm ẩn danh đường nối kết.</li></ul>
-Dự Án
 Blog
-Nguồn
 Chọn máy chủ khác...
 Đặt lại
 tên cuộc đối thoại

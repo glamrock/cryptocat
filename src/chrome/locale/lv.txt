@@ -2,9 +2,7 @@ ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Privātas sarunas ikvienam.
 Esi sveicināts Cryptocat. Šeit būs daži noderīgi padomi: <ul><li>Cryptocat nav maģiska lode. Tev nekad nevajadzētu uzticēt savu dzīvi nevienai programmatūrai.</li><li>Cryptocat nevar tevi aizsargāt pret neuzticamiem cilvēkiem, taustiņspiedienu pierakstītājiem, kā arī tas nepadara tavu pieslēgumu anonīmu.</li></ul>
-Projekts
 Blogs
-Avots
 Cits serveris...
 Anulēt
 sarunas nosaukums

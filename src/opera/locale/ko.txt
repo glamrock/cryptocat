@@ -2,9 +2,7 @@ ltr
 "Microsoft Yahei", "微软雅黑", Tahoma, "Helvetica Neue", Helvetica, Arial, sans-serif, STXihei, "华文细黑"
 모든 사람을위한 개인 대화.
 Cryptocat에 오신 것을 환영합니다. 다음은 몇 가지 유용한 팁은 다음과 같습니다: <ul><li>Cryptocat는 마법의 총알이 아닙니다. 당신은 당신의 삶을 소프트웨어의 조각을 신뢰하지 않는다.</li><li> Cryptocat는 신뢰할 수없는 사람, 키 로거, 그리고 익명으로 연결된 곳으로부터 사용자를 보호 할 수 없습니다.</li></ul>
-계획
 블로그
-출처
 사용자 지정 서버 ...
 재설정
 대화 이름

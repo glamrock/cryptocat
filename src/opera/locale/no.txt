@@ -2,9 +2,7 @@ ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Private sampler for alle. 
 Velkommen til Cryptocat. Her er noen gode tips: <ul><li>Cryptocat er ikke en universalløsning. Du bør aldri legge livet ditt i hendene på noen programvare.</li><li> Cryptocat kan ikke beskytte deg mot upålitelige personer, keyloggere og anonymiserer ikke forbindelsen din. </li></ul>
-Prosjekt
 Blogg
-Kildekode
 Egendefinert server…
 Tilbakestill
 samtalenavn

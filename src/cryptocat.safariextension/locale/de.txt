@@ -2,9 +2,7 @@ ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Privates Chatten für alle.
 Willkommen bei Cryptocat. Hier sind einige hilfreiche Tipps: <ul> <li> Cryptocat ist kein Wundermittel. Sie sollten nie einer Software mit Ihrem Leben vertrauen.</li> <li> Cryptocat kann Sie nicht vor vertrauensunwürdigen Menschen und Key-loggern bewahren und anonymisiert auch Ihre Verbindung nicht.</li></ul>
-Projekt
 Blog
-Quelltext
 Benutzerdefinierter Server...
 Zurücksetzen
 Name der Konversation

@@ -2,9 +2,7 @@ ltr
 "Microsoft Yahei", "微软雅黑", Tahoma, "Helvetica Neue", Helvetica, Arial, sans-serif, STXihei, "华文细黑"
 屬於每個人的私人對話。
 歡迎來到 Cryptocat。這裡是一些有用的提示：<ul><li>Cryptocat 不是靈丹妙藥，你從不應該。</li><li> Cryptocat 不能保障您被，鍵盤紀錄器，。</li></ul>
-項目
 博客
-源代碼
 自定義服務器...
 重設
 通話名稱

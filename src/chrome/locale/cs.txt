@@ -2,9 +2,7 @@ ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Soukromý chat pro každého.
 Vítejte v Cryptocat. Tady je několik užitečných tipů: <ul><li>Cryptocat není žádný zázrak. Nikdy byste neměli svěřit váš život do rukou jakéhokoliv programu.</li><li>Cryptocat vás nemůže ochránit před nedůvěryhodnými lidmi, keyloggery a neanonymizuje vaše připojení.</li></ul>
-Projekt
 Blog
-Zdrojový kód
 Vlastní server ...
 obnovit
 jméno chatu

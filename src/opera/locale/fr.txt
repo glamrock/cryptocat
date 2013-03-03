@@ -2,9 +2,7 @@ ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Conversations Privées Pour Tout le Monde.
 Bienvenue sur Cryptocat. Voici quelques conseils utiles: <ul><li>Cryptocat n'est pas une solution miracle. Vous ne devriez jamais faire confiance à aucun morceau de logiciel avec votre vie.</li><li>Cryptocat ne peut pas vous protéger contre des personnes peu fiables, des enregistreurs, et ne peut pas anonymiser votre connexion.</li></ul>
-Projet
 Blog
-Source
 Serveur externe...
 Remonter
 nom de la conversation
