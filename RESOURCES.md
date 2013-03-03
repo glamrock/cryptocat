@@ -16,8 +16,8 @@ License: MIT, GPL-2+
 Origin: https://github.com/jquery/jquery-color  
 License: MIT  
 
-### jQuery.tipTip
-Origin: hhttp://code.drewwilson.com/entry/tiptip-jquery-plugin 
+### jQuery.qTip2
+Origin: https://github.com/craga89/qtip2
 License: MIT, GPL  
 
 ### OTR.js

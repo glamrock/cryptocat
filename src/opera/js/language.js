@@ -133,11 +133,19 @@ Language.refresh = function(languageObject) {
 	$('#status').attr('title', languageObject['chatWindow']['statusAvailable']);
 	$('#status').attr('alt', languageObject['chatWindow']['statusAvailable']);
 	$('#conversationTag').text(languageObject['chatWindow']['conversation']);
-	$('#conversationName').attr('title', languageObject['loginWindow']['conversationNameTooltip']);
 	$('#languageSelect').text($('#' + Cryptocat.language['language']).text());
-	$('[title],#conversationName').tipTip({
-		defaultPosition: 'bottom',
-		delay: 100
+	$('[title]').qtip({
+		position: {
+			my: 'top right',
+			at: 'bottom left'
+		}
+	});
+	$('#conversationName').qtip({
+		position: {
+			my: 'center right',
+			at: 'center left'
+		},
+		content: languageObject['loginWindow']['conversationNameTooltip']
 	});
 	$('#conversationName').select();
 }
