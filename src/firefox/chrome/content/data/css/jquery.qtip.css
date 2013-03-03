@@ -47,7 +47,7 @@
 .qtip-default{
 	background-color: rgba(0, 0, 0, 0.9);
 	border: 2px solid #404050;
-	box-shadow: 3px 3px 10px #000;
+	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
 	color: #f3f3f3;
 	border-radius: 4px 0 4px 4px;
 	max-width: 225px;

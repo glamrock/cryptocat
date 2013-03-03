@@ -166,8 +166,8 @@ function buildConversationInfo(conversation) {
 // Switches the currently active conversation to `buddy'
 function switchConversation(buddy) {
 	if ($('#buddy-' + buddy).attr('status') !== 'offline') {
-		$('#' + buddy).animate({'background-color': '#97CEEC'});
-		$('#buddy-' + buddy).css('border-bottom', '1px solid #76BDE5');
+		$('#' + buddy).animate({'background-color': '#7BBFEC'});
+		$('#buddy-' + buddy).css('border-bottom', '1px solid #72B1DB');
 	}
 	if (buddy !== 'main-Conversation') {
 		$('#buddy-' + buddy).css('background-image', 'none');
@@ -556,7 +556,7 @@ function handlePresence(presence) {
 	else if ($(presence).find('show').text() === '' || $(presence).find('show').text() === 'chat') {
 		if ($('#buddy-' + nickname).attr('status') !== 'online') {
 			var status = 'online';
-			var backgroundColor = '#76BDE5';
+			var backgroundColor = '#72B1DB';
 			var placement = '#buddiesOnline';
 		}
 	}
@@ -572,7 +572,7 @@ function handlePresence(presence) {
 		$('#buddy-' + nickname).animate({
 			'color': '#FFF',
 			'backgroundColor': backgroundColor,
-			'borderLeftColor': '#97CEEC'
+			'borderLeftColor': '#7BBFEC'
 		});
 		if (currentConversation !== nickname) {
 			$('#buddy-' + nickname).slideUp('fast', function() {
@@ -600,7 +600,7 @@ function bindBuddyClick(nickname) {
 			var oldConversation = currentConversation;
 			if ($('#buddy-' + oldConversation).attr('status') === 'online') {
 				var placement = '#buddiesOnline';
-				var backgroundColor = '#76BDE5';
+				var backgroundColor = '#72B1DB';
 				var color = '#FFF';
 			}
 			else if ($('#buddy-' + oldConversation).attr('status') === 'away') {
@@ -624,13 +624,13 @@ function bindBuddyClick(nickname) {
 			|| (($(this).prev().attr('id') === 'buddiesAway')
 			&& $('#buddiesOnline').next().attr('id') === 'buddiesAway')) {
 			$(this).insertAfter('#currentConversation');
-			$(this).animate({'background-color': '#97CEEC'});
+			$(this).animate({'background-color': '#7BBFEC'});
 			switchConversation(nickname);
 		}
 		else {
 			$(this).slideUp('fast', function() {
 				$(this).insertAfter('#currentConversation').slideDown('fast', function() {
-					$(this).animate({'background-color': '#97CEEC'});
+					$(this).animate({'background-color': '#7BBFEC'});
 					switchConversation(nickname);
 				});
 			});
@@ -1016,10 +1016,10 @@ $('#customServer').click(function() {
 $('#languageSelect').click(function() {
 	$('#introParagraph').fadeOut(function() {
 		$('#languages li').css({'color': '#FFF', 'font-weight': 'normal'});
-		$('#' + Cryptocat.language['language']).css({'color': '#97CEEC', 'font-weight': 'bold'});
+		$('#' + Cryptocat.language['language']).css({'color': '#7BBFEC', 'font-weight': 'bold'});
 		$('#languages').fadeIn();
 		$('#languages li').mouseenter(function() {
-			$(this).animate({'color': '#97CEEC'}, 'fast');
+			$(this).animate({'color': '#7BBFEC'}, 'fast');
 		});
 		$('#languages li').mouseleave(function() {
 			$(this).animate({'color': '#FFF'}, 'fast');
@@ -1146,9 +1146,15 @@ function connectXMPP(username, password) {
 				else if (status === Strophe.Status.CONNFAIL) {
 					if (!loginError) {
 						$('#loginInfo').text(Cryptocat.language['loginMessage']['connectionFailed']);
+						$('#loginInfo').animate({'color': '#E93028'}, 'fast');
+					}
+				}
+				else if (status === Strophe.Status.DISCONNECTED) {
+					if (!loginError) {
+						$('#loginInfo').text(Cryptocat.language['loginMessage']['connectionFailed']);
+						$('#loginInfo').animate({'color': '#E93028'}, 'fast');
 						logout();
 					}
-					$('#loginInfo').animate({'color': '#E93028'}, 'fast');
 				}
 			});
 		}
@@ -1182,7 +1188,7 @@ function connected() {
 	}
 	$('#buddy-main-Conversation').attr('status', 'online');
 	$('#loginInfo').text('✓');
-	$('#loginInfo').animate({'color': '#97CEEC'}, 'fast');
+	$('#loginInfo').animate({'color': '#7BBFEC'}, 'fast');
 	$('#bubble').animate({'margin-top': '+=0.5%'}, function() {
 		$('#bubble').animate({'margin-top': '0'}, function() {
 			$('#loginLinks').fadeOut();

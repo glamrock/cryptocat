@@ -8,7 +8,7 @@
 
 body {
 	height: 100%;
-	background-color: #c7e5f5;
+	background-color: #C7E5F5;
 	margin: 0;
 	font-family: 'Helvetica Neue', Helvetica, Arial, Verdana;
 	color: #FFF;
@@ -17,7 +17,7 @@ body {
 	line-height: 2em;
 }
 a {
-	color: #97CEEC;
+	color: #7BBFEC;
 	text-decoration: none;
 }
 a:hover {
@@ -39,7 +39,7 @@ img.logo {
 #logoText {
 	display: inline-block;
 	margin: 6px 0 0 10px;
-	color: #97CEEC;
+	color: #7BBFEC;
 	font-family: 'Monda', 'Helvetica Neue', Arial, Helvetica, sans-serif;
 	font-size: 16px;
 }
@@ -51,7 +51,7 @@ img.logo {
 	margin: 5% auto 0 auto;
 	background: #080812;
 	border-radius: 8px 0 8px 8px;
-	box-shadow: 4px 4px #76BDE5;
+	box-shadow: 4px 4px #72B1DB;
 }
 #bubble:after {
 	content: ' ';
@@ -131,16 +131,16 @@ img.logo {
 	width: 211px;
 }
 [type=submit] {
-	box-shadow: 2px 2px #97CEEC;
+	box-shadow: 2px 2px #7BBFEC;
 }
 [type=submit]:hover {
 	cursor: pointer;
-	background: #97CEEC;
-	border: 1px solid #97CEEC;
+	background: #7BBFEC;
+	border: 1px solid #7BBFEC;
 }
 [type=submit]:active {
-	border: 1px solid #97CEEC;
-	box-shadow: 2px 2px #76BDE5;
+	border: 1px solid #7BBFEC;
+	box-shadow: 2px 2px #72B1DB;
 }
 #loginInfo {
 	color: #999;
@@ -156,7 +156,7 @@ img.logo {
 	font-size: 1.5em;
 }
 #bubble .loginOption {
-	background: #97CEEC;
+	background: #7BBFEC;
 	color: #000;
 	padding: 0 6px 4px 6px;
 	width: 201px;
@@ -192,7 +192,7 @@ img.logo {
 	color: #888;
 }
 #bubble #languageSelect {
-	color: #97CEEC;
+	color: #7BBFEC;
 	margin: 0 10px;
 	font-weight: bold;
 }
@@ -228,7 +228,7 @@ img.logo {
 	line-height: 13px;
 }
 .buddy {
-	background: #76BDE5;
+	background: #72B1DB;
 	background-position: 85% 7px;
 	background-repeat: no-repeat;
 	background-size: 16px 16px;
@@ -236,15 +236,15 @@ img.logo {
 	padding: 8px 7px 6px 7px;
 	font-family: 'Monda', 'Helvetica Neue', Arial, Helvetica, sans-serif;
 	font-size: 1.1em;
-	font-weight: bold;
 	width: 133px;
 	height: 15px;
 	display: none;
 	position: relative;
-	border-left: 3px solid #97CEEC;
+	border-left: 3px solid #7BBFEC;
 	z-index: 1;
 	text-align: left;
 	cursor: pointer;
+	z-index: 15;
 }
 .buddyMenu {
 	position: relative;
@@ -300,7 +300,7 @@ img.logo {
 	background: rgba(0, 0, 0, 0.94);
 	box-shadow: 2px 2px #E93028;
 	top: -450px;
-	color: #97CEEC;
+	color: #7BBFEC;
 	font-family: monospace;
 }
 #dialogBoxClose {
@@ -336,7 +336,6 @@ img.logo {
 	padding: 5px 6px;
 	font-size: 1em;
 	box-shadow: none;
-	font-weight: bold;
 	font-family: Helvetica, Arial;
 	margin: 0;
 	border: none;
@@ -351,7 +350,7 @@ img.logo {
 	margin-top: 5px;
 }
 #dialogBox .button {
-	background: #97CEEC;
+	background: #7BBFEC;
 }
 #dialogBox .no {
 	background: #E93028;
@@ -415,36 +414,36 @@ img.logo {
 	margin-top: 20px;
 }
 #conversationInfo {
-	background: #97CEEC;
+	background: #7BBFEC;
 	text-align: left;
 	font-size: 1em;
 	margin: 0;
 	border-radius: 0;
-	padding: 5px 0 11px 0;
+	padding: 6px 0 10px 0;
 	width: 0;
 	float: left;
 	height: 13px;
 	font-family: 'Monda', 'Helvetica', 'Arial', 'Verdana';
-	border-bottom: 1px solid #76BDE5;
-	font-weight: bold;
+	border-bottom: 1px solid #72B1DB;
 	display: none;
 	opacity: 1;
+	box-shadow: 0 10px 40px #000;
+	z-index: 10;
 }
 #conversationInfo .conversationUserCount {
-	background: #70B9E0;
-	border-radius: 0 4px 4px 0;
+	background: #97CEEC;
+	border-radius: 0 5px 5px 0;
 	color: #FFF;
 	font-weight: bold;
 	text-align: center;
 	font-size: 12px;
-	margin: -5px 10px 0 0;
-	padding: 5px;
-	height: 20px;
-	display: inline-block;
+	margin: 0 10px 10px 0;
+	padding: 5px 5px 4px 5px;
+	vertical-align: 10px;
 }
 #conversationInfo .conversationName {
-	position: relative;
-	bottom: 2px;
+	position: absolute;
+	bottom: 3px;
 }
 #conversationInfo #groupConversation {
 	position: absolute;
@@ -452,23 +451,21 @@ img.logo {
 	line-height: 19px;
 }
 #conversationWindow .timeStamp {
-	color: #CCC;
+	color: #BBB;
 	font-size: 0.8em;
 	font-family: monospace;
-	text-shadow: 1px 1px #555;
+	vertical-align: 1px;
 }
 #conversationWindow .sender {
-	color: #97CEEC;
+	color: #7BBFEC;
 	padding: 7px 3px 6px 0;
 	width: 100px;
 	margin: 0 10px;
 	display: inline;
 	text-align: right;
-	font-weight: bold;
 }
 #conversationWindow .nickHighlight {
-	font-weight: bold;
-	color: #97CEEC;
+	color: #7BBFEC;
 }
 #userInput {
 	display: none;
@@ -482,7 +479,7 @@ img.logo {
 	margin: 0 0 7px 14px;
 	display: inline;
 	border: none;
-	border-left: 6px solid #97CEEC;
+	border-left: 6px solid #7BBFEC;
 	box-shadow: none;
 	font-family: 'Monda', 'Helvetica Neue', Arial, Helvetica, sans-serif;
 	font-size: 1.25em;
@@ -503,7 +500,7 @@ img.logo {
 #progressForm img {
 	float: left;
 	margin: 8px 20px 0 0;
-	box-shadow: 2px 2px #97CEEC;
+	box-shadow: 2px 2px #7BBFEC;
 }
 #progressInfo {
 	width: 320px;
@@ -517,6 +514,7 @@ img.logo {
 	height: 55px;
 	line-height: 1.6em;
 	margin-top: 10px;
+	color: #777;
 }
 #progressBar {
 	margin-top: 10px;
@@ -527,7 +525,7 @@ img.logo {
 	height: 100%;
 	width: 0%;
 	color: #000;
-	background: #97CEEC;
+	background: #7BBFEC;
 	opacity: 0.8;
 }
 #dialogBox [type=text], #dialogBox [type=password], #dialogBox [type=submit] {
@@ -541,11 +539,11 @@ img.logo {
 }
 #dialogBox #resetKeysOK {
 	background: #000;
-	border: 1px solid #97CEEC;
-	color: #97CEEC;
+	border: 1px solid #7BBFEC;
+	color: #7BBFEC;
 	margin: 0 auto;
 	width: 100px;
-	box-shadow: 2px 2px #97CEEC;
+	box-shadow: 2px 2px #7BBFEC;
 	font-size: 1.2em;
 	cursor: pointer;
 }
@@ -575,7 +573,7 @@ img.logo {
 	font-weight: bold;
 }
 .imageView, .fileView {
-	background-color: #97CEEC;
+	background-color: #7BBFEC;
 	color: #FFF;
 	padding: 0 2px 0 21px;
 	margin-left: 10px;
@@ -588,14 +586,14 @@ img.logo {
 	display: inline-block;
 }
 .userJoin, .userLeave {
-	background-color: #97CEEC;
-	width: 200px;
-	padding: 10px;
+	background-color: #7BBFEC;
+	width: 180px;
+	padding: 6px;
 	margin: 20px;
 	opacity: 0.9;
 	text-align: center;
 	border-radius: 5px 0 5px 5px;
-	font-size: 1.2em;
+	font-size: 1em;
 }
 .userLeave {
 	background: #F00;
@@ -604,7 +602,7 @@ img.logo {
 .userJoin strong, .userLeave strong {
 	padding-right: 10px;
 	font-size: 1.4em;
-	vertical-align: -4px;
+	vertical-align: -1px;
 
 }
 .imageView:hover, .fileView:hover {
