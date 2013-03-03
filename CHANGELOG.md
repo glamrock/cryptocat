@@ -1,5 +1,9 @@
 ## Changelog
 
+#### Cryptocat 2.0.39
+** Mar. 3 2013**
+- User interface bug fixes.  
+
 #### Cryptocat 2.0.38
 **Mar. 2 2013**
 - Cryptocat will now save your language, server and nickname preferences automatically. This feature does not work yet on Firefox.

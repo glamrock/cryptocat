@@ -1,7 +1,7 @@
 $(window).ready(function() {
 
 /* Version number */
-Cryptocat.version = '2.0.38';
+Cryptocat.version = '2.0.39';
 $('#version').text(Cryptocat.version);
 
 /* Configuration */
