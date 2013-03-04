@@ -369,6 +369,10 @@ function addToConversation(message, sender, conversation) {
 
 function desktopNotification(image, title, body, timeout) {
 	if (desktopNotifications) {
+		if (navigator.userAgent.match('Sentenza')) {
+			Stz.notifyMe_({'title': 'Cryptocat', subtitle: title, content: body});
+			return true;
+		}
 		var notice = window.webkitNotifications.createNotification(image, title, body);
 		notice.show();
 		if (timeout > 0) {
