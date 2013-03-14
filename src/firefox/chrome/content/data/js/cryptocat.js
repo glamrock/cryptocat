@@ -78,8 +78,7 @@ if (localStorageEnabled) {
 	// Load pre-existing encryption keys
 	// Key storage currently disabled as we are not yet sure if this is safe to do.
 	/* if (localStorage.getItem('myKey') !== null) {
-		myKey = JSON.parse(localStorage.getItem('myKey'));
-		DSA.inherit(myKey);
+		myKey = new DSA(JSON.parse(localStorage.getItem('myKey')));
 		multiParty.setPrivateKey(localStorage.getItem('multiPartyKey'));
 		multiParty.genPublicKey();
 	} */
@@ -89,12 +88,11 @@ if (localStorageEnabled) {
 var keyGenerator = new Worker('js/keygenerator.js');
 var dataReader = new Worker('js/datareader.js');
 keyGenerator.onmessage = function(e) {
-	myKey = e.data;
+	myKey = new DSA(e.data);
 	// Key storage currently disabled as we are not yet sure if this is safe to do.
 	//if (localStorageEnabled) {
 	//	localStorage.setItem('myKey', JSON.stringify(myKey));
 	//}
-	DSA.inherit(myKey);
 	$('#fill').stop().animate({'width': '100%', 'opacity': '1'}, 400, 'linear', function() {
 		$('#loginInfo').text(Cryptocat.language['loginMessage']['connecting']);
 		$('#dialogBoxClose').click();
@@ -142,10 +140,7 @@ function initiateConversation(conversation) {
 // OTR functions
 // Handle incoming messages
 var uicb = function(buddy) {
-	return function(err, msg) {
-		if (err) {
-			return console.log('OTR error: ' + err);
-		}
+	return function(msg) {
 		addToConversation(msg, buddy, buddy);
 	}
 }
@@ -547,13 +542,27 @@ function handlePresence(presence) {
 	}
 	// Add to otrKeys if necessary
 	if (nickname !== 'main-Conversation' && !otrKeys.hasOwnProperty(nickname)) {
-		// var options = {
+		var options = {
 		// 	fragment_size: 8192,
 		// 	send_interval: 400,
-		// }
-		otrKeys[nickname] = new OTR(myKey, uicb(nickname), iocb(nickname));
+			priv: myKey
+		};
+		otrKeys[nickname] = new OTR(options);
 		otrKeys[nickname].REQUIRE_ENCRYPTION = true;
-	}
+		otrKeys[nickname].on('ui', uicb(nickname));
+		otrKeys[nickname].on('io', iocb(nickname));
+		otrKeys[nickname].on('error', function(err) {
+		console.log('OTR error: ' + err);
+	});
+    otrKeys[nickname].on('status', (function(nickname) {
+      return function(state) {
+        // close generating fingerprint dialog after AKE
+        if ( otrKeys[nickname].generatingFingerprint &&
+             state === OTR.CONST.STATUS_AKE_SUCCESS
+        ) { closeGenerateFingerprints(nickname); }
+      };
+    }(nickname)));
+  }
 	// Detect buddy going offline
 	if ($(presence).attr('type') === 'unavailable') {
 		removeBuddy(nickname);
@@ -683,14 +692,9 @@ function sendFile(nickname) {
 	});
 }
 
-// Display buddy information, including fingerprints etc.
-function displayInfo(nickname) {
-	// Do nothing if a dialog already exists
-	if ($('#displayInfo').length) {
-		return false;
-	}
-	nickname = Strophe.xmlescape(nickname);
-	var displayInfoDialog = '<input type="button" class="bar" value="'
+// Display info dialog
+function displayInfoDialog(nickname) {
+	return '<input type="button" class="bar" value="'
 		+ nickname + '"/><div id="displayInfo">'
 		+ Cryptocat.language['chatWindow']['otrFingerprint']
 		+ '<br /><span id="otrFingerprint"></span><br />'
@@ -698,6 +702,52 @@ function displayInfo(nickname) {
 		+ Cryptocat.language['chatWindow']['groupFingerprint']
 		+ '<br /><span id="multiPartyFingerprint"></span><br />'
 		+ '<div id="multiPartyColorprint"></div><br /></div>';
+}
+
+// Show fingerprints internal function
+function showFingerprints(nickname) {
+	$('#otrFingerprint').text(getFingerprint(nickname, 1));
+	$('#multiPartyFingerprint').text(getFingerprint(nickname, 0));
+	var otrColorprint = getFingerprint(nickname, 1).split(' ');
+	otrColorprint.splice(0, 1);
+	for (var color in otrColorprint) {
+		$('#otrColorprint').append(
+			'<div class="colorprint" style="background:#'
+			+ otrColorprint[color].substring(0, 6) + '"></div>'
+		);
+	}
+	var multiPartyColorprint = getFingerprint(nickname, 0).split(' ');
+	multiPartyColorprint.splice(0, 1);
+	for (var color in multiPartyColorprint) {
+		$('#multiPartyColorprint').append(
+			'<div class="colorprint" style="background:#'
+			+ multiPartyColorprint[color].substring(0, 6) + '"></div>'
+		);
+	}
+}
+
+// Close generating fingerprints dialog
+function closeGenerateFingerprints(nickname) {
+  $('#fill')
+    .stop()
+    .animate({'width': '100%', 'opacity': '1'}, 400, 'linear',
+      function() {
+        $('#dialogBoxContent').fadeOut(function() {
+          $(this).html(displayInfoDialog(nickname));
+          showFingerprints(nickname);
+          $(this).fadeIn();
+          otrKeys[nickname].generatingFingerprint = false;
+        });
+      });
+}
+
+// Display buddy information, including fingerprints etc.
+function displayInfo(nickname) {
+	// Do nothing if a dialog already exists
+	if ($('#displayInfo').length) {
+		return false;
+	}
+	nickname = Strophe.xmlescape(nickname);
 	// If OTR fingerprints have not been generated, show a progress bar and generate them.
 	if ((nickname !== myNickname) && !otrKeys[nickname].msgstate) {
 		var progressDialog = '<div id="progressBar"><div id="fill"></div></div>';
@@ -706,44 +756,15 @@ function displayInfo(nickname) {
 		});
 		$('#progressBar').css('margin', '70px auto 0 auto');
 		$('#fill').animate({'width': '100%', 'opacity': '1'}, 8000, 'linear');
-		otrKeys[nickname].sendQueryMsg();
-		$(document).bind('otrFingerprintReady', function() {
-			$('#fill').stop().animate({'width': '100%', 'opacity': '1'}, 400, 'linear', function() {
-				$('#dialogBoxContent').fadeOut(function() {
-					$(this).html(displayInfoDialog);
-					showFingerprints(nickname);
-					$(this).fadeIn();
-					$(document).unbind('otrFingerprintReady');
-				});
-			});
-		});
+    // add some state for status callback
+    otrKeys[nickname].generatingFingerprint = true;
+    otrKeys[nickname].sendQueryMsg();
 	}
 	else {
-		dialogBox(displayInfoDialog, 1, null, function() {
+		dialogBox(displayInfoDialog(nickname), 1, null, function() {
 			$('#displayInfo').remove();
 		});
 		showFingerprints(nickname);
-	}
-	// Show fingerprints internal function
-	function showFingerprints(nickname) {
-		$('#otrFingerprint').text(getFingerprint(nickname, 1));
-		$('#multiPartyFingerprint').text(getFingerprint(nickname, 0));
-		var otrColorprint = getFingerprint(nickname, 1).split(' ');
-		otrColorprint.splice(0, 1);
-		for (var color in otrColorprint) {
-			$('#otrColorprint').append(
-				'<div class="colorprint" style="background:#' 
-				+ otrColorprint[color].substring(0, 6) + '"></div>'
-			);
-		}
-		var multiPartyColorprint = getFingerprint(nickname, 0).split(' ');
-		multiPartyColorprint.splice(0, 1);
-		for (var color in multiPartyColorprint) {
-			$('#multiPartyColorprint').append(
-				'<div class="colorprint" style="background:#' 
-				+ multiPartyColorprint[color].substring(0, 6) + '"></div>'
-			);
-		}
 	}
 }
 

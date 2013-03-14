@@ -13,6 +13,7 @@ importScripts('crypto-js/mode-ctr.js');
 importScripts('salsa20.js');
 importScripts('cryptocatRandom.js');
 importScripts('bigint.js');
+importScripts('eventemitter.js');
 importScripts('otr.js');
 
 self.addEventListener('message', function(e) {

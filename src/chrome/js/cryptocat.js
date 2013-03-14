@@ -545,15 +545,15 @@ function handlePresence(presence) {
 		var options = {
 		// 	fragment_size: 8192,
 		// 	send_interval: 400,
-      priv: myKey
+			priv: myKey
 		};
 		otrKeys[nickname] = new OTR(options);
 		otrKeys[nickname].REQUIRE_ENCRYPTION = true;
-    otrKeys[nickname].on('ui', uicb(nickname));
-    otrKeys[nickname].on('io', iocb(nickname));
-    otrKeys[nickname].on('error', function(err) {
-      console.log('OTR error: ' + err);
-    });
+		otrKeys[nickname].on('ui', uicb(nickname));
+		otrKeys[nickname].on('io', iocb(nickname));
+		otrKeys[nickname].on('error', function(err) {
+		console.log('OTR error: ' + err);
+	});
     otrKeys[nickname].on('status', (function(nickname) {
       return function(state) {
         // close generating fingerprint dialog after AKE

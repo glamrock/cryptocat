@@ -1,6 +1,6 @@
 /*!
 
-  otr.js v0.0.12-go - 2013-01-11
+  otr.js v0.1.3 - 2013-03-10
   (c) 2013 - Arlo Breault <arlolra@gmail.com>
   Freely distributed under the MPL v2.0 license.
 
@@ -12,6 +12,7 @@
 var OTR = {}, DSA = {}
 
 ;(function () {
+  "use strict"
 
   var root = this
 
@@ -50,6 +51,15 @@ var OTR = {}, DSA = {}
     , SMPSTATE_EXPECT3 : 3
     , SMPSTATE_EXPECT4 : 4
 
+    // unstandard status codes
+    , STATUS_SEND_QUERY  : 0
+    , STATUS_AKE_INIT    : 1
+    , STATUS_AKE_SUCCESS : 2
+    , STATUS_SMP_INIT    : 3
+    , STATUS_SMP_SECRET  : 4
+    , STATUS_SMP_ANSWER  : 5
+    , STATUS_END_OTR     : 6
+
   }
 
   if (typeof exports !== 'undefined') {
@@ -60,6 +70,7 @@ var OTR = {}, DSA = {}
 
 }).call(this)
 ;(function () {
+  "use strict"
 
   var root = this
 
@@ -96,6 +107,17 @@ var OTR = {}, DSA = {}
          typeof this.debug !== 'function' &&
          typeof console !== 'undefined'
     ) console.log(msg)
+  }
+
+  HLP.extend = function (child, parent) {
+    for (var key in parent) {
+      if (Object.hasOwnProperty.call(parent, key))
+        child[key] = parent[key]
+    }
+    function ctor() { this.constructor = child }
+    ctor.prototype = parent.prototype
+    child.prototype = new ctor()
+    child.__super__ = parent.prototype
   }
 
   HLP.divMod = function (num, den, n) {
@@ -451,6 +473,7 @@ var OTR = {}, DSA = {}
 // http://www.itl.nist.gov/fipspubs/fip186.htm
 
 ;(function () {
+  "use strict"
 
   var root = this
 
@@ -595,7 +618,93 @@ var OTR = {}, DSA = {}
     BigInt.mod_(bi, TN)
   }
 
-  function generatePrimes(bit_length) {
+  function generatePrimesFIPS(bit_length) {
+
+    var t = timer()  // for debugging
+
+    // number of MR tests to perform
+    var repeat = bit_lengths[bit_length].repeat
+
+    var N = bit_lengths[bit_length].N
+    var TN = HLP.twotothe(N)
+
+    var n = Math.floor((bit_length - 1) / N)
+    var b = (bit_length - 1) % N
+
+    var bl4 = 4 * bit_length
+    var brk = false
+
+    var q, p, seed, u, tmp, counter, offset, k, cspo, V, W, X, LM1, c
+    for (;;) {
+
+      seed = BigInt.randBigInt(N)
+
+      tmp = BigInt.dup(seed)
+      inc_(tmp, TN)
+      tmp = SHAbigInt(tmp)
+
+      u = SHAbigInt(seed)
+      u = HLP.bigBitWise('XOR', u, tmp)
+
+      q = HLP.bigBitWise('OR', u, HLP.twotothe(N - 1))
+      q[0] |= 1
+
+      if (!isProbablePrime(q, repeat)) continue
+
+      t('q')
+      offset = BigInt.dup(seed)
+      inc_(offset, TN)
+
+      for (counter = 0; counter < bl4; counter++) {
+        W = ZERO
+        cspo = BigInt.addInt(seed, offset)
+
+        for (k = 0; k < (n + 1); k ++) {
+          inc_(offset, TN)
+          V = SHAbigInt(offset)
+          if (k === n) V = BigInt.mod(V, HLP.twotothe(b))
+          V = BigInt.mult(V, HLP.twotothe(N * k))
+          W = BigInt.add(W, V)
+        }
+
+        LM1 = HLP.twotothe(bit_length - 1)
+        X = BigInt.add(W, LM1)
+
+        c = BigInt.mod(X, BigInt.mult(q, TWO))
+        p = BigInt.sub(X, BigInt.sub(c, ONE))
+
+        if (BigInt.greater(LM1, p)) continue
+        if (!isProbablePrime(p, repeat)) continue
+
+        t('p')
+        primes[bit_length] = { p: p, q: q }
+        brk = true
+        break
+      }
+
+      if (brk) break
+    }
+
+    var h = BigInt.dup(TWO)
+    var pm1 = BigInt.sub(p, ONE)
+    var e = BigInt.multMod(pm1, BigInt.inverseMod(q, p), p)
+
+    var g
+    for (;;) {
+      g = BigInt.powMod(h, e, p)
+      if (BigInt.equals(g, ONE)) {
+        h = BigInt.add(h, ONE)
+        continue
+      }
+      primes[bit_length].g = g
+      t('g')
+      return
+    }
+
+    throw new Error('Unreachable!')
+  }
+
+  function generatePrimesGO(bit_length) {
 
     var t = timer()  // for debugging
 
@@ -658,8 +767,11 @@ var OTR = {}, DSA = {}
     throw new Error('Unreachable!')
   }
 
-  function DSA(obj, bit_length) {
-    if (!(this instanceof DSA)) return new DSA(obj, bit_length)
+  function DSA(obj, opts) {
+    if (!(this instanceof DSA)) return new DSA(obj, opts)
+
+    // options
+    opts = opts || {}
 
     // inherit
     if (obj) {
@@ -672,13 +784,16 @@ var OTR = {}, DSA = {}
     }
 
     // default to 1024
-    bit_length = parseInt(bit_length ? bit_length : 1024, 10)
+    var bit_length = parseInt(opts.bit_length ? opts.bit_length : 1024, 10)
 
     if (!bit_lengths[bit_length])
       throw new Error('Unsupported bit length.')
 
     // set primes
-    if (!primes[bit_length]) generatePrimes(bit_length)
+    if (!primes[bit_length]) {
+      if (opts.fips) generatePrimesFIPS(bit_length)
+      else generatePrimesGO(bit_length)
+    }
 
     this.p = primes[bit_length].p
     this.q = primes[bit_length].q
@@ -732,7 +847,6 @@ var OTR = {}, DSA = {}
       var pk = this.packPublic()
       if (this.type === KEY_TYPE) pk = pk.substring(2)
       pk = CryptoJS.enc.Latin1.parse(pk)
-      $(document).trigger('otrFingerprintReady') // Added by Nadim for Cryptocat
       return CryptoJS.SHA1(pk).toString(CryptoJS.enc.Hex)
     }
 
@@ -753,10 +867,87 @@ var OTR = {}, DSA = {}
     return new DSA(obj)
   }
 
-  DSA.parsePrivate = function (str) {
-    str = CryptoJS.enc.Base64.parse(str)
-    str = str.toString(CryptoJS.enc.Latin1)
-    return DSA.parsePublic(str, true)
+  function tokenizeStr(str) {
+    var start, end
+
+    start = str.indexOf("(")
+    end = str.lastIndexOf(")")
+
+    if (start < 0 || end < 0)
+      throw new Error("Malformed S-Expression")
+
+    str = str.substring(start + 1, end)
+
+    var splt = str.search(/\s/)
+    var obj = {
+        type: str.substring(0, splt)
+      , val: []
+    }
+
+    str = str.substring(splt + 1, end)
+    start = str.indexOf("(")
+
+    if (start < 0) obj.val.push(str)
+    else {
+
+      var i, len, ss, es
+      while (start > -1) {
+        i = start + 1
+        len = str.length
+        for (ss = 1, es = 0; i < len && es < ss; i++) {
+          if (str[i] === "(") ss++
+          if (str[i] === ")") es++
+        }
+        obj.val.push(tokenizeStr(str.substring(start, ++i)))
+        str = str.substring(++i)
+        start = str.indexOf("(")
+      }
+
+    }
+    return obj
+  }
+
+  function parseLibotr(obj) {
+    if (!obj.type) throw new Error("Parse error.")
+
+    var o, val
+    if (obj.type === "privkeys") {
+      o = []
+      obj.val.forEach(function (i) {
+        o.push(parseLibotr(i))
+      })
+      return o
+    }
+
+    o = {}
+    obj.val.forEach(function (i) {
+
+      val = i.val[0]
+      if (typeof val === "string") {
+
+        if (val.indexOf("#") === 0) {
+          val = val.substring(1, val.lastIndexOf("#"))
+          val = BigInt.str2bigInt(val, 16)
+        }
+
+      } else {
+        val = parseLibotr(i)
+      }
+
+      o[i.type] = val
+    })
+
+    return o
+  }
+
+  DSA.parsePrivate = function (str, libotr) {
+    if (!libotr) {
+      str = CryptoJS.enc.Base64.parse(str)
+      str = str.toString(CryptoJS.enc.Latin1)
+      return DSA.parsePublic(str, true)
+    }
+    // only returning the first key found
+    return parseLibotr(tokenizeStr(str))[0]["private-key"].dsa
   }
 
   DSA.verify = function (key, m, r, s) {
@@ -786,6 +977,7 @@ var OTR = {}, DSA = {}
 
 }).call(this)
 ;(function () {
+  "use strict"
 
   var root = this
 
@@ -990,6 +1182,7 @@ var OTR = {}, DSA = {}
 
 }).call(this)
 ;(function () {
+  "use strict"
 
   var root = this
 
@@ -1145,6 +1338,8 @@ var OTR = {}, DSA = {}
       // go encrypted
       this.otr.authstate = CONST.AUTHSTATE_NONE
       this.otr.msgstate = CONST.MSGSTATE_ENCRYPTED
+
+      this.otr.trigger('status', [CONST.STATUS_AKE_SUCCESS])
 
       // send stored msgs
       this.otr.sendStored()
@@ -1341,6 +1536,8 @@ var OTR = {}, DSA = {}
     initiateAKE: function (version) {
       HLP.debug.call(this.otr, 'd-h commit message')
 
+      this.otr.trigger('status', [CONST.STATUS_AKE_INIT])
+
       this.otr.authstate = CONST.AUTHSTATE_AWAITING_DHKEY
 
       var gxmpi = HLP.packMPI(this.our_dh.publicKey)
@@ -1363,6 +1560,7 @@ var OTR = {}, DSA = {}
 
 }).call(this)
 ;(function () {
+  "use strict"
 
   var root = this
 
@@ -1479,7 +1677,7 @@ var OTR = {}, DSA = {}
       if (msg.type === 6) {
         this.otr.trust = false
         this.init()
-        this.otr._smcb('trust', this.otr.trust)
+        this.otr.trigger('smp', ['trust', this.otr.trust])
         return
       }
 
@@ -1535,7 +1733,7 @@ var OTR = {}, DSA = {}
           this.smpstate = CONST.SMPSTATE_EXPECT0
 
           // invoke question
-          this.otr._smcb('question', question)
+          this.otr.trigger('smp', ['question', question])
           return
 
         case CONST.SMPSTATE_EXPECT2:
@@ -1663,7 +1861,7 @@ var OTR = {}, DSA = {}
 
           this.otr.trust = true
           this.init()
-          this.otr._smcb('trust', this.otr.trust)
+          this.otr.trigger('smp', ['trust', this.otr.trust])
           break
 
         case CONST.SMPSTATE_EXPECT4:
@@ -1689,7 +1887,7 @@ var OTR = {}, DSA = {}
 
           this.otr.trust = true
           this.init()
-          this.otr._smcb('trust', this.otr.trust)
+          this.otr.trigger('smp', ['trust', this.otr.trust])
           return
 
       }
@@ -1704,6 +1902,8 @@ var OTR = {}, DSA = {}
 
     rcvSecret: function (secret, question) {
       HLP.debug.call(this.otr, 'receive secret')
+
+      this.otr.trigger('status', [CONST.STATUS_SMP_SECRET])
 
       if (this.otr.msgstate !== CONST.MSGSTATE_ENCRYPTED)
         return this.otr.error('Not ready to send encrypted messages.')
@@ -1722,6 +1922,8 @@ var OTR = {}, DSA = {}
 
     answer: function () {
       HLP.debug.call(this.otr, 'smp answer')
+
+      this.otr.trigger('status', [CONST.STATUS_SMP_ANSWER])
 
       var r4 = HLP.randomExponent()
       this.computePQ(r4)
@@ -1756,6 +1958,8 @@ var OTR = {}, DSA = {}
 
     initiate: function (question) {
       HLP.debug.call(this.otr, 'smp initiate')
+
+      this.otr.trigger('status', [CONST.STATUS_SMP_INIT])
 
       if (this.smpstate !== CONST.SMPSTATE_EXPECT1)
         this.abort()  // abort + restart
@@ -1799,27 +2003,31 @@ var OTR = {}, DSA = {}
       this.otr.trust = false
       this.init()
       this.sendMsg(HLP.packTLV(6, ''))
-      this.otr._smcb('trust', this.otr.trust)
+      this.otr.trigger('smp', ['trust', this.otr.trust])
     }
 
   }
 
 }).call(this)
 ;(function () {
+  "use strict"
 
   var root = this
 
-  var CryptoJS, BigInt, CONST, HLP, Parse, AKE, SM, DSA
+  var CryptoJS, BigInt, EventEmitter, CONST, HLP, Parse, AKE, SM, DSA
   if (typeof exports !== 'undefined') {
     module.exports = OTR
     CryptoJS = require('../vendor/crypto.js')
     BigInt = require('../vendor/bigint.js')
+    EventEmitter = require('../vendor/eventemitter.js').EventEmitter
     CONST = require('./const.js')
     HLP = require('./helpers.js')
     Parse = require('./parse.js')
     AKE = require('./ake.js')
     SM = require('./sm.js')
     DSA = require('./dsa.js')
+    // expose CONST for consistency with docs
+    OTR.CONST = CONST
   } else {
     // copy over and expose internals
     Object.keys(root.OTR).forEach(function (k) {
@@ -1828,6 +2036,7 @@ var OTR = {}, DSA = {}
     root.OTR = OTR
     CryptoJS = root.CryptoJS
     BigInt = root.BigInt
+    EventEmitter = root.EventEmitter
     CONST = OTR.CONST
     HLP = OTR.HLP
     Parse = OTR.Parse
@@ -1842,17 +2051,17 @@ var OTR = {}, DSA = {}
   var N = BigInt.str2bigInt(CONST.N, 16)
 
   // OTR contructor
-  function OTR(priv, uicb, iocb, options) {
-    if (!(this instanceof OTR)) return new OTR(priv, uicb, iocb, options)
-
-    // private keys
-    if (priv && !(priv instanceof DSA))
-      throw new Error('Requires long-lived DSA key.')
-
-    this.priv = priv ? priv : new DSA()
+  function OTR(options) {
+    if (!(this instanceof OTR)) return new OTR(options)
 
     // options
     options = options || {}
+
+    // private keys
+    if (options.priv && !(options.priv instanceof DSA))
+      throw new Error('Requires long-lived DSA key.')
+
+    this.priv = options.priv ? options.priv : new DSA()
 
     this.fragment_size = options.fragment_size || 0
     if (!(this.fragment_size >= 0))
@@ -1862,13 +2071,6 @@ var OTR = {}, DSA = {}
     if (!(this.send_interval >= 0))
       throw new Error('Send interval must be a positive integer.')
 
-    // attach callbacks
-    if ( !iocb || typeof iocb !== 'function' ||
-         !uicb || typeof uicb !== 'function'
-    ) throw new Error('UI and IO callbacks are required.')
-
-    this.uicb = uicb
-    this._iocb = iocb
     this.outgoing = []
 
     // instance tag
@@ -1876,12 +2078,6 @@ var OTR = {}, DSA = {}
 
     // debug
     this.debug = !!options.debug
-
-    // smp callback
-    if (!options.smcb || typeof options.smcb !== 'function')
-      options.smcb = function () {}  // no-opt
-
-    this._smcb = options.smcb
 
     // init vals
     this.init()
@@ -1891,510 +2087,505 @@ var OTR = {}, DSA = {}
     ;['sendMsg', 'receiveMsg'].forEach(function (meth) {
       self[meth] = self[meth].bind(self)
     })
+
+    EventEmitter.call(this)
   }
 
-  OTR.prototype = {
+  // inherit from EE
+  HLP.extend(OTR, EventEmitter)
 
-    constructor: OTR,
+  // add to prototype
+  OTR.prototype.init = function () {
 
-    init: function () {
+    this.msgstate = CONST.MSGSTATE_PLAINTEXT
+    this.authstate = CONST.AUTHSTATE_NONE
 
-      this.msgstate = CONST.MSGSTATE_PLAINTEXT
-      this.authstate = CONST.AUTHSTATE_NONE
+    this.ALLOW_V2 = true
+    this.ALLOW_V3 = true
 
-      this.ALLOW_V2 = true
-      this.ALLOW_V3 = true
+    this.REQUIRE_ENCRYPTION = false
+    this.SEND_WHITESPACE_TAG = false
+    this.WHITESPACE_START_AKE = false
+    this.ERROR_START_AKE = false
 
-      this.REQUIRE_ENCRYPTION = false
-      this.SEND_WHITESPACE_TAG = false
-      this.WHITESPACE_START_AKE = false
-      this.ERROR_START_AKE = false
+    Parse.initFragment(this)
 
-      Parse.initFragment(this)
+    // their keys
+    this.their_y = null
+    this.their_old_y = null
+    this.their_keyid = 0
+    this.their_priv_pk = null
+    this.their_instance_tag = '\x00\x00\x00\x00'
 
-      // their keys
-      this.their_y = null
-      this.their_old_y = null
-      this.their_keyid = 0
-      this.their_priv_pk = null
-      this.their_instance_tag = '\x00\x00\x00\x00'
+    // our keys
+    this.our_dh = this.dh()
+    this.our_old_dh = this.dh()
+    this.our_keyid = 2
 
-      // our keys
-      this.our_dh = this.dh()
-      this.our_old_dh = this.dh()
-      this.our_keyid = 2
+    // session keys
+    this.sessKeys = [ new Array(2), new Array(2) ]
 
-      // session keys
-      this.sessKeys = [ new Array(2), new Array(2) ]
+    // saved
+    this.storedMgs = []
+    this.oldMacKeys = []
 
-      // saved
-      this.storedMgs = []
-      this.oldMacKeys = []
+    // smp
+    this.sm = null  // initialized after AKE
+    this.trust = false  // will be true after successful smp
 
-      // smp
-      this.sm = null  // initialized after AKE
-      this.trust = false  // will be true after successful smp
+    // when ake is complete
+    // save their keys and the session
+    this._akeInit()
 
-      // when ake is complete
-      // save their keys and the session
-      this._akeInit()
+    // receive plaintext message since switching to plaintext
+    // used to decide when to stop sending pt tags when SEND_WHITESPACE_TAG
+    this.receivedPlaintext = false
 
-      // receive plaintext message since switching to plaintext
-      // used to decide when to stop sending pt tags when SEND_WHITESPACE_TAG
-      this.receivedPlaintext = false
+  }
 
-    },
+  OTR.prototype._akeInit = function () {
+    this.ake = new AKE(this)
+    this.transmittedRS = false
+    this.ssid = null
+  }
 
-    _akeInit: function () {
-      this.ake = new AKE(this)
-      this.transmittedRS = false
-      this.ssid = null
-    },
+  OTR.prototype._smInit = function () {
+    this.sm = new SM(this)
+  }
 
-    _smInit: function () {
-      this.sm = new SM(this)
-    },
+  OTR.prototype.io = function (msg) {
 
-    iocb: function iocb(msg) {
+    // buffer
+    this.outgoing = this.outgoing.concat(msg)
 
-      // buffer
-      this.outgoing = this.outgoing.concat(msg)
-
-      // send sync
-      if (!this.send_interval) {
-        while (this.outgoing.length) {
-          msg = this.outgoing.shift()
-          this._iocb(msg)
-        }
-        return
+    var self = this
+    ;(function send(first) {
+      if (!first) {
+        if (!self.outgoing.length) return
+        var msg = self.outgoing.shift()
+        self.trigger('io', [msg])
       }
+      setTimeout(send, self.send_interval)
+    }(true))
+
+  }
+
+  OTR.prototype.dh = function dh() {
+    var keys = { privateKey: BigInt.randBigInt(320) }
+    keys.publicKey = BigInt.powMod(G, keys.privateKey, N)
+    return keys
+  }
+
+  // session constructor
+  OTR.prototype.dhSession = function dhSession(our_dh, their_y) {
+    if (!(this instanceof dhSession)) return new dhSession(our_dh, their_y)
+
+    // shared secret
+    var s = BigInt.powMod(their_y, our_dh.privateKey, N)
+    var secbytes = HLP.packMPI(s)
+
+    // session id
+    this.id = HLP.mask(HLP.h2('\x00', secbytes), 0, 64)  // first 64-bits
+
+    // are we the high or low end of the connection?
+    var sq = BigInt.greater(our_dh.publicKey, their_y)
+    var sendbyte = sq ? '\x01' : '\x02'
+    var rcvbyte  = sq ? '\x02' : '\x01'
+
+    // sending and receiving keys
+    this.sendenc = HLP.mask(HLP.h1(sendbyte, secbytes), 0, 128)  // f16 bytes
+    this.sendmac = CryptoJS.SHA1(CryptoJS.enc.Latin1.parse(this.sendenc))
+    this.sendmac = this.sendmac.toString(CryptoJS.enc.Latin1)
+    this.sendmacused = false
+    this.rcvenc = HLP.mask(HLP.h1(rcvbyte, secbytes), 0, 128)
+    this.rcvmac = CryptoJS.SHA1(CryptoJS.enc.Latin1.parse(this.rcvenc))
+    this.rcvmac = this.rcvmac.toString(CryptoJS.enc.Latin1)
+    this.rcvmacused = false
+
+    // extra symmetric key
+    this.extra_symkey = HLP.h2('\xff', secbytes)
+
+    // counters
+    this.send_counter = 0
+    this.rcv_counter = 0
+  }
+
+  OTR.prototype.rotateOurKeys = function () {
+
+    // reveal old mac keys
+    var self = this
+    this.sessKeys[1].forEach(function (sk) {
+      if (sk && sk.sendmacused) self.oldMacKeys.push(sk.sendmac)
+      if (sk && sk.rcvmacused) self.oldMacKeys.push(sk.rcvmac)
+    })
+
+    // rotate our keys
+    this.our_old_dh = this.our_dh
+    this.our_dh = this.dh()
+    this.our_keyid += 1
+
+    this.sessKeys[1][0] = this.sessKeys[0][0]
+    this.sessKeys[1][1] = this.sessKeys[0][1]
+    this.sessKeys[0] = [
+        this.their_y ?
+            new this.dhSession(this.our_dh, this.their_y) : null
+      , this.their_old_y ?
+            new this.dhSession(this.our_dh, this.their_old_y) : null
+    ]
+
+  }
+
+  OTR.prototype.rotateTheirKeys = function (their_y) {
+
+    // increment their keyid
+    this.their_keyid += 1
+
+    // reveal old mac keys
+    var self = this
+    this.sessKeys.forEach(function (sk) {
+      if (sk[1] && sk[1].sendmacused) self.oldMacKeys.push(sk[1].sendmac)
+      if (sk[1] && sk[1].rcvmacused) self.oldMacKeys.push(sk[1].rcvmac)
+    })
+
+    // rotate their keys / session
+    this.their_old_y = this.their_y
+    this.sessKeys[0][1] = this.sessKeys[0][0]
+    this.sessKeys[1][1] = this.sessKeys[1][0]
+
+    // new keys / sessions
+    this.their_y = their_y
+    this.sessKeys[0][0] = new this.dhSession(this.our_dh, this.their_y)
+    this.sessKeys[1][0] = new this.dhSession(this.our_old_dh, this.their_y)
+
+  }
+
+  OTR.prototype.prepareMsg = function (msg) {
+    if (this.msgstate !== CONST.MSGSTATE_ENCRYPTED || this.their_keyid === 0)
+      return this.error('Not ready to encrypt.')
+
+    var sessKeys = this.sessKeys[1][0]
+    sessKeys.send_counter += 1
+
+    var ctr = HLP.packCtr(sessKeys.send_counter)
 
-      // an async option
-      // maybe this is outside the scope?
-      var self = this
-      ;(function send(first) {
-        if (!first) {
-          if (!self.outgoing.length) return
-          var msg = self.outgoing.shift()
-          self._iocb(msg)
-        }
-        setTimeout(send, self.send_interval)
-      }(true))
-
-    },
-
-    dh: function dh() {
-      var keys = { privateKey: BigInt.randBigInt(320) }
-      keys.publicKey = BigInt.powMod(G, keys.privateKey, N)
-      return keys
-    },
-
-    // session constructor
-    dhSession: function dhSession(our_dh, their_y) {
-      if (!(this instanceof dhSession)) return new dhSession(our_dh, their_y)
-
-      // shared secret
-      var s = BigInt.powMod(their_y, our_dh.privateKey, N)
-      var secbytes = HLP.packMPI(s)
-
-      // session id
-      this.id = HLP.mask(HLP.h2('\x00', secbytes), 0, 64)  // first 64-bits
-
-      // are we the high or low end of the connection?
-      var sq = BigInt.greater(our_dh.publicKey, their_y)
-      var sendbyte = sq ? '\x01' : '\x02'
-      var rcvbyte  = sq ? '\x02' : '\x01'
-
-      // sending and receiving keys
-      this.sendenc = HLP.mask(HLP.h1(sendbyte, secbytes), 0, 128)  // f16 bytes
-      this.sendmac = CryptoJS.SHA1(CryptoJS.enc.Latin1.parse(this.sendenc))
-      this.sendmac = this.sendmac.toString(CryptoJS.enc.Latin1)
-      this.sendmacused = false
-      this.rcvenc = HLP.mask(HLP.h1(rcvbyte, secbytes), 0, 128)
-      this.rcvmac = CryptoJS.SHA1(CryptoJS.enc.Latin1.parse(this.rcvenc))
-      this.rcvmac = this.rcvmac.toString(CryptoJS.enc.Latin1)
-      this.rcvmacused = false
-
-      // extra symmetric key
-      this.extra_symkey = HLP.h2('\xff', secbytes)
-
-      // counters
-      this.send_counter = 0
-      this.rcv_counter = 0
-    },
-
-    rotateOurKeys: function () {
-
-      // reveal old mac keys
-      var self = this
-      this.sessKeys[1].forEach(function (sk) {
-        if (sk && sk.sendmacused) self.oldMacKeys.push(sk.sendmac)
-        if (sk && sk.rcvmacused) self.oldMacKeys.push(sk.rcvmac)
-      })
-
-      // rotate our keys
-      this.our_old_dh = this.our_dh
-      this.our_dh = this.dh()
-      this.our_keyid += 1
-
-      this.sessKeys[1][0] = this.sessKeys[0][0]
-      this.sessKeys[1][1] = this.sessKeys[0][1]
-      this.sessKeys[0] = [
-          this.their_y ?
-              new this.dhSession(this.our_dh, this.their_y) : null
-        , this.their_old_y ?
-              new this.dhSession(this.our_dh, this.their_old_y) : null
-      ]
-
-    },
-
-    rotateTheirKeys: function (their_y) {
-
-      // increment their keyid
-      this.their_keyid += 1
-
-      // reveal old mac keys
-      var self = this
-      this.sessKeys.forEach(function (sk) {
-        if (sk[1] && sk[1].sendmacused) self.oldMacKeys.push(sk[1].sendmac)
-        if (sk[1] && sk[1].rcvmacused) self.oldMacKeys.push(sk[1].rcvmac)
-      })
-
-      // rotate their keys / session
-      this.their_old_y = this.their_y
-      this.sessKeys[0][1] = this.sessKeys[0][0]
-      this.sessKeys[1][1] = this.sessKeys[1][0]
-
-      // new keys / sessions
-      this.their_y = their_y
-      this.sessKeys[0][0] = new this.dhSession(this.our_dh, this.their_y)
-      this.sessKeys[1][0] = new this.dhSession(this.our_old_dh, this.their_y)
-
-    },
+    var send = this.ake.otr_version + '\x03'  // version and type
+    var v3 = (this.ake.otr_version === CONST.OTR_VERSION_3)
 
-    prepareMsg: function (msg) {
-      if (this.msgstate !== CONST.MSGSTATE_ENCRYPTED || this.their_keyid === 0)
-        return this.error('Not ready to encrypt.')
-
-      var sessKeys = this.sessKeys[1][0]
-      sessKeys.send_counter += 1
-
-      var ctr = HLP.packCtr(sessKeys.send_counter)
-
-      var send = this.ake.otr_version + '\x03'  // version and type
-      var v3 = (this.ake.otr_version === CONST.OTR_VERSION_3)
-
-      if (v3) {
-        send += this.our_instance_tag
-        send += this.their_instance_tag
-      }
-
-      send += '\x00'  // flag
-      send += HLP.packINT(this.our_keyid - 1)
-      send += HLP.packINT(this.their_keyid)
-      send += HLP.packMPI(this.our_dh.publicKey)
-      send += ctr.substring(0, 8)
-
-      var aes = HLP.encryptAes(
-          CryptoJS.enc.Latin1.parse(msg)
-        , sessKeys.sendenc
-        , ctr
-      )
-
-      send += HLP.packData(aes)
-      send += HLP.make1Mac(send, sessKeys.sendmac)
-      send += HLP.packData(this.oldMacKeys.splice(0).join(''))
-
-      sessKeys.sendmacused = true
-
-      send = HLP.wrapMsg(
-          send
-        , this.fragment_size
-        , v3
-        , this.our_instance_tag
-        , this.their_instance_tag
-      )
-      if (send[0]) return this.error(send[0])
-      return send[1]
-    },
-
-    handleDataMsg: function (msg) {
-      var vt = msg.version + msg.type
-
-      if (this.ake.otr_version === CONST.OTR_VERSION_3)
-        vt += msg.instance_tags
-
-      var types = ['BYTE', 'INT', 'INT', 'MPI', 'CTR', 'DATA', 'MAC', 'DATA']
-      msg = HLP.splitype(types, msg.msg)
-
-      // ignore flag
-      var ign = (msg[0] === '\x01')
-
-      if (this.msgstate !== CONST.MSGSTATE_ENCRYPTED || msg.length !== 8) {
-        if (!ign) this.error('Received an unreadable encrypted message.', true)
-        return
-      }
-
-      var our_keyid = this.our_keyid - HLP.readLen(msg[2])
-      var their_keyid = this.their_keyid - HLP.readLen(msg[1])
-
-      if (our_keyid < 0 || our_keyid > 1) {
-        if (!ign) this.error('Not of our latest keys.', true)
-        return
-      }
-
-      var our_dh =  our_keyid ? this.our_old_dh : this.our_dh
-
-      if (their_keyid < 0 || their_keyid > 1) {
-        if (!ign) this.error('Not of your latest keys.', true)
-        return
-      }
-
-      var their_y = their_keyid ? this.their_old_y : this.their_y
-
-      if (their_keyid === 1 && !their_y) {
-        if (!ign) this.error('Do not have that key.')
-        return
-      }
-
-      var sessKeys = this.sessKeys[our_keyid][their_keyid]
-
-      var ctr = HLP.unpackCtr(msg[4])
-      if (ctr <= sessKeys.rcv_counter) {
-        if (!ign) this.error('Counter in message is not larger.')
-        return
-      }
-      sessKeys.rcv_counter = ctr
-
-      // verify mac
-      vt += msg.slice(0, 6).join('')
-      var vmac = HLP.make1Mac(vt, sessKeys.rcvmac)
-
-      if (msg[6] !== vmac) {
-        if (!ign) this.error('MACs do not match.')
-        return
-      }
-      sessKeys.rcvmacused = true
-
-      var out = HLP.decryptAes(
-          msg[5].substring(4)
-        , sessKeys.rcvenc
-        , HLP.padCtr(msg[4])
-      )
-      out = out.toString(CryptoJS.enc.Latin1)
-
-      if (!our_keyid) this.rotateOurKeys()
-      if (!their_keyid) this.rotateTheirKeys(HLP.readMPI(msg[3]))
-
-      // parse TLVs
-      var ind = out.indexOf('\x00')
-      if (~ind) {
-        this.handleTLVs(out.substring(ind + 1), sessKeys)
-        out = out.substring(0, ind)
-      }
-
-      out = CryptoJS.enc.Latin1.parse(out)
-      return out.toString(CryptoJS.enc.Utf8)
-    },
-
-    handleTLVs: function (tlvs, sessKeys) {
-      var type, len, msg
-      for (; tlvs.length; ) {
-        type = HLP.unpackSHORT(tlvs.substr(0, 2))
-        len = HLP.unpackSHORT(tlvs.substr(2, 2))
-
-        msg = tlvs.substr(4, len)
-
-        // TODO: handle pathological cases better
-        if (msg.length < len) break
-
-        switch (type) {
-          case 1:
-            // Disconnected
-            this.msgstate = CONST.MSGSTATE_FINISHED
-            this.uicb(null,
-              'Your buddy closed the private connection! ' +
-              'You should do the same.')
-            break
-          case 2: case 3: case 4:
-          case 5: case 6: case 7:
-            // SMP
-            this.sm.handleSM({ msg: msg, type: type })
-            break
-          case 8:
-            // Extra Symkey
-            // sessKeys.extra_symkey
-            break
-        }
-
-        tlvs = tlvs.substring(4 + len)
-      }
-    },
-
-    smpSecret: function (secret, question) {
-      if (this.msgstate !== CONST.MSGSTATE_ENCRYPTED)
-        return this.error('Must be encrypted for SMP.')
-
-      if (typeof secret !== 'string' || secret.length < 1)
-        return this.error('Secret is required.')
-
-      this.sm.rcvSecret(secret, question)
-    },
-
-    sendQueryMsg: function () {
-      var versions = {}
-        , msg = CONST.OTR_TAG
-
-      if (this.ALLOW_V2) versions['2'] = true
-      if (this.ALLOW_V3) versions['3'] = true
-
-      // but we don't allow v1
-      // if (versions['1']) msg += '?'
-
-      var vs = Object.keys(versions)
-      if (vs.length) {
-        msg += 'v'
-        vs.forEach(function (v) {
-          if (v !== '1') msg += v
-        })
-        msg += '?'
-      }
-
-      this._sendMsg(msg, true)
-    },
-
-    sendMsg: function (msg) {
-      if ( this.REQUIRE_ENCRYPTION ||
-           this.msgstate !== CONST.MSGSTATE_PLAINTEXT
-      ) {
-        msg = CryptoJS.enc.Utf8.parse(msg)
-        msg = msg.toString(CryptoJS.enc.Latin1)
-      }
-      this._sendMsg(msg)
-    },
-
-    _sendMsg: function (msg, internal) {
-      if (!internal) {  // a user or sm msg
-
-        switch (this.msgstate) {
-          case CONST.MSGSTATE_PLAINTEXT:
-            if (this.REQUIRE_ENCRYPTION) {
-              this.storedMgs.push(msg)
-              this.sendQueryMsg()
-              return
-            }
-            if (this.SEND_WHITESPACE_TAG && !this.receivedPlaintext) {
-              msg += CONST.WHITESPACE_TAG  // 16 byte tag
-              if (this.ALLOW_V3) msg += CONST.WHITESPACE_TAG_V3
-              if (this.ALLOW_V2) msg += CONST.WHITESPACE_TAG_V2
-            }
-            break
-          case CONST.MSGSTATE_FINISHED:
-            this.storedMgs.push(msg)
-            this.error('Message cannot be sent at this time.')
-            return
-          default:
-            msg = this.prepareMsg(msg)
-        }
-
-      }
-      if (msg) this.iocb(msg)
-    },
-
-    receiveMsg: function (msg) {
-
-      // parse type
-      msg = Parse.parseMsg(this, msg)
-
-      if (!msg) return
-
-      switch (msg.cls) {
-        case 'error':
-          this.error(msg.msg)
-          return
-        case 'ake':
-          if ( msg.version === CONST.OTR_VERSION_3 &&
-            this.checkInstanceTags(msg.instance_tags)
-          ) return  // ignore
-          this.ake.handleAKE(msg)
-          return
-        case 'data':
-          if ( msg.version === CONST.OTR_VERSION_3 &&
-            this.checkInstanceTags(msg.instance_tags)
-          ) return  // ignore
-          msg.msg = this.handleDataMsg(msg)
-          break
-        case 'query':
-          if (this.msgstate === CONST.MSGSTATE_ENCRYPTED) this._akeInit()
-          this.doAKE(msg)
-          break
-        default:
-          // check for encrypted
-          if ( this.REQUIRE_ENCRYPTION ||
-               this.msgstate !== CONST.MSGSTATE_PLAINTEXT
-          ) this.error('Received an unencrypted message.')
-
-          // received a plaintext message
-          // stop sending the whitespace tag
-          this.receivedPlaintext = true
-
-          // received a whitespace tag
-          if (this.WHITESPACE_START_AKE) this.doAKE(msg)
-      }
-
-      if (msg.msg) this.uicb(null, msg.msg)
-    },
-
-    checkInstanceTags: function (it) {
-      var their_it = HLP.readLen(it.substr(0, 4))
-      var our_it = HLP.readLen(it.substr(4, 4))
-
-      if (our_it && our_it !== HLP.readLen(this.our_instance_tag))
-        return true
-
-      if (HLP.readLen(this.their_instance_tag)) {
-        if (HLP.readLen(this.their_instance_tag) !== their_it) return true
-      } else {
-        if (their_it < 100) return true
-        this.their_instance_tag = HLP.packINT(their_it)
-      }
-    },
-
-    doAKE: function (msg) {
-      if (this.ALLOW_V3 && ~msg.ver.indexOf(CONST.OTR_VERSION_3)) {
-        this.ake.initiateAKE(CONST.OTR_VERSION_3)
-      } else if (this.ALLOW_V2 && ~msg.ver.indexOf(CONST.OTR_VERSION_2)) {
-        this.ake.initiateAKE(CONST.OTR_VERSION_2)
-      }
-    },
-
-    error: function (err, send) {
-      if (send) {
-        if (!this.debug) err = "An OTR error has occurred."
-        err = '?OTR Error:' + err
-        this._sendMsg(err, true)
-        return
-      }
-      this.uicb(err)
-    },
-
-    sendStored: function () {
-      var self = this
-      ;(this.storedMgs.splice(0)).forEach(function (msg) {
-        self._sendMsg(msg)
-      })
-    },
-
-    endOtr: function () {
-      if (this.msgstate === CONST.MSGSTATE_ENCRYPTED) {
-        this.sendMsg('\x00\x00\x01\x00\x00')
-        this.sm = null
-      }
-      this.msgstate = CONST.MSGSTATE_PLAINTEXT
-      this.receivedPlaintext = false
+    if (v3) {
+      send += this.our_instance_tag
+      send += this.their_instance_tag
     }
 
+    send += '\x00'  // flag
+    send += HLP.packINT(this.our_keyid - 1)
+    send += HLP.packINT(this.their_keyid)
+    send += HLP.packMPI(this.our_dh.publicKey)
+    send += ctr.substring(0, 8)
+
+    var aes = HLP.encryptAes(
+        CryptoJS.enc.Latin1.parse(msg)
+      , sessKeys.sendenc
+      , ctr
+    )
+
+    send += HLP.packData(aes)
+    send += HLP.make1Mac(send, sessKeys.sendmac)
+    send += HLP.packData(this.oldMacKeys.splice(0).join(''))
+
+    sessKeys.sendmacused = true
+
+    send = HLP.wrapMsg(
+        send
+      , this.fragment_size
+      , v3
+      , this.our_instance_tag
+      , this.their_instance_tag
+    )
+    if (send[0]) return this.error(send[0])
+    return send[1]
   }
+
+  OTR.prototype.handleDataMsg = function (msg) {
+    var vt = msg.version + msg.type
+
+    if (this.ake.otr_version === CONST.OTR_VERSION_3)
+      vt += msg.instance_tags
+
+    var types = ['BYTE', 'INT', 'INT', 'MPI', 'CTR', 'DATA', 'MAC', 'DATA']
+    msg = HLP.splitype(types, msg.msg)
+
+    // ignore flag
+    var ign = (msg[0] === '\x01')
+
+    if (this.msgstate !== CONST.MSGSTATE_ENCRYPTED || msg.length !== 8) {
+      if (!ign) this.error('Received an unreadable encrypted message.', true)
+      return
+    }
+
+    var our_keyid = this.our_keyid - HLP.readLen(msg[2])
+    var their_keyid = this.their_keyid - HLP.readLen(msg[1])
+
+    if (our_keyid < 0 || our_keyid > 1) {
+      if (!ign) this.error('Not of our latest keys.', true)
+      return
+    }
+
+    var our_dh =  our_keyid ? this.our_old_dh : this.our_dh
+
+    if (their_keyid < 0 || their_keyid > 1) {
+      if (!ign) this.error('Not of your latest keys.', true)
+      return
+    }
+
+    var their_y = their_keyid ? this.their_old_y : this.their_y
+
+    if (their_keyid === 1 && !their_y) {
+      if (!ign) this.error('Do not have that key.')
+      return
+    }
+
+    var sessKeys = this.sessKeys[our_keyid][their_keyid]
+
+    var ctr = HLP.unpackCtr(msg[4])
+    if (ctr <= sessKeys.rcv_counter) {
+      if (!ign) this.error('Counter in message is not larger.')
+      return
+    }
+    sessKeys.rcv_counter = ctr
+
+    // verify mac
+    vt += msg.slice(0, 6).join('')
+    var vmac = HLP.make1Mac(vt, sessKeys.rcvmac)
+
+    if (msg[6] !== vmac) {
+      if (!ign) this.error('MACs do not match.')
+      return
+    }
+    sessKeys.rcvmacused = true
+
+    var out = HLP.decryptAes(
+        msg[5].substring(4)
+      , sessKeys.rcvenc
+      , HLP.padCtr(msg[4])
+    )
+    out = out.toString(CryptoJS.enc.Latin1)
+
+    if (!our_keyid) this.rotateOurKeys()
+    if (!their_keyid) this.rotateTheirKeys(HLP.readMPI(msg[3]))
+
+    // parse TLVs
+    var ind = out.indexOf('\x00')
+    if (~ind) {
+      this.handleTLVs(out.substring(ind + 1), sessKeys)
+      out = out.substring(0, ind)
+    }
+
+    out = CryptoJS.enc.Latin1.parse(out)
+    return out.toString(CryptoJS.enc.Utf8)
+  }
+
+  OTR.prototype.handleTLVs = function (tlvs, sessKeys) {
+    var type, len, msg
+    for (; tlvs.length; ) {
+      type = HLP.unpackSHORT(tlvs.substr(0, 2))
+      len = HLP.unpackSHORT(tlvs.substr(2, 2))
+
+      msg = tlvs.substr(4, len)
+
+      // TODO: handle pathological cases better
+      if (msg.length < len) break
+
+      switch (type) {
+        case 1:
+          // Disconnected
+          this.msgstate = CONST.MSGSTATE_FINISHED
+          this.trigger('status', [CONST.STATUS_END_OTR])
+          break
+        case 2: case 3: case 4:
+        case 5: case 6: case 7:
+          // SMP
+          this.sm.handleSM({ msg: msg, type: type })
+          break
+        case 8:
+          // Extra Symkey
+          // sessKeys.extra_symkey
+          break
+      }
+
+      tlvs = tlvs.substring(4 + len)
+    }
+  }
+
+  OTR.prototype.smpSecret = function (secret, question) {
+    if (this.msgstate !== CONST.MSGSTATE_ENCRYPTED)
+      return this.error('Must be encrypted for SMP.')
+
+    if (typeof secret !== 'string' || secret.length < 1)
+      return this.error('Secret is required.')
+
+    this.sm.rcvSecret(secret, question)
+  }
+
+  OTR.prototype.sendQueryMsg = function () {
+    var versions = {}
+      , msg = CONST.OTR_TAG
+
+    if (this.ALLOW_V2) versions['2'] = true
+    if (this.ALLOW_V3) versions['3'] = true
+
+    // but we don't allow v1
+    // if (versions['1']) msg += '?'
+
+    var vs = Object.keys(versions)
+    if (vs.length) {
+      msg += 'v'
+      vs.forEach(function (v) {
+        if (v !== '1') msg += v
+      })
+      msg += '?'
+    }
+
+    this._sendMsg(msg, true)
+    this.trigger('status', [CONST.STATUS_SEND_QUERY])
+  }
+
+  OTR.prototype.sendMsg = function (msg) {
+    if ( this.REQUIRE_ENCRYPTION ||
+         this.msgstate !== CONST.MSGSTATE_PLAINTEXT
+    ) {
+      msg = CryptoJS.enc.Utf8.parse(msg)
+      msg = msg.toString(CryptoJS.enc.Latin1)
+    }
+    this._sendMsg(msg)
+  }
+
+  OTR.prototype._sendMsg = function (msg, internal) {
+    if (!internal) {  // a user or sm msg
+
+      switch (this.msgstate) {
+        case CONST.MSGSTATE_PLAINTEXT:
+          if (this.REQUIRE_ENCRYPTION) {
+            this.storedMgs.push(msg)
+            this.sendQueryMsg()
+            return
+          }
+          if (this.SEND_WHITESPACE_TAG && !this.receivedPlaintext) {
+            msg += CONST.WHITESPACE_TAG  // 16 byte tag
+            if (this.ALLOW_V3) msg += CONST.WHITESPACE_TAG_V3
+            if (this.ALLOW_V2) msg += CONST.WHITESPACE_TAG_V2
+          }
+          break
+        case CONST.MSGSTATE_FINISHED:
+          this.storedMgs.push(msg)
+          this.error('Message cannot be sent at this time.')
+          return
+        default:
+          msg = this.prepareMsg(msg)
+      }
+
+    }
+    if (msg) this.io(msg)
+  }
+
+  OTR.prototype.receiveMsg = function (msg) {
+
+    // parse type
+    msg = Parse.parseMsg(this, msg)
+
+    if (!msg) return
+
+    switch (msg.cls) {
+      case 'error':
+        this.error(msg.msg)
+        return
+      case 'ake':
+        if ( msg.version === CONST.OTR_VERSION_3 &&
+          this.checkInstanceTags(msg.instance_tags)
+        ) return  // ignore
+        this.ake.handleAKE(msg)
+        return
+      case 'data':
+        if ( msg.version === CONST.OTR_VERSION_3 &&
+          this.checkInstanceTags(msg.instance_tags)
+        ) return  // ignore
+        msg.msg = this.handleDataMsg(msg)
+        break
+      case 'query':
+        if (this.msgstate === CONST.MSGSTATE_ENCRYPTED) this._akeInit()
+        this.doAKE(msg)
+        break
+      default:
+        // check for encrypted
+        if ( this.REQUIRE_ENCRYPTION ||
+             this.msgstate !== CONST.MSGSTATE_PLAINTEXT
+        ) this.error('Received an unencrypted message.')
+
+        // received a plaintext message
+        // stop sending the whitespace tag
+        this.receivedPlaintext = true
+
+        // received a whitespace tag
+        if (this.WHITESPACE_START_AKE) this.doAKE(msg)
+    }
+
+    if (msg.msg) this.trigger('ui', [msg.msg])
+  }
+
+  OTR.prototype.checkInstanceTags = function (it) {
+    var their_it = HLP.readLen(it.substr(0, 4))
+    var our_it = HLP.readLen(it.substr(4, 4))
+
+    if (our_it && our_it !== HLP.readLen(this.our_instance_tag))
+      return true
+
+    if (HLP.readLen(this.their_instance_tag)) {
+      if (HLP.readLen(this.their_instance_tag) !== their_it) return true
+    } else {
+      if (their_it < 100) return true
+      this.their_instance_tag = HLP.packINT(their_it)
+    }
+  }
+
+  OTR.prototype.doAKE = function (msg) {
+    if (this.ALLOW_V3 && ~msg.ver.indexOf(CONST.OTR_VERSION_3)) {
+      this.ake.initiateAKE(CONST.OTR_VERSION_3)
+    } else if (this.ALLOW_V2 && ~msg.ver.indexOf(CONST.OTR_VERSION_2)) {
+      this.ake.initiateAKE(CONST.OTR_VERSION_2)
+    } else {
+      // is this an error?
+      this.error('OTR conversation requested, ' +
+        'but no compatible protocol version found.')
+    }
+  }
+
+  OTR.prototype.error = function (err, send) {
+    if (send) {
+      if (!this.debug) err = "An OTR error has occurred."
+      err = '?OTR Error:' + err
+      this._sendMsg(err, true)
+      return
+    }
+    this.trigger('error', [err])
+  }
+
+  OTR.prototype.sendStored = function () {
+    var self = this
+    ;(this.storedMgs.splice(0)).forEach(function (msg) {
+      self._sendMsg(msg)
+    })
+  }
+
+  OTR.prototype.endOtr = function () {
+    if (this.msgstate === CONST.MSGSTATE_ENCRYPTED) {
+      this.sendMsg('\x00\x00\x01\x00\x00')
+      this.sm = null
+    }
+    this.msgstate = CONST.MSGSTATE_PLAINTEXT
+    this.receivedPlaintext = false
+    this.trigger('status', [CONST.STATUS_END_OTR])
+  }
+
+  // attach methods
 
   OTR.makeInstanceTag = function () {
     var num = BigInt.randBigInt(32)
