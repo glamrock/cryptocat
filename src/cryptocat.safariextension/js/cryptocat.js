@@ -1,7 +1,7 @@
 $(window).ready(function() {
 
 /* Version number */
-Cryptocat.version = '2.0.40';
+Cryptocat.version = '2.0.41';
 $('#version').text(Cryptocat.version);
 
 /* Configuration */
@@ -1189,11 +1189,11 @@ function connectXMPP(username, password) {
 					}
 				}
 				else if (status === Strophe.Status.DISCONNECTED) {
-					if (!loginError) {
+					if (loginError) {
 						$('#loginInfo').text(Cryptocat.language['loginMessage']['connectionFailed']);
 						$('#loginInfo').animate({'color': '#E93028'}, 'fast');
-						logout();
 					}
+					logout();
 				}
 			});
 		}

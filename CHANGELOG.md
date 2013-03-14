@@ -1,11 +1,20 @@
 ## Changelog
 
+### Cryptocat 2.0.41
+**Mar. 14 2013**
+- Fixed a bug in Cryptocat for Mac that prevented text selection, copy and paste from working.
+- Updated OTR libraries to version 0.1.3.
+- Notification settings are now saved from session to session.
+- Improved Italian translation.
+- Improved Japanese translation.
+- Some small tweaks and adjustments.
+
 ### Cryptocat 2.0.40
-** Mar. 3 2013**
+**Mar. 3 2013**
 - More substantial color scheme and UI improvements.  
 
 #### Cryptocat 2.0.39
-** Mar. 3 2013**
+**Mar. 3 2013**
 - User interface bug fixes.  
 
 #### Cryptocat 2.0.38
