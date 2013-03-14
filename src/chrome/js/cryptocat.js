@@ -58,6 +58,13 @@ if (localStorageEnabled) {
 			});
 		}, 0);
 	}
+	// Load notification settings
+	if (localStorage.getItem('desktopNotifications') === '1') {
+		$('#notifications').click();
+	}
+	if (localStorage.getItem('audioNotifications') === '1') {
+		$('#audio').click();
+	}
 	// Load custom server settings
 	if (localStorage.getItem('domain')) {
 		domain = localStorage.getItem('domain');
@@ -877,6 +884,7 @@ else {
 			$(this).attr('alt', Cryptocat.language['chatWindow']['desktopNotificationsOn']);
 			$(this).attr('title', Cryptocat.language['chatWindow']['desktopNotificationsOn']);
 			desktopNotifications = 1;
+			localStorage.setItem('desktopNotifications', '1');
 			if (window.webkitNotifications.checkPermission()) {
 				window.webkitNotifications.requestPermission(function() {});
 			}
@@ -886,6 +894,7 @@ else {
 			$(this).attr('alt', Cryptocat.language['chatWindow']['desktopNotificationsOff']);
 			$(this).attr('title', Cryptocat.language['chatWindow']['desktopNotificationsOff']);
 			desktopNotifications = 0;
+			localStorage.setItem('desktopNotifications', '0');
 		}
 	});
 }
@@ -896,20 +905,25 @@ else {
 if (!navigator.userAgent.match(/(Chrome)|(Firefox)/)) {
 	$('#audio').remove();
 }
-$('#audio').click(function() {
-	if ($(this).attr('src') === 'img/noSound.png') {
-		$(this).attr('src', 'img/sound.png');
-		$(this).attr('alt', Cryptocat.language['chatWindow']['audioNotificationsOn']);
-		$(this).attr('title', Cryptocat.language['chatWindow']['audioNotificationsOn']);
-		audioNotifications = 1;
-	}
-	else {
-		$(this).attr('src', 'img/noSound.png');
-		$(this).attr('alt', Cryptocat.language['chatWindow']['audioNotificationsOff']);
-		$(this).attr('title', Cryptocat.language['chatWindow']['audioNotificationsOff']);
-		audioNotifications = 0;
-	}
-});
+else {
+	$('#audio').click(function() {
+		if ($(this).attr('src') === 'img/noSound.png') {
+			$(this).attr('src', 'img/sound.png');
+			$(this).attr('alt', Cryptocat.language['chatWindow']['audioNotificationsOn']);
+			$(this).attr('title', Cryptocat.language['chatWindow']['audioNotificationsOn']);
+			audioNotifications = 1;
+			localStorage.setItem('audioNotifications', '1');
+		}
+		else {
+			$(this).attr('src', 'img/noSound.png');
+			$(this).attr('alt', Cryptocat.language['chatWindow']['audioNotificationsOff']);
+			$(this).attr('title', Cryptocat.language['chatWindow']['audioNotificationsOff']);
+			audioNotifications = 0;
+			localStorage.setItem('audioNotifications', '0');
+		}
+	});
+}
+
 
 // Logout button
 $('#logout').click(function() {

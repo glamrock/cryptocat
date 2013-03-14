@@ -237,7 +237,7 @@ function addJacobian(x1, y1, z1, x2, y2, z2) {
         var s1 = BigInt.multMod(y1, BigInt.multMod(z2, z2z2, p256), p256);
         var s2 = BigInt.multMod(y2, BigInt.multMod(z1, z1z1, p256), p256);
         var h = subMod(u2, u1, p256);
-        var xEqual = isZero(h)
+        var xEqual = isZero(h);
         var i = BigInt.mult(h, two);
         i = BigInt.multMod(i, i, p256);
         j = BigInt.multMod(h, i, p256);
