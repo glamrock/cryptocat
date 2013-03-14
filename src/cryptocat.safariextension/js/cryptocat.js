@@ -263,7 +263,7 @@ function getFingerprint(buddy, OTR) {
 
 // Convert message URLs to links. Used internally.
 function addLinks(message) {
-	if ((URLs = message.match(/((mailto\:|(news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi))) {
+	if ((URLs = message.match(/(((news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi))) {
 		for (var i in URLs) {
 			var sanitize = URLs[i].split('');
 			for (var l in sanitize) {
