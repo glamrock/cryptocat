@@ -388,18 +388,20 @@ function desktopNotification(image, title, body, timeout) {
 // Add a join/part notification to the main conversation window.
 // If 'join === 1', shows join notification, otherwise shows part
 function buddyNotification(buddy, join) {
+  var status, audioNotification;
 	if (join) {
-		var status = '<div class="userJoin"><strong>+</strong>' + buddy + '</div>';
-		var audioNotification = 'userOnline';
+		status = '<div class="userJoin"><strong>+</strong>' + buddy + '</div>';
+		audioNotification = 'userOnline';
 	}
 	else {
-		var status = '<div class="userLeave"><strong>-</strong>' + buddy + '</div>';
-		var audioNotification = 'userOffline';
+		status = '<div class="userLeave"><strong>-</strong>' + buddy + '</div>';
+		audioNotification = 'userOffline';
 	}
 	conversations['main-Conversation'] += status;
-	if (currentConversation === 'main-Conversation') {
-		$('#conversationWindow').append(status);
+	if (currentConversation !== 'main-Conversation') {
+    conversations[currentConversation] += status;
 	}
+  $('#conversationWindow').append(status);
 	if (($('#conversationWindow')[0].scrollHeight - $('#conversationWindow').scrollTop()) < 1500) {	
 		scrollDown(400);
 	}

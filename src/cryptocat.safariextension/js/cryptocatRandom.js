@@ -57,7 +57,7 @@ if (navigator.userAgent.match('Opera')) {
 }
 else {
 	Cryptocat.random = function() {
-		o = '';
+		var x, o = '';
 		while (o.length < 16) {
 			x = state.getBytes(1);
 			if (x[0] <= 250) {
