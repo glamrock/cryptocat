@@ -516,7 +516,6 @@ function handleMessage(message) {
 
 // Handle incoming presence updates from the XMPP server.
 function handlePresence(presence) {
-	// console.log(presence);
 	var nickname = cleanNickname($(presence).attr('from'));
 	// If invalid nickname, do not process
 	if ($(presence).attr('type') === 'error') {
@@ -538,7 +537,6 @@ function handlePresence(presence) {
 	// Detect nickname change (which may be done by non-Cryptocat XMPP clients)
 	if ($(presence).find('status').attr('code') === '303') {
 		var newNickname = cleanNickname('/' + $(presence).find('item').attr('nick'));
-		console.log(nickname + ' changed nick to ' + newNickname);
 		changeNickname(nickname, newNickname);
 		return true;
 	}
@@ -559,9 +557,12 @@ function handlePresence(presence) {
     otrKeys[nickname].on('status', (function(nickname) {
       return function(state) {
         // close generating fingerprint dialog after AKE
-        if ( otrKeys[nickname].generatingFingerprint &&
+        if ( otrKeys[nickname].genFingerCb &&
              state === OTR.CONST.STATUS_AKE_SUCCESS
-        ) { closeGenerateFingerprints(nickname); }
+        ) {
+          closeGenerateFingerprints(nickname, otrKeys[nickname].genFingerCb);
+          delete otrKeys[nickname].genFingerCb;
+        }
       };
     }(nickname)));
   }
@@ -706,6 +707,59 @@ function displayInfoDialog(nickname) {
 		+ '<div id="multiPartyColorprint"></div><br /></div>';
 }
 
+// Close generating fingerprints dialog
+function closeGenerateFingerprints(nickname, arr) {
+  var open = arr[0],
+      close = arr[1],
+      cb = arr[2];
+  $('#fill')
+    .stop()
+    .animate({'width': '100%', 'opacity': '1'}, 400, 'linear',
+      function() {
+        $('#dialogBoxContent').fadeOut(function() {
+          $(this).empty().show();
+          if (close) {
+            $('#dialogBoxClose').click();
+            open = false;
+          }
+          cb(open);
+        });
+      });
+}
+
+// If OTR fingerprints have not been generated, show a progress bar and generate them.
+function ensureOTRdialog(nickname, close, cb) {
+  var open = false;
+	if (nickname === myNickname || otrKeys[nickname].msgstate) {
+    return cb(open);
+  }
+	var progressDialog = '<div id="progressBar"><div id="fill"></div></div>';
+	dialogBox(progressDialog, 1);
+  open = true;
+	$('#progressBar').css('margin', '70px auto 0 auto');
+	$('#fill').animate({'width': '100%', 'opacity': '1'}, 8000, 'linear');
+  // add some state for status callback
+  otrKeys[nickname].genFingerCb = [open, close, cb];
+	otrKeys[nickname].sendQueryMsg();
+}
+
+// Display buddy information, including fingerprints etc.
+function displayInfo(nickname) {
+  // Do nothing if a dialog already exists
+  if ($('#displayInfo').length) {
+    return false;
+  }
+  nickname = Strophe.xmlescape(nickname);
+  ensureOTRdialog(nickname, false, function(open) {
+    if (open) {
+      $('#dialogBoxContent').html(displayInfoDialog(nickname));
+    } else {
+      dialogBox(displayInfoDialog(nickname), 1);
+    }
+    showFingerprints(nickname);
+  });
+}
+
 // Show fingerprints internal function
 function showFingerprints(nickname) {
 	$('#otrFingerprint').text(getFingerprint(nickname, 1));
@@ -725,48 +779,6 @@ function showFingerprints(nickname) {
 			'<div class="colorprint" style="background:#'
 			+ multiPartyColorprint[color].substring(0, 6) + '"></div>'
 		);
-	}
-}
-
-// Close generating fingerprints dialog
-function closeGenerateFingerprints(nickname) {
-  $('#fill')
-    .stop()
-    .animate({'width': '100%', 'opacity': '1'}, 400, 'linear',
-      function() {
-        $('#dialogBoxContent').fadeOut(function() {
-          $(this).html(displayInfoDialog(nickname));
-          showFingerprints(nickname);
-          $(this).fadeIn();
-          otrKeys[nickname].generatingFingerprint = false;
-        });
-      });
-}
-
-// Display buddy information, including fingerprints etc.
-function displayInfo(nickname) {
-	// Do nothing if a dialog already exists
-	if ($('#displayInfo').length) {
-		return false;
-	}
-	nickname = Strophe.xmlescape(nickname);
-	// If OTR fingerprints have not been generated, show a progress bar and generate them.
-	if ((nickname !== myNickname) && !otrKeys[nickname].msgstate) {
-		var progressDialog = '<div id="progressBar"><div id="fill"></div></div>';
-		dialogBox(progressDialog, 1, null, function() {
-			$('#displayInfo').remove();
-		});
-		$('#progressBar').css('margin', '70px auto 0 auto');
-		$('#fill').animate({'width': '100%', 'opacity': '1'}, 8000, 'linear');
-    // add some state for status callback
-    otrKeys[nickname].generatingFingerprint = true;
-    otrKeys[nickname].sendQueryMsg();
-	}
-	else {
-		dialogBox(displayInfoDialog(nickname), 1, null, function() {
-			$('#displayInfo').remove();
-		});
-		showFingerprints(nickname);
 	}
 }
 
@@ -853,6 +865,7 @@ function dialogBox(data, closeable, onAppear, onClose) {
 		}
 		$('#dialogBox').animate({'top': '+=10px'}, 'fast')
 			.animate({'top': '-450px'}, 'fast', function() {
+        $('#dialogBoxContent').empty();
 				if (onClose) {
 					onClose();
 				}
