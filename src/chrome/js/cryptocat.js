@@ -709,9 +709,8 @@ function displayInfoDialog(nickname) {
 
 // Close generating fingerprints dialog
 function closeGenerateFingerprints(nickname, arr) {
-  var open = arr[0],
-      close = arr[1],
-      cb = arr[2];
+  var close = arr[0],
+      cb = arr[1];
   $('#fill')
     .stop()
     .animate({'width': '100%', 'opacity': '1'}, 400, 'linear',
@@ -720,42 +719,29 @@ function closeGenerateFingerprints(nickname, arr) {
           $(this).empty().show();
           if (close) {
             $('#dialogBoxClose').click();
-            open = false;
           }
-          cb(open);
+          cb();
         });
       });
 }
 
 // If OTR fingerprints have not been generated, show a progress bar and generate them.
 function ensureOTRdialog(nickname, close, cb) {
-  var open = false;
-	if (nickname === myNickname || otrKeys[nickname].msgstate) {
-    return cb(open);
-  }
+	if (nickname === myNickname || otrKeys[nickname].msgstate) return cb();
 	var progressDialog = '<div id="progressBar"><div id="fill"></div></div>';
 	dialogBox(progressDialog, 1);
-  open = true;
 	$('#progressBar').css('margin', '70px auto 0 auto');
 	$('#fill').animate({'width': '100%', 'opacity': '1'}, 8000, 'linear');
   // add some state for status callback
-  otrKeys[nickname].genFingerCb = [open, close, cb];
+  otrKeys[nickname].genFingerCb = [close, cb];
 	otrKeys[nickname].sendQueryMsg();
 }
 
 // Display buddy information, including fingerprints etc.
 function displayInfo(nickname) {
-  // Do nothing if a dialog already exists
-  if ($('#displayInfo').length) {
-    return false;
-  }
   nickname = Strophe.xmlescape(nickname);
-  ensureOTRdialog(nickname, false, function(open) {
-    if (open) {
-      $('#dialogBoxContent').html(displayInfoDialog(nickname));
-    } else {
-      dialogBox(displayInfoDialog(nickname), 1);
-    }
+  ensureOTRdialog(nickname, false, function() {
+    dialogBox(displayInfoDialog(nickname), 1);
     showFingerprints(nickname);
   });
 }
@@ -843,6 +829,7 @@ function sendStatus() {
 // onClose may be defined as a callback function to execute on dialog box close.
 function dialogBox(data, closeable, onAppear, onClose) {
 	if ($('#dialogBox').css('top') !== '-450px') {
+    $('#dialogBoxContent').html(data);
 		return false;
 	}
 	if (closeable) {
