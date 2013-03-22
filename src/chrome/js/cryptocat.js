@@ -86,7 +86,6 @@ if (localStorageEnabled) {
 
 // Initialize workers
 var keyGenerator = new Worker('js/keygenerator.js');
-var dataReader = new Worker('js/datareader.js');
 keyGenerator.onmessage = function(e) {
 	myKey = new DSA(e.data);
 	// Key storage currently disabled as we are not yet sure if this is safe to do.
@@ -97,6 +96,72 @@ keyGenerator.onmessage = function(e) {
 		$('#loginInfo').text(Cryptocat.language['loginMessage']['connecting']);
 		$('#dialogBoxClose').click();
 	});
+}
+
+var dataReader = new Worker('js/datareader.js');
+dataReader.onmessage = function(m) {
+  var cn = conversationName + '@' + conferenceServer + '/';
+  var data = m.data;
+  switch (data.type) {
+    case 'error':
+      if (data.error === 'typeError') {
+        $('#fileErrorField')
+          .text('Please make sure your file is a .zip file or an image.');
+      } else if (data.error === 'sizeError') {
+        $('#fileErrorField')
+          .text('File cannot be larger than ' + fileSize + ' kilobytes');
+      }
+      break;
+    case 'open':
+      conn.ibb.open(cn + data.to, data.sid, null, function(err) {
+        if (err) return console.log(err);
+        dataReader.postMessage({
+          type: 'data',
+          start: true,
+          to: data.to,
+          sid: data.sid
+        });
+      });
+      break;
+    case 'data':
+      conn.ibb.data(cn + data.to, data.sid, data.seq, data.data, function(err) {
+        if (err) return console.log(err);
+        dataReader.postMessage({
+          type: 'data',
+          seq: data.seq,
+          to: data.to,
+          sid: data.sid
+        });
+      });
+      break;
+    case 'close':
+      conn.ibb.close(cn + data.to, data.sid, function(err) {
+        if (err) return console.log(err);
+      });
+      break;
+  }
+  if (data.close) $('#dialogBoxClose').click();
+};
+dataReader.postMessage({
+  type: 'seed',
+  seed: Cryptocat.generateSeed()
+});
+
+var rcvFile = {};
+function ibbHandler(type, from, sid, data) {
+  switch (type) {
+    case 'open':
+      if (!rcvFile[from]) rcvFile[from] = {};
+      rcvFile[from][sid] = [];
+      break;
+    case 'data':
+      rcvFile[from][sid].push(data);
+      break;
+    case 'close':
+      window.open(rcvFile[from][sid], '_blank');
+      delete rcvFile[from][sid];
+      break;
+  }
 }
 
 // Outputs the current hh:mm.
@@ -664,35 +729,31 @@ function bindBuddyClick(nickname) {
 // Send encrypted file
 // File is converted into a base64 Data URI which is then sent as an OTR message.
 function sendFile(nickname) {
+
 	var sendFileDialog = '<div class="bar">' + Cryptocat.language['chatWindow']['sendEncryptedFile'] + '</div>'
 		+ '<input type="file" id="fileSelector" name="file[]" />'
 		+ '<input type="button" id="fileSelectButton" class="button" value="select file" />'
 		+ '<div id="fileErrorField"></div>'
 		+ 'Only .zip files and images are accepted.<br />'
 		+ 'Maximum file size: ' + fileSize + ' kilobytes.';
-	dialogBox(sendFileDialog, 1);
-	$('#fileSelector').change(function(e) {
-		e.stopPropagation();
-		dataReader.onmessage = function(e) {
-			if (e.data === 'typeError') {
-				$('#fileErrorField').text('Please make sure your file is a .zip file or an image.');
-			}
-			else if (e.data === 'sizeError') {
-				$('#fileErrorField').text('File cannot be larger than ' + fileSize + ' kilobytes');
-			}
-			else {
-				otrKeys[nickname].sendMsg(e.data);
-				addToConversation(e.data, myNickname, nickname);
-				$('#dialogBoxClose').click();
-			}
-		};
-		if (this.files) {
-			dataReader.postMessage(this.files);
-		}
-	});
-	$('#fileSelectButton').click(function() {
-		$('#fileSelector').click();
-	});
+
+  ensureOTRdialog(nickname, false, function() {
+    dialogBox(sendFileDialog, 1);
+    $('#fileSelector').change(function(e) {
+      e.stopPropagation();
+      if (this.files) {
+        dataReader.postMessage({
+          type: 'open',
+          file: this.files[0],
+          to: nickname
+        });
+      }
+    });
+    $('#fileSelectButton').click(function() {
+      $('#fileSelector').click();
+    });
+  });
+
 }
 
 // Display info dialog
@@ -778,13 +839,11 @@ function bindBuddyMenu(nickname) {
 			$('#menu-' + nickname).attr('status', 'active');
 			var buddyMenuContents = '<div class="buddyMenuContents" id="' + nickname + '-contents">';
 			$(this).css('background-image', 'url("img/up.png")');
-			$('#buddy-' + nickname).delay(10).animate({'height': '28px'}, 180, function() {
+			$('#buddy-' + nickname).delay(10).animate({'height': '44px'}, 180, function() {
 				$(this).append(buddyMenuContents);
-				// File sharing menu item
-				// (currently disabled)
-				// $('#' + nickname + '-contents').append(
-				// 	'<li class="option1">' + Cryptocat.language['chatWindow']['sendEncryptedFile']  + '</li>'
-				// );
+        $('#' + nickname + '-contents').append(
+          '<li class="option1">' + Cryptocat.language['chatWindow']['sendEncryptedFile']  + '</li>'
+        );
 				$('#' + nickname + '-contents').append(
 					'<li class="option2">' + Cryptocat.language['chatWindow']['displayInfo'] + '</li>'
 				);
@@ -1182,6 +1241,7 @@ function connectXMPP(username, password) {
 					$('#loginInfo').text(Cryptocat.language['loginMessage']['connecting']);
 				}
 				else if (status === Strophe.Status.CONNECTED) {
+          conn.ibb.addIBBHandler(ibbHandler);
 					connected();
 				}
 				else if (status === Strophe.Status.CONNFAIL) {
