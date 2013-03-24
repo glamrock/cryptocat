@@ -159,14 +159,17 @@ dataReader.postMessage({
 });
 
 var rcvFile = {};
-function ibbHandler(type, from, sid, data) {
+function ibbHandler(type, from, sid, data, seq) {
   switch (type) {
     case 'open': break;
     case 'data':
-      rcvFile[from][sid].data.push(data);
+      rcvFile[from][sid].seq = seq;
+      rcvFile[from][sid].data.push(atob(data));
       break;
     case 'close':
-      window.open(rcvFile[from][sid].data[0], '_blank');
+      // var blog = new Blob(rcvFile[from][sid].data);
+      // var url = URL.createObjectURL(blob);
+      // window.open(url, '_blank');
       delete rcvFile[from][sid];
       break;
   }

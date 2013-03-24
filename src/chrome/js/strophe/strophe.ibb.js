@@ -60,14 +60,15 @@
       var type = child.tagName.toLowerCase();
       var sid = $(child).attr('sid');
 
-      var data;
+      var data, seq;
       if (type === 'data') {
         data = $(child).text();
+        seq = $(child).attr('seq');
       }
 
       // callback message
       if (typeof this._cb === 'function') {
-        this._cb(type, from, sid, data);
+        this._cb(type, from, sid, data, seq);
       }
 
       return true;  // keep handler active
