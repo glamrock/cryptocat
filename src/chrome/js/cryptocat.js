@@ -98,9 +98,12 @@ keyGenerator.onmessage = function(e) {
 	});
 }
 
+function cn(to) {
+  return conversationName + '@' + conferenceServer + '/' + to;
+}
+
 var dataReader = new Worker('js/datareader.js');
 dataReader.onmessage = function(m) {
-  var cn = conversationName + '@' + conferenceServer + '/';
   var data = m.data;
   switch (data.type) {
     case 'error':
@@ -113,18 +116,26 @@ dataReader.onmessage = function(m) {
       }
       break;
     case 'open':
-      conn.ibb.open(cn + data.to, data.sid, null, function(err) {
-        if (err) return console.log(err);
-        dataReader.postMessage({
-          type: 'data',
-          start: true,
-          to: data.to,
-          sid: data.sid
-        });
+      conn.si_filetransfer.send(
+        cn(data.to),
+        data.sid,
+        data.filename,
+        data.size,
+        function (err) {
+          if (err) return console.log(err);
+          conn.ibb.open(cn(data.to), data.sid, 4096, function(err) {
+            if (err) return console.log(err);
+            dataReader.postMessage({
+              type: 'data',
+              start: true,
+              to: data.to,
+              sid: data.sid
+            });
+          });
       });
       break;
     case 'data':
-      conn.ibb.data(cn + data.to, data.sid, data.seq, data.data, function(err) {
+      conn.ibb.data(cn(data.to), data.sid, data.seq, data.data, function(err) {
         if (err) return console.log(err);
         dataReader.postMessage({
           type: 'data',
@@ -135,7 +146,7 @@ dataReader.onmessage = function(m) {
       });
       break;
     case 'close':
-      conn.ibb.close(cn + data.to, data.sid, function(err) {
+      conn.ibb.close(cn(data.to), data.sid, function(err) {
         if (err) return console.log(err);
       });
       break;
@@ -150,18 +161,24 @@ dataReader.postMessage({
 var rcvFile = {};
 function ibbHandler(type, from, sid, data) {
   switch (type) {
-    case 'open':
-      if (!rcvFile[from]) rcvFile[from] = {};
-      rcvFile[from][sid] = [];
-      break;
+    case 'open': break;
     case 'data':
-      rcvFile[from][sid].push(data);
+      rcvFile[from][sid].data.push(data);
       break;
     case 'close':
-      window.open(rcvFile[from][sid], '_blank');
+      window.open(rcvFile[from][sid].data[0], '_blank');
       delete rcvFile[from][sid];
       break;
   }
+}
+function fileHandler(from, sid, filename, size) {
+  if (!rcvFile[from]) rcvFile[from] = {};
+  rcvFile[from][sid] = {
+    filename: filename,
+    size: size,
+    seq: 0,
+    data: []
+  };
 }
 
 // Outputs the current hh:mm.
@@ -285,11 +302,10 @@ function shortenString(string, length) {
 
 // Clean nickname so that it's safe to use.
 function cleanNickname(nickname) {
-	var clean;
-	if (clean = nickname.match(/\/([\s\S]+)/)) {
+	var clean = nickname.match(/\/([\s\S]+)/);
+	if (clean) {
 		clean = Strophe.xmlescape(clean[1]);
-	}
-	else {
+	} else {
 		return false;
 	}
 	if (clean.match(/\W/)) {
@@ -300,20 +316,21 @@ function cleanNickname(nickname) {
 
 // Get a fingerprint, formatted for readability
 function getFingerprint(buddy, OTR) {
+  var fingerprint;
 	if (OTR) {
 		if (buddy === myNickname) {
-			var fingerprint = myKey.fingerprint();
+			fingerprint = myKey.fingerprint();
 		}
 		else {
-			var fingerprint = otrKeys[buddy].their_priv_pk.fingerprint();
+			fingerprint = otrKeys[buddy].their_priv_pk.fingerprint();
 		}
 	}
 	else {
 		if (buddy === myNickname) {
-			var fingerprint = multiParty.genFingerprint();
+			fingerprint = multiParty.genFingerprint();
 		}
 		else {
-			var fingerprint = multiParty.genFingerprint(buddy);
+			fingerprint = multiParty.genFingerprint(buddy);
 		}
 	}
 	var formatted = '';
@@ -369,6 +386,7 @@ function addFile(message) {
 	var mime = new RegExp('(data:(application\/((x-compressed)|(x-zip-compressed)|'
 		+ '(zip)))|(multipart\/x-zip))\;base64,(\\w|\\/|\\+|\\=|\\s)*$');
 
+  var match;
 	if (match = message.match(/data:image\/\w+\;base64,(\w|\\|\/|\+|\=)*$/)) {
 		message = message.replace(/data:image\/\w+\;base64,(\w|\\|\/|\+|\=)*$/,
 			'<a href="' + match[0] + '" class="imageView" target="_blank">' + Cryptocat.language['chatWindow']['viewImage'] + '</a>');
@@ -410,7 +428,7 @@ function addToConversation(message, sender, conversation) {
 	message = addEmoticons(message);
 	message = message.replace(/:/g, '&#58;');
 	var timeStamp = '<span class="timeStamp">' + currentTime(0) + '</span>';
-	var sender = '<span class="sender">' + Strophe.xmlescape(shortenString(sender, 16)) + '</span>';
+	sender = '<span class="sender">' + Strophe.xmlescape(shortenString(sender, 16)) + '</span>';
 	if (conversation === currentConversation) {
 		message = '<div class="Line' + lineDecoration + '">' + timeStamp + sender + message + '</div>';
 		conversations[conversation] += message;
@@ -1242,6 +1260,7 @@ function connectXMPP(username, password) {
 				}
 				else if (status === Strophe.Status.CONNECTED) {
           conn.ibb.addIBBHandler(ibbHandler);
+          conn.si_filetransfer.addFileHandler(fileHandler);
 					connected();
 				}
 				else if (status === Strophe.Status.CONNFAIL) {

@@ -68,6 +68,8 @@
           type: 'open',
           sid: sid,
           to: to,
+          filename: file.name,
+          size: file.size,
           close: true
         });
         break;
