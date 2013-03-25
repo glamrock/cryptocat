@@ -175,9 +175,9 @@ function blobFromData(data, mime) {
 
 var rcvFile = {};
 function ibbHandler(type, from, sid, data, seq) {
+  var nick = from.split('/')[1];
   switch (type) {
     case 'open':
-      var nick = from.split('/')[1];
       var file = rcvFile[from][sid].filename;
       rcvFile[from][sid].key = fileKeys[nick][file];
       delete fileKeys[nick][file];
@@ -211,7 +211,19 @@ function ibbHandler(type, from, sid, data, seq) {
         rcvFile[from][sid].mime
       );
       var url = URL.createObjectURL(blob);
-      window.open(url, '_blank');
+      var link = "<a href='" + url + "' target='_blank'>" +
+        Strophe.xmlescape(rcvFile[from][sid].filename) + "</a>";
+      var sender = '<span class="sender">' +
+        Strophe.xmlescape(shortenString(nick, 16)) + '</span>';
+      var msg = '<div class="Line0">' + sender + 'has sent you a file: ' +
+        link + '. Right click and save as.</div>';
+      initiateConversation(nick);
+      conversations[nick] += msg;
+      if (currentConversation === nick) {
+        $('#conversationWindow').append(msg);
+      } else {
+        iconNotify(nick);
+      }
       delete rcvFile[from][sid];
       break;
   }
@@ -491,12 +503,16 @@ function addToConversation(message, sender, conversation) {
 	else {
 		message = '<div class="Line' + lineDecoration + '">' + timeStamp + sender + message + '</div>';
 		conversations[conversation] += message;
-		var backgroundColor = $('#buddy-' + conversation).css('background-color');
-		$('#buddy-' + conversation).css('background-image', 'url("img/newMessage.png")');
-		$('#buddy-' + conversation)
-			.animate({'backgroundColor': '#A7D8F7'})
-			.animate({'backgroundColor': backgroundColor});
+    iconNotify(conversation);
 	}
+}
+
+function iconNotify(conversation) {
+	var backgroundColor = $('#buddy-' + conversation).css('background-color');
+	$('#buddy-' + conversation).css('background-image', 'url("img/newMessage.png")');
+	$('#buddy-' + conversation)
+		.animate({'backgroundColor': '#A7D8F7'})
+		.animate({'backgroundColor': backgroundColor});
 }
 
 function desktopNotification(image, title, body, timeout) {
