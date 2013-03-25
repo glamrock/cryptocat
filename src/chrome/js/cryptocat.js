@@ -102,10 +102,16 @@ function cn(to) {
   return conversationName + '@' + conferenceServer + '/' + to;
 }
 
+// store extra symmetric keys
+var fileKeys = {};
+
 var dataReader = new Worker('js/datareader.js');
 dataReader.onmessage = function(m) {
   var data = m.data;
   switch (data.type) {
+    case 'log':
+      console.log(data.log)
+      return;
     case 'error':
       if (data.error === 'typeError') {
         $('#fileErrorField')
@@ -160,9 +166,6 @@ dataReader.postMessage({
 });
 
 function blobFromData(data, mime) {
-  data = data.reduce(function (prv, cur) {
-    return prv + atob(cur.split(',')[1]);
-  }, '');
   var ia = new Uint8Array(data.length);
   for (var i = 0; i < data.length; i++) {
     ia[i] = data.charCodeAt(i);
@@ -173,10 +176,34 @@ function blobFromData(data, mime) {
 var rcvFile = {};
 function ibbHandler(type, from, sid, data, seq) {
   switch (type) {
-    case 'open': break;
+    case 'open':
+      var nick = from.split('/')[1];
+      var file = rcvFile[from][sid].filename;
+      rcvFile[from][sid].key = fileKeys[nick][file];
+      delete fileKeys[nick][file];
+      break;
     case 'data':
       rcvFile[from][sid].seq = seq;
-      rcvFile[from][sid].data.push(data);
+      var key = rcvFile[from][sid].key;
+      var ss = data.length - 88;
+      var msg = data.substring(0, ss);
+      var mac = data.substring(ss);
+      var cmac = CryptoJS.HmacSHA512(
+        CryptoJS.enc.Base64.parse(msg),
+        CryptoJS.enc.Latin1.parse(key[1])
+      );
+      if (mac !== cmac.toString(CryptoJS.enc.Base64)) {
+        console.log("Macs don't match.")
+        return;
+      }
+      var opts = {
+        mode: CryptoJS.mode.CTR,
+        iv: CryptoJS.enc.Latin1.parse(rcvFile[from][sid].ctr),
+        padding: CryptoJS.pad.NoPadding
+      };
+      msg = CryptoJS.AES.decrypt(msg, CryptoJS.enc.Latin1.parse(key[0]), opts);
+      rcvFile[from][sid].data += (msg.toString(CryptoJS.enc.Latin1));
+      rcvFile[from][sid].ctr += 1;
       break;
     case 'close':
       var blob = blobFromData(
@@ -185,7 +212,7 @@ function ibbHandler(type, from, sid, data, seq) {
       );
       var url = URL.createObjectURL(blob);
       window.open(url, '_blank');
-      // delete rcvFile[from][sid];
+      delete rcvFile[from][sid];
       break;
   }
 }
@@ -196,7 +223,8 @@ function fileHandler(from, sid, filename, size, mime) {
     size: size,
     mime: mime,
     seq: 0,
-    data: []
+    ctr: 0,
+    data: ''
   };
 }
 
@@ -667,6 +695,17 @@ function handlePresence(presence) {
         }
       };
     }(nickname)));
+    otrKeys[nickname].on('file', (function (nickname) {
+      return function(type, key, filename) {
+        // make two keys, for encrypt then mac
+        key = CryptoJS.SHA512(CryptoJS.enc.Latin1.parse(key));
+        key = key.toString(CryptoJS.enc.Latin1);
+        if (!fileKeys[nickname]) fileKeys[nickname] = {};
+        fileKeys[nickname][filename] = [
+          key.substring(0, 32), key.substring(32)
+        ];
+      };
+    })(nickname));
   }
 	// Detect buddy going offline
 	if ($(presence).attr('type') === 'unavailable') {
@@ -779,11 +818,16 @@ function sendFile(nickname) {
     $('#fileSelector').change(function(e) {
       e.stopPropagation();
       if (this.files) {
+        var file = this.files[0];
+        otrKeys[nickname].sendFile(file.name);
+        var key = fileKeys[nickname][file.name];
         dataReader.postMessage({
           type: 'open',
-          file: this.files[0],
-          to: nickname
+          file: file,
+          to: nickname,
+          key: key
         });
+        delete fileKeys[nickname][file.name];
       }
     });
     $('#fileSelectButton').click(function() {
