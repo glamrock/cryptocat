@@ -79,10 +79,11 @@
       var $file = $('file', $m);
       var filename = $file.attr('name');
       var size = $file.attr('size'); 
+      var mime = $('si', $m).attr('mime-type');
 
       // callback message
       if (typeof this._cb === 'function') {
-        this._cb(from, sid, filename, size);
+        this._cb(from, sid, filename, size, mime);
       }
 
       return true;
@@ -109,7 +110,7 @@
       this._c.sendIQ(iq, success, fail, 60 * 1000);
     },
 
-    send: function (to, sid, filename, size, cb) {
+    send: function (to, sid, filename, size, mime, cb) {
 
       // check for In-Band Bytestream plugin
       if (!Object.hasOwnProperty.call(this._c, 'ibb')) {
@@ -124,7 +125,8 @@
       }).c('si', {
         xmlns: Strophe.NS.SI,
         id: sid,
-        profile: Strophe.NS.SI_FILE_TRANSFER
+        profile: Strophe.NS.SI_FILE_TRANSFER,
+        'mime-type': mime
       }).c('file', {
         xmlns: Strophe.NS.SI_FILE_TRANSFER,
         name: filename,

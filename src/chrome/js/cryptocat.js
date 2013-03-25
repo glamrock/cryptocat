@@ -121,6 +121,7 @@ dataReader.onmessage = function(m) {
         data.sid,
         data.filename,
         data.size,
+        data.mime,
         function (err) {
           if (err) return console.log(err);
           conn.ibb.open(cn(data.to), data.sid, 4096, function(err) {
@@ -158,27 +159,42 @@ dataReader.postMessage({
   seed: Cryptocat.generateSeed()
 });
 
+function blobFromData(data, mime) {
+  data = data.reduce(function (prv, cur) {
+    return prv + atob(cur.split(',')[1]);
+  }, '');
+  var ia = new Uint8Array(data.length);
+  for (var i = 0; i < data.length; i++) {
+    ia[i] = data.charCodeAt(i);
+  }
+  return new Blob([ia], { type: mime });
+}
+
 var rcvFile = {};
 function ibbHandler(type, from, sid, data, seq) {
   switch (type) {
     case 'open': break;
     case 'data':
       rcvFile[from][sid].seq = seq;
-      rcvFile[from][sid].data.push(atob(data));
+      rcvFile[from][sid].data.push(data);
       break;
     case 'close':
-      // var blog = new Blob(rcvFile[from][sid].data);
-      // var url = URL.createObjectURL(blob);
-      // window.open(url, '_blank');
-      delete rcvFile[from][sid];
+      var blob = blobFromData(
+        rcvFile[from][sid].data,
+        rcvFile[from][sid].mime
+      );
+      var url = URL.createObjectURL(blob);
+      window.open(url, '_blank');
+      // delete rcvFile[from][sid];
       break;
   }
 }
-function fileHandler(from, sid, filename, size) {
+function fileHandler(from, sid, filename, size, mime) {
   if (!rcvFile[from]) rcvFile[from] = {};
   rcvFile[from][sid] = {
     filename: filename,
     size: size,
+    mime: mime,
     seq: 0,
     data: []
   };

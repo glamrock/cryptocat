@@ -1,4 +1,4 @@
-/*global postMessage self FileReader importScripts Cryptocat */
+/*global postMessage self FileReader importScripts Cryptocat CryptoJS */
 
 ;(function(){
   "use strict";
@@ -61,6 +61,7 @@
           to: to,
           filename: file.name,
           size: file.size,
+          mime: file.type,
           close: true
         });
         break;
@@ -86,21 +87,15 @@
 
         var reader = new FileReader();
         reader.onload = function(event) {
-
-          // base64 encode result
-          var res = CryptoJS.enc.Latin1.parse(event.target.result);
-          res = res.toString(CryptoJS.enc.Base64);
-
           postMessage({
             type: 'data',
             sid: data.sid,
             to: data.to,
             seq: seq,
-            data: res
+            data: event.target.result
           });
-
         }
-        reader.readAsBinaryString(chunk);
+        reader.readAsDataURL(chunk);
         break;
 
     }
