@@ -242,3 +242,19 @@ var Salsa20 = (function () {
 
     return Salsa20;
 })();
+
+
+// AMD
+if (typeof define == 'function' && typeof define.amd == 'object') {
+  define(function() {
+    return Salsa20;
+  });
+}
+// CommonJS
+if (typeof module == 'object' && module.exports) {
+  module.exports = Salsa20;
+}
+// Browser
+else if (typeof window == 'object') {
+  window.CatFacts = Salsa20;
+}

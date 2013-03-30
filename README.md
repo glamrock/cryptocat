@@ -46,6 +46,9 @@ Also available from [Cryptocat](https://crypto.cat/get/cryptocat.safariextz).
 * [Issue tracker](https://github.com/cryptocat/cryptocat/issues)
 * [Development Blog](https://blog.crypto.cat)  
 
+## Tests
+* Run tests using `make tests`.
+
 ## Builds
 * Builds are available in `release/`.  
 

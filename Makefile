@@ -18,3 +18,8 @@ changes:
 	@cd src/firefox/chrome/content/data/ && rm -rf css img js locale snd index.html
 	@cd src/chrome/ && cp -R css img js locale snd index.html ../firefox/chrome/content/data/
 	@/bin/echo "done"
+
+tests:
+	@/bin/echo -n "[Cryptocat] Running tests... "
+	@`/usr/bin/which npm` install
+	@node_modules/.bin/mocha --ui exports --reporter spec test/chrome/js/*.test.js

@@ -1,3 +1,10 @@
 .DS_Store
 
 stz/*
+
+# npm
+node_modules/
+
+# IDE files
+.idea/
+*.iml
