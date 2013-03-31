@@ -2,6 +2,7 @@
 // Contributed by Dmitry Chestnykh
 // 21-01-2013
 (function () {
+  var global = this;
 
    var Salsa20 = function (key, nonce) {
         // Constants.
@@ -19,7 +20,7 @@
 
         this.setKey(key);
         this.setNonce(nonce);
-    }
+    };
 
     // setKey sets the key to the given 32-byte array.
     Salsa20.prototype.setKey = function(key) {
@@ -250,8 +251,8 @@
      module.exports = Salsa20;
    }
    // Browser
-   else if (typeof window == 'object') {
-     window.Salsa20 = Salsa20;
+   else if (typeof global == 'object') {
+     global.Salsa20 = Salsa20;
    }
 
 })();
