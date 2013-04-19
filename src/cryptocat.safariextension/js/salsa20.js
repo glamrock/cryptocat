@@ -1,10 +1,10 @@
 // Salsa20 implementation
 // Contributed by Dmitry Chestnykh
 // 21-01-2013
+(function () {
+  var global = this;
 
-var Salsa20 = (function () {
-
-    function Salsa20(key, nonce) {
+   var Salsa20 = function (key, nonce) {
         // Constants.
         this.rounds = 20; // number of Salsa rounds
         this.sigmaWords = [0x61707865, 0x3320646e, 0x79622d32, 0x6b206574];
@@ -20,7 +20,7 @@ var Salsa20 = (function () {
 
         this.setKey(key);
         this.setNonce(nonce);
-    }
+    };
 
     // setKey sets the key to the given 32-byte array.
     Salsa20.prototype.setKey = function(key) {
@@ -237,8 +237,22 @@ var Salsa20 = (function () {
             this.block[58] = (x14 >>> 16) & 0xff; this.block[59] = (x14 >>> 24) & 0xff;
             this.block[60] = (x15 >>>  0) & 0xff; this.block[61] = (x15 >>>  8) & 0xff;
             this.block[62] = (x15 >>> 16) & 0xff; this.block[63] = (x15 >>> 24) & 0xff;
-    };
+   };
 
 
-    return Salsa20;
+   // AMD
+   if (typeof define == 'function' && typeof define.amd == 'object') {
+     define(function() {
+       return Salsa20;
+     });
+   }
+   // CommonJS
+   if (typeof module ==  'object' && module.exports) {
+     module.exports = Salsa20;
+   }
+   // Browser
+   else if (typeof global == 'object') {
+     global.Salsa20 = Salsa20;
+   }
+
 })();
