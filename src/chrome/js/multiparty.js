@@ -11,6 +11,19 @@ var myPublicKey;
 multiParty.requestRegEx = /^\?:3multiParty:3\?:keyRequest$/;
 multiParty.publicKeyRegEx = /^\?:3multiParty:3\?:publicKey:(\w|=)+$/;
 
+function correctIvLength(iv){
+	ivAsWordArray = CryptoJS.enc.Base64.parse(iv);
+	ivAsArray = ivAsWordArray.words;
+	ivAsArray.push(0); //adds 0 as the 4th element, causing the equivalent 
+					   //bytestring to have a length of 16 bytes, with 
+					   // \x00\x00\x00\x00 at the end.
+					   //without this, crypto-js will take in a counter of 
+					   //12 bytes, and the first 2 counter iterations will 
+					   //use 0, instead of 0 and then 1. 
+					   //see https://github.com/cryptocat/cryptocat/issues/258
+	return CryptoJS.lib.WordArray.create(ivAsArray);
+}
+
 // AES-CTR-256 encryption
 // No padding, starting IV of 0
 // Input: UTF8, Output: Base64
@@ -18,7 +31,7 @@ multiParty.publicKeyRegEx = /^\?:3multiParty:3\?:publicKey:(\w|=)+$/;
 function encryptAES(msg, c, iv) {
 	var opts = {
 		mode: CryptoJS.mode.CTR,
-		iv: CryptoJS.enc.Base64.parse(iv),
+		iv: correctIvLength(iv),
 		padding: CryptoJS.pad.NoPadding
 	}
 	var aesctr = CryptoJS.AES.encrypt (
@@ -37,7 +50,7 @@ function decryptAES(msg, c, iv) {
 	msg = CryptoJS.enc.Base64.parse(msg);
 	var opts = {
 		mode: CryptoJS.mode.CTR,
-		iv: CryptoJS.enc.Base64.parse(iv),
+		iv: correctIvLength(iv),
 		padding: CryptoJS.pad.NoPadding
 	}
 	var aesctr = CryptoJS.AES.decrypt(
