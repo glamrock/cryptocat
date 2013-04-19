@@ -1,5 +1,10 @@
 ## Changelog
 
+### Cryptocat 2.0.42
+**Apr. 19 2013**
+- IMPORTANT: Due to changes to multiparty key generation (in order to be compatible with the upcoming mobile apps), this version of Cryptocat cannot have multiparty conversations with previous versions. However private conversations still work. Due to this, this release will not be pushed until it is both reviewed by Mozilla (for the Firefox Addons Website) and Apple (for the Mac App Store).
+- Fixed a bug found in the encryption libraries that could partially weaken the security of multiparty Cryptocat messages.
+
 ### Cryptocat 2.0.41
 **Mar. 14 2013**
 - Fixed a bug in Cryptocat for Mac that prevented text selection, copy and paste from working.
