@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/cryptocat/cryptocat.png?branch=master)](http://travis-ci.org/cryptocat/cryptocat)
+
 #[Cryptocat](https://crypto.cat)
 #### Web Instant Messaging App With Accessible Encryption.
 #### Experimental software: Don't trust with your life! Peer review appreciated.
