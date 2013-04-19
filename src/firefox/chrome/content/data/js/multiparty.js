@@ -88,7 +88,8 @@ function checkSize(publicKey) {
 // Generate private key (32 byte random number)
 // Represented in decimal
 multiParty.genPrivateKey = function() {
-	myPrivateKey = Cryptocat.randomString(32, 0, 0, 1);
+	rand = Cryptocat.randomString(32, 0, 0, 1);
+	myPrivateKey = BigInt.str2bigInt(rand, 10);
 	return myPrivateKey;
 }
 
