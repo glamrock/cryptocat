@@ -21,7 +21,9 @@ Cryptocat.generateSeed = function() {
 		return output;
 	}
 	// Firefox
-	if (navigator.userAgent.match('Firefox')) {
+	if (navigator.userAgent.match('Firefox') &&
+		(!window.crypto || !window.crypto.getRandomValues)
+	) {
 		var buffer = firefoxRandomBytes();
 	}
 	// Browsers that don't require shitty workarounds
