@@ -355,6 +355,9 @@ img.logo {
 #dialogBox .no {
 	background: #E93028;
 }
+#dialogBox #fileInfoField {
+	padding: 20px;
+}
 #conversationWrapper {
 	width: 750px;
 	overflow: hidden;

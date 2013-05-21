@@ -109,10 +109,10 @@ dataReader.onmessage = function(m) {
 			return;
 		case 'error':
 			if (data.error === 'typeError') {
-				$('#fileErrorField').text('Please make sure your file is a .zip file or an image.');
+				$('#fileInfoField').text('Error: Please make sure your file is a ZIP file or an image.');
 			}
 			else if (data.error === 'sizeError') {
-				$('#fileErrorField').text('File cannot be larger than ' + fileSize + ' kilobytes');
+				$('#fileInfoField').text('Error: File cannot be larger than ' + fileSize + ' kilobytes');
 			}
 			break;
 		case 'open':
@@ -162,7 +162,9 @@ dataReader.onmessage = function(m) {
 			break;
 	}
 	if (data.close) {
-		$('#dialogBoxClose').click();
+		window.setTimeout(function() {
+			$('#dialogBoxClose').click();
+		}, 1000);
 	}
 };
 dataReader.postMessage({
@@ -452,7 +454,7 @@ function addFile(blob) {
 }
 
 // Add a `message` from `sender` to the `conversation` display and log.
-// If `filename` is defined, then we are adding a recieved file to the conversation,
+// If `isFile`, then we are adding a recieved file to the conversation,
 // not a typical message.
 function addToConversation(message, sender, conversation, isFile) {
 	if (!message) {
@@ -822,14 +824,11 @@ function bindBuddyClick(nickname) {
 // Send encrypted file
 // File is converted into a base64 Data URI which is then sent as an OTR message.
 function sendFile(nickname) {
-
 	var sendFileDialog = '<div class="bar">' + Cryptocat.language['chatWindow']['sendEncryptedFile'] + '</div>'
 		+ '<input type="file" id="fileSelector" name="file[]" />'
-		+ '<input type="button" id="fileSelectButton" class="button" value="select file" />'
-		+ '<div id="fileErrorField"></div>'
-		+ 'Only .zip files and images are accepted.<br />'
-		+ 'Maximum file size: ' + fileSize + ' kilobytes.';
-
+		+ '<input type="button" id="fileSelectButton" class="button" value="Select file" />'
+		+ '<div id="fileInfoField">Only ZIP files and images are accepted.'
+		+ '<br />Maximum file size: ' + fileSize + ' kilobytes.</div>';
 	ensureOTRdialog(nickname, false, function() {
 		dialogBox(sendFileDialog, 1);
 		$('#fileSelector').change(function(e) {
@@ -851,7 +850,6 @@ function sendFile(nickname) {
 			$('#fileSelector').click();
 		});
 	});
-
 }
 
 // Display info dialog
