@@ -173,7 +173,7 @@ Curve25519.sigToString = function(p){
 }
 
 Curve25519.sigFromString = function(s){
-  p = JSON.parse(s);
+  var p = JSON.parse(s);
   p[0] = BigInt.str2bigInt(p[0], 64);
   p[1] = BigInt.str2bigInt(p[1], 64);
   return p;
@@ -184,7 +184,7 @@ Curve25519.publicKeyToString = function(p){
 }
 
 Curve25519.publicKeyFromString = function(s){
-  p = JSON.parse(s);
+  var p = JSON.parse(s);
   p[0] = BigInt.str2bigInt(p[0], 64);
   p[1] = BigInt.str2bigInt(p[1], 64);
   return p;
@@ -217,17 +217,17 @@ function subMod(a, b, m) {
         if (BigInt.greater(a, b)) {
                 return BigInt.mod(BigInt.sub(a, b), m);
         }
-        tmp = BigInt.mod(BigInt.sub(b, a), m);
+        var tmp = BigInt.mod(BigInt.sub(b, a), m);
         return BigInt.sub(m, tmp);
 
 }
 
 // addJacobian adds two elliptic curve points in Jacobian form.
 function addJacobian(x1, y1, z1, x2, y2, z2) {
-        if (isZero(z1)) {
+        if (BigInt.isZero(z1)) {
                 return [x2, y2, z2];
         }
-        if (isZero(z2)) {
+        if (BigInt.isZero(z2)) {
                 return [x1, y1, z1];
         }
         var z1z1 = BigInt.multMod(z1, z1, p256);
@@ -237,13 +237,13 @@ function addJacobian(x1, y1, z1, x2, y2, z2) {
         var s1 = BigInt.multMod(y1, BigInt.multMod(z2, z2z2, p256), p256);
         var s2 = BigInt.multMod(y2, BigInt.multMod(z1, z1z1, p256), p256);
         var h = subMod(u2, u1, p256);
-        var xEqual = isZero(h);
+        var xEqual = BigInt.isZero(h);
         var i = BigInt.mult(h, two);
         i = BigInt.multMod(i, i, p256);
-        j = BigInt.multMod(h, i, p256);
+        var j = BigInt.multMod(h, i, p256);
 
         var r = subMod(s2, s1, p256);
-        var yEqual = isZero(r);
+        var yEqual = BigInt.isZero(r);
         if (xEqual && yEqual) {
                 return doubleJacobian(x1, y1, z1);
         }
@@ -289,7 +289,7 @@ function doubleJacobian(x, y, z) {
 // affineFromJacobian returns the affine point corresponding to the given
 // Jacobian point.
 function affineFromJacobian(x, y, z) {
-        if (isZero(z)) {
+        if (BigInt.isZero(z)) {
                 return [null, null];
         }
         var zinv = BigInt.inverseMod(z, p256);
@@ -337,9 +337,8 @@ function scalarMultP256(bx, by, in_k) {
 // an interger occurs. SECG says that you should truncate to the big-length of
 // the curve first and that's what OpenSSL does.
 Curve25519.ecdsaSign = function(privateKey, message) {
-        var r;
-        var s;
-
+        var r, s, priv, m, kinv;
+        
         priv = Curve25519.privateKeyFromString(privateKey);
 
         m = BigInt.mod(CryptoJS.SHA512(JSON.stringify(message)).toString(CryptoJS.enc.Hex).substring(0,32), n256);
@@ -372,14 +371,15 @@ Curve25519.ecdsaSign = function(privateKey, message) {
 // message. See the comment above ecdsaSign about converting a message into the
 // bigint |message|.
 Curve25519.ecdsaVerify = function(publicKey, signature, message) {
-
+        var pub, sig, m;
+        
         pub = Curve25519.publicKeyFromString(publicKey);
         sig = Curve25519.sigFromString(signature);
 
         m = BigInt.mod(CryptoJS.SHA512(JSON.stringify(message)).toString(CryptoJS.enc.Hex).substring(0,32), n256);
 
-        var r = sig[0]
-        var s = sig[1]
+        var r = sig[0];
+        var s = sig[1];
 
         if (BigInt.isZero(r) || BigInt.isZero(s)) {
                 return false;
