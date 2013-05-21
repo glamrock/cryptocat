@@ -31,8 +31,8 @@
   };
 
   var mime = new RegExp(
-    '(image.*)|(application/((x-compressed)|' +
-    '(x-zip-compressed)|(zip)))|(multipart/x-zip)'
+    '^(image\/(png|jpeg|gif))|(application\/((x-compressed)|' +
+    '(x-zip-compressed)|(zip)))|(multipart/x-zip)$'
   );
 
   self.addEventListener('message', function(e) {

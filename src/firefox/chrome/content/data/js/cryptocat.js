@@ -21,6 +21,7 @@ var domain = defaultDomain;
 var conferenceServer = defaultConferenceServer;
 var bosh = defaultBOSH;
 var otrKeys = {};
+var fileKeys = {};
 var conversations = {};
 var loginCredentials = [];
 var currentConversation = 0;
@@ -86,7 +87,6 @@ if (localStorageEnabled) {
 
 // Initialize workers
 var keyGenerator = new Worker('js/keygenerator.js');
-var dataReader = new Worker('js/datareader.js');
 keyGenerator.onmessage = function(e) {
 	myKey = new DSA(e.data);
 	// Key storage currently disabled as we are not yet sure if this is safe to do.
@@ -97,6 +97,152 @@ keyGenerator.onmessage = function(e) {
 		$('#loginInfo').text(Cryptocat.language['loginMessage']['connecting']);
 		$('#dialogBoxClose').click();
 	});
+}
+
+var dataReader = new Worker('js/datareader.js');
+function cn(to) { return conversationName + '@' + conferenceServer + '/' + to; }
+dataReader.onmessage = function(m) {
+	var data = m.data;
+	switch(data.type) {
+		case 'log':
+			console.log(data.log)
+			return;
+		case 'error':
+			if (data.error === 'typeError') {
+				$('#fileErrorField').text('Please make sure your file is a .zip file or an image.');
+			}
+			else if (data.error === 'sizeError') {
+				$('#fileErrorField').text('File cannot be larger than ' + fileSize + ' kilobytes');
+			}
+			break;
+		case 'open':
+			conn.si_filetransfer.send(
+				cn(data.to),
+				data.sid,
+				data.filename,
+				data.size,
+				data.mime,
+				function(err) {
+					if (err) {
+						return console.log(err);
+					}
+					conn.ibb.open(cn(data.to), data.sid, 4096, function(err) {
+						if (err) {
+							return console.log(err);
+						}
+						dataReader.postMessage({
+							type: 'data',
+							start: true,
+							to: data.to,
+							sid: data.sid
+						});
+					});
+				}
+			);
+			break;
+		case 'data':
+			conn.ibb.data(cn(data.to), data.sid, data.seq, data.data, function(err) {
+				if (err) {
+					return console.log(err);
+				}
+				dataReader.postMessage({
+					type: 'data',
+					seq: data.seq,
+					to: data.to,
+					sid: data.sid
+				});
+			});
+			break;
+		case 'close':
+			conn.ibb.close(cn(data.to), data.sid, function(err) {
+				if (err) {
+					return console.log(err);
+				}
+			});
+			break;
+	}
+	if (data.close) {
+		$('#dialogBoxClose').click();
+	}
+};
+dataReader.postMessage({
+	type: 'seed',
+	seed: Cryptocat.generateSeed()
+});
+
+function blobFromData(data, mime) {
+	var ia = new Uint8Array(data.length);
+	for (var i = 0; i < data.length; i++) {
+		ia[i] = data.charCodeAt(i);
+	}
+	return new Blob([ia], { type: mime });
+}
+
+var rcvFile = {};
+function ibbHandler(type, from, sid, data, seq) {
+	var nick = from.split('/')[1];
+	switch (type) {
+		case 'open':
+			var file = rcvFile[from][sid].filename;
+			rcvFile[from][sid].key = fileKeys[nick][file];
+			delete fileKeys[nick][file];
+			break;
+		case 'data':
+			rcvFile[from][sid].seq = seq;
+			var key = rcvFile[from][sid].key;
+			var ss = data.length - 88;
+			var msg = data.substring(0, ss);
+			var mac = data.substring(ss);
+			var cmac = CryptoJS.HmacSHA512(
+				CryptoJS.enc.Base64.parse(msg),
+				CryptoJS.enc.Latin1.parse(key[1])
+			);
+			if (mac !== cmac.toString(CryptoJS.enc.Base64)) {
+				console.log('OTR file transfer: MACs do not match.')
+				return;
+			}
+			var opts = {
+				mode: CryptoJS.mode.CTR,
+				iv: CryptoJS.enc.Latin1.parse(rcvFile[from][sid].ctr),
+				padding: CryptoJS.pad.NoPadding
+			};
+			msg = CryptoJS.AES.decrypt(msg, CryptoJS.enc.Latin1.parse(key[0]), opts);
+			rcvFile[from][sid].data += (msg.toString(CryptoJS.enc.Latin1));
+			rcvFile[from][sid].ctr += 1;
+			break;
+		case 'close':
+		    var fileTypeMIME = new RegExp(
+		      '^(image\/(png|jpeg|gif))|(application\/((x-compressed)|' +
+		      '(x-zip-compressed)|(zip)))|(multipart/x-zip)$'
+		    );
+			var blob = blobFromData(
+				rcvFile[from][sid].data,
+				rcvFile[from][sid].mime
+			);
+			var url = URL.createObjectURL(blob);
+			console.log('1');
+			if (rcvFile[from][sid].mime.match(fileTypeMIME)) {
+				console.log('2');
+				addToConversation(url, nick, nick, true);
+			}
+			else {
+				console.log('Received file of unallowed file type ' 
+					+ rcvFile[from][sid].mime + ' from ' + sender);
+			}
+			delete rcvFile[from][sid];
+			break;
+	}
+}
+function fileHandler(from, sid, filename, size, mime) {
+	if (!rcvFile[from]) rcvFile[from] = {};
+	rcvFile[from][sid] = {
+		filename: filename,
+		size: size,
+		mime: mime,
+		seq: 0,
+		ctr: 0,
+		data: ''
+	};
 }
 
 // Outputs the current hh:mm.
@@ -220,11 +366,10 @@ function shortenString(string, length) {
 
 // Clean nickname so that it's safe to use.
 function cleanNickname(nickname) {
-	var clean;
-	if (clean = nickname.match(/\/([\s\S]+)/)) {
+	var clean = nickname.match(/\/([\s\S]+)/);
+	if (clean) {
 		clean = Strophe.xmlescape(clean[1]);
-	}
-	else {
+	} else {
 		return false;
 	}
 	if (clean.match(/\W/)) {
@@ -235,20 +380,21 @@ function cleanNickname(nickname) {
 
 // Get a fingerprint, formatted for readability
 function getFingerprint(buddy, OTR) {
+	var fingerprint;
 	if (OTR) {
 		if (buddy === myNickname) {
-			var fingerprint = myKey.fingerprint();
+			fingerprint = myKey.fingerprint();
 		}
 		else {
-			var fingerprint = otrKeys[buddy].their_priv_pk.fingerprint();
+			fingerprint = otrKeys[buddy].their_priv_pk.fingerprint();
 		}
 	}
 	else {
 		if (buddy === myNickname) {
-			var fingerprint = multiParty.genFingerprint();
+			fingerprint = multiParty.genFingerprint();
 		}
 		else {
-			var fingerprint = multiParty.genFingerprint(buddy);
+			fingerprint = multiParty.genFingerprint(buddy);
 		}
 	}
 	var formatted = '';
@@ -298,25 +444,17 @@ function addEmoticons(message) {
 		.replace(/(\s|^)\&lt\;3\b(?=(\s|$))/g, ' <span class="monospace">&#9829;</span> ');
 }
 
-// Convert Data URI to viewable/downloadable file.
-// Warning: This function is currently unused and is probably not secure for use.
-function addFile(message) {
-	var mime = new RegExp('(data:(application\/((x-compressed)|(x-zip-compressed)|'
-		+ '(zip)))|(multipart\/x-zip))\;base64,(\\w|\\/|\\+|\\=|\\s)*$');
-
-	if (match = message.match(/data:image\/\w+\;base64,(\w|\\|\/|\+|\=)*$/)) {
-		message = message.replace(/data:image\/\w+\;base64,(\w|\\|\/|\+|\=)*$/,
-			'<a href="' + match[0] + '" class="imageView" target="_blank">' + Cryptocat.language['chatWindow']['viewImage'] + '</a>');
-	}
-	else if (match = message.match(mime)) {
-		message = message.replace(mime,
-			'<a href="' + match[0] + '" class="fileView" target="_blank">' + Cryptocat.language['chatWindow']['downloadFile'] + '</a>');
-	}
-	return message;
+// Convert Data blob to downloadable file.
+function addFile(blob) {
+	console.log('4');
+	return '<a href="' + blob + '" class="fileView" target="_blank">'
+		+ Cryptocat.language['chatWindow']['downloadFile'] + '</a>';
 }
 
 // Add a `message` from `sender` to the `conversation` display and log.
-function addToConversation(message, sender, conversation) {
+// If `filename` is defined, then we are adding a recieved file to the conversation,
+// not a typical message.
+function addToConversation(message, sender, conversation, isFile) {
 	if (!message) {
 		return false;
 	}
@@ -340,12 +478,17 @@ function addToConversation(message, sender, conversation) {
 			lineDecoration = 3;
 		}
 	}
-	// message = addFile(message); Function disabled
-	message = addLinks(message);
-	message = addEmoticons(message);
+	if (isFile) {
+		console.log('3');
+		message = addFile(message)
+	}
+	else {
+		message = addLinks(message);
+		message = addEmoticons(message);
+	}
 	message = message.replace(/:/g, '&#58;');
 	var timeStamp = '<span class="timeStamp">' + currentTime(0) + '</span>';
-	var sender = '<span class="sender">' + Strophe.xmlescape(shortenString(sender, 16)) + '</span>';
+	sender = '<span class="sender">' + Strophe.xmlescape(shortenString(sender, 16)) + '</span>';
 	if (conversation === currentConversation) {
 		message = '<div class="Line' + lineDecoration + '">' + timeStamp + sender + message + '</div>';
 		conversations[conversation] += message;
@@ -361,12 +504,16 @@ function addToConversation(message, sender, conversation) {
 	else {
 		message = '<div class="Line' + lineDecoration + '">' + timeStamp + sender + message + '</div>';
 		conversations[conversation] += message;
-		var backgroundColor = $('#buddy-' + conversation).css('background-color');
-		$('#buddy-' + conversation).css('background-image', 'url("img/newMessage.png")');
-		$('#buddy-' + conversation)
-			.animate({'backgroundColor': '#A7D8F7'})
-			.animate({'backgroundColor': backgroundColor});
+		iconNotify(conversation);
 	}
+}
+
+function iconNotify(conversation) {
+	var backgroundColor = $('#buddy-' + conversation).css('background-color');
+	$('#buddy-' + conversation).css('background-image', 'url("img/newMessage.png")');
+	$('#buddy-' + conversation)
+		.animate({'backgroundColor': '#A7D8F7'})
+		.animate({'backgroundColor': backgroundColor});
 }
 
 function desktopNotification(image, title, body, timeout) {
@@ -388,7 +535,7 @@ function desktopNotification(image, title, body, timeout) {
 // Add a join/part notification to the main conversation window.
 // If 'join === 1', shows join notification, otherwise shows part
 function buddyNotification(buddy, join) {
-  var status, audioNotification;
+	var status, audioNotification;
 	if (join) {
 		status = '<div class="userJoin"><strong>+</strong>' + buddy + '</div>';
 		audioNotification = 'userOnline';
@@ -399,9 +546,9 @@ function buddyNotification(buddy, join) {
 	}
 	conversations['main-Conversation'] += status;
 	if (currentConversation !== 'main-Conversation') {
-    conversations[currentConversation] += status;
+		conversations[currentConversation] += status;
 	}
-  $('#conversationWindow').append(status);
+	$('#conversationWindow').append(status);
 	if (($('#conversationWindow')[0].scrollHeight - $('#conversationWindow').scrollTop()) < 1500) {	
 		scrollDown(400);
 	}
@@ -516,7 +663,6 @@ function handleMessage(message) {
 
 // Handle incoming presence updates from the XMPP server.
 function handlePresence(presence) {
-	// console.log(presence);
 	var nickname = cleanNickname($(presence).attr('from'));
 	// If invalid nickname, do not process
 	if ($(presence).attr('type') === 'error') {
@@ -538,7 +684,6 @@ function handlePresence(presence) {
 	// Detect nickname change (which may be done by non-Cryptocat XMPP clients)
 	if ($(presence).find('status').attr('code') === '303') {
 		var newNickname = cleanNickname('/' + $(presence).find('item').attr('nick'));
-		console.log(nickname + ' changed nick to ' + newNickname);
 		changeNickname(nickname, newNickname);
 		return true;
 	}
@@ -556,15 +701,29 @@ function handlePresence(presence) {
 		otrKeys[nickname].on('error', function(err) {
 		console.log('OTR error: ' + err);
 	});
-    otrKeys[nickname].on('status', (function(nickname) {
-      return function(state) {
-        // close generating fingerprint dialog after AKE
-        if ( otrKeys[nickname].generatingFingerprint &&
-             state === OTR.CONST.STATUS_AKE_SUCCESS
-        ) { closeGenerateFingerprints(nickname); }
-      };
-    }(nickname)));
-  }
+	otrKeys[nickname].on('status', (function(nickname) {
+		return function(state) {
+			// close generating fingerprint dialog after AKE
+			if ( otrKeys[nickname].genFingerCb &&
+					 state === OTR.CONST.STATUS_AKE_SUCCESS
+			) {
+				closeGenerateFingerprints(nickname, otrKeys[nickname].genFingerCb);
+				delete otrKeys[nickname].genFingerCb;
+			}
+		};
+	}(nickname)));
+	otrKeys[nickname].on('file', (function (nickname) {
+		return function(type, key, filename) {
+			// make two keys, for encrypt then mac
+			key = CryptoJS.SHA512(CryptoJS.enc.Latin1.parse(key));
+			key = key.toString(CryptoJS.enc.Latin1);
+			if (!fileKeys[nickname]) fileKeys[nickname] = {};
+			fileKeys[nickname][filename] = [
+				key.substring(0, 32), key.substring(32)
+			];
+		};
+	})(nickname));
+	}
 	// Detect buddy going offline
 	if ($(presence).attr('type') === 'unavailable') {
 		removeBuddy(nickname);
@@ -663,35 +822,36 @@ function bindBuddyClick(nickname) {
 // Send encrypted file
 // File is converted into a base64 Data URI which is then sent as an OTR message.
 function sendFile(nickname) {
+
 	var sendFileDialog = '<div class="bar">' + Cryptocat.language['chatWindow']['sendEncryptedFile'] + '</div>'
 		+ '<input type="file" id="fileSelector" name="file[]" />'
 		+ '<input type="button" id="fileSelectButton" class="button" value="select file" />'
 		+ '<div id="fileErrorField"></div>'
 		+ 'Only .zip files and images are accepted.<br />'
 		+ 'Maximum file size: ' + fileSize + ' kilobytes.';
-	dialogBox(sendFileDialog, 1);
-	$('#fileSelector').change(function(e) {
-		e.stopPropagation();
-		dataReader.onmessage = function(e) {
-			if (e.data === 'typeError') {
-				$('#fileErrorField').text('Please make sure your file is a .zip file or an image.');
+
+	ensureOTRdialog(nickname, false, function() {
+		dialogBox(sendFileDialog, 1);
+		$('#fileSelector').change(function(e) {
+			e.stopPropagation();
+			if (this.files) {
+				var file = this.files[0];
+				otrKeys[nickname].sendFile(file.name);
+				var key = fileKeys[nickname][file.name];
+				dataReader.postMessage({
+					type: 'open',
+					file: file,
+					to: nickname,
+					key: key
+				});
+				delete fileKeys[nickname][file.name];
 			}
-			else if (e.data === 'sizeError') {
-				$('#fileErrorField').text('File cannot be larger than ' + fileSize + ' kilobytes');
-			}
-			else {
-				otrKeys[nickname].sendMsg(e.data);
-				addToConversation(e.data, myNickname, nickname);
-				$('#dialogBoxClose').click();
-			}
-		};
-		if (this.files) {
-			dataReader.postMessage(this.files);
-		}
+		});
+		$('#fileSelectButton').click(function() {
+			$('#fileSelector').click();
+		});
 	});
-	$('#fileSelectButton').click(function() {
-		$('#fileSelector').click();
-	});
+
 }
 
 // Display info dialog
@@ -704,6 +864,45 @@ function displayInfoDialog(nickname) {
 		+ Cryptocat.language['chatWindow']['groupFingerprint']
 		+ '<br /><span id="multiPartyFingerprint"></span><br />'
 		+ '<div id="multiPartyColorprint"></div><br /></div>';
+}
+
+// Close generating fingerprints dialog
+function closeGenerateFingerprints(nickname, arr) {
+	var close = arr[0],
+			cb = arr[1];
+	$('#fill')
+		.stop()
+		.animate({'width': '100%', 'opacity': '1'}, 400, 'linear',
+			function() {
+				$('#dialogBoxContent').fadeOut(function() {
+					$(this).empty().show();
+					if (close) {
+						$('#dialogBoxClose').click();
+					}
+					cb();
+				});
+			});
+}
+
+// If OTR fingerprints have not been generated, show a progress bar and generate them.
+function ensureOTRdialog(nickname, close, cb) {
+	if (nickname === myNickname || otrKeys[nickname].msgstate) return cb();
+	var progressDialog = '<div id="progressBar"><div id="fill"></div></div>';
+	dialogBox(progressDialog, 1);
+	$('#progressBar').css('margin', '70px auto 0 auto');
+	$('#fill').animate({'width': '100%', 'opacity': '1'}, 8000, 'linear');
+	// add some state for status callback
+	otrKeys[nickname].genFingerCb = [close, cb];
+	otrKeys[nickname].sendQueryMsg();
+}
+
+// Display buddy information, including fingerprints etc.
+function displayInfo(nickname) {
+	nickname = Strophe.xmlescape(nickname);
+	ensureOTRdialog(nickname, false, function() {
+		dialogBox(displayInfoDialog(nickname), 1);
+		showFingerprints(nickname);
+	});
 }
 
 // Show fingerprints internal function
@@ -728,48 +927,6 @@ function showFingerprints(nickname) {
 	}
 }
 
-// Close generating fingerprints dialog
-function closeGenerateFingerprints(nickname) {
-  $('#fill')
-    .stop()
-    .animate({'width': '100%', 'opacity': '1'}, 400, 'linear',
-      function() {
-        $('#dialogBoxContent').fadeOut(function() {
-          $(this).html(displayInfoDialog(nickname));
-          showFingerprints(nickname);
-          $(this).fadeIn();
-          otrKeys[nickname].generatingFingerprint = false;
-        });
-      });
-}
-
-// Display buddy information, including fingerprints etc.
-function displayInfo(nickname) {
-	// Do nothing if a dialog already exists
-	if ($('#displayInfo').length) {
-		return false;
-	}
-	nickname = Strophe.xmlescape(nickname);
-	// If OTR fingerprints have not been generated, show a progress bar and generate them.
-	if ((nickname !== myNickname) && !otrKeys[nickname].msgstate) {
-		var progressDialog = '<div id="progressBar"><div id="fill"></div></div>';
-		dialogBox(progressDialog, 1, null, function() {
-			$('#displayInfo').remove();
-		});
-		$('#progressBar').css('margin', '70px auto 0 auto');
-		$('#fill').animate({'width': '100%', 'opacity': '1'}, 8000, 'linear');
-    // add some state for status callback
-    otrKeys[nickname].generatingFingerprint = true;
-    otrKeys[nickname].sendQueryMsg();
-	}
-	else {
-		dialogBox(displayInfoDialog(nickname), 1, null, function() {
-			$('#displayInfo').remove();
-		});
-		showFingerprints(nickname);
-	}
-}
-
 // Bind buddy menus for new buddies. Used internally.
 function bindBuddyMenu(nickname) {
 	nickname = Strophe.xmlescape(nickname);
@@ -780,13 +937,11 @@ function bindBuddyMenu(nickname) {
 			$('#menu-' + nickname).attr('status', 'active');
 			var buddyMenuContents = '<div class="buddyMenuContents" id="' + nickname + '-contents">';
 			$(this).css('background-image', 'url("img/up.png")');
-			$('#buddy-' + nickname).delay(10).animate({'height': '28px'}, 180, function() {
+			$('#buddy-' + nickname).delay(10).animate({'height': '44px'}, 180, function() {
 				$(this).append(buddyMenuContents);
-				// File sharing menu item
-				// (currently disabled)
-				// $('#' + nickname + '-contents').append(
-				// 	'<li class="option1">' + Cryptocat.language['chatWindow']['sendEncryptedFile']  + '</li>'
-				// );
+				$('#' + nickname + '-contents').append(
+					'<li class="option1">' + Cryptocat.language['chatWindow']['sendEncryptedFile'] + '</li>'
+				);
 				$('#' + nickname + '-contents').append(
 					'<li class="option2">' + Cryptocat.language['chatWindow']['displayInfo'] + '</li>'
 				);
@@ -831,6 +986,7 @@ function sendStatus() {
 // onClose may be defined as a callback function to execute on dialog box close.
 function dialogBox(data, closeable, onAppear, onClose) {
 	if ($('#dialogBox').css('top') !== '-450px') {
+		$('#dialogBoxContent').html(data);
 		return false;
 	}
 	if (closeable) {
@@ -853,6 +1009,7 @@ function dialogBox(data, closeable, onAppear, onClose) {
 		}
 		$('#dialogBox').animate({'top': '+=10px'}, 'fast')
 			.animate({'top': '-450px'}, 'fast', function() {
+				$('#dialogBoxContent').empty();
 				if (onClose) {
 					onClose();
 				}
@@ -1093,8 +1250,7 @@ $('#loginForm').submit(function() {
 	//Check validity of conversation name and nickname.
 	$('#conversationName').val($.trim($('#conversationName').val().toLowerCase()));
 	$('#nickname').val($.trim($('#nickname').val().toLowerCase()));
-	if (($('#conversationName').val() === '')
-		|| ($('#conversationName').val() === Cryptocat.language['loginWindow']['conversationName'])) {
+	if ($('#conversationName').val() === '') {
 		loginFail(Cryptocat.language['loginMessage']['enterConversation']);
 		$('#conversationName').select();
 	}
@@ -1102,8 +1258,7 @@ $('#loginForm').submit(function() {
 		loginFail(Cryptocat.language['loginMessage']['conversationAlphanumeric']);
 		$('#conversationName').select();
 	}
-	else if (($('#nickname').val() === '')
-		|| ($('#nickname').val() === Cryptocat.language['loginWindow']['nickname'])) {
+	else if ($('#nickname').val() === '') {
 		loginFail(Cryptocat.language['loginMessage']['enterNickname']);
 		$('#nickname').select();
 	}
@@ -1182,6 +1337,8 @@ function connectXMPP(username, password) {
 					$('#loginInfo').text(Cryptocat.language['loginMessage']['connecting']);
 				}
 				else if (status === Strophe.Status.CONNECTED) {
+					conn.ibb.addIBBHandler(ibbHandler);
+					conn.si_filetransfer.addFileHandler(fileHandler);
 					connected();
 				}
 				else if (status === Strophe.Status.CONNFAIL) {
@@ -1291,9 +1448,8 @@ function logout() {
 				currentConversation = 0;
 				conn = null;
 				if (!loginError) {
-					$('#conversationName').val(Cryptocat.language['loginWindow']['conversationName']);
+					$('#conversationName').val('');
 				}
-				$('#nickname').val(Cryptocat.language['loginWindow']['nickname']);
 				$('#info').fadeIn();
 				$('#loginLinks').fadeIn();
 				$('#version').fadeIn();

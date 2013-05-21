@@ -114,8 +114,8 @@ Language.refresh = function(languageObject) {
 	$('#introParagraph').html(languageObject['loginWindow']['introParagraph']);
 	$('#blog').text(languageObject['loginWindow']['blog']);
 	$('#customServer').text(languageObject['loginWindow']['customServer']);
-	$('#conversationName').val(languageObject['loginWindow']['conversationName']);
-	$('#nickname').val(languageObject['loginWindow']['nickname']);
+	$('#conversationName').attr('placeholder', languageObject['loginWindow']['conversationName']);
+	$('#nickname').attr('placeholder', languageObject['loginWindow']['nickname']);
 	$('#loginSubmit').val(languageObject['loginWindow']['connect']);
 	$('#loginInfo').text(languageObject['loginWindow']['enterConversation']);
 	$('#logout').attr('title', languageObject['chatWindow']['logout']);

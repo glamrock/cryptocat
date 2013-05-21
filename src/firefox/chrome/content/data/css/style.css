@@ -580,6 +580,7 @@ img.logo {
 	box-shadow: 1px 1px #34BEED;
 	font-size: 0.9em;
 	background-image: url("../img/file.png");
+	background-size: 16px auto;
 	background-position: center left;
 	background-repeat: no-repeat;
 	font-family: monospace;
