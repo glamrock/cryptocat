@@ -8,7 +8,7 @@ $('#version').text(Cryptocat.version);
 var defaultDomain = 'crypto.cat'; // Domain name to connect to for XMPP.
 var defaultConferenceServer = 'conference.crypto.cat'; // Address of the XMPP MUC server.
 var defaultBOSH = 'https://crypto.cat/http-bind'; // BOSH is served over an HTTPS proxy for better security and availability.
-var fileSize = 700; // Maximum encrypted file sharing size, in kilobytes. Also needs to be defined in datareader.js
+var fileSize = 1024; // Maximum encrypted file sharing size, in kilobytes. Also needs to be defined in datareader.js
 var localStorageEnabled = 1; 
 if (navigator.userAgent.match('Firefox')) {
 	// Local storage features are disabled in Firefox until we migrate to a packaged web app

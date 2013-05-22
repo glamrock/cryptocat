@@ -17,8 +17,8 @@
   importScripts('cryptocatRandom.js');
 
   var files = {};
-  var fileSize = 700;
-  var chunkSize = 4096;
+  var fileSize = 1024;
+  var chunkSize = 64511;
 
   function uniqueId() {
     return Cryptocat.randomString(64, 1, 1, 1, 0) + ":" + "ibb";
