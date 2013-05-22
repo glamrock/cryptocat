@@ -164,7 +164,7 @@ dataReader.onmessage = function(m) {
 	if (data.close) {
 		window.setTimeout(function() {
 			$('#dialogBoxClose').click();
-		}, 1000);
+		}, 700);
 	}
 };
 dataReader.postMessage({
@@ -222,9 +222,7 @@ function ibbHandler(type, from, sid, data, seq) {
 				rcvFile[from][sid].mime
 			);
 			var url = URL.createObjectURL(blob);
-			console.log('1');
 			if (rcvFile[from][sid].mime.match(fileTypeMIME)) {
-				console.log('2');
 				addToConversation(url, nick, nick, true);
 			}
 			else {
@@ -448,7 +446,6 @@ function addEmoticons(message) {
 
 // Convert Data blob to downloadable file.
 function addFile(blob) {
-	console.log('4');
 	return '<a href="' + blob + '" class="fileView" target="_blank">'
 		+ Cryptocat.language['chatWindow']['downloadFile'] + '</a>';
 }
@@ -481,7 +478,6 @@ function addToConversation(message, sender, conversation, isFile) {
 		}
 	}
 	if (isFile) {
-		console.log('3');
 		message = addFile(message)
 	}
 	else {
@@ -1302,8 +1298,8 @@ $('#loginForm').submit(function() {
 			if (myKey) {
 				clearInterval(catFactInterval);
 			}
-		}, 10000);
-		$('#fill').animate({'width': '100%', 'opacity': '1'}, 10000, 'linear');
+		}, 9000);
+		$('#fill').animate({'width': '100%', 'opacity': '1'}, 9000, 'linear');
 	}
 	// If everything is okay, then register a randomly generated throwaway XMPP ID and log in.
 	else {
