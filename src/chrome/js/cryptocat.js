@@ -8,7 +8,7 @@ $('#version').text(Cryptocat.version);
 var defaultDomain = 'crypto.cat'; // Domain name to connect to for XMPP.
 var defaultConferenceServer = 'conference.crypto.cat'; // Address of the XMPP MUC server.
 var defaultBOSH = 'https://crypto.cat/http-bind'; // BOSH is served over an HTTPS proxy for better security and availability.
-var fileSize = 1024; // Maximum encrypted file sharing size, in kilobytes. Also needs to be defined in datareader.js
+var fileSize = 4096; // Maximum encrypted file sharing size, in kilobytes. Also needs to be defined in datareader.js
 var localStorageEnabled = 1; 
 if (navigator.userAgent.match('Firefox')) {
 	// Local storage features are disabled in Firefox until we migrate to a packaged web app
@@ -112,7 +112,7 @@ dataReader.onmessage = function(m) {
 				$('#fileInfoField').text('Error: Please make sure your file is a ZIP file or an image.');
 			}
 			else if (data.error === 'sizeError') {
-				$('#fileInfoField').text('Error: File cannot be larger than ' + fileSize + ' kilobytes');
+				$('#fileInfoField').text('Error: File cannot be larger than ' + (fileSize / 1024) + ' megabytes');
 			}
 			break;
 		case 'open':
@@ -824,7 +824,7 @@ function sendFile(nickname) {
 		+ '<input type="file" id="fileSelector" name="file[]" />'
 		+ '<input type="button" id="fileSelectButton" class="button" value="Select file" />'
 		+ '<div id="fileInfoField">Only ZIP files and images are accepted.'
-		+ '<br />Maximum file size: ' + fileSize + ' kilobytes.</div>';
+		+ '<br />Maximum file size: ' + (fileSize / 1024) + ' megabytes.</div>';
 	ensureOTRdialog(nickname, false, function() {
 		dialogBox(sendFileDialog, 1);
 		$('#fileSelector').change(function(e) {

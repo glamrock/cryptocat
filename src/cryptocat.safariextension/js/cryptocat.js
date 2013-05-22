@@ -8,7 +8,7 @@ $('#version').text(Cryptocat.version);
 var defaultDomain = 'crypto.cat'; // Domain name to connect to for XMPP.
 var defaultConferenceServer = 'conference.crypto.cat'; // Address of the XMPP MUC server.
 var defaultBOSH = 'https://crypto.cat/http-bind'; // BOSH is served over an HTTPS proxy for better security and availability.
-var fileSize = 1024; // Maximum encrypted file sharing size, in kilobytes. Also needs to be defined in datareader.js
+var fileSize = 4096; // Maximum encrypted file sharing size, in kilobytes. Also needs to be defined in datareader.js
 var localStorageEnabled = 1; 
 if (navigator.userAgent.match('Firefox')) {
 	// Local storage features are disabled in Firefox until we migrate to a packaged web app
@@ -112,7 +112,7 @@ dataReader.onmessage = function(m) {
 				$('#fileInfoField').text('Error: Please make sure your file is a ZIP file or an image.');
 			}
 			else if (data.error === 'sizeError') {
-				$('#fileInfoField').text('Error: File cannot be larger than ' + fileSize + ' kilobytes');
+				$('#fileInfoField').text('Error: File cannot be larger than ' + (fileSize / 1024) + ' megabytes');
 			}
 			break;
 		case 'open':
@@ -164,7 +164,7 @@ dataReader.onmessage = function(m) {
 	if (data.close) {
 		window.setTimeout(function() {
 			$('#dialogBoxClose').click();
-		}, 1000);
+		}, 700);
 	}
 };
 dataReader.postMessage({
@@ -222,9 +222,7 @@ function ibbHandler(type, from, sid, data, seq) {
 				rcvFile[from][sid].mime
 			);
 			var url = URL.createObjectURL(blob);
-			console.log('1');
 			if (rcvFile[from][sid].mime.match(fileTypeMIME)) {
-				console.log('2');
 				addToConversation(url, nick, nick, true);
 			}
 			else {
@@ -448,7 +446,6 @@ function addEmoticons(message) {
 
 // Convert Data blob to downloadable file.
 function addFile(blob) {
-	console.log('4');
 	return '<a href="' + blob + '" class="fileView" target="_blank">'
 		+ Cryptocat.language['chatWindow']['downloadFile'] + '</a>';
 }
@@ -481,7 +478,6 @@ function addToConversation(message, sender, conversation, isFile) {
 		}
 	}
 	if (isFile) {
-		console.log('3');
 		message = addFile(message)
 	}
 	else {
@@ -828,7 +824,7 @@ function sendFile(nickname) {
 		+ '<input type="file" id="fileSelector" name="file[]" />'
 		+ '<input type="button" id="fileSelectButton" class="button" value="Select file" />'
 		+ '<div id="fileInfoField">Only ZIP files and images are accepted.'
-		+ '<br />Maximum file size: ' + fileSize + ' kilobytes.</div>';
+		+ '<br />Maximum file size: ' + (fileSize / 1024) + ' megabytes.</div>';
 	ensureOTRdialog(nickname, false, function() {
 		dialogBox(sendFileDialog, 1);
 		$('#fileSelector').change(function(e) {
@@ -1302,8 +1298,8 @@ $('#loginForm').submit(function() {
 			if (myKey) {
 				clearInterval(catFactInterval);
 			}
-		}, 10000);
-		$('#fill').animate({'width': '100%', 'opacity': '1'}, 10000, 'linear');
+		}, 9000);
+		$('#fill').animate({'width': '100%', 'opacity': '1'}, 9000, 'linear');
 	}
 	// If everything is okay, then register a randomly generated throwaway XMPP ID and log in.
 	else {

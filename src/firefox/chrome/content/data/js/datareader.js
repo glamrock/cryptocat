@@ -17,7 +17,7 @@
   importScripts('cryptocatRandom.js');
 
   var files = {};
-  var fileSize = 1024;
+  var fileSize = 4096;
   var chunkSize = 64511;
 
   function uniqueId() {
