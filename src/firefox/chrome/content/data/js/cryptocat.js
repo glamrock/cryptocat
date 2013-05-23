@@ -168,9 +168,6 @@ dataReader.onmessage = function(m) {
 					return console.log(err);
 				}
 			});
-			window.setTimeout(function() {
-				$('#dialogBoxClose').click();
-			}, 500);
 			break;
 	}
 	if (data.close) {
