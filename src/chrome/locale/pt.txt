@@ -4,30 +4,30 @@ Conversa privada para todos.
 Bem vindo ao Cryptocat. Algumas dicas úteis: <ul><li> Cryptocat não é mágica. Além disso, você nunca deve confiar completamente em nenhum software.</li><li>O Cryptocat não pode proteger você de pessoas não confiáveis ou rastreadores de teclado e não torna a sua conexão anônima. </li></ul>
 Blog
 Servidor personalizado...
-Reset
+Redefinir
 nome da conversa
 nome
 conectar
-Introduza um nome para a sua conversa e compartilhe-o com as pessoas com quem gostaria de falar.
+Introduza um nome para a sua conversa e compartilhe-o com as pessoas com quem gostaria de falar, ou entre na <strong>sala pública</strong> para conhecer novas pessoas!
 Digite o nome da conversa para participar.
 Digite um nome da conversa, por favor.
-O nome da conversa tem de ser alfa numérico
+O nome da conversa tem de ser alfanumérico
 Digite um nome, por favor.
 O nickname tem de ser alfanumérico
 Nickname em uso.
 A autenticação falhou.
-Coneção falhou.
-Obrigado por ter usado Cryptocat.
+Conexão falhou.
+Obrigado por ter usado o Cryptocat.
 Registrando...
 Conectando...
 Conectado.
 Por favor, digite o mais aleatoriamente possível no seu teclado por alguns segundos.
 Gerando chaves criptográficas...
 Conversa em grupo. Clique em um usuário para iniciar uma conversa privada.
-Impressao digital OTR ( para conversas privadas):
+Impressao digital OTR (para conversas privadas):
 Impressão digital de conversa de grupo:
-dar um reset em minhas chaves de encriptação.
-Dar um reset nas suas chaves de encriptação irá desconectá-lo. As suas impressões digitais mudarão também.
+Redefinir minhas chaves de encriptação.
+Redefinir suas chaves de encriptação irá desconectá-lo. As suas impressões digitais também serão modificadas.
 Continuar.
 Status: Disponível
 Status: Ausente
@@ -37,10 +37,17 @@ Notificações no desktop desligadas
 Notificações por audio ligadas
 Notificações por audio desligadas
 Lembrar meu nome.
-Não recordo o meu nome.
+Não lembrar o meu nome.
 Sair
 Exibir informações
-Enviar arquivo criptografado
+Enviar arquivo encriptado
 Ver imagem
 baixar documento
 Conversa
+Apenas arquivos de extensão ZIP e imagens são permitidos, com tamanho máximo de (SIZE) MB.
+Erro: Por favor, verifique se o arquivo possui extensão ZIP ou uma imagem.
+Erro: O Arquivo não pode ser maior do que (SIZE) MB.
+Início da vídeo-conferência
+Fim da vídeo-conferência
+(NICKNAME) gostaria de começar uma vídeo-conferência com você.
+Cancelar

@@ -1,15 +1,15 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Privates Chatten für alle.
-Willkommen bei Cryptocat. Hier sind einige hilfreiche Tipps: <ul> <li> Cryptocat ist kein Wundermittel. Sie sollten nie einer Software mit Ihrem Leben vertrauen.</li> <li> Cryptocat kann Sie nicht vor vertrauensunwürdigen Menschen und Key-loggern bewahren und anonymisiert auch Ihre Verbindung nicht.</li></ul>
+Willkommen bei Cryptocat. Hier sind einige hilfreiche Tipps: <ul> <li> Cryptocat ist kein Wundermittel. Sie sollten nie Ihr Leben einem Stück Software anvertrauen. </li> <li> Cryptocat ist kein Schutz vor nicht vertrauenswürdigen Menschen oder key-loggern. Ihre Verbindung wir nicht anonymisiert.</li></ul>
 Blog
 Benutzerdefinierter Server...
 Zurücksetzen
 Name der Konversation
 Nickname
 Verbinden
-Gib einen Namen für das Gespräch an und teile ihn mit den Menschen, mit denen Du gerne sprechen möchtest.
-Tippe den Namen einer Konversation ein, um ihr beizutreten.
+Geben Sie einen Namen für das Gespräch und teilen sie mit Menschen, die Sie gerne zu sprechen hatte.
+Gebe den Namen einer Konversation ein, um ihr beizutreten.
 Bitte einen Namen für die Konversation eingeben.
 Konversationsname muss alphanumerisch sein.
 Bitte einen Nickname eingeben.
@@ -44,3 +44,10 @@ Datei verschlüsselt senden
 Bild anzeigen
 Datei herunterladen
 Konversation
+Es werden nur ZIP-Dateien und Bilder akzeptiert. Maximale Dateigröße: (SIZE) MB.
+Fehler: Bitte stellen Sie sicher, dass Ihre Datei eine ZIP-Datei oder ein Bild ist. 
+Fehler: Datei darf nicht größer als (SIZE) MB sein.
+Video-Chat starten
+Video-Chat beenden
+(NICKNAME) möchte gern einen Video-Chat mit Ihnen beginnen. 
+Abbrechen

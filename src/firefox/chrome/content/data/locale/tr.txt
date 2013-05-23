@@ -1,10 +1,10 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
-Herkes için Güvenli İletişim.
+Herkes için Güvenli İletişim
 Cryptocat’e hoşgeldiniz. Yararlı öneriler burada bulunur:<ul><li>Cryptocat sihirli bir değnek değildir. Körü körüne hiç bir zaman her hangi bir software’e güvenmeyin.</li><li>Cryptocat sizi ne güvenilmez insanlardan nede tuş kaydedicilerinden koruyabilir, ve sizin bağlantınızı anonimleştirmez.</li></ul>
 Blog
 Özel sunucu
-Yeniden kur
+Yenile
 sohbet adı
 takma ad
 bağlan
@@ -42,5 +42,12 @@ Takma adımı hatırlama
 Bilgi ekranı
 Şifrelenmiş dosya gönder
 Resmi görüntüle
-Bilgi indir
+Dosya indir
 Sohbet
+Sadece ZIP dosyaları ve görüntüler kabul edilmektedir. Azami dosya boyutu: (SIZE) MB.
+Hata: Lütfen dosyanızın ZIP dosyası ya da görüntüsü olduğundan emin olun.
+Hata: Dosya (SIZE) MB daha büyük olamaz.
+Görüntülü sohbeti başlatın
+Görüntülü sohbeti sonlandır
+(NICKNAME) sizinle görüntülü bir sohbet başlatmak istiyor.
+İptal et

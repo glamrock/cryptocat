@@ -8,14 +8,14 @@ Nulstille
 samtale navn
 brugernavn
 forbind
-Intast et navn på din samtale og del den med dem du gerne vil tale med
+Intast et navn på din samtale og del den med dem du gerne vil tale med, eller deltag <strong>lobby</strong> for at tale med nye mennesker
 Indtast navnet på en samtale du vil forbindes til
 Indtast et samtale navn
-Samtale navn skal være alfanumerisk
+Samtale navn skal være alfanumerisk.
 Indtast bruger navn
-Bruger navn skal være alfanumerisk
-Bruger navn i brug
-Gofkendelse fejlede
+Brugernavn skal være alfanumerisk.
+Brugernavn er i brug.
+Godkendelse fejlede.
 Forbindelse fejlede.
 Tak fordi du brugte Cryptocat.
 Registrering...
@@ -44,3 +44,10 @@ Send krypteret fil
 Se billede
 Download fil
 Samtale
+Kun ZIP filer og billeder accepteres. Max fil størrelse: (SIZE) MB.
+Fejl: Kun ZIP fil eller billede.
+Fejl: Fil kan ikke være større end (SIZE) MB.
+Start video samtale
+Afslut video samtale
+(NICKNAME) vil gerne starte en video samtale med dig.
+Fortryd

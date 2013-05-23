@@ -44,3 +44,10 @@ Wyślij zaszyfrowany plik
 Pokaż obrazek
 Pobierz plik
 Rozmowa
+Dozwolone są tylko pliki ZIP i obrazy. Maksymalny rozmiar pliku: (SIZE) MB.
+Błąd: Upewnij się, że plik jest plikiem ZIP lub plikiem graficznym.
+Błąd: Plik nie może być większy niż (SIZE) MB.
+Rozpocznij czat wideo
+Zakończ czat wideo
+Użytkownik (NICKNAME) chciałby rozpocząć z tobą czat wideo.
+Anuluj

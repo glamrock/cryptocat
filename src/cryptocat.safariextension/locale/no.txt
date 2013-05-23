@@ -1,18 +1,18 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
-Private sampler for alle. 
-Velkommen til Cryptocat. Her er noen gode tips: <ul><li>Cryptocat er ikke en universalløsning. Du bør aldri legge livet ditt i hendene på noen programvare.</li><li> Cryptocat kan ikke beskytte deg mot upålitelige personer, keyloggere og anonymiserer ikke forbindelsen din. </li></ul>
+Private Samtaler For Alle. 
+Velkommen til Cryptocat. Her er noen huskeregler: <ul><li>Cryptocat er ingen universalløsning. Du bør aldri legge livet ditt i hendene på noen programvare.</li><li> Cryptocat kan ikke beskytte deg mot upålitelige personer, keyloggere og anonymiserer ikke forbindelsen din. </li></ul>
 Blogg
 Egendefinert server…
 Tilbakestill
 samtalenavn
 kallenavn
 koble til
-Gi samtalen din et navn og del den med venner du ønsker å snakke med.
-Gi samtalen din et navn og del den med venner du ønsker å snakke med.
-Vennligst oppgi et samtalenavn.
+Gi samtalen din et navn og del navnet med de du ønsker å snakke med, eller gå til <strong>lobby</strong> for å treffe nye folk!
+Oppgi navnet på samtalen du ønsker å delta i.
+Vennligst angi et samtalenavn.
 Navnet på samtalen må være alfanumerisk.
-Vennligst oppgi et kallenavn.
+Vennligst angi et kallenavn.
 Kallenavnet må være alfanumerisk.
 Kallenavnet er i bruk.
 Autentisering feilet.
@@ -24,7 +24,7 @@ Tilkoblet.
 Vennligst utfør tastetrykk på tastaturet så tilfeldig som mulig i noen sekunder.
 Genererer krypteringsnøkler...
 Gruppesamtale. Klikk på en bruker for å snakke privat.
-OTR fingeravtrykk (for private sampler):
+OTR fingeravtrykk (for private samtaler):
 Gruppesamtale fingeravtrykk:
 Tilbakestill krypteringsnøklene mine
 Tilbakestilling av krypteringsnøklene dine vil koble deg av. Fingeravtrykkene dine vil også forandres.
@@ -34,8 +34,8 @@ Status: Borte
 Min info
 Skrivebordsvarsler  På 
 Skrivebordsvarsler Av
-Lydvarsling På
-Lydvarsling Av
+Lydvarslinger På
+Lydvarslinger Av
 Husk kallenavnet mitt
 Ikke husk kallenavnet mitt
 Logg ut
@@ -44,3 +44,10 @@ Send kryptert fil
 vis bilde
 last ned fil
 Samtale
+Det er kun ZIP-filer og bilder som aksepteres. Maks filstørrelse: (SIZE) MB.
+Feil: Sikker på at filen din er en ZIP-fil eller et bilde?
+Feil: Filen kan ikke være større enn (SIZE) MB.
+Start videosamtale
+Avslutt videosamtale
+(NICKNAME) vil starte en videosamtale med deg.
+Avbryt

@@ -44,3 +44,10 @@ Send encryptd filez
 show meh picturz
 download teh file
 Conversashun
+ZIP fielz n cat pics only plz. Max file siez: (SIZE) MB.
+Error: Plz maek sure ur filez r an ZIP fiel or cat pic.
+Error: File haz to be smallr den (SIZE) MB plz.
+Start video chat
+End video chat
+(NICKNAME) wants 2 see u on der screen
+Cancel

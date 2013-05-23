@@ -1,16 +1,16 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Conversazioni Private per Tutti.
-Benvenuti a Cryptocat. Ecco alcuni consigli:<ul><li> Cryptocat non è una cosa magica. Non ci si dovrebbe mai fidare di un software.</li><li> Cryptocat non è in grado di proteggerti contro persone inaffidabili, keyloggers e non garantisce il tuo anonimato durante la navigazione. </li></ ul>
+Benvenuti a Cryptocat. Ecco alcuni consigli:<ul><li> Cryptocat non è una cosa magica. Non si dovrebbe mai fidarsi ogni software.</li><li> Cryptocat non in grado di proteggere contra tutto le persone inaffidabili, keyloggers e no mantiene a tu anonimo durante la navigazione. </li></ ul>
 Blog
 Server personalizzato...
-Reset
+Azzera
 nome conversazione
 nickname
 connetti
-Inserisci un nome per la tua conversazione e condividila con le persone con cui ti piacerebbe parlare.
+Inserisci un nome per la tua conversazione e condividerla con la gente que vuoi o accedi a <strong>lobby</strong> per scoprire nuove persone.
 Inserisci il nome di una conversazione a cui partecipare
-Inserisci un nome per la conversazione.
+Inserisci un nome conversazione.
 Il nome della conversazione deve essere alfanumerico
 Si prega di inserire un nickname.
 Il nickname deve essere alfanumerico
@@ -21,13 +21,13 @@ Grazie per aver scelto Cryptocat.
 Registrazione...
 Connessione...
 Connesso.
-Si prega di premere tasti sulla propria tastiera il più casualmente possibile per pochi secondi.
-Generazione in corso di chiavi di cifratura...
+Si prega di scrivere sulla propria tastiera il più casualmente possibile per pochi secondi.
+Generazione chiavi di cifratura...
 Conversazione di gruppo. Clicca su un utente per una chat privata.
-Fingerprint OTR (per conversazioni private):
+OTR fingerprint (per conversazioni private):
 Fingerprint di gruppo di conversazione:
-Genera nuove chiavi di cifratura.
-La generazione di nuove chiavi di cifratura ti farà disconnettere. Anche le tue firme cambieranno.
+Azzera e ricrea le mie chiavi di cifratura.
+L'azzeramento e ricreazione delle chiavi di cifratura di scollegheranno. Anche le tue firme cambieranno.
 Continua
 Stato: Disponibile
 Stato: Non al computer
@@ -38,9 +38,16 @@ Notifiche Audio Attive
 Notifiche Audio Disattivate
 Ricorda il mio nickname
 Non ricordare il mio nickname
-Disconnettiti
+Scollegati
 Mostra Info
 Invio file cifrato
 vedi immagine
 scarica file
 Conversazione
+Solo i ZIP file e immagini sono accettati. Dimensione massima di un file: (SIZE) MB.
+Errore : per favore controlla que il file è un ZIP o una immagine.
+Errore : File non può essere superiore a (SIZE) MB.
+Inizio della videoconferenza
+Fine della videoconferenza
+(NICKNAME) vuole iniziare una videoconferenza con te.
+annullare

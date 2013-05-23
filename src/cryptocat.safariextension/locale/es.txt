@@ -1,14 +1,14 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Conversaciones privadas para todos.
-Bienvenido a Cryptocat. Aquí tiene algunos consejos: <ul><li>Cryptocat no es un remedio mágico. Usted nunca debería poner su vida entre las manos de algún software.</li><li>Cryptocat no le puede proteger contra personas indignas de confianza, key logres, y no anonimiza su conexión.</li></ul>
+Bienvenido a Cryptocat. Aqui tiene algunos consejos: <ul><li>Cryptocat no es un remedio magico. Usted nunca debería poner su vida entre las manos de algún software.</li><li>Cryptocat no le puede protejer contra personnas indignas de confianza, key loggers, y no anonimiza su conexión.</li></ul>
 Blog
 Servidor personalizado
 Reiniciar
 nombre de la conversación
 nombre de usuario
 conectar
-Introduce un nombre para tu conversación y compártelo con la gente con la que quieres hablar.
+Introduce un nombre para tu conversación y compártelo con la gente con la que quieres hablar, o únete al <strong>lobby</strong> para conocer gente nueva.
 Introduce el nombre de una conversación para unirse.
 Por favor, introduce un nombre de conversación.
 El nombre de la conversación tiene que ser alfanumérico.
@@ -44,3 +44,10 @@ Enviar archivo encriptado
 ver imagen
 descargar archivo
 Conversación
+Solo archivos compimidos, ZIP, e imagines son aceptados. El tamano maximo del archivo es: (SIZE) MB.
+Error: Por favor asegura que tu archivo es un archivo comprimido, ZIP, o una imagen.
+Error: El archivo no puede ser mas grande de (SIZE) MB.
+Comenzar chat de video
+Terminar chat de video
+(NICKNAME) quisiera comenzar un chat de video contigo.
+Cancelar
