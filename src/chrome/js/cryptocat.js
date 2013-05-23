@@ -158,7 +158,7 @@ dataReader.onmessage = function(m) {
 			$('[file=' + data.sid + '] .fileProgressBarFill').animate({'width': progress + '%'});
 			if (progress > 95) {
 				var conversationBuffer = $(conversations[data.to]);
-				conversationBuffer.find('[file=' + data.sid + ']').replaceWith($('[file=' + data.sid + ']'));
+				conversationBuffer.find('[file=' + data.sid + '] .fileProgressBarFill').width('100%');
 				conversations[data.to] = conversationBuffer;
 			}
 			break;
