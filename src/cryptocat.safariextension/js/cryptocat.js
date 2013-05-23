@@ -156,10 +156,10 @@ dataReader.onmessage = function(m) {
 			});
 			progress = (data.ctr * 100) / (Math.ceil(data.size / (Cryptocat.chunkSize) - 1));
 			$('[file=' + data.sid + '] .fileProgressBarFill').animate({'width': progress + '%'});
-			if (progress > 95) {
+			if (progress === 100) {
 				var conversationBuffer = $(conversations[data.to]);
 				conversationBuffer.find('[file=' + data.sid + '] .fileProgressBarFill').width('100%');
-				conversations[data.to] = conversationBuffer;
+				conversations[data.to] = $('<div>').append($(conversationBuffer).clone()).html();
 			}
 			break;
 		case 'close':
@@ -174,7 +174,6 @@ dataReader.onmessage = function(m) {
 		window.setTimeout(function() {
 			$('#dialogBoxClose').click();
 		}, 500);
-		$('[file=' + data.sid + '] .fileProgressBarFill').animate({'width': '100%'});
 	}
 };
 dataReader.postMessage({
@@ -462,12 +461,12 @@ function addEmoticons(message) {
 
 // Convert Data blob to downloadable file, replacing the progress bar.
 function addFile(blob, file, conversation) {
+	var conversationBuffer = $(conversations[conversation]);
 	var fileLink = '<a href="' + blob + '" class="fileView" target="_blank">'
 		+ Cryptocat.language['chatWindow']['downloadFile'] + '</a>';
-	var conversationBuffer = $(conversations[conversation]);
 	$('[file=' + file + ']').replaceWith(fileLink);
 	conversationBuffer.find('[file=' + file + ']').replaceWith(fileLink);
-	conversations[conversation] = conversationBuffer;
+	conversations[conversation] = $('<div>').append($(conversationBuffer).clone()).html();
 }
 
 // Add a `message` from `sender` to the `conversation` display and log.
