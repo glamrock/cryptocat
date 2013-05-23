@@ -1,5 +1,5 @@
 chrome:
-	@zip -q -r9 release/cryptocat-chrome.zip src/core/* src/chrome/* -x "*/\.*" -x "\.*"
+	@zip -q -r9 release/cryptocat-chrome.zip src/core/* -x "*/\.*" -x "\.*"
 	@/bin/echo "[Cryptocat] Chrome build available in release/"
 
 firefox:
