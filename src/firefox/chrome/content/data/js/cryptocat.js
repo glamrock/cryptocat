@@ -155,7 +155,7 @@ dataReader.onmessage = function(m) {
 					sid: data.sid
 				});
 			});
-			updateFileTransferProgress(data.sid, data.ctr, data.size, data.to);
+			updateFileTransferProgress(data.sid, data.ctr + 1, data.size, data.to);
 			break;
 		case 'close':
 			conn.ibb.close(cn(data.to), data.sid, function(err) {
@@ -163,7 +163,7 @@ dataReader.onmessage = function(m) {
 					return console.log(err);
 				}
 			});
-			updateFileTransferProgress(data.sid, data.ctr, data.size, data.to);
+			updateFileTransferProgress(data.sid, data.ctr + 1, data.size, data.to);
 			break;
 	}
 	if (data.close) {
@@ -270,14 +270,12 @@ function currentTime(seconds) {
 
 // Update a file transfer progress bar.
 function updateFileTransferProgress(file, chunk, size, recipient) {
-	progress = (chunk * 100) / (Math.ceil(size / (Cryptocat.chunkSize - 1)));
+	progress = (chunk * 100) / (Math.ceil(size / Cryptocat.chunkSize));
 	if (progress > 100) { progress = 100 };
 	$('[file=' + file + '] .fileProgressBarFill').animate({'width': progress + '%'});
-	if (progress === 100) {
-		var conversationBuffer = $(conversations[recipient]);
-		conversationBuffer.find('[file=' + file + '] .fileProgressBarFill').width('100%');
-		conversations[recipient] = $('<div>').append($(conversationBuffer).clone()).html();
-	}
+	var conversationBuffer = $(conversations[recipient]);
+	conversationBuffer.find('[file=' + file + '] .fileProgressBarFill').width(progress + '%');
+	conversations[recipient] = $('<div>').append($(conversationBuffer).clone()).html();
 }
 
 // Plays the audio file defined by the `audio` variable.
