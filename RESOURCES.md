@@ -8,6 +8,10 @@ License: PD
 Origin: http://code.google.com/p/crypto-js/  
 License: BSD-2-Clause  
 
+### EventEmitter
+Origin: git.io/ee
+License: MIT  
+
 ### jQuery
 Origin: http://jquery.org/  
 License: MIT, GPL-2+  
