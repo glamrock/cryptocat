@@ -90,7 +90,9 @@
           postMessage({
             type: 'close',
             sid: data.sid,
-            to: data.to
+            to: data.to,
+            ctr: files[sid].ctr,
+            size: files[sid].file.size
           });
           return;
         }
@@ -136,7 +138,7 @@
             to: data.to,
             seq: seq,
             ctr: files[sid].ctr,
-			size: files[sid].file.size,
+            size: files[sid].file.size,
             data: msg + mac.toString(CryptoJS.enc.Base64)
           });
         }

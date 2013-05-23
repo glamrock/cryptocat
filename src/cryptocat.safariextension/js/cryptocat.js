@@ -23,6 +23,7 @@ var conferenceServer = defaultConferenceServer;
 var bosh = defaultBOSH;
 var otrKeys = {};
 var fileKeys = {};
+var rcvFile = {};
 var conversations = {};
 var loginCredentials = [];
 var currentConversation = 0;
@@ -154,13 +155,7 @@ dataReader.onmessage = function(m) {
 					sid: data.sid
 				});
 			});
-			progress = (data.ctr * 100) / (Math.ceil(data.size / (Cryptocat.chunkSize) - 1));
-			$('[file=' + data.sid + '] .fileProgressBarFill').animate({'width': progress + '%'});
-			if (progress === 100) {
-				var conversationBuffer = $(conversations[data.to]);
-				conversationBuffer.find('[file=' + data.sid + '] .fileProgressBarFill').width('100%');
-				conversations[data.to] = $('<div>').append($(conversationBuffer).clone()).html();
-			}
+			updateFileTransferProgress(data.sid, data.ctr, data.size, data.to);
 			break;
 		case 'close':
 			conn.ibb.close(cn(data.to), data.sid, function(err) {
@@ -168,6 +163,7 @@ dataReader.onmessage = function(m) {
 					return console.log(err);
 				}
 			});
+			updateFileTransferProgress(data.sid, data.ctr, data.size, data.to);
 			break;
 	}
 	if (data.close) {
@@ -181,15 +177,19 @@ dataReader.postMessage({
 	seed: Cryptocat.generateSeed()
 });
 
-function blobFromData(data, mime) {
-	var ia = new Uint8Array(data.length);
-	for (var i = 0; i < data.length; i++) {
-		ia[i] = data.charCodeAt(i);
-	}
-	return new Blob([ia], { type: mime });
+function fileHandler(from, sid, filename, size, mime) {
+	if (!rcvFile[from]) rcvFile[from] = {};
+	rcvFile[from][sid] = {
+		filename: filename,
+		size: size,
+		mime: mime,
+		seq: 0,
+		ctr: 0,
+		data: ''
+	};
 }
 
-var rcvFile = {};
+
 function ibbHandler(type, from, sid, data, seq) {
 	var nick = from.split('/')[1];
 	var fileTypeMIME = new RegExp(
@@ -228,14 +228,15 @@ function ibbHandler(type, from, sid, data, seq) {
 			msg = CryptoJS.AES.decrypt(msg, CryptoJS.enc.Latin1.parse(key[0]), opts);
 			rcvFile[from][sid].data += (msg.toString(CryptoJS.enc.Latin1));
 			rcvFile[from][sid].ctr += 1;
-			progress = (rcvFile[from][sid].ctr * 100) / Math.ceil(rcvFile[from][sid].size / Cryptocat.chunkSize);
-			$('[file=' + sid + '] .fileProgressBarFill').animate({'width': progress + '%'});
+			updateFileTransferProgress(sid, rcvFile[from][sid].ctr, rcvFile[from][sid].size, nick);
 			break;
 		case 'close':
-			var blob = blobFromData(
-				rcvFile[from][sid].data,
-				rcvFile[from][sid].mime
-			);
+			// Convert data to blob
+			var ia = new Uint8Array(rcvFile[from][sid].data.length);
+			for (var i = 0; i < rcvFile[from][sid].data.length; i++) {
+				ia[i] = rcvFile[from][sid].data.charCodeAt(i);
+			}
+			var blob = new Blob([ia], { type: rcvFile[from][sid].mime });
 			var url = URL.createObjectURL(blob);
 			if (rcvFile[from][sid].mime.match(fileTypeMIME)) {
 				addFile(url, sid, nick);
@@ -247,17 +248,6 @@ function ibbHandler(type, from, sid, data, seq) {
 			delete rcvFile[from][sid];
 			break;
 	}
-}
-function fileHandler(from, sid, filename, size, mime) {
-	if (!rcvFile[from]) rcvFile[from] = {};
-	rcvFile[from][sid] = {
-		filename: filename,
-		size: size,
-		mime: mime,
-		seq: 0,
-		ctr: 0,
-		data: ''
-	};
 }
 
 // Outputs the current hh:mm.
@@ -276,6 +266,18 @@ function currentTime(seconds) {
 		}
 	}
 	return time.join(':');
+}
+
+// Update a file transfer progress bar.
+function updateFileTransferProgress(file, chunk, size, recipient) {
+	progress = (chunk * 100) / (Math.ceil(size / (Cryptocat.chunkSize - 1)));
+	if (progress > 100) { progress = 100 };
+	$('[file=' + file + '] .fileProgressBarFill').animate({'width': progress + '%'});
+	if (progress === 100) {
+		var conversationBuffer = $(conversations[recipient]);
+		conversationBuffer.find('[file=' + file + '] .fileProgressBarFill').width('100%');
+		conversations[recipient] = $('<div>').append($(conversationBuffer).clone()).html();
+	}
 }
 
 // Plays the audio file defined by the `audio` variable.
@@ -837,7 +839,6 @@ function bindBuddyClick(nickname) {
 }
 
 // Send encrypted file
-// File is converted into a base64 Data URI which is then sent as an OTR message.
 function sendFile(nickname) {
 	var sendFileDialog = '<div class="bar">' + Cryptocat.language['chatWindow']['sendEncryptedFile'] + '</div>'
 		+ '<input type="file" id="fileSelector" name="file[]" />'
