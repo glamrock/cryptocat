@@ -2,7 +2,7 @@ var _ = require('lodash'),
 	path = require('path'),
 	test = require('../../testbase')();
 
-var Salsa20 = require('../../../src/chrome/js/lib/salsa20');
+var Salsa20 = require('../../../src/core/js/lib/salsa20');
 
 
 test['Salsa20'] = {
