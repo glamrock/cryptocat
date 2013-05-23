@@ -154,8 +154,13 @@ dataReader.onmessage = function(m) {
 					sid: data.sid
 				});
 			});
-			progress = (data.ctr * 100) / Math.ceil(data.size / Cryptocat.chunkSize);
+			progress = (data.ctr * 100) / (Math.ceil(data.size / (Cryptocat.chunkSize) - 1));
 			$('[file=' + data.sid + '] .fileProgressBarFill').animate({'width': progress + '%'});
+			if (progress > 95) {
+				var conversationBuffer = $(conversations[data.to]);
+				conversationBuffer.find('[file=' + data.sid + ']').replaceWith($('[file=' + data.sid + ']'));
+				conversations[data.to] = conversationBuffer;
+			}
 			break;
 		case 'close':
 			conn.ibb.close(cn(data.to), data.sid, function(err) {
@@ -163,6 +168,9 @@ dataReader.onmessage = function(m) {
 					return console.log(err);
 				}
 			});
+			window.setTimeout(function() {
+				$('#dialogBoxClose').click();
+			}, 500);
 			break;
 	}
 	if (data.close) {
