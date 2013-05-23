@@ -14,14 +14,13 @@
   importScripts('crypto-js/pad-nopadding.js');
   importScripts('crypto-js/mode-ctr.js');
   importScripts('salsa20.js');
+  importScripts('cryptocatGlobals.js');
   importScripts('cryptocatRandom.js');
 
   var files = {};
-  var fileSize = 4096;
-  var chunkSize = 64511;
 
   function uniqueId() {
-    return Cryptocat.randomString(64, 1, 1, 1, 0) + ":" + "ibb";
+    return Cryptocat.randomString(64, 1, 0, 1, 0);
   }
 
   var console = {
@@ -51,7 +50,7 @@
         var error;
         if (!file.type.match(mime)) {
           error = 'typeError';
-        } else if (file.size > (fileSize * 1024)) {
+        } else if (file.size > (Cryptocat.fileSize * 1024)) {
           error = 'sizeError';
         }
 
@@ -96,12 +95,13 @@
           return;
         }
 
-        var end = files[sid].position + chunkSize;
+        var end = files[sid].position + Cryptocat.chunkSize;
         var chunk = files[sid].file.slice(files[sid].position, end);
         files[sid].position = end;
 
         // bump ctr
-        files[sid].ctr += data.start ? 0 : 1;
+		if (typeof(files[sid].ctr) === 'undefined') { files[sid].ctr = 0; }
+		else { files[sid].ctr += 1 }
 
         var reader = new FileReader();
         reader.onload = function(event) {
@@ -135,7 +135,8 @@
             sid: data.sid,
             to: data.to,
             seq: seq,
-            ctr: 0,
+            ctr: files[sid].ctr,
+			size: files[sid].file.size,
             data: msg + mac.toString(CryptoJS.enc.Base64)
           });
         }

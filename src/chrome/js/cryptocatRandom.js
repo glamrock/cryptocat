@@ -1,5 +1,3 @@
-var Cryptocat = function() {};
-
 (function(){
 
 var state;

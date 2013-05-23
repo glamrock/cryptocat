@@ -5,10 +5,11 @@ Cryptocat.version = '2.0.42';
 $('#version').text(Cryptocat.version);
 
 /* Configuration */
+// Some global variables are set in cryptocatGlobals.js
+// This is due to the need to call them from inside web workers
 var defaultDomain = 'crypto.cat'; // Domain name to connect to for XMPP.
 var defaultConferenceServer = 'conference.crypto.cat'; // Address of the XMPP MUC server.
 var defaultBOSH = 'https://crypto.cat/http-bind'; // BOSH is served over an HTTPS proxy for better security and availability.
-var fileSize = 4096; // Maximum encrypted file sharing size, in kilobytes. Also needs to be defined in datareader.js
 var localStorageEnabled = 1; 
 if (navigator.userAgent.match('Firefox')) {
 	// Local storage features are disabled in Firefox until we migrate to a packaged web app
@@ -112,7 +113,7 @@ dataReader.onmessage = function(m) {
 				$('#fileInfoField').text('Error: Please make sure your file is a ZIP file or an image.');
 			}
 			else if (data.error === 'sizeError') {
-				$('#fileInfoField').text('Error: File cannot be larger than ' + (fileSize / 1024) + ' megabytes');
+				$('#fileInfoField').text('Error: File cannot be larger than ' + (Cryptocat.fileSize / 1024) + ' megabytes');
 			}
 			break;
 		case 'open':
@@ -126,7 +127,7 @@ dataReader.onmessage = function(m) {
 					if (err) {
 						return console.log(err);
 					}
-					conn.ibb.open(cn(data.to), data.sid, 4096, function(err) {
+					conn.ibb.open(cn(data.to), data.sid, Cryptocat.chunkSize, function(err) {
 						if (err) {
 							return console.log(err);
 						}
@@ -139,6 +140,7 @@ dataReader.onmessage = function(m) {
 					});
 				}
 			);
+			addToConversation(data.sid, myNickname, data.to, true);
 			break;
 		case 'data':
 			conn.ibb.data(cn(data.to), data.sid, data.seq, data.data, function(err) {
@@ -152,6 +154,8 @@ dataReader.onmessage = function(m) {
 					sid: data.sid
 				});
 			});
+			progress = (data.ctr * 100) / Math.ceil(data.size / Cryptocat.chunkSize);
+			$('[file=' + data.sid + '] .fileProgressBarFill').animate({'width': progress + '%'});
 			break;
 		case 'close':
 			conn.ibb.close(cn(data.to), data.sid, function(err) {
@@ -164,7 +168,8 @@ dataReader.onmessage = function(m) {
 	if (data.close) {
 		window.setTimeout(function() {
 			$('#dialogBoxClose').click();
-		}, 700);
+		}, 500);
+		$('[file=' + data.sid + '] .fileProgressBarFill').animate({'width': '100%'});
 	}
 };
 dataReader.postMessage({
@@ -183,10 +188,18 @@ function blobFromData(data, mime) {
 var rcvFile = {};
 function ibbHandler(type, from, sid, data, seq) {
 	var nick = from.split('/')[1];
+	var fileTypeMIME = new RegExp(
+		'^(image\/(png|jpeg|gif))|(application\/((x-compressed)|' +
+		'(x-zip-compressed)|(zip)))|(multipart/x-zip)$'
+	);
 	switch (type) {
 		case 'open':
 			var file = rcvFile[from][sid].filename;
 			rcvFile[from][sid].key = fileKeys[nick][file];
+			if (sid.match(/^\w{64}$/)
+			&& rcvFile[from][sid].mime.match(fileTypeMIME)) {
+				addToConversation(sid, nick, nick, true);
+			}
 			delete fileKeys[nick][file];
 			break;
 		case 'data':
@@ -211,19 +224,17 @@ function ibbHandler(type, from, sid, data, seq) {
 			msg = CryptoJS.AES.decrypt(msg, CryptoJS.enc.Latin1.parse(key[0]), opts);
 			rcvFile[from][sid].data += (msg.toString(CryptoJS.enc.Latin1));
 			rcvFile[from][sid].ctr += 1;
+			progress = (rcvFile[from][sid].ctr * 100) / Math.ceil(rcvFile[from][sid].size / Cryptocat.chunkSize);
+			$('[file=' + sid + '] .fileProgressBarFill').animate({'width': progress + '%'});
 			break;
 		case 'close':
-		    var fileTypeMIME = new RegExp(
-		      '^(image\/(png|jpeg|gif))|(application\/((x-compressed)|' +
-		      '(x-zip-compressed)|(zip)))|(multipart/x-zip)$'
-		    );
 			var blob = blobFromData(
 				rcvFile[from][sid].data,
 				rcvFile[from][sid].mime
 			);
 			var url = URL.createObjectURL(blob);
 			if (rcvFile[from][sid].mime.match(fileTypeMIME)) {
-				addToConversation(url, nick, nick, true);
+				addFile(url, sid, nick);
 			}
 			else {
 				console.log('Received file of unallowed file type ' 
@@ -444,10 +455,14 @@ function addEmoticons(message) {
 		.replace(/(\s|^)\&lt\;3\b(?=(\s|$))/g, ' <span class="monospace">&#9829;</span> ');
 }
 
-// Convert Data blob to downloadable file.
-function addFile(blob) {
-	return '<a href="' + blob + '" class="fileView" target="_blank">'
+// Convert Data blob to downloadable file, replacing the progress bar.
+function addFile(blob, file, conversation) {
+	var fileLink = '<a href="' + blob + '" class="fileView" target="_blank">'
 		+ Cryptocat.language['chatWindow']['downloadFile'] + '</a>';
+	var conversationBuffer = $(conversations[conversation]);
+	$('[file=' + file + ']').replaceWith(fileLink);
+	conversationBuffer.find('[file=' + file + ']').replaceWith(fileLink);
+	conversations[conversation] = conversationBuffer;
 }
 
 // Add a `message` from `sender` to the `conversation` display and log.
@@ -478,7 +493,7 @@ function addToConversation(message, sender, conversation, isFile) {
 		}
 	}
 	if (isFile) {
-		message = addFile(message)
+		message = '<div class="fileProgressBar" file="' + message + '"><div class="fileProgressBarFill"></div></div>'
 	}
 	else {
 		message = addLinks(message);
@@ -824,7 +839,7 @@ function sendFile(nickname) {
 		+ '<input type="file" id="fileSelector" name="file[]" />'
 		+ '<input type="button" id="fileSelectButton" class="button" value="Select file" />'
 		+ '<div id="fileInfoField">Only ZIP files and images are accepted.'
-		+ '<br />Maximum file size: ' + (fileSize / 1024) + ' megabytes.</div>';
+		+ '<br />Maximum file size: ' + (Cryptocat.fileSize / 1024) + ' megabytes.</div>';
 	ensureOTRdialog(nickname, false, function() {
 		dialogBox(sendFileDialog, 1);
 		$('#fileSelector').change(function(e) {

@@ -527,9 +527,22 @@ img.logo {
 #progressBar #fill {
 	height: 100%;
 	width: 0%;
-	color: #000;
 	background: #7BBFEC;
 	opacity: 0.8;
+}
+.fileProgressBar {
+	height: 14px;
+	width: 130px;
+	display: inline-block;
+	border: 1px solid #7BBFEC;
+	vertical-align: -3px;
+	margin-left: 10px;
+	box-shadow: 1px 1px #7BBFEC;
+}
+.fileProgressBarFill {
+	height: 100%;
+	width: 0%;
+	background: #7BBFEC;
 }
 #dialogBox [type=text], #dialogBox [type=password], #dialogBox [type=submit] {
 	background: #000;
