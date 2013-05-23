@@ -1,11 +1,11 @@
 /** Test utilities */
 
 var sinon = require('sinon'),
-    chai = require("chai");
+	chai = require('chai');
 
 var assert = chai.assert,
-    expect = chai.expect,
-    should = chai.should();
+	expect = chai.expect,
+	should = chai.should();
 
 
 /**
@@ -29,15 +29,15 @@ assert.same = function(actual, expected, message) {
  */
 var createTest = function(title) {
   var test = {
-    beforeEach: function() {
-      test.mocker = sinon.sandbox.create();
-      test.assert = assert;
-      test.expect = expect;
-      test.should = should;
-    },
-    afterEach: function() {
-      test.mocker.restore();
-    }
+	beforeEach: function() {
+	  test.mocker = sinon.sandbox.create();
+	  test.assert = assert;
+	  test.expect = expect;
+	  test.should = should;
+	},
+	afterEach: function() {
+	  test.mocker.restore();
+	}
   };
 
   return test;
