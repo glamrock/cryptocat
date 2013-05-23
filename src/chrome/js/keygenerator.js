@@ -1,5 +1,4 @@
 (function() {
-	
 	importScripts('crypto-js/core.js');
 	importScripts('crypto-js/enc-base64.js');
 	importScripts('crypto-js/cipher-core.js');
@@ -22,5 +21,4 @@
 		Cryptocat.setSeed(e.data);
 		self.postMessage(new DSA());
 	}, false);
-
 })();
