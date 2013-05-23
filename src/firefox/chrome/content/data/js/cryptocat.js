@@ -111,10 +111,10 @@ dataReader.onmessage = function(m) {
 			return;
 		case 'error':
 			if (data.error === 'typeError') {
-				$('#fileInfoField').text('Error: Please make sure your file is a ZIP file or an image.');
+				$('#fileInfoField').text(Cryptocat.language['chatWindow']['fileTypeError']);
 			}
 			else if (data.error === 'sizeError') {
-				$('#fileInfoField').text('Error: File cannot be larger than ' + (Cryptocat.fileSize / 1024) + ' megabytes');
+				$('#fileInfoField').text(Cryptocat.language['chatWindow']['fileSizeError']);
 			}
 			break;
 		case 'open':
@@ -841,8 +841,7 @@ function sendFile(nickname) {
 	var sendFileDialog = '<div class="bar">' + Cryptocat.language['chatWindow']['sendEncryptedFile'] + '</div>'
 		+ '<input type="file" id="fileSelector" name="file[]" />'
 		+ '<input type="button" id="fileSelectButton" class="button" value="Select file" />'
-		+ '<div id="fileInfoField">Only ZIP files and images are accepted.'
-		+ '<br />Maximum file size: ' + (Cryptocat.fileSize / 1024) + ' megabytes.</div>';
+		+ '<div id="fileInfoField">' + Cryptocat.language['chatWindow']['fileTransferInfo'] + '</div>';
 	ensureOTRdialog(nickname, false, function() {
 		dialogBox(sendFileDialog, 1);
 		$('#fileSelector').change(function(e) {

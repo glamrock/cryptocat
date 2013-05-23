@@ -93,7 +93,14 @@ Language.buildObject = function(locale, language) {
 			'sendEncryptedFile': language[i++],
 			'viewImage': language[i++],
 			'downloadFile': language[i++],
-			'conversation': language[i++]
+			'conversation': language[i++],
+			'fileTransferInfo': language[i++].replace('(SIZE)', (Cryptocat.fileSize / 1024)),
+			'fileTypeError': language[i++],
+			'fileSizeError': language[i++].replace('(SIZE)', (Cryptocat.fileSize / 1024)),
+			'startVideoChat': language[i++],
+			'endVideoChat': language[i++],
+			'videoChatQuery': language[i++],
+			'cancel': language[i++]
 		}
 	}
 	Language.refresh(languageObject);
