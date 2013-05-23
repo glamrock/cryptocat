@@ -1,8 +1,9 @@
-$(window).ready(function() {
+var Cryptocat = function() {};
+Cryptocat.version = '2.0.42'; // Version number
+Cryptocat.fileSize = 5120; // Maximum encrypted file sharing size, in kilobytes.
+Cryptocat.chunkSize = 64511; // Size in which file chunks are split, in bytes.
 
-/* Version number */
-Cryptocat.version = '2.0.42';
-$('#version').text(Cryptocat.version);
+if (typeof(window) !== 'undefined') { $(window).ready(function() {
 
 /* Configuration */
 // Some global variables are set in cryptocatGlobals.js
@@ -34,6 +35,9 @@ var loginError = 0;
 var currentStatus = 'online';
 var soundEmbed = null;
 var conn, conversationName, myNickname, myKey;
+
+// Set version number in UI
+$('#version').text(Cryptocat.version);
 
 // Seed RNG
 Cryptocat.setSeed(Cryptocat.generateSeed());
@@ -88,7 +92,7 @@ if (localStorageEnabled) {
 }
 
 // Initialize workers
-var keyGenerator = new Worker('js/keygenerator.js');
+var keyGenerator = new Worker('js/workers/keygenerator.js');
 keyGenerator.onmessage = function(e) {
 	myKey = new DSA(e.data);
 	// Key storage currently disabled as we are not yet sure if this is safe to do.
@@ -101,7 +105,7 @@ keyGenerator.onmessage = function(e) {
 	});
 }
 
-var dataReader = new Worker('js/datareader.js');
+var dataReader = new Worker('js/workers/datareader.js');
 function cn(to) { return conversationName + '@' + conferenceServer + '/' + to; }
 dataReader.onmessage = function(m) {
 	var data = m.data;
@@ -1505,4 +1509,4 @@ $(window).unload(function() {
 	logout();
 });
 
-});//:3
+})}//:3

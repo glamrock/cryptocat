@@ -3,19 +3,19 @@
 ;(function(){
 	"use strict";
 
-	importScripts('crypto-js/core.js');
-	importScripts('crypto-js/enc-base64.js');
-	importScripts('crypto-js/cipher-core.js');
-	importScripts('crypto-js/x64-core.js');
-	importScripts('crypto-js/aes.js');
-	importScripts('crypto-js/sha256.js');
-	importScripts('crypto-js/sha512.js');
-	importScripts('crypto-js/hmac.js');
-	importScripts('crypto-js/pad-nopadding.js');
-	importScripts('crypto-js/mode-ctr.js');
-	importScripts('salsa20.js');
-	importScripts('cryptocatGlobals.js');
-	importScripts('cryptocatRandom.js');
+	importScripts('../lib/crypto-js/core.js');
+	importScripts('../lib/crypto-js/enc-base64.js');
+	importScripts('../lib/crypto-js/cipher-core.js');
+	importScripts('../lib/crypto-js/x64-core.js');
+	importScripts('../lib/crypto-js/aes.js');
+	importScripts('../lib/crypto-js/sha256.js');
+	importScripts('../lib/crypto-js/sha512.js');
+	importScripts('../lib/crypto-js/hmac.js');
+	importScripts('../lib/crypto-js/pad-nopadding.js');
+	importScripts('../lib/crypto-js/mode-ctr.js');
+	importScripts('../lib/salsa20.js');
+	importScripts('../cryptocat.js');
+	importScripts('../etc/cryptocatRandom.js');
 
 	var files = {};
 	
