@@ -17,13 +17,13 @@ El nom d'usuari ha de ser alfanumèric.
 El nom d'usuari no està disponible.
 Error d'identificació.
 Error de connexió.
-Gràcies per fer servir Cryptocat.
+Gràcies per utilitzar Cryptocat.
 Registrant...
 Connectant...
 Connectat.
 Si us plau, escriu aleatòriament amb el teclat durant uns segons.
 Generant claus de xifrat...
-Conversa de grup. Clica un usuari per a iniciar una conversa privada.
+Conversa de grup. Clica a un usuari per a iniciar una conversa privada.
 Empremta OTR (per a converses privades):
 Empremta de conversa de grup:
 Reinicia les meves claus de xifrat
@@ -42,5 +42,12 @@ Desconnectar-se
 Mostra informació
 Envia fitxer xifrat
 Veure imatge
-Desa fitxer
+Desar fitxer
 Conversa
+Només s'accepten arxius ZIP i imatges. Mida màxima d'arxiu: (SIZE) MB.
+Error: Assegura't que l'arxiu sigui un ZIP o una imatge.
+Error: L'arxiu no pot superar (SIZE) MB.
+Iniciar xat amb video
+Finalitzar xat amb video
+(NICKNAME) vol iniciar un xat amb video amb tu.
+Cancel·lar
