@@ -7,10 +7,6 @@ var fileMIME = new RegExp(
 	'(x-zip-compressed)|(zip)))|(multipart/x-zip)$'
 );
 
-function uniqueId() {
-	return Cryptocat.randomString(64, 1, 0, 1, 0);
-}
-
 function cn(to) {
 	return Cryptocat.conversationName + '@' + Cryptocat.conferenceServer + '/' + to;
 }
@@ -29,7 +25,7 @@ Cryptocat.beginSendFile = function(data) {
 			$('#dialogBoxClose').click();
 		}, 500);
 	}
-	sid = uniqueId();
+	sid = Cryptocat.connection.getUniqueId();
 	files[sid] = {
 		to: data.to,
 		position: 0,
