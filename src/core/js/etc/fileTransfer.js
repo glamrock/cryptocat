@@ -15,15 +15,6 @@ function cn(to) {
 	return Cryptocat.conversationName + '@' + Cryptocat.conferenceServer + '/' + to;
 }
 
-function packCtr(val) {
-	var i = 0, res = '';
-	for (; i < 8; i++) {
-		res = String.fromCharCode(val & 0xff) + res;
-		val >>= 8;
-	}
-	return res + '\x00\x00\x00\x00\x00\x00\x00\x00';
-}
-
 Cryptocat.beginSendFile = function(data) {
 	if (!data.file.type.match(fileMIME)) {
 		$('#fileInfoField').text(Cryptocat.language['chatWindow']['fileTypeError']);
@@ -96,10 +87,9 @@ Cryptocat.sendFileData = function(data) {
 		// encrypt
 		// don't use seq as a counter
 		// it repeats after 65535 above
-		var counter = packCtr(files[sid].ctr);
 		var opts = {
 			mode: CryptoJS.mode.CTR,
-			iv: CryptoJS.enc.Latin1.parse(counter),
+			iv: CryptoJS.enc.Latin1.parse(OTR.HLP.packCtr(files[sid].ctr)),
 			padding: CryptoJS.pad.NoPadding
 		};
 		var aesctr = CryptoJS.AES.encrypt (
