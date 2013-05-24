@@ -100,17 +100,13 @@
 				var end = files[sid].position + Cryptocat.chunkSize;
 				var chunk = files[sid].file.slice(files[sid].position, end);
 				files[sid].position = end;
-
-				// bump ctr
-		if (typeof(files[sid].ctr) === 'undefined') { files[sid].ctr = 0; }
-		else { files[sid].ctr += 1 }
-
+				if (typeof(files[sid].ctr) === 'undefined') { files[sid].ctr = 0; }
+				else { files[sid].ctr += 1 }
 				var reader = new FileReader();
 				reader.onload = function(event) {
 					var msg = event.target.result;
 					// remove dataURL header
 					msg = msg.split(',')[1];
-
 					// encrypt
 					// don't use seq as a counter
 					// it repeats after 65535 above
@@ -125,13 +121,11 @@
 						opts
 					);
 					msg = aesctr.toString();
-
 					// then mac
 					var mac = CryptoJS.HmacSHA512(
 						CryptoJS.enc.Base64.parse(msg),
 						CryptoJS.enc.Latin1.parse(files[sid].key[1])
 					);
-
 					postMessage({
 						type: 'data',
 						sid: data.sid,
@@ -144,9 +138,7 @@
 				}
 				reader.readAsDataURL(chunk);
 				break;
-
-		}
-
+			}
 	}, false);
 
 }());
