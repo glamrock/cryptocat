@@ -22,6 +22,15 @@
 	function uniqueId() {
 		return Cryptocat.randomString(64, 1, 0, 1, 0);
 	}
+	
+	function packCtr(val) {
+		var i = 0, res = '';
+		for (; i < 8; i++) {
+			res = String.fromCharCode(val & 0xff) + res;
+			val >>= 8;
+		}
+		return res + '\x00\x00\x00\x00\x00\x00\x00\x00';
+	}
 
 	var console = {
 		log: function (log) {
@@ -66,7 +75,8 @@
 					to: to,
 					position: 0,
 					file: file,
-					key: data.key
+					key: data.key,
+					ctr: -1
 				};
 
 				postMessage({
@@ -100,8 +110,7 @@
 				var end = files[sid].position + Cryptocat.chunkSize;
 				var chunk = files[sid].file.slice(files[sid].position, end);
 				files[sid].position = end;
-				if (typeof(files[sid].ctr) === 'undefined') { files[sid].ctr = 0; }
-				else { files[sid].ctr += 1 }
+				files[sid].ctr += 1;
 				var reader = new FileReader();
 				reader.onload = function(event) {
 					var msg = event.target.result;
@@ -110,9 +119,10 @@
 					// encrypt
 					// don't use seq as a counter
 					// it repeats after 65535 above
+					var counter = packCtr(files[sid].ctr);
 					var opts = {
 						mode: CryptoJS.mode.CTR,
-						iv: CryptoJS.enc.Latin1.parse(files[sid].ctr),
+						iv: CryptoJS.enc.Latin1.parse(counter),
 						padding: CryptoJS.pad.NoPadding
 					};
 					var aesctr = CryptoJS.AES.encrypt (

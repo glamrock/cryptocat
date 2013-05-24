@@ -226,7 +226,7 @@ function ibbHandler(type, from, sid, data, seq) {
 			}
 			var opts = {
 				mode: CryptoJS.mode.CTR,
-				iv: CryptoJS.enc.Latin1.parse(rcvFile[from][sid].ctr),
+				iv: CryptoJS.enc.Latin1.parse(OTR.HLP.packCtr(rcvFile[from][sid].ctr)),
 				padding: CryptoJS.pad.NoPadding
 			};
 			msg = CryptoJS.AES.decrypt(msg, CryptoJS.enc.Latin1.parse(key[0]), opts);
