@@ -1,6 +1,6 @@
 .DS_Store
-
 stz/*
+src/cryptocat.safariextension/*
 
 # npm
 node_modules/

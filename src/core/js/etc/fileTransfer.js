@@ -78,9 +78,9 @@ Cryptocat.sendFileData = function(data) {
 	var reader = new FileReader();
 	reader.onload = function(event) {
 		var msg = event.target.result;
-		// remove dataURL header
+		// Remove dataURL header
 		msg = msg.split(',')[1];
-		// encrypt
+		// Encrypt
 		// don't use seq as a counter
 		// it repeats after 65535 above
 		var opts = {
@@ -94,12 +94,12 @@ Cryptocat.sendFileData = function(data) {
 			opts
 		);
 		msg = aesctr.toString();
-		// then mac
+		// Then mac
 		var mac = CryptoJS.HmacSHA512(
 			CryptoJS.enc.Base64.parse(msg),
 			CryptoJS.enc.Latin1.parse(files[sid].key[1])
 		);
-		// combine ciphertext and mac, then transfer chunk
+		// Combine ciphertext and mac, then transfer chunk
 		msg += mac.toString(CryptoJS.enc.Base64);
 		Cryptocat.connection.ibb.data(cn(data.to), sid, seq, msg, function(err) {
 			if (err) {
@@ -158,7 +158,13 @@ Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 				ia[i] = rcvFile[from][sid].data.charCodeAt(i);
 			}
 			var blob = new Blob([ia], { type: rcvFile[from][sid].mime });
-			var url = URL.createObjectURL(blob);
+			// Safari compatibility
+			if (navigator.userAgent.match('Safari')) {
+				var url = window.webkitURL.createObjectURL(blob);
+			}
+			else {
+				var url = URL.createObjectURL(blob);
+			}
 			if (rcvFile[from][sid].mime.match(fileMIME)) {
 				Cryptocat.addFile(url, sid, nick);
 			}
