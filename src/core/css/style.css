@@ -53,17 +53,6 @@ img.logo {
 	border-radius: 8px 0 8px 8px;
 	box-shadow: 4px 4px #72B1DB;
 }
-#bubble:after {
-	content: ' ';
-	position: absolute;
-	width: 0;
-	height: 0;
-	left: 305px;
-	top: 310px;
-	border: 30px solid;
-	border-color: #080812 transparent transparent #080812;
-	z-index: 0;
-}
 #bubble #head {
 	background: #131316;
 	width: 100%;

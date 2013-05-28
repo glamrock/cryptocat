@@ -469,7 +469,7 @@ function addBuddy(nickname) {
 			);
 		});
 		if (buddyNotifications) {
-			buddyNotification(nickname, 1);
+			buddyNotification(nickname, true);
 		}
 	});
 	$('#buddyList').dequeue();
@@ -500,7 +500,7 @@ function removeBuddy(nickname) {
 		}
 	}
 	if (buddyNotifications) {
-		buddyNotification(nickname, 0);
+		buddyNotification(nickname, true);
 	}
 }
 
