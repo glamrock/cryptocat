@@ -32,7 +32,6 @@ var loginCredentials = [];
 var currentConversation = 0;
 var audioNotifications = 0;
 var desktopNotifications = 0;
-var buddyNotifications = 0;
 var loginError = 0;
 var currentStatus = 'online';
 var soundEmbed = null;
@@ -214,7 +213,6 @@ function switchConversation(buddy) {
 
 // Handles login failures
 function loginFail(message) {
-	buddyNotifications = 0;
 	$('#loginInfo').text(message);
 	$('#bubble').animate({'left': '+=5px'}, 130)
 		.animate({'left': '-=10px'}, 130)
@@ -413,7 +411,7 @@ function desktopNotification(image, title, body, timeout) {
 }
 
 // Add a join/part notification to the main conversation window.
-// If 'join === 1', shows join notification, otherwise shows part
+// If 'join === true', shows join notification, otherwise shows part
 function buddyNotification(buddy, join) {
 	var status, audioNotification;
 	if (join) {
@@ -425,10 +423,9 @@ function buddyNotification(buddy, join) {
 		audioNotification = 'userOffline';
 	}
 	conversations['main-Conversation'] += status;
-	if (currentConversation !== 'main-Conversation') {
-		conversations[currentConversation] += status;
+	if (currentConversation === 'main-Conversation') {
+		$('#conversationWindow').append(status);
 	}
-	$('#conversationWindow').append(status);
 	if (($('#conversationWindow')[0].scrollHeight - $('#conversationWindow').scrollTop()) < 1500) {	
 		scrollDown(400);
 	}
@@ -468,9 +465,7 @@ function addBuddy(nickname) {
 				sendPublicKey, null
 			);
 		});
-		if (buddyNotifications) {
-			buddyNotification(nickname, 1);
-		}
+		buddyNotification(nickname, true);
 	});
 	$('#buddyList').dequeue();
 }
@@ -499,9 +494,7 @@ function removeBuddy(nickname) {
 			});
 		}
 	}
-	if (buddyNotifications) {
-		buddyNotification(nickname, 0);
-	}
+	buddyNotification(nickname, false);
 }
 
 // Handle nickname change (which may be done by non-Cryptocat XMPP clients)
@@ -1274,7 +1267,6 @@ function connected() {
 					$('#buddyList').css('width', (150 + scrollWidth) + 'px');
 					bindBuddyClick('main-Conversation');
 					$('#buddy-main-Conversation').click();
-					buddyNotifications = 1;
 				});
 			});
 		});
@@ -1284,7 +1276,6 @@ function connected() {
 
 // Executes on user logout.
 function logout() {
-	buddyNotifications = 0;
 	Cryptocat.connection.muc.leave(Cryptocat.conversationName + '@' + Cryptocat.conferenceServer);
 	Cryptocat.connection.disconnect();
 	$('.button').fadeOut('fast');
