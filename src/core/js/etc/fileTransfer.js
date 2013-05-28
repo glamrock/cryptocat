@@ -165,7 +165,8 @@ Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 			else {
 				var url = URL.createObjectURL(blob);
 			}
-			if (rcvFile[from][sid].mime.match(fileMIME)) {
+			if (rcvFile[from][sid].filename.match(/^\w{64}$/)
+			&& rcvFile[from][sid].mime.match(fileMIME)) {
 				Cryptocat.addFile(url, sid, nick, rcvFile[from][sid].filename);
 			}
 			else {
