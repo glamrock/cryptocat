@@ -10,6 +10,12 @@ firefox:
 	@rm -r src/firefox/chrome/content/data/*
 	@/bin/echo "[Cryptocat] Firefox build available in release/"
 
+safari:
+	@rm -rf src/cryptocat.safariextension
+	@cp -R src/core src/cryptocat.safariextension
+	@cp -R src/safari/* src/cryptocat.safariextension
+	@/bin/echo "[Cryptocat] Safari extension packaged for testing."
+
 tests:
 	@/bin/echo -n "[Cryptocat] Running tests... "
 	@`/usr/bin/which npm` install
