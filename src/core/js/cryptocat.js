@@ -322,9 +322,10 @@ Cryptocat.updateFileProgressBar = function(file, chunk, size, recipient) {
 }
 
 // Convert Data blob to downloadable file, replacing the progress bar.
-Cryptocat.addFile = function(blob, file, conversation) {
+Cryptocat.addFile = function(blob, file, conversation, filename) {
 	var conversationBuffer = $(conversations[conversation]);
-	var fileLink = '<a href="' + blob + '" class="fileView" target="_blank">'
+	var fileLink = '<a href="' + blob
+		+ '" class="fileView" target="_blank" download="' + filename + '">'
 		+ Cryptocat.language['chatWindow']['downloadFile'] + '</a>';
 	$('[file=' + file + ']').replaceWith(fileLink);
 	conversationBuffer.find('[file=' + file + ']').replaceWith(fileLink);
