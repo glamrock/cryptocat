@@ -152,26 +152,27 @@ Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 			Cryptocat.updateFileProgressBar(sid, rcvFile[from][sid].ctr, rcvFile[from][sid].size, nick);
 			break;
 		case 'close':
-			// Convert data to blob
-			var ia = new Uint8Array(rcvFile[from][sid].data.length);
-			for (var i = 0; i < rcvFile[from][sid].data.length; i++) {
-				ia[i] = rcvFile[from][sid].data.charCodeAt(i);
-			}
-			var blob = new Blob([ia], { type: rcvFile[from][sid].mime });
 			// Safari compatibility
+			var url;
 			if (navigator.userAgent.match('Safari')) {
-				var url = window.webkitURL.createObjectURL(blob);
+				url = "data:application/octet-stream;base64," +
+					CryptoJS.enc.Latin1.parse(rcvFile[from][sid].data).toString(CryptoJS.enc.Base64);
+			} else {
+				// Convert data to blob
+				var ia = new Uint8Array(rcvFile[from][sid].data.length);
+				for (var i = 0; i < rcvFile[from][sid].data.length; i++) {
+					ia[i] = rcvFile[from][sid].data.charCodeAt(i);
+				}
+				var blob = new Blob([ia], { type: rcvFile[from][sid].mime });
+				url = URL.createObjectURL(blob);
 			}
-			else {
-				var url = URL.createObjectURL(blob);
-			}
-			if (rcvFile[from][sid].filename.match(/^\w{64}$/)
+			if (rcvFile[from][sid].filename.match(/^[\w-.]+$/)
 			&& rcvFile[from][sid].mime.match(fileMIME)) {
 				Cryptocat.addFile(url, sid, nick, rcvFile[from][sid].filename);
 			}
 			else {
 				console.log('Received file of unallowed file type ' 
-					+ rcvFile[from][sid].mime + ' from ' + sender);
+					+ rcvFile[from][sid].mime + ' from ' + nick);
 			}
 			delete rcvFile[from][sid];
 			break;
