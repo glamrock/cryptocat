@@ -165,13 +165,13 @@ Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 			else {
 				var url = URL.createObjectURL(blob);
 			}
-			if (rcvFile[from][sid].filename.match(/^\w{64}$/)
+			if (rcvFile[from][sid].filename.match(/^[\w-.]+$/)
 			&& rcvFile[from][sid].mime.match(fileMIME)) {
 				Cryptocat.addFile(url, sid, nick, rcvFile[from][sid].filename);
 			}
 			else {
 				console.log('Received file of unallowed file type ' 
-					+ rcvFile[from][sid].mime + ' from ' + sender);
+					+ rcvFile[from][sid].mime + ' from ' + nick);
 			}
 			delete rcvFile[from][sid];
 			break;
