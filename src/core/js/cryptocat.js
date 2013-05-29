@@ -467,10 +467,10 @@ function addBuddy(nickname) {
 				Cryptocat.conversationName + '@' + Cryptocat.conferenceServer, null,
 				sendPublicKey, null
 			);
+			if (buddyNotifications) {
+				buddyNotification(nickname, true);
+			}
 		});
-		if (buddyNotifications) {
-			buddyNotification(nickname, true);
-		}
 	});
 	$('#buddyList').dequeue();
 }
@@ -500,7 +500,7 @@ function removeBuddy(nickname) {
 		}
 	}
 	if (buddyNotifications) {
-		buddyNotification(nickname, true);
+		buddyNotification(nickname, false);
 	}
 }
 
