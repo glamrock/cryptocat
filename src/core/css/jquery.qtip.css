@@ -45,10 +45,11 @@
 
 /* Default tooltip style */
 .qtip-default{
-	background-color: rgba(0, 0, 0, 0.9);
-	border: 2px solid #404050;
-	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
-	color: #f3f3f3;
+	background: rgba(255, 255, 255, 0.9);
+	border: 2px solid #97CEEC;
+	color: #000;
+	font-size: 12px;
+	line-height: 16px;
 	border-radius: 4px 0 4px 4px;
 	max-width: 225px;
 }

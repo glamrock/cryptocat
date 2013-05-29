@@ -3,12 +3,12 @@
 	<meta charset="UTF-8" />
 	<title>Cryptocat</title>
 	<link rel="stylesheet" media="screen" href="css/style.css" type="text/css" />
-	<link rel="stylesheet" media="reader,aural,braille,speech" href="css/speech.css" type="text/css" />
 	<link rel="stylesheet" href="css/jquery.qtip.css" type="text/css" />
 	<link rel="icon" type="image/gif" href="img/favicon.gif" />
 	<script type="application/javascript" src="js/lib/jquery/jquery.js"></script>
 	<script type="application/javascript" src="js/lib/jquery/jquery.color.js"></script>
 	<script type="application/javascript" src="js/lib/jquery/jquery.qtip.js"></script>
+	<script type="application/javascript" src="js/lib/mustache.js"></script>
 	<script type="application/javascript" src="js/lib/strophe/strophe.js"></script>
 	<script type="application/javascript" src="js/lib/strophe/strophe.register.js"></script>
 	<script type="application/javascript" src="js/lib/strophe/strophe.ibb.js"></script>
@@ -43,21 +43,29 @@
 		<div id="dialogBoxContent"></div>
 	</div>
 	<div id="bubble">
-		<div id="head" dir="ltr">
+		<div id="header" dir="ltr">
 			<img src="img/cryptocat.png" alt="Cryptocat" class="logo" />
-			<span id="logoText" dir="ltr">Cryptocat</span>
+			<span id="logoText" dir="ltr">cryptocat</span>
 			<img class="button" id="logout" src="img/logout.png" alt="" />
 			<img class="button" id="audio" src="img/noSound.png" alt="" />
 			<img class="button" id="notifications" src="img/noNotifications.png" alt="" />
 			<img class="button" id="myInfo" src="img/key.png" alt="" />
 			<img class="button" id="status" src="img/available.png" alt="" />
-			<div id="loginLinks">
-				<a href="https://blog.crypto.cat" target="_blank" id="blog"></a>
-			</div>
 		</div>
+		<form id="loginForm" dir="ltr">
+			<input type="text" id="conversationName" maxlength="20" autocomplete="off" dir="ltr" />
+			<input type="text" id="nickname" maxlength="16" autocomplete="off" dir="ltr" />
+			<input type="submit" id="loginSubmit" dir="ltr" />
+			<div id="loginInfo"></div>
+		</form>
 		<div id="info">
 			<h1 id="introHeader"></h1>
 			<p id="introParagraph"></p>
+		</div>
+		<div id="footer">
+			<div id="version"></div>
+			<a href="#" id="languageSelect"></a>
+			<a href="#" id="customServer"></a>
 			<ul id="languages">
 				<li id="en">English</li>
 				<li id="ca">Català</li>
@@ -94,17 +102,13 @@
 				<li id="vi">Tiếng Việt</li>
 				<li id="ug">Uyghur</li>
 			</ul>
-		</div>
-		<form id="loginForm">
-			<div id="loginInfo"></div>
-			<input type="text" id="conversationName" maxlength="20" autocomplete="off" />
-			<input type="text" id="nickname" maxlength="16" autocomplete="off" />
-			<input type="submit" id="loginSubmit" />
-			<a href="#" class="loginOption" id="customServer"></a>
-		</form>
-		<div id="version"></div>
-		<div id="options">
-			<a href="#" id="languageSelect"></a>
+			<div id="customServerDialog">
+				<input type="text" class="customServer" id="customDomain" title="Domain Name"></input>
+				<input type="text" class="customServer" id="customConferenceServer" title="XMPP Conference Server"></input>
+				<input type="text" class="customServer" id="customBOSH" title="BOSH Relay"></input>
+				<input type="button" id="customServerReset"></input>
+				<input type="button" id="customServerSubmit"></input>
+			</div>
 		</div>
 		<div id="buddyWrapper">
 			<div id="buddyList">

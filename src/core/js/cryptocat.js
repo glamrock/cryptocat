@@ -13,15 +13,14 @@ Cryptocat.myNickname = null;
 if (typeof(window) !== 'undefined') { $(window).ready(function() {
 
 /* Configuration */
-// Some global variables are set in cryptocatGlobals.js
-// This is due to the need to call them from inside web workers
-var defaultDomain = 'crypto.cat'; // Domain name to connect to for XMPP.
-var defaultConferenceServer = 'conference.crypto.cat'; // Address of the XMPP MUC server.
-var defaultBOSH = 'https://crypto.cat/http-bind'; // BOSH is served over an HTTPS proxy for better security and availability.
+// Domain name to connect to for XMPP.
+var defaultDomain = 'crypto.cat';
+// Address of the XMPP MUC server.
+var defaultConferenceServer = 'conference.crypto.cat';
+// BOSH is served over an HTTPS proxy for better security and availability.
+var defaultBOSH = 'https://crypto.cat/http-bind';
 var localStorageEnabled = true; 
 if (navigator.userAgent.match('Firefox')) {
-	// Local storage features are disabled in Firefox until we migrate to a packaged web app
-	// (Scheduled for Firefox 21 or 22)
 	localStorageEnabled = false;
 }
 
@@ -181,7 +180,7 @@ function buildConversationInfo(conversation) {
 // Switches the currently active conversation to `buddy'
 function switchConversation(buddy) {
 	if ($('#buddy-' + buddy).attr('status') !== 'offline') {
-		$('#' + buddy).animate({'background-color': '#7BBFEC'});
+		$('#' + buddy).animate({'background-color': '#97CEEC'});
 		$('#buddy-' + buddy).css('border-bottom', '1px solid #72B1DB');
 	}
 	if (buddy !== 'main-Conversation') {
@@ -634,7 +633,7 @@ function handlePresence(presence) {
 		$('#buddy-' + nickname).animate({
 			'color': '#FFF',
 			'backgroundColor': backgroundColor,
-			'borderLeftColor': '#7BBFEC'
+			'borderLeftColor': '#97CEEC'
 		});
 		if (currentConversation !== nickname) {
 			$('#buddy-' + nickname).slideUp('fast', function() {
@@ -686,13 +685,13 @@ function bindBuddyClick(nickname) {
 			|| (($(this).prev().attr('id') === 'buddiesAway')
 			&& $('#buddiesOnline').next().attr('id') === 'buddiesAway')) {
 			$(this).insertAfter('#currentConversation');
-			$(this).animate({'background-color': '#7BBFEC'});
+			$(this).animate({'background-color': '#97CEEC'});
 			switchConversation(nickname);
 		}
 		else {
 			$(this).slideUp('fast', function() {
 				$(this).insertAfter('#currentConversation').slideDown('fast', function() {
-					$(this).animate({'background-color': '#7BBFEC'});
+					$(this).animate({'background-color': '#97CEEC'});
 					switchConversation(nickname);
 				});
 			});
@@ -875,18 +874,19 @@ function dialogBox(data, closeable, onAppear, onClose) {
 	$('#dialogBoxClose').unbind('click');
 	$('#dialogBoxClose').click(function(e) {
 		e.stopPropagation();
+		$(this).unbind('click');
 		if ($(this).css('width') === 0) {
 			return false;
 		}
 		$('#dialogBox').animate({'top': '+=10px'}, 'fast')
 			.animate({'top': '-450px'}, 'fast', function() {
 				$('#dialogBoxContent').empty();
+				$('#dialogBoxClose').css('width', '0');
+				$('#dialogBoxClose').css('font-size', '0');
 				if (onClose) {
 					onClose();
 				}
 			});
-		$(this).css('width', '0');
-		$(this).css('font-size', '0');
 		$('#userInputText').focus();
 	});
 	if (closeable) {
@@ -1034,73 +1034,55 @@ $('#customServer').click(function() {
 	Cryptocat.bosh = Strophe.xmlescape(Cryptocat.bosh);
 	Cryptocat.conferenceServer = Strophe.xmlescape(Cryptocat.conferenceServer);
 	Cryptocat.domain = Strophe.xmlescape(Cryptocat.domain);
-	var customServerDialog = '<input type="button" class="bar" value="'
-		+ Cryptocat.language['loginWindow']['customServer'] + '"/><br />'
-		+ '<input type="text" class="customServer" id="customDomain"></input>'
-		+ '<input type="text" class="customServer" id="customConferenceServer"></input>'
-		+ '<input type="text" class="customServer" id="customBOSH"></input>'
-		+ '<input type="button" class="button" id="customServerReset"></input>'
-		+ '<input type="button" class="button" id="customServerSubmit"></input>';
-	dialogBox(customServerDialog, 1);
-	$('#customDomain').val(Cryptocat.domain)
-		.attr('title', 'Domain name')
-		.click(function() {$(this).select()});
-	$('#customConferenceServer').val(Cryptocat.conferenceServer)
-		.attr('title', 'XMPP-MUC server')
-		.click(function() {$(this).select()});
-	$('#customBOSH').val(Cryptocat.bosh)
-		.attr('title', 'BOSH relay')
-		.click(function() {$(this).select()});
-	$('#customServerReset').val(Cryptocat.language['loginWindow']['reset']).click(function() {
-		$('#customDomain').val(defaultDomain);
-		$('#customConferenceServer').val(defaultConferenceServer);
-		$('#customBOSH').val(defaultBOSH);
-		if (localStorageEnabled) {
-			localStorage.removeItem('domain');
-			localStorage.removeItem('conferenceServer');
-			localStorage.removeItem('bosh');
-		}
-	});
-	$('#customServerSubmit').val(Cryptocat.language['chatWindow']['continue']).click(function() {
-		Cryptocat.domain = $('#customDomain').val();
-		Cryptocat.conferenceServer = $('#customConferenceServer').val();
-		Cryptocat.bosh = $('#customBOSH').val();
-		$('#dialogBoxClose').click();
-		if (localStorageEnabled) {
-			localStorage.setItem('domain', Cryptocat.domain);
-			localStorage.setItem('conferenceServer', Cryptocat.conferenceServer);
-			localStorage.setItem('bosh', Cryptocat.bosh);
-		}
-	});
-	$('#customDomain').select();
-	$('.customServer').qtip({
-		position: {
-			my: 'center left',
-			at: 'center right'
-		}
+	$('#footer').animate({'height': '180px'}, function() {
+		$('#customServerDialog').fadeIn();
+		$('#customDomain').val(Cryptocat.domain)
+			.click(function() {$(this).select()});
+		$('#customConferenceServer').val(Cryptocat.conferenceServer)
+			.click(function() {$(this).select()});
+		$('#customBOSH').val(Cryptocat.bosh)
+			.click(function() {$(this).select()});
+		$('#customServerReset').val(Cryptocat.language['loginWindow']['reset']).click(function() {
+			$('#customDomain').val(defaultDomain);
+			$('#customConferenceServer').val(defaultConferenceServer);
+			$('#customBOSH').val(defaultBOSH);
+			if (localStorageEnabled) {
+				localStorage.removeItem('domain');
+				localStorage.removeItem('conferenceServer');
+				localStorage.removeItem('bosh');
+			}
+		});
+		$('#customServerSubmit').val(Cryptocat.language['chatWindow']['continue']).click(function() {
+			$('#customServerDialog').fadeOut(200, function() {
+				$('#footer').animate({'height': '14px'});
+			});
+			Cryptocat.domain = $('#customDomain').val();
+			Cryptocat.conferenceServer = $('#customConferenceServer').val();
+			Cryptocat.bosh = $('#customBOSH').val();
+			if (localStorageEnabled) {
+				localStorage.setItem('domain', Cryptocat.domain);
+				localStorage.setItem('conferenceServer', Cryptocat.conferenceServer);
+				localStorage.setItem('bosh', Cryptocat.bosh);
+			}
+		});
+		$('#customDomain').select();
 	});
 });
 
 // Language selector.
 $('#languageSelect').click(function() {
-	$('#introParagraph').fadeOut(function() {
+	$('#footer').animate({'height': '180px'}, function() {
 		$('#languages li').css({'color': '#FFF', 'font-weight': 'normal'});
-		$('#' + Cryptocat.language['language']).css({'color': '#7BBFEC', 'font-weight': 'bold'});
+		$('#' + Cryptocat.language['language']).css({'color': '#97CEEC', 'font-weight': 'bold'});
 		$('#languages').fadeIn();
-		$('#languages li').mouseenter(function() {
-			$(this).animate({'color': '#7BBFEC'}, 'fast');
-		});
-		$('#languages li').mouseleave(function() {
-			$(this).animate({'color': '#FFF'}, 'fast');
-		});
 		$('#languages li').click(function() {
 			var lang = $(this).attr('id');
-			$('#languages').fadeOut(function() {
+			$('#languages').fadeOut(200, function() {
 				Language.set(lang);
 				if (localStorageEnabled) {
 					localStorage.setItem('language', lang);
 				}
-				$('#introParagraph').fadeIn();
+				$('#footer').animate({'height': '14px'});
 			});
 		});
 	});
@@ -1145,6 +1127,7 @@ $('#loginForm').submit(function() {
 		dialogBox(progressForm, 0, function() {
 			// We need to pass the web worker a pre-generated seed.
 			keyGenerator.postMessage(Cryptocat.generateSeed());
+			startConnection();
 			// Key storage currently disabled as we are not yet sure if this is safe to do.
 			//if (localStorageEnabled) {
 			//	localStorage.setItem('multiPartyKey', multiParty.genPrivateKey());
@@ -1155,7 +1138,6 @@ $('#loginForm').submit(function() {
 			multiParty.genPublicKey();
 		}, function() {
 			$('#loginSubmit').removeAttr('readonly')
-			$('#loginForm').submit();
 			$('#loginSubmit').attr('readonly', 'readonly');
 		});
 		if (Cryptocat.language['language'] === 'en') {
@@ -1180,18 +1162,24 @@ $('#loginForm').submit(function() {
 	}
 	// If everything is okay, then register a randomly generated throwaway XMPP ID and log in.
 	else {
-		Cryptocat.conversationName = Strophe.xmlescape($('#conversationName').val());
-		Cryptocat.myNickname = Strophe.xmlescape($('#nickname').val());
-		loginCredentials[0] = Cryptocat.randomString(256, 1, 1, 1, 0);
-		loginCredentials[1] = Cryptocat.randomString(256, 1, 1, 1, 0);
-		connectXMPP(loginCredentials[0], loginCredentials[1]);
-		$('#loginSubmit').attr('readonly', 'readonly');
+		startConnection();
 	}
 	return false;
 });
 
+
+// Begin connection process.
+function startConnection() {
+	Cryptocat.conversationName = Strophe.xmlescape($('#conversationName').val());
+	Cryptocat.myNickname = Strophe.xmlescape($('#nickname').val());
+	loginCredentials[0] = Cryptocat.randomString(256, 1, 1, 1, 0);
+	loginCredentials[1] = Cryptocat.randomString(256, 1, 1, 1, 0);
+	connectXMPP(loginCredentials[0], loginCredentials[1]);
+	$('#loginSubmit').attr('readonly', 'readonly');
+}
+
 // Registers a new user on the XMPP server, connects and join conversation.
-function connectXMPP(username, password) {
+function connectXMPP(username, password, connect) {
 	Cryptocat.connection = new Strophe.Connection(Cryptocat.bosh);
 	Cryptocat.connection.register.connect(Cryptocat.domain, function(status) {
 		if (status === Strophe.Status.REGISTER) {
@@ -1204,7 +1192,7 @@ function connectXMPP(username, password) {
 			Cryptocat.connection = new Strophe.Connection(Cryptocat.bosh);
 			Cryptocat.connection.connect(username + '@' + Cryptocat.domain, password, function(status) {
 				if (status === Strophe.Status.CONNECTING) {
-					$('#loginInfo').animate({'color': '#999'}, 'fast');
+					$('#loginInfo').animate({'color': '#FFF'}, 'fast');
 					$('#loginInfo').text(Cryptocat.language['loginMessage']['connecting']);
 				}
 				else if (status === Strophe.Status.CONNECTED) {
@@ -1237,7 +1225,7 @@ function connectXMPP(username, password) {
 	});
 }
 
-// Executes on XMPP connection.
+// Executes on successfully completed XMPP connection.
 function connected() {
 	Cryptocat.connection.muc.join(
 		Cryptocat.conversationName + '@' + Cryptocat.conferenceServer, Cryptocat.myNickname, 
@@ -1257,24 +1245,24 @@ function connected() {
 	}
 	$('#buddy-main-Conversation').attr('status', 'online');
 	$('#loginInfo').text('✓');
-	$('#loginInfo').animate({'color': '#7BBFEC'}, 'fast');
-	$('#bubble').animate({'margin-top': '+=0.5%'}, function() {
-		$('#bubble').animate({'margin-top': '0'}, function() {
-			$('#loginLinks').fadeOut();
-			$('#info').fadeOut();
-			$('#version').fadeOut();
-			$('#options').fadeOut();
-			$('#loginForm').fadeOut();
-			$('#bubble').animate({'width': '100%'})
-			.animate({'height': $(window).height()}, function() {
-				$(this).animate({'margin': '0', 'border-radius': '0'});
-				$('.button').fadeIn();
-				$('#buddyWrapper').slideDown('fast', function() {
-					var scrollWidth = document.getElementById('buddyList').scrollWidth;
-					$('#buddyList').css('width', (150 + scrollWidth) + 'px');
-					bindBuddyClick('main-Conversation');
-					$('#buddy-main-Conversation').click();
-					buddyNotifications = 1;
+	$('#info').fadeOut(200);
+	$('#loginForm').fadeOut(200, function() {
+		$('#bubble').animate({'margin-top': '+=0.5%'}, function() {
+			$('#bubble').animate({'margin-top': '0'}, function() {
+				$('#loginLinks').fadeOut();
+				$('#version').fadeOut();
+				$('#options').fadeOut();
+				$('#bubble').animate({'width': '100%'})
+				.animate({'height': $(window).height()}, function() {
+					$(this).animate({'margin': '0', 'border-radius': '0'});
+					$('.button').fadeIn();
+					$('#buddyWrapper').slideDown('fast', function() {
+						var scrollWidth = document.getElementById('buddyList').scrollWidth;
+						$('#buddyList').css('width', (150 + scrollWidth) + 'px');
+						bindBuddyClick('main-Conversation');
+						$('#buddy-main-Conversation').click();
+						buddyNotifications = 1;
+					});
 				});
 			});
 		});
@@ -1295,7 +1283,7 @@ function logout() {
 		$('#conversationWindow').slideUp(function() {
 			$('#buddyWrapper').slideUp();
 			if (!loginError) {
-				$('#loginInfo').animate({'color': '#999'}, 'fast');
+				$('#loginInfo').animate({'color': '#FFF'}, 'fast');
 				$('#loginInfo').text(Cryptocat.language['loginMessage']['thankYouUsing']);
 			}
 			$('#bubble').css({

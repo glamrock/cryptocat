@@ -115,11 +115,9 @@ Language.refresh = function(languageObject) {
 	else {
 		$('body').css({'font-size': '11px'});
 	}
-	$('html').attr('dir', languageObject['direction']);
 	$('body').css('font-family', languageObject['font-family']);
 	$('#introHeader').text(languageObject['loginWindow']['introHeader']);
 	$('#introParagraph').html(languageObject['loginWindow']['introParagraph']);
-	$('#blog').text(languageObject['loginWindow']['blog']);
 	$('#customServer').text(languageObject['loginWindow']['customServer']);
 	$('#conversationName').attr('placeholder', languageObject['loginWindow']['conversationName']);
 	$('#nickname').attr('placeholder', languageObject['loginWindow']['nickname']);
@@ -145,11 +143,18 @@ Language.refresh = function(languageObject) {
 	});
 	$('#conversationName').qtip({
 		position: {
-			my: 'center right',
-			at: 'center left'
+			my: 'bottom left',
+			at: 'top center'
 		},
 		content: languageObject['loginWindow']['conversationNameTooltip']
 	});
+	$('html').attr('dir', languageObject['direction']);
+	if (languageObject['direction'] === 'ltr') {
+		$('div#bubble #info li').css('background-position', 'top left');
+	}
+	else {
+		$('div#bubble #info li').css('background-position', 'top right');
+	}
 	$('#conversationName').select();
 }
 
