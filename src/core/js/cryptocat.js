@@ -48,6 +48,9 @@ $('#version').text(Cryptocat.version);
 // Seed RNG
 Cryptocat.setSeed(Cryptocat.generateSeed());
 
+// Make main window draggable
+$('#bubble').draggable().resizable();
+
 // Initialize language settings
 if (!localStorageEnabled) {
 	Language.set(window.navigator.language.toLowerCase());
@@ -196,7 +199,6 @@ function switchConversation(buddy) {
 			$('#conversationWindow').css('width', (712 + scrollWidth) + 'px');
 			scrollDown(600);
 		});
-		$(window).resize();
 	});
 	// Clean up finished conversations
 	$('#buddyList div').each(function() {
@@ -680,7 +682,6 @@ function bindBuddyClick(nickname) {
 		initiateConversation(currentConversation);
 		$('#conversationWindow').html(conversations[currentConversation]);
 		$('.Line1, .Line2, .Line3').addClass('visibleLine');
-		$(window).resize();
 		if (($(this).prev().attr('id') === 'buddiesOnline')
 			|| (($(this).prev().attr('id') === 'buddiesAway')
 			&& $('#buddiesOnline').next().attr('id') === 'buddiesAway')) {
@@ -1034,6 +1035,7 @@ $('#customServer').click(function() {
 	Cryptocat.bosh = Strophe.xmlescape(Cryptocat.bosh);
 	Cryptocat.conferenceServer = Strophe.xmlescape(Cryptocat.conferenceServer);
 	Cryptocat.domain = Strophe.xmlescape(Cryptocat.domain);
+	$('#languages').hide();
 	$('#footer').animate({'height': '180px'}, function() {
 		$('#customServerDialog').fadeIn();
 		$('#customDomain').val(Cryptocat.domain)
@@ -1071,6 +1073,7 @@ $('#customServer').click(function() {
 
 // Language selector.
 $('#languageSelect').click(function() {
+	$('#customServerDialog').hide();
 	$('#footer').animate({'height': '180px'}, function() {
 		$('#languages li').css({'color': '#FFF', 'font-weight': 'normal'});
 		$('#' + Cryptocat.language['language']).css({'color': '#97CEEC', 'font-weight': 'bold'});
@@ -1127,7 +1130,7 @@ $('#loginForm').submit(function() {
 		dialogBox(progressForm, 0, function() {
 			// We need to pass the web worker a pre-generated seed.
 			keyGenerator.postMessage(Cryptocat.generateSeed());
-			startConnection();
+			startConnection(false);
 			// Key storage currently disabled as we are not yet sure if this is safe to do.
 			//if (localStorageEnabled) {
 			//	localStorage.setItem('multiPartyKey', multiParty.genPrivateKey());
@@ -1139,6 +1142,7 @@ $('#loginForm').submit(function() {
 		}, function() {
 			$('#loginSubmit').removeAttr('readonly')
 			$('#loginSubmit').attr('readonly', 'readonly');
+			connected();
 		});
 		if (Cryptocat.language['language'] === 'en') {
 			$('#progressInfo').append(
@@ -1162,24 +1166,24 @@ $('#loginForm').submit(function() {
 	}
 	// If everything is okay, then register a randomly generated throwaway XMPP ID and log in.
 	else {
-		startConnection();
+		startConnection(true);
 	}
 	return false;
 });
 
 
 // Begin connection process.
-function startConnection() {
+function startConnection(join) {
 	Cryptocat.conversationName = Strophe.xmlescape($('#conversationName').val());
 	Cryptocat.myNickname = Strophe.xmlescape($('#nickname').val());
 	loginCredentials[0] = Cryptocat.randomString(256, 1, 1, 1, 0);
 	loginCredentials[1] = Cryptocat.randomString(256, 1, 1, 1, 0);
-	connectXMPP(loginCredentials[0], loginCredentials[1]);
+	connectXMPP(loginCredentials[0], loginCredentials[1], join);
 	$('#loginSubmit').attr('readonly', 'readonly');
 }
 
 // Registers a new user on the XMPP server, connects and join conversation.
-function connectXMPP(username, password, connect) {
+function connectXMPP(username, password, join) {
 	Cryptocat.connection = new Strophe.Connection(Cryptocat.bosh);
 	Cryptocat.connection.register.connect(Cryptocat.domain, function(status) {
 		if (status === Strophe.Status.REGISTER) {
@@ -1198,7 +1202,9 @@ function connectXMPP(username, password, connect) {
 				else if (status === Strophe.Status.CONNECTED) {
 					Cryptocat.connection.ibb.addIBBHandler(Cryptocat.ibbHandler);
 					Cryptocat.connection.si_filetransfer.addFileHandler(Cryptocat.fileHandler);
-					connected();
+					if (join) {
+						connected();
+					}
 				}
 				else if (status === Strophe.Status.CONNFAIL) {
 					if (!loginError) {
@@ -1247,24 +1253,18 @@ function connected() {
 	$('#loginInfo').text('✓');
 	$('#info').fadeOut(200);
 	$('#loginForm').fadeOut(200, function() {
-		$('#bubble').animate({'margin-top': '+=0.5%'}, function() {
-			$('#bubble').animate({'margin-top': '0'}, function() {
-				$('#loginLinks').fadeOut();
-				$('#version').fadeOut();
-				$('#options').fadeOut();
-				$('#bubble').animate({'width': '100%'})
-				.animate({'height': $(window).height()}, function() {
-					$(this).animate({'margin': '0', 'border-radius': '0'});
-					$('.button').fadeIn();
-					$('#buddyWrapper').slideDown('fast', function() {
-						var scrollWidth = document.getElementById('buddyList').scrollWidth;
-						$('#buddyList').css('width', (150 + scrollWidth) + 'px');
-						bindBuddyClick('main-Conversation');
-						$('#buddy-main-Conversation').click();
-						buddyNotifications = 1;
-					});
-				});
-			});
+		$('#loginLinks').fadeOut();
+		$('#version').fadeOut();
+		$('#options').fadeOut();
+		$('.button').fadeIn();
+		$('#buddyWrapper').slideDown('fast', function() {
+			var scrollWidth = document.getElementById('buddyList').scrollWidth;
+			$('#buddyList').css('width', (150 + scrollWidth) + 'px');
+			bindBuddyClick('main-Conversation');
+			$('#buddy-main-Conversation').click();
+			window.setTimeout(function() {
+				buddyNotifications = 1;
+			}, 5000);
 		});
 	});
 	loginError = 0;
@@ -1332,25 +1332,12 @@ $(window).focus(function() {
 	}
 });
 
-// On browser resize, also resize Cryptocat window.
-// (This can be done with CSS for width, but not really for height.)
-$(window).resize(function() {
-	if ($('#buddy-main-Conversation').attr('status') === 'online') {
-		var width = $(window).width() - $('#buddyWrapper').width();
-		if ($(window).height() > 525) {
-			$('#bubble').css('height', $(window).height());
-		}
-		$('#conversationWrapper').css('width', width);
-		$('#userInputText').css('width', width - 61);
-		$('#conversationWindow').css('height', $('#bubble').height() - 133);
-		$('#conversationInfo').css({'width': width});
-		$('.Line1, .Line2, .Line3').css('width', width - 60);
-	}
-});
-
 // Logout on browser close.
 $(window).unload(function() {
 	logout();
 });
+
+// Show main window.
+$('#bubble').show();
 
 })}//:3

@@ -98,6 +98,7 @@ div#bubble {
 	box-shadow: 5px 5px #76BDE5;
 	border: 10px solid #080816;
 	padding: 10px 8px 50px 8px;
+	display: none;
 }
 
 div#bubble div#header {
@@ -133,12 +134,16 @@ div#bubble .button {
 	cursor: pointer;
 	float: right;
 	margin: 9px 10px 0 0;
-	width: 16px;
-	height: 16px;
+	width: 20px;
+	height: 20px;
 }
 
 div#bubble #loginForm {
 	margin: 95px auto 0 auto;
+}
+
+div#bubble #loginForm #conversationName {
+	border-radius: 10px 0 0 0;
 }
 
 div#bubble #loginForm [type=text] {
@@ -173,16 +178,16 @@ div#bubble #loginSubmit {
 div#loginInfo {
 	text-align: center;
 	font-size: 1.1em;
-	background: #76BDE5;
+	background: #97CEEC;
 	padding: 3px;
 	color: #FFF;
-	border-radius: 10px 0 10px 10px;
-	width: 300px;
+	border-radius: 0 0 10px 10px;
+	width: 341px;
 	margin: 10px auto;
 }
 
 div#bubble div#info {
-	background: rgba(118, 189, 229, 0.2);
+	background: rgba(151, 206, 236, 0.2);
 	padding: 4px 10px;
 	border-radius: 10px 0 10px 10px;
 	margin: 20px auto;
