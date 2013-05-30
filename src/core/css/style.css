@@ -462,8 +462,10 @@ DIALOG BOX
 
 #progressBar {
 	margin-top: 10px;
-	height: 17px;
-	width: 308px;
+	height: 18px;
+	width: 290px;
+	border: 1px solid #97CEEC;
+	padding: 1px;
 }
 
 #progressBar #fill {
@@ -477,9 +479,10 @@ DIALOG BOX
 	height: 14px;
 	width: 130px;
 	display: inline-block;
-	border: 1px solid #97CEEC;
 	vertical-align: -3px;
 	margin-left: 10px;
+	border: 1px solid #97CEEC;
+	padding: 1px;
 }
 
 .fileProgressBarFill {
