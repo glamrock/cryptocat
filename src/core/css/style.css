@@ -687,12 +687,11 @@ CONVERSATION WINDOW
 }
 
 #userInputSend:hover {
-    background: #76BDE5;
-    text-shadow: 3px 2px #97CEEC;
+    text-shadow: 3px 2px #76BDE5, -1px -1px #333;
 }
 
 #userInputSend:active {
-    background: #222;
+    text-shadow: 3px 2px #76BDE5, -1px -1px #000;
 }
 
 .fileView {
