@@ -28,9 +28,9 @@
 
 .qtip-content{
 	position: relative;
-	padding: 5px 9px;
+	padding: 4px 8px;
 	overflow: hidden;
-	text-align: left;
+	text-align: justify;
 	word-wrap: break-word;
 }
 
@@ -45,17 +45,12 @@
 
 /* Default tooltip style */
 .qtip-default{
-	background: rgba(255, 255, 255, 0.9);
-	border: 2px solid #97CEEC;
-	color: #000;
-	font-size: 12px;
+	background: #76BDE5;
+	color: #FFF;
+	font-size: 11px;
 	line-height: 16px;
 	border-radius: 4px 0 4px 4px;
 	max-width: 225px;
-}
-
-.qtip-default strong {
-	color: #97CEEC;
 }
 
 /* Opera bug #357 - Incorrect tip position

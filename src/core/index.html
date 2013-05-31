@@ -47,11 +47,13 @@
 		<div id="header" dir="ltr">
 			<img src="img/cryptocat.png" alt="Cryptocat" class="logo" />
 			<span id="logoText" dir="ltr">cryptocat</span>
-			<img class="button" id="logout" src="img/logout.png" alt="" />
-			<img class="button" id="audio" src="img/noSound.png" alt="" />
-			<img class="button" id="notifications" src="img/noNotifications.png" alt="" />
-			<img class="button" id="myInfo" src="img/key.png" alt="" />
-			<img class="button" id="status" src="img/available.png" alt="" />
+			<div id="optionButtons">
+				<img class="button" id="status" src="img/available.png" alt="" />
+				<img class="button" id="myInfo" src="img/key.png" alt="" />
+				<img class="button" id="notifications" src="img/noNotifications.png" alt="" />
+				<img class="button" id="audio" src="img/noSound.png" alt="" />
+				<img class="button" id="logout" src="img/logout.png" alt="" />
+			</div>
 		</div>
 		<form id="loginForm" dir="ltr">
 			<input type="text" id="conversationName" maxlength="20" autocomplete="off" dir="ltr" />
@@ -65,8 +67,10 @@
 		</div>
 		<div id="footer">
 			<div id="version"></div>
-			<a href="#" id="languageSelect"></a>
-			<a href="#" id="customServer"></a>
+			<div id="loginOptions">
+				<a href="#" id="languageSelect"></a>
+				<a href="#" id="customServer"></a>
+			</div>
 			<ul id="languages">
 				<li id="en">English</li>
 				<li id="ca">Català</li>
@@ -110,6 +114,14 @@
 				<input type="button" id="customServerReset"></input>
 				<input type="button" id="customServerSubmit"></input>
 			</div>
+			<form id="userInput">
+				<textarea id="userInputText"></textarea>
+				<input type="submit" value="►" id="userInputSend"></input>
+			</form>
+		</div>
+		<div id="conversationWrapper">
+			<div id="conversationWindow">
+			</div>
 		</div>
 		<div id="buddyWrapper">
 			<div id="buddyList">
@@ -121,14 +133,6 @@
 				<span id="buddiesAway"></span>
 			</div>
 		</div>
-		<div id="conversationInfo"></div>
-		<div id="conversationWrapper">
-			<div id="conversationWindow">
-			</div>
-		</div>
-		<form id="userInput">
-			<textarea id="userInputText"></textarea>
-		</form>
 	</div>
 </body>
 </html>

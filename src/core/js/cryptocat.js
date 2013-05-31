@@ -48,8 +48,8 @@ $('#version').text(Cryptocat.version);
 // Seed RNG
 Cryptocat.setSeed(Cryptocat.generateSeed());
 
-// Make main window draggable
-$('#bubble').draggable().resizable();
+// Make main window draggable, resizable
+$('#bubble').draggable();
 
 // Initialize language settings
 if (!localStorageEnabled) {
@@ -137,14 +137,6 @@ function playSound(audio) {
 	(new Audio('snd/' + audio + '.wav')).play();
 }
 
-// Scrolls down the chat window to the bottom in a smooth animation.
-// 'speed' is animation speed in milliseconds.
-function scrollDown(speed) {
-	$('#conversationWindow').animate({
-		scrollTop: $('#conversationWindow')[0].scrollHeight + 20
-	}, speed);
-}
-
 // Initiates a conversation. Internal use.
 function initiateConversation(conversation) {
 	if (!conversations.hasOwnProperty(conversation)) {
@@ -169,15 +161,7 @@ var iocb = function(buddy) {
 
 // Creates a template for the conversation info bar at the top of each conversation.
 function buildConversationInfo(conversation) {
-	$('#conversationInfo').html(
-		'<span class="conversationUserCount">' + $('.buddy').length + '</span>'
-		+ '<span class="conversationName">' + Cryptocat.myNickname + '@' + Cryptocat.conversationName + '</span>'
-	);
-	if (conversation === 'main-Conversation') {
-		$('#conversationInfo').append(
-			'<span id="groupConversation">' + Cryptocat.language['chatWindow']['groupConversation'] + '</span>'
-		);
-	}
+
 }
 
 // Switches the currently active conversation to `buddy'
@@ -189,15 +173,11 @@ function switchConversation(buddy) {
 	if (buddy !== 'main-Conversation') {
 		$('#buddy-' + buddy).css('background-image', 'none');
 	}
-	$('#conversationInfo').slideDown(function() {
-		buildConversationInfo(currentConversation);
-		$('#conversationWindow').slideDown('fast', function() {
-			$('#userInput').fadeIn('fast', function() {
-				$('#userInputText').focus();
-			});
-			var scrollWidth = document.getElementById('conversationWindow').scrollWidth;
-			$('#conversationWindow').css('width', (712 + scrollWidth) + 'px');
-			scrollDown(600);
+	buildConversationInfo(currentConversation);
+	$('#conversationWindow').fadeIn(200, function() {
+		scrollDownConversation(400);
+		$('#userInput').fadeIn(200, function() {
+			$('#userInputText').focus();
 		});
 	});
 	// Clean up finished conversations
@@ -207,7 +187,7 @@ function switchConversation(buddy) {
 			&& ($(this).attr('status') === 'offline')) {
 			$(this).slideUp(500, function() {
 				$(this).remove();
-				updateUserCount();
+				// updateUserCount();
 			});
 		}
 	});
@@ -220,7 +200,7 @@ function loginFail(message) {
 	$('#bubble').animate({'left': '+=5px'}, 130)
 		.animate({'left': '-=10px'}, 130)
 		.animate({'left': '+=5px'}, 130);
-	$('#loginInfo').animate({'color': '#E93028'}, 'fast');
+	$('#loginInfo').animate({'color': '#E93028'}, 200);
 }
 
 // Simply shortens a string `string` to length `length.
@@ -377,10 +357,8 @@ Cryptocat.addToConversation = function(message, sender, conversation, isFile) {
 		$('#conversationWindow').append(message);
 		$('.Line' + lineDecoration).last()
 			.css('width', width - 60)
-			.animate({'margin-top': '20px', 'opacity': '1'}, 'fast');
-		if (($('#conversationWindow')[0].scrollHeight - $('#conversationWindow').scrollTop()) < 1500) {	
-			scrollDown(400);
-		}
+			.animate({'margin-top': '20px', 'opacity': '1'}, 200);
+		scrollDownConversation(400);
 	}
 	else {
 		message = '<div class="Line' + lineDecoration + '">' + timeStamp + sender + message + '</div>';
@@ -430,9 +408,7 @@ function buddyNotification(buddy, join) {
 		conversations[currentConversation] += status;
 	}
 	$('#conversationWindow').append(status);
-	if (($('#conversationWindow')[0].scrollHeight - $('#conversationWindow').scrollTop()) < 1500) {	
-		scrollDown(400);
-	}
+	scrollDownConversation(400);
 	if (!document.hasFocus()) {
 		desktopNotification('img/keygen.gif', buddy, '', 0x1337);
 	}
@@ -462,7 +438,7 @@ function addBuddy(nickname) {
 			$('#menu-' + nickname).unbind('click');
 			bindBuddyMenu(nickname);
 			bindBuddyClick(nickname);
-			updateUserCount();
+			// updateUserCount();
 			var sendPublicKey = multiParty.sendPublicKey(nickname);
 			Cryptocat.connection.muc.message(
 				Cryptocat.conversationName + '@' + Cryptocat.conferenceServer, null,
@@ -487,7 +463,7 @@ function removeBuddy(nickname) {
 			&& ($('#buddy-' + nickname).css('background-image') === 'none')) {
 			$('#buddy-' + nickname).slideUp(500, function() {
 				$(this).remove();
-				updateUserCount();
+				// updateUserCount();
 			});
 		}
 		else {
@@ -638,8 +614,8 @@ function handlePresence(presence) {
 			'borderLeftColor': '#97CEEC'
 		});
 		if (currentConversation !== nickname) {
-			$('#buddy-' + nickname).slideUp('fast', function() {
-				$(this).insertAfter(placement).slideDown('fast');
+			$('#buddy-' + nickname).slideUp(200, function() {
+				$(this).insertAfter(placement).slideDown(200);
 			});
 		}
 	}
@@ -671,11 +647,11 @@ function bindBuddyClick(nickname) {
 				var backgroundColor = '#5588A5';
 				var color = '#FFF';
 			}
-			$('#buddy-' + oldConversation).slideUp('fast', function() {
+			$('#buddy-' + oldConversation).slideUp(200, function() {
 				$(this).css('background-color', backgroundColor);
 				$(this).css('color', color);
 				$(this).css('border-bottom', 'none');
-				$(this).insertAfter(placement).slideDown('fast');
+				$(this).insertAfter(placement).slideDown(200);
 			});
 		}
 		currentConversation = nickname;
@@ -690,8 +666,8 @@ function bindBuddyClick(nickname) {
 			switchConversation(nickname);
 		}
 		else {
-			$(this).slideUp('fast', function() {
-				$(this).insertAfter('#currentConversation').slideDown('fast', function() {
+			$(this).slideUp(200, function() {
+				$(this).insertAfter('#currentConversation').slideDown(200, function() {
 					$(this).animate({'background-color': '#97CEEC'});
 					switchConversation(nickname);
 				});
@@ -726,6 +702,16 @@ function sendFile(nickname) {
 			$('#fileSelector').click();
 		});
 	});
+}
+
+// Scrolls down the chat window to the bottom in a smooth animation.
+// 'speed' is animation speed in milliseconds.
+function scrollDownConversation(speed) {
+	if (($('#conversationWindow')[0].scrollHeight - $('#conversationWindow').scrollTop()) < 1500) {	
+		$('#conversationWindow').animate({
+			scrollTop: $('#conversationWindow')[0].scrollHeight + 20
+		}, speed);
+	}
 }
 
 // Display info dialog
@@ -816,7 +802,7 @@ function bindBuddyMenu(nickname) {
 				$('#' + nickname + '-contents').append(
 					'<li class="option2">' + Cryptocat.language['chatWindow']['displayInfo'] + '</li>'
 				);
-				$('#' + nickname + '-contents').fadeIn('fast', function() {
+				$('#' + nickname + '-contents').fadeIn(200, function() {
 					$('.option1').click(function(e) {
 						e.stopPropagation();
 						sendFile(nickname);
@@ -834,7 +820,7 @@ function bindBuddyMenu(nickname) {
 			$('#menu-' + nickname).attr('status', 'inactive');
 			$(this).css('background-image', 'url("img/down.png")');
 			$('#buddy-' + nickname).animate({'height': '15px'}, 190);
-			$('#' + nickname + '-contents').fadeOut('fast', function() {
+			$('#' + nickname + '-contents').fadeOut(200, function() {
 				$('#' + nickname + '-contents').remove();
 			});
 		}
@@ -856,37 +842,25 @@ function sendStatus() {
 // onAppear may be defined as a callback function to execute on dialog box appear.
 // onClose may be defined as a callback function to execute on dialog box close.
 function dialogBox(data, closeable, onAppear, onClose) {
-	if ($('#dialogBox').css('top') !== '-450px') {
-		$('#dialogBoxContent').html(data);
-		return false;
-	}
 	if (closeable) {
 		$('#dialogBoxClose').css('width', '18px');
 		$('#dialogBoxClose').css('font-size', '12px');
 	}
 	$('#dialogBoxContent').html(data);
-	$('#dialogBox').animate({'top': '+=440px'}, 'fast').animate({
-		'top': '-=10px'
-	}, 'fast', function() {
-		if (onAppear) {
-			onAppear();
-		}
+	$('#dialogBox').fadeIn(100, function() {
+		if (onAppear) { onAppear() }
 	});
-	$('#dialogBoxClose').unbind('click');
-	$('#dialogBoxClose').click(function(e) {
+	$('#dialogBoxClose').unbind('click').click(function(e) {
 		e.stopPropagation();
 		$(this).unbind('click');
 		if ($(this).css('width') === 0) {
 			return false;
 		}
-		$('#dialogBox').animate({'top': '+=10px'}, 'fast')
-			.animate({'top': '-450px'}, 'fast', function() {
+		$('#dialogBox').fadeOut(100, function() {
 				$('#dialogBoxContent').empty();
 				$('#dialogBoxClose').css('width', '0');
 				$('#dialogBoxClose').css('font-size', '0');
-				if (onClose) {
-					onClose();
-				}
+				if (onClose) { onClose() }
 			});
 		$('#userInputText').focus();
 	});
@@ -899,7 +873,7 @@ function dialogBox(data, closeable, onAppear, onClose) {
 			}
 		});
 	}
-}
+} $('#dialogBox').draggable();
 
 // Buttons
 // Status button
@@ -1028,6 +1002,9 @@ $('#userInputText').keyup(function(e) {
 	if (e.keyCode === 13) {
 		e.preventDefault();
 	}
+});
+$('#userInputSubmit').click(function() {
+	$('#userInput').submit();
 });
 
 // Custom server dialog
@@ -1196,7 +1173,7 @@ function connectXMPP(username, password, join) {
 			Cryptocat.connection = new Strophe.Connection(Cryptocat.bosh);
 			Cryptocat.connection.connect(username + '@' + Cryptocat.domain, password, function(status) {
 				if (status === Strophe.Status.CONNECTING) {
-					$('#loginInfo').animate({'color': '#FFF'}, 'fast');
+					$('#loginInfo').animate({'color': '#FFF'}, 200);
 					$('#loginInfo').text(Cryptocat.language['loginMessage']['connecting']);
 				}
 				else if (status === Strophe.Status.CONNECTED) {
@@ -1209,13 +1186,13 @@ function connectXMPP(username, password, join) {
 				else if (status === Strophe.Status.CONNFAIL) {
 					if (!loginError) {
 						$('#loginInfo').text(Cryptocat.language['loginMessage']['connectionFailed']);
-						$('#loginInfo').animate({'color': '#E93028'}, 'fast');
+						$('#loginInfo').animate({'color': '#E93028'}, 200);
 					}
 				}
 				else if (status === Strophe.Status.DISCONNECTED) {
 					if (loginError) {
 						$('#loginInfo').text(Cryptocat.language['loginMessage']['connectionFailed']);
-						$('#loginInfo').animate({'color': '#E93028'}, 'fast');
+						$('#loginInfo').animate({'color': '#E93028'}, 200);
 					}
 					logout();
 				}
@@ -1252,16 +1229,17 @@ function connected() {
 	$('#buddy-main-Conversation').attr('status', 'online');
 	$('#loginInfo').text('✓');
 	$('#info').fadeOut(200);
+	$('#loginOptions').fadeOut(200);
 	$('#loginForm').fadeOut(200, function() {
-		$('#loginLinks').fadeOut();
+		bindBuddyClick('main-Conversation');
+		$('#buddy-main-Conversation').click();
+		$('#conversationWrapper').fadeIn();
 		$('#version').fadeOut();
-		$('#options').fadeOut();
-		$('.button').fadeIn();
-		$('#buddyWrapper').slideDown('fast', function() {
-			var scrollWidth = document.getElementById('buddyList').scrollWidth;
-			$('#buddyList').css('width', (150 + scrollWidth) + 'px');
-			bindBuddyClick('main-Conversation');
-			$('#buddy-main-Conversation').click();
+		$('#optionButtons').fadeIn();
+		$('#footer').animate({'height': '60px'}, function() {
+			$('#userInput').fadeIn();
+		})
+		$('#buddyWrapper').slideDown(function() {
 			window.setTimeout(function() {
 				buddyNotifications = 1;
 			}, 5000);
@@ -1275,15 +1253,13 @@ function logout() {
 	buddyNotifications = 0;
 	Cryptocat.connection.muc.leave(Cryptocat.conversationName + '@' + Cryptocat.conferenceServer);
 	Cryptocat.connection.disconnect();
-	$('.button').fadeOut('fast');
-	$('#conversationInfo').slideUp();
-	$('#conversationInfo').text('');
+	$('#optionButtons').fadeOut(200);
 	$('#buddy-main-Conversation').attr('status', 'offline');
 	$('#userInput').fadeOut(function() {
 		$('#conversationWindow').slideUp(function() {
 			$('#buddyWrapper').slideUp();
 			if (!loginError) {
-				$('#loginInfo').animate({'color': '#FFF'}, 'fast');
+				$('#loginInfo').animate({'color': '#FFF'}, 200);
 				$('#loginInfo').text(Cryptocat.language['loginMessage']['thankYouUsing']);
 			}
 			$('#bubble').css({
@@ -1313,7 +1289,7 @@ function logout() {
 				$('#loginLinks').fadeIn();
 				$('#version').fadeIn();
 				$('#options').fadeIn();
-				$('#loginForm').fadeIn('fast', function() {
+				$('#loginForm').fadeIn(200, function() {
 					$('#conversationName').select();
 					$('#loginSubmit').removeAttr('readonly');
 				});
