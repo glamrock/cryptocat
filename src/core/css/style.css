@@ -564,6 +564,7 @@ CONVERSATION WINDOW
     height: 80%;
     margin-top: 1px;
 	display: none;
+	padding-top: 10px;
 }
 
 #conversationWindow {
@@ -602,28 +603,29 @@ CONVERSATION WINDOW
 	color: #97CEEC;
 }
 
-.Line1, .Line2, .Line3 {
+.line1, .line2, .line3 {
 	background: rgba(151, 206, 236, 0.35);
 	border-radius: 3px 0 3px 3px;
 	padding: 3px 8px;
 	word-wrap: break-word;
 	text-align: left;
     position: relative;
-	margin: 30px 0 16px 0;
+	top: 20px;
 	opacity: 0;
+	margin-bottom: 17px;
 	font-size: 0.95em;
 	max-width: 94.6%;
 }
 
-.Line2 {
+.line2 {
     background: rgba(151, 206, 236, 0.25);
 }
 
-.Line3 {
+.line3 {
 	background: rgba(151, 206, 236, 0.45);
 }
 
-.Line1:after, .Line2:after, .Line3:after {
+.line1:after, .line2:after, .line3:after {
 	content: ' ';
 	position: absolute;
 	width: 0;
@@ -632,24 +634,24 @@ CONVERSATION WINDOW
 	border: 8px solid;
 }
 
-.Line1:after {
+.line1:after {
 	left: 15px;
 	border-color: rgba(151, 206, 236, 0.35) transparent transparent;
 }
 
-.Line2:after {
+.line2:after {
 	right: 15px;
 	border-color: rgba(151, 206, 236, 0.25) transparent transparent transparent;
 }
 
-.Line3:after {
+.line3:after {
 	right: 15px;
 	border-color: rgba(151, 206, 236, 0.45) transparent transparent;	
 }
 
 .visibleLine {
 	opacity: 1;
-	margin-top: 20px;
+	top: 0;
 }
 
 #userInput {

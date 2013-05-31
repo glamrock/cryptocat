@@ -176,9 +176,7 @@ function switchConversation(buddy) {
 	buildConversationInfo(currentConversation);
 	$('#conversationWindow').fadeIn(200, function() {
 		scrollDownConversation(400);
-		$('#userInput').fadeIn(200, function() {
-			$('#userInputText').focus();
-		});
+		$('#userInputText').focus();
 	});
 	// Clean up finished conversations
 	$('#buddyList div').each(function() {
@@ -351,17 +349,15 @@ Cryptocat.addToConversation = function(message, sender, conversation, isFile) {
 	var timeStamp = '<span class="timeStamp">' + currentTime(0) + '</span>';
 	sender = '<span class="sender">' + Strophe.xmlescape(shortenString(sender, 16)) + '</span>';
 	if (conversation === currentConversation) {
-		message = '<div class="Line' + lineDecoration + '">' + timeStamp + sender + message + '</div>';
+		message = '<div class="line' + lineDecoration + '">' + timeStamp + sender + message + '</div>';
 		conversations[conversation] += message;
-		var width = $(window).width() - $('#buddyWrapper').width();
 		$('#conversationWindow').append(message);
-		$('.Line' + lineDecoration).last()
-			.css('width', width - 60)
-			.animate({'margin-top': '20px', 'opacity': '1'}, 200);
+		$('.line' + lineDecoration).last()
+			.animate({'top': '0', 'opacity': '1'}, 200);
 		scrollDownConversation(400);
 	}
 	else {
-		message = '<div class="Line' + lineDecoration + '">' + timeStamp + sender + message + '</div>';
+		message = '<div class="line' + lineDecoration + '">' + timeStamp + sender + message + '</div>';
 		conversations[conversation] += message;
 		iconNotify(conversation);
 	}
@@ -657,7 +653,7 @@ function bindBuddyClick(nickname) {
 		currentConversation = nickname;
 		initiateConversation(currentConversation);
 		$('#conversationWindow').html(conversations[currentConversation]);
-		$('.Line1, .Line2, .Line3').addClass('visibleLine');
+		$('.line1, .line2, .line3').addClass('visibleLine');
 		if (($(this).prev().attr('id') === 'buddiesOnline')
 			|| (($(this).prev().attr('id') === 'buddiesAway')
 			&& $('#buddiesOnline').next().attr('id') === 'buddiesAway')) {
@@ -1229,15 +1225,16 @@ function connected() {
 	$('#buddy-main-Conversation').attr('status', 'online');
 	$('#loginInfo').text('✓');
 	$('#info').fadeOut(200);
-	$('#loginOptions').fadeOut(200);
+	$('#loginOptions,#languages,#customServerDialog,#version').fadeOut(200);
 	$('#loginForm').fadeOut(200, function() {
 		bindBuddyClick('main-Conversation');
 		$('#buddy-main-Conversation').click();
 		$('#conversationWrapper').fadeIn();
-		$('#version').fadeOut();
 		$('#optionButtons').fadeIn();
-		$('#footer').animate({'height': '60px'}, function() {
-			$('#userInput').fadeIn();
+		$('#footer').delay(200).animate({'height': '60px'}, function() {
+			$('#userInput').fadeIn(200, function() {
+				$('#userInputText').focus();
+			});
 		})
 		$('#buddyWrapper').slideDown(function() {
 			window.setTimeout(function() {
