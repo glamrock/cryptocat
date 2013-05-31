@@ -40,7 +40,7 @@ Remember my nickname
 Don't remember my nickname
 Logout
 Display Info
-Send encrypted file
+Send file
 view image
 download file
 Conversation

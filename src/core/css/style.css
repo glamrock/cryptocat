@@ -331,6 +331,14 @@ BUDDY LIST
 	z-index: 15;
 }
 
+.onlineBuddy {
+	background: #97CEEC;
+}
+
+.awayBuddy {
+	background: #76BDE5;
+}
+
 .buddyMenu {
 	position: relative;
 	z-index: 2;

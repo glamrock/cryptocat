@@ -585,6 +585,7 @@ function handlePresence(presence) {
 	}
 	// Create buddy element if buddy is new
 	else if (!$('#buddy-' + nickname).length) {
+		console.log(presence);
 		addBuddy(nickname);
 	}
 	// Handle buddy status change to 'available'
@@ -633,21 +634,17 @@ function bindBuddyClick(nickname) {
 		}
 		if (currentConversation) {
 			var oldConversation = currentConversation;
-			if ($('#buddy-' + oldConversation).attr('status') === 'online') {
-				var placement = '#buddiesOnline';
-				var backgroundColor = '#72B1DB';
-				var color = '#FFF';
-			}
-			else if ($('#buddy-' + oldConversation).attr('status') === 'away') {
-				var placement = '#buddiesAway';
-				var backgroundColor = '#5588A5';
-				var color = '#FFF';
-			}
+			
 			$('#buddy-' + oldConversation).slideUp(200, function() {
-				$(this).css('background-color', backgroundColor);
-				$(this).css('color', color);
 				$(this).css('border-bottom', 'none');
-				$(this).insertAfter(placement).slideDown(200);
+				if ($('#buddy-' + oldConversation).attr('status') === 'online') {
+					$(this).insertAfter('#buddiesOnline')
+						.removeClass('awayBuddy').addClass('onlineBuddy').slideDown(200);
+				}
+				else if ($('#buddy-' + oldConversation).attr('status') === 'away') {
+					$(this).insertAfter('#buddiesAway')
+						.removeClass('onlineBuddy').addClass('awayBuddy').slideDown(200);
+				}
 			});
 		}
 		currentConversation = nickname;
@@ -1236,11 +1233,10 @@ function connected() {
 				$('#userInputText').focus();
 			});
 		})
-		$('#buddyWrapper').slideDown(function() {
-			window.setTimeout(function() {
-				buddyNotifications = 1;
-			}, 5000);
-		});
+		$('#buddyWrapper').slideDown();
+		window.setTimeout(function() {
+			buddyNotifications = 1;
+		}, 5000);
 	});
 	loginError = 0;
 }
@@ -1253,43 +1249,30 @@ function logout() {
 	$('#optionButtons').fadeOut(200);
 	$('#buddy-main-Conversation').attr('status', 'offline');
 	$('#userInput').fadeOut(function() {
-		$('#conversationWindow').slideUp(function() {
-			$('#buddyWrapper').slideUp();
+		$('#footer').animate({'height': '14px'});
+		$('#buddyWrapper').slideUp();
+		$('#conversationWindow').fadeOut(function() {
 			if (!loginError) {
 				$('#loginInfo').animate({'color': '#FFF'}, 200);
 				$('#loginInfo').text(Cryptocat.language['loginMessage']['thankYouUsing']);
 			}
-			$('#bubble').css({
-				'border-radius': '8px 0 8px 8px',
-				'margin': '0 auto'
+			$('#buddyList div').each(function() {
+				$(this).remove();
 			});
-			$('#bubble').animate({
-				'margin-top': '5%',
-				'height': '310px'
-			}).animate({'width': '680px'}, function() {
-				$('#buddyList div').each(function() {
-					if ($(this).attr('id') !== 'buddy-main-Conversation') {
-						$(this).remove();
-					}
-				});
-				$('#conversationWindow').text('');
-				otrKeys = {};
-				multiParty.reset();
-				conversations = {};
-				loginCredentials = [];
-				currentConversation = 0;
-				Cryptocat.connection = null;
-				if (!loginError) {
-					$('#conversationName').val('');
-				}
-				$('#info').fadeIn();
-				$('#loginLinks').fadeIn();
-				$('#version').fadeIn();
-				$('#options').fadeIn();
-				$('#loginForm').fadeIn(200, function() {
-					$('#conversationName').select();
-					$('#loginSubmit').removeAttr('readonly');
-				});
+			$('#conversationWindow').text('');
+			otrKeys = {};
+			multiParty.reset();
+			conversations = {};
+			loginCredentials = [];
+			currentConversation = 0;
+			Cryptocat.connection = null;
+			if (!loginError) {
+				$('#conversationName').val('');
+			}
+			$('#info,#loginOptions,#version').fadeIn();
+			$('#loginForm').fadeIn(200, function() {
+				$('#conversationName').select();
+				$('#loginSubmit').removeAttr('readonly');
 			});
 			$('.buddy').unbind('click');
 			$('.buddyMenu').unbind('click');
@@ -1312,5 +1295,21 @@ $(window).unload(function() {
 
 // Show main window.
 $('#bubble').show();
+
+// Resize windows automatically according to browser window
+$(window).resize(function() {
+	if ($(window).width() >= 1920 && $(window).height() >= 1080) {
+		window.parent.document.body.style.zoom = 1.8; return;
+	}
+	if ($(window).width() >= 1170 && $(window).height() >= 650) {
+		window.parent.document.body.style.zoom = 1.4; return;
+	}
+	if ($(window).width() >= 870 && $(window).height() >= 500) {
+		window.parent.document.body.style.zoom = 1.2; return;
+	}
+	else {
+		window.parent.document.body.style.zoom = 1
+	}
+}); $(window).resize();
 
 })}//:3
