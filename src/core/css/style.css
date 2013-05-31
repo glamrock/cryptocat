@@ -29,7 +29,7 @@ body {
 }
 
 a {
-	color: #97CEEC;
+	color: #76BDE5;
 	text-decoration: none;
 }
 
@@ -296,12 +296,12 @@ BUDDY LIST
 #buddyWrapper {
 	overflow: hidden;
 	width: 100px;
-	float: right;
-	height: 495px;
+	height: 382px;
 	display: none;
 	position: absolute;
 	right: 0;
-	top: 40px;
+	z-index: 1000;
+	top: 35px;
 }
 
 #buddyList {
@@ -310,6 +310,7 @@ BUDDY LIST
 	overflow-y: scroll;
 	overflow-x: hidden;
 	line-height: 13px;
+	z-index: 1000;
 }
 
 .buddy {
@@ -346,8 +347,11 @@ BUDDY LIST
 }
 
 .buddyMenu:hover {
-	background: #111;
-	box-shadow: 2px 2px #111;
+	background-color: #111;
+}
+
+.buddyMenu:active {
+	background-color: #000;
 }
 
 .buddyMenuContents {
@@ -366,10 +370,6 @@ BUDDY LIST
 
 .buddyMenuContents li:hover {
 	background: rgba(255, 255, 255, 0.4);
-}
-
-.buddyMenu:active {
-	background: #000;
 }
 
 #buddy-main-Conversation {
@@ -715,6 +715,7 @@ CONVERSATION WINDOW
 	background: #97CEEC;
 	width: 150px;
 	padding: 2px;
+	margin: 0 0 15px 0;
 	text-align: center;
 	color: #FFF;
 	border-radius: 5px 0 5px 5px;
