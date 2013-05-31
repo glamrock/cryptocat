@@ -6,6 +6,9 @@
 	"directories": {
 		"test": "test"
 	},
+	"dependencies": {
+		"express": "3.2.5"
+	},
 	"devDependencies": {
 		"lodash": "~1.1.1",
 		"mocha": "~1.8.2",
@@ -13,7 +16,8 @@
 		"sinon": "~1.6.0"
 	},
 	"scripts": {
-		"test": "mocha"
+		"test": "mocha",
+		"start": "node standalone-server.js"
 	},
 	"repository": {
 		"type": "git",
