@@ -134,14 +134,16 @@ div#bubble #optionButtons {
 	display: none;
 	float: right;
 	position: absolute;
-	top: 3px;
-	right: 8px;
+    top: 2px;
+	right: 7px;
 }
 
 div#bubble .button {
 	margin: 7px 0 0 7px;
 	width: 16px;
 	height: 16px;
+	border: 1px solid #F00;
+	border-radius: 5px 0 5px 5px;
 }
 
 div#bubble #loginForm {
@@ -581,7 +583,7 @@ CONVERSATION WINDOW
 	width: 102%;
 	font-family: 'Monda', 'Helvetica Neue', Arial, Helvetica, sans-serif;
 	position: relative;
-	font-size: 1.25em;
+	font-size: 1.15em;
 	overflow-x: hidden;
 	overflow-y: scroll;
 }
@@ -592,17 +594,17 @@ CONVERSATION WINDOW
 	font-size: 0.8em;
 	font-family: monospace;
 	vertical-align: 1px;
+	display: none;
 }
 
 #conversationWindow .sender {
 	padding: 5px;
 	font-size: 0.9em;
-	margin: 0 10px;
+	margin: 0 10px 0 0;
 	min-width: 50px;
 	display: inline-block;
 	text-align: center;
-	border-radius: 5px 0 5px 5px;
-	background: rgba(161, 206, 236, 0.7);
+	border-radius: 3px 0 0 3px;
 	color: #FFF;
 	padding: 2px;
 }
@@ -612,9 +614,10 @@ CONVERSATION WINDOW
 }
 
 .line1, .line2, .line3 {
-	background: rgba(151, 206, 236, 0.35);
+	box-shadow: 2px 2px #97CEEC;
+	border: 1px solid #97CEEC;
 	border-radius: 3px 0 3px 3px;
-	padding: 3px 8px;
+	padding: 0 8px 0 0;
 	word-wrap: break-word;
 	text-align: left;
     position: relative;
@@ -625,12 +628,16 @@ CONVERSATION WINDOW
 	max-width: 94.6%;
 }
 
-.line2 {
-    background: rgba(151, 206, 236, 0.25);
+.line1 .sender {
+    background: #97CEEC;
 }
 
-.line3 {
-	background: rgba(151, 206, 236, 0.45);
+.line2 .sender {
+    background: #87B9D4;
+}
+
+.line3 .sender {
+	background: #A8E0FF;
 }
 
 .line1:after, .line2:after, .line3:after {
@@ -643,18 +650,18 @@ CONVERSATION WINDOW
 }
 
 .line1:after {
-	left: 15px;
-	border-color: rgba(151, 206, 236, 0.35) transparent transparent;
+	left: 18px;
+	border-color: #97CEEC transparent transparent transparent;
 }
 
 .line2:after {
-	right: 15px;
-	border-color: rgba(151, 206, 236, 0.25) transparent transparent transparent;
+	right: 18px;
+	border-color: #87B9D4 transparent transparent transparent;
 }
 
 .line3:after {
-	right: 15px;
-	border-color: rgba(151, 206, 236, 0.45) transparent transparent;	
+	right: 18px;
+	border-color: #A8E0FF transparent transparent;	
 }
 
 .visibleLine {
