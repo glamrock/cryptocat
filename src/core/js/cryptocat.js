@@ -406,7 +406,7 @@ function buddyNotification(buddy, join) {
 	}
 	conversations['main-Conversation'] += status;
 	if (currentConversation === 'main-Conversation') {
-		conversations[currentConversation] += status;
+		$('#conversationWindow').append(status);
 	}
 	scrollDownConversation(400);
 	if (!document.hasFocus()) {
