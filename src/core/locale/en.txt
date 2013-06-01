@@ -5,7 +5,7 @@ Welcome to Cryptocat. Here are some helpful tips: <ul><li>Cryptocat is not a mag
 Blog
 Custom server
 Reset
-name your chat
+conversation name
 nickname
 connect
 Enter a name for your conversation and share it with people you'd like to talk to, or join <strong>lobby</strong> to meet new people!
@@ -40,7 +40,7 @@ Remember my nickname
 Don't remember my nickname
 Logout
 Display Info
-Send file
+Send encrypted file
 view image
 download file
 Conversation
