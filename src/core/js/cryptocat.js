@@ -1150,7 +1150,7 @@ function startConnection(join) {
 }
 
 // Registers a new user on the XMPP server, connects and join conversation.
-function connectXMPP(username, password, join) {
+function connectXMPP(username, password, connectAnimation) {
 	Cryptocat.connection = new Strophe.Connection(Cryptocat.bosh);
 	Cryptocat.connection.register.connect(Cryptocat.domain, function(status) {
 		if (status === Strophe.Status.REGISTER) {
@@ -1169,9 +1169,16 @@ function connectXMPP(username, password, join) {
 				else if (status === Strophe.Status.CONNECTED) {
 					Cryptocat.connection.ibb.addIBBHandler(Cryptocat.ibbHandler);
 					Cryptocat.connection.si_filetransfer.addFileHandler(Cryptocat.fileHandler);
-					if (join) {
-						connected();
-					}
+					Cryptocat.connection.muc.join(
+						Cryptocat.conversationName + '@' + Cryptocat.conferenceServer, Cryptocat.myNickname, 
+						function(message) {
+							if (handleMessage(message)) { return true }
+						},
+						function (presence) {
+							if (handlePresence(presence)) { return true }
+						}
+					);
+					if (connectAnimation) { connected() }
 				}
 				else if (status === Strophe.Status.CONNFAIL) {
 					if (!loginError) {
@@ -1198,17 +1205,10 @@ function connectXMPP(username, password, join) {
 	});
 }
 
+
 // Executes on successfully completed XMPP connection.
 function connected() {
-	Cryptocat.connection.muc.join(
-		Cryptocat.conversationName + '@' + Cryptocat.conferenceServer, Cryptocat.myNickname, 
-		function(message) {
-			if (handleMessage(message)) { return true }
-		},
-		function (presence) {
-			if (handlePresence(presence)) { return true }
-		}
-	);
+	
 	if (localStorageEnabled) {
 		localStorage.setItem('myNickname', Cryptocat.myNickname);
 	}
