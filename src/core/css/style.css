@@ -129,6 +129,7 @@ div#bubble #logoText {
 	margin: 1px 0 0 5px;
 	color: #97CEEC;
 	font-family: 'Logotype';
+	-webkit-font-smoothing: none;
 	font-size: 3.1em;
 	text-shadow: 2px 2px #45A7DD;
 }
