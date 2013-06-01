@@ -92,7 +92,7 @@ div#bubble {
 	z-index: 1;
 	width: 700px;
 	height: 500px;
-	margin: 2% auto 0 auto;
+	margin: 1% auto 0 auto;
 	background: #FFF;
 	border-radius: 15px 0 15px 15px;
 	box-shadow: 5px 5px #76BDE5;
@@ -622,7 +622,8 @@ CONVERSATION WINDOW
 	padding: 5px;
 	font-size: 0.9em;
 	margin: 0 10px 0 -4px;
-	min-width: 50px;
+	min-width: 70px;
+	cursor: default;
 	border-radius: 0 0 3px 0;
 	display: inline-block;
 	text-align: center;
@@ -653,7 +654,7 @@ CONVERSATION WINDOW
     box-shadow: 2px 2px #87B9D4;
     border-color: #87B9D4;
 }
-
+ 
 .line3 {
     box-shadow: 2px 2px #A8E0FF;
     border-color: #A8E0FF;
@@ -674,8 +675,6 @@ CONVERSATION WINDOW
 .line1:after, .line2:after, .line3:after {
 	content: ' ';
 	position: absolute;
-	width: 0;
-	height: 0;
 	top: 100%;
 	border: 10px solid;
 }

@@ -180,6 +180,7 @@ function switchConversation(buddy) {
 	}
 	buildConversationInfo(currentConversation);
 	$('#conversationWindow').fadeIn(200, function() {
+		bindTimestamps();
 		scrollDownConversation(400);
 		$('#userInputText').focus();
 	});
@@ -350,14 +351,14 @@ Cryptocat.addToConversation = function(message, sender, conversation, isFile) {
 		message = addEmoticons(message);
 	}
 	message = message.replace(/:/g, '&#58;');
-	var timeStamp = '<span class="timeStamp">' + currentTime(0) + '</span>';
-	sender = '<span class="sender">' + Strophe.xmlescape(shortenString(sender, 16)) + '</span>';
+	sender = '<span class="sender" sender="' + Strophe.xmlescape(shortenString(sender, 16)) + '"'
+		+ 'timestamp="' + currentTime(0) + '">' + Strophe.xmlescape(shortenString(sender, 16)) + '</span>';
 	if (conversation === currentConversation) {
-		message = '<div class="line' + lineDecoration + '">' + timeStamp + sender + message + '</div>';
+		message = '<div class="line' + lineDecoration + '">' + sender + message + '</div>';
 		conversations[conversation] += message;
 		$('#conversationWindow').append(message);
-		$('.line' + lineDecoration).last()
-			.animate({'top': '0', 'opacity': '1'}, 200);
+		$('.line' + lineDecoration).last().animate({'top': '0', 'opacity': '1'}, 200);
+		bindTimestamps();
 		scrollDownConversation(400);
 	}
 	else {
@@ -365,6 +366,17 @@ Cryptocat.addToConversation = function(message, sender, conversation, isFile) {
 		conversations[conversation] += message;
 		iconNotify(conversation);
 	}
+}
+
+// Bind timestamps to show when message sender is hovered
+function bindTimestamps() {
+	$('.sender').unbind('mouseenter,mouseleave');
+	$('.sender').mouseenter(function() {
+		$(this).text($(this).attr('timestamp'));
+	});
+	$('.sender').mouseleave(function() {
+		$(this).text($(this).attr('sender'));
+	});
 }
 
 function iconNotify(conversation) {
