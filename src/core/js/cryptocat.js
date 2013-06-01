@@ -516,7 +516,6 @@ function handleMessage(message) {
 
 // Handle incoming presence updates from the XMPP server.
 function handlePresence(presence) {
-	console.log(presence);
 	var nickname = cleanNickname($(presence).attr('from'));
 	// If invalid nickname, do not process
 	if ($(presence).attr('type') === 'error') {
@@ -586,6 +585,7 @@ function handlePresence(presence) {
 	}
 	// Create buddy element if buddy is new
 	else if (!$('#buddy-' + nickname).length) {
+		console.log(presence);
 		addBuddy(nickname);
 	}
 	// Handle buddy status change to 'available'
@@ -1303,6 +1303,9 @@ $(window).resize(function() {
 	}
 	if ($(window).width() >= 1170 && $(window).height() >= 650) {
 		window.parent.document.body.style.zoom = 1.4; return;
+	}
+	if ($(window).width() >= 870 && $(window).height() >= 500) {
+		window.parent.document.body.style.zoom = 1.2; return;
 	}
 	else {
 		window.parent.document.body.style.zoom = 1
