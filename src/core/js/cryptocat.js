@@ -48,9 +48,6 @@ $('#version').text(Cryptocat.version);
 // Seed RNG
 Cryptocat.setSeed(Cryptocat.generateSeed());
 
-// Make main window draggable, resizable
-$('#bubble').draggable();
-
 // Initialize language settings
 if (!localStorageEnabled) {
 	Language.set(window.navigator.language.toLowerCase());
