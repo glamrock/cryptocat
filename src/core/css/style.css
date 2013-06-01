@@ -600,11 +600,10 @@ CONVERSATION WINDOW
 #conversationWindow .sender {
 	padding: 5px;
 	font-size: 0.9em;
-	margin: 0 10px 0 0;
+	margin: 0 10px 0 -4px;
 	min-width: 50px;
 	display: inline-block;
 	text-align: center;
-	border-radius: 3px 0 0 3px;
 	color: #FFF;
 	padding: 2px;
 }
@@ -615,17 +614,27 @@ CONVERSATION WINDOW
 
 .line1, .line2, .line3 {
 	box-shadow: 2px 2px #97CEEC;
-	border: 1px solid #97CEEC;
+	border: 2px solid #97CEEC;
 	border-radius: 3px 0 3px 3px;
-	padding: 0 8px 0 0;
+	padding: 0 4px;
 	word-wrap: break-word;
 	text-align: left;
     position: relative;
 	top: 20px;
 	opacity: 0;
-	margin-bottom: 17px;
+	margin-bottom: 15px;
 	font-size: 0.95em;
 	max-width: 94.6%;
+}
+
+.line2 {
+    box-shadow: 2px 2px #87B9D4;
+    border-color: #87B9D4;
+}
+
+.line3 {
+    box-shadow: 2px 2px #A8E0FF;
+    border-color: #A8E0FF;
 }
 
 .line1 .sender {
@@ -646,7 +655,7 @@ CONVERSATION WINDOW
 	width: 0;
 	height: 0;
 	top: 100%;
-	border: 8px solid;
+	border: 10px solid;
 }
 
 .line1:after {
@@ -728,8 +737,9 @@ CONVERSATION WINDOW
 
 .userJoin, .userLeave {
 	background: #97CEEC;
-	width: 150px;
-	padding: 2px;
+	max-width: 120px;
+	box-shadow: 1px 1px #87B9D4;
+	display: block;
 	margin: 0 0 15px 0;
 	text-align: center;
 	color: #FFF;
@@ -739,6 +749,7 @@ CONVERSATION WINDOW
 
 .userLeave {
 	background: #F00;
+	box-shadow: 1px 1px #F00;
 }
 
 .userJoin strong, .userLeave strong {

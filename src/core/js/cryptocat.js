@@ -390,6 +390,7 @@ function desktopNotification(image, title, body, timeout) {
 // Add a join/part notification to the main conversation window.
 // If 'join === 1', shows join notification, otherwise shows part
 function buddyNotification(buddy, join) {
+	if (!buddyNotifications) { return false }
 	var status, audioNotification;
 	if (join) {
 		status = '<div class="userJoin"><strong>+</strong>' + buddy + '</div>';
@@ -435,14 +436,11 @@ function addBuddy(nickname) {
 			bindBuddyMenu(nickname);
 			bindBuddyClick(nickname);
 			// updateUserCount();
-			var sendPublicKey = multiParty.sendPublicKey(nickname);
 			Cryptocat.connection.muc.message(
 				Cryptocat.conversationName + '@' + Cryptocat.conferenceServer, null,
-				sendPublicKey, null
+				multiParty.sendPublicKey(nickname), null
 			);
-			if (buddyNotifications) {
-				buddyNotification(nickname, true);
-			}
+			buddyNotification(nickname, true);
 		});
 	});
 	$('#buddyList').dequeue();
@@ -472,9 +470,7 @@ function removeBuddy(nickname) {
 			});
 		}
 	}
-	if (buddyNotifications) {
-		buddyNotification(nickname, false);
-	}
+	buddyNotification(nickname, false);
 }
 
 // Handle nickname change (which may be done by non-Cryptocat XMPP clients)
@@ -516,6 +512,7 @@ function handleMessage(message) {
 
 // Handle incoming presence updates from the XMPP server.
 function handlePresence(presence) {
+	console.log(presence);
 	var nickname = cleanNickname($(presence).attr('from'));
 	// If invalid nickname, do not process
 	if ($(presence).attr('type') === 'error') {
@@ -585,7 +582,7 @@ function handlePresence(presence) {
 	}
 	// Create buddy element if buddy is new
 	else if (!$('#buddy-' + nickname).length) {
-		console.log(presence);
+		console.log('2 ' + presence);
 		addBuddy(nickname);
 	}
 	// Handle buddy status change to 'available'
@@ -1206,14 +1203,10 @@ function connected() {
 	Cryptocat.connection.muc.join(
 		Cryptocat.conversationName + '@' + Cryptocat.conferenceServer, Cryptocat.myNickname, 
 		function(message) {
-			if (handleMessage(message)) {
-				return true;
-			}
+			if (handleMessage(message)) { return true }
 		},
 		function (presence) {
-			if (handlePresence(presence)) {
-				return true;
-			}
+			if (handlePresence(presence)) { return true }
 		}
 	);
 	if (localStorageEnabled) {
@@ -1303,9 +1296,6 @@ $(window).resize(function() {
 	}
 	if ($(window).width() >= 1170 && $(window).height() >= 650) {
 		window.parent.document.body.style.zoom = 1.4; return;
-	}
-	if ($(window).width() >= 870 && $(window).height() >= 500) {
-		window.parent.document.body.style.zoom = 1.2; return;
 	}
 	else {
 		window.parent.document.body.style.zoom = 1
