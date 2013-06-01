@@ -302,17 +302,17 @@ BUDDY LIST
 #buddyWrapper {
 	overflow: hidden;
 	width: 107px;
-	height: 382px;
+	height: 447px;
 	display: none;
 	position: absolute;
 	right: 0;
 	z-index: 1000;
-	top: 39px;
+	top: 38px;
 }
 
 #buddyList {
-	height: 495px;
-	width: 110px;
+	height: 450px;
+	width: 140px;
 	overflow-y: scroll;
 	overflow-x: hidden;
 	line-height: 13px;
@@ -340,14 +340,6 @@ BUDDY LIST
 	z-index: 15;
 }
 
-.onlineBuddy {
-	background: #97CEEC;
-}
-
-.awayBuddy {
-	background: #76BDE5;
-}
-
 .buddyMenu {
 	position: relative;
 	z-index: 2;
@@ -360,11 +352,10 @@ BUDDY LIST
 	height: 14px;
 	cursor: pointer;
 	border-radius: 3px 0 3px 3px;
-	opacity: 0.8;
 }
 
 .buddyMenu:hover {
-	background-color: #111;
+	background-color: #97CEEC;
 }
 
 .buddyMenu:active {
@@ -386,12 +377,12 @@ BUDDY LIST
 }
 
 .buddyMenuContents li:hover {
-	background: rgba(255, 255, 255, 0.4);
+	background: rgba(255, 255, 255, 0.2);
 }
 
 #buddy-main-Conversation {
 	background-image: url("../img/groupChat.png");
-	background-position: 96% 1px;
+	background-position: 97% 3px;
 }
 
 /*

@@ -173,7 +173,7 @@ function buildConversationInfo(conversation) {
 // Switches the currently active conversation to `buddy'
 function switchConversation(buddy) {
 	if ($('#buddy-' + buddy).attr('status') !== 'offline') {
-		$('#' + buddy).animate({'background-color': '#97CEEC'});
+		$('#' + buddy).animate({'backgroundColor': '#000'});
 	}
 	if (buddy !== 'main-Conversation') {
 		$('#buddy-' + buddy).css('background-image', 'none');
@@ -368,7 +368,7 @@ Cryptocat.addToConversation = function(message, sender, conversation, isFile) {
 }
 
 function iconNotify(conversation) {
-	var backgroundColor = $('#buddy-' + conversation).css('background-color');
+	var backgroundColor = $('#buddy-' + conversation).css('backgroundColor');
 	$('#buddy-' + conversation).css('background-image', 'url("img/newMessage.png")');
 	$('#buddy-' + conversation)
 		.animate({'backgroundColor': '#A7D8F7'})
@@ -456,7 +456,6 @@ function removeBuddy(nickname) {
 			$('#buddy-' + nickname).animate({
 				'color': '#BBB',
 				'backgroundColor': '#222',
-				'borderLeftColor': '#111',
 				'borderBottom': 'none'
 			});
 		}
@@ -578,14 +577,14 @@ function handlePresence(presence) {
 	else if ($(presence).find('show').text() === '' || $(presence).find('show').text() === 'chat') {
 		if ($('#buddy-' + nickname).attr('status') !== 'online') {
 			var status = 'online';
-			var backgroundColor = '#72B1DB';
+			var backgroundColor = '#000';
 			var placement = '#buddiesOnline';
 		}
 	}
 	// Handle buddy status change to 'away'
 	else if ($('#buddy-' + nickname).attr('status') !== 'away') {
 			var status = 'away';
-			var backgroundColor = '#5588A5';
+			var backgroundColor = '#222';
 			var placement = '#buddiesAway';
 	}
 	// Perform status change
@@ -593,13 +592,10 @@ function handlePresence(presence) {
 	if (placement) {
 		$('#buddy-' + nickname).animate({
 			'color': '#FFF',
-			'backgroundColor': backgroundColor,
-			'borderLeftColor': '#97CEEC'
+			'backgroundColor': backgroundColor
 		});
 		if (currentConversation !== nickname) {
-			$('#buddy-' + nickname).slideUp(200, function() {
-				$(this).insertAfter(placement).slideDown(200);
-			});
+			$(this).insertAfter(placement).slideDown(200);
 		}
 	}
 	return true;
@@ -619,36 +615,30 @@ function bindBuddyClick(nickname) {
 			$(this).css('background-image', 'url("img/groupChat.png")');
 		}
 		if (currentConversation) {
-			var oldConversation = currentConversation;
-			
-			$('#buddy-' + oldConversation).slideUp(200, function() {
-				if ($('#buddy-' + oldConversation).attr('status') === 'online') {
-					$(this).insertAfter('#buddiesOnline')
-						.removeClass('awayBuddy').addClass('onlineBuddy').slideDown(200);
-				}
-				else if ($('#buddy-' + oldConversation).attr('status') === 'away') {
-					$(this).insertAfter('#buddiesAway')
-						.removeClass('onlineBuddy').addClass('awayBuddy').slideDown(200);
-				}
-			});
+			var previousConversation = currentConversation;
+			if ($('#buddy-' + previousConversation).attr('status') === 'online') {
+				$('#buddy-' + previousConversation).animate({'backgroundColor': '#000'});
+				$('#buddy-' + previousConversation).insertAfter('#buddiesOnline').slideDown(100);
+			}
+			else if ($('#buddy-' + previousConversation).attr('status') === 'away') {
+				$('#buddy-' + previousConversation).animate({'backgroundColor': '#222'});
+				$('#buddy-' + previousConversation).insertAfter('#buddiesAway').slideDown(100);
+			}
 		}
 		currentConversation = nickname;
 		initiateConversation(currentConversation);
 		$('#conversationWindow').html(conversations[currentConversation]);
 		$('.line1, .line2, .line3').addClass('visibleLine');
+		$(this).animate({'backgroundColor': '#97CEEC'});
 		if (($(this).prev().attr('id') === 'buddiesOnline')
 			|| (($(this).prev().attr('id') === 'buddiesAway')
 			&& $('#buddiesOnline').next().attr('id') === 'buddiesAway')) {
 			$(this).insertAfter('#currentConversation');
-			$(this).animate({'background-color': '#97CEEC'});
 			switchConversation(nickname);
 		}
 		else {
-			$(this).slideUp(200, function() {
-				$(this).insertAfter('#currentConversation').slideDown(200, function() {
-					$(this).animate({'background-color': '#97CEEC'});
-					switchConversation(nickname);
-				});
+			$(this).insertAfter('#currentConversation').slideDown(100, function() {
+				switchConversation(nickname);
 			});
 		}
 	});
@@ -1204,7 +1194,7 @@ function connected() {
 	$('#loginInfo').text('✓');
 	$('#info').fadeOut(200);
 	$('#loginOptions,#languages,#customServerDialog,#version,#logoText').fadeOut(200);
-	$('#header').animate({'background-color': '#000'});
+	$('#header').animate({'backgroundColor': '#000'});
 	$('.logo').animate({'margin-top': '-11px'});
 	$('#loginForm').fadeOut(200, function() {
 		$('#conversationInfo').fadeIn();
@@ -1231,7 +1221,7 @@ function logout() {
 	Cryptocat.connection.muc.leave(Cryptocat.conversationName + '@' + Cryptocat.conferenceServer);
 	Cryptocat.connection.disconnect();
 	$('#conversationInfo,#optionButtons').fadeOut();
-	$('#header').animate({'background-color': 'transparent'});
+	$('#header').animate({'backgroundColor': 'transparent'});
 	$('.logo').animate({'margin-top': '-5px'});
 	$('#buddyWrapper').slideUp();
 	$('.buddy').unbind('click');
