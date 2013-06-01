@@ -161,14 +161,19 @@ var iocb = function(buddy) {
 
 // Creates a template for the conversation info bar at the top of each conversation.
 function buildConversationInfo(conversation) {
-
+	$('.conversationName').text(Cryptocat.myNickname + '@' + Cryptocat.conversationName);
+	if (conversation === 'main-Conversation') {
+		$('#groupConversation').text(Cryptocat.language['chatWindow']['groupConversation']);
+	}
+	else {
+		$('#groupConversation').text('');
+	}
 }
 
 // Switches the currently active conversation to `buddy'
 function switchConversation(buddy) {
 	if ($('#buddy-' + buddy).attr('status') !== 'offline') {
 		$('#' + buddy).animate({'background-color': '#97CEEC'});
-		$('#buddy-' + buddy).css('border-bottom', '1px solid #72B1DB');
 	}
 	if (buddy !== 'main-Conversation') {
 		$('#buddy-' + buddy).css('background-image', 'none');
@@ -185,7 +190,6 @@ function switchConversation(buddy) {
 			&& ($(this).attr('status') === 'offline')) {
 			$(this).slideUp(500, function() {
 				$(this).remove();
-				// updateUserCount();
 			});
 		}
 	});
@@ -401,10 +405,9 @@ function buddyNotification(buddy, join) {
 		audioNotification = 'userOffline';
 	}
 	conversations['main-Conversation'] += status;
-	if (currentConversation !== 'main-Conversation') {
+	if (currentConversation === 'main-Conversation') {
 		conversations[currentConversation] += status;
 	}
-	$('#conversationWindow').append(status);
 	scrollDownConversation(400);
 	if (!document.hasFocus()) {
 		desktopNotification('img/keygen.gif', buddy, '', 0x1337);
@@ -414,28 +417,17 @@ function buddyNotification(buddy, join) {
 	}
 }
 
-// Update user count for display in conversation info bar.
-function updateUserCount() {
-	if ($('.conversationUserCount').text() !== $('.buddy').length.toString()) {
-		$('.conversationUserCount').animate({'color': '#70B9E0'}, function() {
-			$(this).text($('.buddy').length);
-			$(this).animate({'color': '#FFF'});
-		});	
-	}
-}
-
 // Build new buddy
 function addBuddy(nickname) {
 	$('#buddyList').queue(function() {
 		var buddyTemplate = '<div class="buddy" title="' + nickname + '" id="buddy-' 
-			+ nickname + '" status="online"><span>' + nickname + '</span>'
+			+ nickname + '" status="online"><span>' + shortenString(nickname, 14) + '</span>'
 			+ '<div class="buddyMenu" id="menu-' + nickname + '"></div></div>'
 		$(buddyTemplate).insertAfter('#buddiesOnline').slideDown(100, function() {
 			$('#buddy-' + nickname).unbind('click');
 			$('#menu-' + nickname).unbind('click');
 			bindBuddyMenu(nickname);
 			bindBuddyClick(nickname);
-			// updateUserCount();
 			Cryptocat.connection.muc.message(
 				Cryptocat.conversationName + '@' + Cryptocat.conferenceServer, null,
 				multiParty.sendPublicKey(nickname), null
@@ -457,7 +449,6 @@ function removeBuddy(nickname) {
 			&& ($('#buddy-' + nickname).css('background-image') === 'none')) {
 			$('#buddy-' + nickname).slideUp(500, function() {
 				$(this).remove();
-				// updateUserCount();
 			});
 		}
 		else {
@@ -512,7 +503,6 @@ function handleMessage(message) {
 
 // Handle incoming presence updates from the XMPP server.
 function handlePresence(presence) {
-	console.log(presence);
 	var nickname = cleanNickname($(presence).attr('from'));
 	// If invalid nickname, do not process
 	if ($(presence).attr('type') === 'error') {
@@ -582,7 +572,6 @@ function handlePresence(presence) {
 	}
 	// Create buddy element if buddy is new
 	else if (!$('#buddy-' + nickname).length) {
-		console.log('2 ' + presence);
 		addBuddy(nickname);
 	}
 	// Handle buddy status change to 'available'
@@ -633,7 +622,6 @@ function bindBuddyClick(nickname) {
 			var oldConversation = currentConversation;
 			
 			$('#buddy-' + oldConversation).slideUp(200, function() {
-				$(this).css('border-bottom', 'none');
 				if ($('#buddy-' + oldConversation).attr('status') === 'online') {
 					$(this).insertAfter('#buddiesOnline')
 						.removeClass('awayBuddy').addClass('onlineBuddy').slideDown(200);
@@ -995,6 +983,7 @@ $('#userInputText').keyup(function(e) {
 });
 $('#userInputSubmit').click(function() {
 	$('#userInput').submit();
+	$('#userInputText').select();
 });
 
 // Custom server dialog
@@ -1208,15 +1197,17 @@ function connectXMPP(username, password, connectAnimation) {
 
 // Executes on successfully completed XMPP connection.
 function connected() {
-	
 	if (localStorageEnabled) {
 		localStorage.setItem('myNickname', Cryptocat.myNickname);
 	}
 	$('#buddy-main-Conversation').attr('status', 'online');
 	$('#loginInfo').text('✓');
 	$('#info').fadeOut(200);
-	$('#loginOptions,#languages,#customServerDialog,#version').fadeOut(200);
+	$('#loginOptions,#languages,#customServerDialog,#version,#logoText').fadeOut(200);
+	$('#header').animate({'background-color': '#000'});
+	$('.logo').animate({'margin-top': '-11px'});
 	$('#loginForm').fadeOut(200, function() {
+		$('#conversationInfo').fadeIn();
 		bindBuddyClick('main-Conversation');
 		$('#buddy-main-Conversation').click();
 		$('#conversationWrapper').fadeIn();
@@ -1239,18 +1230,25 @@ function logout() {
 	buddyNotifications = 0;
 	Cryptocat.connection.muc.leave(Cryptocat.conversationName + '@' + Cryptocat.conferenceServer);
 	Cryptocat.connection.disconnect();
-	$('#optionButtons').fadeOut(200);
-	$('#buddy-main-Conversation').attr('status', 'offline');
+	$('#conversationInfo,#optionButtons').fadeOut();
+	$('#header').animate({'background-color': 'transparent'});
+	$('.logo').animate({'margin-top': '-5px'});
+	$('#buddyWrapper').slideUp();
+	$('.buddy').unbind('click');
+	$('.buddyMenu').unbind('click');
+	$('#buddy-main-Conversation').insertAfter('#buddiesOnline');
 	$('#userInput').fadeOut(function() {
+		$('#logoText').fadeIn();
 		$('#footer').animate({'height': '14px'});
-		$('#buddyWrapper').slideUp();
 		$('#conversationWindow').fadeOut(function() {
 			if (!loginError) {
 				$('#loginInfo').animate({'color': '#FFF'}, 200);
 				$('#loginInfo').text(Cryptocat.language['loginMessage']['thankYouUsing']);
 			}
 			$('#buddyList div').each(function() {
-				$(this).remove();
+				if ($(this).attr('id') !== 'buddy-main-Conversation') {
+					$(this).remove();
+				}
 			});
 			$('#conversationWindow').text('');
 			otrKeys = {};
@@ -1267,9 +1265,6 @@ function logout() {
 				$('#conversationName').select();
 				$('#loginSubmit').removeAttr('readonly');
 			});
-			$('.buddy').unbind('click');
-			$('.buddyMenu').unbind('click');
-			$('#buddy-main-Conversation').insertAfter('#buddiesOnline');
 		});
 	});
 }
@@ -1288,18 +1283,5 @@ $(window).unload(function() {
 
 // Show main window.
 $('#bubble').show();
-
-// Resize windows automatically according to browser window
-$(window).resize(function() {
-	if ($(window).width() >= 1920 && $(window).height() >= 1080) {
-		window.parent.document.body.style.zoom = 1.8; return;
-	}
-	if ($(window).width() >= 1170 && $(window).height() >= 650) {
-		window.parent.document.body.style.zoom = 1.4; return;
-	}
-	else {
-		window.parent.document.body.style.zoom = 1
-	}
-}); $(window).resize();
 
 })}//:3
