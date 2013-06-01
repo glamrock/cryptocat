@@ -592,8 +592,8 @@ CONVERSATION WINDOW
 #conversationWrapper {
 	width: 85%;
 	overflow: hidden;
-    height: 80%;
-    margin-top: 1px;
+    height: 89%;
+    margin-top: -5px;
 	display: none;
 	padding-top: 10px;
 }
