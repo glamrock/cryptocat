@@ -28,7 +28,7 @@ if (navigator.userAgent.match('Firefox')) {
 var otrKeys = {};
 var conversations = {};
 var loginCredentials = [];
-var currentConversation = 0;
+var currentConversation = null;
 var audioNotifications = 0;
 var desktopNotifications = 0;
 var buddyNotifications = 0;
@@ -217,7 +217,8 @@ function cleanNickname(nickname) {
 	var clean = nickname.match(/\/([\s\S]+)/);
 	if (clean) {
 		clean = Strophe.xmlescape(clean[1]);
-	} else {
+	}
+	else {
 		return false;
 	}
 	if (clean.match(/\W/)) {
@@ -359,7 +360,7 @@ Cryptocat.addToConversation = function(message, sender, conversation, isFile) {
 		scrollDownConversation(400);
 	}
 	else {
-		message = '<div class="line' + lineDecoration + '">' + timeStamp + sender + message + '</div>';
+		message = '<div class="line' + lineDecoration + '">' + sender + message + '</div>';
 		conversations[conversation] += message;
 		iconNotify(conversation);
 	}
@@ -538,8 +539,6 @@ function handlePresence(presence) {
 	// Add to otrKeys if necessary
 	if (nickname !== 'main-Conversation' && !otrKeys.hasOwnProperty(nickname)) {
 		var options = {
-		// 	fragment_size: 8192,
-		// 	send_interval: 400,
 			priv: myKey
 		};
 		otrKeys[nickname] = new OTR(options);
@@ -547,31 +546,31 @@ function handlePresence(presence) {
 		otrKeys[nickname].on('ui', uicb(nickname));
 		otrKeys[nickname].on('io', iocb(nickname));
 		otrKeys[nickname].on('error', function(err) {
-		console.log('OTR error: ' + err);
-	});
-	otrKeys[nickname].on('status', (function(nickname) {
-		return function(state) {
-			// close generating fingerprint dialog after AKE
-			if (otrKeys[nickname].genFingerCb
-			&& state === OTR.CONST.STATUS_AKE_SUCCESS) {
-				closeGenerateFingerprints(nickname, otrKeys[nickname].genFingerCb);
-				delete otrKeys[nickname].genFingerCb;
-			}
-		};
-	}(nickname)));
-	otrKeys[nickname].on('file', (function (nickname) {
-		return function(type, key, filename) {
+			console.log('OTR error: ' + err);
+		});
+		otrKeys[nickname].on('status', (function(nickname) {
+			return function(state) {
+				// close generating fingerprint dialog after AKE
+				if (otrKeys[nickname].genFingerCb
+				&& state === OTR.CONST.STATUS_AKE_SUCCESS) {
+					closeGenerateFingerprints(nickname, otrKeys[nickname].genFingerCb);
+					delete otrKeys[nickname].genFingerCb;
+				}
+			};
+		} (nickname)));
+		otrKeys[nickname].on('file', (function (nickname) {
+			return function(type, key, filename) {
 			// make two keys, for encrypt then mac
-			key = CryptoJS.SHA512(CryptoJS.enc.Latin1.parse(key));
-			key = key.toString(CryptoJS.enc.Latin1);
-			if (!Cryptocat.fileKeys[nickname]) {
-				Cryptocat.fileKeys[nickname] = {};
-			}
-			Cryptocat.fileKeys[nickname][filename] = [
-				key.substring(0, 32), key.substring(32)
-			];
-		};
-	})(nickname));
+				key = CryptoJS.SHA512(CryptoJS.enc.Latin1.parse(key));
+				key = key.toString(CryptoJS.enc.Latin1);
+				if (!Cryptocat.fileKeys[nickname]) {
+					Cryptocat.fileKeys[nickname] = {};
+				}
+				Cryptocat.fileKeys[nickname][filename] = [
+					key.substring(0, 32), key.substring(32)
+				];
+			};
+		}) (nickname));
 	}
 	// Detect buddy going offline
 	if ($(presence).attr('type') === 'unavailable') {
@@ -636,7 +635,7 @@ function bindBuddyClick(nickname) {
 		}
 		currentConversation = nickname;
 		initiateConversation(currentConversation);
-		switchConversation(nickname);
+		switchConversation(currentConversation);
 		$('#conversationWindow').html(conversations[currentConversation]);
 		$('.line1, .line2, .line3').addClass('visibleLine');
 		$(this).animate({'backgroundColor': '#97CEEC'});
@@ -806,10 +805,12 @@ function bindBuddyMenu(nickname) {
 // Send your current status to the XMPP server.
 function sendStatus() {
 	if (currentStatus === 'away') {
-		Cryptocat.connection.muc.setStatus(Cryptocat.conversationName + '@' + Cryptocat.conferenceServer, Cryptocat.myNickname, 'away', 'away');
+		Cryptocat.connection.muc.setStatus(Cryptocat.conversationName + '@' 
+		+ Cryptocat.conferenceServer, Cryptocat.myNickname, 'away', 'away');
 	}
 	else {
-		Cryptocat.connection.muc.setStatus(Cryptocat.conversationName + '@' + Cryptocat.conferenceServer, Cryptocat.myNickname, '', '');
+		Cryptocat.connection.muc.setStatus(Cryptocat.conversationName + '@' 
+		+ Cryptocat.conferenceServer, Cryptocat.myNickname, '', '');
 	}
 }
 
@@ -1253,7 +1254,7 @@ function logout() {
 			multiParty.reset();
 			conversations = {};
 			loginCredentials = [];
-			currentConversation = 0;
+			currentConversation = null;
 			Cryptocat.connection = null;
 			if (!loginError) {
 				$('#conversationName').val('');
