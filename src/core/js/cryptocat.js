@@ -636,6 +636,7 @@ function bindBuddyClick(nickname) {
 		}
 		currentConversation = nickname;
 		initiateConversation(currentConversation);
+		switchConversation(nickname);
 		$('#conversationWindow').html(conversations[currentConversation]);
 		$('.line1, .line2, .line3').addClass('visibleLine');
 		$(this).animate({'backgroundColor': '#97CEEC'});
@@ -643,12 +644,10 @@ function bindBuddyClick(nickname) {
 			|| (($(this).prev().attr('id') === 'buddiesAway')
 			&& $('#buddiesOnline').next().attr('id') === 'buddiesAway')) {
 			$(this).insertAfter('#currentConversation');
-			switchConversation(nickname);
+			
 		}
 		else {
-			$(this).insertAfter('#currentConversation').slideDown(100, function() {
-				switchConversation(nickname);
-			});
+			$(this).insertAfter('#currentConversation').slideDown(100);
 		}
 	});
 }
