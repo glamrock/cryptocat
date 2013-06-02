@@ -176,11 +176,10 @@ function switchConversation(buddy) {
 		$('#buddy-' + buddy).css('background-image', 'none');
 	}
 	buildConversationInfo(currentConversation);
-	$('#conversationWindow').fadeIn(200, function() {
-		bindTimestamps();
-		scrollDownConversation(400);
-		$('#userInputText').focus();
-	});
+	$('#conversationWindow').html(conversations[currentConversation]);
+	bindTimestamps();
+	scrollDownConversation(400);
+	$('#userInputText').focus();
 	// Clean up finished conversations
 	$('#buddyList div').each(function() {
 		if (($(this).attr('id') !== ('buddy-' + currentConversation))
@@ -636,7 +635,6 @@ function bindBuddyClick(nickname) {
 		currentConversation = nickname;
 		initiateConversation(currentConversation);
 		switchConversation(currentConversation);
-		$('#conversationWindow').html(conversations[currentConversation]);
 		$('.line1, .line2, .line3').addClass('visibleLine');
 		$(this).animate({'backgroundColor': '#97CEEC'});
 		if (($(this).prev().attr('id') === 'buddiesOnline')
@@ -824,7 +822,7 @@ function dialogBox(data, closeable, onAppear, onClose) {
 		$('#dialogBoxClose').css('font-size', '12px');
 	}
 	$('#dialogBoxContent').html(data);
-	$('#dialogBox').fadeIn(100, function() {
+	$('#dialogBox').fadeIn(200, function() {
 		if (onAppear) { onAppear() }
 	});
 	$('#dialogBoxClose').unbind('click').click(function(e) {
@@ -1219,7 +1217,7 @@ function connected() {
 		$('#buddyWrapper').slideDown();
 		window.setTimeout(function() {
 			buddyNotifications = 1;
-		}, 5000);
+		}, 9999);
 	});
 	loginError = 0;
 }
