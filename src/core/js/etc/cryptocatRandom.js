@@ -60,7 +60,7 @@ else {
 		var x, o = '';
 		while (o.length < 16) {
 			x = state.getBytes(1);
-			if (x[0] <= 250) {
+			if (x[0] < 250) {
 				o += x[0] % 10;
 			}
 		}
