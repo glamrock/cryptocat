@@ -118,9 +118,7 @@ function currentTime(seconds) {
 	var time = [];
 	time.push(date.getHours().toString());
 	time.push(date.getMinutes().toString());
-	if (seconds) {
-		time.push(date.getSeconds().toString());
-	}
+	if (seconds) { time.push(date.getSeconds().toString()); }
 	for (var just in time) {
 		if (time[just].length === 1) {
 			time[just] = '0' + time[just];
@@ -178,7 +176,9 @@ function switchConversation(buddy) {
 	buildConversationInfo(currentConversation);
 	$('#conversationWindow').html(conversations[currentConversation]);
 	bindTimestamps();
-	scrollDownConversation(400);
+	window.setTimeout(function() {
+		scrollDownConversation(400);
+	}, 200);
 	$('#userInputText').focus();
 	// Clean up finished conversations
 	$('#buddyList div').each(function() {
@@ -349,7 +349,7 @@ Cryptocat.addToConversation = function(message, sender, conversation, isFile) {
 	}
 	message = message.replace(/:/g, '&#58;');
 	sender = '<span class="sender" sender="' + Strophe.xmlescape(shortenString(sender, 16)) + '"'
-		+ 'timestamp="' + currentTime(0) + '">' + Strophe.xmlescape(shortenString(sender, 16)) + '</span>';
+		+ 'timestamp="' + currentTime(1) + '">' + Strophe.xmlescape(shortenString(sender, 16)) + '</span>';
 	if (conversation === currentConversation) {
 		message = '<div class="line' + lineDecoration + '">' + sender + message + '</div>';
 		conversations[conversation] += message;

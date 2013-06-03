@@ -604,7 +604,7 @@ CONVERSATION WINDOW
 #conversationWindow {
 	z-index: 3;
 	height: 100%;
-	width: 102%;
+	width: 104%;
 	font-family: 'Monda', 'Helvetica Neue', Arial, Helvetica, sans-serif;
 	position: relative;
 	font-size: 1.15em;
@@ -650,7 +650,7 @@ CONVERSATION WINDOW
 	opacity: 0;
 	margin-bottom: 15px;
 	font-size: 0.95em;
-	max-width: 95%;
+	max-width: 93.9%;
 }
 
 .line2 {
