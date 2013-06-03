@@ -170,7 +170,7 @@ function buildConversationInfo(conversation) {
 // Switches the currently active conversation to `buddy'
 function switchConversation(buddy) {
 	if ($('#buddy-' + buddy).attr('status') !== 'offline') {
-		$('#' + buddy).animate({'backgroundColor': '#000'});
+		$('#' + buddy).animate({'backgroundColor': '#151520'});
 	}
 	if (buddy !== 'main-Conversation') {
 		$('#buddy-' + buddy).css('background-image', 'none');
@@ -584,7 +584,7 @@ function handlePresence(presence) {
 	else if ($(presence).find('show').text() === '' || $(presence).find('show').text() === 'chat') {
 		if ($('#buddy-' + nickname).attr('status') !== 'online') {
 			var status = 'online';
-			var backgroundColor = '#000';
+			var backgroundColor = '#151520';
 			var placement = '#buddiesOnline';
 		}
 	}
@@ -624,7 +624,7 @@ function bindBuddyClick(nickname) {
 		if (currentConversation) {
 			var previousConversation = currentConversation;
 			if ($('#buddy-' + previousConversation).attr('status') === 'online') {
-				$('#buddy-' + previousConversation).animate({'backgroundColor': '#000'});
+				$('#buddy-' + previousConversation).animate({'backgroundColor': '#151520'});
 				$('#buddy-' + previousConversation).insertAfter('#buddiesOnline').slideDown(100);
 			}
 			else if ($('#buddy-' + previousConversation).attr('status') === 'away') {
@@ -1201,7 +1201,7 @@ function connected() {
 	$('#loginInfo').text('✓');
 	$('#info').fadeOut(200);
 	$('#loginOptions,#languages,#customServerDialog,#version,#logoText').fadeOut(200);
-	$('#header').animate({'backgroundColor': '#000'});
+	$('#header').animate({'backgroundColor': '#151520'});
 	$('.logo').animate({'margin-top': '-11px'});
 	$('#loginForm').fadeOut(200, function() {
 		$('#conversationInfo').fadeIn();

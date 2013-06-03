@@ -96,7 +96,7 @@ div#bubble {
 	background: #FFF;
 	border-radius: 15px 0 15px 15px;
 	box-shadow: 5px 5px #76BDE5;
-	border: 10px solid #080816;
+	border: 10px solid #151520;
 	padding: 0 8px 50px 8px;
 	display: none;
 }
@@ -232,7 +232,7 @@ div#bubble h1 {
 }
 
 div#bubble #footer {
-	background: #080816;
+	background: #151520;
 	width: 100%;
 	height: 14px;
 	padding: 1px 0 2px 2px;
@@ -243,6 +243,10 @@ div#bubble #footer {
 	font-weight: bold;
 	font-size: 1.1em;
 	z-index: 20;
+}
+
+div#footer a {
+    color: #97CEEC;
 }
 
 div#footer #version {
@@ -273,7 +277,6 @@ div#customServerDialog [type=button] {
 }
 
 div#footer #languageSelect {
-	color: #97CEEC;
 	margin: 0 10px;
 	float: right;
 }
@@ -321,7 +324,7 @@ BUDDY LIST
 
 .buddy {
 	background: #76BDE5;
-	background: #000;
+	background: #151520;
 	border-radius: 2px 0 0 2px;
 	margin-top: 2px;
 	background-position: 80% 4px;
@@ -359,7 +362,7 @@ BUDDY LIST
 }
 
 .buddyMenu:active {
-	background-color: #000;
+	background-color: #151520;
 }
 
 .buddyMenuContents {
@@ -407,7 +410,7 @@ DIALOG BOX
 	box-shadow: 3px 3px #97CEEC;
 	top: -20px;
 	display: none;
-	color: #000;
+	color: #151520;
 	font-family: monospace;
 }
 
@@ -509,7 +512,7 @@ DIALOG BOX
 }
 
 #dialogBox [type=text], #dialogBox [type=password], #dialogBox [type=submit] {
-	background: #000;
+	background: #151520;
 	border: 1px solid #222;
 	color: #FFF;
 	float: left;
@@ -519,7 +522,7 @@ DIALOG BOX
 }
 
 #dialogBox #resetKeysOK {
-	background: #000;
+	background: #151520;
 	border: 1px solid #97CEEC;
 	color: #97CEEC;
 	margin: 0 auto;
@@ -610,7 +613,7 @@ CONVERSATION WINDOW
 }
 
 #conversationWindow .timeStamp {
-	color: #000;
+	color: #151520;
 	text-shadow: 1px 1px #CCC;
 	font-size: 0.8em;
 	font-family: monospace;
@@ -717,7 +720,7 @@ CONVERSATION WINDOW
 	text-align: left;
 	resize: none;
 	overflow: hidden;
-	border: 1px solid #383838;
+	border: 1px solid #353535;
 }
 
 #userInputSend {
@@ -738,7 +741,7 @@ CONVERSATION WINDOW
 }
 
 #userInputSend:active {
-    text-shadow: 3px 2px #76BDE5, -1px -1px #000;
+    text-shadow: 3px 2px #76BDE5, -1px -1px #151520;
 }
 
 .fileView {
