@@ -90,30 +90,27 @@ MAIN WINDOW (BUBBLE)
 div#bubble {
 	position: relative;
 	z-index: 1;
-	width: 700px;
+	width: 716px;
 	height: 500px;
 	margin: 1% auto 0 auto;
 	background: #FFF;
 	border-radius: 15px 0 15px 15px;
 	box-shadow: 5px 5px #76BDE5;
 	border: 10px solid #151520;
-	padding: 0 8px 50px 8px;
+	padding: 0 0 50px 0;
 	display: none;
 }
 
 div#bubble div#header {
-	width: 102.5%;
+	width: 100%;
 	height: 28px;
-	margin: 0 0 0 -6px;
 	padding: 8px 0 0 0;
-	position: relative;
-	right: 2px;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	cursor: default;
 	user-select: none;
 	-moz-user-select: none;
-	
+	direction: ltr;
 }
 
 div#bubble img.logo {
@@ -121,12 +118,12 @@ div#bubble img.logo {
 	padding: 1px 0 0 5px;
 	float: left;
 	height: 34px;
-	margin-top: -5px;
+	margin: -5px 5px 0 5px;
+	direction: ltr;
 }
 
 div#bubble #logoText {
 	display: inline-block;
-	margin: 1px 0 0 5px;
 	color: #97CEEC;
 	font-family: 'Logotype';
 	-webkit-font-smoothing: none;
@@ -171,7 +168,7 @@ div#bubble #loginForm [type=text] {
 div#bubble #loginForm #nickname {
 	width: 250px;
 	font-size: 2em;
-	margin: 0 0 0 143px;
+	margin: 0 0 0 151px;
 	display: inline;
 }
 
@@ -264,7 +261,7 @@ a#customServer {
 
 div#customServerDialog {
 	display: none;
-	margin: 40px 190px;
+	margin: 40px 225px;
 }
 
 div#customServerDialog input {
@@ -515,7 +512,6 @@ DIALOG BOX
 	padding: 5px 20px 5px 10px;
 	border-left: none;
 	background: #97CEEC;
-	border-radius: 0 0 4px 0;
 	max-width: 175px;
 	margin-bottom: 20px;
 	color: #FFF;
@@ -619,10 +615,13 @@ CONVERSATION WINDOW
 #conversationWrapper {
 	width: 85%;
 	overflow: hidden;
-    height: 89%;
+    height: 80%;
     margin-top: -5px;
 	display: none;
-	padding-top: 10px;
+	padding: 10px 8px 0 8px;
+	direction: ltr;
+	position: absolute;
+	left: 0;
 }
 
 #conversationWindow {
@@ -674,7 +673,7 @@ CONVERSATION WINDOW
 	opacity: 0;
 	margin-bottom: 15px;
 	font-size: 0.95em;
-	max-width: 93.9%;
+	max-width: 92.0%;
 }
 
 .line2 {
@@ -735,7 +734,7 @@ CONVERSATION WINDOW
 	border-radius: 7px 0 0 7px;
 	padding: 8px 10px;
 	height: 32px;
-	width: 80.5%;
+	width: 578px;
 	margin: 10px 0 7px 0;
 	display: inline;
 	box-shadow: none;
@@ -752,7 +751,7 @@ CONVERSATION WINDOW
     height: 48px;
     position: relative;
     bottom: 25px;
-    margin-left: 10px;
+    margin: 0 5px;
     border-radius: 0px 0 7px 0px;
     font-size: 1.8em;
     text-shadow: 3px 2px #76BDE5;
