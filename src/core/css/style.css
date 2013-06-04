@@ -135,7 +135,7 @@ div#bubble #optionButtons {
 	display: none;
 	float: right;
 	position: absolute;
-    top: -1px;
+	top: -1px;
 	right: 2px;
 }
 
@@ -243,7 +243,7 @@ div#bubble #footer {
 }
 
 div#footer a {
-    color: #97CEEC;
+	color: #97CEEC;
 }
 
 div#footer #version {
@@ -522,15 +522,15 @@ DIALOG BOX
 }
 
 #dialogBox #fileSelectButton {
-    margin: 0 auto;
-    padding: 10px;
-    border-radius: 4px 0 4px 4px;
-    font-size: 1.2em;
+	margin: 30px auto 10px auto;
+	padding: 10px;
+	border-radius: 4px 0 4px 4px;
+	font-size: 1.2em;
 }
 
 #dialogBox #fileInfoField {
-    color: #444;
-    font-family: 'Monda'
+	color: #444;
+	font-family: 'Monda'
 }
 
 #dialogBox [type=text], #dialogBox [type=password], #dialogBox [type=submit] {
@@ -592,33 +592,33 @@ CONVERSATION WINDOW
 */
 
 #conversationInfo {
-    color: #FFF;
-    font-family: 'Monda';
-    font-size: 1em;
-    margin: 0 0 0 20px;
-    position: relative;
-    bottom: 4px;
+	color: #FFF;
+	font-family: 'Monda';
+	font-size: 1em;
+	margin: 0 0 0 20px;
+	position: relative;
+	bottom: 4px;
 	display: none;
 }
 
 #conversationInfo .conversationName {
-    color: #FFF;
-    background: #97CEEC;
-    padding: 2px 7px;
-    border-radius: 3px 0 3px 3px;
-    font-size: 1.1em;
+	color: #FFF;
+	background: #97CEEC;
+	padding: 2px 7px;
+	border-radius: 3px 0 3px 3px;
+	font-size: 1.1em;
 }
 
 #conversationInfo #groupConversation {
-    float: right;
-    margin: -5px 120px 0 0;
+	float: right;
+	margin: -5px 120px 0 0;
 }
 
 #conversationWrapper {
 	width: 85%;
 	overflow: hidden;
-    height: 80%;
-    margin-top: -5px;
+	height: 80%;
+	margin-top: -5px;
 	display: none;
 	padding: 10px 8px 0 8px;
 	direction: ltr;
@@ -648,9 +648,9 @@ CONVERSATION WINDOW
 
 #conversationWindow .sender {
 	padding: 5px;
-	font-size: 0.95em;
+	font-size: 0.9em;
 	margin: 0 10px 0 -4px;
-	min-width: 75px;
+	min-width: 70px;
 	cursor: default;
 	border-radius: 0 0 3px 0;
 	display: inline-block;
@@ -670,30 +670,30 @@ CONVERSATION WINDOW
 	padding: 0 4px;
 	word-wrap: break-word;
 	text-align: left;
-    position: relative;
+	position: relative;
 	top: 20px;
 	opacity: 0;
 	margin-bottom: 15px;
-	font-size: 1em;
+	font-size: 0.95em;
 	max-width: 92.0%;
 }
 
 .line2 {
-    box-shadow: 2px 2px #87B9D4;
-    border-color: #87B9D4;
+	box-shadow: 2px 2px #87B9D4;
+	border-color: #87B9D4;
 }
  
 .line3 {
-    box-shadow: 2px 2px #A8E0FF;
-    border-color: #A8E0FF;
+	box-shadow: 2px 2px #A8E0FF;
+	border-color: #A8E0FF;
 }
 
 .line1 .sender {
-    background: #97CEEC;
+	background: #97CEEC;
 }
 
 .line2 .sender {
-    background: #87B9D4;
+	background: #87B9D4;
 }
 
 .line3 .sender {
@@ -749,24 +749,24 @@ CONVERSATION WINDOW
 }
 
 #userInputSend {
-    width: 102px;
-    height: 48px;
-    position: relative;
-    bottom: 25px;
-    margin: 0 5px;
-    border-radius: 0px 0 7px 0px;
-    font-size: 1.8em;
-    text-shadow: 3px 2px #76BDE5;
-    box-shadow: 2px 2px #76BDE5;
-    display: inline;
+	width: 102px;
+	height: 48px;
+	position: relative;
+	bottom: 25px;
+	margin: 0 5px;
+	border-radius: 0px 0 7px 0px;
+	font-size: 1.8em;
+	text-shadow: 3px 2px #76BDE5;
+	box-shadow: 2px 2px #76BDE5;
+	display: inline;
 }
 
 #userInputSend:hover {
-    text-shadow: 3px 2px #76BDE5, -1px -1px #999;
+	text-shadow: 3px 2px #76BDE5, -1px -1px #999;
 }
 
 #userInputSend:active {
-    text-shadow: 3px 2px #76BDE5, -1px -1px #151520;
+	text-shadow: 3px 2px #76BDE5, -1px -1px #151520;
 }
 
 .fileView {
