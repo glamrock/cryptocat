@@ -1,9 +1,9 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Conversa privada para todos.
-Bem vindo ao Cryptocat. Algumas dicas úteis: <ul><li> Cryptocat não é mágica. Além disso, você nunca deve confiar completamente em nenhum software.</li><li>O Cryptocat não pode proteger você de pessoas não confiáveis ou rastreadores de teclado e não torna a sua conexão anônima. </li></ul>
+Bem vindo ao Cryptocat. Algumas dicas úteis: <ul><li> Cryptocat não é mágica. Além disso, você nunca deve confiar completamente em nenhum software.</li><li class="key">Cryptocat não pode proteger você de pessoas não confiáveis ou rastreadores de teclado e não torna a sua conexão anônima. </li></ul>
 Blog
-Servidor personalizado...
+Servidor
 Redefinir
 nome da conversa
 nome
@@ -13,8 +13,8 @@ Digite o nome da conversa para participar.
 Digite um nome da conversa, por favor.
 O nome da conversa tem de ser alfanumérico
 Digite um nome, por favor.
-O nickname tem de ser alfanumérico
-Nickname em uso.
+O seu nome tem de ser alfanumérico
+Nome em uso.
 A autenticação falhou.
 Conexão falhou.
 Obrigado por ter usado o Cryptocat.
@@ -28,7 +28,7 @@ Impressao digital OTR (para conversas privadas):
 Impressão digital de conversa de grupo:
 Redefinir minhas chaves de encriptação.
 Redefinir suas chaves de encriptação irá desconectá-lo. As suas impressões digitais também serão modificadas.
-Continuar.
+Continuar
 Status: Disponível
 Status: Ausente
 Minhas informações
@@ -44,7 +44,7 @@ Enviar arquivo encriptado
 Ver imagem
 baixar documento
 Conversa
-Apenas arquivos de extensão ZIP e imagens são permitidos, com tamanho máximo de (SIZE) MB.
+Apenas arquivos de extensão ZIP e imagens são permitidos, com tamanho máximo de  (SIZE) MB.
 Erro: Por favor, verifique se o arquivo possui extensão ZIP ou uma imagem.
 Erro: O Arquivo não pode ser maior do que (SIZE) MB.
 Início da vídeo-conferência

@@ -1,15 +1,15 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
-Conversations Privées Pour Tout le Monde.
-Bienvenue sur Cryptocat. Voici quelques conseils utiles : <ul><li>Cryptocat n'est pas une solution miracle. Vous ne devriez jamais faire confiance à un morceau de logiciel dans votre vie.</li><li>Cryptocat ne peut pas vous protéger contre les personnes peu fiables, les enregistreurs de frappe et ne peut pas rendre votre connexion anonyme.</li></ul>
+Conversations privées pour tout le monde.
+Bienvenue sur Cryptocat. Voici quelques conseils utiles: <ul><li>Cryptocat n'est pas une solution miracle. Vous ne devriez jamais faire confiance à aucun morceau de logiciel avec votre vie.</li><li class="key">Cryptocat ne peut pas vous protéger contre des personnes peu fiables, des enregistreurs, et ne peut pas anonymiser votre connexion.</li></ul>
 Blog
-Serveur dédié...
-Remonter
+Serveur dédié
+Réinitialiser
 nom de la conversation
 pseudonyme
 connexion
 Entrez un nom pour votre conversation et envoyez-le aux gens avec qui vous souhaitez parler ou rejoignez <strong>lobby</strong> pour faire de nouvelles rencontres.
-Entrez le nom d'une conversation à rejoindre.
+Saisissez le nom d'une conversation à rejoindre.
 Entrez un nom de conversation s'il vous plaît.
 Le nom de conversation doit être au format alphanumérique.
 Entrez un pseudonyme s'il vous plaît.
@@ -18,11 +18,11 @@ Ce pseudonyme est déjà utilisé.
 Erreur d'authentification.
 La connexion a échouée.
 Merci d'avoir utilisé Cryptocat.
-Enregistrement...
-Connexion...
+Enregistrement ...
+Connexion ...
 Connecté.
 Veuillez taper sur votre clavier d'une manière aléatoire pendant quelques secondes.
-Génération de clés de chiffrement...
+Génération des clés de chiffrement...
 Conversation de groupe. Cliquez sur un utilisateur pour commencer une conversation privée.
 Signature OTR (pour les conversations privées) :
 Signature de la conversation de groupe :
@@ -32,10 +32,10 @@ Continuer
 Statut : Disponible
 Statut : Non Disponible
 Mes Informations
-Notifications Visibles
-Pas de Notifications Visibles
+Notifications visibles
+Aucune notification visible
 Notifications Audio
-Pas de Notifications Audio
+Aucune notification audio
 Se souvenir de mon pseudonyme
 Ne pas sauvegarder mon pseudonyme
 Déconnexion
@@ -44,10 +44,10 @@ Envoyer un fichier chiffré
 afficher l'image
 télécharger le fichier
 Conversation
-Seuls les fichiers ZIP et les images sont acceptées. Taille maximale: (SIZE) MB.
+Seuls les fichiers ZIP et les images sont acceptées. Taille maximale:  (SIZE) MB.
 Erreur : Veuillez vérifier que le fichier soit bien un ZIP ou une image.
 Erreur : Le fichier ne peut pas dépasser (SIZE) MB.
-Visioconférence démarrée
-Fin de la visioconférence
+Démarrer la visioconférence
+Terminer la visioconférence
 (NICKNAME) aimerait démarrer une visioconférence avec vous.
 Annuler

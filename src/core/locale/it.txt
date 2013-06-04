@@ -1,9 +1,9 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Conversazioni Private per Tutti.
-Benvenuti a Cryptocat. Ecco alcuni consigli:<ul><li> Cryptocat non è una cosa magica. Non si dovrebbe mai fidarsi ogni software.</li><li> Cryptocat non in grado di proteggere contra tutto le persone inaffidabili, keyloggers e no mantiene a tu anonimo durante la navigazione. </li></ ul>
+Benvenuti a Cryptocat. Ecco alcuni consigli:<ul><li> Cryptocat non è una cosa magica. Non si dovrebbe mai fidarsi ogni software.</li><li class="key"> Cryptocat non in grado di proteggere contra tutto le persone inaffidabili, keyloggers e no mantiene a tu anonimo durante la navigazione. </li></ ul>
 Blog
-Server personalizzato...
+Server personalizzato
 Azzera
 nome conversazione
 nickname

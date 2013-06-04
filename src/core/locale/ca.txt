@@ -1,9 +1,9 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Converses privades per a tothom.
-Benvingut a Cryptocat. Aquests són alguns consells útils:<ul><li>Cryptocat no és una solució màgica. Mai deixis la teva vida en mans d'un programa.</li> <li> Cryptocat no et protegeix contra persones dolentes ni keyloggers, i no anonimitza la teva connexió.</li></ul>
+Benvingut a Cryptocat. Aquests són alguns consells útils: <ul> <li> Cryptocat no és una solució màgica. Vostè hauria never trust qualsevol peça de programari amb el seu vida. </li> <li class="key"> Cryptocat no pot protegir-se contra les persones dignes de confiança, loggers clau i no anonymize la connexió. </li> </ul>
 Bloc
-Servidor personalitzat...
+Servidor personalitzat
 Reinicia
 nom de la conversa
 nom d'usuari
@@ -29,8 +29,8 @@ Empremta de conversa de grup:
 Reinicia les meves claus de xifrat
 Reiniciar les teves claus de xifrat et desconnectarà. La teva emprempta digital també canviarà.
 Continua
-Estatus: Disponible
-Estatus: Absent
+Estat: Disponible
+Estat: Absent
 La meva informació
 Notificacions d'escriptori activades
 Notificacions d'escriptori desactivades

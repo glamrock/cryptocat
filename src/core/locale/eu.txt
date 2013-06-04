@@ -1,9 +1,9 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Elkarrizketa pribatuak edonorentzat.
-Ongi etorri Cryptocat-era. Hona hemen aholku erabilgarri batzuk:<ul><li>Cryptocat ez da konponbide perfektua. Ez ezazu inoiz jarri zure bizitza software baten esku.</li><li>Cryptocat-ek ezin zaitu babestu pertsona ez fidagarri edo key logger-en aurka eta ez du zure konexioa anonimo bihurtzen</li></ul>
+Ongi etorri Crytocat-era. Hona hemen aholku erabilgarri batzuk:<ul><li>Cryptocat ez da konponbide perfektua. Ez ezazu inoiz jarri zure bizitza software baten esku.</li><li class="key">Cryptocat-ek ezin zaitu babestu pertsona ez fidagarri edo key logger-en aurka eta ez du zure konexioa anonimo bihurtzen</li></ul>
 Bloga
-Zerbitzari pertsonalizatua...
+Zerbitzari pertsonalizatua
 Berrezarri
 elkarrizketa-izena
 goitizena
@@ -44,7 +44,7 @@ Bidali fitxategi zifratua
 ikusi irudia
 deskargatu fitxategia
 Elkarrizketa
-ZIP fitxategiak eta irudiak bakarrik onartzen dira. Fitxategi-tamaina maximoa: (SIZE) MB.
+ZIP fitxategiak eta irudiak bakarrik onartzen dira. Fitxategi-tamaina maximoa:  (SIZE) MB.
 Errorea: Egiazta ezazu fitxategia ZIP motakoa edo irudia dela.
 Errorea: Fitxategia ezin da izan (SIZE) MB baino handiagoa.
 Hasi bideo-elkarrizketa

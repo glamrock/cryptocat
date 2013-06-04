@@ -1,7 +1,7 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Conversaciones privadas para todos.
-Bienvenido a Cryptocat. Aqui tiene algunos consejos: <ul><li>Cryptocat no es un remedio magico. Usted nunca debería poner su vida entre las manos de algún software.</li><li>Cryptocat no le puede protejer contra personnas indignas de confianza, key loggers, y no anonimiza su conexión.</li></ul>
+Bienvenido a Cryptocat. Aqui tiene algunos consejos: <ul><li>Cryptocat no es un remedio magico. Usted nunca debería poner su vida entre las manos de algún software.</li><li class="key">Cryptocat no le puede protejer contra personnas indignas de confianza, key loggers, y no anonimiza su conexión.</li></ul>
 Blog
 Servidor personalizado
 Reiniciar
@@ -44,9 +44,9 @@ Enviar archivo encriptado
 ver imagen
 descargar archivo
 Conversación
-Solo archivos compimidos, ZIP, e imagines son aceptados. El tamano maximo del archivo es: (SIZE) MB.
+Solo se aceptan archivos ZIP e imágenes. Tamaño máximo: (SIZE) MB.
 Error: Por favor asegura que tu archivo es un archivo comprimido, ZIP, o una imagen.
-Error: El archivo no puede ser mas grande de (SIZE) MB.
+Error: El archivo no puede ser más grande que (SIZE) MB.
 Comenzar chat de video
 Terminar chat de video
 (NICKNAME) quisiera comenzar un chat de video contigo.

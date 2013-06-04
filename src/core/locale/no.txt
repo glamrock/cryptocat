@@ -1,9 +1,9 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Private Samtaler For Alle. 
-Velkommen til Cryptocat. Her er noen huskeregler: <ul><li>Cryptocat er ingen universalløsning. Du bør aldri legge livet ditt i hendene på noen programvare.</li><li> Cryptocat kan ikke beskytte deg mot upålitelige personer, keyloggere og anonymiserer ikke forbindelsen din. </li></ul>
+Velkommen til Cryptocat. Her er noen greie huskeregler: <ul><li>Cryptocat er ikke en universalløsning. Du bør aldri legge livet ditt i hendene på noen programvare.</li><li class="key"> Cryptocat kan ikke beskytte deg mot upålitelige personer, keyloggere og anonymiserer ikke forbindelsen din. </li></ul>
 Blogg
-Egendefinert server…
+Egendefinert server
 Tilbakestill
 samtalenavn
 kallenavn
@@ -27,12 +27,12 @@ Gruppesamtale. Klikk på en bruker for å snakke privat.
 OTR fingeravtrykk (for private samtaler):
 Gruppesamtale fingeravtrykk:
 Tilbakestill krypteringsnøklene mine
-Tilbakestilling av krypteringsnøklene dine vil koble deg av. Fingeravtrykkene dine vil også forandres.
+Tilbakestilling av krypteringsnøklene dine vil koble deg fra. Fingeravtrykkene dine vil også forandres.
 Fortsett
 Status: Tilgjengelig
 Status: Borte
 Min info
-Skrivebordsvarsler  På 
+Skrivebordsvarsler På 
 Skrivebordsvarsler Av
 Lydvarslinger På
 Lydvarslinger Av
@@ -44,7 +44,7 @@ Send kryptert fil
 vis bilde
 last ned fil
 Samtale
-Det er kun ZIP-filer og bilder som aksepteres. Maks filstørrelse: (SIZE) MB.
+Kun ZIP-filer og bilder aksepteres. Maksimum filstørrelse: (SIZE) MB.
 Feil: Sikker på at filen din er en ZIP-fil eller et bilde?
 Feil: Filen kan ikke være større enn (SIZE) MB.
 Start videosamtale

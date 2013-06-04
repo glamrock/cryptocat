@@ -1,11 +1,11 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Privégesprekken voor iedereen.
-Welkom bij Cryptocat. Belangrijke tips: <ul><li>Cryptocat is geen magische oplossing. Vertrouw je leven nooit aan software toe.</li><li>Cryptocat beschermt je niet tegen onbetrouwbare personen of key loggers, en maakt je internetverbinding niet anoniem.</li></ul>
+Welkom bij Cryptocat. Hier zijn wat tips: <ul><li>Cryptocat biedt geen magische oplossing. Je moet software nooit jouw leven toevertrouwen.</li><li class="key">Cryptocat kan je niet beschermen tegen onbetrouwbare personen en key loggers, en anonimiseert je verbinding niet.</li></ul>
 Blog
-Specifieke server...
+Andere server
 Reset
-gespreksnaam
+naam conversatie
 roepnaam
 verbinden
 Geef je gesprek een naam en deel die met mensen waarmee je wil praten, of vervoeg de  <strong>lobby</strong> om nieuwe mensen te ontmoeten!
