@@ -110,7 +110,8 @@ Language.buildObject = function(locale, language) {
 // Deliver new strings and refresh login page
 Language.refresh = function(languageObject) {
 	Cryptocat.language = languageObject
-	if (languageObject['language'] === 'bo') {
+	var smallType = ['bo', 'ar', 'in']
+	if (smallType.indexOf(languageObject['language']) >= 0) {
 		$('body').css({'font-size': '13px'})
 	}
 	else {
