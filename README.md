@@ -47,6 +47,7 @@ All contributed code, written in JavaScript, must adhere to the following coding
 
 ### Documentation & Wiki
 * [Multiparty Protocol Specification](https://github.com/cryptocat/cryptocat/wiki/Multiparty-Protocol-Specification)  
+* [OTR Encrypted File Transfer Specification](https://github.com/cryptocat/cryptocat/wiki/OTR-Encrypted-File-Transfer-Specification)  
 * [Server Deployment Instructions](https://github.com/cryptocat/cryptocat/wiki/Server-Deployment-Instructions)  
 * [Threat Model](https://github.com/cryptocat/cryptocat/wiki/Threat-Model)  
 * [Design and Functionality Overview](https://github.com/cryptocat/cryptocat/wiki/Design-and-Functionality)  
