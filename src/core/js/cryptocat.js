@@ -53,7 +53,7 @@ var templates = {
 		+ '<div id="fileInfoField">{{fileTransferInfo}}</div>',
 	file: '<div class="fileProgressBar" file="{{message}}"><div class="fileProgressBarFill"></div></div>',
 	message: '<div class="line{{lineDecoration}}"><span class="sender" sender="{{sender}}"'
-	 		+ ' timestamp="{{currentTime}}">{{sender}}</span>{{message}}</div>'
+	 		+ ' timestamp="{{currentTime}}">{{sender}}</span>{{&message}}</div>'
 }
 
 // Set server information to defaults
