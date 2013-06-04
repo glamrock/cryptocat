@@ -60,7 +60,7 @@ else {
 		var x, o = '';
 		while (o.length < 16) {
 			x = state.getBytes(1);
-			if (x[0] <= 250) {
+			if (x[0] < 250) {
 				o += x[0] % 10;
 			}
 		}
@@ -74,19 +74,11 @@ else {
 Cryptocat.randomString = function(size, alpha, uppercase, numeric, hex) {
 	var keyspace = '';
 	var result = '';
-	if (hex) {
-		keyspace = '0123456789abcdef';
-	}
+	if (hex) { keyspace = '0123456789abcdef' }
 	else {
-		if (alpha) {
-			keyspace += 'abcdefghijklmnopqrstuvwxyz';
-		}
-		if (uppercase) {
-			keyspace += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		}
-		if (numeric) {
-			keyspace += '0123456789';
-		}
+		if (alpha) { keyspace += 'abcdefghijklmnopqrstuvwxyz' }
+		if (uppercase) { keyspace += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' }
+		if (numeric) { keyspace += '0123456789' }
 	}
 	for (var i = 0; i !== size; i++) {
 		result += keyspace[Math.floor(Cryptocat.random()*keyspace.length)];
