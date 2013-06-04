@@ -37,6 +37,25 @@ var currentStatus = 'online';
 var soundEmbed = null;
 var myKey;
 
+/* Templates */
+var templates = {
+	buddy: '<div class="buddy" title="{{nickname}}" id="buddy-{{nickname}}" status="online">'
+				+ '<span>{{shortNickname}}</span>'
+		+ '<div class="buddyMenu" id="menu-{{nickname}}"></div></div>',
+	infoDialog: '<input type="button" class="bar" value="{{nickname}}" />'
+		+ '<div id="displayInfo">{{otrFingerprint}}<br /><span id="otrFingerprint"></span><br />'
+			+ '<div id="otrColorprint"></div>{{groupFingerprint}}'
+			+ '<br /><span id="multiPartyFingerprint"></span><br />'
+			+ '<div id="multiPartyColorprint"></div><br /></div>',
+	sendFile: '<div class="bar">{{sendEncryptedFile}}</div>'
+		+ '<input type="file" id="fileSelector" name="file[]" />'
+		+ '<input type="button" id="fileSelectButton" class="button" value="{{sendEncryptedFile}}" />'
+		+ '<div id="fileInfoField">{{fileTransferInfo}}</div>',
+	file: '<div class="fileProgressBar" file="{{message}}"><div class="fileProgressBarFill"></div></div>',
+	message: '<div class="line{{lineDecoration}}"><span class="sender" sender="{{sender}}"'
+	 		+ ' timestamp="{{currentTime}}">{{sender}}</span>{{message}}</div>'
+}
+
 // Set server information to defaults
 Cryptocat.domain = defaultDomain;
 Cryptocat.conferenceServer = defaultConferenceServer;
@@ -341,26 +360,27 @@ Cryptocat.addToConversation = function(message, sender, conversation, isFile) {
 		}
 	}
 	if (isFile) {
-		message = '<div class="fileProgressBar" file="' + message + '"><div class="fileProgressBarFill"></div></div>'
+		message = Mustache.render(templates.file, { message: message });
 	}
 	else {
 		message = addLinks(message);
 		message = addEmoticons(message);
 	}
 	message = message.replace(/:/g, '&#58;');
-	sender = '<span class="sender" sender="' + Strophe.xmlescape(shortenString(sender, 16)) + '"'
-		+ 'timestamp="' + currentTime(1) + '">' + Strophe.xmlescape(shortenString(sender, 16)) + '</span>';
+	message = Mustache.render(templates.message, {
+		lineDecoration: lineDecoration,
+		sender: shortenString(sender, 16),
+		currentTime: currentTime(1),
+		message: message
+	});
+	conversations[conversation] += message;
 	if (conversation === currentConversation) {
-		message = '<div class="line' + lineDecoration + '">' + sender + message + '</div>';
-		conversations[conversation] += message;
 		$('#conversationWindow').append(message);
 		$('.line' + lineDecoration).last().animate({'top': '0', 'opacity': '1'}, 200);
 		bindTimestamps();
 		scrollDownConversation(400);
 	}
 	else {
-		message = '<div class="line' + lineDecoration + '">' + sender + message + '</div>';
-		conversations[conversation] += message;
 		iconNotify(conversation);
 	}
 }
@@ -405,6 +425,7 @@ function desktopNotification(image, title, body, timeout) {
 function buddyNotification(buddy, join) {
 	if (!buddyNotifications) { return false }
 	var status, audioNotification;
+	buddy = Strophe.xmlescape(buddy);
 	if (join) {
 		status = '<div class="userJoin"><strong>+</strong>' + buddy + '</div>';
 		audioNotification = 'userOnline';
@@ -429,9 +450,11 @@ function buddyNotification(buddy, join) {
 // Build new buddy
 function addBuddy(nickname) {
 	$('#buddyList').queue(function() {
-		var buddyTemplate = '<div class="buddy" title="' + nickname + '" id="buddy-' 
-			+ nickname + '" status="online"><span>' + shortenString(nickname, 14) + '</span>'
-			+ '<div class="buddyMenu" id="menu-' + nickname + '"></div></div>'
+		var buddyTemplate = Mustache.render(templates.buddy, {
+			nickname: nickname,
+			shortNickname: shortenString(nickname, 14)
+		});
+		console.log(buddyTemplate);
 		$(buddyTemplate).insertAfter('#buddiesOnline').slideDown(100, function() {
 			$('#buddy-' + nickname).unbind('click');
 			$('#menu-' + nickname).unbind('click');
@@ -651,10 +674,10 @@ function bindBuddyClick(nickname) {
 
 // Send encrypted file
 function sendFile(nickname) {
-	var sendFileDialog = '<div class="bar">' + Cryptocat.language['chatWindow']['sendEncryptedFile'] + '</div>'
-		+ '<input type="file" id="fileSelector" name="file[]" />'
-		+ '<input type="button" id="fileSelectButton" class="button" value="Select file" />'
-		+ '<div id="fileInfoField">' + Cryptocat.language['chatWindow']['fileTransferInfo'] + '</div>';
+	var sendFileDialog = Mustache.render(templates.sendFile, {
+		sendEncryptedFile: Cryptocat.language['chatWindow']['sendEncryptedFile'],
+		fileTransferInfo: Cryptocat.language['chatWindow']['fileTransferInfo']
+	});
 	ensureOTRdialog(nickname, false, function() {
 		dialogBox(sendFileDialog, 1);
 		$('#fileSelector').change(function(e) {
@@ -687,18 +710,6 @@ function scrollDownConversation(speed) {
 	}
 }
 
-// Display info dialog
-function displayInfoDialog(nickname) {
-	return '<input type="button" class="bar" value="'
-		+ nickname + '"/><div id="displayInfo">'
-		+ Cryptocat.language['chatWindow']['otrFingerprint']
-		+ '<br /><span id="otrFingerprint"></span><br />'
-		+ '<div id="otrColorprint"></div>'
-		+ Cryptocat.language['chatWindow']['groupFingerprint']
-		+ '<br /><span id="multiPartyFingerprint"></span><br />'
-		+ '<div id="multiPartyColorprint"></div><br /></div>';
-}
-
 // Close generating fingerprints dialog
 function closeGenerateFingerprints(nickname, arr) {
 	var close = arr[0];
@@ -729,8 +740,13 @@ function ensureOTRdialog(nickname, close, cb) {
 // Display buddy information, including fingerprints etc.
 function displayInfo(nickname) {
 	nickname = Strophe.xmlescape(nickname);
+	var infoDialog = Mustache.render(templates.infoDialog, {
+		nickname: nickname,
+		otrFingerprint: Cryptocat.language['chatWindow']['otrFingerprint'],
+		groupFingerprint: Cryptocat.language['chatWindow']['groupFingerprint']
+	});
 	ensureOTRdialog(nickname, false, function() {
-		dialogBox(displayInfoDialog(nickname), 1);
+		dialogBox(infoDialog, 1);
 		showFingerprints(nickname);
 	});
 }
