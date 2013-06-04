@@ -177,7 +177,7 @@ multiParty.sendMessage = function(message) {
 	encrypted['tag'] = message
 	var concatenatedCiphertext = ''
 	var sortedRecipients = Object.keys(sharedSecrets).sort()
-	for (var i = 0 i; !== sortedRecipients.length; i++) {
+	for (var i = 0; i !== sortedRecipients.length; i++) {
 		var iv = CryptoJS.enc.Hex.parse(Cryptocat.randomString(24, 0, 0, 0, 1)).toString(CryptoJS.enc.Base64)
 		// Do not reuse IVs
 		while (usedIVs.indexOf(iv) >= 0) {
@@ -290,4 +290,4 @@ multiParty.reset = function() {
 	usedIVs = []
 }
 
-})()//:3
+})//:3
