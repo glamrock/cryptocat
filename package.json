@@ -6,14 +6,21 @@
 	"directories": {
 		"test": "test"
 	},
+	"dependencies": {
+		"express": "3.2.5"
+	},
 	"devDependencies": {
 		"lodash": "~1.1.1",
 		"mocha": "~1.8.2",
 		"chai": "~1.5.0",
 		"sinon": "~1.6.0"
 	},
+	"bin": {
+		"cryptocat": "standalone-server.js"
+	},
 	"scripts": {
-		"test": "mocha"
+		"test": "mocha",
+		"start": "node standalone-server.js"
 	},
 	"repository": {
 		"type": "git",
