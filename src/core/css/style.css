@@ -511,6 +511,30 @@ DIALOG BOX
 	background: #97CEEC;
 }
 
+#dialogBox .title {
+	padding: 5px 20px 5px 10px;
+	border-left: none;
+	background: #97CEEC;
+	border-radius: 0 0 4px 0;
+	max-width: 175px;
+	margin-bottom: 20px;
+	color: #FFF;
+	font-family: 'Monda';
+	font-size: 1.5em;
+}
+
+#dialogBox #fileSelectButton {
+    margin: 0 auto;
+    padding: 10px;
+    border-radius: 4px 0 4px 4px;
+    font-size: 1.2em;
+}
+
+#dialogBox #fileInfoField {
+    color: #444;
+    font-family: 'Monda'
+}
+
 #dialogBox [type=text], #dialogBox [type=password], #dialogBox [type=submit] {
 	background: #151520;
 	border: 1px solid #222;
