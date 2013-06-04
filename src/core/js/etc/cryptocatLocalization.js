@@ -158,4 +158,4 @@ Language.refresh = function(languageObject) {
 	$('#conversationName').select()
 }
 
-})()
+})

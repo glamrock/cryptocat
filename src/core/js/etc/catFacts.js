@@ -1,7 +1,7 @@
 var CatFacts = function() {}
 (function(){
-var lastCatFact
 
+var lastCatFact
 var interestingFacts = [
 'Cats and humans have identical regions in the brain responsible for emotion.',
 'A cat\'s brain is more similar to a human brain than that of a dog.',
@@ -54,7 +54,7 @@ var interestingFacts = [
 'Cryptocat\'s lead developer lives with a cat named Sprite. She is super cute and awesome!',
 'Cats can make over one hundred different vocalizations.',
 'Cats purr at a frequency that promotes bone density and helps with bone healing.'
-];
+]
 
 CatFacts.getFact = function() {
 	catFact = Math.floor(Cryptocat.random() * interestingFacts.length)
@@ -65,4 +65,4 @@ CatFacts.getFact = function() {
 	return interestingFacts[catFact]
 }
 
-})();
+})
