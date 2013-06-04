@@ -648,9 +648,9 @@ CONVERSATION WINDOW
 
 #conversationWindow .sender {
 	padding: 5px;
-	font-size: 0.9em;
+	font-size: 0.95em;
 	margin: 0 10px 0 -4px;
-	min-width: 70px;
+	min-width: 75px;
 	cursor: default;
 	border-radius: 0 0 3px 0;
 	display: inline-block;
@@ -674,7 +674,7 @@ CONVERSATION WINDOW
 	top: 20px;
 	opacity: 0;
 	margin-bottom: 15px;
-	font-size: 0.95em;
+	font-size: 1em;
 	max-width: 92.0%;
 }
 
