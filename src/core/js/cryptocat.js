@@ -1,4 +1,4 @@
-var Cryptocat = function() {}
+var Cryptocat = function() {};
 Cryptocat.version = '2.0.42' // Version number
 Cryptocat.fileSize = 5120 // Maximum encrypted file sharing size, in kilobytes.
 Cryptocat.chunkSize = 64511 // Size in which file chunks are split, in bytes.
@@ -11,7 +11,6 @@ Cryptocat.conversationName = null
 Cryptocat.myNickname = null
 
 if (typeof(window) !== 'undefined') { $(window).ready(function() {
-
 /* Configuration */
 // Domain name to connect to for XMPP.
 var defaultDomain = 'crypto.cat'

@@ -1,4 +1,4 @@
-var CatFacts = function() {}
+var CatFacts = function() {};
 (function(){
 
 var lastCatFact
@@ -65,4 +65,4 @@ CatFacts.getFact = function() {
 	return interestingFacts[catFact]
 }
 
-})
+})()

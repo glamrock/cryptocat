@@ -1,4 +1,5 @@
-var Language = function() {}
+var Language = function() {};
+
 (function(){
 
 // Handle aliases
@@ -158,4 +159,4 @@ Language.refresh = function(languageObject) {
 	$('#conversationName').select()
 }
 
-})
+})()

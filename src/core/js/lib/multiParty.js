@@ -1,4 +1,4 @@
-var multiParty = function() {}
+var multiParty = function() {};
 (function(){
 
 var publicKeys = {}
@@ -290,4 +290,4 @@ multiParty.reset = function() {
 	usedIVs = []
 }
 
-})//:3
+})()//:3
