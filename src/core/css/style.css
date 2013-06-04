@@ -345,7 +345,6 @@ BUDDY LIST
 	z-index: 2;
 	float: right;
 	margin: 0;
-	font-size: 0.9em;
 	background-image: url("../img/down.png");
 	background-size: 14px 14px;
 	width: 14px;
@@ -366,7 +365,8 @@ BUDDY LIST
 .buddyMenuContents {
 	display: none;
 	margin: 5px 0 0 -7px;
-	width: 147px;
+	font-size: 0.9em;
+	width: 107px;
 }
 
 .buddyMenuContents li {
