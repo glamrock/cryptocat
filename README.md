@@ -18,7 +18,15 @@ Also available from [Mozilla Firefox Addons](https://addons.mozilla.org/en-US/fi
 Apple's model makes an automated build process difficult.  
 Also available from [Cryptocat](https://crypto.cat/get/cryptocat.safariextz).
 
-## Compatibility Status
+### Coding style for contributions
+All contributed code, written in JavaScript, must adhere to the following coding style:  
+	1. Tabs are used for indentation, **not** spaces.  
+	2. Lines are **not** ended with semicolons.  
+	3. Use camel case for variables, filenames, and so on.  
+	4. Please comment your code sufficiently.  
+	5. Anonymous closures should be used wherever they are useful.  
+
+### Compatibility Status
 ```
   -----------------------------------------
  |             Windows   Mac      Linux    |

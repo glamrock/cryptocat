@@ -1,6 +1,6 @@
-var CatFacts = function() {};
+var CatFacts = function() {}
 (function(){
-var lastCatFact;
+var lastCatFact
 
 var interestingFacts = [
 'Cats and humans have identical regions in the brain responsible for emotion.',
@@ -57,12 +57,12 @@ var interestingFacts = [
 ];
 
 CatFacts.getFact = function() {
-	catFact = Math.floor(Cryptocat.random() * interestingFacts.length);
+	catFact = Math.floor(Cryptocat.random() * interestingFacts.length)
 	while (lastCatFact === catFact) {
-		catFact = Math.floor(Cryptocat.random() * interestingFacts.length);
+		catFact = Math.floor(Cryptocat.random() * interestingFacts.length)
 	}
-	lastCatFact = catFact;
-	return interestingFacts[catFact];
+	lastCatFact = catFact
+	return interestingFacts[catFact]
 }
 
 })();

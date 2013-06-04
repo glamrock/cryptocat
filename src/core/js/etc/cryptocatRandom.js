@@ -1,6 +1,6 @@
 (function(){
 
-var state;
+var state
 
 Cryptocat.generateSeed = function() {
 	// If Opera, do not seed (see Cryptocat.random() comments for explanation).
@@ -9,27 +9,27 @@ Cryptocat.generateSeed = function() {
 	// Firefox developers sucking and it taking them four years+ to implement
 	// window.crypto.getRandomValues().
 	function firefoxRandomBytes() {
-		var element = document.createElement('cryptocatFirefoxElement');
-		document.documentElement.appendChild(element);
-		var evt = document.createEvent('HTMLEvents');
-		evt.initEvent('cryptocatGenerateRandomBytes', true, false);
-		element.dispatchEvent(evt);
-		var output = element.getAttribute('randomValues').split(',');
-		delete element;
-		return output;
+		var element = document.createElement('cryptocatFirefoxElement')
+		document.documentElement.appendChild(element)
+		var evt = document.createEvent('HTMLEvents')
+		evt.initEvent('cryptocatGenerateRandomBytes', true, false)
+		element.dispatchEvent(evt)
+		var output = element.getAttribute('randomValues').split(',')
+		delete element
+		return output
 	}
 	// Firefox
 	if (navigator.userAgent.match('Firefox') &&
 		(!window.crypto || !window.crypto.getRandomValues)
 	) {
-		var buffer = firefoxRandomBytes();
+		var buffer = firefoxRandomBytes()
 	}
 	// Browsers that don't require shitty workarounds
 	else {
-		var buffer = new Uint8Array(40);
-		window.crypto.getRandomValues(buffer);
+		var buffer = new Uint8Array(40)
+		window.crypto.getRandomValues(buffer)
 	}
-	return buffer;
+	return buffer
 }
 
 Cryptocat.setSeed = function(s) {
@@ -44,7 +44,7 @@ Cryptocat.setSeed = function(s) {
 		[
 			s[32],s[33],s[34],s[35],s[36],s[37],s[38],s[39]
 		]
-	);
+	)
 }
 
 // In Opera, Math.random() is a cryptographically secure
@@ -53,18 +53,18 @@ Cryptocat.setSeed = function(s) {
 // Math.random() instead of implementing our own CSPRNG
 // if Cryptocat is running on top of Opera.
 if (navigator.userAgent.match('Opera')) {
-	Cryptocat.random = Math.random;
+	Cryptocat.random = Math.random
 }
 else {
 	Cryptocat.random = function() {
-		var x, o = '';
+		var x, o = ''
 		while (o.length < 16) {
-			x = state.getBytes(1);
+			x = state.getBytes(1)
 			if (x[0] < 250) {
-				o += x[0] % 10;
+				o += x[0] % 10
 			}
 		}
-		return parseFloat('0.' + o);
+		return parseFloat('0.' + o)
 	}
 }
 
@@ -72,8 +72,8 @@ else {
 // If `alpha = 1`, random string will contain alpha characters, and so on.
 // If 'hex = 1', all other settings are overridden.
 Cryptocat.randomString = function(size, alpha, uppercase, numeric, hex) {
-	var keyspace = '';
-	var result = '';
+	var keyspace = ''
+	var result = ''
 	if (hex) { keyspace = '0123456789abcdef' }
 	else {
 		if (alpha) { keyspace += 'abcdefghijklmnopqrstuvwxyz' }
@@ -81,9 +81,9 @@ Cryptocat.randomString = function(size, alpha, uppercase, numeric, hex) {
 		if (numeric) { keyspace += '0123456789' }
 	}
 	for (var i = 0; i !== size; i++) {
-		result += keyspace[Math.floor(Cryptocat.random()*keyspace.length)];
+		result += keyspace[Math.floor(Cryptocat.random()*keyspace.length)]
 	}
-	return result;
+	return result
 }
 
-})();//:3
+})()//:3
