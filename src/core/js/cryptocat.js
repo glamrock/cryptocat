@@ -453,7 +453,6 @@ function addBuddy(nickname) {
 			nickname: nickname,
 			shortNickname: shortenString(nickname, 14)
 		})
-		console.log(buddyTemplate)
 		$(buddyTemplate).insertAfter('#buddiesOnline').slideDown(100, function() {
 			$('#buddy-' + nickname).unbind('click')
 			$('#menu-' + nickname).unbind('click')
