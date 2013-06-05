@@ -135,6 +135,10 @@ Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 			break
 		case 'data':
 			if (rcvFile[from][sid].abort) return
+			if (rcvFile[from][sid].ctr > rcvFile[from][sid].total - 1) {
+				rcvFile[from][sid].abort = true
+				return
+			}
 			rcvFile[from][sid].seq = seq
 			var key = rcvFile[from][sid].key
 			var ss = data.length - 88
@@ -162,7 +166,9 @@ Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 			Cryptocat.updateFileProgressBar(sid, rcvFile[from][sid].ctr, rcvFile[from][sid].size, nick)
 			break
 		case 'close':
-			if (!rcvFile[from][sid].abort) {
+			if (!rcvFile[from][sid].abort &&
+				rcvFile[from][sid].total === (rcvFile[from][sid].ctr)
+      ) {
 				// Convert data to blob
 				var ia = new Uint8Array(rcvFile[from][sid].data.length)
 				for (var i = 0; i < rcvFile[from][sid].data.length; i++) {
