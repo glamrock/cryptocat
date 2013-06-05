@@ -682,14 +682,17 @@ function sendFile(nickname) {
 			e.stopPropagation()
 			if (this.files) {
 				var file = this.files[0]
-				otrKeys[nickname].sendFile(file.name)
-				var key = Cryptocat.fileKeys[nickname][file.name]
+				var filename = Cryptocat.randomString(16, 1, 1, 1, 0)
+				filename += file.name.match(/\.(\w)+$/)[0]
+				otrKeys[nickname].sendFile(filename)
+				var key = Cryptocat.fileKeys[nickname][filename]
 				Cryptocat.beginSendFile({
 					file: file,
+					filename: filename,
 					to: nickname,
 					key: key
 				})
-				delete Cryptocat.fileKeys[nickname][file.name]
+				delete Cryptocat.fileKeys[nickname][filename]
 			}
 		})
 		$('#fileSelectButton').click(function() {

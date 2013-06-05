@@ -40,7 +40,7 @@ Cryptocat.beginSendFile = function(data) {
 	Cryptocat.connection.si_filetransfer.send(
 		cn(data.to),
 		sid,
-		data.file.name,
+		data.filename,
 		data.file.size,
 		data.file.type,
 		function(err) {
