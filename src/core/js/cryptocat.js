@@ -331,6 +331,16 @@ Cryptocat.addFile = function(blob, file, conversation, filename) {
 	conversations[conversation] = $('<div>').append($(conversationBuffer).clone()).html()
 }
 
+// Signal a file transfer error in the UI.
+Cryptocat.fileTransferError = function(sid) {
+	$('[file=' + sid + ']').animate({
+		'borderColor': '#F00'
+	})
+	$('[file=' + sid + ']').find('.fileProgressBarFill').animate({
+		'backgroundColor': '#F00'
+	})
+}
+
 // Add a `message` from `sender` to the `conversation` display and log.
 // If `isFile`, then we are adding a recieved file to the conversation,
 // not a typical message.

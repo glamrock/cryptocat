@@ -137,6 +137,7 @@ Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 			if (rcvFile[from][sid].abort) return
 			if (rcvFile[from][sid].ctr > rcvFile[from][sid].total - 1) {
 				rcvFile[from][sid].abort = true
+				Cryptocat.fileTransferError(sid)
 				return
 			}
 			rcvFile[from][sid].seq = seq
@@ -152,6 +153,7 @@ Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 			)
 			if (mac !== cmac.toString(CryptoJS.enc.Base64)) {
 				rcvFile[from][sid].abort = true
+				Cryptocat.fileTransferError(sid)
 				console.log('OTR file transfer: MACs do not match.')
 				return
 			}
