@@ -150,7 +150,7 @@ div#bubble #loginForm {
 }
 
 div#bubble #loginForm #conversationName {
-	border-radius: 7px 0 0 0;
+	border-radius: 4px 0 0 0;
 	width: 400px;
 	font-size: 2.8em;
 }
@@ -188,19 +188,21 @@ div#loginInfo {
 	background: #97CEEC;
 	padding: 3px;
 	color: #FFF;
-	border-radius: 0 0 7px 7px;
+	border-radius: 0 0 4px 4px;
 	width: 408px;
 	margin: 9px auto;
+	box-shadow: 2px 2px #76bde5;
 }
 
 div#bubble div#info {
-	background: rgba(151, 206, 236, 0.2);
+	border: 1px solid #97ceec;
 	padding: 4px 10px;
-	border-radius: 10px 0 10px 10px;
+	box-shadow: 4px 4px #97CEEC;
+	border-radius: 4px 0 4px 4px;
 	margin: 20px auto;
 	width: 650px;
 	height: 210px;
-	font-size: 1.2em;
+	font-size: 1.1em;
 	line-height: 1.5em;
 	font-family: Verdana, Arial, Helvetica;
 }
@@ -365,7 +367,7 @@ BUDDY LIST
 .buddyMenuContents {
 	display: none;
 	margin: 5px 0 0 -7px;
-	font-size: 0.9em;
+	font-size: 0.8em;
 	width: 107px;
 }
 
@@ -397,20 +399,20 @@ DIALOG BOX
 	position: absolute;
 	width: 470px;
 	height: 240px;
+	border: 1px solid #97CEEC;
 	border-radius: 8px 0 8px 8px;
 	margin: 120px auto 0 -235px;
 	left: 50%;
 	z-index: 4;
 	font-size: 1.1em;
-	border: 1px dashed #97CEEC;
 	border-right: none;
 	border-bottom: none;
-	background: rgba(255, 255, 255, 0.99);
-	box-shadow: 3px 3px #97CEEC;
+	background: #FCFCFC;
+	box-shadow: 5px 5px #97CEEC;
 	top: -20px;
 	display: none;
 	color: #151520;
-	font-family: monospace;
+	font-family: 'Monda';
 }
 
 #dialogBoxClose {
@@ -421,7 +423,7 @@ DIALOG BOX
 	color: #FFF;
 	background: #97CeeC;
 	float: right;
-	margin-top: 2px;
+	margin-top: 4px;
 	padding-bottom: 4px;
 	cursor: pointer;
 	font-family: Helvetica, Arial, Verdana;
@@ -476,7 +478,7 @@ DIALOG BOX
 	height: 55px;
 	line-height: 1.6em;
 	margin-top: 10px;
-	color: #777;
+	color: #444;
 }
 
 #progressBar {
@@ -517,7 +519,6 @@ DIALOG BOX
 	max-width: 175px;
 	margin-bottom: 8px;
 	color: #FFF;
-	font-family: 'Monda';
 	font-size: 1.5em;
 }
 
@@ -562,6 +563,7 @@ DIALOG BOX
 #otrFingerprint, #multiPartyFingerprint {
 	font-weight: bold;
 	font-size: 14px;
+	font-family: monospace;
 }
 
 #otrColorprint, #multiPartyColorprint {

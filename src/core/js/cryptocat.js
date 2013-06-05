@@ -217,7 +217,7 @@ function loginFail(message) {
 	$('#bubble').animate({'left': '+=5px'}, 130)
 		.animate({'left': '-=10px'}, 130)
 		.animate({'left': '+=5px'}, 130)
-	$('#loginInfo').animate({'color': '#E93028'}, 200)
+	$('#loginInfo').animate({'backgroundColor': '#E93028'}, 200)
 }
 
 // Simply shortens a string `string` to length `length.
@@ -1163,7 +1163,7 @@ function connectXMPP(username, password, connectAnimation) {
 			Cryptocat.connection = new Strophe.Connection(Cryptocat.bosh)
 			Cryptocat.connection.connect(username + '@' + Cryptocat.domain, password, function(status) {
 				if (status === Strophe.Status.CONNECTING) {
-					$('#loginInfo').animate({'color': '#FFF'}, 200)
+					$('#loginInfo').animate({'backgroundColor': '#97CEEC'}, 200)
 					$('#loginInfo').text(Cryptocat.language['loginMessage']['connecting'])
 				}
 				else if (status === Strophe.Status.CONNECTED) {
@@ -1181,15 +1181,15 @@ function connectXMPP(username, password, connectAnimation) {
 					if (connectAnimation) { connected() }
 				}
 				else if (status === Strophe.Status.CONNFAIL) {
-					if (!loginError) {
+					if (loginError) {
 						$('#loginInfo').text(Cryptocat.language['loginMessage']['connectionFailed'])
-						$('#loginInfo').animate({'color': '#E93028'}, 200)
+						$('#loginInfo').animate({'backgroundColor': '#E93028'}, 200)
 					}
 				}
 				else if (status === Strophe.Status.DISCONNECTED) {
 					if (!loginError) {
 						$('#loginInfo').text(Cryptocat.language['loginMessage']['connectionFailed'])
-						$('#loginInfo').animate({'color': '#E93028'}, 200)
+						$('#loginInfo').animate({'bakgroundColor': '#E93028'}, 200)
 					}
 					logout()
 				}
@@ -1253,7 +1253,7 @@ function logout() {
 		$('#footer').animate({'height': '14px'})
 		$('#conversationWindow').fadeOut(function() {
 			if (!loginError) {
-				$('#loginInfo').animate({'color': '#FFF'}, 200)
+				$('#loginInfo').animate({'backgroundColor': '#97CEEC'}, 200)
 				$('#loginInfo').text(Cryptocat.language['loginMessage']['thankYouUsing'])
 			}
 			$('#buddyList div').each(function() {
