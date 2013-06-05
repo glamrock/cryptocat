@@ -167,7 +167,7 @@ Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 			break
 		case 'close':
 			if (!rcvFile[from][sid].abort &&
-				rcvFile[from][sid].total === (rcvFile[from][sid].ctr)
+				rcvFile[from][sid].total === rcvFile[from][sid].ctr
       ) {
 				// Convert data to blob
 				var ia = new Uint8Array(rcvFile[from][sid].data.length)
