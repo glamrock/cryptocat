@@ -1214,7 +1214,7 @@ function connected() {
 	$('#buddy-main-Conversation').attr('status', 'online')
 	$('#loginInfo').text('✓')
 	$('#info').fadeOut(200)
-	$('#loginOptions,#languages,#customServerDialog,#version,#logoText').fadeOut(200)
+	$('#loginOptions,#languages,#customServerDialog,#version,#logoText,#loginInfo').fadeOut(200)
 	$('#header').animate({'backgroundColor': '#151520'})
 	$('.logo').animate({'margin-top': '-11px'})
 	$('#loginForm').fadeOut(200, function() {
@@ -1271,7 +1271,7 @@ function logout() {
 			if (!loginError) {
 				$('#conversationName').val('')
 			}
-			$('#info,#loginOptions,#version').fadeIn()
+			$('#info,#loginOptions,#version,#loginInfo').fadeIn()
 			$('#loginForm').fadeIn(200, function() {
 				$('#conversationName').select()
 				$('#loginSubmit').removeAttr('readonly')
