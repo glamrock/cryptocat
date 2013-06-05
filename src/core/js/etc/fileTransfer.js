@@ -1,5 +1,8 @@
 $(window).ready(function() {
 
+// Safari compatibility
+window.URL = window.URL || window.webkitURL
+
 var files = {}
 var rcvFile = {}
 var fileMIME = new RegExp(
@@ -31,6 +34,7 @@ Cryptocat.beginSendFile = function(data) {
 		position: 0,
 		file: data.file,
 		key: data.key,
+		total: Math.ceil(data.file.size / Cryptocat.chunkSize),
 		ctr: -1
 	}
 	Cryptocat.connection.si_filetransfer.send(
@@ -95,8 +99,10 @@ Cryptocat.sendFileData = function(data) {
 		)
 		msg = aesctr.toString()
 		// Then mac
+		var prefix = OTR.HLP.packBytes(files[sid].ctr, 8)
+		prefix += OTR.HLP.packBytes(files[sid].total, 8)
 		var mac = CryptoJS.HmacSHA512(
-			CryptoJS.enc.Base64.parse(msg),
+			CryptoJS.enc.Base64.parse(prefix + msg),
 			CryptoJS.enc.Latin1.parse(files[sid].key[1])
 		)
 		// Combine ciphertext and mac, then transfer chunk
@@ -128,16 +134,20 @@ Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 			delete Cryptocat.fileKeys[nick][file]
 			break
 		case 'data':
+			if (rcvFile[from][sid].abort) return
 			rcvFile[from][sid].seq = seq
 			var key = rcvFile[from][sid].key
 			var ss = data.length - 88
 			var msg = data.substring(0, ss)
 			var mac = data.substring(ss)
+			var prefix = OTR.HLP.packBytes(rcvFile[from][sid].ctr, 8)
+			prefix += OTR.HLP.packBytes(rcvFile[from][sid].total, 8)
 			var cmac = CryptoJS.HmacSHA512(
-				CryptoJS.enc.Base64.parse(msg),
+				CryptoJS.enc.Base64.parse(prefix + msg),
 				CryptoJS.enc.Latin1.parse(key[1])
 			)
 			if (mac !== cmac.toString(CryptoJS.enc.Base64)) {
+				rcvFile[from][sid].abort = true
 				console.log('OTR file transfer: MACs do not match.')
 				return
 			}
@@ -152,26 +162,22 @@ Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 			Cryptocat.updateFileProgressBar(sid, rcvFile[from][sid].ctr, rcvFile[from][sid].size, nick)
 			break
 		case 'close':
-			// Convert data to blob
-			var ia = new Uint8Array(rcvFile[from][sid].data.length)
-			for (var i = 0; i < rcvFile[from][sid].data.length; i++) {
-				ia[i] = rcvFile[from][sid].data.charCodeAt(i)
-			}
-			var blob = new Blob([ia], { type: rcvFile[from][sid].mime })
-			// Safari compatibility
-			if (navigator.userAgent.match('Safari')) {
-				var url = window.webkitURL.createObjectURL(blob)
-			}
-			else {
+			if (!rcvFile[from][sid].abort) {
+				// Convert data to blob
+				var ia = new Uint8Array(rcvFile[from][sid].data.length)
+				for (var i = 0; i < rcvFile[from][sid].data.length; i++) {
+					ia[i] = rcvFile[from][sid].data.charCodeAt(i)
+				}
+				var blob = new Blob([ia], { type: rcvFile[from][sid].mime })
 				var url = URL.createObjectURL(blob)
-			}
-			if (rcvFile[from][sid].filename.match(/^[\w-.]+$/)
-			&& rcvFile[from][sid].mime.match(fileMIME)) {
-				Cryptocat.addFile(url, sid, nick, rcvFile[from][sid].filename)
-			}
-			else {
-				console.log('Received file of unallowed file type ' 
-					+ rcvFile[from][sid].mime + ' from ' + nick)
+				if (rcvFile[from][sid].filename.match(/^[\w-.]+$/) &&
+						rcvFile[from][sid].mime.match(fileMIME)
+				) {
+					Cryptocat.addFile(url, sid, nick, rcvFile[from][sid].filename)
+				} else {
+					console.log('Received file of unallowed file type ' +
+						rcvFile[from][sid].mime + ' from ' + nick)
+				}
 			}
 			delete rcvFile[from][sid]
 			break
@@ -186,6 +192,8 @@ Cryptocat.fileHandler = function(from, sid, filename, size, mime) {
 		mime: mime,
 		seq: 0,
 		ctr: 0,
+		total: Math.ceil(size / Cryptocat.chunkSize),
+		abort: false,
 		data: ''
 	}
 }
