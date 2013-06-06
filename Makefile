@@ -1,30 +1,22 @@
 chrome:
-	@/bin/echo -n "[Cryptocat] Compressing... "
-	@cd src/chrome/ && zip -q -r9 ../../release/cryptocat-chrome.zip * -x "*/\.*" -x "\.*"
-	@/bin/echo "done"
+	@rm -f release/cryptocat-chrome.zip
+	@cd src/core/ && zip -q -r9 ../../release/cryptocat-chrome.zip * -x "*/\.*" -x "\.*"
 	@/bin/echo "[Cryptocat] Chrome build available in release/"
 
 firefox:
-	@/bin/echo -n "[Cryptocat] Compressing... "
+	@rm -f release/cryptocat-firefox.xpi
+	@cp -r src/core/* src/firefox/chrome/content/data/
 	@cd src/firefox/ && zip -q -r9 ../../release/cryptocat-firefox.xpi * -x "*/\.*" -x "\.*"
-	@/bin/echo "done"
+	@rm -r src/firefox/chrome/content/data/*
 	@/bin/echo "[Cryptocat] Firefox build available in release/"
 
-opera:
-	@/bin/echo -n "[Cryptocat] Compressing... "
-	@cd src/opera/ && zip -q -r9 ../../release/cryptocat-opera.oex * -x "*/\.*" -x "\.*"
-	@/bin/echo "done"
-	@/bin/echo "[Cryptocat] Opera build available in release/"
-changes:
-	@/bin/echo -n "[Cryptocat] Pushing changes to Safari...  "
-	@cd src/cryptocat.safariextension/ && rm -rf css img js locale snd index.html
-	@cd src/chrome/ && cp -R css img js locale snd index.html ../cryptocat.safariextension/
-	@/bin/echo "done"
-	@/bin/echo -n "[Cryptocat] Pushing changes to Firefox... "
-	@cd src/firefox/chrome/content/data/ && rm -rf css img js locale snd index.html
-	@cd src/chrome/ && cp -R css img js locale snd index.html ../firefox/chrome/content/data/
-	@/bin/echo "done"
-	@/bin/echo -n "[Cryptocat] Pushing changes to Opera... "
-	@cd src/opera/ && rm -rf css img js locale snd index.html
-	@cd src/chrome/ && cp -R css img js locale snd index.html ../opera/
-	@/bin/echo "  done"
+safari:
+	@rm -rf src/cryptocat.safariextension
+	@cp -R src/core src/cryptocat.safariextension
+	@cp -R src/safari/* src/cryptocat.safariextension
+	@/bin/echo "[Cryptocat] Safari extension packaged for testing."
+
+tests:
+	@/bin/echo -n "[Cryptocat] Running tests... "
+	@`/usr/bin/which npm` install
+	@node_modules/.bin/mocha --ui exports --reporter spec test/chrome/js/*.test.js

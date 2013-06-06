@@ -1,5 +1,39 @@
 ## Changelog
 
+### Cryptocat 2.0.42
+**Apr. 19 2013**
+- IMPORTANT: Due to changes to multiparty key generation (in order to be compatible with the upcoming mobile apps), this version of Cryptocat cannot have multiparty conversations with previous versions. However private conversations still work. Due to this, this release will not be pushed until it is both reviewed by Mozilla (for the Firefox Addons Website) and Apple (for the Mac App Store).
+- Fixed a bug found in the encryption libraries that could partially weaken the security of multiparty Cryptocat messages.
+
+### Cryptocat 2.0.41
+**Mar. 14 2013**
+- Fixed a bug in Cryptocat for Mac that prevented text selection, copy and paste from working.
+- Updated OTR libraries to version 0.1.3.
+- Notification settings are now saved from session to session.
+- Improved Italian translation.
+- Improved Japanese translation.
+- Some small tweaks and adjustments.
+
+### Cryptocat 2.0.40
+**Mar. 3 2013**
+- More substantial color scheme and UI improvements.  
+
+#### Cryptocat 2.0.39
+**Mar. 3 2013**
+- User interface bug fixes.  
+
+#### Cryptocat 2.0.38
+**Mar. 2 2013**
+- Cryptocat will now save your language, server and nickname preferences automatically. This feature does not work yet on Firefox.
+- Cryptocat will now automatically log out on connection failure.
+- Improved message input interface.
+- Many small user interface tweaks and improvements.
+- Removed unused libraries, replaced some libraries.
+- Updated jQuery to version 1.9.1.
+- Minor bug fix in elliptic curve cryptography library.
+- Russian translation improvements.
+- Czech translation improvements.
+
 #### Cryptocat 2.0.37
 **Feb. 11 2013**
 - Added Bengali and Bulgarian translations.

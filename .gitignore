@@ -1,2 +1,15 @@
+<<<<<<< HEAD
 .hypnotoad
 .c9revisions
+=======
+.DS_Store
+stz/*
+src/cryptocat.safariextension/*
+
+# npm
+node_modules/
+
+# IDE files
+.idea/
+*.iml
+>>>>>>> origin
