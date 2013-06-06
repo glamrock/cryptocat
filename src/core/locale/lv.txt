@@ -1,14 +1,14 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Privātas sarunas ikvienam.
-Esi sveicināts Cryptocat. Šeit būs daži noderīgi padomi: <ul><li>Cryptocat nav maģiska lode. Tev nekad nevajadzētu uzticēt savu dzīvi nevienai programmatūrai.</li><li>Cryptocat nevar tevi aizsargāt pret neuzticamiem cilvēkiem, taustiņspiedienu pierakstītājiem, kā arī tas nepadara tavu pieslēgumu anonīmu.</li></ul>
+Esi sveicināts Cryptocat. Šeit būs daži noderīgi padomi: <ul><li>Cryptocat nav maģiska lode. Tev nekad nevajadzētu uzticēt savu dzīvi nevienai programmatūrai.</li><li class="key">Cryptocat nevar tevi aizsargāt pret neuzticamiem cilvēkiem, taustiņspiedienu pierakstītājiem, kā arī tas nepadara tavu pieslēgumu anonīmu.</li></ul>
 Blogs
-Cits serveris...
+Cits serveris
 Anulēt
 sarunas nosaukums
 pseidonīms
 savienoties
-Levadiet nosaukumu jūsu saruna un dalīties tajā ar cilvēkiem, jūs gribētu runāt ar.
+Ievadat jūsu sarunas nosaukumu un dalaties ar cilvēkiem ar kuriem jūs vēlaties sarunāties, vai pievienojaties <strong> forumam </strong>, lai iepazītos ar jauniem cilvēkiem!
 Ievadi sarunas nosaukumu, kuram pievienoties.
 Lūdzu, ievadi sarunas nosaukumu.
 Sarunas nosaukumā var būt tikai burti un cipari.
@@ -21,7 +21,7 @@ Paldies, ka lieto Cryptocat.
 Rēģistrējas...
 Savienojas...
 Savienojums nodibināts.
-Lūdzu paraksti ar klaviatūru pēc iespējas neprognozējamāki turpmākās dažas sekundes.
+Lūdzu raksti ar klaviatūru pēc iespējas neprognozējamāk turpmākās dažas sekundes.
 Ģenerē šifrēšanas atslēgas...
 Grupas saruna. Noklikšķini uz lietotāja, lai sāktu privātu sarunu.
 OTR kontrolsumma (privātai sarunai):
@@ -36,7 +36,7 @@ Darbvirsmas brīdinājumi ieslēgti
 Darbvirsmas brīdinājumi izslēgti
 Skaņas brīdinājumi ieslēgti
 Skaņas brīdinājumi izslēgti
-Atcerēties pseidonīmu
+Atcerēties manu pseidonīmu
 Neatcerēties manu pseidonīmu
 Atslēgties
 Parādīt informāciju
@@ -44,3 +44,10 @@ Sūtīt šifrētu failu
 apskatīt attēlu
 lejupielādēt failu
 Saruna
+Pieņemti tiek vienīgi faili ZIP formātā. Maksimālais faila izmērs: (SIZE) MB. 
+Kļūda: Lūdzu pārliecinaties, ka jūsu fails ir ZIP formātā vai kā atēls.
+Kļūda: Fails nevar būt lielāks par (SIZE) MB.
+Sākt video sarunu
+Beigt video sarunu
+(NICKNAME) vēlas sākt video sarunu ar tevi.
+Pārtraukt
