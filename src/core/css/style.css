@@ -667,7 +667,7 @@ CONVERSATION WINDOW
 
 .line1, .line2, .line3 {
 	box-shadow: 2px 2px #87B9D4;
-	border-color: #87B9D4;
+	border: 2px solid #87B9D4;
 	border-radius: 3px 0 3px 3px;
 	padding: 0 4px;
 	word-wrap: break-word;
