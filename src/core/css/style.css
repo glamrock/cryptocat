@@ -666,8 +666,8 @@ CONVERSATION WINDOW
 }
 
 .line1, .line2, .line3 {
-	box-shadow: 2px 2px #97CEEC;
-	border: 2px solid #97CEEC;
+	box-shadow: 2px 2px #87B9D4;
+	border-color: #87B9D4;
 	border-radius: 3px 0 3px 3px;
 	padding: 0 4px;
 	word-wrap: break-word;
@@ -681,8 +681,8 @@ CONVERSATION WINDOW
 }
 
 .line2 {
-	box-shadow: 2px 2px #87B9D4;
-	border-color: #87B9D4;
+	box-shadow: 2px 2px #97CEEC;
+	border: 2px solid #97CEEC;
 }
  
 .line3 {
@@ -691,11 +691,11 @@ CONVERSATION WINDOW
 }
 
 .line1 .sender {
-	background: #97CEEC;
+	background: #87B9D4;
 }
 
 .line2 .sender {
-	background: #87B9D4;
+	background: #97CEEC;
 }
 
 .line3 .sender {
@@ -711,12 +711,12 @@ CONVERSATION WINDOW
 
 .line1:after {
 	left: 18px;
-	border-color: #97CEEC transparent transparent transparent;
+	border-color: #87B9D4 transparent transparent transparent;
 }
 
 .line2:after {
 	right: 18px;
-	border-color: #87B9D4 transparent transparent transparent;
+	border-color: #97CEEC transparent transparent transparent;
 }
 
 .line3:after {
