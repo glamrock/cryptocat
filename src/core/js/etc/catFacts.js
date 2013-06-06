@@ -115,7 +115,8 @@ var interestingFacts = [
 'In Japan, cats are thought to have the power to turn into super spirits when they die. This may be because according to the Buddhist religion, the body of the cat is the temporary resting place of very spiritual people.',
 'Most cats had short hair until about 100 years ago, when it became fashionable to own cats and experiment with breeding.',
 'Cats have 32 muscles that control the outer ear (humans have only 6). A cat can independently rotate its ears 180 degrees.',
-'During the nearly 18 hours a day that kittens sleep, an important growth hormone is released. One reason that kittens sleep so much is because a growth hormone is released only during sleep.',
+'During the nearly 18 hours a day that kittens sleep, an important growth hormone is released. ',
+'One reason that kittens sleep so much is because a growth hormone is released only during sleep.',
 'Cats have about 130,000 hairs per square inch (20,155 hairs per square centimeter).',
 'The heaviest cat on record is Himmy, a Tabby from Queensland, Australia. He weighed nearly 47 pounds (21 kg).',
 'The oldest cat on record was Creme Puff from Austin, Texas, who lived for 38 years. ',
@@ -136,8 +137,6 @@ var interestingFacts = [
  'Feeding cats dog food or canned tuna that\'s for human consumption can cause malnutrition.',
 'A 2007 Gallup poll revealed that both men and women were equally likely to own a cat.',
 'A cat\'s heart beats nearly twice as fast as a human heart, at 110 to 140 beats a minute.'
-
-
 ]
 
 CatFacts.getFact = function() {
