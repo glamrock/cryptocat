@@ -988,12 +988,12 @@ $('#userInputText').keydown(function(e) {
 	if (e.keyCode === 9) {
 		e.preventDefault()
 		for (var nickname in otrKeys) {
-			if (match = nickname.match($(this).val().match(/(\S)+$/)[0])) {
+			if (match = nickname.match($(this).val().match(/(\S)+$/))) {
 				if ($(this).val().match(/\s/)) {
-					$(this).val($(this).val().replace(match, nickname + ' '))
+					$(this).val($(this).val().replace(match[0], nickname + ' '))
 				}
 				else {
-					$(this).val($(this).val().replace(match, nickname + ': '))
+					$(this).val($(this).val().replace(match[0], nickname + ': '))
 				}
 			}
 		}
