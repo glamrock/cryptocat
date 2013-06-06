@@ -51,6 +51,7 @@ var templates = {
 		+ '<input type="button" id="fileSelectButton" value="{{sendEncryptedFile}}" />'
 		+ '<div id="fileInfoField">{{fileTransferInfo}}</div>',
 	file: '<div class="fileProgressBar" file="{{message}}"><div class="fileProgressBarFill"></div></div>',
+	fileLink: '<a href="{{url}}" class="fileView" target="_blank" download="{{filename}}">{{downloadFile}}</a>',
 	message: '<div class="line{{lineDecoration}}"><span class="sender" sender="{{sender}}"'
 	 	+ ' timestamp="{{currentTime}}">{{sender}}</span>{{&message}}</div>'
 }
@@ -320,12 +321,14 @@ Cryptocat.updateFileProgressBar = function(file, chunk, size, recipient) {
 	conversations[recipient] = $('<div>').append($(conversationBuffer).clone()).html()
 }
 
-// Convert Data blob to downloadable file, replacing the progress bar.
-Cryptocat.addFile = function(blob, file, conversation, filename) {
+// Convert Data blob/url to downloadable file, replacing the progress bar.
+Cryptocat.addFile = function(url, file, conversation, filename) {
 	var conversationBuffer = $(conversations[conversation])
-	var fileLink = '<a href="' + blob
-		+ '" class="fileView" target="_blank" download="' + filename + '">'
-		+ Cryptocat.language['chatWindow']['downloadFile'] + '</a>'
+	var fileLink = Mustache.render(templates.fileLink, {
+		url: url,
+		filename: filename,
+		downloadFile: Cryptocat.language['chatWindow']['downloadFile']
+	})
 	$('[file=' + file + ']').replaceWith(fileLink)
 	conversationBuffer.find('[file=' + file + ']').replaceWith(fileLink)
 	conversations[conversation] = $('<div>').append($(conversationBuffer).clone()).html()

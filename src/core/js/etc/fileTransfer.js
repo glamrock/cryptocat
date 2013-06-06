@@ -75,15 +75,17 @@ Cryptocat.sendFileData = function(data) {
 		Cryptocat.updateFileProgressBar(sid, files[sid].ctr + 1, files[sid].file.size, data.to)
 		return
 	}
-	var end = files[sid].position + Cryptocat.chunkSize
-	var chunk = files[sid].file.slice(files[sid].position, end)
-	files[sid].position = end
-	files[sid].ctr += 1
 	var reader = new FileReader()
 	reader.onload = function(event) {
 		var msg = event.target.result
 		// Remove dataURL header
 		msg = msg.split(',')[1]
+		
+		// Split into chunk
+		var end = files[sid].position + Cryptocat.chunkSize
+		var chunk = msg.slice(files[sid].position, end)
+		files[sid].position = end
+		files[sid].ctr += 1
 		// Encrypt
 		// don't use seq as a counter
 		// it repeats after 65535 above
@@ -119,7 +121,7 @@ Cryptocat.sendFileData = function(data) {
 		})
 		Cryptocat.updateFileProgressBar(sid, files[sid].ctr + 1, files[sid].file.size, data.to)
 	}
-	reader.readAsDataURL(chunk)
+	reader.readAsDataURL(files[sid].file)
 }
 
 Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
@@ -168,21 +170,19 @@ Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 			Cryptocat.updateFileProgressBar(sid, rcvFile[from][sid].ctr, rcvFile[from][sid].size, nick)
 			break
 		case 'close':
-			if (!rcvFile[from][sid].abort &&
-				rcvFile[from][sid].total === rcvFile[from][sid].ctr
-      ) {
+			if (!rcvFile[from][sid].abort && rcvFile[from][sid].total === rcvFile[from][sid].ctr) {
 				// Convert data to blob
 				var ia = new Uint8Array(rcvFile[from][sid].data.length)
 				for (var i = 0; i < rcvFile[from][sid].data.length; i++) {
 					ia[i] = rcvFile[from][sid].data.charCodeAt(i)
 				}
 				var blob = new Blob([ia], { type: rcvFile[from][sid].mime })
-				var url = URL.createObjectURL(blob)
-				if (rcvFile[from][sid].filename.match(/^[\w-.]+$/) &&
-						rcvFile[from][sid].mime.match(fileMIME)
-				) {
+				var url = window.URL.createObjectURL(blob)
+				if (rcvFile[from][sid].filename.match(/^[\w-.]+$/)
+				&& rcvFile[from][sid].mime.match(fileMIME)) {
 					Cryptocat.addFile(url, sid, nick, rcvFile[from][sid].filename)
-				} else {
+				} 
+				else {
 					console.log('Received file of unallowed file type ' +
 						rcvFile[from][sid].mime + ' from ' + nick)
 				}
