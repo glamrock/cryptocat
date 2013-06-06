@@ -464,7 +464,7 @@ function addBuddy(nickname) {
 	$('#buddyList').queue(function() {
 		var buddyTemplate = Mustache.render(templates.buddy, {
 			nickname: nickname,
-			shortNickname: shortenString(nickname, 10)
+			shortNickname: shortenString(nickname, 12)
 		})
 		$(buddyTemplate).insertAfter('#buddiesOnline').slideDown(100, function() {
 			$('#buddy-' + nickname).unbind('click')
