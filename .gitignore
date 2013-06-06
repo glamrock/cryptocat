@@ -1,3 +1,14 @@
+-.DS_Store
+-stz/*
+-src/cryptocat.safariextension/*
+-
+-# npm
+-node_modules/
+-
+-# IDE files
+-.idea/
+-*.iml
+
 .hypnotoad
 .c9revisions
 .top-secret-cat-facts
