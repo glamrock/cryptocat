@@ -618,23 +618,20 @@ function handlePresence(presence) {
 	else if ($(presence).find('show').text() === '' || $(presence).find('show').text() === 'chat') {
 		if ($('#buddy-' + nickname).attr('status') !== 'online') {
 			var status = 'online'
-			var backgroundColor = '#151520'
+			var color = '#151520'
 			var placement = '#buddiesOnline'
 		}
 	}
 	// Handle buddy status change to 'away'
 	else if ($('#buddy-' + nickname).attr('status') !== 'away') {
 			var status = 'away'
-			var backgroundColor = '#222'
+			var color = '#223'
 			var placement = '#buddiesAway'
 	}
 	// Perform status change
 	$('#buddy-' + nickname).attr('status', status)
 	if (placement) {
-		$('#buddy-' + nickname).animate({
-			'color': '#FFF',
-			'backgroundColor': backgroundColor
-		})
+		$('#buddy-' + nickname).animate({ 'color': color })
 		if (currentConversation !== nickname) {
 			$(this).insertAfter(placement).slideDown(200)
 		}
