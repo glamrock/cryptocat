@@ -53,8 +53,7 @@ var interestingFacts = [
 'When cats are happy or pleased, they momentarily squeeze their eyes shut.',
 'Cryptocat\'s lead developer lives with a cat named Sprite. She is super cute and awesome!',
 'Cats can make over one hundred different vocalizations.',
-'Cats purr at a frequency that promotes bone density and helps with bone healing.'
-'Every year nearly four million cats are eaten in Asia.',
+'Cats purr at a frequency that promotes bone density and helps with bone healing.',
 'On average, cats spend two-thirds of every day sleeping.',
 'Unlike dogs, cats do not have a sweet tooth. Scientists believe this is due to a mutation in a key taste receptor.',
 'When a cat chases its prey, it keeps its head level. Dogs and humans bob their heads up and down.',
@@ -95,7 +94,7 @@ var interestingFacts = [
 'The first cat show was organized in 1871 in London. Cat shows later became a worldwide craze.',
 'The first cartoon cat was Felix the Cat in 1919.',
 'A cat\'s nose pad is ridged with a unique pattern, just like the fingerprint  of a human.',
-'A 2007 Gallup poll revealed that both men and women were equally likely to own a cat.',
+'A 2007 Gallup poll revealed that both men and women were equally likely to own a cat.'
 ]
 
 CatFacts.getFact = function() {
