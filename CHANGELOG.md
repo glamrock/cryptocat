@@ -1,7 +1,7 @@
 ## Changelog
 
 ### Cryptocat 2.1
-**Jun. 7 2013**
+**Jun. 7 2013**  
 This is a major update to Cryptocat with many improvements and bug fixes.  
 
 - User Interface redesign: Cryptocat's user interface has been redesigned to be brighter, friendlier, and faster. Existing users will find the new design familiar enough use, while new users will benefit from a friendlier user experience.  
