@@ -625,7 +625,7 @@ function handlePresence(presence) {
 	// Handle buddy status change to 'away'
 	else if ($('#buddy-' + nickname).attr('status') !== 'away') {
 			var status = 'away'
-			var color = '#223'
+			var color = '#778'
 			var placement = '#buddiesAway'
 	}
 	// Perform status change
