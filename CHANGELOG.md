@@ -1,5 +1,18 @@
 ## Changelog
 
+### Cryptocat 2.1
+**Jun. 7 2013**
+- This is a major update to Cryptocat with a lot of improvements and bug fixes.  
+- User Interface redesign: Cryptocat's user interface has been redesigned to be brighter, friendlier, and faster. Existing users will find the new design familiar enough use, while new users will benefit from a friendlier user experience.  
+- Encrypted file sharing: Send files via Cryptocat. ZIP files as well as images can now be shared with people inside a chatroom.  
+- Security enhancements and bug fixes. Updating is recommended.  
+- Major code cleanup and optimizations, including many bug fixes.  
+- Added 41 new interesting cat facts.  
+- Updated jQuery to 2.0.2.  
+- Updated OTR libraries to version 0.1.5.  
+
+**Known issues**: Safari users are currently able to send but not receive files. The Uighur translation is also currently unavailable and will return in a future version.  
+
 ### Cryptocat 2.0.42
 **Apr. 19 2013**
 - IMPORTANT: Due to changes to multiparty key generation (in order to be compatible with the upcoming mobile apps), this version of Cryptocat cannot have multiparty conversations with previous versions. However private conversations still work. Due to this, this release will not be pushed until it is both reviewed by Mozilla (for the Firefox Addons Website) and Apple (for the Mac App Store).
