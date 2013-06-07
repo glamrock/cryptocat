@@ -2,7 +2,8 @@
 
 ### Cryptocat 2.1
 **Jun. 7 2013**
-- This is a major update to Cryptocat with a lot of improvements and bug fixes.  
+This is a major update to Cryptocat with many improvements and bug fixes.  
+
 - User Interface redesign: Cryptocat's user interface has been redesigned to be brighter, friendlier, and faster. Existing users will find the new design familiar enough use, while new users will benefit from a friendlier user experience.  
 - Encrypted file sharing: Send files via Cryptocat. ZIP files as well as images can now be shared with people inside a chatroom.  
 - Security enhancements and bug fixes. Updating is recommended.  
