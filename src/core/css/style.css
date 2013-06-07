@@ -710,17 +710,17 @@ CONVERSATION WINDOW
 }
 
 .line1:after {
-	left: 18px;
+	left: 30px;
 	border-color: #76BDE5 transparent transparent transparent;
 }
 
 .line2:after {
-	right: 18px;
+	right: 30px;
 	border-color: #97CEEC transparent transparent transparent;
 }
 
 .line3:after {
-	right: 18px;
+	right: 30px;
 	border-color: #A8E0FF transparent transparent;	
 }
 
