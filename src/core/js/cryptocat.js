@@ -196,7 +196,7 @@ function switchConversation(buddy) {
 	$('#conversationWindow').html(conversations[currentConversation])
 	bindTimestamps()
 	window.setTimeout(function() {
-		scrollDownConversation(400)
+		scrollDownConversation(100)
 	}, 400)
 	$('#userInputText').focus()
 	// Clean up finished conversations
