@@ -197,7 +197,7 @@ function switchConversation(buddy) {
 	bindTimestamps()
 	window.setTimeout(function() {
 		scrollDownConversation(400)
-	}, 200)
+	}, 400)
 	$('#userInputText').focus()
 	// Clean up finished conversations
 	$('#buddyList div').each(function() {
