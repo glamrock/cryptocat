@@ -758,30 +758,25 @@ function displayInfo(nickname) {
 	})
 	ensureOTRdialog(nickname, false, function() {
 		dialogBox(infoDialog, 1)
-		showFingerprints(nickname)
+		$('#otrFingerprint').text(getFingerprint(nickname, 1))
+		$('#multiPartyFingerprint').text(getFingerprint(nickname, 0))
+		var otrColorprint = getFingerprint(nickname, 1).split(' ')
+		otrColorprint.splice(0, 1)
+		for (var color in otrColorprint) {
+			$('#otrColorprint').append(
+				'<div class="colorprint" style="background:#'
+				+ otrColorprint[color].substring(0, 6) + '"></div>'
+			)
+		}
+		var multiPartyColorprint = getFingerprint(nickname, 0).split(' ')
+		multiPartyColorprint.splice(0, 1)
+		for (var color in multiPartyColorprint) {
+			$('#multiPartyColorprint').append(
+				'<div class="colorprint" style="background:#'
+				+ multiPartyColorprint[color].substring(0, 6) + '"></div>'
+			)
+		}
 	})
-}
-
-// Show fingerprints internal function
-function showFingerprints(nickname) {
-	$('#otrFingerprint').text(getFingerprint(nickname, 1))
-	$('#multiPartyFingerprint').text(getFingerprint(nickname, 0))
-	var otrColorprint = getFingerprint(nickname, 1).split(' ')
-	otrColorprint.splice(0, 1)
-	for (var color in otrColorprint) {
-		$('#otrColorprint').append(
-			'<div class="colorprint" style="background:#'
-			+ otrColorprint[color].substring(0, 6) + '"></div>'
-		)
-	}
-	var multiPartyColorprint = getFingerprint(nickname, 0).split(' ')
-	multiPartyColorprint.splice(0, 1)
-	for (var color in multiPartyColorprint) {
-		$('#multiPartyColorprint').append(
-			'<div class="colorprint" style="background:#'
-			+ multiPartyColorprint[color].substring(0, 6) + '"></div>'
-		)
-	}
 }
 
 // Bind buddy menus for new buddies. Used internally.
