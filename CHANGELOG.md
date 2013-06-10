@@ -1,5 +1,10 @@
 ## Changelog
 
+### Cryptocat 2.1.2
+**Jun. 10 2013**  
+- Fix a connectivity bug introduced in the previous update that could lead to connectivity problems as well as an erroneous mismatch in OTR fingeprint displays in rare circumstances.  
+- Many small user interface and usability bug fixes.  
+
 ### Cryptocat 2.1
 **Jun. 7 2013**  
 This is a major update to Cryptocat with many improvements and bug fixes.  

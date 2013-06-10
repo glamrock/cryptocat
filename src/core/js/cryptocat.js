@@ -1,5 +1,5 @@
 var Cryptocat = function() {};
-Cryptocat.version = '2.1' // Version number
+Cryptocat.version = '2.1.2' // Version number
 Cryptocat.fileSize = 5120 // Maximum encrypted file sharing size, in kilobytes.
 Cryptocat.chunkSize = 64511 // Size in which file chunks are split, in bytes.
 Cryptocat.fileKeys = {}
