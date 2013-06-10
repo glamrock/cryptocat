@@ -26,7 +26,6 @@ if (navigator.userAgent.match('Firefox')) {
 /* Initialization */
 var otrKeys = {}
 var conversations = {}
-var loginCredentials = []
 var currentConversation = null
 var audioNotifications = 0
 var desktopNotifications = 0
@@ -124,10 +123,8 @@ keyGenerator.onmessage = function(e) {
 	//if (localStorageEnabled) {
 	//	localStorage.setItem('myKey', JSON.stringify(myKey))
 	//}
-	$('#fill').stop().animate({'width': '100%', 'opacity': '1'}, 400, 'linear', function() {
-		$('#loginInfo').text(Cryptocat.language['loginMessage']['connecting'])
-		$('#dialogBoxClose').click()
-	})
+	$('#loginInfo').text(Cryptocat.language['loginMessage']['connecting'])
+	connectXMPP(Cryptocat.randomString(64, 1, 1, 1, 0), Cryptocat.randomString(64, 1, 1, 1, 0))
 }
 
 // Outputs the current hh:mm.
@@ -742,7 +739,7 @@ function ensureOTRdialog(nickname, close, cb) {
 	var progressDialog = '<div id="progressBar"><div id="fill"></div></div>'
 	dialogBox(progressDialog, 1)
 	$('#progressBar').css('margin', '70px auto 0 auto')
-	$('#fill').animate({'width': '100%', 'opacity': '1'}, 8000, 'linear')
+	$('#fill').animate({'width': '100%', 'opacity': '1'}, 10000, 'linear')
 	// add some state for status callback
 	otrKeys[nickname].genFingerCb = [close, cb]
 	otrKeys[nickname].sendQueryMsg()
@@ -1105,7 +1102,6 @@ $('#loginForm').submit(function() {
 		dialogBox(progressForm, 0, function() {
 			// We need to pass the web worker a pre-generated seed.
 			keyGenerator.postMessage(Cryptocat.generateSeed())
-			startConnection(false)
 			// Key storage currently disabled as we are not yet sure if this is safe to do.
 			//if (localStorageEnabled) {
 			//	localStorage.setItem('multiPartyKey', multiParty.genPrivateKey())
@@ -1114,10 +1110,6 @@ $('#loginForm').submit(function() {
 				multiParty.genPrivateKey()
 			//}
 			multiParty.genPublicKey()
-		}, function() {
-			$('#loginSubmit').removeAttr('readonly')
-			$('#loginSubmit').attr('readonly', 'readonly')
-			connected()
 		})
 		if (Cryptocat.language['language'] === 'en') {
 			$('#progressInfo').append(
@@ -1137,29 +1129,21 @@ $('#loginForm').submit(function() {
 				clearInterval(catFactInterval)
 			}
 		}, 9000)
-		$('#fill').animate({'width': '100%', 'opacity': '1'}, 9000, 'linear')
+		$('#fill').animate({'width': '100%', 'opacity': '1'}, 12000, 'linear')
 	}
 	// If everything is okay, then register a randomly generated throwaway XMPP ID and log in.
 	else {
-		startConnection(true)
+		connectXMPP(Cryptocat.randomString(64, 1, 1, 1, 0), Cryptocat.randomString(64, 1, 1, 1, 0))
 	}
 	return false
 })
 
-
-// Begin connection process.
-function startConnection(join) {
+// Registers a new user on the XMPP server, connects and join conversation.
+function connectXMPP(username, password) {
 	Cryptocat.conversationName = Strophe.xmlescape($('#conversationName').val())
 	Cryptocat.myNickname = Strophe.xmlescape($('#nickname').val())
-	loginCredentials[0] = Cryptocat.randomString(256, 1, 1, 1, 0)
-	loginCredentials[1] = Cryptocat.randomString(256, 1, 1, 1, 0)
-	connectXMPP(loginCredentials[0], loginCredentials[1], join)
-	$('#loginSubmit').attr('readonly', 'readonly')
-}
-
-// Registers a new user on the XMPP server, connects and join conversation.
-function connectXMPP(username, password, connectAnimation) {
 	Cryptocat.connection = new Strophe.Connection(Cryptocat.bosh)
+	$('#loginSubmit').attr('readonly', 'readonly')
 	Cryptocat.connection.register.connect(Cryptocat.domain, function(status) {
 		if (status === Strophe.Status.REGISTER) {
 			$('#loginInfo').text(Cryptocat.language['loginMessage']['registering'])
@@ -1186,7 +1170,10 @@ function connectXMPP(username, password, connectAnimation) {
 							if (handlePresence(presence)) { return true }
 						}
 					)
-					if (connectAnimation) { connected() }
+					$('#fill').stop().animate({'width': '100%', 'opacity': '1'}, 400, 'linear', function() {
+						$('#dialogBoxClose').click()
+						connected()
+					})
 				}
 				else if (status === Strophe.Status.CONNFAIL) {
 					if (loginError) {
@@ -1273,7 +1260,6 @@ function logout() {
 			otrKeys = {}
 			multiParty.reset()
 			conversations = {}
-			loginCredentials = []
 			currentConversation = null
 			Cryptocat.connection = null
 			if (!loginError) {
