@@ -52,7 +52,7 @@ var templates = {
 	file: '<div class="fileProgressBar" file="{{message}}"><div class="fileProgressBarFill"></div></div>',
 	fileLink: '<a href="{{url}}" class="fileView" target="_blank" download="{{filename}}">{{downloadFile}}</a>',
 	message: '<div class="line{{lineDecoration}}"><span class="sender" sender="{{sender}}"'
-	 	+ ' timestamp="{{currentTime}}">{{sender}}</span>{{&message}}</div>'
+		+ ' timestamp="{{currentTime}}">{{sender}}</span>{{&message}}</div>'
 }
 
 // Set server information to defaults
@@ -584,7 +584,7 @@ function handlePresence(presence) {
 				if (otrKeys[nickname].genFingerCb
 				&& state === OTR.CONST.STATUS_AKE_SUCCESS) {
 					closeGenerateFingerprints(nickname, otrKeys[nickname].genFingerCb)
-					delete otrKeys[nickname].genFingerCb
+					;delete otrKeys[nickname].genFingerCb
 				}
 			}
 		} (nickname)))
@@ -602,6 +602,8 @@ function handlePresence(presence) {
 			}
 		}) (nickname))
 	}
+
+	var status, color, placement
 	// Detect buddy going offline
 	if ($(presence).attr('type') === 'unavailable') {
 		removeBuddy(nickname)
@@ -614,16 +616,16 @@ function handlePresence(presence) {
 	// Handle buddy status change to 'available'
 	else if ($(presence).find('show').text() === '' || $(presence).find('show').text() === 'chat') {
 		if ($('#buddy-' + nickname).attr('status') !== 'online') {
-			var status = 'online'
-			var color = '#151520'
-			var placement = '#buddiesOnline'
+			status = 'online'
+			color = '#151520'
+			placement = '#buddiesOnline'
 		}
 	}
 	// Handle buddy status change to 'away'
 	else if ($('#buddy-' + nickname).attr('status') !== 'away') {
-			var status = 'away'
-			var color = '#778'
-			var placement = '#buddiesAway'
+			status = 'away'
+			color = '#778'
+			placement = '#buddiesAway'
 	}
 	// Perform status change
 	$('#buddy-' + nickname).attr('status', status)
@@ -669,7 +671,6 @@ function bindBuddyClick(nickname) {
 			|| (($(this).prev().attr('id') === 'buddiesAway')
 			&& $('#buddiesOnline').next().attr('id') === 'buddiesAway')) {
 			$(this).insertAfter('#currentConversation')
-			
 		}
 		else {
 			$(this).insertAfter('#currentConversation').slideDown(100)
@@ -699,7 +700,7 @@ function sendFile(nickname) {
 					to: nickname,
 					key: key
 				})
-				delete Cryptocat.fileKeys[nickname][filename]
+				;delete Cryptocat.fileKeys[nickname][filename]
 			}
 		})
 		$('#fileSelectButton').click(function() {
@@ -754,12 +755,13 @@ function displayInfo(nickname) {
 		groupFingerprint: Cryptocat.language['chatWindow']['groupFingerprint']
 	})
 	ensureOTRdialog(nickname, false, function() {
+		var color
 		dialogBox(infoDialog, 1)
 		$('#otrFingerprint').text(getFingerprint(nickname, 1))
 		$('#multiPartyFingerprint').text(getFingerprint(nickname, 0))
 		var otrColorprint = getFingerprint(nickname, 1).split(' ')
 		otrColorprint.splice(0, 1)
-		for (var color in otrColorprint) {
+		for (color in otrColorprint) {
 			$('#otrColorprint').append(
 				'<div class="colorprint" style="background:#'
 				+ otrColorprint[color].substring(0, 6) + '"></div>'
@@ -767,7 +769,7 @@ function displayInfo(nickname) {
 		}
 		var multiPartyColorprint = getFingerprint(nickname, 0).split(' ')
 		multiPartyColorprint.splice(0, 1)
-		for (var color in multiPartyColorprint) {
+		for (color in multiPartyColorprint) {
 			$('#multiPartyColorprint').append(
 				'<div class="colorprint" style="background:#'
 				+ multiPartyColorprint[color].substring(0, 6) + '"></div>'
@@ -977,7 +979,8 @@ $('#userInputText').keydown(function(e) {
 	if (e.keyCode === 9) {
 		e.preventDefault()
 		for (var nickname in otrKeys) {
-			if (match = nickname.match($(this).val().match(/(\S)+$/))) {
+			match = nickname.match($(this).val().match(/(\S)+$/))
+			if (match) {
 				if ($(this).val().match(/\s/)) {
 					$(this).val($(this).val().replace(match[0], nickname + ' '))
 				}

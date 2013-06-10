@@ -20,3 +20,8 @@ tests:
 	@/bin/echo -n "[Cryptocat] Running tests... "
 	@`/usr/bin/which npm` install
 	@node_modules/.bin/mocha --ui exports --reporter spec test/chrome/js/*.test.js
+
+lint:
+	@node_modules/.bin/jshint --verbose --config .jshintrc src/core/js/cryptocat.js src/core/js/etc/*.js
+
+all: lint tests

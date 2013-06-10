@@ -1,0 +1,10 @@
+{
+	"browser": true,
+	"devel": true,
+	"node": true,
+	"asi": true,
+	"laxbreak": true,
+	"sub": true,
+	"smarttabs": true,
+	"-W018": true
+}
