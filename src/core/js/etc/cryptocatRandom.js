@@ -15,18 +15,19 @@ Cryptocat.generateSeed = function() {
 		evt.initEvent('cryptocatGenerateRandomBytes', true, false)
 		element.dispatchEvent(evt)
 		var output = element.getAttribute('randomValues').split(',')
-		delete element
+		element = null
 		return output
 	}
+	var buffer
 	// Firefox
 	if (navigator.userAgent.match('Firefox') &&
 		(!window.crypto || !window.crypto.getRandomValues)
 	) {
-		var buffer = firefoxRandomBytes()
+		buffer = firefoxRandomBytes()
 	}
 	// Browsers that don't require shitty workarounds
 	else {
-		var buffer = new Uint8Array(40)
+		buffer = new Uint8Array(40)
 		window.crypto.getRandomValues(buffer)
 	}
 	return buffer

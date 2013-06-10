@@ -7,9 +7,4 @@ before_script:
   - "npm install"
 
 script:
-  - "make tests"
-
-notifications:
-  email:
-    - nadim@crypto.cat
-
+  - "make all"
