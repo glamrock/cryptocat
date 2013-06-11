@@ -55,13 +55,12 @@ function groupAdd(x1, xn, zn, xm, zm) {
 	// z₃ = 4(x·z′ - z·x′)² · x1
 	var xz = BigInt.multMod(xm, zn, Curve25519.p25519);
 	var zx = BigInt.multMod(zm, xn, Curve25519.p25519);
-	var d;
 	if (BigInt.greater(xz, zx)) {
 	    d = BigInt.sub(xz, zx);
 	} else {
 	    d = BigInt.sub(zx, xz);
 	}
-	var sq = BigInt.multMod(d, d, Curve25519.p25519);
+	sq = BigInt.multMod(d, d, Curve25519.p25519);
 	var sq2 = BigInt.multMod(sq, x1, Curve25519.p25519);
 	var outz = BigInt.multMod(sq2, four, Curve25519.p25519);
 
@@ -104,21 +103,22 @@ Curve25519.scalarMult = function(i, base) {
 	var x2 = base;
 	var z2 = BigInt.str2bigInt("1", 10);
 
+	var j, point;
 	for (i = 17; i >= 0; i--) {
-		var j = 14;
+		j = 14;
 		if (i == 17) {
 			j = 0;
 		}
 		for (; j >= 0; j--) {
 			if (scalar[i]&0x4000) {
-				var point = groupAdd(base, x1, z1, x2, z2);
+				point = groupAdd(base, x1, z1, x2, z2);
 				x1 = point[0];
 				z1 = point[1];
 				point = groupDouble(x2, z2);
 				x2 = point[0];
 				z2 = point[1];
 			} else {
-				var point = groupAdd(base, x1, z1, x2, z2);
+				point = groupAdd(base, x1, z1, x2, z2);
 				x2 = point[0];
 				z2 = point[1];
 				point = groupDouble(x1, z1);
@@ -201,15 +201,15 @@ Curve25519.ecdsaGenPublicKey = function(privateKey){
 // isOnCurve returns true if the given point is on the curve.
 function isOnCurve(x, y) {
 	// y² = x³ - 3x + b
-	var yy = BigInt.multMod(y, y, p);
-	var xxx = BigInt.multMod(x, mult(x, x), p);
-	var threex = BigInt.multMod(three, x, p);
+	var yy = BigInt.multMod(y, y, p256);
+	var xxx = BigInt.multMod(x, BigInt.mult(x, x), p256);
+	var threex = BigInt.multMod(three, x, p256);
 	var s = BigInt.add(xxx, b256);
 	if (BigInt.greater(threex, s)) {
 		return false;
 	}
 	s = BigInt.sub(s, threex);
-	return equals(s, yy);
+	return BigInt.equals(s, yy);
 }
 
 // subMod returns a-b mod m
@@ -261,7 +261,7 @@ function addJacobian(x1, y1, z1, x2, y2, z2) {
 	y3 = BigInt.mult(y3, two);
 	y3 = subMod(tmp, y3, p256);
 
-	var tmp = BigInt.add(z1, z2);
+	tmp = BigInt.add(z1, z2);
 	tmp = BigInt.multMod(tmp, tmp, p256);
 	tmp = subMod(tmp, z1z1, p256);
 	tmp = subMod(tmp, z2z2, p256);
@@ -311,19 +311,20 @@ function scalarMultP256(bx, by, in_k) {
 	var y = one;
 	var z = zero;
 
-	for (var i = k.length-1; i >= 0; i--) {
-		for (var j = 14; j >= 0; j--) {
-		  var point = doubleJacobian(x, y, z);
-		  x = point[0];
-		  y = point[1];
-		  z = point[2];
-		  if (k[i]&0x4000) {
-			  var point = addJacobian(bx, by, bz, x, y, z);
-			  x = point[0];
-			  y = point[1];
-			  z = point[2];
-		  }
-		  k[i] <<= 1;
+	var i, j, point
+	for (i = k.length-1; i >= 0; i--) {
+		for (j = 14; j >= 0; j--) {
+			point = doubleJacobian(x, y, z);
+			x = point[0];
+			y = point[1];
+			z = point[2];
+			if (k[i]&0x4000) {
+				point = addJacobian(bx, by, bz, x, y, z);
+				x = point[0];
+				y = point[1];
+				z = point[2];
+			}
+			k[i] <<= 1;
 		}
 	}
 
@@ -348,14 +349,14 @@ Curve25519.ecdsaSign = function(privateKey, message) {
 		while (true) {
 			k = BigInt.randBigInt(256);
 			var point = scalarMultP256(p256Gx, p256Gy, k);
-			var r = point[0];
+			r = point[0];
 			r = BigInt.mod(r, n256);
 			if (!BigInt.isZero(r)) {
 				break;
 			}
 		}
 
-		var s = BigInt.multMod(priv, r, n256);
+		s = BigInt.multMod(priv, r, n256);
 		s = BigInt.add(s, m);
 		kinv = BigInt.inverseMod(k, n256);
 		s = BigInt.multMod(s, kinv, n256);

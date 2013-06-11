@@ -28,7 +28,7 @@ Cryptocat.beginSendFile = function(data) {
 			$('#dialogBoxClose').click()
 		}, 500)
 	}
-	sid = Cryptocat.connection.getUniqueId()
+	var sid = Cryptocat.connection.getUniqueId()
 	files[sid] = {
 		to: data.to,
 		position: 0,

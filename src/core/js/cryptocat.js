@@ -273,7 +273,8 @@ function getFingerprint(buddy, OTR) {
 
 // Convert message URLs to links. Used internally.
 function addLinks(message) {
-	if ((URLs = message.match(/(((news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi))) {
+	var URLs = message.match(/(((news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi)
+	if (URLs) {
 		for (var i in URLs) {
 			var sanitize = URLs[i].split('')
 			for (var l in sanitize) {
@@ -310,7 +311,7 @@ function addEmoticons(message) {
 
 // Update a file transfer progress bar.
 Cryptocat.updateFileProgressBar = function(file, chunk, size, recipient) {
-	progress = (chunk * 100) / (Math.ceil(size / Cryptocat.chunkSize))
+	var progress = (chunk * 100) / (Math.ceil(size / Cryptocat.chunkSize))
 	if (progress > 100) { progress = 100 }
 	$('[file=' + file + '] .fileProgressBarFill').animate({'width': progress + '%'})
 	var conversationBuffer = $(conversations[recipient])
@@ -349,6 +350,7 @@ Cryptocat.addToConversation = function(message, sender, conversation, isFile) {
 		return false
 	}
 	initiateConversation(conversation)
+	var lineDecoration
 	if (sender === Cryptocat.myNickname) {
 		lineDecoration = 1
 		message = Strophe.xmlescape(message)
@@ -978,7 +980,8 @@ $('#userInput').submit(function() {
 $('#userInputText').keydown(function(e) {
 	if (e.keyCode === 9) {
 		e.preventDefault()
-		for (var nickname in otrKeys) {
+		var nickname, match
+		for (nickname in otrKeys) {
 			match = nickname.match($(this).val().match(/(\S)+$/))
 			if (match) {
 				if ($(this).val().match(/\s/)) {

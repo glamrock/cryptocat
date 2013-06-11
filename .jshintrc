@@ -1,10 +1,28 @@
 {
 	"browser": true,
 	"devel": true,
+	"jquery": true,
 	"node": true,
 	"asi": true,
 	"laxbreak": true,
 	"sub": true,
 	"smarttabs": true,
-	"-W018": true
+	"undef": true,
+	"eqnull": true,
+	"-W018": true,
+	"globals": {
+		"CryptoJS": true,
+		"Cryptocat": true,
+		"Mustache": true,
+		"OTR": true,
+		"Strophe": true,
+		"DSA": true,
+		"Salsa20": true,
+		"Language": true,
+		"multiParty": true,
+		"BigInt": true,
+		"Curve25519": true,
+		"Stz": true,
+		"CatFacts": true
+	}
 }
