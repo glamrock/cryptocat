@@ -250,7 +250,9 @@ function getFingerprint(buddy, OTR) {
 			fingerprint = myKey.fingerprint()
 		}
 		else {
+			/*jshint -W106 */
 			fingerprint = otrKeys[buddy].their_priv_pk.fingerprint()
+			/*jshint +W106 */
 		}
 	}
 	else {
@@ -418,7 +420,9 @@ function iconNotify(conversation) {
 function desktopNotification(image, title, body, timeout) {
 	if (desktopNotifications) {
 		if (navigator.userAgent.match('Sentenza')) {
+			/*jshint -W106 */
 			Stz.notifyMe_({'title': 'Cryptocat', subtitle: title, content: body})
+			/*jshint +W106 */
 			return true
 		}
 		var notice = window.webkitNotifications.createNotification(image, title, body)
@@ -1166,7 +1170,9 @@ function connectXMPP(username, password) {
 				}
 				else if (status === Strophe.Status.CONNECTED) {
 					Cryptocat.connection.ibb.addIBBHandler(Cryptocat.ibbHandler)
+					/*jshint -W106 */
 					Cryptocat.connection.si_filetransfer.addFileHandler(Cryptocat.fileHandler)
+					/*jshint +W106 */
 					Cryptocat.connection.muc.join(
 						Cryptocat.conversationName + '@' + Cryptocat.conferenceServer, Cryptocat.myNickname, 
 						function(message) {

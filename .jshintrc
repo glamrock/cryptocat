@@ -9,6 +9,7 @@
 	"smarttabs": true,
 	"undef": true,
 	"eqnull": true,
+	"camelcase": true,
 	"-W018": true,
 	"globals": {
 		"CryptoJS": true,

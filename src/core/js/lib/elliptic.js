@@ -303,9 +303,9 @@ function affineFromJacobian(x, y, z) {
 }
 
 // scalarMultP256 returns in_k*(bx,by)
-function scalarMultP256(bx, by, in_k) {
+function scalarMultP256(bx, by, inK) {
 	var bz = [1, 0];
-	var k = BigInt.dup(in_k);
+	var k = BigInt.dup(inK);
 
 	var x = zero;
 	var y = one;
