@@ -1175,8 +1175,10 @@ function connectXMPP(username, password) {
 					)
 					$('#fill').stop().animate({'width': '100%', 'opacity': '1'}, 400, 'linear', function() {
 						$('#dialogBoxClose').click()
-						connected()
 					})
+					window.setTimeout(function() {
+						connected()
+					}, 400)
 				}
 				else if (status === Strophe.Status.CONNFAIL) {
 					if (loginError) {
@@ -1259,7 +1261,7 @@ function logout() {
 					$(this).remove()
 				}
 			})
-			$('#conversationWindow').text('')
+			$('#conversationWindow').html('')
 			otrKeys = {}
 			multiParty.reset()
 			conversations = {}
