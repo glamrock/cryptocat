@@ -82,20 +82,20 @@ if (localStorageEnabled) {
 	}
 	// Load nickname settings
 	if (localStorage.getItem('myNickname')) {
-		window.setTimeout(function() {
-			$('#nickname').animate({'color': 'transparent'}, function() {
-				$(this).val(localStorage.getItem('myNickname'))
-				$(this).animate({'color': '#FFF'})
-			})
-		}, 0)
+		$('#nickname').animate({'color': 'transparent'}, function() {
+			$(this).val(localStorage.getItem('myNickname'))
+			$(this).animate({'color': '#FFF'})
+		})
 	}
 	// Load notification settings
-	if (localStorage.getItem('desktopNotifications') === '1') {
-		$('#notifications').click()
-	}
-	if (localStorage.getItem('audioNotifications') === '1') {
-		$('#audio').click()
-	}
+	window.setTimeout(function() {
+		if (localStorage.getItem('desktopNotifications') === '1') {
+			$('#notifications').click()
+		}
+		if (localStorage.getItem('audioNotifications') === '1') {
+			$('#audio').click()
+		}
+	}, 3000)
 	// Load custom server settings
 	if (localStorage.getItem('domain')) {
 		Cryptocat.domain = localStorage.getItem('domain')
