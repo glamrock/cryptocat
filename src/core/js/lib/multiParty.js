@@ -12,8 +12,8 @@ multiParty.requestRegEx = /^\?:3multiParty:3\?:keyRequest$/
 multiParty.publicKeyRegEx = /^\?:3multiParty:3\?:publicKey:(\w|=)+$/
 
 function correctIvLength(iv){
-	ivAsWordArray = CryptoJS.enc.Base64.parse(iv)
-	ivAsArray = ivAsWordArray.words
+	var ivAsWordArray = CryptoJS.enc.Base64.parse(iv)
+	var ivAsArray = ivAsWordArray.words
 	ivAsArray.push(0)  // adds 0 as the 4th element, causing the equivalent 
 					   // bytestring to have a length of 16 bytes, with 
 					   // \x00\x00\x00\x00 at the end.
@@ -88,7 +88,7 @@ function checkSize(publicKey) {
 // Generate private key (32 byte random number)
 // Represented in decimal
 multiParty.genPrivateKey = function() {
-	rand = Cryptocat.randomString(64, 0, 0, 1, 0)
+	var rand = Cryptocat.randomString(64, 0, 0, 1, 0)
 	myPrivateKey = BigInt.str2bigInt(rand, 16)
 	return myPrivateKey
 }
@@ -110,7 +110,7 @@ multiParty.genPublicKey = function() {
 // First 256 bytes are for encryption, last 256 bytes are for HMAC.
 // Represented in hexadecimal
 multiParty.genSharedSecret = function(user) {
-	sharedSecret = CryptoJS.SHA512(
+	var sharedSecret = CryptoJS.SHA512(
 		Curve25519.ecDH(
 			myPrivateKey, BigInt.str2bigInt(
 				publicKeys[user], 64
@@ -127,16 +127,18 @@ multiParty.genSharedSecret = function(user) {
 // Get fingerprint fingerprint
 // If user is null, returns own fingerprint
 multiParty.genFingerprint = function(user) {
+	var key
 	if (!user) {
-		var key = myPublicKey
+		key = myPublicKey
 	}
 	else {
-		var key = publicKeys[user]
+		key = publicKeys[user]
 	}
-	return fingerprints[user] = CryptoJS.SHA512(key)
+	fingerprints[user] = CryptoJS.SHA512(key)
 		.toString()
 		.substring(0, 40)
 		.toUpperCase()
+	return fingerprints[user]
 }
 
 // Send public key request string.
@@ -177,11 +179,12 @@ multiParty.sendMessage = function(message) {
 	encrypted['tag'] = message
 	var concatenatedCiphertext = ''
 	var sortedRecipients = Object.keys(sharedSecrets).sort()
-	for (var i = 0; i !== sortedRecipients.length; i++) {
-		var iv = CryptoJS.enc.Hex.parse(Cryptocat.randomString(24, 0, 0, 0, 1)).toString(CryptoJS.enc.Base64)
+	var i, iv
+	for (i = 0; i !== sortedRecipients.length; i++) {
+		iv = CryptoJS.enc.Hex.parse(Cryptocat.randomString(24, 0, 0, 0, 1)).toString(CryptoJS.enc.Base64)
 		// Do not reuse IVs
 		while (usedIVs.indexOf(iv) >= 0) {
-			var iv = CryptoJS.enc.Hex.parse(Cryptocat.randomString(24, 0, 0, 0, 1)).toString(CryptoJS.enc.Base64)
+			iv = CryptoJS.enc.Hex.parse(Cryptocat.randomString(24, 0, 0, 0, 1)).toString(CryptoJS.enc.Base64)
 		}
 		usedIVs.push(iv)
 		encrypted['text'][sortedRecipients[i]] = {}
@@ -189,7 +192,7 @@ multiParty.sendMessage = function(message) {
 		encrypted['text'][sortedRecipients[i]]['iv'] = iv
 		concatenatedCiphertext += encrypted['text'][sortedRecipients[i]]['message'] + encrypted['text'][sortedRecipients[i]]['iv']
 	}
-	for (var i = 0; i !== sortedRecipients.length; i++) {
+	for (i = 0; i !== sortedRecipients.length; i++) {
 		encrypted['text'][sortedRecipients[i]]['hmac'] = HMAC(concatenatedCiphertext, sharedSecrets[sortedRecipients[i]]['hmac'])
 		encrypted['tag'] += encrypted['text'][sortedRecipients[i]]['hmac']
 	}
@@ -230,7 +233,8 @@ multiParty.receiveMessage = function(sender, myName, message) {
 			// console.log(message)
 			var concatenatedCiphertext = ''
 			var sortedRecipients = Object.keys(message['text']).sort()
-			for (var i = 0; i !== sortedRecipients.length; i++) {
+			var i
+			for (i = 0; i !== sortedRecipients.length; i++) {
 				concatenatedCiphertext += message['text'][sortedRecipients[i]]['message'] + message['text'][sortedRecipients[i]]['iv']
 			}
 			if (message['text'][myName]['hmac'] === HMAC(concatenatedCiphertext, sharedSecrets[sender]['hmac'])) {
@@ -241,7 +245,7 @@ multiParty.receiveMessage = function(sender, myName, message) {
 				usedIVs.push(message['text'][myName]['iv'])
 				var plaintext = decryptAES(message['text'][myName]['message'], sharedSecrets[sender]['message'], message['text'][myName]['iv'])
 				var messageTag = plaintext
-				for (var i = 0; i !== sortedRecipients.length; i++) {
+				for (i = 0; i !== sortedRecipients.length; i++) {
 					messageTag += message['text'][sortedRecipients[i]]['hmac']
 				}
 				if (multiParty.messageTag(messageTag) === message['tag']) {
@@ -278,8 +282,8 @@ multiParty.renameKeys = function(oldName, newName) {
 // Remove user keys and information
 multiParty.removeKeys = function(user) {
 	delete publicKeys[user]
-	delete sharedSecrets[user]
-	delete fingerprints[user]
+	;delete sharedSecrets[user]
+	;delete fingerprints[user]
 }
 
 // Reset everything except my own key pair

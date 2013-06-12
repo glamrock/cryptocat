@@ -250,7 +250,9 @@ function getFingerprint(buddy, OTR) {
 			fingerprint = myKey.fingerprint()
 		}
 		else {
+			/*jshint -W106 */
 			fingerprint = otrKeys[buddy].their_priv_pk.fingerprint()
+			/*jshint +W106 */
 		}
 	}
 	else {
@@ -273,7 +275,8 @@ function getFingerprint(buddy, OTR) {
 
 // Convert message URLs to links. Used internally.
 function addLinks(message) {
-	if ((URLs = message.match(/(((news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi))) {
+	var URLs = message.match(/(((news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi)
+	if (URLs) {
 		for (var i in URLs) {
 			var sanitize = URLs[i].split('')
 			for (var l in sanitize) {
@@ -310,7 +313,7 @@ function addEmoticons(message) {
 
 // Update a file transfer progress bar.
 Cryptocat.updateFileProgressBar = function(file, chunk, size, recipient) {
-	progress = (chunk * 100) / (Math.ceil(size / Cryptocat.chunkSize))
+	var progress = (chunk * 100) / (Math.ceil(size / Cryptocat.chunkSize))
 	if (progress > 100) { progress = 100 }
 	$('[file=' + file + '] .fileProgressBarFill').animate({'width': progress + '%'})
 	var conversationBuffer = $(conversations[recipient])
@@ -349,6 +352,7 @@ Cryptocat.addToConversation = function(message, sender, conversation, isFile) {
 		return false
 	}
 	initiateConversation(conversation)
+	var lineDecoration
 	if (sender === Cryptocat.myNickname) {
 		lineDecoration = 1
 		message = Strophe.xmlescape(message)
@@ -416,7 +420,9 @@ function iconNotify(conversation) {
 function desktopNotification(image, title, body, timeout) {
 	if (desktopNotifications) {
 		if (navigator.userAgent.match('Sentenza')) {
+			/*jshint -W106 */
 			Stz.notifyMe_({'title': 'Cryptocat', subtitle: title, content: body})
+			/*jshint +W106 */
 			return true
 		}
 		var notice = window.webkitNotifications.createNotification(image, title, body)
@@ -978,7 +984,8 @@ $('#userInput').submit(function() {
 $('#userInputText').keydown(function(e) {
 	if (e.keyCode === 9) {
 		e.preventDefault()
-		for (var nickname in otrKeys) {
+		var nickname, match
+		for (nickname in otrKeys) {
 			match = nickname.match($(this).val().match(/(\S)+$/))
 			if (match) {
 				if ($(this).val().match(/\s/)) {
@@ -1163,7 +1170,9 @@ function connectXMPP(username, password) {
 				}
 				else if (status === Strophe.Status.CONNECTED) {
 					Cryptocat.connection.ibb.addIBBHandler(Cryptocat.ibbHandler)
+					/*jshint -W106 */
 					Cryptocat.connection.si_filetransfer.addFileHandler(Cryptocat.fileHandler)
+					/*jshint +W106 */
 					Cryptocat.connection.muc.join(
 						Cryptocat.conversationName + '@' + Cryptocat.conferenceServer, Cryptocat.myNickname, 
 						function(message) {

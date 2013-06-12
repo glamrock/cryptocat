@@ -28,7 +28,7 @@ Cryptocat.beginSendFile = function(data) {
 			$('#dialogBoxClose').click()
 		}, 500)
 	}
-	sid = Cryptocat.connection.getUniqueId()
+	var sid = Cryptocat.connection.getUniqueId()
 	files[sid] = {
 		to: data.to,
 		position: 0,
@@ -37,7 +37,9 @@ Cryptocat.beginSendFile = function(data) {
 		total: Math.ceil(data.file.size / Cryptocat.chunkSize),
 		ctr: -1
 	}
+	/*jshint -W106 */
 	Cryptocat.connection.si_filetransfer.send(
+	/*jshint +W106 */
 		cn(data.to),
 		sid,
 		data.filename,

@@ -25,7 +25,7 @@ Language.set = function(locale) {
 		accepts: 'text/html',
 		contentType: 'text/html',
 		complete: function(data) {
-			language = data.responseText.split('\n')
+			var language = data.responseText.split('\n')
 			if (language.length < 5) {
 				// Something's wrong, reset to English and exit
 				Language.set('en')
@@ -42,7 +42,7 @@ Language.set = function(locale) {
 // Build and deliver language object
 Language.buildObject = function(locale, language) {
 	var i = 0
-	languageObject = {
+	var languageObject = {
 		'language': locale,
 		'direction': language[i++],
 		'font-family': language[i++],

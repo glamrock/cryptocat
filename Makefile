@@ -22,6 +22,10 @@ tests:
 	@node_modules/.bin/mocha --ui exports --reporter spec test/chrome/js/*.test.js
 
 lint:
-	@node_modules/.bin/jshint --verbose --config .jshintrc src/core/js/cryptocat.js src/core/js/etc/*.js
+	@node_modules/.bin/jshint --verbose --config .jshintrc \
+		src/core/js/cryptocat.js \
+		src/core/js/lib/multiParty.js \
+		src/core/js/lib/elliptic.js \
+		src/core/js/etc/*.js
 
 all: lint tests
