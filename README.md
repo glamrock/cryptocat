@@ -18,14 +18,6 @@ Also available from [Mozilla Firefox Addons](https://addons.mozilla.org/en-US/fi
 Apple's model makes an automated build process difficult.  
 Also available from [Cryptocat](https://crypto.cat/get/cryptocat.safariextz).
 
-### Coding style for contributions
-All contributed code, written in JavaScript, must adhere to the following coding style:  
-	1. Tabs are used for indentation, **not** spaces.  
-	2. Lines are **not** ended with semicolons.  
-	3. Use camel case for variables, filenames, and so on.  
-	4. Please comment your code sufficiently.  
-	5. Anonymous closures should be used wherever they are useful.  
-
 ### Compatibility Status
 ```
   -----------------------------------------
@@ -45,6 +37,9 @@ All contributed code, written in JavaScript, must adhere to the following coding
 * OTR **[DONE]** | [Discussion](https://github.com/cryptocat/cryptocat/issues/84), [Library](https://github.com/arlolra/otr)
 * mpOTR | [Discussion](https://github.com/cryptocat/cryptocat/issues/82), Spec in progress. Currently relying on the [Cryptocat Multiparty Protocol](https://github.com/cryptocat/cryptocat/wiki/Multiparty-Protocol-Specification)  
 
+### Contributing
+Please see `CONTRIBUTING.md` for guidelines on how to contribute.
+
 ### Documentation & Wiki
 * [Multiparty Protocol Specification](https://github.com/cryptocat/cryptocat/wiki/Multiparty-Protocol-Specification)  
 * [OTR Encrypted File Transfer Specification](https://github.com/cryptocat/cryptocat/wiki/OTR-Encrypted-File-Transfer-Specification)  
@@ -56,9 +51,6 @@ All contributed code, written in JavaScript, must adhere to the following coding
 ### Discussion & Blog
 * [Issue tracker](https://github.com/cryptocat/cryptocat/issues)
 * [Development Blog](https://blog.crypto.cat)  
-
-### Tests
-* Run tests using `make tests`.
 
 ### Builds
 * Builds are available in `release/`.  
