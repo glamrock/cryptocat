@@ -55,23 +55,23 @@ var templates = {
 		+ ' timestamp="{{currentTime}}">{{sender}}</span>{{&message}}</div>'
 }
 
-// Set server information to defaults
+// Set server information to defaults.
 Cryptocat.domain = defaultDomain
 Cryptocat.conferenceServer = defaultConferenceServer
 Cryptocat.bosh = defaultBOSH
 
-// Set version number in UI
+// Set version number in UI.
 $('#version').text(Cryptocat.version)
 
-// Seed RNG
+// Seed RNG.
 Cryptocat.setSeed(Cryptocat.generateSeed())
 
-// Initialize language settings
+// Initialize language settings.
 if (!localStorageEnabled) {
 	Language.set(window.navigator.language.toLowerCase())
 }
 
-// If localStorage is implemented, load saved settings
+// If localStorage is implemented, load saved settings.
 if (localStorageEnabled) {
 	// Load language settings
 	if (localStorage.getItem('language')) {
@@ -80,14 +80,14 @@ if (localStorageEnabled) {
 	else {
 		Language.set(window.navigator.language.toLowerCase())
 	}
-	// Load nickname settings
+	// Load nickname settings.
 	if (localStorage.getItem('myNickname')) {
 		$('#nickname').animate({'color': 'transparent'}, function() {
 			$(this).val(localStorage.getItem('myNickname'))
 			$(this).animate({'color': '#FFF'})
 		})
 	}
-	// Load notification settings
+	// Load notification settings.
 	window.setTimeout(function() {
 		if (localStorage.getItem('desktopNotifications') === '1') {
 			$('#notifications').click()
@@ -155,15 +155,14 @@ function initiateConversation(conversation) {
 	}
 }
 
-// OTR functions
-// Handle incoming messages
+// OTR functions:
+// Handle incoming messages.
 var uicb = function(buddy) {
 	return function(msg) {
 		Cryptocat.addToConversation(msg, buddy, buddy)
 	}
 }
-
-// Handle outgoing messages
+// Handle outgoing messages.
 var iocb = function(buddy) {
 	return function(message) {
 		Cryptocat.connection.muc.message(Cryptocat.conversationName + '@' + Cryptocat.conferenceServer, buddy, message, null)
@@ -196,7 +195,7 @@ function switchConversation(buddy) {
 		scrollDownConversation(100)
 	}, 400)
 	$('#userInputText').focus()
-	// Clean up finished conversations
+	// Clean up finished conversations.
 	$('#buddyList div').each(function() {
 		if (($(this).attr('id') !== ('buddy-' + currentConversation))
 			&& ($(this).css('background-image') === 'none')
@@ -208,7 +207,7 @@ function switchConversation(buddy) {
 	})
 }
 
-// Handles login failures
+// Handles login failures.
 function loginFail(message) {
 	buddyNotifications = 0
 	$('#loginInfo').text(message)
@@ -242,7 +241,7 @@ function cleanNickname(nickname) {
 	return clean
 }
 
-// Get a fingerprint, formatted for readability
+// Get a fingerprint, formatted for readability.
 function getFingerprint(buddy, OTR) {
 	var fingerprint
 	if (OTR) {
@@ -398,7 +397,7 @@ Cryptocat.addToConversation = function(message, sender, conversation, isFile) {
 	}
 }
 
-// Bind timestamps to show when message sender is hovered
+// Bind timestamps to show when message sender is hovered.
 function bindTimestamps() {
 	$('.sender').unbind('mouseenter,mouseleave')
 	$('.sender').mouseenter(function() {
@@ -436,7 +435,7 @@ function desktopNotification(image, title, body, timeout) {
 }
 
 // Add a join/part notification to the main conversation window.
-// If 'join === 1', shows join notification, otherwise shows part
+// If 'join === 1', shows join notification, otherwise shows part.
 function buddyNotification(buddy, join) {
 	if (!buddyNotifications) { return false }
 	var status, audioNotification
@@ -462,7 +461,7 @@ function buddyNotification(buddy, join) {
 	}
 }
 
-// Build new buddy
+// Build new buddy.
 function addBuddy(nickname) {
 	$('#buddyList').queue(function() {
 		var buddyTemplate = Mustache.render(templates.buddy, {
@@ -484,9 +483,9 @@ function addBuddy(nickname) {
 	$('#buddyList').dequeue()
 }
 
-// Handle buddy going offline
+// Handle buddy going offline.
 function removeBuddy(nickname) {
-	// Delete their encryption keys
+	// Delete their encryption keys.
 	delete otrKeys[nickname]
 	multiParty.removeKeys(nickname)
 	if (($('#buddy-' + nickname).length !== 0)
@@ -586,7 +585,7 @@ function handlePresence(presence) {
 		})
 		otrKeys[nickname].on('status', (function(nickname) {
 			return function(state) {
-				// close generating fingerprint dialog after AKE
+				// Close generating fingerprint dialog after AKE.
 				if (otrKeys[nickname].genFingerCb
 				&& state === OTR.CONST.STATUS_AKE_SUCCESS) {
 					closeGenerateFingerprints(nickname, otrKeys[nickname].genFingerCb)
@@ -596,7 +595,7 @@ function handlePresence(presence) {
 		} (nickname)))
 		otrKeys[nickname].on('file', (function (nickname) {
 			return function(type, key, filename) {
-			// make two keys, for encrypt then mac
+			// Make two keys, for encrypt then MAC.
 				key = CryptoJS.SHA512(CryptoJS.enc.Latin1.parse(key))
 				key = key.toString(CryptoJS.enc.Latin1)
 				if (!Cryptocat.fileKeys[nickname]) {
@@ -610,16 +609,16 @@ function handlePresence(presence) {
 	}
 
 	var status, color, placement
-	// Detect buddy going offline
+	// Detect buddy going offline.
 	if ($(presence).attr('type') === 'unavailable') {
 		removeBuddy(nickname)
 		return true
 	}
-	// Create buddy element if buddy is new
+	// Create buddy element if buddy is new.
 	else if (!$('#buddy-' + nickname).length) {
 		addBuddy(nickname)
 	}
-	// Handle buddy status change to 'available'
+	// Handle buddy status change to 'available'.
 	else if ($(presence).find('show').text() === '' || $(presence).find('show').text() === 'chat') {
 		if ($('#buddy-' + nickname).attr('status') !== 'online') {
 			status = 'online'
@@ -627,13 +626,13 @@ function handlePresence(presence) {
 			placement = '#buddiesOnline'
 		}
 	}
-	// Handle buddy status change to 'away'
+	// Handle buddy status change to 'away'.
 	else if ($('#buddy-' + nickname).attr('status') !== 'away') {
 			status = 'away'
 			color = '#778'
 			placement = '#buddiesAway'
 	}
-	// Perform status change
+	// Perform status change.
 	$('#buddy-' + nickname).attr('status', status)
 	if (placement) {
 		$('#buddy-' + nickname).animate({ 'color': color })
@@ -684,7 +683,7 @@ function bindBuddyClick(nickname) {
 	})
 }
 
-// Send encrypted file
+// Send encrypted file.
 function sendFile(nickname) {
 	var sendFileDialog = Mustache.render(templates.sendFile, {
 		sendEncryptedFile: Cryptocat.language['chatWindow']['sendEncryptedFile'],
@@ -725,7 +724,7 @@ function scrollDownConversation(speed) {
 	}
 }
 
-// Close generating fingerprints dialog
+// Close generating fingerprints dialog.
 function closeGenerateFingerprints(nickname, arr) {
 	var close = arr[0]
 	var cb = arr[1]
@@ -877,8 +876,8 @@ function dialogBox(data, closeable, onAppear, onClose) {
 	}
 } $('#dialogBox').draggable()
 
-// Buttons
-// Status button
+// Buttons:
+// Status button.
 $('#status').click(function() {
 	if ($(this).attr('src') === 'img/available.png') {
 		$(this).attr('src', 'img/away.png')
@@ -896,12 +895,12 @@ $('#status').click(function() {
 	}
 })
 
-// My info button
+// My info button.
 $('#myInfo').click(function() {
 	displayInfo(Cryptocat.myNickname)
 })
 
-// Desktop notifications button
+// Desktop notifications button.
 if (!window.webkitNotifications) {
 	$('#notifications').remove()
 }
@@ -927,8 +926,8 @@ else {
 	})
 }
 
-// Audio notifications button
-// If using Safari, remove this button
+// Audio notifications button.
+// If using Safari, remove this button.
 // (Since Safari does not support audio notifications)
 if (!navigator.userAgent.match(/(Chrome)|(Firefox)/)) {
 	$('#audio').remove()
@@ -953,12 +952,12 @@ else {
 }
 
 
-// Logout button
+// Logout button.
 $('#logout').click(function() {
 	logout()
 })
 
-// Submit user input
+// Submit user input.
 $('#userInput').submit(function() {
 	var message = $.trim($('#userInputText').val())
 	if (message !== '') {
@@ -1012,7 +1011,7 @@ $('#userInputSubmit').click(function() {
 	$('#userInputText').select()
 })
 
-// Custom server dialog
+// Custom server dialog.
 $('#customServer').click(function() {
 	Cryptocat.bosh = Strophe.xmlescape(Cryptocat.bosh)
 	Cryptocat.conferenceServer = Strophe.xmlescape(Cryptocat.conferenceServer)
@@ -1240,7 +1239,7 @@ function connected() {
 		$('#buddyWrapper').slideDown()
 		window.setTimeout(function() {
 			buddyNotifications = 1
-		}, 9999)
+		}, 6000)
 	})
 	loginError = 0
 }
@@ -1292,6 +1291,13 @@ function logout() {
 $(window).focus(function() {
 	if ($('#buddy-main-Conversation').attr('status') === 'online') {
 		$('#userInputText').focus()
+	}
+})
+
+// Prevent accidental window close.
+$(window).bind('beforeunload', function() {
+	if (buddyNotifications) {
+		return Cryptocat.language['loginMessage']['thankYouUsing']
 	}
 })
 
