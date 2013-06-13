@@ -17,11 +17,11 @@
 		"jshint": "2.1.3"
 	},
 	"bin": {
-		"cryptocat": "standalone-server.js"
+		"cryptocat": "src/standaloneServer.js"
 	},
 	"scripts": {
 		"test": "mocha --ui exports --reporter spec test/chrome/js/*.test.js",
-		"start": "node standalone-server.js"
+		"start": "node src/standaloneServer.js"
 	},
 	"repository": {
 		"type": "git",
