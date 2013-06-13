@@ -147,11 +147,13 @@ Strophe.addConnectionPlugin('muc', {
   (String) html_message - The message to send to the room with html markup.
   (String) type - "groupchat" for group chat messages o
                   "chat" for private chat messages
+  (String) notification - "composing" for composing message
+                          "active" for not composing message
   Returns:
   msgiq - the unique id used to send the message
   */
 
-  message: function(room, nick, message, html_message, type) {
+  message: function(room, nick, message, html_message, type, notification) {
     var msg, msgid, parent, room_nick;
     room_nick = this.test_append_nick(room, nick);
     type = type || (nick != null ? "chat" : "groupchat");
@@ -181,7 +183,7 @@ Strophe.addConnectionPlugin('muc', {
     }
     msg.c("x", {
       xmlns: "jabber:x:event"
-    }).c("composing");
+    }).c(notification);
     this._connection.send(msg);
     return msgid;
   },

@@ -26,34 +26,15 @@ if (navigator.userAgent.match('Firefox')) {
 /* Initialization */
 var otrKeys = {}
 var conversations = {}
-var currentConversation = null
-var audioNotifications = 0
-var desktopNotifications = 0
-var buddyNotifications = 0
-var loginError = 0
 var currentStatus = 'online'
-var soundEmbed = null
+var currentConversation
+var audioNotifications
+var desktopNotifications
+var buddyNotifications
+var loginError
+var soundEmbed
 var myKey
-
-/* Templates */
-var templates = {
-	buddy: '<div class="buddy" title="{{nickname}}" id="buddy-{{nickname}}" status="online">'
-				+ '<span>{{shortNickname}}</span>'
-		+ '<div class="buddyMenu" id="menu-{{nickname}}"></div></div>',
-	infoDialog: '<div class="title">{{nickname}}</div>'
-		+ '<div id="displayInfo">{{otrFingerprint}}<br /><span id="otrFingerprint"></span><br />'
-			+ '<div id="otrColorprint"></div>{{groupFingerprint}}'
-			+ '<br /><span id="multiPartyFingerprint"></span><br />'
-			+ '<div id="multiPartyColorprint"></div><br /></div>',
-	sendFile: '<div class="title">{{sendEncryptedFile}}</div>'
-		+ '<input type="file" id="fileSelector" name="file[]" />'
-		+ '<input type="button" id="fileSelectButton" value="{{sendEncryptedFile}}" />'
-		+ '<div id="fileInfoField">{{fileTransferInfo}}</div>',
-	file: '<div class="fileProgressBar" file="{{message}}"><div class="fileProgressBarFill"></div></div>',
-	fileLink: '<a href="{{url}}" class="fileView" target="_blank" download="{{filename}}">{{downloadFile}}</a>',
-	message: '<div class="line{{lineDecoration}}"><span class="sender" sender="{{sender}}"'
-		+ ' timestamp="{{currentTime}}">{{sender}}</span>{{&message}}</div>'
-}
+var composing
 
 // Set server information to defaults.
 Cryptocat.domain = defaultDomain
@@ -89,10 +70,10 @@ if (localStorageEnabled) {
 	}
 	// Load notification settings.
 	window.setTimeout(function() {
-		if (localStorage.getItem('desktopNotifications') === '1') {
+		if (localStorage.getItem('desktopNotifications') === 'true') {
 			$('#notifications').click()
 		}
-		if (localStorage.getItem('audioNotifications') === '1') {
+		if (localStorage.getItem('audioNotifications') === 'true') {
 			$('#audio').click()
 		}
 	}, 3000)
@@ -128,7 +109,7 @@ keyGenerator.onmessage = function(e) {
 }
 
 // Outputs the current hh:mm.
-// If `seconds = 1`, outputs hh:mm:ss.
+// If `seconds = true`, outputs hh:mm:ss.
 function currentTime(seconds) {
 	var date = new Date()
 	var time = []
@@ -165,7 +146,10 @@ var uicb = function(buddy) {
 // Handle outgoing messages.
 var iocb = function(buddy) {
 	return function(message) {
-		Cryptocat.connection.muc.message(Cryptocat.conversationName + '@' + Cryptocat.conferenceServer, buddy, message, null)
+		Cryptocat.connection.muc.message(
+			Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
+			buddy, message, null, 'chat', 'active'
+		)
 	}
 }
 
@@ -209,7 +193,7 @@ function switchConversation(buddy) {
 
 // Handles login failures.
 function loginFail(message) {
-	buddyNotifications = 0
+	buddyNotifications = false
 	$('#loginInfo').text(message)
 	$('#bubble').animate({'left': '+=5px'}, 130)
 		.animate({'left': '-=10px'}, 130)
@@ -323,7 +307,7 @@ Cryptocat.updateFileProgressBar = function(file, chunk, size, recipient) {
 // Convert Data blob/url to downloadable file, replacing the progress bar.
 Cryptocat.addFile = function(url, file, conversation, filename) {
 	var conversationBuffer = $(conversations[conversation])
-	var fileLink = Mustache.render(templates.fileLink, {
+	var fileLink = Mustache.render(Cryptocat.templates.fileLink, {
 		url: url,
 		filename: filename,
 		downloadFile: Cryptocat.language['chatWindow']['downloadFile']
@@ -372,17 +356,17 @@ Cryptocat.addToConversation = function(message, sender, conversation, isFile) {
 		}
 	}
 	if (isFile) {
-		message = Mustache.render(templates.file, { message: message })
+		message = Mustache.render(Cryptocat.templates.file, { message: message })
 	}
 	else {
 		message = addLinks(message)
 		message = addEmoticons(message)
 	}
 	message = message.replace(/:/g, '&#58;')
-	message = Mustache.render(templates.message, {
+	message = Mustache.render(Cryptocat.templates.message, {
 		lineDecoration: lineDecoration,
 		sender: shortenString(sender, 16),
-		currentTime: currentTime(1),
+		currentTime: currentTime(true),
 		message: message
 	})
 	conversations[conversation] += message
@@ -435,7 +419,7 @@ function desktopNotification(image, title, body, timeout) {
 }
 
 // Add a join/part notification to the main conversation window.
-// If 'join === 1', shows join notification, otherwise shows part.
+// If 'join === true', shows join notification, otherwise shows part.
 function buddyNotification(buddy, join) {
 	if (!buddyNotifications) { return false }
 	var status, audioNotification
@@ -464,7 +448,7 @@ function buddyNotification(buddy, join) {
 // Build new buddy.
 function addBuddy(nickname) {
 	$('#buddyList').queue(function() {
-		var buddyTemplate = Mustache.render(templates.buddy, {
+		var buddyTemplate = Mustache.render(Cryptocat.templates.buddy, {
 			nickname: nickname,
 			shortNickname: shortenString(nickname, 12)
 		})
@@ -474,8 +458,8 @@ function addBuddy(nickname) {
 			bindBuddyMenu(nickname)
 			bindBuddyClick(nickname)
 			Cryptocat.connection.muc.message(
-				Cryptocat.conversationName + '@' + Cryptocat.conferenceServer, null,
-				multiParty.sendPublicKey(nickname), null
+				Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
+				null, multiParty.sendPublicKey(nickname), null, 'groupchat', 'active'
 			)
 			buddyNotification(nickname, true)
 		})
@@ -533,7 +517,16 @@ function handleMessage(message) {
 	if (!$('#buddy-' + nickname).length) {
 		return true
 	}
+	// Check if message has a "composing" notification.
+	if ($(message).find('composing').length) {
+		console.log('composing notification detected')
+	}
+	// Check if message has an "active" (stopped writing) notification.
+	if ($(message).find('active').length) {
+		console.log('active notification detected')
+	}
 	if (type === 'groupchat') {
+		if (!body.length) { return true }
 		body = multiParty.receiveMessage(nickname, Cryptocat.myNickname, body)
 		if (typeof(body) === 'string') {
 			Cryptocat.addToConversation(body, nickname, 'main-Conversation')
@@ -553,7 +546,7 @@ function handlePresence(presence) {
 		if ($(presence).find('error').attr('code') === '409') {
 			// Delay logout in order to avoid race condition with window animation
 			window.setTimeout(function() {
-				loginError = 1
+				loginError = true
 				logout()
 				loginFail(Cryptocat.language['loginMessage']['nicknameInUse'])
 			}, 3000)
@@ -580,9 +573,7 @@ function handlePresence(presence) {
 		otrKeys[nickname].REQUIRE_ENCRYPTION = true
 		otrKeys[nickname].on('ui', uicb(nickname))
 		otrKeys[nickname].on('io', iocb(nickname))
-		otrKeys[nickname].on('error', function(err) {
-			console.log('OTR error: ' + err)
-		})
+		otrKeys[nickname].on('error', function(err) {})
 		otrKeys[nickname].on('status', (function(nickname) {
 			return function(state) {
 				// Close generating fingerprint dialog after AKE.
@@ -685,7 +676,7 @@ function bindBuddyClick(nickname) {
 
 // Send encrypted file.
 function sendFile(nickname) {
-	var sendFileDialog = Mustache.render(templates.sendFile, {
+	var sendFileDialog = Mustache.render(Cryptocat.templates.sendFile, {
 		sendEncryptedFile: Cryptocat.language['chatWindow']['sendEncryptedFile'],
 		fileTransferInfo: Cryptocat.language['chatWindow']['fileTransferInfo']
 	})
@@ -754,7 +745,7 @@ function ensureOTRdialog(nickname, close, cb) {
 // Display buddy information, including fingerprints etc.
 function displayInfo(nickname) {
 	nickname = Strophe.xmlescape(nickname)
-	var infoDialog = Mustache.render(templates.infoDialog, {
+	var infoDialog = Mustache.render(Cryptocat.templates.infoDialog, {
 		nickname: nickname,
 		otrFingerprint: Cryptocat.language['chatWindow']['otrFingerprint'],
 		groupFingerprint: Cryptocat.language['chatWindow']['groupFingerprint']
@@ -839,7 +830,7 @@ function sendStatus() {
 }
 
 // Displays a pretty dialog box with `data` as the content HTML.
-// If `closeable = 1`, then the dialog box has a close button on the top right.
+// If `closeable = true`, then the dialog box has a close button on the top right.
 // onAppear may be defined as a callback function to execute on dialog box appear.
 // onClose may be defined as a callback function to execute on dialog box close.
 function dialogBox(data, closeable, onAppear, onClose) {
@@ -910,7 +901,7 @@ else {
 			$(this).attr('src', 'img/notifications.png')
 			$(this).attr('alt', Cryptocat.language['chatWindow']['desktopNotificationsOn'])
 			$(this).attr('title', Cryptocat.language['chatWindow']['desktopNotificationsOn'])
-			desktopNotifications = 1
+			desktopNotifications = true
 			localStorage.setItem('desktopNotifications', '1')
 			if (window.webkitNotifications.checkPermission()) {
 				window.webkitNotifications.requestPermission(function() {})
@@ -920,7 +911,7 @@ else {
 			$(this).attr('src', 'img/noNotifications.png')
 			$(this).attr('alt', Cryptocat.language['chatWindow']['desktopNotificationsOff'])
 			$(this).attr('title', Cryptocat.language['chatWindow']['desktopNotificationsOff'])
-			desktopNotifications = 0
+			desktopNotifications = false
 			localStorage.setItem('desktopNotifications', '0')
 		}
 	})
@@ -938,15 +929,15 @@ else {
 			$(this).attr('src', 'img/sound.png')
 			$(this).attr('alt', Cryptocat.language['chatWindow']['audioNotificationsOn'])
 			$(this).attr('title', Cryptocat.language['chatWindow']['audioNotificationsOn'])
-			audioNotifications = 1
-			localStorage.setItem('audioNotifications', '1')
+			audioNotifications = true
+			localStorage.setItem('audioNotifications', 'true')
 		}
 		else {
 			$(this).attr('src', 'img/noSound.png')
 			$(this).attr('alt', Cryptocat.language['chatWindow']['audioNotificationsOff'])
 			$(this).attr('title', Cryptocat.language['chatWindow']['audioNotificationsOff'])
-			audioNotifications = 0
-			localStorage.setItem('audioNotifications', '0')
+			audioNotifications = false
+			localStorage.setItem('audioNotifications', 'false')
 		}
 	})
 }
@@ -964,8 +955,8 @@ $('#userInput').submit(function() {
 		if (currentConversation === 'main-Conversation') {
 			if (multiParty.userCount() >= 1) {
 				Cryptocat.connection.muc.message(
-					Cryptocat.conversationName + '@' + Cryptocat.conferenceServer, null,
-					multiParty.sendMessage(message), null
+					Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
+					null, multiParty.sendMessage(message), null, 'groupchat', 'active'
 				)
 			}
 		}
@@ -994,9 +985,27 @@ $('#userInputText').keydown(function(e) {
 			}
 		}
 	}
-	if (e.keyCode === 13) {
+	else if (e.keyCode === 13) {
 		e.preventDefault()
 		$('#userInput').submit()
+	}
+	else if (!composing) {
+		composing = true
+		window.setTimeout(function() {
+			composing = false
+		}, 3000)
+		if (currentConversation === 'main-Conversation') {
+			Cryptocat.connection.muc.message(
+				Cryptocat.conversationName + '@' + Cryptocat.conferenceServer, 
+				null, '', null, 'groupchat', 'composing'
+			)
+		}
+		else {
+			Cryptocat.connection.muc.message(
+				Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
+				currentConversation, '', null, 'chat', 'composing'
+			)
+		}
 	}
 })
 $('#userInputText').keyup(function(e) {
@@ -1236,15 +1245,15 @@ function connected() {
 		})
 		$('#buddyWrapper').slideDown()
 		window.setTimeout(function() {
-			buddyNotifications = 1
+			buddyNotifications = true
 		}, 6000)
 	})
-	loginError = 0
+	loginError = false
 }
 
 // Executes on user logout.
 function logout() {
-	buddyNotifications = 0
+	buddyNotifications = false
 	Cryptocat.connection.muc.leave(Cryptocat.conversationName + '@' + Cryptocat.conferenceServer)
 	Cryptocat.connection.disconnect()
 	$('#conversationInfo,#optionButtons').fadeOut()
