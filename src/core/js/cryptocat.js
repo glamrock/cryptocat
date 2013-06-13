@@ -983,16 +983,14 @@ $('#userInput').submit(function() {
 $('#userInputText').keydown(function(e) {
 	if (e.keyCode === 9) {
 		e.preventDefault()
-		var nickname, match
+		var nickname, match, suffix
 		for (nickname in otrKeys) {
-			match = nickname.match($(this).val().match(/(\S)+$/))
+			try { match = nickname.match($(this).val().match(/(\S)+$/)[0]) }
+			catch(err) {}
 			if (match) {
-				if ($(this).val().match(/\s/)) {
-					$(this).val($(this).val().replace(match[0], nickname + ' '))
-				}
-				else {
-					$(this).val($(this).val().replace(match[0], nickname + ': '))
-				}
+				if ($(this).val().match(/\s/)) { suffix = ' ' }
+				else { suffix = ': ' }
+				$(this).val($(this).val().replace(/(\S)+$/, nickname + suffix))
 			}
 		}
 	}
