@@ -30,7 +30,7 @@ License: MIT
 
 ### OTR.js
 Origin: https://github.com/arlolra/otr/  
-License: LGPL  
+License: MPL 2.0  
 
 ### Strophe.js
 Origin: http://strophe.im  
