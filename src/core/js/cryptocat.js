@@ -26,6 +26,7 @@ if (navigator.userAgent.match('Firefox')) {
 /* Initialization */
 var otrKeys = {}
 var conversations = {}
+var composingTimeouts = {}
 var currentStatus = 'online'
 var currentConversation
 var audioNotifications
@@ -357,11 +358,18 @@ Cryptocat.addToConversation = function(message, sender, conversation, type) {
 	}
 	else if (type === 'composing') {
 		message = Mustache.render(Cryptocat.templates.composing, { id: 'composing-' + sender })
-		window.setTimeout(function() {
+		if (composingTimeouts[sender]) {
+			window.clearTimeout(composingTimeouts[sender])
+			composingTimeouts[sender] = null
+		}
+		composingTimeouts[sender] = window.setTimeout(function() {
 			if ($('#composing-' + sender).length) {
 				$('#composing-' + sender).parent().fadeOut(100).remove()
 			}
 		}, 5000)
+		if ($('#composing-' + sender).length) {
+			return true
+		}
 	}
 	else if (type === 'message') {
 		message = addLinks(message)
