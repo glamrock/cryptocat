@@ -843,7 +843,7 @@ function bindBuddyMenu(nickname) {
 					})
 					$('.option3').click(function(e) {
 						e.stopPropagation()
-						if (blockAction = 'block') {
+						if (blockAction === 'block') {
 							Cryptocat.blockedUsers.push(nickname)
 							$(this).text('Unblock')
 						}
