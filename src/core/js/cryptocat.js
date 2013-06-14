@@ -359,7 +359,7 @@ Cryptocat.addToConversation = function(message, sender, conversation, type) {
 		message = Mustache.render(Cryptocat.templates.composing, { id: 'composing-' + sender })
 		window.setTimeout(function() {
 			if ($('#composing-' + sender).length) {
-				$('#composing-' + sender).parent().fadeOut(100)
+				$('#composing-' + sender).parent().fadeOut(100).remove()
 			}
 		}, 5000)
 	}
@@ -539,7 +539,7 @@ function handleMessage(message) {
 	// Check if message has an "active" (stopped writing) notification.
 	if ($(message).find('active').length) {
 		if ($('#composing-' + nickname).length) {
-			$('#composing-' + nickname).parent().fadeOut(100)
+			$('#composing-' + nickname).parent().fadeOut(100).remove()
 		}
 	}
 	if (type === 'groupchat') {
