@@ -179,6 +179,12 @@ multiParty.sendMessage = function(message) {
 	encrypted['tag'] = message
 	var concatenatedCiphertext = ''
 	var sortedRecipients = Object.keys(sharedSecrets).sort()
+	// Do not send messages to blocked users.
+	for (var b in Cryptocat.blockedUsers) {
+		if (sortedRecipients.indexOf(Cryptocat.blockedUsers[b]) >= 0) {
+			sortedRecipients.splice(sortedRecipients.indexOf(Cryptocat.blockedUsers[b]), 1)
+		}
+	}
 	var i, iv
 	for (i = 0; i !== sortedRecipients.length; i++) {
 		iv = CryptoJS.enc.Hex.parse(Cryptocat.randomString(24, 0, 0, 0, 1)).toString(CryptoJS.enc.Base64)

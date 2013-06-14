@@ -2,7 +2,9 @@ var Cryptocat = function() {};
 Cryptocat.version = '2.1.2' // Version number
 Cryptocat.fileSize = 5120 // Maximum encrypted file sharing size, in kilobytes.
 Cryptocat.chunkSize = 64511 // Size in which file chunks are split, in bytes.
+
 Cryptocat.fileKeys = {}
+Cryptocat.blockedUsers = []
 Cryptocat.connection = null
 Cryptocat.domain = null
 Cryptocat.conferenceServer = null
@@ -31,7 +33,7 @@ var currentStatus = 'online'
 var currentConversation
 var audioNotifications
 var desktopNotifications
-var buddyNotifications
+var showNotifications
 var loginError
 var soundEmbed
 var myKey
@@ -194,7 +196,7 @@ function switchConversation(buddy) {
 
 // Handles login failures.
 function loginFail(message) {
-	buddyNotifications = false
+	showNotifications = false
 	$('#loginInfo').text(message)
 	$('#bubble').animate({'left': '+=5px'}, 130)
 		.animate({'left': '-=10px'}, 130)
@@ -329,9 +331,10 @@ Cryptocat.fileTransferError = function(sid) {
 }
 
 // Add a `message` from `sender` to the `conversation` display and log.
-// `type` can be `file`, `composing`, or `message`
+// `type` can be 'file', 'composing' or 'message'.
 Cryptocat.addToConversation = function(message, sender, conversation, type) {
 	if (!message) { return false }
+	if (Cryptocat.blockedUsers.indexOf(sender) >= 0) { return false }
 	initiateConversation(conversation)
 	var lineDecoration
 	if (sender === Cryptocat.myNickname) {
@@ -436,7 +439,7 @@ function desktopNotification(image, title, body, timeout) {
 // Add a join/part notification to the main conversation window.
 // If 'join === true', shows join notification, otherwise shows part.
 function buddyNotification(buddy, join) {
-	if (!buddyNotifications) { return false }
+	if (!showNotifications) { return false }
 	var status, audioNotification
 	buddy = Strophe.xmlescape(buddy)
 	if (join) {
@@ -533,7 +536,7 @@ function handleMessage(message) {
 		return true
 	}
 	// Check if message has a "composing" notification.
-	if ($(message).find('composing').length) {
+	if ($(message).find('composing').length && (body === 'composing')) {
 		var conversation
 		if (type === 'groupchat') {
 			conversation = 'main-Conversation'
@@ -541,7 +544,9 @@ function handleMessage(message) {
 		else if (type === 'chat') {
 			conversation = nickname
 		}
-		Cryptocat.addToConversation('composing', nickname, conversation, 'composing')
+		if (showNotifications) {
+			Cryptocat.addToConversation('composing', nickname, conversation, 'composing')
+		}
 		return true
 	}
 	// Check if message has an "active" (stopped writing) notification.
@@ -809,14 +814,22 @@ function bindBuddyMenu(nickname) {
 			$('#menu-' + nickname).attr('status', 'active')
 			var buddyMenuContents = '<div class="buddyMenuContents" id="' + nickname + '-contents">'
 			$(this).css('background-image', 'url("img/up.png")')
-			$('#buddy-' + nickname).delay(10).animate({'height': '44px'}, 180, function() {
+			var blockAction
+			if (Cryptocat.blockedUsers.indexOf(nickname) >= 0) {
+				blockAction = 'Unblock'
+			}
+			else {
+				blockAction = 'Block'
+			}
+			$('#buddy-' + nickname).delay(10).animate({'height': '60px'}, 180, function() {
 				$(this).append(buddyMenuContents)
 				$('#' + nickname + '-contents').append(
-					'<li class="option1">' + Cryptocat.language['chatWindow']['sendEncryptedFile'] + '</li>'
-				)
-				$('#' + nickname + '-contents').append(
-					'<li class="option2">' + Cryptocat.language['chatWindow']['displayInfo'] + '</li>'
-				)
+					Mustache.render(Cryptocat.templates.buddyMenu, {
+						sendEncryptedFile: Cryptocat.language['chatWindow']['sendEncryptedFile'],
+						displayInfo: Cryptocat.language['chatWindow']['displayInfo'],
+						block: blockAction
+					})
+				)				
 				$('#' + nickname + '-contents').fadeIn(200, function() {
 					$('.option1').click(function(e) {
 						e.stopPropagation()
@@ -826,6 +839,18 @@ function bindBuddyMenu(nickname) {
 					$('.option2').click(function(e) {
 						e.stopPropagation()
 						displayInfo(nickname)
+						$('#menu-' + nickname).click()
+					})
+					$('.option3').click(function(e) {
+						e.stopPropagation()
+						if (blockAction = 'block') {
+							Cryptocat.blockedUsers.push(nickname)
+							$(this).text('Unblock')
+						}
+						else {
+							Cryptocat.blockedUsers.splice(Cryptocat.blockedUsers.indexOf(nickname), 1)
+							$(this).text('Block')
+						}
 						$('#menu-' + nickname).click()
 					})
 				})
@@ -1271,7 +1296,7 @@ function connected() {
 		})
 		$('#buddyWrapper').slideDown()
 		window.setTimeout(function() {
-			buddyNotifications = true
+			showNotifications = true
 		}, 6000)
 	})
 	loginError = false
@@ -1279,7 +1304,7 @@ function connected() {
 
 // Executes on user logout.
 function logout() {
-	buddyNotifications = false
+	showNotifications = false
 	Cryptocat.connection.muc.leave(Cryptocat.conversationName + '@' + Cryptocat.conferenceServer)
 	Cryptocat.connection.disconnect()
 	$('#conversationInfo,#optionButtons').fadeOut()
@@ -1329,7 +1354,7 @@ $(window).focus(function() {
 
 // Prevent accidental window close.
 $(window).bind('beforeunload', function() {
-	if (buddyNotifications) {
+	if (showNotifications) {
 		return Cryptocat.language['loginMessage']['thankYouUsing']
 	}
 })
