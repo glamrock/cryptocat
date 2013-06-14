@@ -140,7 +140,7 @@ function initiateConversation(conversation) {
 // Handle incoming messages.
 var uicb = function(buddy) {
 	return function(msg) {
-		Cryptocat.addToConversation(msg, buddy, buddy)
+		Cryptocat.addToConversation(msg, buddy, buddy, 'message')
 	}
 }
 // Handle outgoing messages.
@@ -328,12 +328,9 @@ Cryptocat.fileTransferError = function(sid) {
 }
 
 // Add a `message` from `sender` to the `conversation` display and log.
-// If `isFile`, then we are adding a recieved file to the conversation,
-// not a typical message.
-Cryptocat.addToConversation = function(message, sender, conversation, isFile) {
-	if (!message) {
-		return false
-	}
+// `type` can be `file`, `composing`, or `message`
+Cryptocat.addToConversation = function(message, sender, conversation, type) {
+	if (!message) { return false }
 	initiateConversation(conversation)
 	var lineDecoration
 	if (sender === Cryptocat.myNickname) {
@@ -342,10 +339,10 @@ Cryptocat.addToConversation = function(message, sender, conversation, isFile) {
 	}
 	else {
 		lineDecoration = 2
-		if (audioNotifications) {
+		if (audioNotifications && (type !== 'composing')) {
 			playSound('msgGet')
 		}
-		if (!document.hasFocus()) {
+		if (!document.hasFocus() && (type !== 'composing')) {
 			desktopNotification('img/keygen.gif', sender, message, 0x1337)
 		}
 		message = Strophe.xmlescape(message)
@@ -355,10 +352,18 @@ Cryptocat.addToConversation = function(message, sender, conversation, isFile) {
 			lineDecoration = 3
 		}
 	}
-	if (isFile) {
+	if (type === 'file') {
 		message = Mustache.render(Cryptocat.templates.file, { message: message })
 	}
-	else {
+	else if (type === 'composing') {
+		message = Mustache.render(Cryptocat.templates.composing, { id: 'composing-' + sender })
+		window.setTimeout(function() {
+			if ($('#composing-' + sender).length) {
+				$('#composing-' + sender).parent().fadeOut(100)
+			}
+		}, 5000)
+	}
+	else if (type === 'message') {
 		message = addLinks(message)
 		message = addEmoticons(message)
 	}
@@ -369,14 +374,16 @@ Cryptocat.addToConversation = function(message, sender, conversation, isFile) {
 		currentTime: currentTime(true),
 		message: message
 	})
-	conversations[conversation] += message
+	if (type !== 'composing') {
+		conversations[conversation] += message
+	}
 	if (conversation === currentConversation) {
 		$('#conversationWindow').append(message)
-		$('.line' + lineDecoration).last().animate({'top': '0', 'opacity': '1'}, 200)
+		$('.line' + lineDecoration).last().animate({'top': '0', 'opacity': '1'}, 100)
 		bindTimestamps()
 		scrollDownConversation(400)
 	}
-	else {
+	else if (type !== 'composing') {
 		iconNotify(conversation)
 	}
 }
@@ -519,17 +526,27 @@ function handleMessage(message) {
 	}
 	// Check if message has a "composing" notification.
 	if ($(message).find('composing').length) {
-		console.log('composing notification detected')
+		var conversation
+		if (type === 'groupchat') {
+			conversation = 'main-Conversation'
+		}
+		else if (type === 'chat') {
+			conversation = nickname
+		}
+		Cryptocat.addToConversation('composing', nickname, conversation, 'composing')
+		return true
 	}
 	// Check if message has an "active" (stopped writing) notification.
 	if ($(message).find('active').length) {
-		console.log('active notification detected')
+		if ($('#composing-' + nickname).length) {
+			$('#composing-' + nickname).parent().fadeOut(100)
+		}
 	}
 	if (type === 'groupchat') {
 		if (!body.length) { return true }
 		body = multiParty.receiveMessage(nickname, Cryptocat.myNickname, body)
 		if (typeof(body) === 'string') {
-			Cryptocat.addToConversation(body, nickname, 'main-Conversation')
+			Cryptocat.addToConversation(body, nickname, 'main-Conversation', 'message')
 		}
 	}
 	else if (type === 'chat') {
@@ -963,7 +980,7 @@ $('#userInput').submit(function() {
 		else {
 			otrKeys[currentConversation].sendMsg(message)
 		}
-		Cryptocat.addToConversation(message, Cryptocat.myNickname, currentConversation)
+		Cryptocat.addToConversation(message, Cryptocat.myNickname, currentConversation, 'message')
 	}
 	$('#userInputText').val('')
 	return false
@@ -993,19 +1010,20 @@ $('#userInputText').keydown(function(e) {
 		composing = true
 		window.setTimeout(function() {
 			composing = false
-		}, 3000)
+		}, 2500)
+		var destination, type
 		if (currentConversation === 'main-Conversation') {
-			Cryptocat.connection.muc.message(
-				Cryptocat.conversationName + '@' + Cryptocat.conferenceServer, 
-				null, '', null, 'groupchat', 'composing'
-			)
+			destination = null
+			type = 'groupchat'
 		}
 		else {
-			Cryptocat.connection.muc.message(
-				Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
-				currentConversation, '', null, 'chat', 'composing'
-			)
+			destination = currentConversation
+			type = 'chat'
 		}
+		Cryptocat.connection.muc.message(
+			Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
+			destination, '', null, type, 'composing'
+		)
 	}
 })
 $('#userInputText').keyup(function(e) {

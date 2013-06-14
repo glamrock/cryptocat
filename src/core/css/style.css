@@ -812,6 +812,12 @@ CONVERSATION WINDOW
 	text-decoration: none;
 }
 
+img.typing {
+	width: 29px;
+	height: auto;
+	vertical-align: -3px;
+}
+
 /*
 -------------------
 EMOTICONS

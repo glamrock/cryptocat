@@ -52,7 +52,7 @@ Cryptocat.beginSendFile = function(data) {
 				if (err) {
 					return console.log(err)
 				}
-				Cryptocat.addToConversation(sid, Cryptocat.myNickname, data.to, true)
+				Cryptocat.addToConversation(sid, Cryptocat.myNickname, data.to, 'file')
 				Cryptocat.sendFileData({
 					start: true,
 					to: data.to,
@@ -132,7 +132,7 @@ Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 			var file = rcvFile[from][sid].filename
 			rcvFile[from][sid].key = Cryptocat.fileKeys[nick][file]
 			if (sid.match(/^\w{64}$/) && rcvFile[from][sid].mime.match(fileMIME)) {
-				Cryptocat.addToConversation(sid, nick, nick, true)
+				Cryptocat.addToConversation(sid, nick, nick, 'file')
 			}
 			delete Cryptocat.fileKeys[nick][file]
 			break
