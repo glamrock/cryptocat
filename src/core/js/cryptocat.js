@@ -1055,7 +1055,7 @@ $('#userInputText').keydown(function(e) {
 		}
 		Cryptocat.connection.muc.message(
 			Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
-			destination, '', null, type, 'composing'
+			destination, 'composing', null, type, 'composing'
 		)
 	}
 })
@@ -1282,7 +1282,7 @@ function connected() {
 	$('#info').fadeOut(200)
 	$('#loginOptions,#languages,#customServerDialog,#version,#logoText,#loginInfo').fadeOut(200)
 	$('#header').animate({'backgroundColor': '#151520'})
-	$('.logo').animate({'margin-top': '-11px'})
+	$('.logo').animate({'margin': '-11px 5px 0 0'})
 	$('#loginForm').fadeOut(200, function() {
 		$('#conversationInfo').fadeIn()
 		bindBuddyClick('main-Conversation')
@@ -1309,7 +1309,7 @@ function logout() {
 	Cryptocat.connection.disconnect()
 	$('#conversationInfo,#optionButtons').fadeOut()
 	$('#header').animate({'backgroundColor': 'transparent'})
-	$('.logo').animate({'margin-top': '-5px'})
+	$('.logo').animate({'margin': '-5px 5px 0 5px'})
 	$('#buddyWrapper').slideUp()
 	$('.buddy').unbind('click')
 	$('.buddyMenu').unbind('click')

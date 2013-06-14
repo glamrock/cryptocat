@@ -110,7 +110,7 @@ div#bubble div#header {
 
 div#bubble img.logo {
 	display: inline;
-	padding: 1px 0 0 5px;
+	padding: 1px 0 0 0;
 	float: left;
 	height: 34px;
 	margin: -5px 5px 0 5px;
