@@ -1,5 +1,18 @@
 ## Changelog
 
+### Cryptocat 2.1.3
+**Jun. 14 2013**  
+- New feature: Block users! Prevents annoying users from sending you messages/from seeing your messages.  
+- New feature: Typing notification. See when a user is composing a message (both users need to be using Cryptocat 2.1.3 or higher.)  
+- Fixed a bug that would prevent conversations from scrolling down when tabs are switched.  
+- Fixed a bug that prevented nickname tab completion from working.  
+- Fixed a bug that would prevent some ZIP files from being transferred.  
+- Fixed a bug that would prevent audio and desktop notification settings from being saved.  
+- Fixed a bug that would prevent a user from logging back in after logging out.  
+- Fixed a bug that would show a vertical scroll bar on logout for no reason.  
+- Additional small bug fixes.  
+- Uighur translation has returned.  
+
 ### Cryptocat 2.1.2
 **Jun. 10 2013**  
 - Fix a connectivity bug introduced in the previous update that could lead to connectivity problems as well as an erroneous mismatch in OTR fingeprint displays in rare circumstances.  
