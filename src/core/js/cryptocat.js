@@ -738,8 +738,8 @@ function sendFile(nickname) {
 // If `threshold is true, we won't scroll down if the user
 // appears to be scrolling up to read messages.
 function scrollDownConversation(speed, threshold) {
-	if ((($('#conversationWindow')[0].scrollHeight - $('#conversationWindow').scrollTop()) < 950)
-	|| !threshold) {
+	var scrollPosition = $('#conversationWindow')[0].scrollHeight - $('#conversationWindow').scrollTop()
+	if ((scrollPosition < 950) || !threshold) {
 		$('#conversationWindow').animate({
 			scrollTop: $('#conversationWindow')[0].scrollHeight + 20
 		}, speed)
