@@ -1,5 +1,9 @@
 ## Changelog
 
+### Cryptocat 2.1.5
+**Jun. 15 2013**  
+- Fixed a series of user experience incompatibilities with previous versions.  
+
 ### Cryptocat 2.1.3/2.1.4
 **Jun. 14 2013**  
 - New feature: Block users! Prevents annoying users from sending you messages/from seeing your messages.  
