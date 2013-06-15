@@ -1,6 +1,6 @@
 ## Changelog
 
-### Cryptocat 2.1.3
+### Cryptocat 2.1.3/2.1.4
 **Jun. 14 2013**  
 - New feature: Block users! Prevents annoying users from sending you messages/from seeing your messages.  
 - New feature: Typing notification. See when a user is composing a message (both users need to be using Cryptocat 2.1.3 or higher.)  
