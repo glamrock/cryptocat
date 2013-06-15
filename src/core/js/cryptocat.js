@@ -331,7 +331,7 @@ Cryptocat.fileTransferError = function(sid) {
 // Add a `message` from `sender` to the `conversation` display and log.
 // `type` can be 'file', 'composing' or 'message'.
 Cryptocat.addToConversation = function(message, sender, conversation, type) {
-	if (!message) { return false }
+	if (!message.length && (type !== 'composing')) { return false }
 	if (Cryptocat.blockedUsers.indexOf(sender) >= 0) { return false }
 	initiateConversation(conversation)
 	var lineDecoration
@@ -357,7 +357,7 @@ Cryptocat.addToConversation = function(message, sender, conversation, type) {
 	if (type === 'file') {
 		message = Mustache.render(Cryptocat.templates.file, { message: message })
 	}
-	else if (type === 'composing') {
+	else if (type === 'composing' && !message.length) {
 		message = Mustache.render(Cryptocat.templates.composing, { id: 'composing-' + sender })
 		if (composingTimeouts[sender]) {
 			window.clearTimeout(composingTimeouts[sender])
@@ -536,7 +536,7 @@ function handleMessage(message) {
 		return true
 	}
 	// Check if message has a "composing" notification.	
-	if ($(message).find('composing').length && (body === 'composing')) {
+	if ($(message).find('composing').length && !body.length) {
 		var conversation
 		if (type === 'groupchat') {
 			conversation = 'main-Conversation'
@@ -545,7 +545,7 @@ function handleMessage(message) {
 			conversation = nickname
 		}
 		if (showNotifications) {
-			Cryptocat.addToConversation('composing', nickname, conversation, 'composing')
+			Cryptocat.addToConversation('', nickname, conversation, 'composing')
 		}
 		return true
 	}
@@ -1056,7 +1056,7 @@ $('#userInputText').keydown(function(e) {
 		}
 		Cryptocat.connection.muc.message(
 			Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
-			destination, 'composing', null, type, 'composing'
+			destination, '', null, type, 'composing'
 		)
 	}
 })
