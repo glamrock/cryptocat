@@ -533,7 +533,7 @@ function handleMessage(message) {
 	if (!$('#buddy-' + nickname).length) {
 		return true
 	}
-	// Check if message has a "composing" notification.
+	// Check if message has a "composing" notification.	
 	if ($(message).find('composing').length && (body === 'composing')) {
 		var conversation
 		if (type === 'groupchat') {
@@ -844,13 +844,11 @@ function bindBuddyMenu(nickname) {
 					})
 					$('.option3').click(function(e) {
 						e.stopPropagation()
-						if (blockAction === 'block') {
+						if (blockAction === 'Block') {
 							Cryptocat.blockedUsers.push(nickname)
-							$(this).text('Unblock')
 						}
 						else {
 							Cryptocat.blockedUsers.splice(Cryptocat.blockedUsers.indexOf(nickname), 1)
-							$(this).text('Block')
 						}
 						$('#menu-' + nickname).click()
 					})
