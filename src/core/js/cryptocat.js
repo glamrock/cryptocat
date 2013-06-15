@@ -178,7 +178,7 @@ function switchConversation(buddy) {
 	buildConversationInfo(currentConversation)
 	$('#conversationWindow').html(conversations[currentConversation])
 	bindTimestamps()
-	scrollDownConversation(0)
+	scrollDownConversation(0, false)
 	$('#userInputText').focus()
 	// Clean up finished conversations.
 	$('#buddyList div').each(function() {
@@ -390,9 +390,7 @@ Cryptocat.addToConversation = function(message, sender, conversation, type) {
 		$('#conversationWindow').append(message)
 		$('.line' + lineDecoration).last().animate({'top': '0', 'opacity': '1'}, 100)
 		bindTimestamps()
-		if (($('#conversationWindow')[0].scrollHeight - $('#conversationWindow').scrollTop()) < 950) {
-			scrollDownConversation(400)
-		}
+		scrollDownConversation(400, true)
 	}
 	else if (type !== 'composing') {
 		iconNotify(conversation)
@@ -454,9 +452,7 @@ function buddyNotification(buddy, join) {
 	if (currentConversation === 'main-Conversation') {
 		$('#conversationWindow').append(status)
 	}
-	if (($('#conversationWindow')[0].scrollHeight - $('#conversationWindow').scrollTop()) < 950) {
-		scrollDownConversation(400)
-	}
+	scrollDownConversation(400, true)
 	if (!document.hasFocus()) {
 		desktopNotification('img/keygen.gif', buddy, '', 0x1337)
 	}
@@ -739,10 +735,15 @@ function sendFile(nickname) {
 
 // Scrolls down the chat window to the bottom in a smooth animation.
 // 'speed' is animation speed in milliseconds.
-function scrollDownConversation(speed) {
-	$('#conversationWindow').animate({
-		scrollTop: $('#conversationWindow')[0].scrollHeight + 20
-	}, speed)
+// If `threshold is true, we won't scroll down if the user
+// appears to be scrolling up to read messages.
+function scrollDownConversation(speed, threshold) {
+	if ((($('#conversationWindow')[0].scrollHeight - $('#conversationWindow').scrollTop()) < 950)
+	|| !threshold) {
+		$('#conversationWindow').animate({
+			scrollTop: $('#conversationWindow')[0].scrollHeight + 20
+		}, speed)
+	}
 }
 
 // Close generating fingerprints dialog.
