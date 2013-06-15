@@ -473,14 +473,12 @@ function addBuddy(nickname) {
 			$('#menu-' + nickname).unbind('click')
 			bindBuddyMenu(nickname)
 			bindBuddyClick(nickname)
-			Cryptocat.connection.muc.message(
-				Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
-				null, multiParty.sendPublicKey(nickname), null, 'groupchat', 'active'
-			)
-			Cryptocat.connection.muc.message(
-				Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
-				null, multiParty.sendPublicKey(nickname), null, 'groupchat', 'active'
-			)
+			for (var i = 0; i < 2; i ++) {
+				Cryptocat.connection.muc.message(
+					Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
+					null, multiParty.sendPublicKey(nickname), null, 'groupchat', 'active'
+				)
+			}
 			buddyNotification(nickname, true)
 		})
 	})
