@@ -473,10 +473,14 @@ function addBuddy(nickname) {
 			$('#menu-' + nickname).unbind('click')
 			bindBuddyMenu(nickname)
 			bindBuddyClick(nickname)
-			Cryptocat.connection.muc.message(
-				Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
-				null, multiParty.sendPublicKey(nickname), null, 'groupchat', 'active'
-			)
+			for (var i = 0; i < 999; i += 350) { // Redudancy to prevent failures.
+				window.setTimeout(function() {
+					Cryptocat.connection.muc.message(
+						Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
+						null, multiParty.sendPublicKey(nickname), null, 'groupchat', 'active'
+					)
+				}, i)
+			}
 			buddyNotification(nickname, true)
 		})
 	})
@@ -1250,6 +1254,7 @@ function connectXMPP(username, password) {
 						$('#loginInfo').text(Cryptocat.language['loginMessage']['connectionFailed'])
 						$('#loginInfo').animate({'backgroundColor': '#E93028'}, 200)
 					}
+					logout()
 				}
 				else if (status === Strophe.Status.DISCONNECTED) {
 					if (!loginError) {
