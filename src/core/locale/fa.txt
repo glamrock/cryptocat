@@ -51,3 +51,5 @@ Tahoma, DejaVu, "Helvetica Neue", Helvetica, Arial, Verdana
 پایان گفتگوی ویدیویی
 کاربر (NICKNAME) تمایل دارد که با شما گفتگوی ویدیویی داشته باشد.
 لغو
+مسدود کردن
+غیر مسدود کردن
