@@ -1,17 +1,17 @@
 #[Cryptocat](https://crypto.cat)
-####Browser-based app for easy to use, accessible encrypted chat.
+###Browser-based app for easy to use, accessible encrypted chat.
 Cryptocat is an experimental browser-based chat client for easy to use, encrypted conversations. It uses the [OTR](http://www.cypherpunks.ca/otr/) protocol over XMPP for encrypted two-party chat and the (upcoming) mpOTR protocol for encrypted multi-party chat.  
 
 [![Build Status](https://secure.travis-ci.org/cryptocat/cryptocat.png?branch=master)](http://travis-ci.org/cryptocat/cryptocat)  
 
 ##Platforms
-####Google Chrome
+###Google Chrome
 Run `make chrome` to build a Google Chrome-loadable .zip extension (or just .zip the directory.)  
 Also available from the [Chrome Web Store](https://chrome.google.com/webstore/detail/cryptocat/gonbigodpnfghidmnphnadhepmbabhij).  
-####Mozilla Firefox
+###Mozilla Firefox
 Run `make firefox` to build a Mozilla Firefox-loadable .xpi extension (or just .zip the directory and change the extension to .xpi.)  
 Also available from [Mozilla Firefox Addons](https://addons.mozilla.org/en-US/firefox/addon/cryptocat/).  
-#####Apple Safari
+###Apple Safari
 Apple's model makes an automated build process difficult.  
 Also available from [Cryptocat](https://crypto.cat/get/cryptocat.safariextz).
 
