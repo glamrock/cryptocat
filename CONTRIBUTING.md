@@ -25,10 +25,12 @@ The full license text is included in `LICENSE.txt`.
 * [Development Blog](https://blog.crypto.cat)  
 
 ##Contributors
+
 ###Team
 * **Nadim Kobeissi**: Created Cryptocat. Responsible for project direction, most of the code, design, implementation.  
 * **Arlo Breault**: OTR library maintainer, bug reporter, all-around helper.  
 * **Daniel "koolfy" Faucon**: Documentation maintainer, bug reporter, catches all the CTR implementation bugs.  
+
 ###Contributors
 * **Jacob Appelbaum**: Testing and feedback.  
 * **Joseph Bonneau**: Testing and feedback.  
@@ -38,6 +40,7 @@ The full license text is included in `LICENSE.txt`.
 * **Arturo Filasto**: Testing and feedback. 
 * **Tom Lowenthal**: Testing and feedback.  
 * **Fabio Pietrosanti**: Testing and feedback.  
+
 ###Multimedia
 * **A.J. Korkidakis**: Promotional video.  
 * **P.J. Onori**: Some of the icons.  
