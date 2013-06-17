@@ -1,6 +1,6 @@
-## Contributing to Cryptocat
+#Contributing to Cryptocat
 
-### Coding style for contributions
+##Coding style for contributions
 All contributed code, written in JavaScript, must adhere to the following coding style:  
 	1. Tabs are used for indentation, **not** spaces.  
 	2. Lines are **not** ended with semicolons.  
@@ -9,17 +9,25 @@ All contributed code, written in JavaScript, must adhere to the following coding
 	5. Anonymous closures should be used wherever they are useful.  
 
 
-### Contributing or improving translations
+##Contributing or improving translations
 Please **do not send pull requests for translations**. Instead, use [Transifex](https://www.transifex.com/projects/p/Cryptocat/resource/cryptocat/). Notify a project manager for Cryptocat on Transifex in case you need assistance.
 
-### Tests
+##Tests
 * Run tests using `make tests`.
 * Make sure your code conforms by running `make lint`.
 
-### License
+##License
 All contributed code will automatically be licensed under the [GNU Affero General Public License (AGPL3)](https://www.gnu.org/licenses/agpl-3.0.html).  
 The full license text is included in `LICENSE.txt`.  
 
-### Discussion & Blog
+##Discussion & Blog
 * [Issue tracker](https://github.com/cryptocat/cryptocat/issues)
 * [Development Blog](https://blog.crypto.cat)  
+
+##Contributors
+* **Lead Developer**: Nadim Kobeissi  
+* **Notable Contributors**: Arlo Breault, Daniel "koolfy" Faucon  
+* **Contributors**: Jacob Appelbaum, Joseph Bonneau, Griffin Boyce, Dmitry Chestnykh, David Dahl Arturo Filasto, Tom Lowenthal, Fabio Pietrosanti  
+* **Multimedia**: A.J. Korkidakis, P.J. Onori, Rich Vreeland  
+  
+With a warm thanks to the hard-working contributors who wish to remain anonymous.
