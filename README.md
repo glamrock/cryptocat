@@ -22,7 +22,7 @@ Also available from [Cryptocat](https://crypto.cat/get/cryptocat.safariextz).
 
 ##Contributing
 Please see `CONTRIBUTING.md` for guidelines on how to contribute.  
-Please see `SECURITY.md` for guidelines on reporting secuirty issues.
+Please see `SECURITY.md` for guidelines on reporting security issues.
 
 ##Documentation & Wiki
 * [Multiparty Protocol Specification](https://github.com/cryptocat/cryptocat/wiki/Multiparty-Protocol-Specification)  
