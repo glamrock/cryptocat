@@ -1,11 +1,8 @@
-[![Build Status](https://secure.travis-ci.org/cryptocat/cryptocat.png?branch=master)](http://travis-ci.org/cryptocat/cryptocat)
-
 #[Cryptocat](https://crypto.cat)
 ####Web Instant Messaging App With Accessible Encryption.
-#####Experimental software: Don't trust with your life! Peer review appreciated.
+Cryptocat is an experimental browser-based chat client for easy to use, encrypted conversations. It uses the [OTR](http://www.cypherpunks.ca/otr/) protocol over XMPP for encrypted two-party chat and the (upcoming) mpOTR protocol for encrypted multi-party chat.  
 
-##Description
-Cryptocat is a browser-based XMPP client that provides multi-user (and private) instant messaging inside chatrooms. It uses the [OTR](http://www.cypherpunks.ca/otr/) protocol for encrypted two-party chat and the (upcoming) mpOTR protocol for encrypted multi-party chat.  
+[![Build Status](https://secure.travis-ci.org/cryptocat/cryptocat.png?branch=master)](http://travis-ci.org/cryptocat/cryptocat)  
 
 ##Platforms
 ####Google Chrome
@@ -24,7 +21,8 @@ Also available from [Cryptocat](https://crypto.cat/get/cryptocat.safariextz).
 * mpOTR | [Discussion](https://github.com/cryptocat/cryptocat/issues/82), Spec in progress. Currently relying on the [Cryptocat Multiparty Protocol](https://github.com/cryptocat/cryptocat/wiki/Multiparty-Protocol-Specification)  
 
 ##Contributing
-Please see `CONTRIBUTING.md` for guidelines on how to contribute.
+Please see `CONTRIBUTING.md` for guidelines on how to contribute.  
+Please see `SECURITY.md` for guidelines on reporting secuirty issues.
 
 ##Documentation & Wiki
 * [Multiparty Protocol Specification](https://github.com/cryptocat/cryptocat/wiki/Multiparty-Protocol-Specification)  
@@ -35,7 +33,7 @@ Please see `CONTRIBUTING.md` for guidelines on how to contribute.
 * [Architecture and Lifecycle](https://project.crypto.cat/documents/a&l.pdf)  
 
 ##Discussion & Blog
-* [Issue tracker](https://github.com/cryptocat/cryptocat/issues)
+* [Issue tracker](https://github.com/cryptocat/cryptocat/issues)  
 * [Development Blog](https://blog.crypto.cat)  
 
 ##Builds
