@@ -25,9 +25,22 @@ The full license text is included in `LICENSE.txt`.
 * [Development Blog](https://blog.crypto.cat)  
 
 ##Contributors
-* **Lead Developer**: Nadim Kobeissi  
-* **Notable Contributors**: Arlo Breault, Daniel "koolfy" Faucon  
-* **Contributors**: Jacob Appelbaum, Joseph Bonneau, Griffin Boyce, Dmitry Chestnykh, David Dahl Arturo Filasto, Tom Lowenthal, Fabio Pietrosanti  
-* **Multimedia**: A.J. Korkidakis, P.J. Onori, Rich Vreeland  
+###Team
+* **Nadim Kobeissi**: Created Cryptocat. Responsible for project direction, most of the code, design, implementation.  
+* **Arlo Breault**: OTR library maintainer, bug reporter, all-around helper.  
+* **Daniel "koolfy" Faucon**: Documentation maintainer, bug reporter, catches all the CTR implementation bugs.  
+###Contributors
+* **Jacob Appelbaum**: Testing and feedback.  
+* **Joseph Bonneau**: Testing and feedback.  
+* **Griffin Boyce**: Testing and feedback.  
+* **Dmitry Chestnykh**: Salsa20 CSPRNG implementation.  
+* **David Dahl**: window.crypto.getRandomValues() implementation for Firefox.  
+* **Arturo Filasto**: Testing and feedback. 
+* **Tom Lowenthal**: Testing and feedback.  
+* **Fabio Pietrosanti**: Testing and feedback.  
+###Multimedia
+* **A.J. Korkidakis**: Promotional video.  
+* **P.J. Onori**: Some of the icons.  
+* **Rich Vreeland**: Audio notifications.  
   
-With a warm thanks to the hard-working contributors who wish to remain anonymous.
+**With warm thanks to a contributor who has asked to remain anonymous.**
