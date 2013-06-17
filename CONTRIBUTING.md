@@ -37,7 +37,7 @@ The full license text is included in `LICENSE.txt`.
 * **Griffin Boyce**: Testing and feedback.  
 * **Dmitry Chestnykh**: Salsa20 CSPRNG implementation.  
 * **David Dahl**: window.crypto.getRandomValues() implementation for Firefox.  
-* **Arturo Filasto**: Testing and feedback. 
+* **Arturo Filastò**: Testing and feedback. 
 * **Tom Lowenthal**: Testing and feedback.  
 * **Fabio Pietrosanti**: Testing and feedback.  
 
