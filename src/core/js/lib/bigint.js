@@ -1,44 +1,14 @@
-(function() {
+;(function (root, factory) {
 
-  var root = this
-
-  var bpe = 0  // bits stored per array element
-  for (bpe = 0; (1 << (bpe + 1)) > (1 << bpe); bpe++) ;  // bpe = number of bits in the mantissa on this platform
-  bpe >>= 1  // bpe = number of bits in one element of the array representing the bigInt
-
-  var BigInt = {
-      str2bigInt    : str2bigInt
-    , bigInt2str    : bigInt2str
-    , int2bigInt    : int2bigInt
-    , multMod       : multMod
-    , powMod        : powMod
-    , inverseMod    : inverseMod
-    , randBigInt    : randBigInt
-    , equals        : equals
-    , sub           : sub
-    , mod           : mod
-    , mod_          : mod_
-    , modInt        : modInt
-    , mult          : mult
-    , divInt_       : divInt_
-    , rightShift_   : rightShift_
-    , leftShift_    : leftShift_
-    , dup           : dup
-    , greater       : greater
-    , add           : add
-    , addInt        : addInt
-    , addInt_       : addInt_
-    , isZero        : isZero
-    , bitSize       : bitSize
-    , randTruePrime : randTruePrime
-    , millerRabin   : millerRabin
-    , divide_       : divide_
-    , trim          : trim
-    , expand        : expand
-    , bpe           : bpe
+  if (typeof define === 'function' && define.amd) {
+    define(factory)
+  } else if (typeof module !== 'undefined' && module.exports) {
+    module.exports = factory()
+  } else {
+    root.BigInt = factory()
   }
 
-  root.BigInt = BigInt
+}(this, function () {
 
   ////////////////////////////////////////////////////////////////////////////////////////
   // Big Integer Library v. 5.5
@@ -220,7 +190,9 @@
   //       sentences that seem to imply it's faster to do a non-modular square followed by a single
   //       Montgomery reduction, but that's obviously wrong.
   ////////////////////////////////////////////////////////////////////////////////////////
+
   //globals
+  var bpe = 0        // bits stored per array element
   var mask=0;        //AND this with an array element to chop it down to bpe bits
   var radix=mask+1;  //equals 2^bpe.  A single 1 bit to the left of the last bit of mask.
 
@@ -228,6 +200,8 @@
   var digitsStr='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_=!@#$%^&*()[]{}|;:,.<>/?`~ \\\'\"+-';
 
   //initialize the global variables
+  for (bpe = 0; (1<<(bpe+1)) > (1<<bpe); bpe++);  // bpe = number of bits in the mantissa on this platform
+  bpe>>=1;                   // bpe = number of bits in one element of the array representing the bigInt
   mask=(1<<bpe)-1;           //AND the mask with an integer to get its bpe least significant bits
   radix=mask+1;              //2^bpe.  a single 1 bit to the left of the first bit of mask
   var one=int2bigInt(1,1,1);     //constant used in powMod_()
@@ -1553,4 +1527,43 @@
     copy_(x,sa);
   }
 
-}).call(this)
+
+  var BigInt = {
+      str2bigInt    : str2bigInt
+    , bigInt2str    : bigInt2str
+    , int2bigInt    : int2bigInt
+    , multMod       : multMod
+    , powMod        : powMod
+    , inverseMod    : inverseMod
+    , randBigInt    : randBigInt
+    , randBigInt_   : randBigInt_
+    , equals        : equals
+    , equalsInt     : equalsInt
+    , sub           : sub
+    , mod           : mod
+    , mod_          : mod_
+    , modInt        : modInt
+    , mult          : mult
+    , divInt_       : divInt_
+    , rightShift_   : rightShift_
+    , leftShift_    : leftShift_
+    , dup           : dup
+    , greater       : greater
+    , add           : add
+    , addInt        : addInt
+    , addInt_       : addInt_
+    , isZero        : isZero
+    , bitSize       : bitSize
+    , randTruePrime : randTruePrime
+    , millerRabin   : millerRabin
+    , divide_       : divide_
+    , trim          : trim
+    , expand        : expand
+    , bpe           : bpe
+    , primes        : primes
+    , findPrimes    : findPrimes
+  }
+
+  return BigInt
+
+}))

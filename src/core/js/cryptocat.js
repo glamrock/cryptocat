@@ -13,6 +13,14 @@ Cryptocat.conversationName = null
 Cryptocat.myNickname = null
 
 if (typeof(window) !== 'undefined') { $(window).ready(function() {
+
+// This provides backwards compat with CryptoJS 3.0.2
+// CryptoJS.enc.Base64.parse used to do this by default.
+var _base64Parse = CryptoJS.enc.Base64.parse
+CryptoJS.enc.Base64.parse = function (base64Str) {
+	return _base64Parse.call(CryptoJS.enc.Base64, base64Str.replace(/\s/g, ''))
+}
+
 /* Configuration */
 // Domain name to connect to for XMPP.
 var defaultDomain = 'crypto.cat'
