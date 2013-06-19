@@ -51,3 +51,5 @@ Start video chat
 End video chat
 (NICKNAME) wants 2 see u on der screen
 Cancel
+Block
+Unblock

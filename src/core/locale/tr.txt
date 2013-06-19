@@ -51,3 +51,5 @@ Görüntülü sohbeti başlatın
 Görüntülü sohbeti sonlandır
 (NICKNAME) sizinle görüntülü bir sohbet başlatmak istiyor.
 İptal et
+Blokla
+Engellemeyi kaldır

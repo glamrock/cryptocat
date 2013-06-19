@@ -51,3 +51,5 @@ Start video samtale
 Afslut video samtale
 (NICKNAME) vil gerne starte en video samtale med dig.
 Fortryd
+Blokér
+Fjern blokering

@@ -51,3 +51,5 @@ Video-Chat starten
 Video-Chat beenden
 (NICKNAME) möchte gerne einen Video-Chat mit dir beginnen. 
 Abbrechen
+Sperren
+Entsperren

@@ -51,3 +51,5 @@ Starta videochat
 Avsluta videochat
 (NICKNAME) vill starta en videochat med dig.
 Avbryt
+Blockera
+Avblockera

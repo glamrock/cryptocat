@@ -51,3 +51,5 @@ Start videosamtale
 Avslutt videosamtale
 (NICKNAME) vil starte en videosamtale med deg.
 Avbryt
+Blokker
+Fjern blokkering

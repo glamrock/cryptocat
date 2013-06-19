@@ -51,3 +51,5 @@ Begin beeldgesprek
 Beëindig beeldgesprek
 (NICKNAME) wil een beeldgesprek met je beginnen.
 Annuleren
+Blokkeren
+Deblokkeren

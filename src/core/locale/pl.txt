@@ -51,3 +51,5 @@ Rozpocznij czat wideo
 Zakończ czat wideo
 Użytkownik (NICKNAME) chciałby rozpocząć z tobą czat wideo.
 Anuluj
+Zablokuj
+Odblokuj

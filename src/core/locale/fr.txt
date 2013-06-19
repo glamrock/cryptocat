@@ -51,3 +51,5 @@ Démarrer la visioconférence
 Terminer la visioconférence
 (NICKNAME) aimerait démarrer une visioconférence avec vous.
 Annuler
+Bloquer
+Débloquer

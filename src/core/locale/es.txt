@@ -51,3 +51,5 @@ Comenzar chat de video
 Terminar chat de video
 (NICKNAME) quisiera comenzar un chat de video contigo.
 Cancelar
+Bloquear
+Desbloquear
