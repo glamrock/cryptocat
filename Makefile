@@ -16,6 +16,11 @@ safari:
 	@cp -R src/safari/* src/cryptocat.safariextension
 	@/bin/echo "[Cryptocat] Safari extension packaged for testing."
 
+mac:
+	@rm -rf src/mac/htdocs
+	@cp -R src/core src/mac/htdocs
+	@/bin/echo "[Cryptocat] Mac app packaged for testing."
+
 tests:
 	@/bin/echo -n "[Cryptocat] Running tests... "
 	@`/usr/bin/which npm` install

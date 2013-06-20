@@ -14,7 +14,7 @@ Cryptocat.myNickname = null
 
 if (typeof(window) !== 'undefined') { $(window).ready(function() {
 
-// This provides backwards compat with CryptoJS 3.0.2
+// This provides backwards compatibility with CryptoJS 3.0.2
 // CryptoJS.enc.Base64.parse used to do this by default.
 var _base64Parse = CryptoJS.enc.Base64.parse
 CryptoJS.enc.Base64.parse = function (base64Str) {
@@ -426,12 +426,6 @@ function iconNotify(conversation) {
 
 function desktopNotification(image, title, body, timeout) {
 	if (desktopNotifications) {
-		if (navigator.userAgent.match('Sentenza')) {
-			/*jshint -W106 */
-			Stz.notifyMe_({'title': 'Cryptocat', subtitle: title, content: body})
-			/*jshint +W106 */
-			return true
-		}
 		var notice = window.webkitNotifications.createNotification(image, title, body)
 		notice.show()
 		if (timeout > 0) {
