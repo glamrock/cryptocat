@@ -1,5 +1,4 @@
 .DS_Store
-stz/*
 src/cryptocat.safariextension/*
 src/mac/htdocs/*
 
@@ -9,3 +8,5 @@ node_modules/
 # IDE files
 .idea/
 *.iml
+
+src/mac/Cryptocat.xcodeproj/project.xcworkspace/xcuserdata/*

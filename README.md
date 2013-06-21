@@ -15,6 +15,9 @@ Also available from [Mozilla Firefox Addons](https://addons.mozilla.org/en-US/fi
 Apple's model makes an automated build process difficult.  
 Also available from [Cryptocat](https://crypto.cat/get/cryptocat.safariextz).
 
+### Apple Mac OS X
+Run `make mac`, then open `src/mac/Cryptocat.xcodeproj` and compile in XCode.
+
 ##Goals
 * XMPP **[DONE]** | [Discussion](https://github.com/cryptocat/cryptocat/issues/83), [Library](http://strophe.im)
 * OTR **[DONE]** | [Discussion](https://github.com/cryptocat/cryptocat/issues/84), [Library](https://github.com/arlolra/otr)
