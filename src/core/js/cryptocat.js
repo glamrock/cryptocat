@@ -430,10 +430,10 @@ function desktopNotification(image, title, body, timeout) {
 		if (navigator.userAgent === 'Chrome (Mac app)'){
 			var iframe = document.createElement('IFRAME')
 			// The syntax for the Mac App Notifications is the following: "js-call:title:body".
-    		iframe.setAttribute('src', 'js-call:'+title+':'+body)
-    		document.documentElement.appendChild(iframe)
-    		iframe.parentNode.removeChild(iframe)
-    		iframe = null
+			iframe.setAttribute('src', 'js-call:'+title+':'+body)
+			document.documentElement.appendChild(iframe)
+			iframe.parentNode.removeChild(iframe)
+			iframe = null
 		}
 		var notice = window.webkitNotifications.createNotification(image, title, body)
 		notice.show()
