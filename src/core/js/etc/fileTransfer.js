@@ -76,17 +76,16 @@ Cryptocat.sendFileData = function(data) {
 		Cryptocat.updateFileProgressBar(sid, files[sid].ctr + 1, files[sid].file.size, data.to)
 		return
 	}
+	// Split into chunk
+	var end = files[sid].position + Cryptocat.chunkSize
+	var chunk = files[sid].file.slice(files[sid].position, end)
+	files[sid].position = end
+	files[sid].ctr += 1
 	var reader = new FileReader()
 	reader.onload = function(event) {
 		var msg = event.target.result
 		// Remove dataURL header
 		msg = msg.split(',')[1]
-		
-		// Split into chunk
-		var end = files[sid].position + Cryptocat.chunkSize
-		var chunk = msg.slice(files[sid].position, end)
-		files[sid].position = end
-		files[sid].ctr += 1
 		// Encrypt
 		// don't use seq as a counter
 		// it repeats after 65535 above
@@ -96,7 +95,7 @@ Cryptocat.sendFileData = function(data) {
 			padding: CryptoJS.pad.NoPadding
 		}
 		var aesctr = CryptoJS.AES.encrypt (
-			CryptoJS.enc.Base64.parse(msg),
+			CryptoJS.enc.Base64.parse(chunk),
 			CryptoJS.enc.Latin1.parse(files[sid].key[0]),
 			opts
 		)
@@ -122,7 +121,7 @@ Cryptocat.sendFileData = function(data) {
 		})
 		Cryptocat.updateFileProgressBar(sid, files[sid].ctr + 1, files[sid].file.size, data.to)
 	}
-	reader.readAsDataURL(files[sid].file)
+	reader.readAsDataURL(chunk)
 }
 
 Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
