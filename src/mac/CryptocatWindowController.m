@@ -15,16 +15,15 @@
 
 @implementation CryptocatWindowController
 
-- (id)init{
+- (id)init {
 	self = [self initWithWindowNibName:@"CryptocatWindowController" owner:self];
-
 	if (self) {
 		self.roomname = nil;
 	}
 	return self;
 }
 
-- (void)awakeFromNib{
+- (void)awakeFromNib {
 	NSString *appSupportPath = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) objectAtIndex:0];
 	NSString *htmlPath = htmlPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/htdocs/index.html"];
 	
@@ -66,7 +65,6 @@
 }
 
 // We use an iFrame location's property as a bridge to Objective-C from JavaScript.
-
 - (void)webView:(WebView *)sender decidePolicyForNavigationAction:(NSDictionary *)actionInformation request:(NSURLRequest *)request frame:(WebFrame *)frame decisionListener:(id<WebPolicyDecisionListener>)listener
 {
     if ([[[request URL] absoluteString] hasPrefix:@"js-call:"]) {
@@ -77,7 +75,7 @@
 		userNotification.hasActionButton = FALSE;
 		[[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:userNotification];
     }
-	else{
+	else {
 		[listener use];
 	}
 }
