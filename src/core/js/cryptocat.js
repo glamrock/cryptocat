@@ -259,7 +259,7 @@ function getFingerprint(buddy, OTR) {
 	var formatted = ''
 	for (var i in fingerprint) {
 		if (fingerprint.hasOwnProperty(i)) {
-			if ((i !== 0) && !(i % 8)) {
+			if ((i !== 0) && (i % 8) === 0) {
 				formatted += ' '
 			}
 			formatted += fingerprint[i]

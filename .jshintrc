@@ -1,14 +1,5 @@
 {
-	"browser": true,
-	"devel": true,
-	"jquery": true,
-	"node": true,
-	"asi": true,
-	"laxbreak": true,
-	"sub": true,
-	"smarttabs": true,
-	"eqnull": true,
-	"-W018": true,
+
 	"bitwise": false,
 	"camelcase": true,
 	"curly": true,
@@ -28,6 +19,39 @@
 	"unused": true,
 	"strict": false,
 	"trailing": true,
+	"maxparams": false,
+	"maxdepth": false,
+	"maxstatements": false,
+	"maxcomplexity": false,
+	"maxlen": false,
+
+	"asi": true,
+	"boss": false,
+	"debug": false,
+	"eqnull": true,
+	"esnext": false,
+	"evil": false,
+	"expr": false,
+	"funcscope": false,
+	"globalstrict": false,
+	"iterator": false,
+	"laxbreak": true,
+	"laxcomma": false,
+	"loopfunc": false,
+	"moz": false,
+	"multistr": false,
+	"proto": false,
+	"scripturl": false,
+	"smarttabs": true,
+	"shadow": false,
+	"sub": true,
+	"supernew": false,
+	"validthis": false,
+
+	"browser": true,
+	"jquery": true,
+	"node": true,
+
 	"globals": {
 		"CryptoJS": true,
 		"Cryptocat": true,
@@ -42,4 +66,5 @@
 		"Curve25519": true,
 		"CatFacts": true
 	}
+
 }
