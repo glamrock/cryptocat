@@ -15,6 +15,8 @@
 		5F7EA8F21773905A00D619BB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F7EA8F11773905A00D619BB /* main.m */; };
 		5F7EA8F5177390FC00D619BB /* Cryptocat.icns in Resources */ = {isa = PBXBuildFile; fileRef = 5F7EA8F4177390FC00D619BB /* Cryptocat.icns */; };
 		5F7EA8F71773914D00D619BB /* htdocs in Resources */ = {isa = PBXBuildFile; fileRef = 5F7EA8F61773914D00D619BB /* htdocs */; };
+		B608451217756705004DFFD0 /* CryptocatWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B608451117756705004DFFD0 /* CryptocatWindowController.m */; };
+		B608451417756B58004DFFD0 /* CryptocatWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B608451317756B58004DFFD0 /* CryptocatWindowController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +37,10 @@
 		5F7EA8F31773906100D619BB /* Cryptocat-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cryptocat-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		5F7EA8F4177390FC00D619BB /* Cryptocat.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Cryptocat.icns; sourceTree = "<group>"; };
 		5F7EA8F61773914D00D619BB /* htdocs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = htdocs; sourceTree = SOURCE_ROOT; };
+		B608451017756705004DFFD0 /* CryptocatWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptocatWindowController.h; sourceTree = SOURCE_ROOT; };
+		B608451117756705004DFFD0 /* CryptocatWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CryptocatWindowController.m; sourceTree = SOURCE_ROOT; };
+		B608451317756B58004DFFD0 /* CryptocatWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CryptocatWindowController.xib; sourceTree = SOURCE_ROOT; };
+		B66BDA521775A038007BDB39 /* kConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kConstants.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +100,10 @@
 				5F179560177395A100D286E0 /* Cryptocat.entitlements */,
 				5F7EA8E417738FF500D619BB /* CryptocatAppDelegate.h */,
 				5F7EA8E517738FF500D619BB /* CryptocatAppDelegate.m */,
+				B608451017756705004DFFD0 /* CryptocatWindowController.h */,
+				B608451117756705004DFFD0 /* CryptocatWindowController.m */,
+				B608451317756B58004DFFD0 /* CryptocatWindowController.xib */,
+				B66BDA521775A038007BDB39 /* kConstants.h */,
 				5F7EA8E61773903400D619BB /* MainMenu.xib */,
 				5F7EA8F61773914D00D619BB /* htdocs */,
 				5F4ADDC617737FCF00309087 /* Supporting Files */,
@@ -169,6 +179,7 @@
 				5F17956217739F3300D286E0 /* MainMenu.xib in Resources */,
 				5F1795631773A92400D286E0 /* Credits.rtf in Resources */,
 				5F7EA8F71773914D00D619BB /* htdocs in Resources */,
+				B608451417756B58004DFFD0 /* CryptocatWindowController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,6 +192,7 @@
 			files = (
 				5F7EA8F21773905A00D619BB /* main.m in Sources */,
 				5F179561177395E600D286E0 /* CryptocatAppDelegate.m in Sources */,
+				B608451217756705004DFFD0 /* CryptocatWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

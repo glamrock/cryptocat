@@ -353,7 +353,7 @@ Cryptocat.addToConversation = function(message, sender, conversation, type) {
 			playSound('msgGet')
 		}
 		if (!document.hasFocus() && (type !== 'composing')) {
-			desktopNotification('img/keygen.gif', sender, message, 0x1337)
+			desktopNotification('img/keygen.gif', "New Message from " + sender, message, 0x1337)
 		}
 		message = Strophe.xmlescape(message)
 		if (message.match(Cryptocat.myNickname)) {
@@ -426,6 +426,15 @@ function iconNotify(conversation) {
 
 function desktopNotification(image, title, body, timeout) {
 	if (desktopNotifications) {
+		// Support of Mac native notifications using bridges for Objective-C WebKit.
+		if(navigator.userAgent == "Chrome (Mac app)"){
+			var iframe = document.createElement("IFRAME");
+			// The syntax for the Mac App Notifications is the following: "js-call:title:body"
+    		iframe.setAttribute("src", "js-call:"+title+":"+body);
+    		document.documentElement.appendChild(iframe);
+    		iframe.parentNode.removeChild(iframe);
+    		iframe = null;
+		}
 		var notice = window.webkitNotifications.createNotification(image, title, body)
 		notice.show()
 		if (timeout > 0) {
@@ -456,7 +465,7 @@ function buddyNotification(buddy, join) {
 	}
 	scrollDownConversation(400, true)
 	if (!document.hasFocus()) {
-		desktopNotification('img/keygen.gif', buddy, '', 0x1337)
+		desktopNotification('img/keygen.gif', buddy + " connected", '', 0x1337)
 	}
 	if (audioNotifications) {
 		playSound(audioNotification)

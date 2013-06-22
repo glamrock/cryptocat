@@ -7,13 +7,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import <WebKit/WebKit.h>
 
-@interface CryptocatAppDelegate : NSObject <NSApplicationDelegate> {
-	IBOutlet WebView *webView;
-}
+@interface CryptocatAppDelegate : NSObject <NSApplicationDelegate, NSMenuDelegate>
 
-@property (assign) IBOutlet NSWindow *window;
-@property (nonatomic, retain) IBOutlet WebView *webView;
+@property (nonatomic, retain) NSMutableArray *chatWindows;
+
+- (IBAction)openChatWindow:(id)sender;
 
 @end
