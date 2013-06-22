@@ -853,7 +853,11 @@ function bindBuddyMenu(nickname) {
 						displayInfo: Cryptocat.language['chatWindow']['displayInfo'],
 						block: blockAction
 					})
-				)				
+				)
+				// Remove file sharing under Safari (doesn't work currently)
+				if (!navigator.userAgent.match(/(Chrome)|(Firefox)/)) {
+					$('.option1').remove()
+				}
 				$('#' + nickname + '-contents').fadeIn(200, function() {
 					$('.option1').click(function(e) {
 						e.stopPropagation()
@@ -1013,7 +1017,6 @@ else {
 		}
 	})
 }
-
 
 // Logout button.
 $('#logout').click(function() {
