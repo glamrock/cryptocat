@@ -33,11 +33,17 @@
 	[controller showWindow:nil];
 }
 
-- (void)removeConversationWindow:(NSWindowController*) conversation{
-	[self.conversationWindows removeObject:conversation];
-	
-	if ([self.conversationWindows count] == 0) {
-		[[NSApplication sharedApplication] terminate:self];
+- (void)removeConversationWindow:(NSWindow*) conversation{
+	CryptocatWindowController *conversationController;
+	for (CryptocatWindowController* controller in self.conversationWindows) {
+		if ([controller.window isEqualTo:conversation]) {
+			conversationController = controller;
+		}
+	}
+	if (conversationController) {
+		[conversationController.webView stopLoading:nil];
+		[conversationController.webView close];		
+		[self.conversationWindows removeObject:conversationController];
 	}
 }
 

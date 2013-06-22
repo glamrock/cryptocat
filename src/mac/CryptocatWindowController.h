@@ -12,8 +12,5 @@
 @interface CryptocatWindowController : NSWindowController <NSWindowDelegate>
 
 @property IBOutlet WebView *webView;
-@property NSString *roomname;
-
-- (void)setTitleOfView:(NSString*)name;
 
 @end

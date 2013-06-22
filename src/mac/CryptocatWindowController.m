@@ -19,7 +19,7 @@
 - (id)init {
 	self = [self initWithWindowNibName:@"CryptocatWindowController" owner:self];
 	if (self) {
-		self.roomname = nil;
+		
 	}
 	return self;
 }
@@ -46,10 +46,6 @@
 - (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame {
 	[self.window makeKeyAndOrderFront:nil];
 	[self.window center];
-}
-
-- (void)windowWillClose:(NSNotification *)notification{
-	[[CryptocatWindowManager sharedManager] removeConversationWindow:self];
 }
 
 // Bind file dialog for file transfers.
@@ -84,13 +80,6 @@
 	else {
 		[listener use];
 	}
-}
-
-// We want to have the name of the room to switch between rooms
-
-- (void)setTitleOfView:(NSString*)name{
-	self.roomname = name;
-	self.window.title = name?kApplicationName:[kApplicationName stringByAppendingFormat:@" - %@", name];
 }
 
 @end

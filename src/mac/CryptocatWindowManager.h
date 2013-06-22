@@ -19,6 +19,6 @@
 #pragma mark Instance methods
 
 - (void)initiateNewConversation;
-- (void)removeConversationWindow:(NSWindowController*) conversation;
+- (void)removeConversationWindow:(NSWindow*) conversation;
 
 @end
