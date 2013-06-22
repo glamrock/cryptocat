@@ -137,8 +137,6 @@ Curve25519.scalarMult = function(i, base) {
 
 // P256
 
-
-
 // var priv = BigInt.randBigInt(256)
 // var pub = scalarMultP256(p256Gx, p256Gy, priv)
 // var message = BigInt.str2bigInt('2349623424239482634', 10)
@@ -155,9 +153,6 @@ var b256 = BigInt.str2bigInt('5ac635d8aa3a93e7b3ebbd55769886bc651d06b0cc53b0f63b
 var p256Gx = BigInt.str2bigInt('6b17d1f2e12c4247f8bce6e563a440f277037d812deb33a0f4a13945d898c296', 16)
 var p256Gy = BigInt.str2bigInt('4fe342e2fe1a7f9b8ee7eb4a7c0f9e162bce33576b315ececbb6406837bf51f5', 16)
 
-
-
-
 Curve25519.privateKeyToString = function(p){
 	return BigInt.bigInt2str(p, 64)
 }
@@ -165,7 +160,6 @@ Curve25519.privateKeyToString = function(p){
 Curve25519.privateKeyFromString = function(s){
 	return BigInt.str2bigInt(s, 64)
 }
-
 
 Curve25519.sigToString = function(p){
 	return JSON.stringify([BigInt.bigInt2str(p[0], 64), BigInt.bigInt2str(p[1], 64)])
