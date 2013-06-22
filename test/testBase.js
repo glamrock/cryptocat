@@ -17,7 +17,7 @@ var assert = chai.assert,
  * @type {Boolean}
  */
 assert.same = function(actual, expected, message) {
-  assert.deepEqual(actual, expected, message)
+	assert.deepEqual(actual, expected, message)
 }
 
 /**
@@ -26,19 +26,18 @@ assert.same = function(actual, expected, message) {
  * This will setup a mocking sandbox for the test.
  */
 var createTest = function(title) {
-  var test = {
-	beforeEach: function() {
-	  test.mocker = sinon.sandbox.create()
-	  test.assert = assert
-	  test.expect = expect
-	  test.should = should
-	},
-	afterEach: function() {
-	  test.mocker.restore()
+	var test = {
+		beforeEach: function() {
+			test.mocker = sinon.sandbox.create()
+			test.assert = assert
+			test.expect = expect
+			test.should = should
+		},
+		afterEach: function() {
+			test.mocker.restore()
+		}
 	}
-  }
-
-  return test
+	return test
 }
 
 module.exports = createTest
