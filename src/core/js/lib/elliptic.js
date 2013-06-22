@@ -22,21 +22,21 @@ var Curve25519 = function() {
 (function(){
 
 // p25519 is the curve25519 prime: 2^255 - 19
-Curve25519.p25519 = BigInt.str2bigInt("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffed", 16);
+Curve25519.p25519 = BigInt.str2bigInt('7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffed', 16);
 // p25519Minus2 = 2^255 - 21
-var p25519Minus2 = BigInt.str2bigInt("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffeb", 16);
+var p25519Minus2 = BigInt.str2bigInt('7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffeb', 16);
 // a is a parameter of the elliptic curve
-var a = BigInt.str2bigInt("486662", 10);
+var a = BigInt.str2bigInt('486662', 10);
 // basePoint is the generator of the elliptic curve group
-var basePoint = BigInt.str2bigInt("9", 10);
+var basePoint = BigInt.str2bigInt('9', 10);
 
 // These variables are names for small, bigint constants.
-var eight = BigInt.str2bigInt("8", 10);
-var four = BigInt.str2bigInt("4", 10);
-var three = BigInt.str2bigInt("3", 10);
-var two = BigInt.str2bigInt("2", 10);
-var one = BigInt.str2bigInt("1", 10);
-var zero = BigInt.str2bigInt("0", 10);
+var eight = BigInt.str2bigInt('8', 10);
+var four = BigInt.str2bigInt('4', 10);
+var three = BigInt.str2bigInt('3', 10);
+var two = BigInt.str2bigInt('2', 10);
+var one = BigInt.str2bigInt('1', 10);
+var zero = BigInt.str2bigInt('0', 10);
 
 // groupAdd adds two elements of the elliptic curve group in Montgomery form.
 function groupAdd(x1, xn, zn, xm, zm) {
@@ -98,15 +98,15 @@ Curve25519.scalarMult = function(i, base) {
 	scalar[17] = 0;
 	scalar[16] |= 0x4000;
 
-	var x1 = BigInt.str2bigInt("1", 10);
-	var z1 = BigInt.str2bigInt("0", 10);
+	var x1 = BigInt.str2bigInt('1', 10);
+	var z1 = BigInt.str2bigInt('0', 10);
 	var x2 = base;
-	var z2 = BigInt.str2bigInt("1", 10);
+	var z2 = BigInt.str2bigInt('1', 10);
 
 	var j, point;
 	for (i = 17; i >= 0; i--) {
 		j = 14;
-		if (i == 17) {
+		if (i === 17) {
 			j = 0;
 		}
 		for (; j >= 0; j--) {
@@ -142,19 +142,19 @@ Curve25519.scalarMult = function(i, base) {
 
 // var priv = BigInt.randBigInt(256)
 // var pub = scalarMultP256(p256Gx, p256Gy, priv)
-// var message = BigInt.str2bigInt("2349623424239482634", 10)
+// var message = BigInt.str2bigInt('2349623424239482634', 10)
 // var signature = ecdsaSign(priv, message)
 // print (ecdsaVerify(pub, signature, message))
 
 // p256 is the p256 prime
-var p256 = BigInt.str2bigInt("115792089210356248762697446949407573530086143415290314195533631308867097853951", 10);
+var p256 = BigInt.str2bigInt('115792089210356248762697446949407573530086143415290314195533631308867097853951', 10);
 // n256 is the number of points in the group
-var n256 = BigInt.str2bigInt("115792089210356248762697446949407573529996955224135760342422259061068512044369", 10);
+var n256 = BigInt.str2bigInt('115792089210356248762697446949407573529996955224135760342422259061068512044369', 10);
 // b256 is a parameter of the curve
-var b256 = BigInt.str2bigInt("5ac635d8aa3a93e7b3ebbd55769886bc651d06b0cc53b0f63bce3c3e27d2604b", 16);
+var b256 = BigInt.str2bigInt('5ac635d8aa3a93e7b3ebbd55769886bc651d06b0cc53b0f63bce3c3e27d2604b', 16);
 // p256Gx and p256Gy is the generator of the group
-var p256Gx = BigInt.str2bigInt("6b17d1f2e12c4247f8bce6e563a440f277037d812deb33a0f4a13945d898c296", 16);
-var p256Gy = BigInt.str2bigInt("4fe342e2fe1a7f9b8ee7eb4a7c0f9e162bce33576b315ececbb6406837bf51f5", 16);
+var p256Gx = BigInt.str2bigInt('6b17d1f2e12c4247f8bce6e563a440f277037d812deb33a0f4a13945d898c296', 16);
+var p256Gy = BigInt.str2bigInt('4fe342e2fe1a7f9b8ee7eb4a7c0f9e162bce33576b315ececbb6406837bf51f5', 16);
 
 
 
@@ -407,7 +407,7 @@ Curve25519.ecdsaVerify = function(publicKey, signature, message) {
 }
 
 Curve25519.ecDH = function(priv, pub) {
-	if (typeof pub === "undefined") {
+	if (typeof pub === 'undefined') {
 		return Curve25519.scalarMult(priv, basePoint);
 	}
 	else {
