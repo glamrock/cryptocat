@@ -7,56 +7,38 @@
 //
 
 #import "CryptocatAppDelegate.h"
-
-@interface WebPreferences (WebPreferencesPrivate)
-- (void)_setLocalStorageDatabasePath:(NSString *)path;
-- (void) setLocalStorageEnabled:(BOOL)localStorageEnabled;
-@end
+#import "CryptocatWindowController.h"
 
 @implementation CryptocatAppDelegate;
 
-@synthesize window;
-@synthesize webView;
+// To support multiple windows chats we implement the dock menu delegate method
 
-- (void)awakeFromNib {
-	NSString *appSupportPath = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-	NSString *htmlPath = htmlPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/htdocs/index.html"];
-	
-	// Set user agent to Chrome in order to load some Cryptocat features not available to Safari.
-	[webView setCustomUserAgent:@"Chrome (Mac app)"];
-	
-	// Initialize localStorage.
-	WebPreferences* prefs = [WebPreferences standardPreferences];
-	[prefs _setLocalStorageDatabasePath:appSupportPath];
-	[prefs setLocalStorageEnabled:YES];
-	[webView setPreferences:prefs];
-	
-	// Initialize Cryptocat.
-	[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:htmlPath]]];
+- (NSMenu *)applicationDockMenu:(NSApplication *)sender{
+	NSMenu *dockMenu = [[NSMenu alloc]initWithTitle:kApplicationName];
+	// We also want command + N to initiate a new chat window but addItem:initWithTitle:action:keyEquivalent doesn't support key modifiers so we just set it to an empty NSString.
+	[dockMenu addItem:[[NSMenuItem alloc] initWithTitle:@"New Window" action:@selector(openChatWindow) keyEquivalent:@""]];
+	return dockMenu;
 }
 
-// Show Cryptocat window once everything is ready.
-- (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame {
-	[window makeKeyAndOrderFront:self];
-	[window center];
+- (void)applicationDidFinishLaunching:(NSNotification *)notification{
+	//NSMenuItem *item = [[[NSApplication sharedApplication] mainMenu] itemWithTitle:@"Conversations"];
+	self.chatWindows = [NSMutableArray array];
+	[self openChatWindow:nil];
 }
 
-// Bind file dialog for file transfers.
-- (void)webView:(WebView *)sender runOpenPanelForFileButtonWithResultListener:(id <WebOpenPanelResultListener>)resultListener {
-    NSOpenPanel* openDlg = [NSOpenPanel openPanel];
-    [openDlg setCanChooseFiles:YES];
-    [openDlg setCanChooseDirectories:NO];
-    if ([openDlg runModal] == NSOKButton) {
-        NSArray* files = [[openDlg URLs]valueForKey:@"relativePath"];
-        [resultListener chooseFilenames:files];
-    }
+- (IBAction)openChatWindow:(id)sender{
+	CryptocatWindowController *controller = [[CryptocatWindowController alloc]init];
+	[self.chatWindows addObject:controller];
+	[controller showWindow:nil];
 }
 
-// Remove useless items from webView context menu.
-- (NSArray *)webView:(WebView *)sender contextMenuItemsForElement:(NSDictionary *)element defaultMenuItems:(NSArray *)defaultMenuItems {
-	NSMutableArray *defaultMenuItemsFixed = [(NSArray*)defaultMenuItems mutableCopy];
-	[defaultMenuItemsFixed removeObjectAtIndex:0];
-	return defaultMenuItemsFixed;
+- (void)applicationDidBecomeActive:(NSNotification *)notification{
+	[[NSUserNotificationCenter defaultUserNotificationCenter] removeAllDeliveredNotifications];
 }
+
+#pragma mark NSMenu Delegate Methods
+// We implement the delegate methods of the NSMenu Item to be able to switch between multiple conversations
+
+#warning todo
 
 @end
