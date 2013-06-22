@@ -1,6 +1,6 @@
 var _ = require('lodash'),
 	path = require('path'),
-	test = require('../../testbase')();
+	test = require('../../testBase')();
 
 var Salsa20 = require('../../../src/core/js/lib/salsa20');
 
