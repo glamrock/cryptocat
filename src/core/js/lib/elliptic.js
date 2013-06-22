@@ -1,11 +1,11 @@
 // curve25519
 
 // In order to generate a public value:
-//   priv = BigInt.randBigInt(256)
-//   pub = scalarMult(priv, basePoint)
+//	priv = BigInt.randBigInt(256)
+//	pub = scalarMult(priv, basePoint)
 //
 // In order to perform key agreement:
-//   shared = scalarMult(myPrivate, theirPublic)
+//	shared = scalarMult(myPrivate, theirPublic)
 
 /*
 Here's a test: this should print the same thing twice.
@@ -15,6 +15,7 @@ var pub1 = scalarMult(priv1, basePoint)
 var pub2 = scalarMult(priv2, basePoint)
 print (scalarMult(priv1, pub2))
 print (scalarMult(priv2, pub1)) */
+
 var Curve25519 = function() {};
 
 (function(){
@@ -54,9 +55,9 @@ function groupAdd(x1, xn, zn, xm, zm) {
 	var xz = BigInt.multMod(xm, zn, Curve25519.p25519)
 	var zx = BigInt.multMod(zm, xn, Curve25519.p25519)
 	if (BigInt.greater(xz, zx)) {
-	    d = BigInt.sub(xz, zx)
+		d = BigInt.sub(xz, zx)
 	} else {
-	    d = BigInt.sub(zx, xz)
+		d = BigInt.sub(zx, xz)
 	}
 	sq = BigInt.multMod(d, d, Curve25519.p25519)
 	var sq2 = BigInt.multMod(sq, x1, Curve25519.p25519)
@@ -72,9 +73,9 @@ function groupDouble(x, z) {
 	var zz = BigInt.multMod(z, z, Curve25519.p25519)
 	var d
 	if (BigInt.greater(xx, zz)) {
-	  d = BigInt.sub(xx, zz)
+		d = BigInt.sub(xx, zz)
 	} else {
-	  d = BigInt.sub(zz, xx)
+		d = BigInt.sub(zz, xx)
 	}
 	var outx = BigInt.multMod(d, d, Curve25519.p25519)
 
@@ -171,29 +172,29 @@ Curve25519.sigToString = function(p){
 }
 
 Curve25519.sigFromString = function(s){
-  var p = JSON.parse(s)
-  p[0] = BigInt.str2bigInt(p[0], 64)
-  p[1] = BigInt.str2bigInt(p[1], 64)
-  return p
+	var p = JSON.parse(s)
+	p[0] = BigInt.str2bigInt(p[0], 64)
+	p[1] = BigInt.str2bigInt(p[1], 64)
+	return p
 }
 
 Curve25519.publicKeyToString = function(p){
-  return JSON.stringify([BigInt.bigInt2str(p[0], 64), BigInt.bigInt2str(p[1], 64)])
+	return JSON.stringify([BigInt.bigInt2str(p[0], 64), BigInt.bigInt2str(p[1], 64)])
 }
 
 Curve25519.publicKeyFromString = function(s){
-  var p = JSON.parse(s)
-  p[0] = BigInt.str2bigInt(p[0], 64)
-  p[1] = BigInt.str2bigInt(p[1], 64)
-  return p
+	var p = JSON.parse(s)
+	p[0] = BigInt.str2bigInt(p[0], 64)
+	p[1] = BigInt.str2bigInt(p[1], 64)
+	return p
 }
 
 Curve25519.ecdsaGenPrivateKey = function(){
-  return Curve25519.privateKeyToString(BigInt.randBigInt(256))
+	return Curve25519.privateKeyToString(BigInt.randBigInt(256))
 }
 
 Curve25519.ecdsaGenPublicKey = function(privateKey){
-  return Curve25519.publicKeyToString(scalarMultP256(p256Gx, p256Gy, Curve25519.privateKeyFromString(privateKey)))
+	return Curve25519.publicKeyToString(scalarMultP256(p256Gx, p256Gy, Curve25519.privateKeyFromString(privateKey)))
 }
 
 // isOnCurve returns true if the given point is on the curve.
