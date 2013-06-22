@@ -1,14 +1,14 @@
 ;(function (root, factory) {
 
   if (typeof define === 'function' && define.amd) {
-    define(factory)
+    define(['../etc/cryptocatRandom'], factory)
   } else if (typeof module !== 'undefined' && module.exports) {
-    module.exports = factory()
+    module.exports = factory(require('../etc/cryptocatRandom.js'))
   } else {
-    root.BigInt = factory()
+    root.BigInt = factory(root.Cryptocat)
   }
 
-}(this, function () {
+}(this, function (Cryptocat) {
 
   ////////////////////////////////////////////////////////////////////////////////////////
   // Big Integer Library v. 5.5

@@ -33,6 +33,7 @@ lint:
 		src/core/js/lib/elliptic.js \
 		src/core/js/lib/salsa20.js \
 		src/core/js/etc/*.js \
+		src/standaloneServer.js \
 		test/testBase.js \
 		test/core/js/*.js
 

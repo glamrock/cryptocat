@@ -1,5 +1,15 @@
 // curve25519
 
+;(function (root, factory) {
+
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = factory(require('./bigint.js'))
+  } else {
+    root.Curve25519 = factory(root.BigInt)
+  }
+
+}(this, function (BigInt) {
+
 // In order to generate a public value:
 //	priv = BigInt.randBigInt(256)
 //	pub = scalarMult(priv, basePoint)
@@ -7,18 +17,7 @@
 // In order to perform key agreement:
 //	shared = scalarMult(myPrivate, theirPublic)
 
-/*
-Here's a test: this should print the same thing twice.
-var priv1 = BigInt.randBigInt(256, 0)
-var priv2 = BigInt.randBigInt(256, 0)
-var pub1 = scalarMult(priv1, basePoint)
-var pub2 = scalarMult(priv2, basePoint)
-print (scalarMult(priv1, pub2))
-print (scalarMult(priv2, pub1)) */
-
-var Curve25519 = function() {};
-
-(function(){
+var Curve25519 = function () {}
 
 // p25519 is the curve25519 prime: 2^255 - 19
 Curve25519.p25519 = BigInt.str2bigInt('7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffed', 16)
@@ -148,7 +147,7 @@ var p256 = BigInt.str2bigInt('11579208921035624876269744694940757353008614341529
 // n256 is the number of points in the group
 var n256 = BigInt.str2bigInt('115792089210356248762697446949407573529996955224135760342422259061068512044369', 10)
 // b256 is a parameter of the curve
-var b256 = BigInt.str2bigInt('5ac635d8aa3a93e7b3ebbd55769886bc651d06b0cc53b0f63bce3c3e27d2604b', 16)
+// var b256 = BigInt.str2bigInt('5ac635d8aa3a93e7b3ebbd55769886bc651d06b0cc53b0f63bce3c3e27d2604b', 16)
 // p256Gx and p256Gy is the generator of the group
 var p256Gx = BigInt.str2bigInt('6b17d1f2e12c4247f8bce6e563a440f277037d812deb33a0f4a13945d898c296', 16)
 var p256Gy = BigInt.str2bigInt('4fe342e2fe1a7f9b8ee7eb4a7c0f9e162bce33576b315ececbb6406837bf51f5', 16)
@@ -192,18 +191,18 @@ Curve25519.ecdsaGenPublicKey = function(privateKey){
 }
 
 // isOnCurve returns true if the given point is on the curve.
-function isOnCurve(x, y) {
-	// y² = x³ - 3x + b
-	var yy = BigInt.multMod(y, y, p256)
-	var xxx = BigInt.multMod(x, BigInt.mult(x, x), p256)
-	var threex = BigInt.multMod(three, x, p256)
-	var s = BigInt.add(xxx, b256)
-	if (BigInt.greater(threex, s)) {
-		return false
-	}
-	s = BigInt.sub(s, threex)
-	return BigInt.equals(s, yy)
-}
+// function isOnCurve(x, y) {
+// 	// y² = x³ - 3x + b
+// 	var yy = BigInt.multMod(y, y, p256)
+// 	var xxx = BigInt.multMod(x, BigInt.mult(x, x), p256)
+// 	var threex = BigInt.multMod(three, x, p256)
+// 	var s = BigInt.add(xxx, b256)
+// 	if (BigInt.greater(threex, s)) {
+// 		return false
+// 	}
+// 	s = BigInt.sub(s, threex)
+// 	return BigInt.equals(s, yy)
+// }
 
 // subMod returns a-b mod m
 function subMod(a, b, m) {
@@ -407,4 +406,7 @@ Curve25519.ecDH = function(priv, pub) {
 		return BigInt.bigInt2str(Curve25519.scalarMult(priv, pub), 64)
 	}
 }
-})()
+
+return Curve25519
+
+}))

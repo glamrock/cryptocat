@@ -1,10 +1,19 @@
-(function(){
+;(function (root, factory) {
+
+	if (typeof module !== 'undefined' && module.exports) {
+		module.exports = factory({}, require('../lib/salsa20.js'), true)
+	} else {
+		if (typeof root.Cryptocat === 'undefined') {
+			root.Cryptocat = function () {}
+		}
+		factory(root.Cryptocat, root.Salsa20, false)
+	}
+
+}(this, function (Cryptocat, Salsa20, node) {
 
 var state
 
 Cryptocat.generateSeed = function() {
-	// If Opera, do not seed (see Cryptocat.random() comments for explanation).
-	if (navigator.userAgent.match('Opera')) { return false }
 	// The following incredibly ugly Firefox hack is completely the fault of 
 	// Firefox developers sucking and it taking them four years+ to implement
 	// window.crypto.getRandomValues().
@@ -18,9 +27,20 @@ Cryptocat.generateSeed = function() {
 		element = null
 		return output
 	}
-	var buffer
+	var buffer, crypto
+	// Node.js ... for tests
+	if (typeof window === 'undefined' && typeof require !== 'undefined') {
+		crypto = require('crypto')
+		try {
+			buffer = crypto.randomBytes(40)
+		} catch (e) { throw e }
+	}
+	// If Opera, do not seed (see Cryptocat.random() comments for explanation).
+	else if (navigator.userAgent.match('Opera')) {
+		return false
+	}
 	// Firefox
-	if (navigator.userAgent.match('Firefox') &&
+	else if (navigator.userAgent.match('Firefox') &&
 		(!window.crypto || !window.crypto.getRandomValues)
 	) {
 		buffer = firefoxRandomBytes()
@@ -37,8 +57,8 @@ Cryptocat.setSeed = function(s) {
 	if (!s) { return false }
 	state = new Salsa20(
 		[
-			        s[0],s[1],s[2],s[3],s[4],s[5],s[6],s[7],
-			  s[8],s[9],s[10],s[11],s[12],s[13],s[14],s[15],
+			s[ 0],s[ 1],s[ 2],s[ 3],s[ 4],s[ 5],s[ 6],s[ 7],
+			s[ 8],s[ 9],s[10],s[11],s[12],s[13],s[14],s[15],
 			s[16],s[17],s[18],s[19],s[20],s[21],s[22],s[23],
 			s[24],s[25],s[26],s[27],s[28],s[29],s[30],s[31]
 		],
@@ -53,7 +73,7 @@ Cryptocat.setSeed = function(s) {
 // in which this is the case. Therefore, it is safe to use
 // Math.random() instead of implementing our own CSPRNG
 // if Cryptocat is running on top of Opera.
-if (navigator.userAgent.match('Opera')) {
+if (typeof navigator !== 'undefined' && navigator.userAgent.match('Opera')) {
 	Cryptocat.random = Math.random
 }
 else {
@@ -87,4 +107,11 @@ Cryptocat.randomString = function(size, alpha, uppercase, numeric, hex) {
 	return result
 }
 
-})()//:3
+if (node) {
+	// Seed RNG in tests.
+	Cryptocat.setSeed(Cryptocat.generateSeed())
+}
+
+return Cryptocat
+
+}))//:3

@@ -25,6 +25,7 @@
 	"plusplus": false,
 	"quotmark": "single",
 	"undef": true,
+	"unused": true,
 	"globals": {
 		"CryptoJS": true,
 		"Cryptocat": true,
