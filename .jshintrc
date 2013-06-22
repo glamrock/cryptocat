@@ -26,6 +26,8 @@
 	"quotmark": "single",
 	"undef": true,
 	"unused": true,
+	"strict": false,
+	"trailing": true,
 	"globals": {
 		"CryptoJS": true,
 		"Cryptocat": true,

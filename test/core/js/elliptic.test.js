@@ -19,7 +19,7 @@ test['Curve25519'] = {
 				Curve25519.scalarMult(priv1, pub2),
 				Curve25519.scalarMult(priv2, pub1)
 			)
-		}	
+		}
 	}
 
 }
