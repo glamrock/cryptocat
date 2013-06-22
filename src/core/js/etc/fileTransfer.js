@@ -95,7 +95,7 @@ Cryptocat.sendFileData = function(data) {
 			padding: CryptoJS.pad.NoPadding
 		}
 		var aesctr = CryptoJS.AES.encrypt (
-			CryptoJS.enc.Base64.parse(chunk),
+			CryptoJS.enc.Base64.parse(msg),
 			CryptoJS.enc.Latin1.parse(files[sid].key[0]),
 			opts
 		)
