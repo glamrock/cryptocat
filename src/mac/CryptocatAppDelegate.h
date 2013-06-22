@@ -10,8 +10,4 @@
 
 @interface CryptocatAppDelegate : NSObject <NSApplicationDelegate, NSMenuDelegate>
 
-@property (nonatomic, retain) NSMutableArray *chatWindows;
-
-- (IBAction)openChatWindow:(id)sender;
-
 @end

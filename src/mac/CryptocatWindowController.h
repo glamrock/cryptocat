@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
 
-@interface CryptocatWindowController : NSWindowController
+@interface CryptocatWindowController : NSWindowController <NSWindowDelegate>
 
 @property IBOutlet WebView *webView;
 @property NSString *roomname;

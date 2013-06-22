@@ -7,7 +7,7 @@
 //
 
 #import "CryptocatAppDelegate.h"
-#import "CryptocatWindowController.h"
+#import "CryptocatWindowManager.h"
 
 @implementation CryptocatAppDelegate;
 
@@ -21,20 +21,17 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification{
-	//NSMenuItem *item = [[[NSApplication sharedApplication] mainMenu] itemWithTitle:@"Conversations"];
-	self.chatWindows = [NSMutableArray array];
 	[self openChatWindow:nil];
 }
 
 - (IBAction)openChatWindow:(id)sender{
-	CryptocatWindowController *controller = [[CryptocatWindowController alloc]init];
-	[self.chatWindows addObject:controller];
-	[controller showWindow:nil];
+	[[CryptocatWindowManager sharedManager]initiateNewConversation];
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification{
 	[[NSUserNotificationCenter defaultUserNotificationCenter] removeAllDeliveredNotifications];
 }
+
 
 #pragma mark NSMenu Delegate Methods
 // We implement the delegate methods of the NSMenu Item to be able to switch between multiple conversations

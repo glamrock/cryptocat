@@ -7,6 +7,7 @@
 //
 
 #import "CryptocatWindowController.h"
+#import "CryptocatWindowManager.h"
 
 @interface WebPreferences (WebPreferencesPrivate)
 - (void)_setLocalStorageDatabasePath:(NSString *)path;
@@ -24,6 +25,7 @@
 }
 
 - (void)awakeFromNib {
+	[self.window setDelegate:[CryptocatWindowManager sharedManager]];
 	NSString *appSupportPath = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) objectAtIndex:0];
 	NSString *htmlPath = htmlPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/htdocs/index.html"];
 	
@@ -44,6 +46,10 @@
 - (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame {
 	[self.window makeKeyAndOrderFront:nil];
 	[self.window center];
+}
+
+- (void)windowWillClose:(NSNotification *)notification{
+	[[CryptocatWindowManager sharedManager] removeConversationWindow:self];
 }
 
 // Bind file dialog for file transfers.

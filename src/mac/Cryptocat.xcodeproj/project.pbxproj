@@ -17,6 +17,7 @@
 		5F7EA8F71773914D00D619BB /* htdocs in Resources */ = {isa = PBXBuildFile; fileRef = 5F7EA8F61773914D00D619BB /* htdocs */; };
 		B608451217756705004DFFD0 /* CryptocatWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B608451117756705004DFFD0 /* CryptocatWindowController.m */; };
 		B608451417756B58004DFFD0 /* CryptocatWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B608451317756B58004DFFD0 /* CryptocatWindowController.xib */; };
+		B633A4D3177642F800BC20ED /* CryptocatWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B633A4D2177642F800BC20ED /* CryptocatWindowManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,8 @@
 		B608451017756705004DFFD0 /* CryptocatWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptocatWindowController.h; sourceTree = SOURCE_ROOT; };
 		B608451117756705004DFFD0 /* CryptocatWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CryptocatWindowController.m; sourceTree = SOURCE_ROOT; };
 		B608451317756B58004DFFD0 /* CryptocatWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CryptocatWindowController.xib; sourceTree = SOURCE_ROOT; };
+		B633A4D1177642F800BC20ED /* CryptocatWindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptocatWindowManager.h; sourceTree = SOURCE_ROOT; };
+		B633A4D2177642F800BC20ED /* CryptocatWindowManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CryptocatWindowManager.m; sourceTree = SOURCE_ROOT; };
 		B66BDA521775A038007BDB39 /* kConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kConstants.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -100,6 +103,8 @@
 				5F179560177395A100D286E0 /* Cryptocat.entitlements */,
 				5F7EA8E417738FF500D619BB /* CryptocatAppDelegate.h */,
 				5F7EA8E517738FF500D619BB /* CryptocatAppDelegate.m */,
+				B633A4D1177642F800BC20ED /* CryptocatWindowManager.h */,
+				B633A4D2177642F800BC20ED /* CryptocatWindowManager.m */,
 				B608451017756705004DFFD0 /* CryptocatWindowController.h */,
 				B608451117756705004DFFD0 /* CryptocatWindowController.m */,
 				B608451317756B58004DFFD0 /* CryptocatWindowController.xib */,
@@ -193,6 +198,7 @@
 				5F7EA8F21773905A00D619BB /* main.m in Sources */,
 				5F179561177395E600D286E0 /* CryptocatAppDelegate.m in Sources */,
 				B608451217756705004DFFD0 /* CryptocatWindowController.m in Sources */,
+				B633A4D3177642F800BC20ED /* CryptocatWindowManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
