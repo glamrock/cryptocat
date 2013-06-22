@@ -38,6 +38,7 @@ The full license text is included in `LICENSE.txt`.
 * **Dmitry Chestnykh**: Salsa20 CSPRNG implementation.  
 * **David Dahl**: window.crypto.getRandomValues() implementation for Firefox.  
 * **Arturo Filastò**: Testing and feedback. 
+* **Frederic Jacobs**: Substantial contributions to Cryptocat for Mac.  
 * **Tom Lowenthal**: Testing and feedback.  
 * **Fabio Pietrosanti**: Testing and feedback.  
 
