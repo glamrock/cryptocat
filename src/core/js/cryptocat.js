@@ -43,7 +43,6 @@ var audioNotifications
 var desktopNotifications
 var showNotifications
 var loginError
-var soundEmbed
 var myKey
 var composing
 
@@ -257,28 +256,34 @@ function getFingerprint(buddy, OTR) {
 	}
 	var formatted = ''
 	for (var i in fingerprint) {
-		if ((i !== 0) && !(i % 8)) {
-			formatted += ' '
+		if (fingerprint.hasOwnProperty(i)) {
+			if ((i !== 0) && !(i % 8)) {
+				formatted += ' '
+			}
+			formatted += fingerprint[i]
 		}
-		formatted += fingerprint[i]
 	}
 	return formatted.toUpperCase()
 }
 
 // Convert message URLs to links. Used internally.
 function addLinks(message) {
+	var i, l, sanitize
 	var URLs = message.match(/(((news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi)
 	if (URLs) {
-		for (var i in URLs) {
-			var sanitize = URLs[i].split('')
-			for (var l in sanitize) {
-				if (!sanitize[l].match(/\w|\d|\:|\/|\?|\=|\#|\+|\,|\.|\&|\;|\%/)) {
-					sanitize[l] = encodeURIComponent(sanitize[l])
+		for (i in URLs) {
+			if (URLs.hasOwnProperty(i)) {
+				sanitize = URLs[i].split('')
+				for (l in sanitize) {
+					if (sanitize.hasOwnProperty(l) &&
+						!sanitize[l].match(/\w|\d|\:|\/|\?|\=|\#|\+|\,|\.|\&|\;|\%/)) {
+						sanitize[l] = encodeURIComponent(sanitize[l])
+					}
 				}
+				sanitize = sanitize.join('')
+				var processed = sanitize.replace(':','&colon;')
+				message = message.replace(sanitize, '<a target="_blank" href="' + processed + '">' + processed + '</a>')
 			}
-			sanitize = sanitize.join('')
-			var processed = sanitize.replace(':','&colon;')
-			message = message.replace(sanitize, '<a target="_blank" href="' + processed + '">' + processed + '</a>')		
 		}
 	}
 	return message
@@ -614,7 +619,6 @@ function handlePresence(presence) {
 		otrKeys[nickname].REQUIRE_ENCRYPTION = true
 		otrKeys[nickname].on('ui', uicb(nickname))
 		otrKeys[nickname].on('io', iocb(nickname))
-		otrKeys[nickname].on('error', function(err) {})
 		otrKeys[nickname].on('status', (function(nickname) {
 			return function(state) {
 				// Close generating fingerprint dialog after AKE.
@@ -776,7 +780,9 @@ function closeGenerateFingerprints(nickname, arr) {
 
 // If OTR fingerprints have not been generated, show a progress bar and generate them.
 function ensureOTRdialog(nickname, close, cb) {
-	if (nickname === Cryptocat.myNickname || otrKeys[nickname].msgstate) return cb()
+	if (nickname === Cryptocat.myNickname || otrKeys[nickname].msgstate) {
+		return cb()
+	}
 	var progressDialog = '<div id="progressBar"><div id="fill"></div></div>'
 	dialogBox(progressDialog, 1)
 	$('#progressBar').css('margin', '70px auto 0 auto')
@@ -802,18 +808,22 @@ function displayInfo(nickname) {
 		var otrColorprint = getFingerprint(nickname, 1).split(' ')
 		otrColorprint.splice(0, 1)
 		for (color in otrColorprint) {
-			$('#otrColorprint').append(
-				'<div class="colorprint" style="background:#'
-				+ otrColorprint[color].substring(0, 6) + '"></div>'
-			)
+			if (otrColorprint.hasOwnProperty(color)) {
+				$('#otrColorprint').append(
+					'<div class="colorprint" style="background:#'
+					+ otrColorprint[color].substring(0, 6) + '"></div>'
+				)
+			}
 		}
 		var multiPartyColorprint = getFingerprint(nickname, 0).split(' ')
 		multiPartyColorprint.splice(0, 1)
 		for (color in multiPartyColorprint) {
-			$('#multiPartyColorprint').append(
-				'<div class="colorprint" style="background:#'
-				+ multiPartyColorprint[color].substring(0, 6) + '"></div>'
-			)
+			if (multiPartyColorprint.hasOwnProperty(color)) {
+				$('#multiPartyColorprint').append(
+					'<div class="colorprint" style="background:#'
+					+ multiPartyColorprint[color].substring(0, 6) + '"></div>'
+				)
+			}
 		}
 	})
 }
@@ -1038,12 +1048,14 @@ $('#userInputText').keydown(function(e) {
 		e.preventDefault()
 		var nickname, match, suffix
 		for (nickname in otrKeys) {
-			try { match = nickname.match($(this).val().match(/(\S)+$/)[0]) }
-			catch(err) {}
-			if (match) {
-				if ($(this).val().match(/\s/)) { suffix = ' ' }
-				else { suffix = ': ' }
-				$(this).val($(this).val().replace(/(\S)+$/, nickname + suffix))
+			if (otrKeys.hasOwnProperty(nickname)) {
+				try { match = nickname.match($(this).val().match(/(\S)+$/)[0]) }
+				catch(err) {}
+				if (match) {
+					if ($(this).val().match(/\s/)) { suffix = ' ' }
+					else { suffix = ': ' }
+					$(this).val($(this).val().replace(/(\S)+$/, nickname + suffix))
+				}
 			}
 		}
 	}

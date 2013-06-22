@@ -32,7 +32,9 @@ Language.set = function(locale) {
 				return false
 			}
 			for (var i in language) {
-				language[i] = $.trim(language[i])
+				if (language.hasOwnProperty(i)) {
+					language[i] = $.trim(language[i])
+				}
 			}
 			Language.buildObject(locale, language)
 		}

@@ -66,7 +66,9 @@ Cryptocat.beginSendFile = function(data) {
 Cryptocat.sendFileData = function(data) {
 	var sid = data.sid
 	var seq = data.start ? 0 : parseInt(data.seq, 10) + 1
-	if (seq > 65535) seq = 0
+	if (seq > 65535) {
+		seq = 0
+	}
 	if (files[sid].position > files[sid].file.size) {
 		Cryptocat.connection.ibb.close(cn(data.to), sid, function(err) {
 			if (err) {
@@ -136,7 +138,9 @@ Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 			delete Cryptocat.fileKeys[nick][file]
 			break
 		case 'data':
-			if (rcvFile[from][sid].abort) return
+			if (rcvFile[from][sid].abort) {
+				return
+			}
 			if (rcvFile[from][sid].ctr > rcvFile[from][sid].total - 1) {
 				rcvFile[from][sid].abort = true
 				Cryptocat.fileTransferError(sid)
@@ -193,7 +197,9 @@ Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 }
 
 Cryptocat.fileHandler = function(from, sid, filename, size, mime) {
-	if (!rcvFile[from]) rcvFile[from] = {}
+	if (!rcvFile[from]) {
+		rcvFile[from] = {}
+	}
 	rcvFile[from][sid] = {
 		filename: filename,
 		size: size,
