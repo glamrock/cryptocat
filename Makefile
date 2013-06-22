@@ -31,6 +31,8 @@ lint:
 		src/core/js/cryptocat.js \
 		src/core/js/lib/multiParty.js \
 		src/core/js/lib/elliptic.js \
-		src/core/js/etc/*.js
+		src/core/js/etc/*.js \
+		test/testBase.js \
+		test/core/js/*.js
 
 all: lint tests

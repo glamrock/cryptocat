@@ -1,22 +1,21 @@
 var _ = require('lodash'),
 	path = require('path'),
-	test = require('../../testBase')();
+	test = require('../../testBase')()
 
-var Salsa20 = require('../../../src/core/js/lib/salsa20');
-
+var Salsa20 = require('../../../src/core/js/lib/salsa20')
 
 test['Salsa20'] = {
 
   'key=8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0': {
 	beforeEach: function() {
-	  this.key = [8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	  this.key = [8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 	},
 
 	'nonce=0,0,0,0,0,0,0,0': {
 	  beforeEach: function() {
-		this.salsa20 = new Salsa20(this.key, [0,0,0,0,0,0,0,0]);
+		this.salsa20 = new Salsa20(this.key, [0,0,0,0,0,0,0,0])
 	  },
-	  'check first 512 bytes': function() {
+	  'Check first 512 bytes': function() {
 		test.assert.same(
 			this.salsa20.getHexString(512),
 			'5b393241fd4138028805e664fdd1589f45379ccb57f884234329013e5f0ac632' +
@@ -35,49 +34,49 @@ test['Salsa20'] = {
 			'78e42cd079d391993a2e1c11d4b9e307ca7377828d1a48a569b47553e98f9ec4' +
 			'6ecc14402da20972df13a86a7707b782c50673a220583d8bcbc5408780f95697' +
 			'7edb177c27da09644efa06e008b7fc659e06a532223e88675820ba78e6647877'
-		);
+		)
 	  }
 	},
 
 	'nonce=255,255,255,255,255,255,255,255': {
 	  beforeEach: function() {
-		this.salsa20 = new Salsa20(this.key, [255,255,255,255,255,255,255,255]);
+		this.salsa20 = new Salsa20(this.key, [255,255,255,255,255,255,255,255])
 	  },
 
-	  'check first 512 bytes': function() {
+	  'Check first 512 bytes': function() {
 		test.assert.same(
 			this.salsa20.getHexString(512),
 			'61b832391a3584a26de4a61f9100132c8c182b83b26c8305b55b64b9dfb420b2fc' +
-				'348d934b092d5cbe0b967283bdef5945309d768227e29d018555571aa20e3a6634' +
-				'92275eec13315aca0353314a314d67ba117f7e6ebb9ac9d0fa4e0e87f34c73b7e9' +
-				'e089d92ff9a6b775d40e5e00c10935f5fc52c0def08fba6d87ed7b4de694a751fc' +
-				'b6c4472b8da0ef2b2e605d467cd9a397e6b337827ab2e6f3eb9c5f98e60f256592' +
-				'c39bd029ed2c86de3f4f70baffc66aca63f043dafd348dd75aac37636e4f04ebaf' +
-				'727d66ca2a0005ee2ff8519ccb95a3979d20539e1ef9d736251acdc9da54e4132c' +
-				'9c112f16d4d42ad68a48b3ad35d67db5f49a023376f9c0d5340ac317e7b24749e3' +
-				'db1c8fcbb045566eb2ba1658dad2dd737914103df8232f59dca466038663940332' +
-				'6449b6cc5ede58fe5bf5500d5c170f2057402467b7d35f88870beb083811320abf' +
-				'dcc581b11468474be50fd5f66cbcbe5f08016e582710537ca2c63157896c19c409' +
-				'8591ac7109478e9b00b35cdcd575b64488af2151bd7f1c87acc186ad7b6d79698f' +
-				'8a8133646ab8044fef54dc3c2dd9b6d8bc2f93f9dc22bf4cf63607b94a7fd1d0bf' +
-				'e450e0a1ed90618ac6f716f740946e0ebb1957749b374f47520a0bdd11d74f55c3' +
-				'2f27ce85bae4238eb121fd8a2c08f00d8723a850bca31d195271202e98cdd13e18' +
-				'1abaf478ab754b27d975247fbd1dbca489'
-		);
+			'348d934b092d5cbe0b967283bdef5945309d768227e29d018555571aa20e3a6634' +
+			'92275eec13315aca0353314a314d67ba117f7e6ebb9ac9d0fa4e0e87f34c73b7e9' +
+			'e089d92ff9a6b775d40e5e00c10935f5fc52c0def08fba6d87ed7b4de694a751fc' +
+			'b6c4472b8da0ef2b2e605d467cd9a397e6b337827ab2e6f3eb9c5f98e60f256592' +
+			'c39bd029ed2c86de3f4f70baffc66aca63f043dafd348dd75aac37636e4f04ebaf' +
+			'727d66ca2a0005ee2ff8519ccb95a3979d20539e1ef9d736251acdc9da54e4132c' +
+			'9c112f16d4d42ad68a48b3ad35d67db5f49a023376f9c0d5340ac317e7b24749e3' +
+			'db1c8fcbb045566eb2ba1658dad2dd737914103df8232f59dca466038663940332' +
+			'6449b6cc5ede58fe5bf5500d5c170f2057402467b7d35f88870beb083811320abf' +
+			'dcc581b11468474be50fd5f66cbcbe5f08016e582710537ca2c63157896c19c409' +
+			'8591ac7109478e9b00b35cdcd575b64488af2151bd7f1c87acc186ad7b6d79698f' +
+			'8a8133646ab8044fef54dc3c2dd9b6d8bc2f93f9dc22bf4cf63607b94a7fd1d0bf' +
+			'e450e0a1ed90618ac6f716f740946e0ebb1957749b374f47520a0bdd11d74f55c3' +
+			'2f27ce85bae4238eb121fd8a2c08f00d8723a850bca31d195271202e98cdd13e18' +
+			'1abaf478ab754b27d975247fbd1dbca489'
+		)
 	  }
 	}
   },
 
   'key=1,255,32,78,90,3,200,5,0,0,0,0,0,0,0,0,0,0,0,9,9,9,0,0,0,0,0,0,0,133,211,1': {
 	beforeEach: function() {
-	  this.key = [1,255,32,78,90,3,200,5,0,0,0,0,0,0,0,0,0,0,0,9,9,9,0,0,0,0,0,0,0,133,211,1];
+	  this.key = [1,255,32,78,90,3,200,5,0,0,0,0,0,0,0,0,0,0,0,9,9,9,0,0,0,0,0,0,0,133,211,1]
 	},
 
 	'nonce=0,0,0,0,0,0,0,0': {
 	  beforeEach: function() {
-		this.salsa20 = new Salsa20(this.key, [0,0,0,0,0,0,0,0]);
+		this.salsa20 = new Salsa20(this.key, [0,0,0,0,0,0,0,0])
 	  },
-	  'check first 512 bytes': function() {
+	  'Check first 512 bytes': function() {
 		test.assert.same(
 			this.salsa20.getHexString(512),
 			'3e8311417455a6abf6d1548d1b0866006343bb7bcef27f44879b88710897785f' +
@@ -96,16 +95,16 @@ test['Salsa20'] = {
 			'62711c40b523153d9e3f2cfeae9166f129f3db0c73be97eb5b7a12b08f53f3c0' +
 			'5013fe1241a874cb625dbf34380bfe6fe132959d3b528e102b11ad0faf2c0143' +
 			'a680950006a99d3617a92273c6d5198aa71bd4aa2ab98623057b3a679cf544a7'
-		);
+		)
 	  }
 	},
 
 	'nonce=255,255,255,255,255,255,255,255': {
 	  beforeEach: function() {
-		this.salsa20 = new Salsa20(this.key, [255,255,255,255,255,255,255,255]);
+		this.salsa20 = new Salsa20(this.key, [255,255,255,255,255,255,255,255])
 	  },
 
-	  'check first 512 bytes': function() {
+	  'Check first 512 bytes': function() {
 		test.assert.same(
 			this.salsa20.getHexString(512),
 			'b342fa48e76835d16a17b20cade51c3337f93c9819dd9866475196010d258f94' +
@@ -124,13 +123,10 @@ test['Salsa20'] = {
 			'48e2161a4f186d5da764b12cd9480e4686db9391f2d29cd1696b5e584bb04b6f' +
 			'feb815e1709f39c1e24aa344014b3616b1c34bb034644233857dd33a6ee428d1' +
 			'90b0d1438f8e6730221226c452c6ff1f0122ac47ac3a477f2f8bf4659d4c5ad9'
-		);
+		)
 	  }
 	}
   }
+}
 
-};
-
-
-
-module.exports[path.basename(__filename)] = test;
+module.exports[path.basename(__filename)] = test
