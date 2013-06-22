@@ -941,7 +941,7 @@ function dialogBox(data, closeable, onAppear, onClose) {
 			}
 		})
 	}
-} $('#dialogBox').draggable()
+}
 
 // Buttons:
 // Status button.
