@@ -177,13 +177,22 @@ Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 			break
 		case 'close':
 			if (!rcvFile[from][sid].abort && rcvFile[from][sid].total === rcvFile[from][sid].ctr) {
-				// Convert data to blob
-				var ia = new Uint8Array(rcvFile[from][sid].data.length)
-				for (var i = 0; i < rcvFile[from][sid].data.length; i++) {
-					ia[i] = rcvFile[from][sid].data.charCodeAt(i)
+				var url
+				if (navigator.userAgent.match('Safari')) {
+					url = 'data:application/octet-stream;base64,' +
+						CryptoJS.enc.Latin1
+							.parse(rcvFile[from][sid].data)
+							.toString(CryptoJS.enc.Base64)
 				}
-				var blob = new Blob([ia], { type: rcvFile[from][sid].mime })
-				var url = window.URL.createObjectURL(blob)
+				else {
+					// Convert data to blob
+					var ia = new Uint8Array(rcvFile[from][sid].data.length)
+					for (var i = 0; i < rcvFile[from][sid].data.length; i++) {
+						ia[i] = rcvFile[from][sid].data.charCodeAt(i)
+					}
+					var blob = new Blob([ia], { type: rcvFile[from][sid].mime })
+					url = window.URL.createObjectURL(blob)
+				}
 				if (rcvFile[from][sid].filename.match(/^[\w-.]+$/)
 				&& rcvFile[from][sid].mime.match(fileMIME)) {
 					Cryptocat.addFile(url, sid, nick, rcvFile[from][sid].filename)
