@@ -80,7 +80,9 @@ Cryptocat.sendFileData = function(data) {
 	}
 	// Split into chunk
 	var end = files[sid].position + Cryptocat.chunkSize
-	var chunk = files[sid].file.slice(files[sid].position, end)
+	// Check for slice function on file
+	var sliceStr = files[sid].file.slice ? 'slice' : 'webkitSlice'
+	var chunk = files[sid].file[sliceStr](files[sid].position, end)
 	files[sid].position = end
 	files[sid].ctr += 1
 	var reader = new FileReader()
