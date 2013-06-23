@@ -5,18 +5,26 @@ Cryptocat is an experimental browser-based chat client for easy to use, encrypte
 [![Build Status](https://secure.travis-ci.org/cryptocat/cryptocat.png?branch=master)](http://travis-ci.org/cryptocat/cryptocat)  
 
 ##Platforms
+
 ###Google Chrome
 Run `make chrome` to build a Google Chrome-loadable .zip extension (or just .zip the directory.)  
 Also available from the [Chrome Web Store](https://chrome.google.com/webstore/detail/cryptocat/gonbigodpnfghidmnphnadhepmbabhij).  
+
 ###Mozilla Firefox
 Run `make firefox` to build a Mozilla Firefox-loadable .xpi extension (or just .zip the directory and change the extension to .xpi.)  
 Also available from [Mozilla Firefox Addons](https://addons.mozilla.org/en-US/firefox/addon/cryptocat/).  
+
 ###Apple Safari
 Apple's model makes an automated build process difficult.  
 Also available from [Cryptocat](https://crypto.cat/get/cryptocat.safariextz).
 
 ### Apple Mac OS X
-Run `make mac`, then open `src/mac/Cryptocat.xcodeproj` and compile in XCode.
+Run `make mac`, then `open src/mac/Cryptocat.xcodeproj` to open in XCode. You
+can then Build or Run.
+
+You will need to disable code signing if you do not have a certificate or keypair
+set up. Do this by opening the project settings by clicking on Cryptocat in the
+left column and unchecking **Code Sign Application**.
 
 ##Goals
 * XMPP **[DONE]** | [Discussion](https://github.com/cryptocat/cryptocat/issues/83), [Library](http://strophe.im)
