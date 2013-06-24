@@ -128,6 +128,31 @@ Cryptocat.sendFileData = function(data) {
 	reader.readAsDataURL(chunk)
 }
 
+// make sure current Safari is at least <version>
+function matchSafariVersion(version) {
+	var match = navigator.userAgent.match(/\bversion\/(\d+)\.(\d+)\.(\d+)/i)
+	if (match == null) {
+		return false
+	}
+	match = match.slice(1).map(function (i) {
+		return parseInt(i, 10)
+	})
+	function ver(arr, pos) {
+		if (arr[pos] > version[pos]) {
+			return true
+		}
+		if (arr[pos] === version[pos]) {
+			if (pos === version.length) {
+				return true
+			}
+			pos += 1
+			return ver(arr, pos)
+		}
+		return false
+	}
+	return ver(match, 0)
+}
+
 Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 	var nick = from.split('/')[1]
 	switch (type) {
@@ -179,6 +204,14 @@ Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 			if (!rcvFile[from][sid].abort && rcvFile[from][sid].total === rcvFile[from][sid].ctr) {
 				var url
 				if (navigator.userAgent.match('Safari')) {
+					// Safari older than 6.0.5 can only support 128kb
+					if (!matchSafariVersion([6, 0, 5]) &&
+						rcvFile[from][sid].size >= 131072) {
+						Cryptocat.fileTransferError(sid)
+						console.log('File size is too large for this version of Safari')
+						delete rcvFile[from][sid]
+						return
+					}
 					url = 'data:application/octet-stream;base64,' +
 						CryptoJS.enc.Latin1
 							.parse(rcvFile[from][sid].data)
@@ -198,6 +231,7 @@ Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 					Cryptocat.addFile(url, sid, nick, rcvFile[from][sid].filename)
 				} 
 				else {
+					Cryptocat.fileTransferError(sid)
 					console.log('Received file of unallowed file type ' +
 						rcvFile[from][sid].mime + ' from ' + nick)
 				}
