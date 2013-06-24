@@ -15,6 +15,8 @@ test['Curve25519'] = {
 			var priv2 = BigInt.randBigInt(256, 0)
 			var pub1 = Curve25519.scalarMult(priv1, basePoint)
 			var pub2 = Curve25519.scalarMult(priv2, basePoint)
+			test.assert.ok(pub1)
+			test.assert.ok(pub2)
 			test.assert.same(
 				Curve25519.scalarMult(priv1, pub2),
 				Curve25519.scalarMult(priv2, pub1)
