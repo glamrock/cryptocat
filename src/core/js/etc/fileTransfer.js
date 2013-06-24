@@ -209,7 +209,7 @@ Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 						rcvFile[from][sid].size >= 131072) {
 						Cryptocat.fileTransferError(sid)
 						console.log('File size is too large for this version of Safari')
-						delete rcvFile[from][sid]
+						;delete rcvFile[from][sid]
 						return
 					}
 					url = 'data:application/octet-stream;base64,' +
