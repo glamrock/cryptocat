@@ -80,7 +80,9 @@ Cryptocat.sendFileData = function(data) {
 	}
 	// Split into chunk
 	var end = files[sid].position + Cryptocat.chunkSize
-	var chunk = files[sid].file.slice(files[sid].position, end)
+	// Check for slice function on file
+	var sliceStr = files[sid].file.slice ? 'slice' : 'webkitSlice'
+	var chunk = files[sid].file[sliceStr](files[sid].position, end)
 	files[sid].position = end
 	files[sid].ctr += 1
 	var reader = new FileReader()
@@ -124,6 +126,31 @@ Cryptocat.sendFileData = function(data) {
 		Cryptocat.updateFileProgressBar(sid, files[sid].ctr + 1, files[sid].file.size, data.to)
 	}
 	reader.readAsDataURL(chunk)
+}
+
+// make sure current Safari is at least <version>
+function matchSafariVersion(version) {
+	var match = navigator.userAgent.match(/\bversion\/(\d+)\.(\d+)\.(\d+)/i)
+	if (match == null) {
+		return false
+	}
+	match = match.slice(1).map(function (i) {
+		return parseInt(i, 10)
+	})
+	function ver(arr, pos) {
+		if (arr[pos] > version[pos]) {
+			return true
+		}
+		if (arr[pos] === version[pos]) {
+			pos += 1
+			if (pos === version.length) {
+				return true
+			}
+			return ver(arr, pos)
+		}
+		return false
+	}
+	return ver(match, 0)
 }
 
 Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
@@ -175,18 +202,36 @@ Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 			break
 		case 'close':
 			if (!rcvFile[from][sid].abort && rcvFile[from][sid].total === rcvFile[from][sid].ctr) {
-				// Convert data to blob
-				var ia = new Uint8Array(rcvFile[from][sid].data.length)
-				for (var i = 0; i < rcvFile[from][sid].data.length; i++) {
-					ia[i] = rcvFile[from][sid].data.charCodeAt(i)
+				var url
+				if (navigator.userAgent.match('Safari')) {
+					// Safari older than 6.0.5 can only support 128kb
+					if (!matchSafariVersion([6, 0, 5]) &&
+						rcvFile[from][sid].size >= 131072) {
+						Cryptocat.fileTransferError(sid)
+						console.log('File size is too large for this version of Safari')
+						;delete rcvFile[from][sid]
+						return
+					}
+					url = 'data:application/octet-stream;base64,' +
+						CryptoJS.enc.Latin1
+							.parse(rcvFile[from][sid].data)
+							.toString(CryptoJS.enc.Base64)
 				}
-				var blob = new Blob([ia], { type: rcvFile[from][sid].mime })
-				var url = window.URL.createObjectURL(blob)
+				else {
+					// Convert data to blob
+					var ia = new Uint8Array(rcvFile[from][sid].data.length)
+					for (var i = 0; i < rcvFile[from][sid].data.length; i++) {
+						ia[i] = rcvFile[from][sid].data.charCodeAt(i)
+					}
+					var blob = new Blob([ia], { type: rcvFile[from][sid].mime })
+					url = window.URL.createObjectURL(blob)
+				}
 				if (rcvFile[from][sid].filename.match(/^[\w-.]+$/)
 				&& rcvFile[from][sid].mime.match(fileMIME)) {
 					Cryptocat.addFile(url, sid, nick, rcvFile[from][sid].filename)
 				} 
 				else {
+					Cryptocat.fileTransferError(sid)
 					console.log('Received file of unallowed file type ' +
 						rcvFile[from][sid].mime + ' from ' + nick)
 				}
