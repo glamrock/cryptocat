@@ -25,7 +25,7 @@ assert.same = function(actual, expected, message) {
  *
  * This will setup a mocking sandbox for the test.
  */
-var createTest = function(title) {
+var createTest = function() {
 	var test = {
 		beforeEach: function() {
 			test.mocker = sinon.sandbox.create()

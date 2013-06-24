@@ -1,4 +1,6 @@
-var Cryptocat = function() {};
+if (typeof Cryptocat === 'undefined') {
+	Cryptocat = function () {}
+}
 Cryptocat.version = '2.1.5' // Version number
 Cryptocat.fileSize = 5120 // Maximum encrypted file sharing size, in kilobytes.
 Cryptocat.chunkSize = 64511 // Size in which file chunks are split, in bytes.
@@ -28,7 +30,7 @@ var defaultDomain = 'crypto.cat'
 var defaultConferenceServer = 'conference.crypto.cat'
 // BOSH is served over an HTTPS proxy for better security and availability.
 var defaultBOSH = 'https://crypto.cat/http-bind'
-var localStorageEnabled = true 
+var localStorageEnabled = true
 if (navigator.userAgent.match('Firefox')) {
 	localStorageEnabled = false
 }
@@ -257,7 +259,7 @@ function getFingerprint(buddy, OTR) {
 	var formatted = ''
 	for (var i in fingerprint) {
 		if (fingerprint.hasOwnProperty(i)) {
-			if ((i !== 0) && !(i % 8)) {
+			if ((i !== 0) && (i % 8) === 0) {
 				formatted += ' '
 			}
 			formatted += fingerprint[i]
@@ -892,11 +894,11 @@ function bindBuddyMenu(nickname) {
 // Send your current status to the XMPP server.
 function sendStatus() {
 	if (currentStatus === 'away') {
-		Cryptocat.connection.muc.setStatus(Cryptocat.conversationName + '@' 
+		Cryptocat.connection.muc.setStatus(Cryptocat.conversationName + '@'
 		+ Cryptocat.conferenceServer, Cryptocat.myNickname, 'away', 'away')
 	}
 	else {
-		Cryptocat.connection.muc.setStatus(Cryptocat.conversationName + '@' 
+		Cryptocat.connection.muc.setStatus(Cryptocat.conversationName + '@'
 		+ Cryptocat.conferenceServer, Cryptocat.myNickname, '', '')
 	}
 }
@@ -1254,7 +1256,7 @@ function connectXMPP(username, password) {
 					Cryptocat.connection.si_filetransfer.addFileHandler(Cryptocat.fileHandler)
 					/*jshint +W106 */
 					Cryptocat.connection.muc.join(
-						Cryptocat.conversationName + '@' + Cryptocat.conferenceServer, Cryptocat.myNickname, 
+						Cryptocat.conversationName + '@' + Cryptocat.conferenceServer, Cryptocat.myNickname,
 						function(message) {
 							if (handleMessage(message)) { return true }
 						},

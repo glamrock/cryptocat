@@ -18,7 +18,7 @@ Cryptocat.beginSendFile = function(data) {
 	if (!data.file.type.match(fileMIME)) {
 		$('#fileInfoField').text(Cryptocat.language['chatWindow']['fileTypeError'])
 		return
-	} 
+	}
 	else if (data.file.size > (Cryptocat.fileSize * 1024)) {
 		$('#fileInfoField').text(Cryptocat.language['chatWindow']['fileSizeError'])
 		return
@@ -230,7 +230,7 @@ Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 				if (rcvFile[from][sid].filename.match(/^[\w-.]+$/)
 				&& rcvFile[from][sid].mime.match(fileMIME)) {
 					Cryptocat.addFile(url, sid, nick, rcvFile[from][sid].filename)
-				} 
+				}
 				else {
 					Cryptocat.fileTransferError(sid)
 					console.log('Received file of unallowed file type ' +
