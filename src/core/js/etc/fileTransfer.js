@@ -203,7 +203,7 @@ Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 		case 'close':
 			if (!rcvFile[from][sid].abort && rcvFile[from][sid].total === rcvFile[from][sid].ctr) {
 				var url
-				if (navigator.userAgent.match('Safari')) {
+				if (navigator.userAgent.match('Safari') && !navigator.userAgent.match('Chrome')) {
 					// Safari older than 6.0.5 can only support 128kb
 					if (!matchSafariVersion([6, 0, 5]) &&
 						rcvFile[from][sid].size >= 131072) {
