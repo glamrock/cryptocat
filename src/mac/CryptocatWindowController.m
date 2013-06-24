@@ -8,6 +8,7 @@
 
 #import "CryptocatWindowController.h"
 #import "CryptocatWindowManager.h"
+#import "fileUtils.h"
 
 @interface WebPreferences (WebPreferencesPrivate)
 - (void)_setLocalStorageDatabasePath:(NSString *)path;
@@ -18,9 +19,7 @@
 
 - (id)init {
 	self = [self initWithWindowNibName:@"CryptocatWindowController" owner:self];
-	if (self) {
-		
-	}
+	if (self) { }
 	return self;
 }
 
@@ -66,9 +65,13 @@
 	return defaultMenuItemsFixed;
 }
 
-// We use an iFrame location's property as a bridge to Objective-C from JavaScript.
-- (void)webView:(WebView *)sender decidePolicyForNavigationAction:(NSDictionary *)actionInformation request:(NSURLRequest *)request frame:(WebFrame *)frame decisionListener:(id<WebPolicyDecisionListener>)listener
-{
+
+
+// Handle links.
+- (void)webView:(WebView *)webView decidePolicyForNavigationAction:(NSDictionary *)actionInformation
+	request:(NSURLRequest *)request frame:(WebFrame *)frame
+	decisionListener:(id < WebPolicyDecisionListener >)listener {
+	// We use an iFrame location's property as a bridge to Objective-C from JavaScript.
     if ([[[request URL] absoluteString] hasPrefix:@"js-call:"]) {
 		NSArray *components = [[[request URL] absoluteString] componentsSeparatedByString:@":"];
 		NSUserNotification *userNotification = [[NSUserNotification alloc]init];
@@ -76,6 +79,24 @@
 		userNotification.subtitle = [components[2] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 		userNotification.hasActionButton = FALSE;
 		[[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:userNotification];
+    }
+	// Open links in default browser.
+	else if ([[[request URL] absoluteString] hasPrefix:@"http:"]) {
+        [[NSWorkspace sharedWorkspace] openURL:[request URL]];
+    }
+	// Save files.
+	else if ([[[request URL] absoluteString] hasPrefix:@"data:"]) {
+		NSLog(@"data!");
+		NSSavePanel *savePanel = [NSSavePanel savePanel];
+		NSString *base64 = [[[request URL] absoluteString] substringFromIndex:37];
+		NSData *data = [fileUtils base64DataFromString:base64];
+		NSString *savePath = [NSString stringWithFormat:@"%@%@", @"file.", [fileUtils getFileExtension:data]];
+		[savePanel setNameFieldStringValue:savePath];
+		[savePanel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
+			if (result == NSFileHandlingPanelOKButton) {
+				[data writeToURL:[savePanel URL] atomically:FALSE];
+			}
+		}];
     }
 	else {
 		[listener use];

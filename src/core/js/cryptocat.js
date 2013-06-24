@@ -284,7 +284,16 @@ function addLinks(message) {
 				}
 				sanitize = sanitize.join('')
 				var processed = sanitize.replace(':','&colon;')
-				message = message.replace(sanitize, '<a target="_blank" href="' + processed + '">' + processed + '</a>')
+				if (navigator.userAgent === 'Chrome (Mac app)') {
+					message = message.replace(
+						sanitize, '<a href="' + processed + '">' + processed + '</a>'
+					)
+				}
+				else {
+					message = message.replace(
+						sanitize, '<a href="' + processed + '" target="_blank">' + processed + '</a>'
+					)
+				}
 			}
 		}
 	}
@@ -323,7 +332,11 @@ Cryptocat.updateFileProgressBar = function(file, chunk, size, recipient) {
 // Convert Data blob/url to downloadable file, replacing the progress bar.
 Cryptocat.addFile = function(url, file, conversation, filename) {
 	var conversationBuffer = $(conversations[conversation])
-	var fileLink = Mustache.render(Cryptocat.templates.fileLink, {
+	var fileLinkString = 'fileLink'
+	if (navigator.userAgent === 'Chrome (Mac app)') {
+		fileLinkString += 'Mac'
+	}
+	var fileLink = Mustache.render(Cryptocat.templates[fileLinkString], {
 		url: url,
 		filename: filename,
 		downloadFile: Cryptocat.language['chatWindow']['downloadFile']
@@ -434,7 +447,7 @@ function iconNotify(conversation) {
 function desktopNotification(image, title, body, timeout) {
 	if (desktopNotifications) {
 		// Support of Mac native notifications using bridges for Objective-C WebKit.
-		if (navigator.userAgent === 'Chrome (Mac app)'){
+		if (navigator.userAgent === 'Chrome (Mac app)') {
 			var iframe = document.createElement('IFRAME')
 			// The syntax for the Mac App Notifications is the following: "js-call:title:body".
 			iframe.setAttribute('src', 'js-call:'+title+':'+body)

@@ -24,6 +24,8 @@ Cryptocat.templates = {
 	
 	fileLink: '<a href="{{url}}" class="fileView" target="_blank" download="{{filename}}">{{downloadFile}}</a>',
 	
+	fileLinkMac: '<a href="{{url}}" class="fileView" download="{{filename}}">{{downloadFile}}</a>',
+	
 	message: '<div class="line{{lineDecoration}}"><span class="sender" sender="{{sender}}"'
 		+ ' timestamp="{{currentTime}}">{{sender}}</span>{{&message}}</div>',
 		

@@ -22,6 +22,7 @@
 
 /* Begin PBXFileReference section */
 		5F179560177395A100D286E0 /* Cryptocat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Cryptocat.entitlements; sourceTree = SOURCE_ROOT; };
+		5F198EFC1778C7CC005CAFBF /* fileUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fileUtils.h; sourceTree = SOURCE_ROOT; };
 		5F4ADDBC17737FCF00309087 /* Cryptocat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cryptocat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F4ADDBF17737FCF00309087 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		5F4ADDC217737FCF00309087 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -108,6 +109,7 @@
 				B608451017756705004DFFD0 /* CryptocatWindowController.h */,
 				B608451117756705004DFFD0 /* CryptocatWindowController.m */,
 				B608451317756B58004DFFD0 /* CryptocatWindowController.xib */,
+				5F198EFC1778C7CC005CAFBF /* fileUtils.h */,
 				B66BDA521775A038007BDB39 /* kConstants.h */,
 				5F7EA8E61773903400D619BB /* MainMenu.xib */,
 				5F7EA8F61773914D00D619BB /* htdocs */,

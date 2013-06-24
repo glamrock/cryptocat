@@ -6,7 +6,6 @@ window.URL = window.URL || window.webkitURL
 var files = {}
 var rcvFile = {}
 var fileMIME = new RegExp('^(image\/(png|jpeg|gif))|(application\/((x-compressed)|(x-zip-compressed)|(zip)'
-	+ '|(x-bzip2)|(x-gzip)|(x-lzip)|(x-lzma)|(x-lzop)|(x-xz)|(x-tar)|(x-gtar)|(x-rar-compressed)'
 	+ '|(x-zip)|(x-zip-compressed)|(x-compress)|(x-compressed)))|(multipart/x-zip)$'
 )
 
@@ -204,10 +203,12 @@ Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 		case 'close':
 			if (!rcvFile[from][sid].abort && rcvFile[from][sid].total === rcvFile[from][sid].ctr) {
 				var url
-				if (navigator.userAgent.match('Safari') && !navigator.userAgent.match('Chrome')) {
+				if (navigator.userAgent === 'Chrome (Mac app)' ||
+				(navigator.userAgent.match('Safari') && !navigator.userAgent.match('Chrome'))) {
 					// Safari older than 6.0.5 can only support 128kb
-					if (!matchSafariVersion([6, 0, 5]) &&
-						rcvFile[from][sid].size >= 131072) {
+					if (navigator.userAgent !== 'Chrome (Mac app)' &&
+					!matchSafariVersion([6, 0, 5]) &&
+					rcvFile[from][sid].size >= 131072) {
 						Cryptocat.fileTransferError(sid)
 						console.log('File size is too large for this version of Safari')
 						;delete rcvFile[from][sid]
