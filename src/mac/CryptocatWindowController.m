@@ -7,6 +7,7 @@
 //
 
 #import "CryptocatWindowController.h"
+#import "CryptocatWindowManager.h"
 
 @interface WebPreferences (WebPreferencesPrivate)
 - (void)_setLocalStorageDatabasePath:(NSString *)path;
@@ -18,12 +19,13 @@
 - (id)init {
 	self = [self initWithWindowNibName:@"CryptocatWindowController" owner:self];
 	if (self) {
-		self.roomname = nil;
+		
 	}
 	return self;
 }
 
 - (void)awakeFromNib {
+	[self.window setDelegate:[CryptocatWindowManager sharedManager]];
 	NSString *appSupportPath = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) objectAtIndex:0];
 	NSString *htmlPath = htmlPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/htdocs/index.html"];
 	
@@ -78,13 +80,6 @@
 	else {
 		[listener use];
 	}
-}
-
-// We want to have the name of the room to switch between rooms
-
-- (void)setTitleOfView:(NSString*)name{
-	self.roomname = name;
-	self.window.title = name?kApplicationName:[kApplicationName stringByAppendingFormat:@" - %@", name];
 }
 
 @end
