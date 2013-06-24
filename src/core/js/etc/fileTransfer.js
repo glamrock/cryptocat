@@ -6,6 +6,7 @@ window.URL = window.URL || window.webkitURL
 var files = {}
 var rcvFile = {}
 var fileMIME = new RegExp('^(image\/(png|jpeg|gif))|(application\/((x-compressed)|(x-zip-compressed)|(zip)'
+	+ '|(x-bzip2)|(x-gzip)|(x-lzip)|(x-lzma)|(x-lzop)|(x-xz)|(x-tar)|(x-gtar)|(x-rar-compressed)'
 	+ '|(x-zip)|(x-zip-compressed)|(x-compress)|(x-compressed)))|(multipart/x-zip)$'
 )
 
