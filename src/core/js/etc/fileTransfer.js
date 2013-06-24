@@ -142,10 +142,10 @@ function matchSafariVersion(version) {
 			return true
 		}
 		if (arr[pos] === version[pos]) {
+			pos += 1
 			if (pos === version.length) {
 				return true
 			}
-			pos += 1
 			return ver(arr, pos)
 		}
 		return false
