@@ -1,5 +1,15 @@
 #Changelog
 
+##Cryptocat 2.1.6
+**Jun. 24 2013**  
+- Big fixes to file transfer! If you've been experiencing problems, this update should help.  
+- File transfer now works fully in Cryptocat for Safari and Mac, as well as Chrome and Firefox.  
+- Cryptocat for Mac has been rewritten from scratch.  
+- Cryptocat for Mac now supports creating multiple windows for multiple conversations.  
+- Some internal optimizations and updates.  
+- Bug fixes.  
+- Updated Russian and Farsi translations.  
+
 ##Cryptocat 2.1.5
 **Jun. 15 2013**  
 - Fixed a series of user experience incompatibilities with previous versions.  

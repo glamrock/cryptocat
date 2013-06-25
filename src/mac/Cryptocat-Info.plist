@@ -9,7 +9,7 @@
 	<key>CFBundleIconFile</key>
 	<string>Cryptocat</string>
 	<key>CFBundleIdentifier</key>
-	<string>Cryptocat.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>com.cryptocat.cryptocat-mac</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -17,11 +17,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.1.5</string>
+	<string>2.1.6</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>2.1.5</string>
+	<string>2.1.6</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.social-networking</string>
 	<key>LSMinimumSystemVersion</key>
