@@ -165,6 +165,28 @@ var iocb = function(buddy) {
 	}
 }
 
+// Handle SMP callback
+var smcb = function (nickname) {
+	return function (type, data) {
+		var html
+		switch (type) {
+			case 'question':
+				smpQuestion(nickname, data)
+				break
+			case 'trust':
+				// smp completed
+				html = otrKeys[nickname].trust
+					? 'Successfully authenticated '
+					: 'Failed to authenticate '
+				html = Mustache.render(
+					Cryptocat.templates.authWrap,
+					{ html: '<p>' + html + nickname + '.</p>' })
+				dialogBox(html, 1)
+				break
+		}
+	}
+}
+
 // Creates a template for the conversation info bar at the top of each conversation.
 function buildConversationInfo(conversation) {
 	$('.conversationName').text(Cryptocat.myNickname + '@' + Cryptocat.conversationName)
@@ -634,6 +656,7 @@ function handlePresence(presence) {
 		otrKeys[nickname].REQUIRE_ENCRYPTION = true
 		otrKeys[nickname].on('ui', uicb(nickname))
 		otrKeys[nickname].on('io', iocb(nickname))
+		otrKeys[nickname].on('smp', smcb(nickname))
 		otrKeys[nickname].on('status', (function(nickname) {
 			return function(state) {
 				// Close generating fingerprint dialog after AKE.
@@ -843,6 +866,38 @@ function displayInfo(nickname) {
 	})
 }
 
+// Receive an SMP question
+function smpQuestion(nickname, question) {
+	var msg = nickname + ' requests your authentication secret.'
+	if (question) {
+		msg += ' They provided a question: ' + question
+	}
+	var secret = window.prompt(msg)
+	otrKeys[nickname].smpSecret(secret)
+}
+
+// Display SMP authentication
+function displayAuth(nickname) {
+	ensureOTRdialog(nickname, false, function() {
+		var authDialog = Mustache.render(
+			Cryptocat.templates.authDialog,
+			{ trust: otrKeys[nickname].trust })
+		authDialog = Mustache.render(
+			Cryptocat.templates.authWrap,
+			{ html: authDialog })
+		dialogBox(authDialog, 1)
+		$('#smpAuth input[name=submit]')
+			.unbind('click')
+			.bind('click', function(e) {
+				e.preventDefault()
+				var question = $('#smpAuth input[name=smpQuestion]').val()
+				var secret = $('#smpAuth input[name=smpSecret]').val()
+				$('#dialogBoxClose').click()
+				otrKeys[nickname].smpSecret(secret, question)
+			})
+	})
+}
+
 // Bind buddy menus for new buddies. Used internally.
 function bindBuddyMenu(nickname) {
 	nickname = Strophe.xmlescape(nickname)
@@ -860,13 +915,14 @@ function bindBuddyMenu(nickname) {
 			else {
 				blockAction = 'Block'
 			}
-			$('#buddy-' + nickname).delay(10).animate({'height': '60px'}, 180, function() {
+			$('#buddy-' + nickname).delay(10).animate({'height': '76px'}, 180, function() {
 				$(this).append(buddyMenuContents)
 				$('#' + nickname + '-contents').append(
 					Mustache.render(Cryptocat.templates.buddyMenu, {
 						sendEncryptedFile: Cryptocat.language['chatWindow']['sendEncryptedFile'],
 						displayInfo: Cryptocat.language['chatWindow']['displayInfo'],
-						block: blockAction
+						block: blockAction,
+						displayAuth: 'Authenticate'
 					})
 				)
 				$('#' + nickname + '-contents').fadeIn(200, function() {
@@ -888,6 +944,11 @@ function bindBuddyMenu(nickname) {
 						else {
 							Cryptocat.blockedUsers.splice(Cryptocat.blockedUsers.indexOf(nickname), 1)
 						}
+						$('#menu-' + nickname).click()
+					})
+					$('.option4').click(function(e) {
+						e.stopPropagation()
+						displayAuth(nickname)
 						$('#menu-' + nickname).click()
 					})
 				})
