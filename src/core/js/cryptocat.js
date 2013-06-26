@@ -394,7 +394,7 @@ Cryptocat.addToConversation = function(message, sender, conversation, type) {
 		if (audioNotifications && (type !== 'composing')) {
 			playSound('msgGet')
 		}
-		if (!document.hasFocus() && (type !== 'composing')) {
+		if (!document.hasFocus() && (type !== 'composing') && desktopNotifications) {
 			desktopNotification('img/keygen.gif', sender, message, 0x1337)
 		}
 		message = Strophe.xmlescape(message)
@@ -467,18 +467,24 @@ function iconNotify(conversation) {
 }
 
 function desktopNotification(image, title, body, timeout) {
-	if (desktopNotifications) {
-		// Support of Mac native notifications using bridges for Objective-C WebKit.
-		if (navigator.userAgent === 'Chrome (Mac app)') {
-			var iframe = document.createElement('IFRAME')
-			// The syntax for the Mac App Notifications is the following: "js-call:title:body".
-			iframe.setAttribute('src', 'js-call:'+title+':'+body)
-			document.documentElement.appendChild(iframe)
-			iframe.parentNode.removeChild(iframe)
-			iframe = null
+	// Mac
+	if (navigator.userAgent === 'Chrome (Mac app)') {
+		var iframe = document.createElement('IFRAME')
+		iframe.setAttribute('src', 'js-call:'+title+':'+body)
+		document.documentElement.appendChild(iframe)
+		iframe.parentNode.removeChild(iframe)
+		iframe = null
+	}
+	else {
+		// Firefox
+		if ((navigator.userAgent.match('Firefox\/(.*)')[1] | 0) >= 22) {
+			var notice = new Notification(title, { tag: "Cryptocat", body: body, icon: image });
 		}
-		var notice = window.webkitNotifications.createNotification(image, title, body)
-		notice.show()
+		// Chrome, Safari
+		else {
+			var notice = window.webkitNotifications.createNotification(image, title, body)
+			notice.show()
+		}
 		if (timeout > 0) {
 			window.setTimeout(function() {
 				notice.cancel()
@@ -506,7 +512,7 @@ function buddyNotification(buddy, join) {
 		$('#conversationWindow').append(status)
 	}
 	scrollDownConversation(400, true)
-	if (!document.hasFocus()) {
+	if (!document.hasFocus() && desktopNotifications) {
 		desktopNotification('img/keygen.gif', buddy, '', 0x1337)
 	}
 	if (audioNotifications) {
@@ -1041,7 +1047,7 @@ $('#myInfo').click(function() {
 })
 
 // Desktop notifications button.
-if (!window.webkitNotifications) {
+if (!window.webkitNotifications && !Notification.permission) {
 	$('#notifications').remove()
 }
 else {
