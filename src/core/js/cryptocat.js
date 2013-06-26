@@ -878,7 +878,7 @@ function smpQuestion(nickname, question) {
 }
 
 // Display SMP authentication
-function displayAuth(nickname) {
+/* function displayAuth(nickname) {
 	ensureOTRdialog(nickname, false, function() {
 		var authDialog = Mustache.render(
 			Cryptocat.templates.authDialog,
@@ -897,7 +897,7 @@ function displayAuth(nickname) {
 				otrKeys[nickname].smpSecret(secret, question)
 			})
 	})
-}
+} */
 
 // Bind buddy menus for new buddies. Used internally.
 function bindBuddyMenu(nickname) {
