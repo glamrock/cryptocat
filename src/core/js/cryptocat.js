@@ -1,7 +1,7 @@
 if (typeof Cryptocat === 'undefined') {
 	Cryptocat = function () {}
 }
-Cryptocat.version = '2.1.6' // Version number
+Cryptocat.version = '2.1.8' // Version number
 Cryptocat.fileSize = 5120 // Maximum encrypted file sharing size, in kilobytes.
 Cryptocat.chunkSize = 64511 // Size in which file chunks are split, in bytes.
 
@@ -922,8 +922,8 @@ function bindBuddyMenu(nickname) {
 					Mustache.render(Cryptocat.templates.buddyMenu, {
 						sendEncryptedFile: Cryptocat.language['chatWindow']['sendEncryptedFile'],
 						displayInfo: Cryptocat.language['chatWindow']['displayInfo'],
-						block: blockAction,
-						displayAuth: 'Authenticate'
+						block: blockAction
+						// displayAuth: 'Authenticate'
 					})
 				)
 				$('#' + nickname + '-contents').fadeIn(200, function() {
@@ -947,11 +947,11 @@ function bindBuddyMenu(nickname) {
 						}
 						$('#menu-' + nickname).click()
 					})
-					$('.option4').click(function(e) {
-						e.stopPropagation()
-						displayAuth(nickname)
-						$('#menu-' + nickname).click()
-					})
+					// $('.option4').click(function(e) {
+					// 	e.stopPropagation()
+					//	displayAuth(nickname)
+					//	$('#menu-' + nickname).click()
+					// })
 				})
 			})
 		}

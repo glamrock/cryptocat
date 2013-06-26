@@ -1,5 +1,9 @@
 #Changelog
 
+##Cryptocat 2.1.8
+**Jun. 26 2013**  
+- Fixed a bug that would sometimes stall group conversations after some activity, or if a user switched their status to "away".  
+
 ##Cryptocat 2.1.6
 **Jun. 24 2013**  
 - Big fixes to file transfer! If you've been experiencing problems, this update should help.  
