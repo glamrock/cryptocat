@@ -878,7 +878,7 @@ function smpQuestion(nickname, question) {
 }
 
 // Display SMP authentication
-/* function displayAuth(nickname) {
+function displayAuth(nickname) {
 	ensureOTRdialog(nickname, false, function() {
 		var authDialog = Mustache.render(
 			Cryptocat.templates.authDialog,
@@ -897,7 +897,7 @@ function smpQuestion(nickname, question) {
 				otrKeys[nickname].smpSecret(secret, question)
 			})
 	})
-} */
+}
 
 // Bind buddy menus for new buddies. Used internally.
 function bindBuddyMenu(nickname) {
@@ -922,8 +922,8 @@ function bindBuddyMenu(nickname) {
 					Mustache.render(Cryptocat.templates.buddyMenu, {
 						sendEncryptedFile: Cryptocat.language['chatWindow']['sendEncryptedFile'],
 						displayInfo: Cryptocat.language['chatWindow']['displayInfo'],
-						block: blockAction
-						// displayAuth: 'Authenticate'
+						block: blockAction,
+						displayAuth: 'Authenticate'
 					})
 				)
 				$('#' + nickname + '-contents').fadeIn(200, function() {
@@ -947,11 +947,11 @@ function bindBuddyMenu(nickname) {
 						}
 						$('#menu-' + nickname).click()
 					})
-					// $('.option4').click(function(e) {
-					// 	e.stopPropagation()
-					//	displayAuth(nickname)
-					//	$('#menu-' + nickname).click()
-					// })
+					$('.option4').click(function(e) {
+						e.stopPropagation()
+						displayAuth(nickname)
+						$('#menu-' + nickname).click()
+					})
 				})
 			})
 		}
