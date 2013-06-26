@@ -709,10 +709,11 @@ function handlePresence(presence) {
 	// Perform status change.
 	$('#buddy-' + nickname).attr('status', status)
 	if (placement) {
-		$('#buddy-' + nickname).animate({ 'color': color })
-		if (currentConversation !== nickname) {
-			$(this).insertAfter(placement).slideDown(200)
-		}
+		$('#buddy-' + nickname).animate({ 'color': color }, function() {
+			if (currentConversation !== nickname) {
+				$(this).insertAfter(placement).slideDown(200)
+			}
+		})
 	}
 	return true
 }
