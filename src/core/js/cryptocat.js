@@ -476,13 +476,15 @@ function desktopNotification(image, title, body, timeout) {
 		iframe = null
 	}
 	else {
+		var notice
 		// Firefox
 		if ((navigator.userAgent.match('Firefox\/(.*)')[1] | 0) >= 22) {
-			var notice = new Notification(title, { tag: "Cryptocat", body: body, icon: image });
+			var Notification
+			notice = new Notification(title, { tag: 'Cryptocat', body: body, icon: image })
 		}
 		// Chrome, Safari
 		else {
-			var notice = window.webkitNotifications.createNotification(image, title, body)
+			notice = window.webkitNotifications.createNotification(image, title, body)
 			notice.show()
 		}
 		if (timeout > 0) {
@@ -1047,7 +1049,7 @@ $('#myInfo').click(function() {
 })
 
 // Desktop notifications button.
-if (!window.webkitNotifications && !Notification.permission) {
+if (!window.webkitNotifications && ((navigator.userAgent.match('Firefox\/(.*)')[1] | 0) < 22)) {
 	$('#notifications').remove()
 }
 else {
