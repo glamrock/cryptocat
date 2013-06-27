@@ -1,5 +1,10 @@
 #Changelog
 
+##Cryptocat 2.1.9
+**Jun. 27 2013**
+- Web notifications are now available for Firefox 22 and higher!  
+- Fixed a bug that would cause Cryptocat to not launch in browsers set to certain languages and locales.  
+
 ##Cryptocat 2.1.8
 **Jun. 26 2013**  
 - Fixed a bug that would sometimes stall group conversations after some activity, or if a user switched their status to "away".  
