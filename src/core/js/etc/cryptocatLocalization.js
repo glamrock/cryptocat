@@ -39,7 +39,7 @@ Cryptocat.Language.set = function(locale) {
 			}
 			Cryptocat.Language.buildObject(locale, language)
 		},
-		error: function(err) {
+		error: function() {
 			Cryptocat.Language.set('en')
 		}
 	})
