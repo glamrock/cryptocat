@@ -1,4 +1,6 @@
-var Language = function() {};
+if (typeof Cryptocat.Language === 'undefined') {
+	Cryptocat.Language = function() {}
+}
 
 (function(){
 
@@ -17,7 +19,7 @@ function handleAliases(locale) {
 }
 
 // Get locale file, call other functions
-Language.set = function(locale) {
+Cryptocat.Language.set = function(locale) {
 	locale = handleAliases(locale.toLowerCase())
 	$.ajax({
 		url : 'locale/' + locale + '.txt',
@@ -26,9 +28,8 @@ Language.set = function(locale) {
 		contentType: 'text/html',
 		complete: function(data) {
 			var language = data.responseText.split('\n')
-			if (language.length < 5) {
-				// Something's wrong, reset to English and exit
-				Language.set('en')
+			if (language.length < 5) { // data too small, dismiss
+				Cryptocat.Language.set('en')
 				return false
 			}
 			for (var i in language) {
@@ -36,13 +37,16 @@ Language.set = function(locale) {
 					language[i] = $.trim(language[i])
 				}
 			}
-			Language.buildObject(locale, language)
+			Cryptocat.Language.buildObject(locale, language)
+		},
+		error: function(err) {
+			Cryptocat.Language.set('en')
 		}
 	})
 }
 
 // Build and deliver language object
-Language.buildObject = function(locale, language) {
+Cryptocat.Language.buildObject = function(locale, language) {
 	var i = 0
 	var languageObject = {
 		'language': locale,
@@ -106,11 +110,11 @@ Language.buildObject = function(locale, language) {
 			'cancel': language[i++]
 		}
 	}
-	Language.refresh(languageObject)
+	Cryptocat.Language.refresh(languageObject)
 }
 
 // Deliver new strings and refresh login page
-Language.refresh = function(languageObject) {
+Cryptocat.Language.refresh = function(languageObject) {
 	Cryptocat.language = languageObject
 	var smallType = ['bo', 'ar', 'in']
 	if (smallType.indexOf(languageObject['language']) >= 0) {

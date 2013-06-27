@@ -1,5 +1,5 @@
 if (typeof Cryptocat === 'undefined') {
-	Cryptocat = function () {}
+	Cryptocat = function() {}
 }
 Cryptocat.version = '2.1.8' // Version number
 Cryptocat.fileSize = 5120 // Maximum encrypted file sharing size, in kilobytes.
@@ -61,17 +61,17 @@ Cryptocat.setSeed(Cryptocat.generateSeed())
 
 // Initialize language settings.
 if (!localStorageEnabled) {
-	Language.set(window.navigator.language.toLowerCase())
+	Cryptocat.Language.set(window.navigator.language.toLowerCase())
 }
 
 // If localStorage is implemented, load saved settings.
 if (localStorageEnabled) {
 	// Load language settings
 	if (localStorage.getItem('language')) {
-		Language.set(localStorage.getItem('language'))
+		Cryptocat.Language.set(localStorage.getItem('language'))
 	}
 	else {
-		Language.set(window.navigator.language.toLowerCase())
+		Cryptocat.Language.set(window.navigator.language.toLowerCase())
 	}
 	// Load nickname settings.
 	if (localStorage.getItem('myNickname')) {
@@ -265,9 +265,9 @@ function getFingerprint(buddy, OTR) {
 			fingerprint = myKey.fingerprint()
 		}
 		else {
-			/*jshint -W106 */
+			/* jshint -W106 */
 			fingerprint = otrKeys[buddy].their_priv_pk.fingerprint()
-			/*jshint +W106 */
+			/* jshint +W106 */
 		}
 	}
 	else {
@@ -1228,7 +1228,7 @@ $('#languageSelect').click(function() {
 		$('#languages li').click(function() {
 			var lang = $(this).attr('id')
 			$('#languages').fadeOut(200, function() {
-				Language.set(lang)
+				Cryptocat.Language.set(lang)
 				if (localStorageEnabled) {
 					localStorage.setItem('language', lang)
 				}
@@ -1335,9 +1335,9 @@ function connectXMPP(username, password) {
 				}
 				else if (status === Strophe.Status.CONNECTED) {
 					Cryptocat.connection.ibb.addIBBHandler(Cryptocat.ibbHandler)
-					/*jshint -W106 */
+					/* jshint -W106 */
 					Cryptocat.connection.si_filetransfer.addFileHandler(Cryptocat.fileHandler)
-					/*jshint +W106 */
+					/* jshint +W106 */
 					Cryptocat.connection.muc.join(
 						Cryptocat.conversationName + '@' + Cryptocat.conferenceServer, Cryptocat.myNickname,
 						function(message) {
@@ -1469,7 +1469,9 @@ $(window).bind('beforeunload', function() {
 
 // Logout on browser close.
 $(window).unload(function() {
-	logout()
+	if (Cryptocat.connection !== null) {
+		logout()
+	}
 })
 
 // Show main window.
