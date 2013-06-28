@@ -1,5 +1,11 @@
 #Changelog
 
+##Cryptocat 2.1.10
+**Jun. 28 2013**
+- Fixed a bug that prevented desktop notifications from working in Chrome and Safari.  
+- Many usability bug fixes for Firefox.  
+- Fixed a typo.  
+
 ##Cryptocat 2.1.9
 **Jun. 27 2013**
 - Web notifications are now available for Firefox 22 and higher!  
