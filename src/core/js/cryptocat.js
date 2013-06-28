@@ -1,7 +1,7 @@
 if (typeof Cryptocat === 'undefined') {
 	Cryptocat = function() {}
 }
-Cryptocat.version = '2.1.8' // Version number
+Cryptocat.version = '2.1.9' // Version number
 Cryptocat.fileSize = 5120 // Maximum encrypted file sharing size, in kilobytes.
 Cryptocat.chunkSize = 64511 // Size in which file chunks are split, in bytes.
 
@@ -40,6 +40,7 @@ var otrKeys = {}
 var conversations = {}
 var composingTimeouts = {}
 var currentStatus = 'online'
+var isFocused = true
 var currentConversation
 var audioNotifications
 var desktopNotifications
@@ -245,15 +246,9 @@ function shortenString(string, length) {
 // Clean nickname so that it's safe to use.
 function cleanNickname(nickname) {
 	var clean = nickname.match(/\/([\s\S]+)/)
-	if (clean) {
-		clean = Strophe.xmlescape(clean[1])
-	}
-	else {
-		return false
-	}
-	if (clean.match(/\W/)) {
-		return false
-	}
+	if (clean) { clean = Strophe.xmlescape(clean[1]) }
+	else { return false }
+	if (clean.match(/\W/)) { return false }
 	return clean
 }
 
@@ -394,7 +389,7 @@ Cryptocat.addToConversation = function(message, sender, conversation, type) {
 		if (audioNotifications && (type !== 'composing')) {
 			playSound('msgGet')
 		}
-		if (!document.hasFocus() && (type !== 'composing') && desktopNotifications) {
+		if (!isFocused && (type !== 'composing') && desktopNotifications) {
 			desktopNotification('img/keygen.gif', sender, message, 0x1337)
 		}
 		message = Strophe.xmlescape(message)
@@ -476,17 +471,8 @@ function desktopNotification(image, title, body, timeout) {
 		iframe = null
 	}
 	else {
-		var notice
-		// Firefox
-		if ((navigator.userAgent.match('Firefox\/(.*)')[1] | 0) >= 22) {
-			var Notification
-			notice = new Notification(title, { tag: 'Cryptocat', body: body, icon: image })
-		}
-		// Chrome, Safari
-		else {
-			notice = window.webkitNotifications.createNotification(image, title, body)
-			notice.show()
-		}
+		/* global Notification */ // This comment satisfies a jshint requirement.
+		var notice = new Notification(title, { tag: 'Cryptocat', body: body, icon: image })
 		if (timeout > 0) {
 			window.setTimeout(function() {
 				notice.cancel()
@@ -514,7 +500,7 @@ function buddyNotification(buddy, join) {
 		$('#conversationWindow').append(status)
 	}
 	scrollDownConversation(400, true)
-	if (!document.hasFocus() && desktopNotifications) {
+	if (!isFocused && desktopNotifications) {
 		desktopNotification('img/keygen.gif', buddy, '', 0x1337)
 	}
 	if (audioNotifications) {
@@ -886,7 +872,7 @@ function smpQuestion(nickname, question) {
 }
 
 // Display SMP authentication
-function displayAuth(nickname) {
+/* function displayAuth(nickname) {
 	ensureOTRdialog(nickname, false, function() {
 		var authDialog = Mustache.render(
 			Cryptocat.templates.authDialog,
@@ -905,7 +891,7 @@ function displayAuth(nickname) {
 				otrKeys[nickname].smpSecret(secret, question)
 			})
 	})
-}
+} */
 
 // Bind buddy menus for new buddies. Used internally.
 function bindBuddyMenu(nickname) {
@@ -930,8 +916,7 @@ function bindBuddyMenu(nickname) {
 					Mustache.render(Cryptocat.templates.buddyMenu, {
 						sendEncryptedFile: Cryptocat.language['chatWindow']['sendEncryptedFile'],
 						displayInfo: Cryptocat.language['chatWindow']['displayInfo'],
-						block: blockAction,
-						displayAuth: 'Authenticate'
+						block: blockAction
 					})
 				)
 				$('#' + nickname + '-contents').fadeIn(200, function() {
@@ -955,11 +940,11 @@ function bindBuddyMenu(nickname) {
 						}
 						$('#menu-' + nickname).click()
 					})
-					$('.option4').click(function(e) {
+					/* $('.option4').click(function(e) {
 						e.stopPropagation()
 						displayAuth(nickname)
 						$('#menu-' + nickname).click()
-					})
+					}) */
 				})
 			})
 		}
@@ -1049,7 +1034,8 @@ $('#myInfo').click(function() {
 })
 
 // Desktop notifications button.
-if (!window.webkitNotifications && ((navigator.userAgent.match('Firefox\/(.*)')[1] | 0) < 22)) {
+var firefox = navigator.userAgent.match('Firefox\/(.*)')
+if (!window.webkitNotifications && (firefox && ((firefox[1] | 0) < 22))) {
 	$('#notifications').remove()
 }
 else {
@@ -1059,9 +1045,13 @@ else {
 			$(this).attr('alt', Cryptocat.language['chatWindow']['desktopNotificationsOn'])
 			$(this).attr('title', Cryptocat.language['chatWindow']['desktopNotificationsOn'])
 			desktopNotifications = true
-			localStorage.setItem('desktopNotifications', '1')
-			if (window.webkitNotifications.checkPermission()) {
-				window.webkitNotifications.requestPermission(function() {})
+			if (localStorageEnabled) {
+				localStorage.setItem('desktopNotifications', 'true')
+			}
+			if (window.webkitNotifications) {
+				if (window.webkitNotifications.checkPermission()) {
+					window.webkitNotifications.requestPermission(function() {})
+				}
 			}
 		}
 		else {
@@ -1069,7 +1059,9 @@ else {
 			$(this).attr('alt', Cryptocat.language['chatWindow']['desktopNotificationsOff'])
 			$(this).attr('title', Cryptocat.language['chatWindow']['desktopNotificationsOff'])
 			desktopNotifications = false
-			localStorage.setItem('desktopNotifications', '0')
+			if (localStorageEnabled) {
+				localStorage.setItem('desktopNotifications', 'false')
+			}
 		}
 	})
 }
@@ -1087,14 +1079,18 @@ else {
 			$(this).attr('alt', Cryptocat.language['chatWindow']['audioNotificationsOn'])
 			$(this).attr('title', Cryptocat.language['chatWindow']['audioNotificationsOn'])
 			audioNotifications = true
-			localStorage.setItem('audioNotifications', 'true')
+			if (localStorageEnabled) {
+				localStorage.setItem('audioNotifications', 'true')
+			}
 		}
 		else {
 			$(this).attr('src', 'img/noSound.png')
 			$(this).attr('alt', Cryptocat.language['chatWindow']['audioNotificationsOff'])
 			$(this).attr('title', Cryptocat.language['chatWindow']['audioNotificationsOff'])
 			audioNotifications = false
-			localStorage.setItem('audioNotifications', 'false')
+			if (localStorageEnabled) {
+				localStorage.setItem('audioNotifications', 'false')
+			}
 		}
 	})
 }
@@ -1453,8 +1449,16 @@ function logout() {
 	})
 }
 
+// When the window/tab is not selected, set `isFocused` to false.
+// The variable `isFocused` is used to know when to show desktop notifications.
+$(window).blur(function() {
+	isFocused = false
+})
+
 // On window focus, select text input field automatically if we are chatting.
+// Also set `isFocused` to true.
 $(window).focus(function() {
+	isFocused = true
 	if ($('#buddy-main-Conversation').attr('status') === 'online') {
 		$('#userInputText').focus()
 	}
