@@ -1,14 +1,14 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Private Conversations for Everyone.
-Welcome to Cryptocat. Here are some helpful tips: <ul><li>Cryptocat is not a magic bullet. You should never trust any piece of software with your life.</li><li class="key">Cryptocat can't protect you against untrustworthy people, key loggers, and does not anonymize your connection.</li></ul>
+Welcome to Cryptocat. Here are some helpful tips: <ul><li>Cryptocat is not a magic bullet. You should never trust any piece of software with your life.</li><li class="key">Cryptocat can't protect you against untrustworthy people or key loggers, and does not anonymize your connection.</li></ul>
 Blog
 Custom server
 Reset
 conversation name
 nickname
 connect
-Enter a name for your conversation and share it with people you'd like to talk to, or join <strong>lobby</strong> to meet new people!
+Enter a name for your conversation and share it with people you'd like to talk to, or join the <strong>lobby</strong> to meet new people!
 Enter the name of a conversation to join.
 Please enter a conversation name.
 Conversation name must be alphanumeric.
@@ -49,7 +49,7 @@ Error: Please make sure your file is a ZIP file or an image.
 Error: File cannot be larger than (SIZE) MB.
 Start video chat
 End video chat
-(NICKNAME) would like you start a video chat with you.
+(NICKNAME) would like to start a video chat with you.
 Cancel
 Block
 Unblock
