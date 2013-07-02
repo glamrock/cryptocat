@@ -48,7 +48,8 @@ Please see `SECURITY.md` for guidelines on reporting security issues.
 * [Development Blog](https://blog.crypto.cat)  
 
 ##Builds
-* Builds are available in `release/`.  
+Builds for all platforms are available for download from [GitHub Releases](https://github.com/cryptocat/cryptocat/releases), in addition to the sources above.  
+Please be mindful that GitHub builds do not auto-update.
 
 ##Changelog
 Please review `CHANGELOG.md` for an account of the changes made with each version update.  
