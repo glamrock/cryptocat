@@ -81,12 +81,11 @@
 		[[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:userNotification];
     }
 	// Open links in default browser.
-	else if ([[[request URL] absoluteString] hasPrefix:@"http:"]) {
+	else if ([[[request URL] absoluteString] hasPrefix:@"http"]) {
         [[NSWorkspace sharedWorkspace] openURL:[request URL]];
     }
 	// Save files.
 	else if ([[[request URL] absoluteString] hasPrefix:@"data:"]) {
-		NSLog(@"data!");
 		NSSavePanel *savePanel = [NSSavePanel savePanel];
 		NSString *base64 = [[[request URL] absoluteString] substringFromIndex:37];
 		NSData *data = [fileUtils base64DataFromString:base64];
