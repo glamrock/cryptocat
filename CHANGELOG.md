@@ -1,5 +1,9 @@
 #Changelog
 
+##Cryptocat 2.1.11
+**Jul. 2 2013**
+- Fixed a bug in Cryptocat for Mac that would cause problems when users tried to open links.
+
 ##Cryptocat 2.1.10
 **Jun. 28 2013**
 - Fixed a bug that prevented desktop notifications from working in Chrome and Safari.  

@@ -1,7 +1,7 @@
 if (typeof Cryptocat === 'undefined') {
 	Cryptocat = function() {}
 }
-Cryptocat.version = '2.1.10' // Version number
+Cryptocat.version = '2.1.11' // Version number
 Cryptocat.fileSize = 5120 // Maximum encrypted file sharing size, in kilobytes.
 Cryptocat.chunkSize = 64511 // Size in which file chunks are split, in bytes.
 
@@ -288,7 +288,7 @@ function getFingerprint(buddy, OTR) {
 // Convert message URLs to links. Used internally.
 function addLinks(message) {
 	var i, l, sanitize
-	var URLs = message.match(/(((news|(ht|f)tp(s?))\:\/\/){1}\S+)/gi)
+	var URLs = message.match(/((http(s?)\:\/\/){1}\S+)/gi)
 	if (URLs) {
 		for (i in URLs) {
 			if (URLs.hasOwnProperty(i)) {
