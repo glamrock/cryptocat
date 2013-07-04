@@ -77,16 +77,45 @@ if (typeof navigator !== 'undefined' && navigator.userAgent.match('Opera')) {
 	Cryptocat.random = Math.random
 }
 else {
-	Cryptocat.random = function() {
-		var x, o = ''
-		while (o.length < 16) {
-			x = state.getBytes(1)
-			if (x[0] < 250) {
-				o += x[0] % 10
+
+	// from http://davidbau.com/encode/seedrandom.js
+
+	Cryptocat.random = (function () {
+		var width = 256,
+			chunks = 6,
+			significance = Math.pow(2, 52),
+			overflow = significance * 2
+
+		function numerator() {
+			var bytes = state.getBytes(chunks)
+			var i = 0, r = 0
+			for (; i < chunks; i++) {
+				r = r * width + bytes[i]
 			}
+			return r
 		}
-		return parseFloat('0.' + o)
-	}
+
+		// This function returns a random double in [0, 1) that contains
+		// randomness in every bit of the mantissa of the IEEE 754 value.
+
+		return function () {			// Closure to return a random double:
+			var n = numerator(),		// Start with a numerator n < 2 ^ 48
+				d = Math.pow(width, chunks),//	and denominator d = 2 ^ 48.
+				x = 0						//	and no 'extra last byte'.
+			while (n < significance) {		// Fill up all significant digits by
+				n = (n + x) * width			//	shifting numerator and
+				d *= width					//	denominator and generating a
+				x = state.getBytes(1)[0]	//	new least-significant-byte.
+			}
+			while (n >= overflow) {		// To avoid rounding up, before adding
+				n /= 2					//	last byte, shift everything
+				d /= 2					//	right using integer math until
+				x >>>= 1				//	we have exactly the desired bits.
+			}
+			return (n + x) / d			// Form the number within [0, 1).
+		}
+	}())
+
 }
 
 // Generates a random string of length `size` characters.
