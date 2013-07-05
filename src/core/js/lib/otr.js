@@ -1,6 +1,6 @@
 /*!
 
-  otr.js v0.1.9-rc1 - 2013-06-29
+  otr.js v0.2.0 - 2013-07-04
   (c) 2013 - Arlo Breault <arlolra@gmail.com>
   Freely distributed under the MPL v2.0 license.
 
@@ -276,10 +276,12 @@
   }
 
   HLP.packBytes = function (val, bytes) {
-    var res = ''  // big-endian, unsigned long
-    for (bytes -= 1; bytes > -1; bytes--) {
-      res = _toString(val & 0xff) + res
-      val >>= 8
+    val = val.toString(16)
+    var nex, res = ''  // big-endian, unsigned long
+    for (; bytes > 0; bytes--) {
+      nex = val.length ? val.substr(-2, 2) : '0'
+      val = val.substr(0, val.length - 2)
+      res = _toString(parseInt(nex, 16)) + res
     }
     return res
   }
@@ -1487,7 +1489,7 @@
   function SM(reqs) {
     if (!(this instanceof SM)) return new SM(reqs)
 
-    this.version = '1'
+    this.version = 1
 
     this.our_fp = reqs.our_fp
     this.their_fp = reqs.their_fp
