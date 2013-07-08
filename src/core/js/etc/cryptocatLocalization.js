@@ -37,7 +37,8 @@ Cryptocat.Language.set = function(locale) {
 					language[i] = $.trim(language[i])
 				}
 			}
-			Cryptocat.Language.buildObject(locale, language)
+			var languageObject = Cryptocat.Language.buildObject(locale, language)
+			Cryptocat.Language.refresh(languageObject)
 		},
 		error: function() {
 			Cryptocat.Language.set('en')
@@ -101,16 +102,19 @@ Cryptocat.Language.buildObject = function(locale, language) {
 			'viewImage': language[i++],
 			'downloadFile': language[i++],
 			'conversation': language[i++],
-			'fileTransferInfo': language[i++].replace('(SIZE)', (Cryptocat.fileSize / 1024)),
+			'fileTransferInfo': language[i++],
 			'fileTypeError': language[i++],
-			'fileSizeError': language[i++].replace('(SIZE)', (Cryptocat.fileSize / 1024)),
+			'fileSizeError': language[i++],
 			'startVideoChat': language[i++],
 			'endVideoChat': language[i++],
 			'videoChatQuery': language[i++],
 			'cancel': language[i++]
 		}
 	}
-	Cryptocat.Language.refresh(languageObject)
+	var decodeFileSize = function (str) { return str.replace('(SIZE)', (Cryptocat.fileSize / 1024)) }
+	languageObject.chatWindow.fileTransferInfo = decodeFileSize(languageObject.chatWindow.fileTransferInfo)
+	languageObject.chatWindow.fileSizeError = decodeFileSize(languageObject.chatWindow.fileSizeError)
+	return languageObject
 }
 
 // Deliver new strings and refresh login page
