@@ -162,7 +162,7 @@ multiParty.userCount = function() {
 	return Object.keys(sharedSecrets).length
 }
 
-// Generate messasge tag
+// Generate message tag
 multiParty.messageTag = function(message) {
 	for (var i = 0; i !== 8; i++) {
 		message = CryptoJS.SHA512(message)

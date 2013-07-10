@@ -120,7 +120,7 @@ else {
 
 // Generates a random string of length `size` characters.
 // If `alpha = 1`, random string will contain alpha characters, and so on.
-// If 'hex = 1', all other settings are overridden.
+// If `hex = 1`, all other settings are overridden.
 Cryptocat.randomString = function(size, alpha, uppercase, numeric, hex) {
 	var keyspace = ''
 	var result = ''
