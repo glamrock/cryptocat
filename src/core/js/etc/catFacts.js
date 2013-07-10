@@ -96,10 +96,10 @@ var interestingFacts = [
 ]
 
 CatFacts.getFact = function() {
-	var catFact = Math.floor(Cryptocat.random() * interestingFacts.length)
-	while (lastCatFact === catFact) {
+	var catFact
+	do {
 		catFact = Math.floor(Cryptocat.random() * interestingFacts.length)
-	}
+	} while (lastCatFact === catFact)
 	lastCatFact = catFact
 	return interestingFacts[catFact]
 }
