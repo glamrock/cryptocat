@@ -690,7 +690,7 @@ function handlePresence(presence) {
 	else if ($(presence).find('show').text() === '' || $(presence).find('show').text() === 'chat') {
 		if ($('#buddy-' + nickname).attr('status') !== 'online') {
 			status = 'online'
-			color = '#151520'
+			color = '#FFF'
 			placement = '#buddiesOnline'
 		}
 	}
