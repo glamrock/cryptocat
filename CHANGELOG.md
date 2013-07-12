@@ -1,5 +1,12 @@
 #Changelog
 
+##Cryptocat 2.1.12
+**Jul. 12 2013**
+- Fixed some non-critical security issues reported by Steve Thomas that slightly reduce the bits of entropy in OTR authentication. Updating is recommended.  
+- Fixed a pseudo-random number generator bug that causes some bias and wastes entropy. Updating is recommended.  
+- Fixed a user interface bug that would make nicknames hard to read under certain circumstances.  
+- Fixed a user interface bug that would sometimes show jagged-looking login text.  
+
 ##Cryptocat 2.1.11
 **Jul. 2 2013**
 - Fixed a bug in Cryptocat for Mac that would cause problems when users tried to open links.
