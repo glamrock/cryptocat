@@ -30,9 +30,8 @@ var defaultDomain = 'crypto.cat'
 var defaultConferenceServer = 'conference.crypto.cat'
 // BOSH is served over an HTTPS proxy for better security and availability.
 var defaultBOSH = 'https://crypto.cat/http-bind'
-var localStorageEnabled = true
 if (navigator.userAgent.match('Firefox')) {
-	localStorageEnabled = false
+	Cryptocat.initInMemoryStorage()
 }
 
 /* Initialization */
@@ -61,62 +60,52 @@ $('#version').text(Cryptocat.version)
 Cryptocat.setSeed(Cryptocat.generateSeed())
 
 // Initialize language settings.
-if (!localStorageEnabled) {
+if (Cryptocat.Storage.getItem('language')) {
+	Cryptocat.Language.set(Cryptocat.Storage.getItem('language'))
+} else {
 	Cryptocat.Language.set(window.navigator.language.toLowerCase())
 }
 
-// If localStorage is implemented, load saved settings.
-if (localStorageEnabled) {
-	// Load language settings
-	if (localStorage.getItem('language')) {
-		Cryptocat.Language.set(localStorage.getItem('language'))
-	}
-	else {
-		Cryptocat.Language.set(window.navigator.language.toLowerCase())
-	}
-	// Load nickname settings.
-	if (localStorage.getItem('myNickname')) {
-		$('#nickname').animate({'color': 'transparent'}, function() {
-			$(this).val(localStorage.getItem('myNickname'))
-			$(this).animate({'color': '#FFF'})
-		})
-	}
-	// Load notification settings.
-	window.setTimeout(function() {
-		if (localStorage.getItem('desktopNotifications') === 'true') {
-			$('#notifications').click()
-		}
-		if (localStorage.getItem('audioNotifications') === 'true') {
-			$('#audio').click()
-		}
-	}, 3000)
-	// Load custom server settings
-	if (localStorage.getItem('domain')) {
-		Cryptocat.domain = localStorage.getItem('domain')
-	}
-	if (localStorage.getItem('conferenceServer')) {
-		Cryptocat.conferenceServer = localStorage.getItem('conferenceServer')
-	}
-	if (localStorage.getItem('bosh')) {
-		Cryptocat.bosh = localStorage.getItem('bosh')
-	}
-	// Load pre-existing encryption keys
-	// Key storage currently disabled as we are not yet sure if this is safe to do.
-	/* if (localStorage.getItem('myKey') !== null) {
-		myKey = new DSA(JSON.parse(localStorage.getItem('myKey')))
-		multiParty.setPrivateKey(localStorage.getItem('multiPartyKey'))
-		multiParty.genPublicKey()
-	} */
+// Load nickname settings.
+if (Cryptocat.Storage.getItem('myNickname')) {
+	$('#nickname').animate({'color': 'transparent'}, function() {
+		$(this).val(Cryptocat.Storage.getItem('myNickname'))
+		$(this).animate({'color': '#FFF'})
+	})
 }
+// Load notification settings.
+window.setTimeout(function() {
+	if (Cryptocat.Storage.getItem('desktopNotifications') === 'true') {
+		$('#notifications').click()
+	}
+	if (Cryptocat.Storage.getItem('audioNotifications') === 'true') {
+		$('#audio').click()
+	}
+}, 3000)
+// Load custom server settings
+if (Cryptocat.Storage.getItem('domain')) {
+	Cryptocat.domain = Cryptocat.Storage.getItem('domain')
+}
+if (Cryptocat.Storage.getItem('conferenceServer')) {
+	Cryptocat.conferenceServer = Cryptocat.Storage.getItem('conferenceServer')
+}
+if (Cryptocat.Storage.getItem('bosh')) {
+	Cryptocat.bosh = Cryptocat.Storage.getItem('bosh')
+}
+// Load pre-existing encryption keys
+// Key storage currently disabled as we are not yet sure if this is safe to do.
+/* if (Cryptocat.Storage.getItem('myKey') !== null) {
+	myKey = new DSA(JSON.parse(Cryptocat.Storage.getItem('myKey')))
+	multiParty.setPrivateKey(Cryptocat.Storage.getItem('multiPartyKey'))
+	multiParty.genPublicKey()
+} */
 
 // Initialize workers
 var keyGenerator = new Worker('js/workers/keyGenerator.js')
 keyGenerator.onmessage = function(e) {
 	myKey = new DSA(e.data)
 	// Key storage currently disabled as we are not yet sure if this is safe to do.
-	//if (localStorageEnabled) {
-	//	localStorage.setItem('myKey', JSON.stringify(myKey))
-	//}
+	//	Cryptocat.Storage.setItem('myKey', JSON.stringify(myKey))
 	$('#loginInfo').text(Cryptocat.language['loginMessage']['connecting'])
 	connectXMPP(Cryptocat.randomString(64, 1, 1, 1, 0), Cryptocat.randomString(64, 1, 1, 1, 0))
 }
@@ -1045,9 +1034,7 @@ else {
 			$(this).attr('alt', Cryptocat.language['chatWindow']['desktopNotificationsOn'])
 			$(this).attr('title', Cryptocat.language['chatWindow']['desktopNotificationsOn'])
 			desktopNotifications = true
-			if (localStorageEnabled) {
-				localStorage.setItem('desktopNotifications', 'true')
-			}
+			Cryptocat.Storage.setItem('desktopNotifications', 'true')
 			if (window.webkitNotifications) {
 				if (window.webkitNotifications.checkPermission()) {
 					window.webkitNotifications.requestPermission(function() {})
@@ -1059,9 +1046,7 @@ else {
 			$(this).attr('alt', Cryptocat.language['chatWindow']['desktopNotificationsOff'])
 			$(this).attr('title', Cryptocat.language['chatWindow']['desktopNotificationsOff'])
 			desktopNotifications = false
-			if (localStorageEnabled) {
-				localStorage.setItem('desktopNotifications', 'false')
-			}
+			Cryptocat.Storage.setItem('desktopNotifications', 'false')
 		}
 	})
 }
@@ -1079,18 +1064,14 @@ else {
 			$(this).attr('alt', Cryptocat.language['chatWindow']['audioNotificationsOn'])
 			$(this).attr('title', Cryptocat.language['chatWindow']['audioNotificationsOn'])
 			audioNotifications = true
-			if (localStorageEnabled) {
-				localStorage.setItem('audioNotifications', 'true')
-			}
+			Cryptocat.Storage.setItem('audioNotifications', 'true')
 		}
 		else {
 			$(this).attr('src', 'img/noSound.png')
 			$(this).attr('alt', Cryptocat.language['chatWindow']['audioNotificationsOff'])
 			$(this).attr('title', Cryptocat.language['chatWindow']['audioNotificationsOff'])
 			audioNotifications = false
-			if (localStorageEnabled) {
-				localStorage.setItem('audioNotifications', 'false')
-			}
+			Cryptocat.Storage.setItem('audioNotifications', 'false')
 		}
 	})
 }
@@ -1191,11 +1172,9 @@ $('#customServer').click(function() {
 			$('#customDomain').val(defaultDomain)
 			$('#customConferenceServer').val(defaultConferenceServer)
 			$('#customBOSH').val(defaultBOSH)
-			if (localStorageEnabled) {
-				localStorage.removeItem('domain')
-				localStorage.removeItem('conferenceServer')
-				localStorage.removeItem('bosh')
-			}
+			Cryptocat.Storage.removeItem('domain')
+			Cryptocat.Storage.removeItem('conferenceServer')
+			Cryptocat.Storage.removeItem('bosh')
 		})
 		$('#customServerSubmit').val(Cryptocat.language['chatWindow']['continue']).click(function() {
 			$('#customServerDialog').fadeOut(200, function() {
@@ -1204,11 +1183,9 @@ $('#customServer').click(function() {
 			Cryptocat.domain = $('#customDomain').val()
 			Cryptocat.conferenceServer = $('#customConferenceServer').val()
 			Cryptocat.bosh = $('#customBOSH').val()
-			if (localStorageEnabled) {
-				localStorage.setItem('domain', Cryptocat.domain)
-				localStorage.setItem('conferenceServer', Cryptocat.conferenceServer)
-				localStorage.setItem('bosh', Cryptocat.bosh)
-			}
+			Cryptocat.Storage.setItem('domain', Cryptocat.domain)
+			Cryptocat.Storage.setItem('conferenceServer', Cryptocat.conferenceServer)
+			Cryptocat.Storage.setItem('bosh', Cryptocat.bosh)
 		})
 		$('#customDomain').select()
 	})
@@ -1225,9 +1202,7 @@ $('#languageSelect').click(function() {
 			var lang = $(this).attr('id')
 			$('#languages').fadeOut(200, function() {
 				Cryptocat.Language.set(lang)
-				if (localStorageEnabled) {
-					localStorage.setItem('language', lang)
-				}
+				Cryptocat.Storage.setItem('language', lang)
 				$('#footer').animate({'height': '14px'})
 			})
 		})
@@ -1274,9 +1249,7 @@ $('#loginForm').submit(function() {
 			// We need to pass the web worker a pre-generated seed.
 			keyGenerator.postMessage(Cryptocat.generateSeed())
 			// Key storage currently disabled as we are not yet sure if this is safe to do.
-			//if (localStorageEnabled) {
-			//	localStorage.setItem('multiPartyKey', multiParty.genPrivateKey())
-			//}
+			// Cryptocat.Storage.setItem('multiPartyKey', multiParty.genPrivateKey())
 			//else {
 				multiParty.genPrivateKey()
 			//}
@@ -1378,9 +1351,7 @@ function connectXMPP(username, password) {
 
 // Executes on successfully completed XMPP connection.
 function connected() {
-	if (localStorageEnabled) {
-		localStorage.setItem('myNickname', Cryptocat.myNickname)
-	}
+	Cryptocat.Storage.setItem('myNickname', Cryptocat.myNickname)
 	$('#buddy-main-Conversation').attr('status', 'online')
 	$('#loginInfo').text('✓')
 	$('#info').fadeOut(200)
