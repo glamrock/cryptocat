@@ -1,3 +1,6 @@
+if (typeof Cryptocat === 'undefined') {
+	Cryptocat = function() {}
+}
 if (typeof Cryptocat.Language === 'undefined') {
 	Cryptocat.Language = function() {}
 }

@@ -30,9 +30,6 @@ var defaultDomain = 'crypto.cat'
 var defaultConferenceServer = 'conference.crypto.cat'
 // BOSH is served over an HTTPS proxy for better security and availability.
 var defaultBOSH = 'https://crypto.cat/http-bind'
-if (navigator.userAgent.match('Firefox')) {
-	Cryptocat.initInMemoryStorage()
-}
 
 /* Initialization */
 var otrKeys = {}
@@ -58,47 +55,6 @@ $('#version').text(Cryptocat.version)
 
 // Seed RNG.
 Cryptocat.setSeed(Cryptocat.generateSeed())
-
-// Initialize language settings.
-if (Cryptocat.Storage.getItem('language')) {
-	Cryptocat.Language.set(Cryptocat.Storage.getItem('language'))
-} else {
-	Cryptocat.Language.set(window.navigator.language.toLowerCase())
-}
-
-// Load nickname settings.
-if (Cryptocat.Storage.getItem('myNickname')) {
-	$('#nickname').animate({'color': 'transparent'}, function() {
-		$(this).val(Cryptocat.Storage.getItem('myNickname'))
-		$(this).animate({'color': '#FFF'})
-	})
-}
-// Load notification settings.
-window.setTimeout(function() {
-	if (Cryptocat.Storage.getItem('desktopNotifications') === 'true') {
-		$('#notifications').click()
-	}
-	if (Cryptocat.Storage.getItem('audioNotifications') === 'true') {
-		$('#audio').click()
-	}
-}, 3000)
-// Load custom server settings
-if (Cryptocat.Storage.getItem('domain')) {
-	Cryptocat.domain = Cryptocat.Storage.getItem('domain')
-}
-if (Cryptocat.Storage.getItem('conferenceServer')) {
-	Cryptocat.conferenceServer = Cryptocat.Storage.getItem('conferenceServer')
-}
-if (Cryptocat.Storage.getItem('bosh')) {
-	Cryptocat.bosh = Cryptocat.Storage.getItem('bosh')
-}
-// Load pre-existing encryption keys
-// Key storage currently disabled as we are not yet sure if this is safe to do.
-/* if (Cryptocat.Storage.getItem('myKey') !== null) {
-	myKey = new DSA(JSON.parse(Cryptocat.Storage.getItem('myKey')))
-	multiParty.setPrivateKey(Cryptocat.Storage.getItem('multiPartyKey'))
-	multiParty.genPublicKey()
-} */
 
 // Initialize workers
 var keyGenerator = new Worker('js/workers/keyGenerator.js')
