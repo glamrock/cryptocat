@@ -2,7 +2,6 @@ if (typeof Cryptocat === 'undefined') {
 	Cryptocat = function() {}
 }
 
-
 Cryptocat.Storage =  (function () {
 	if (!navigator.userAgent.match('Firefox')) {
 		return localStorage
@@ -20,7 +19,8 @@ Cryptocat.Storage =  (function () {
 // Initialize language settings.
 if (Cryptocat.Storage.getItem('language')) {
 	Cryptocat.Language.set(Cryptocat.Storage.getItem('language'))
-} else {
+}
+else {
 	Cryptocat.Language.set(window.navigator.language.toLowerCase())
 }
 
@@ -34,6 +34,7 @@ if (Cryptocat.Storage.getItem('conferenceServer')) {
 if (Cryptocat.Storage.getItem('bosh')) {
 	Cryptocat.bosh = Cryptocat.Storage.getItem('bosh')
 }
+
 // Load pre-existing encryption keys
 // Key storage currently disabled as we are not yet sure if this is safe to do.
 /* if (Cryptocat.Storage.getItem('myKey') !== null) {
@@ -61,4 +62,3 @@ if (typeof(window) !== 'undefined') { $(window).ready(function() {
 	}, 3000)
 })
 }
-
