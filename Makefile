@@ -17,20 +17,15 @@ safari:
 	@/bin/echo "[Cryptocat] Safari extension packaged for testing."
 
 mac:
-	@rm -rf src/mac/htdocs
-	@cp -R src/core src/mac/htdocs
-	@/bin/echo "[Cryptocat] Mac resources packaged for building. Now build with Xcode or `make mac-standalone`."
-
-mac-app:
 	@rm -rf release/Cryptocat.app
-	@rm -rf release/cryptocat-mac-standalone.zip
+	@rm -rf release/cryptocat.mac.zip
 	@rm -rf src/mac/htdocs
 	@cp -R src/core src/mac/htdocs
 	@xcodebuild -project src/mac/Cryptocat.xcodeproj -configuration 'Release' -alltargets clean
-	@xcodebuild CONFIGURATION_BUILD_DIR="${PWD}/release" -project src/mac/Cryptocat.xcodeproj -configuration 'Release'  build
+	@xcodebuild CONFIGURATION_BUILD_DIR="${PWD}/release" -project src/mac/Cryptocat.xcodeproj -configuration 'Release' build
 	@rm -rf release/Cryptocat.app.dSYM
-	@cd release && zip -q -r9 cryptocat-mac-standalone.zip Cryptocat.app
-	@/bin/echo "[Cryptocat] Mac standalone app available in release/"
+	@cd release && zip -q -r9 cryptocat.mac.zip Cryptocat.app
+	@/bin/echo "[Cryptocat] Mac app available in release/"
 
 tests:
 	@/bin/echo -n "[Cryptocat] Running tests... "
