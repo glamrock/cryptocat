@@ -22,12 +22,7 @@ Apple's model makes an automated build process difficult.
 Also available from [Cryptocat](https://crypto.cat/get/cryptocat.safariextz).
 
 ### Apple Mac OS X
-Run `make mac`, then `open src/mac/Cryptocat.xcodeproj` to open in XCode. You
-can then Build or Run.
-
-You will need to disable code signing if you do not have a certificate or keypair
-set up. Do this by opening the project settings by clicking on Cryptocat in the
-left column and unchecking **Code Sign Application**.
+Run `make mac`, then `open src/mac/Cryptocat.xcodeproj` to open in XCode. You can then Build or Run.  
 
 ##Goals
 * XMPP **[DONE]** | [Discussion](https://github.com/cryptocat/cryptocat/issues/83), [Library](http://strophe.im)
@@ -51,8 +46,7 @@ Please see `SECURITY.md` for guidelines on reporting security issues.
 * [Development Blog](https://blog.crypto.cat)  
 
 ##Builds
-Builds for all platforms are available for download from [GitHub Releases](https://github.com/cryptocat/cryptocat/releases), in addition to the sources above.  
-Please be mindful that GitHub builds do not auto-update.
+Builds for all platforms are available for download from [GitHub Releases](https://github.com/cryptocat/cryptocat/releases), in addition to the sources above. Please be mindful that GitHub builds do not auto-update.
 
 ##Changelog
 Please review `CHANGELOG.md` for an account of the changes made with each version update.  
