@@ -22,7 +22,8 @@ Apple's model makes an automated build process difficult.
 Also available from [Cryptocat](https://crypto.cat/get/cryptocat.safariextz).
 
 ### Apple Mac OS X
-Run `make mac`, then `open src/mac/Cryptocat.xcodeproj` to open in XCode. You can then Build or Run.  
+Run `make mac` to build as a standalone Mac application. (After running `make mac`, you can also `open src/mac/Cryptocat.xcodeproj` to edit & build the project in Xcode normally.)  
+Also available from the [Mac App Store](https://itunes.apple.com/app/cryptocat/id613116229?mt=12).
 
 ##Goals
 * XMPP **[DONE]** | [Discussion](https://github.com/cryptocat/cryptocat/issues/83), [Library](http://strophe.im)
