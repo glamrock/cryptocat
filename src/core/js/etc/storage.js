@@ -2,6 +2,8 @@ if (typeof Cryptocat === 'undefined') {
 	Cryptocat = function() {}
 }
 
+$(window).ready(function() {
+
 Cryptocat.Storage =  (function () {
 	if (!navigator.userAgent.match('Firefox')) {
 		return localStorage
@@ -43,22 +45,21 @@ if (Cryptocat.Storage.getItem('bosh')) {
  multiParty.genPublicKey()
  } */
 
-if (typeof(window) !== 'undefined') { $(window).ready(function() {
-	// Load nickname settings.
-	if (Cryptocat.Storage.getItem('myNickname')) {
-		$('#nickname').animate({'color': 'transparent'}, function() {
-			$(this).val(Cryptocat.Storage.getItem('myNickname'))
-			$(this).animate({'color': '#FFF'})
-		})
-	}
-	// Load notification settings.
-	window.setTimeout(function() {
-		if (Cryptocat.Storage.getItem('desktopNotifications') === 'true') {
-			$('#notifications').click()
-		}
-		if (Cryptocat.Storage.getItem('audioNotifications') === 'true') {
-			$('#audio').click()
-		}
-	}, 3000)
-})
+// Load nickname settings.
+if (Cryptocat.Storage.getItem('myNickname')) {
+	$('#nickname').animate({'color': 'transparent'}, function() {
+		$(this).val(Cryptocat.Storage.getItem('myNickname'))
+		$(this).animate({'color': '#FFF'})
+	})
 }
+// Load notification settings.
+window.setTimeout(function() {
+	if (Cryptocat.Storage.getItem('desktopNotifications') === 'true') {
+		$('#notifications').click()
+	}
+	if (Cryptocat.Storage.getItem('audioNotifications') === 'true') {
+		$('#audio').click()
+	}
+}, 3000)
+
+})
