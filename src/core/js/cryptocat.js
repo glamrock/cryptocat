@@ -1225,9 +1225,6 @@ $('#loginForm').submit(function() {
 			$('#interestingFact').fadeOut(function() {
 				$(this).text(CatFacts.getFact()).fadeIn()
 			})
-			if (myKey) {
-				clearInterval(catFactInterval)
-			}
 		}, 9000)
 		$('#fill').animate({'width': '100%', 'opacity': '1'}, 12000, 'linear')
 	}
@@ -1307,6 +1304,7 @@ function connectXMPP(username, password) {
 
 // Executes on successfully completed XMPP connection.
 function connected() {
+	clearInterval(catFactInterval)
 	Cryptocat.Storage.setItem('myNickname', Cryptocat.myNickname)
 	$('#buddy-main-Conversation').attr('status', 'online')
 	$('#loginInfo').text('✓')
