@@ -44,6 +44,7 @@ var showNotifications
 var loginError
 var myKey
 var composing
+var catFactInterval
 
 // Set server information to defaults.
 Cryptocat.domain = defaultDomain
@@ -1221,7 +1222,7 @@ $('#loginForm').submit(function() {
 		$('#progressInfo').append(
 			'<div id="progressBar"><div id="fill"></div></div>'
 		)
-		var catFactInterval = window.setInterval(function() {
+		catFactInterval = window.setInterval(function() {
 			$('#interestingFact').fadeOut(function() {
 				$(this).text(CatFacts.getFact()).fadeIn()
 			})
