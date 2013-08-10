@@ -33,7 +33,7 @@
         imports.forEach(function (i) {
           importScripts(i)
         })
-		Cryptocat.setSeed(d.seed)
+        Cryptocat.setSeed(d.seed)
         break
       case 'init':
         sm = new root.OTR.SM(d.reqs)
