@@ -150,6 +150,7 @@ Cryptocat.Language.refresh = function(languageObject) {
 	$('#status').attr('alt', languageObject['chatWindow']['statusAvailable'])
 	$('#conversationTag').text(languageObject['chatWindow']['conversation'])
 	$('#languageSelect').text($('#' + Cryptocat.language['language']).text())
+	$('.qtip').remove()
 	$('[title]').qtip({
 		position: {
 			my: 'top right',
