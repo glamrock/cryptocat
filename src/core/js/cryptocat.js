@@ -891,15 +891,20 @@ function bindBuddyMenu(nickname) {
 				$('#' + nickname + '-contents').fadeIn(200, function() {
 					$('.option1').click(function(e) {
 						e.stopPropagation()
-						sendFile(nickname)
+						displayInfo(nickname)
 						$('#menu-' + nickname).click()
 					})
 					$('.option2').click(function(e) {
 						e.stopPropagation()
-						displayInfo(nickname)
+						displayAuth(nickname)
 						$('#menu-' + nickname).click()
 					})
 					$('.option3').click(function(e) {
+						e.stopPropagation()
+						sendFile(nickname)
+						$('#menu-' + nickname).click()
+					})
+					$('.option4').click(function(e) {
 						e.stopPropagation()
 						if (blockAction === 'Block') {
 							Cryptocat.blockedUsers.push(nickname)
@@ -907,11 +912,6 @@ function bindBuddyMenu(nickname) {
 						else {
 							Cryptocat.blockedUsers.splice(Cryptocat.blockedUsers.indexOf(nickname), 1)
 						}
-						$('#menu-' + nickname).click()
-					})
-					$('.option4').click(function(e) {
-						e.stopPropagation()
-						displayAuth(nickname)
 						$('#menu-' + nickname).click()
 					})
 				})
