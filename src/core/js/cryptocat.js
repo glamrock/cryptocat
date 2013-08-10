@@ -590,7 +590,29 @@ function handlePresence(presence) {
 	// Add to otrKeys if necessary
 	if (nickname !== 'main-Conversation' && !otrKeys.hasOwnProperty(nickname)) {
 		var options = {
-			priv: myKey
+			priv: myKey,
+			smw: {
+				path: 'js/lib/sm-webworker.js',
+				seed: Cryptocat.generateSeed,
+				imports: [
+					'crypto-js/core.js',
+					'crypto-js/enc-base64.js',
+					'crypto-js/cipher-core.js',
+					'crypto-js/x64-core.js',
+					'crypto-js/aes.js',
+					'crypto-js/sha1.js',
+					'crypto-js/sha256.js',
+					'crypto-js/sha512.js',
+					'crypto-js/hmac.js',
+					'crypto-js/pad-nopadding.js',
+					'crypto-js/mode-ctr.js',
+					'salsa20.js',
+					'../etc/cryptocatRandom.js',
+					'bigint.js',
+					'eventemitter.js',
+					'otr.js'
+				]
+			}
 		}
 		otrKeys[nickname] = new OTR(options)
 		otrKeys[nickname].REQUIRE_ENCRYPTION = true
@@ -818,7 +840,7 @@ function smpQuestion(nickname, question) {
 }
 
 // Display SMP authentication
-/* function displayAuth(nickname) {
+function displayAuth(nickname) {
 	ensureOTRdialog(nickname, false, function() {
 		var authDialog = Mustache.render(
 			Cryptocat.templates.authDialog,
@@ -837,7 +859,7 @@ function smpQuestion(nickname, question) {
 				otrKeys[nickname].smpSecret(secret, question)
 			})
 	})
-} */
+}
 
 // Bind buddy menus for new buddies. Used internally.
 function bindBuddyMenu(nickname) {
@@ -862,7 +884,8 @@ function bindBuddyMenu(nickname) {
 					Mustache.render(Cryptocat.templates.buddyMenu, {
 						sendEncryptedFile: Cryptocat.language['chatWindow']['sendEncryptedFile'],
 						displayInfo: Cryptocat.language['chatWindow']['displayInfo'],
-						block: blockAction
+						block: blockAction,
+						displayAuth: 'Authenticate'
 					})
 				)
 				$('#' + nickname + '-contents').fadeIn(200, function() {
@@ -886,11 +909,11 @@ function bindBuddyMenu(nickname) {
 						}
 						$('#menu-' + nickname).click()
 					})
-					/* $('.option4').click(function(e) {
+					$('.option4').click(function(e) {
 						e.stopPropagation()
 						displayAuth(nickname)
 						$('#menu-' + nickname).click()
-					}) */
+					})
 				})
 			})
 		}
