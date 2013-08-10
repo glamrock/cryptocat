@@ -35,10 +35,6 @@ Cryptocat.generateSeed = function() {
 			buffer = crypto.randomBytes(40)
 		} catch (e) { throw e }
 	}
-	// If Opera, do not seed (see Cryptocat.random() comments for explanation).
-	else if (navigator.userAgent.match('Opera')) {
-		return false
-	}
 	// Firefox
 	else if (navigator.userAgent.match('Firefox') &&
 		(!window.crypto || !window.crypto.getRandomValues)
@@ -68,72 +64,63 @@ Cryptocat.setSeed = function(s) {
 	)
 }
 
-// In Opera, Math.random() is a cryptographically secure
-// random number generator. Opera is the only browser
-// in which this is the case. Therefore, it is safe to use
-// Math.random() instead of implementing our own CSPRNG
-// if Cryptocat is running on top of Opera.
-if (typeof navigator !== 'undefined' && navigator.userAgent.match('Opera')) {
-	Cryptocat.random = Math.random
-}
-else {
+// from http://davidbau.com/encode/seedrandom.js
 
-	// from http://davidbau.com/encode/seedrandom.js
+Cryptocat.randomFloat = (function () {
+	var width = 256,
+		chunks = 6,
+		significance = Math.pow(2, 52),
+		overflow = significance * 2
 
-	Cryptocat.random = (function () {
-		var width = 256,
-			chunks = 6,
-			significance = Math.pow(2, 52),
-			overflow = significance * 2
-
-		function numerator() {
-			var bytes = state.getBytes(chunks)
-			var i = 0, r = 0
-			for (; i < chunks; i++) {
-				r = r * width + bytes[i]
-			}
-			return r
+	function numerator() {
+		var bytes = state.getBytes(chunks)
+		var i = 0, r = 0
+		for (; i < chunks; i++) {
+			r = r * width + bytes[i]
 		}
+		return r
+	}
 
-		// This function returns a random double in [0, 1) that contains
-		// randomness in every bit of the mantissa of the IEEE 754 value.
+	// This function returns a random double in [0, 1) that contains
+	// randomness in every bit of the mantissa of the IEEE 754 value.
 
-		return function () {			// Closure to return a random double:
-			var n = numerator(),		// Start with a numerator n < 2 ^ 48
-				d = Math.pow(width, chunks),//	and denominator d = 2 ^ 48.
-				x = 0						//	and no 'extra last byte'.
-			while (n < significance) {		// Fill up all significant digits by
-				n = (n + x) * width			//	shifting numerator and
-				d *= width					//	denominator and generating a
-				x = state.getBytes(1)[0]	//	new least-significant-byte.
-			}
-			while (n >= overflow) {		// To avoid rounding up, before adding
-				n /= 2					//	last byte, shift everything
-				d /= 2					//	right using integer math until
-				x >>>= 1				//	we have exactly the desired bits.
-			}
-			return (n + x) / d			// Form the number within [0, 1).
+	return function () {			// Closure to return a random double:
+		var n = numerator(),		// Start with a numerator n < 2 ^ 48
+			d = Math.pow(width, chunks),//	and denominator d = 2 ^ 48.
+			x = 0						//	and no 'extra last byte'.
+		while (n < significance) {		// Fill up all significant digits by
+			n = (n + x) * width			//	shifting numerator and
+			d *= width					//	denominator and generating a
+			x = state.getBytes(1)[0]	//	new least-significant-byte.
 		}
-	}())
+		while (n >= overflow) {		// To avoid rounding up, before adding
+			n /= 2					//	last byte, shift everything
+			d /= 2					//	right using integer math until
+			x >>>= 1				//	we have exactly the desired bits.
+		}
+		return (n + x) / d			// Form the number within [0, 1).
+	}
+}())
 
+Cryptocat.randomByte = function() {
+	return state.getBytes(1)[0]
 }
 
-// Generates a random string of length `size` characters.
-// If `alpha = 1`, random string will contain alpha characters, and so on.
-// If `hex = 1`, all other settings are overridden.
-Cryptocat.randomString = function(size, alpha, uppercase, numeric, hex) {
-	var keyspace = ''
-	var result = ''
-	if (hex) { keyspace = '0123456789abcdef' }
-	else {
-		if (alpha) { keyspace += 'abcdefghijklmnopqrstuvwxyz' }
-		if (uppercase) { keyspace += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' }
-		if (numeric) { keyspace += '0123456789' }
+Cryptocat.getBytes = function(i) {
+	return state.getBytes(i)
+}
+
+Cryptocat.randomBitInt = function(k) {
+	var i = 0, r = 0
+	var b = Math.floor(k / 8)
+	var mask = (1 << (k % 8)) - 1
+	for (; i < b; i++) {
+		r += Math.pow(256, i) * Cryptocat.randomByte()
 	}
-	for (var i = 0; i !== size; i++) {
-		result += keyspace[Math.floor(Cryptocat.random()*keyspace.length)]
+	if (mask) {
+		r += Math.pow(256, i) * (Cryptocat.randomByte() & mask)
 	}
-	return result
+	return r
 }
 
 if (node) {
