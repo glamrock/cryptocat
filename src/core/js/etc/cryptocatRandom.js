@@ -35,10 +35,6 @@ Cryptocat.generateSeed = function() {
 			buffer = crypto.randomBytes(40)
 		} catch (e) { throw e }
 	}
-	// If Opera, do not seed (see Cryptocat.random() comments for explanation).
-	else if (navigator.userAgent.match('Opera')) {
-		return false
-	}
 	// Firefox
 	else if (navigator.userAgent.match('Firefox') &&
 		(!window.crypto || !window.crypto.getRandomValues)
@@ -68,72 +64,33 @@ Cryptocat.setSeed = function(s) {
 	)
 }
 
-// In Opera, Math.random() is a cryptographically secure
-// random number generator. Opera is the only browser
-// in which this is the case. Therefore, it is safe to use
-// Math.random() instead of implementing our own CSPRNG
-// if Cryptocat is running on top of Opera.
-if (typeof navigator !== 'undefined' && navigator.userAgent.match('Opera')) {
-	Cryptocat.random = Math.random
-}
-else {
-
-	// from http://davidbau.com/encode/seedrandom.js
-
-	Cryptocat.random = (function () {
-		var width = 256,
-			chunks = 6,
-			significance = Math.pow(2, 52),
-			overflow = significance * 2
-
-		function numerator() {
-			var bytes = state.getBytes(chunks)
-			var i = 0, r = 0
-			for (; i < chunks; i++) {
-				r = r * width + bytes[i]
-			}
-			return r
-		}
-
-		// This function returns a random double in [0, 1) that contains
-		// randomness in every bit of the mantissa of the IEEE 754 value.
-
-		return function () {			// Closure to return a random double:
-			var n = numerator(),		// Start with a numerator n < 2 ^ 48
-				d = Math.pow(width, chunks),//	and denominator d = 2 ^ 48.
-				x = 0						//	and no 'extra last byte'.
-			while (n < significance) {		// Fill up all significant digits by
-				n = (n + x) * width			//	shifting numerator and
-				d *= width					//	denominator and generating a
-				x = state.getBytes(1)[0]	//	new least-significant-byte.
-			}
-			while (n >= overflow) {		// To avoid rounding up, before adding
-				n /= 2					//	last byte, shift everything
-				d /= 2					//	right using integer math until
-				x >>>= 1				//	we have exactly the desired bits.
-			}
-			return (n + x) / d			// Form the number within [0, 1).
-		}
-	}())
-
+Cryptocat.getBytes = function(i) {
+	if (i.constructor !== Number || i < 1) {
+		throw new Error('Expecting a number greater than 0.')
+	}
+	var bytes = state.getBytes(i)
+	return (i === 1) ? bytes[0] : bytes
 }
 
-// Generates a random string of length `size` characters.
-// If `alpha = 1`, random string will contain alpha characters, and so on.
-// If `hex = 1`, all other settings are overridden.
-Cryptocat.randomString = function(size, alpha, uppercase, numeric, hex) {
-	var keyspace = ''
-	var result = ''
-	if (hex) { keyspace = '0123456789abcdef' }
-	else {
-		if (alpha) { keyspace += 'abcdefghijklmnopqrstuvwxyz' }
-		if (uppercase) { keyspace += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' }
-		if (numeric) { keyspace += '0123456789' }
+Cryptocat.randomBitInt = function(k) {
+	if (k > 31) {
+		throw new Error('That\'s more than JS can handle.')
 	}
-	for (var i = 0; i !== size; i++) {
-		result += keyspace[Math.floor(Cryptocat.random()*keyspace.length)]
+	var i = 0, r = 0
+	var b = Math.floor(k / 8)
+	var mask = (1 << (k % 8)) - 1
+	if (mask) {
+		r = Cryptocat.getBytes(1) & mask
 	}
-	return result
+	for (; i < b; i++) {
+		r = (256 * r) + Cryptocat.getBytes(1)
+	}
+	return r
+}
+
+Cryptocat.encodedBytes = function(bytes, encoding) {
+	var sa = String.fromCharCode.apply(null, Cryptocat.getBytes(bytes))
+	return CryptoJS.enc.Latin1.parse(sa).toString(encoding)
 }
 
 if (node) {
