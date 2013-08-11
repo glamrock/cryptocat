@@ -172,7 +172,7 @@ multiParty.messageTag = function(message) {
 // Send message.
 multiParty.sendMessage = function(message) {
 	// 64 bytes of padding
-	message += String.fromCharCode.apply(null, Cryptocat.getBytes(64))
+	message += Cryptocat.encodedBytes(64, CryptoJS.enc.Latin1)
 	var encrypted = {}
 	encrypted['text'] = {}
 	encrypted['tag'] = message
@@ -186,10 +186,10 @@ multiParty.sendMessage = function(message) {
 	}
 	var i, iv
 	for (i = 0; i !== sortedRecipients.length; i++) {
-		iv = CryptoJS.enc.Hex.parse(BigInt.bigInt2str(BigInt.randBigInt(96), 16)).toString(CryptoJS.enc.Base64)
+		iv = Cryptocat.encodedBytes(12, CryptoJS.enc.Base64)
 		// Do not reuse IVs
 		while (usedIVs.indexOf(iv) >= 0) {
-			iv = CryptoJS.enc.Hex.parse(BigInt.bigInt2str(BigInt.randBigInt(96), 16)).toString(CryptoJS.enc.Base64)
+			iv = Cryptocat.encodedBytes(12, CryptoJS.enc.Base64)
 		}
 		usedIVs.push(iv)
 		encrypted['text'][sortedRecipients[i]] = {}

@@ -64,26 +64,7 @@ keyGenerator.onmessage = function(e) {
 	// Key storage currently disabled as we are not yet sure if this is safe to do.
 	//	Cryptocat.Storage.setItem('myKey', JSON.stringify(myKey))
 	$('#loginInfo').text(Cryptocat.language['loginMessage']['connecting'])
-	connectXMPP(generateString(64, 1, 1, 1, 0), generateString(64, 1, 1, 1, 0))
-}
-
-// Generates a random string of length `size` characters.
-// This isn't CS. Just for (user|file)names.
-// If `alpha = 1`, random string will contain alpha characters, and so on.
-// If `hex = 1`, all other settings are overridden.
-function generateString(size, alpha, uppercase, numeric, hex) {
-	var keyspace = ''
-	var result = ''
-	if (hex) { keyspace = '0123456789abcdef' }
-	else {
-		if (alpha) { keyspace += 'abcdefghijklmnopqrstuvwxyz' }
-		if (uppercase) { keyspace += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' }
-		if (numeric) { keyspace += '0123456789' }
-	}
-	for (var i = 0; i !== size; i++) {
-		result += keyspace[Math.floor(Math.random()*keyspace.length)]
-	}
-	return result
+	connectXMPP(Cryptocat.encodedBytes(16, CryptoJS.enc.Hex), Cryptocat.encodedBytes(16, CryptoJS.enc.Hex))
 }
 
 // Outputs the current hh:mm.
@@ -751,7 +732,7 @@ function sendFile(nickname) {
 			e.stopPropagation()
 			if (this.files) {
 				var file = this.files[0]
-				var filename = generateString(16, 1, 1, 1, 0)
+				var filename = Cryptocat.encodedBytes(16, CryptoJS.enc.Hex)
 				filename += file.name.match(/\.(\w)+$/)[0]
 				otrKeys[nickname].sendFile(filename)
 				var key = Cryptocat.fileKeys[nickname][filename]
@@ -1273,7 +1254,7 @@ $('#loginForm').submit(function() {
 	}
 	// If everything is okay, then register a randomly generated throwaway XMPP ID and log in.
 	else {
-		connectXMPP(generateString(64, 1, 1, 1, 0), generateString(64, 1, 1, 1, 0))
+		connectXMPP(Cryptocat.encodedBytes(16, CryptoJS.enc.Hex), Cryptocat.encodedBytes(16, CryptoJS.enc.Hex))
 	}
 	return false
 })
