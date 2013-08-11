@@ -154,7 +154,9 @@ function switchConversation(buddy) {
 		$('#buddy-' + buddy).css('background-image', 'none')
 	}
 	buildConversationInfo(currentConversation)
-	$('#conversationWindow').html(conversations[currentConversation])
+	if (conversations[currentConversation]) {
+		$('#conversationWindow').html(conversations[currentConversation])
+	}
 	bindTimestamps()
 	scrollDownConversation(0, false)
 	$('#userInputText').focus()
