@@ -111,14 +111,17 @@ Cryptocat.getBytes = function(i) {
 }
 
 Cryptocat.randomBitInt = function(k) {
+	if (k > 31) {
+		throw new Error('That\'s more than JS can handle.')
+	}
 	var i = 0, r = 0
 	var b = Math.floor(k / 8)
 	var mask = (1 << (k % 8)) - 1
-	for (; i < b; i++) {
-		r += Math.pow(256, i) * Cryptocat.randomByte()
-	}
 	if (mask) {
-		r += Math.pow(256, i) * (Cryptocat.randomByte() & mask)
+		r = Cryptocat.randomByte() & mask
+	}
+	for (; i < b; i++) {
+		r = (256 * r) + Cryptocat.randomByte()
 	}
 	return r
 }

@@ -186,10 +186,10 @@ multiParty.sendMessage = function(message) {
 	}
 	var i, iv
 	for (i = 0; i !== sortedRecipients.length; i++) {
-		iv = CryptoJS.enc.Hex.parse(BigInt.bigInt2str(BigInt.randBigInt(96), 10)).toString(CryptoJS.enc.Base64)
+		iv = CryptoJS.enc.Hex.parse(BigInt.bigInt2str(BigInt.randBigInt(96), 16)).toString(CryptoJS.enc.Base64)
 		// Do not reuse IVs
 		while (usedIVs.indexOf(iv) >= 0) {
-			iv = CryptoJS.enc.Hex.parse(BigInt.bigInt2str(BigInt.randBigInt(96), 10)).toString(CryptoJS.enc.Base64)
+			iv = CryptoJS.enc.Hex.parse(BigInt.bigInt2str(BigInt.randBigInt(96), 16)).toString(CryptoJS.enc.Base64)
 		}
 		usedIVs.push(iv)
 		encrypted['text'][sortedRecipients[i]] = {}
