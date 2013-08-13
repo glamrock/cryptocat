@@ -154,9 +154,7 @@ function switchConversation(buddy) {
 		$('#buddy-' + buddy).css('background-image', 'none')
 	}
 	buildConversationInfo(currentConversation)
-	if (conversations[currentConversation]) {
-		$('#conversationWindow').html(conversations[currentConversation])
-	}
+	$('#conversationWindow').html(conversations[currentConversation])
 	bindTimestamps()
 	scrollDownConversation(0, false)
 	$('#userInputText').focus()
@@ -880,7 +878,7 @@ function bindBuddyMenu(nickname) {
 			else {
 				blockAction = 'Block'
 			}
-			$('#buddy-' + nickname).delay(10).animate({'height': '76px'}, 180, function() {
+			$('#buddy-' + nickname).delay(10).animate({'height': '85px'}, 180, function() {
 				$(this).append(buddyMenuContents)
 				$('#' + nickname + '-contents').append(
 					Mustache.render(Cryptocat.templates.buddyMenu, {
