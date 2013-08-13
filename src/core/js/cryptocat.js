@@ -1371,6 +1371,7 @@ function logout() {
 		$('#logoText').fadeIn()
 		$('#footer').animate({'height': '14px'})
 		$('#conversationWrapper').fadeOut(function() {
+			$('#dialogBoxClose').click()
 			if (!loginError) {
 				$('#loginInfo').animate({'backgroundColor': '#97CEEC'}, 200)
 				$('#loginInfo').text(Cryptocat.language['loginMessage']['thankYouUsing'])
