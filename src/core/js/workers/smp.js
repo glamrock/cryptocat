@@ -1,5 +1,5 @@
 ;(function (root) {
-  "use strict";
+  'use strict';
 
   root.OTR = {}
   root.crypto = {}
@@ -18,8 +18,8 @@
   function wrapPostMessage(method) {
     return function () {
       postMessage({
-          method: method
-        , args: Array.prototype.slice.call(arguments, 0)
+          method: method,
+		  args: Array.prototype.slice.call(arguments, 0)
       })
     }
   }

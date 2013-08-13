@@ -113,10 +113,10 @@ var iocb = function(buddy) {
 }
 
 // Handle SMP callback
-var smcb = function (nickname) {
-	return function (type, data) {
+var smcb = function(nickname) {
+	return function(type, data) {
 		var html
-		switch (type) {
+		switch(type) {
 			case 'question':
 				smpQuestion(nickname, data)
 				break
@@ -126,8 +126,10 @@ var smcb = function (nickname) {
 					? 'Successfully authenticated '
 					: 'Failed to authenticate '
 				html = Mustache.render(
-					Cryptocat.templates.authWrap,
-					{ html: '<p>' + html + nickname + '.</p>' })
+					Cryptocat.templates.authWrap, {
+						authWrapTitle: 'Authenticate ' + nickname,
+						html: '<p>' + html + nickname + '.</p>'
+					})
 				dialogBox(html, 1)
 				break
 		}
@@ -592,21 +594,21 @@ function handlePresence(presence) {
 		var options = {
 			priv: myKey,
 			smw: {
-				path: 'js/lib/sm-webworker.js',
+				path: 'js/workers/smp.js',
 				seed: Cryptocat.generateSeed,
 				imports: [
-					'crypto-js/core.js',
-					'crypto-js/enc-base64.js',
-					'crypto-js/cipher-core.js',
-					'crypto-js/x64-core.js',
-					'crypto-js/aes.js',
-					'crypto-js/sha1.js',
-					'crypto-js/sha256.js',
-					'crypto-js/sha512.js',
-					'crypto-js/hmac.js',
-					'crypto-js/pad-nopadding.js',
-					'crypto-js/mode-ctr.js',
-					'salsa20.js',
+					'../lib/crypto-js/core.js',
+					'../lib/crypto-js/enc-base64.js',
+					'../lib/crypto-js/cipher-core.js',
+					'../lib/crypto-js/x64-core.js',
+					'../lib/crypto-js/aes.js',
+					'../lib/crypto-js/sha1.js',
+					'../lib/crypto-js/sha256.js',
+					'../lib/crypto-js/sha512.js',
+					'../lib/crypto-js/hmac.js',
+					'../lib/crypto-js/pad-nopadding.js',
+					'../lib/crypto-js/mode-ctr.js',
+					'../lib/salsa20.js',
 					'../etc/cryptocatRandom.js',
 					'bigint.js',
 					'eventemitter.js',
