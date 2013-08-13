@@ -1252,7 +1252,7 @@ $('#loginForm').submit(function() {
 				$(this).text(CatFacts.getFact()).fadeIn()
 			})
 		}, 9000)
-		$('#fill').animate({'width': '100%', 'opacity': '1'}, 12000, 'linear')
+		$('#fill').animate({'width': '100%', 'opacity': '1'}, 15000, 'linear')
 	}
 	// If everything is okay, then register a randomly generated throwaway XMPP ID and log in.
 	else {
