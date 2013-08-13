@@ -595,25 +595,7 @@ function handlePresence(presence) {
 			priv: myKey,
 			smw: {
 				path: 'js/workers/smp.js',
-				seed: Cryptocat.generateSeed,
-				imports: [
-					'../lib/crypto-js/core.js',
-					'../lib/crypto-js/enc-base64.js',
-					'../lib/crypto-js/cipher-core.js',
-					'../lib/crypto-js/x64-core.js',
-					'../lib/crypto-js/aes.js',
-					'../lib/crypto-js/sha1.js',
-					'../lib/crypto-js/sha256.js',
-					'../lib/crypto-js/sha512.js',
-					'../lib/crypto-js/hmac.js',
-					'../lib/crypto-js/pad-nopadding.js',
-					'../lib/crypto-js/mode-ctr.js',
-					'../lib/salsa20.js',
-					'../etc/cryptocatRandom.js',
-					'bigint.js',
-					'eventemitter.js',
-					'otr.js'
-				]
+				seed: Cryptocat.generateSeed
 			}
 		}
 		otrKeys[nickname] = new OTR(options)
@@ -848,8 +830,10 @@ function displayAuth(nickname) {
 			Cryptocat.templates.authDialog,
 			{ trust: otrKeys[nickname].trust })
 		authDialog = Mustache.render(
-			Cryptocat.templates.authWrap,
-			{ html: authDialog })
+			Cryptocat.templates.authWrap, {
+				authWrapTitle: 'Authenticate ' + nickname,
+				html: authDialog
+			})
 		dialogBox(authDialog, 1)
 		$('#smpAuth input[name=submit]')
 			.unbind('click')

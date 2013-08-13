@@ -17,7 +17,7 @@ Cryptocat.templates = {
 		+ '<div id="multiPartyColorprint"></div><br /></div>',
 
 	authWrap: '<div id="smpAuth">'
-		+ '<div class="title">{{authWrapTitle}}</div></div>',
+		+ '<div class="title">{{authWrapTitle}}</div>{{&html}}</div>',
 
 	authDialog: '<p>Trust? <span id="smpTrust">{{trust}}</span></p>'
 		+ '<div><p>(optional) Question?</p>'
