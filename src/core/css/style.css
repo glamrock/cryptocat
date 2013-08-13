@@ -23,7 +23,6 @@ body {
 	background-color: #C7E5F5;
 	margin: 0;
 	font-family: 'Helvetica Neue', Helvetica, Arial, Verdana;
-	background-image: url("../img/bg.png");
 	background-size: 6px 6px;
 	line-height: 2em;
 }
@@ -74,11 +73,11 @@ img {
 }
 
 ::-webkit-input-placeholder {
-	color: #CCC;
+	color: rgba(255, 255, 255, 0.65);
 }
 
 ::-moz-placeholder {
-	color: #CCC; 
+	color: rgba(255, 255, 255, 0.65);
 }
 
 /*
@@ -164,7 +163,7 @@ div#bubble #loginForm [type=text] {
 	padding: 7px;
 	text-align: center;
 	resize: none;
-	box-shadow: 2px 2px #90CAEA;
+	background: #97CEEC;
 }
 
 div#bubble #loginForm #nickname {
@@ -182,6 +181,13 @@ div#bubble #loginSubmit {
 	position: relative;
 	bottom: 2px;
 	font-size: 1.6em;
+	border: 1px solid #76BDE5;
+	box-shadow: 2px 2px #76BDE5;
+	
+}
+
+div#bubble #loginSubmit:hover {
+    background: #76BDE5;
 }
 
 div#loginInfo {
@@ -193,7 +199,6 @@ div#loginInfo {
 	border-radius: 0 0 4px 4px;
 	width: 408px;
 	margin: 9px auto;
-	box-shadow: 2px 2px #76bde5;
 }
 
 div#bubble div#info {
