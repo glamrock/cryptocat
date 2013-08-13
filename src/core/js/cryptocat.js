@@ -878,7 +878,7 @@ function bindBuddyMenu(nickname) {
 			else {
 				blockAction = 'Block'
 			}
-			$('#buddy-' + nickname).delay(10).animate({'height': '85px'}, 180, function() {
+			$('#buddy-' + nickname).delay(10).animate({'height': '90px'}, 180, function() {
 				$(this).append(buddyMenuContents)
 				$('#' + nickname + '-contents').append(
 					Mustache.render(Cryptocat.templates.buddyMenu, {
@@ -1250,7 +1250,7 @@ $('#loginForm').submit(function() {
 				$(this).text(CatFacts.getFact()).fadeIn()
 			})
 		}, 9000)
-		$('#fill').animate({'width': '100%', 'opacity': '1'}, 15000, 'linear')
+		$('#fill').animate({'width': '100%', 'opacity': '1'}, 14000, 'linear')
 	}
 	// If everything is okay, then register a randomly generated throwaway XMPP ID and log in.
 	else {
