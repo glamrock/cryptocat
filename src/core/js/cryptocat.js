@@ -342,7 +342,7 @@ Cryptocat.addToConversation = function(message, sender, conversation, type) {
 		}
 		message = Strophe.xmlescape(message)
 		if (message.match(Cryptocat.myNickname)) {
-			var nickRegEx = new RegExp(Cryptocat.myNickname, 'g')
+			var nickRegEx = new RegExp('(((?!&).{1})|^)' + Cryptocat.myNickname + '(((?!;).{1})|$)', 'g')
 			message = message.replace(nickRegEx, '<span class="nickHighlight">$&</span>')
 			lineDecoration = 3
 		}
