@@ -159,7 +159,7 @@ Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 		case 'open':
 			var file = rcvFile[from][sid].filename
 			rcvFile[from][sid].key = Cryptocat.fileKeys[nick][file]
-			if (sid.match(/^\w{64}$/) && rcvFile[from][sid].mime.match(fileMIME)) {
+			if (sid.match(/^\w{1,64}$/) && rcvFile[from][sid].mime.match(fileMIME)) {
 				Cryptocat.addToConversation(sid, nick, nick, 'file')
 			}
 			delete Cryptocat.fileKeys[nick][file]
