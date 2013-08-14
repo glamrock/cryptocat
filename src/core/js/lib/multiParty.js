@@ -47,14 +47,13 @@ function encryptAES(msg, c, iv) {
 // Input: Base64, Output: UTF8
 // Key input: hexadecimal
 function decryptAES(msg, c, iv) {
-	msg = CryptoJS.enc.Base64.parse(msg)
 	var opts = {
 		mode: CryptoJS.mode.CTR,
 		iv: correctIvLength(iv),
 		padding: CryptoJS.pad.NoPadding
 	}
 	var aesctr = CryptoJS.AES.decrypt(
-		CryptoJS.enc.Base64.stringify(msg),
+		msg,
 		CryptoJS.enc.Hex.parse(c),
 		opts
 	)
