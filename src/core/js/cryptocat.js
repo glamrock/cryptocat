@@ -516,7 +516,7 @@ function changeNickname(oldNickname, newNickname) {
 // Handle incoming messages from the XMPP server.
 function handleMessage(message) {
 	var nickname = cleanNickname($(message).attr('from'))
-	var body = $(message).find('body').text().replace(/\&quot;/g, '"')
+	var body = $(message).find('body').text()
 	var type = $(message).attr('type')
 	// If archived message, ignore.
 	if ($(message).find('delay').length !== 0) {
