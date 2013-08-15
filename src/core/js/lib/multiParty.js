@@ -282,8 +282,9 @@ multiParty.receiveMessage = function(sender, myName, message) {
 			}
 			
 			// Decrypt message
-			if (!sharedSecrets.hasOwnProperty(sender))
+			if (!sharedSecrets.hasOwnProperty(sender)) {
 				return false
+			}
 			
 			//Sort recipients
 			var sortedRecipients = Object.keys(message['text']).sort()
@@ -332,8 +333,9 @@ multiParty.receiveMessage = function(sender, myName, message) {
 			//Convert to UTF8
 			return plaintext.toString(CryptoJS.enc.Utf8)
 		}
-		else
+		else {
 			console.log('multiParty: Unknown message type: ' + message['text'][myName]['type'])
+		}
 	}
 	return false
 }
