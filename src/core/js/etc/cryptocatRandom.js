@@ -88,9 +88,13 @@ Cryptocat.randomBitInt = function(k) {
 	return r
 }
 
-Cryptocat.encodedBytes = function(bytes, encoding) {
+Cryptocat.rawBytes = function(bytes) {
 	var sa = String.fromCharCode.apply(null, Cryptocat.getBytes(bytes))
-	return CryptoJS.enc.Latin1.parse(sa).toString(encoding)
+	return CryptoJS.enc.Latin1.parse(sa)
+}
+
+Cryptocat.encodedBytes = function(bytes, encoding) {
+	return Cryptocat.rawBytes(bytes).toString(encoding)
 }
 
 if (node) {

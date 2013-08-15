@@ -403,7 +403,7 @@ Curve25519.ecDH = function(priv, pub) {
 		return Curve25519.scalarMult(priv, basePoint)
 	}
 	else {
-		return BigInt.bigInt2str(Curve25519.scalarMult(priv, pub), 64)
+		return Curve25519.scalarMult(priv, pub)
 	}
 }
 
