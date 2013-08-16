@@ -190,6 +190,10 @@ div#bubble #loginSubmit:hover {
     background: #76BDE5;
 }
 
+div#bubble #loginSubmit:active {
+	background: #70B7DE;
+}
+
 div#loginInfo {
 	text-align: center;
 	font-size: 1.3em;

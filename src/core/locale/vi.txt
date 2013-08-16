@@ -51,3 +51,5 @@ Bắt đầu cuộc gọi video
 Kết thúc cuộc gọi video
 (NICKNAME) muốn bắt đầu một cuộc gọi video với bạn.
 Hủy bỏ
+Khóa
+Mở Khóa
