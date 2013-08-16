@@ -36,10 +36,4 @@
 	return YES;
 }
 
-
-#pragma mark NSMenu Delegate Methods
-// We implement the delegate methods of the NSMenu Item to be able to switch between multiple conversations
-
-#warning todo
-
 @end

@@ -79,6 +79,11 @@
 		userNotification.subtitle = [components[2] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 		userNotification.hasActionButton = FALSE;
 		[[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:userNotification];
+		
+		// If the window is not in the foreground we want to bounce the dock icon. Nothing happens if the window is in focus.
+		
+		[NSApp requestUserAttention:NSCriticalRequest];
+		
     }
 	// Open links in default browser.
 	else if ([[[request URL] absoluteString] hasPrefix:@"http"]) {
