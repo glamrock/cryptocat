@@ -150,17 +150,18 @@ multiParty.genFingerprint = function(user) {
 // Send public key request string.
 multiParty.sendPublicKeyRequest = function(user) {
 	var request = {}
+	request['type'] = 'publicKeyRequest'
+	request['text'] = {}
 	request['text'][user] = {}
-	request['text'][user]['type'] = 'publicKeyRequest'
 	return JSON.stringify(request)
 }
 
 // Send my public key in response to a public key request.
 multiParty.sendPublicKey = function(user) {
 	var answer = {}
+	answer['type'] = 'publicKey'
 	answer['text'] = {}
 	answer['text'][user] = {}
-	answer['text'][user]['type'] = 'publicKey'
 	answer['text'][user]['message'] = BigInt.bigInt2base64(myPublicKey, 32)
 	return JSON.stringify(answer)
 }
@@ -190,6 +191,7 @@ multiParty.sendMessage = function(message) {
 
 	var encrypted = {}
 	encrypted['text'] = {}
+	encrypted['type'] = 'message'
 
 	//Sort recipients
 	var sortedRecipients = Object.keys(sharedSecrets).sort()
@@ -216,7 +218,6 @@ multiParty.sendMessage = function(message) {
 
 		//Encrypt the message
 		encrypted['text'][sortedRecipients[i]] = {}
-		encrypted['text'][sortedRecipients[i]]['type'] = 'message'
 		encrypted['text'][sortedRecipients[i]]['message'] = encryptAES(message, sharedSecrets[sortedRecipients[i]]['message'], iv)
 		encrypted['text'][sortedRecipients[i]]['iv'] = iv
 		
@@ -252,7 +253,7 @@ multiParty.receiveMessage = function(sender, myName, message) {
 	}
 	if (typeof(message['text'][myName]) === 'object') {
 		// Detect public key reception, store public key and generate shared secret
-		if (message['text'][myName]['type'] === 'publicKey') {
+		if (message['type'] === 'publicKey') {
 		
 			if(typeof(message['text'][myName]['message']) !== 'string') {
 				console.log('multiParty: publicKey without message field')
@@ -270,10 +271,10 @@ multiParty.receiveMessage = function(sender, myName, message) {
 			return false
 		}
 		// Detect public key request and send public key
-		else if (message['text'][myName]['type'] === 'publicKeyRequest') {
+		else if (message['type'] === 'publicKeyRequest') {
 			multiParty.sendPublicKey(sender)
 		}
-		else if (message['text'][myName]['type'] === 'message') {
+		else if (message['type'] === 'message') {
 			if(typeof(message['text'][myName]['message']) !== 'string'
 					|| typeof(message['text'][myName]['iv']) !== 'string'
 					|| typeof(message['text'][myName]['hmac']) !== 'string') {
@@ -334,7 +335,7 @@ multiParty.receiveMessage = function(sender, myName, message) {
 			return plaintext.toString(CryptoJS.enc.Utf8)
 		}
 		else {
-			console.log('multiParty: Unknown message type: ' + message['text'][myName]['type'])
+			console.log('multiParty: Unknown message type: ' + message['type'])
 		}
 	}
 	return false
