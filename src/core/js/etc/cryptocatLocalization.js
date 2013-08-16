@@ -125,7 +125,7 @@ Cryptocat.Language.refresh = function(languageObject) {
 	Cryptocat.language = languageObject
 	var smallType = ['bo', 'ar', 'in']
 	if (smallType.indexOf(languageObject['language']) >= 0) {
-		$('body').css({'font-size': '13px'})
+		$('body').css({'font-size': '12px'})
 	}
 	else {
 		$('body').css({'font-size': '11px'})

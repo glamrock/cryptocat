@@ -1160,9 +1160,9 @@ $('#customServer').click(function() {
 // Language selector.
 $('#languageSelect').click(function() {
 	$('#customServerDialog').hide()
+	$('#languages li').css({'color': '#FFF', 'font-weight': 'normal'})
+	$('#' + Cryptocat.language['language']).css({'color': '#97CEEC', 'font-weight': 'bold'})
 	$('#footer').animate({'height': '180px'}, function() {
-		$('#languages li').css({'color': '#FFF', 'font-weight': 'normal'})
-		$('#' + Cryptocat.language['language']).css({'color': '#97CEEC', 'font-weight': 'bold'})
 		$('#languages').fadeIn()
 		$('#languages li').click(function() {
 			var lang = $(this).attr('id')
