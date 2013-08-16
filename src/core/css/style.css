@@ -275,11 +275,16 @@ div#customServerDialog {
 
 div#customServerDialog input {
 	margin: 8px;
+	background: rgba(255, 255, 255, 0.08);
+	box-shadow: none;
+	border-radius: 4px 0 4px 4px;
+	padding: 4px;
 }
 
 div#customServerDialog [type=button] {
 	display: inline;
-	width: 100px;
+	width: 96px;
+	box-shadow: 2px 2px #97CEEC;
 }
 
 div#footer #languageSelect {
