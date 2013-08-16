@@ -138,7 +138,7 @@ multiParty.genFingerprint = function(user) {
 	}
 	fingerprints[user] = CryptoJS.SHA512(
 		CryptoJS.enc.Base64.parse(
-			BigInt.bigInt2base64(key)
+			BigInt.bigInt2base64(key, 32)
 		)
 	)
 		.toString()
