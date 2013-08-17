@@ -19,6 +19,14 @@ Cryptocat.templates = {
 		+ '<input type="text" id="authAnswer" placeholder="Secret answer" />'
 		+ '<input id="authSubmit" type="submit" value="Ask" /></form>'
 		+ '<p id="authVerified">Identity verified.</p>',
+		
+	authRequest: '<div class="title">Authenticate</div>'
+		+ '<p>{{nickname}} wants to verify your identity.'
+		+ ' Please answer the below secret question to authenticate yourself:</p>'
+		+ '<p><strong>{{question}}</strong></p>'
+		+ '<p><form><input id="authReply" type="text" placeholder="Secret answer" />'
+		+ '<input id="authReplySubmit" type="button" /></form></p>'
+		+ '<p>Answer must match exactly with the one given by {{nickname}}.</p>',
 
 	sendFile: '<div class="title">{{sendEncryptedFile}}</div>'
 		+ '<input type="file" id="fileSelector" name="file[]" />'

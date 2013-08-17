@@ -732,7 +732,7 @@ function sendFile(nickname) {
 		fileTransferInfo: Cryptocat.language['chatWindow']['fileTransferInfo']
 	})
 	ensureOTRdialog(nickname, false, function() {
-		dialogBox(sendFileDialog, 240, 1)
+		dialogBox(sendFileDialog, 240, true)
 		$('#fileSelector').change(function(e) {
 			e.stopPropagation()
 			if (this.files) {
@@ -790,7 +790,7 @@ function ensureOTRdialog(nickname, close, cb) {
 		return cb()
 	}
 	var progressDialog = '<div id="progressBar"><div id="fill"></div></div>'
-	dialogBox(progressDialog, 240, 1)
+	dialogBox(progressDialog, 240, true)
 	$('#progressBar').css('margin', '70px auto 0 auto')
 	$('#fill').animate({'width': '100%', 'opacity': '1'}, 10000, 'linear')
 	// add some state for status callback
@@ -808,11 +808,11 @@ function displayInfo(nickname) {
 	})
 	ensureOTRdialog(nickname, false, function() {
 		if (Cryptocat.authenticatedUsers.indexOf(nickname) >= 0) {
-			dialogBox(infoDialog, 250, 1)
+			dialogBox(infoDialog, 250, true)
 			showAuthenticated(nickname, 0)
 		}
 		else {
-			dialogBox(infoDialog, 340, 1)
+			dialogBox(infoDialog, 340, true)
 		}
 		$('#otrFingerprint').text(getFingerprint(nickname, 1))
 		$('#multiPartyFingerprint').text(getFingerprint(nickname, 0))
@@ -820,7 +820,10 @@ function displayInfo(nickname) {
 			e.preventDefault()
 			var question = $('#authQuestion').val()
 			var answer = $('#authAnswer').val().toLowerCase().replace(/(\s|\.|\,|\'|\"|\;|\?|\!)/, '')
-			$('#authSubmit').val('Asking...').unbind('click')
+			$('#authSubmit').val('Asking...')
+			$('#authSubmit').unbind('click').bind('click', function(e) {
+				e.preventDefault()
+			})
 			otrKeys[nickname].smpSecret(answer, question)
 		})
 	})
@@ -828,15 +831,18 @@ function displayInfo(nickname) {
 
 // Receive an SMP question
 function smpQuestion(nickname, question) {
-	var msg = nickname + ' wants to verify your identity.'
-	if (question) {
-		msg += ' Please answer the below secret question to authenticate yourself.'
-			+ ' Answer must match exactly with the one given by '
-			+ nickname + ':\n\n' + question
-	}
-	var secret = window.prompt(msg)
-	secret = secret.toLowerCase().replace(/(\s|\.|\,|\'|\"|\;|\?|\!)/, '')
-	otrKeys[nickname].smpSecret(secret)
+	$('#dialogBoxClose').click()
+	dialogBox(Mustache.render(Cryptocat.templates.authRequest, {
+		nickname: nickname,
+		question: question
+	}), 240, true, function() {
+		$('#authReplySubmit').unbind('click').bind('click', function(e) {
+			e.preventDefault()
+			var answer = $('#authReply').val().toLowerCase().replace(/(\s|\.|\,|\'|\"|\;|\?|\!)/, '')
+			otrKeys[nickname].smpSecret(answer)
+			$('#dialogBoxClose').click()
+		})
+	})
 }
 
 // Bind buddy menus for new buddies. Used internally.
@@ -1199,7 +1205,7 @@ $('#loginForm').submit(function() {
 		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" '
 			+ 'alt="" /><p id="progressInfo"><span>'
 			+ Cryptocat.language['loginMessage']['generatingKeys'] + '</span></p>'
-		dialogBox(progressForm, 240, 0, function() {
+		dialogBox(progressForm, 240, false, function() {
 			// We need to pass the web worker a pre-generated seed.
 			keyGenerator.postMessage(Cryptocat.generateSeed())
 			// Key storage currently disabled as we are not yet sure if this is safe to do.
