@@ -1528,8 +1528,56 @@
   }
 
 
+
+//ADDITIONS to the BigInt library.  
+  //converts a bigInt into a little endian byte array containing the specified amount of bytes which is then encoded into Base64.
+  function bigInt2base64 (x, bytes) {
+    if (s6.length!=x.length) 
+      s6=dup(x);
+    else
+      copy_(s6,x);
+
+	var result = "";
+	while (bytes--)
+		result += String.fromCharCode(divInt_(s6,256));  //t=s6 % base; s6=floor(s6/base);
+
+	return btoa(result);
+  }
+
+  //return the bigInt given a string representation in a given base.  
+  //Pad the array with leading zeros so that it has at least minSize elements.
+  //If base=-1, then it reads in a space-separated list of array elements in decimal.
+  //The array will always have at least one leading zero, unless base=-1.
+  function base642bigInt (s,minSize) {
+    var d, i, j, x, y, kk;
+
+    s = atob(s);
+    var k=s.length;
+    var base=256;
+
+    x=int2bigInt(0,base*k,0);
+    for (i=0;i<k;i++) {
+      d=s.charCodeAt(k-1-i);
+      multInt_(x,base);
+      addInt_(x,d);
+    }
+
+    for (k=x.length;k>0 && !x[k-1];k--); //strip off leading zeros
+    k=minSize>k+1 ? minSize : k+1;
+    y=new Array(k);
+    kk=k<x.length ? k : x.length;
+    for (i=0;i<kk;i++)
+      y[i]=x[i];
+    for (;i<k;i++)
+      y[i]=0;
+    return y;
+  }
+
+
   var BigInt = {
-      str2bigInt    : str2bigInt
+      base642bigInt : base642bigInt
+    , bigInt2base64 : bigInt2base64
+    , str2bigInt    : str2bigInt
     , bigInt2str    : bigInt2str
     , int2bigInt    : int2bigInt
     , multMod       : multMod
