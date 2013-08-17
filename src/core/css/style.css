@@ -503,7 +503,7 @@ DIALOG BOX
     border-radius: 5px 0 5px 5px;
     font-size: 1.2em;
 	background: #97CEEC;
-	border: 1px solid #97CEEC;
+	border: none;
 }
 
 #authVerified {

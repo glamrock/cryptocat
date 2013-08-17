@@ -123,8 +123,8 @@ function showAuthenticated(nickname, speed) {
 			'height': 50,
 			'background-color': '#97CEEC',
 			'margin-top': '15px'
-		}, function() {
-			$('#authVerified').fadeIn()
+		}, speed, function() {
+			$('#authVerified').fadeIn(speed)
 		})
 	}, speed)
 }
@@ -143,6 +143,13 @@ var smcb = function(nickname) {
 					if ($('#authInfo').length) {
 						showAuthenticated(nickname, 200)
 						$('#dialogBox').animate({'height': 250})
+					}
+				}
+				else {
+					if ($('#authInfo').length) {
+						$('#authSubmit').val('Failed').animate({
+							'background-color': '#F00'
+						})
 					}
 				}
 				break
@@ -803,7 +810,7 @@ function displayInfo(nickname) {
 	ensureOTRdialog(nickname, false, function() {
 		if (Cryptocat.authenticatedUsers.indexOf(nickname) >= 0) {
 			dialogBox(infoDialog, 250, 1)
-			showAuthenticated(nickname, 1)
+			showAuthenticated(nickname, 0)
 		}
 		else {
 			dialogBox(infoDialog, 340, 1)
@@ -814,6 +821,7 @@ function displayInfo(nickname) {
 			e.preventDefault()
 			var question = $('#authQuestion').val()
 			var answer = $('#authAnswer').val().toLowerCase().replace(/(\s|\.|\,|\'|\"|\;|\?|\!)/, '')
+			$('#authSubmit').val('Asking...').unbind('click')
 			otrKeys[nickname].smpSecret(answer, question)
 		})
 	})
@@ -823,7 +831,9 @@ function displayInfo(nickname) {
 function smpQuestion(nickname, question) {
 	var msg = nickname + ' wants to verify your identity.'
 	if (question) {
-		msg += ' :\n\n' + question
+		msg += ' Please answer the below secret question to authenticate yourself.'
+			+ ' Answer must match exactly with the one given by '
+			+ nickname + ':\n\n' + question
 	}
 	var secret = window.prompt(msg)
 	secret = secret.toLowerCase().replace(/(\s|\.|\,|\'|\"|\;|\?|\!)/, '')
