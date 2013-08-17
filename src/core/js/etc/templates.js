@@ -4,17 +4,20 @@ Cryptocat.templates = {
 	buddy: '<div class="buddy" title="{{nickname}}" id="buddy-{{nickname}}" status="online">'
 		+ '<span>{{shortNickname}}</span>'
 		+ '<div class="buddyMenu" id="menu-{{nickname}}"></div></div>',
-		
+
 	buddyMenu: '<li class="option1">{{displayInfo}}</li>'
-		+ '<li class="option2">{{displayAuth}}</li>'
-		+ '<li class="option3">{{sendEncryptedFile}}</li>'
-		+ '<li class="option4">{{block}}</li>',
+		+ '<li class="option2">{{sendEncryptedFile}}</li>'
+		+ '<li class="option3">{{block}}</li>',
 
 	infoDialog: '<div class="title">{{nickname}}</div>'
-		+ '<div id="displayInfo">{{otrFingerprint}}<br /><span id="otrFingerprint"></span><br />'
-		+ '<div id="otrColorprint"></div>{{groupFingerprint}}'
-		+ '<br /><span id="multiPartyFingerprint"></span><br />'
-		+ '<div id="multiPartyColorprint"></div><br /></div>',
+		+ '<div id="displayInfo">{{otrFingerprint}}<br /><span id="otrFingerprint"></span>'
+		+ '<br />{{groupFingerprint}}<br /><span id="multiPartyFingerprint"></span>'
+		+ '</div>'
+		+ '<div id="authInfo"><h2>Authenticate</h2>'
+		+ '<p>Verify this user\'s identity by asking a secret question. Answers are case sensitive and must match exactly.</p>'
+		+ '<input type="text" id="authQuestion" placeholder="Secret question" />'
+		+ '<input type="text" id="authAnswer" placeholder="Secret answer" />'
+		+ '<input id="authSubmit" type="button" value="Ask" />',
 
 	authWrap: '<div id="smpAuth">'
 		+ '<div class="title">{{authWrapTitle}}</div>{{&html}}</div>',

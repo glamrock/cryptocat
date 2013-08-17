@@ -454,16 +454,54 @@ DIALOG BOX
 	padding: 25px 0 0 0;
 }
 
+#dialogBoxContent p {
+	padding: 10px;
+	padding: 10px;
+	max-width: 340px;
+	margin: 0 auto;
+}
+
 #displayInfo {
 	font-size: 1.1em;
 	padding: 10px 20px;
 	height: 80px;
 }
 
-#dialogBoxContent p {
-	padding: 10px;
-	max-width: 340px;
-	margin: 0 auto;
+#authInfo {
+    background: rgba(151, 206, 236, 0.4);
+    width: 90%;
+    height: 150px;
+    padding: 0 5px;
+    margin: 8px auto 0 auto;
+    border-radius: 8px 0 8px 8px;
+}
+
+#authInfo h2 {
+    font-size: 16px;
+    padding: 3px;
+    margin: 0 0 -5px 0;
+}
+
+#authInfo p {
+	max-width: 500px;
+}
+
+#authInfo #authQuestion, #authInfo #authAnswer {
+    box-shadow: none;
+    background: rgba(151, 206, 236, 0.7);
+    padding: 4px;
+    width: 260px;
+    border: none;
+    border-radius: 5px 0 5px 5px;
+}
+
+#authInfo #authSubmit {
+    float: right;
+    width: 100px;
+    height: 53px;
+    margin: -33px 20px 0px 0;
+    border-radius: 5px 0 5px 5px;
+    font-size: 1.2em;
 }
 
 #dialogBox #fileInfoField {

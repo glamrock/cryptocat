@@ -130,7 +130,7 @@ var smcb = function(nickname) {
 						authWrapTitle: 'Authenticate ' + nickname,
 						html: '<p>' + html + nickname + '.</p>'
 					})
-				dialogBox(html, 1)
+				dialogBox(html, 340, 1)
 				break
 		}
 	}
@@ -711,7 +711,7 @@ function sendFile(nickname) {
 		fileTransferInfo: Cryptocat.language['chatWindow']['fileTransferInfo']
 	})
 	ensureOTRdialog(nickname, false, function() {
-		dialogBox(sendFileDialog, 1)
+		dialogBox(sendFileDialog, 240, 1)
 		$('#fileSelector').change(function(e) {
 			e.stopPropagation()
 			if (this.files) {
@@ -769,7 +769,7 @@ function ensureOTRdialog(nickname, close, cb) {
 		return cb()
 	}
 	var progressDialog = '<div id="progressBar"><div id="fill"></div></div>'
-	dialogBox(progressDialog, 1)
+	dialogBox(progressDialog, 240, 1)
 	$('#progressBar').css('margin', '70px auto 0 auto')
 	$('#fill').animate({'width': '100%', 'opacity': '1'}, 10000, 'linear')
 	// add some state for status callback
@@ -786,30 +786,9 @@ function displayInfo(nickname) {
 		groupFingerprint: Cryptocat.language['chatWindow']['groupFingerprint']
 	})
 	ensureOTRdialog(nickname, false, function() {
-		var color
-		dialogBox(infoDialog, 1)
+		dialogBox(infoDialog, 340, 1)
 		$('#otrFingerprint').text(getFingerprint(nickname, 1))
 		$('#multiPartyFingerprint').text(getFingerprint(nickname, 0))
-		var otrColorprint = getFingerprint(nickname, 1).split(' ')
-		otrColorprint.splice(0, 1)
-		for (color in otrColorprint) {
-			if (otrColorprint.hasOwnProperty(color)) {
-				$('#otrColorprint').append(
-					'<div class="colorprint" style="background:#'
-					+ otrColorprint[color].substring(0, 6) + '"></div>'
-				)
-			}
-		}
-		var multiPartyColorprint = getFingerprint(nickname, 0).split(' ')
-		multiPartyColorprint.splice(0, 1)
-		for (color in multiPartyColorprint) {
-			if (multiPartyColorprint.hasOwnProperty(color)) {
-				$('#multiPartyColorprint').append(
-					'<div class="colorprint" style="background:#'
-					+ multiPartyColorprint[color].substring(0, 6) + '"></div>'
-				)
-			}
-		}
 	})
 }
 
@@ -834,7 +813,7 @@ function displayAuth(nickname) {
 				authWrapTitle: 'Authenticate ' + nickname,
 				html: authDialog
 			})
-		dialogBox(authDialog, 1)
+		dialogBox(authDialog, 240, 1)
 		$('#smpAuth input[name=submit]')
 			.unbind('click')
 			.bind('click', function(e) {
@@ -864,14 +843,13 @@ function bindBuddyMenu(nickname) {
 			else {
 				blockAction = 'Block'
 			}
-			$('#buddy-' + nickname).delay(10).animate({'height': '90px'}, 180, function() {
+			$('#buddy-' + nickname).delay(10).animate({'height': '75px'}, 180, function() {
 				$(this).append(buddyMenuContents)
 				$('#' + nickname + '-contents').append(
 					Mustache.render(Cryptocat.templates.buddyMenu, {
 						sendEncryptedFile: Cryptocat.language['chatWindow']['sendEncryptedFile'],
 						displayInfo: Cryptocat.language['chatWindow']['displayInfo'],
-						block: blockAction,
-						displayAuth: 'Authenticate'
+						block: blockAction
 					})
 				)
 				$('#' + nickname + '-contents').fadeIn(200, function() {
@@ -882,15 +860,10 @@ function bindBuddyMenu(nickname) {
 					})
 					$('.option2').click(function(e) {
 						e.stopPropagation()
-						displayAuth(nickname)
-						$('#menu-' + nickname).click()
-					})
-					$('.option3').click(function(e) {
-						e.stopPropagation()
 						sendFile(nickname)
 						$('#menu-' + nickname).click()
 					})
-					$('.option4').click(function(e) {
+					$('.option3').click(function(e) {
 						e.stopPropagation()
 						if (blockAction === 'Block') {
 							Cryptocat.blockedUsers.push(nickname)
@@ -928,14 +901,16 @@ function sendStatus() {
 
 // Displays a pretty dialog box with `data` as the content HTML.
 // If `closeable = true`, then the dialog box has a close button on the top right.
+// `height` is the height of the dialog box, in pixels.
 // onAppear may be defined as a callback function to execute on dialog box appear.
 // onClose may be defined as a callback function to execute on dialog box close.
-function dialogBox(data, closeable, onAppear, onClose) {
+function dialogBox(data, height, closeable, onAppear, onClose) {
 	if (closeable) {
 		$('#dialogBoxClose').css('width', '18px')
 		$('#dialogBoxClose').css('font-size', '12px')
 	}
 	$('#dialogBoxContent').html(data)
+	$('#dialogBox').css('height', height)
 	$('#dialogBox').fadeIn(200, function() {
 		if (onAppear) { onAppear() }
 	})
@@ -946,11 +921,11 @@ function dialogBox(data, closeable, onAppear, onClose) {
 			return false
 		}
 		$('#dialogBox').fadeOut(100, function() {
-				$('#dialogBoxContent').empty()
-				$('#dialogBoxClose').css('width', '0')
-				$('#dialogBoxClose').css('font-size', '0')
-				if (onClose) { onClose() }
-			})
+			$('#dialogBoxContent').empty()
+			$('#dialogBoxClose').css('width', '0')
+			$('#dialogBoxClose').css('font-size', '0')
+			if (onClose) { onClose() }
+		})
 		$('#userInputText').focus()
 	})
 	if (closeable) {
@@ -1211,7 +1186,7 @@ $('#loginForm').submit(function() {
 		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" '
 			+ 'alt="" /><p id="progressInfo"><span>'
 			+ Cryptocat.language['loginMessage']['generatingKeys'] + '</span></p>'
-		dialogBox(progressForm, 0, function() {
+		dialogBox(progressForm, 240, 0, function() {
 			// We need to pass the web worker a pre-generated seed.
 			keyGenerator.postMessage(Cryptocat.generateSeed())
 			// Key storage currently disabled as we are not yet sure if this is safe to do.
