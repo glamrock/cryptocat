@@ -126,7 +126,7 @@ multiParty.genSharedSecret = function(user) {
 	}
 }
 
-// Get fingerprint fingerprintsender
+// Get fingerprint
 // If user is null, returns own fingerprint
 multiParty.genFingerprint = function(user) {
 	var key
