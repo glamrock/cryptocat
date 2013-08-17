@@ -18,6 +18,9 @@ Also available from the [Chrome Web Store](https://chrome.google.com/webstore/de
 Run `make firefox` to build a Mozilla Firefox-loadable .xpi extension (or just .zip the directory and change the extension to .xpi.)  
 Also available from [Mozilla Firefox Addons](https://addons.mozilla.org/en-US/firefox/addon/cryptocat/).  
 
+###Opera
+Run `make opera` to build an Opera-compatible .nex extension (or just .zip the directory and change the extension to .nex)
+
 ###Apple Safari
 Apple's model makes an automated build process difficult.  
 Also available from [Cryptocat](https://crypto.cat/get/cryptocat.safariextz).
