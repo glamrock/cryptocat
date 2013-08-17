@@ -4,6 +4,7 @@ Cryptocat is an experimental browser-based chat client for easy to use, encrypte
 
 ## Experimental Status
 [![Build Status](https://secure.travis-ci.org/cryptocat/cryptocat.png?branch=master)](http://travis-ci.org/cryptocat/cryptocat)  
+**Git repository branches are in-development, nightly builds!** They may not work at all. For stable usable builds, check the [releases](https://github.com/cryptocat/cryptocat/releases) section.  
 
 Cryptocat is still under development. Only use it for experimentation! We've had quite a few serious bugs in the past couple of years. [Reports are available on our blog](https://blog.crypto.cat/category/security/).
 
