@@ -321,9 +321,17 @@ Cryptocat.fileTransferError = function(sid) {
 	})
 }
 
+
+//Update the title tag
+//check is false on entry to the room and up responing to others
+Cryptocat.titleBarUpdate = function(sender, check){
+	(check === true) ? $('title').text('Cryptocat - '+Cryptocat.conversationName) : $('title').text(Cryptocat.conversationName + " - " +sender+" says ...");	
+}
+
 // Add a `message` from `sender` to the `conversation` display and log.
 // `type` can be 'file', 'composing' or 'message'.
 Cryptocat.addToConversation = function(message, sender, conversation, type) {
+
 	if (!message.length && (type !== 'composing')) { return false }
 	if (Cryptocat.blockedUsers.indexOf(sender) >= 0) { return false }
 	initiateConversation(conversation)
@@ -340,7 +348,8 @@ Cryptocat.addToConversation = function(message, sender, conversation, type) {
 		if (!isFocused && (type !== 'composing') && desktopNotifications) {
 			desktopNotification('img/keygen.gif', sender, message, 0x1337)
 		}
-		message = Strophe.xmlescape(message)
+		message = Strophe.xmlescape(message);
+		this.titleBarUpdate(sender, false);
 		if (message.match(Cryptocat.myNickname)) {
 			var nickRegEx = new RegExp('(((?!&).{1})|^)' + Cryptocat.myNickname + '(((?!;).{1})|$)', 'g')
 			message = message.replace(nickRegEx, '<span class="nickHighlight">$&</span>')
@@ -515,6 +524,7 @@ function changeNickname(oldNickname, newNickname) {
 
 // Handle incoming messages from the XMPP server.
 function handleMessage(message) {
+
 	var nickname = cleanNickname($(message).attr('from'))
 	var body = $(message).find('body').text()
 	var type = $(message).attr('type')
@@ -565,6 +575,7 @@ function handleMessage(message) {
 
 // Handle incoming presence updates from the XMPP server.
 function handlePresence(presence) {
+
 	var nickname = cleanNickname($(presence).attr('from'))
 	// If invalid nickname, do not process
 	if ($(presence).attr('type') === 'error') {
@@ -966,10 +977,12 @@ $('#myInfo').click(function() {
 // Desktop notifications button.
 var firefox = navigator.userAgent.match('Firefox\/(.*)')
 if (!window.webkitNotifications && (firefox && ((firefox[1] | 0) < 22))) {
+	
 	$('#notifications').remove()
 }
 else {
 	$('#notifications').click(function() {
+
 		if ($(this).attr('src') === 'img/noNotifications.png') {
 			$(this).attr('src', 'img/notifications.png')
 			$(this).attr('alt', Cryptocat.language['chatWindow']['desktopNotificationsOn'])
@@ -1299,13 +1312,16 @@ function connected() {
 	$('.logo').animate({'margin': '-11px 5px 0 0'})
 	$('#loginForm').fadeOut(200, function() {
 		$('#conversationInfo').fadeIn()
+		Cryptocat.titleBarUpdate(null, true);
 		bindBuddyClick('main-Conversation')
 		$('#buddy-main-Conversation').click()
 		$('#conversationWrapper').fadeIn()
 		$('#optionButtons').fadeIn()
 		$('#footer').delay(200).animate({'height': '60px'}, function() {
 			$('#userInput').fadeIn(200, function() {
-				$('#userInputText').focus()
+				$('#userInputText').focus(function(){
+					Cryptocat.titleBarUpdate(null, true);
+				})
 			})
 		})
 		$('#buddyWrapper').slideDown()
