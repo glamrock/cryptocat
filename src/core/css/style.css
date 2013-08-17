@@ -502,6 +502,17 @@ DIALOG BOX
     margin: -33px 20px 0px 0;
     border-radius: 5px 0 5px 5px;
     font-size: 1.2em;
+	background: #97CEEC;
+	border: 1px solid #97CEEC;
+}
+
+#authVerified {
+    text-align: center;
+    font-size: 1.6em;
+    color: #FFF;
+    vertical-align: 40px;
+    text-shadow: #FFF;
+	display: none;
 }
 
 #dialogBox #fileInfoField {
