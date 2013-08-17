@@ -132,7 +132,6 @@ function showAuthenticated(nickname, speed) {
 // Handle SMP callback
 var smcb = function(nickname) {
 	return function(type, data) {
-		var html
 		switch(type) {
 			case 'question':
 				smpQuestion(nickname, data)
