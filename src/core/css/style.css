@@ -701,6 +701,7 @@ CONVERSATION WINDOW
 	margin-bottom: 15px;
 	font-size: 1em;
 	max-width: 92.0%;
+	white-space: pre-wrap;
 }
 
 .line2 {
