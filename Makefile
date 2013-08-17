@@ -1,11 +1,11 @@
 chrome:
-	@mkdir --parent release
+	@mkdir -p release
 	@rm -f release/cryptocat.chrome.zip
 	@cd src/core/ && zip -q -r9 ../../release/cryptocat.chrome.zip * -x "*/\.*" -x "\.*"
 	@/bin/echo "[Cryptocat] Chrome build available in release/"
 
 firefox:
-	@mkdir --parent release
+	@mkdir -p release
 	@rm -f release/cryptocat.firefox.xpi
 	@mkdir src/firefox/chrome/content/data/
 	@cp -r src/core/* src/firefox/chrome/content/data/
