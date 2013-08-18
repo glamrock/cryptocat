@@ -170,7 +170,7 @@ function buildConversationInfo(conversation) {
 // Switches the currently active conversation to `buddy'
 function switchConversation(buddy) {
 	if ($('#buddy-' + buddy).attr('status') !== 'offline') {
-		$('#' + buddy).animate({'background-color': '#151520'})
+		$('#' + buddy).animate({'background-color': '#97CEEC'})
 	}
 	if (buddy !== 'main-Conversation') {
 		$('#buddy-' + buddy).css('background-image', 'none')
@@ -711,7 +711,6 @@ function bindBuddyClick(nickname) {
 		initiateConversation(currentConversation)
 		switchConversation(currentConversation)
 		$('.line1, .line2, .line3').addClass('visibleLine')
-		$(this).animate({'background-color': '#97CEEC'})
 		if (($(this).prev().attr('id') === 'buddiesOnline')
 			|| (($(this).prev().attr('id') === 'buddiesAway')
 			&& $('#buddiesOnline').next().attr('id') === 'buddiesAway')) {
