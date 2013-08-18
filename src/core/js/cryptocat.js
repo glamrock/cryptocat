@@ -180,14 +180,21 @@ function switchConversation(buddy) {
 	bindTimestamps()
 	scrollDownConversation(0, false)
 	$('#userInputText').focus()
+	$('#buddy-' + buddy).animate({'background-color': '#97CEEC'})
+	if (($('#buddy-' + buddy).prev().attr('id') === 'buddiesOnline')
+		|| (($('#buddy-' + buddy).prev().attr('id') === 'buddiesAway')
+		&& $('#buddiesOnline').next().attr('id') === 'buddiesAway')) {
+		$('#buddy-' + buddy).insertAfter('#currentConversation')
+	}
+	else {
+		$('#buddy-' + buddy).insertAfter('#currentConversation').slideDown(100)
+	}
 	// Clean up finished conversations.
 	$('#buddyList div').each(function() {
 		if (($(this).attr('id') !== ('buddy-' + currentConversation))
 			&& ($(this).css('background-image') === 'none')
 			&& ($(this).attr('status') === 'offline')) {
-			$(this).slideUp(500, function() {
-				$(this).remove()
-			})
+			$(this).slideUp(500, function() { $('#' + buddy).remove() })
 		}
 	})
 }
@@ -685,7 +692,7 @@ function handlePresence(presence) {
 // Bind buddy click actions. Used internally.
 function bindBuddyClick(nickname) {
 	$('#buddy-' + nickname).click(function() {
-		$(this).removeClass('pulsing')
+		$(this).removeClass('newMessage')
 		if ($(this).prev().attr('id') === 'currentConversation') {
 			$('#userInputText').focus()
 			return true
@@ -711,15 +718,6 @@ function bindBuddyClick(nickname) {
 		initiateConversation(currentConversation)
 		switchConversation(currentConversation)
 		$('.line1, .line2, .line3').addClass('visibleLine')
-		$(this).animate({'background-color': '#97CEEC'})
-		if (($(this).prev().attr('id') === 'buddiesOnline')
-			|| (($(this).prev().attr('id') === 'buddiesAway')
-			&& $('#buddiesOnline').next().attr('id') === 'buddiesAway')) {
-			$(this).insertAfter('#currentConversation')
-		}
-		else {
-			$(this).insertAfter('#currentConversation').slideDown(100)
-		}
 	})
 }
 
