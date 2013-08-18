@@ -53,3 +53,14 @@ End video chat
 Cancel
 Block
 Unblock
+Authenticate
+Verify this user's identity by asking a secret question. Answers must match exactly!
+Secret question
+Secret answer
+Ask
+Asking...
+Failed
+Identity verified.
+(NICKNAME) wants to verify your identity. Please answer the below secret question to authenticate yourself:
+Your answer must exactly match the one given by (NICKNAME).
+Answer

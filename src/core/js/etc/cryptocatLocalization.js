@@ -111,7 +111,19 @@ Cryptocat.Language.buildObject = function(locale, language) {
 			'startVideoChat': language[i++],
 			'endVideoChat': language[i++],
 			'videoChatQuery': language[i++],
-			'cancel': language[i++]
+			'cancel': language[i++],
+			'block': language[i++],
+			'unblock': language[i++],
+			'authenticate': language[i++],
+			'verifyUserIdentity': language[i++],
+			'secretQuestion': language[i++],
+			'secretAnswer': language[i++],
+			'ask': language[i++],
+			'asking': language[i++],
+			'failed': language[i++],
+			'identityVerified': language[i++],
+			'authRequest': language[i++],
+			'answerMustMatch': language[i++]
 		}
 	}
 	var decodeFileSize = function (str) { return str.replace('(SIZE)', (Cryptocat.fileSize / 1024)) }

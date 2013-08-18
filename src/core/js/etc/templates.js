@@ -14,19 +14,19 @@ Cryptocat.templates = {
 		+ '<br />{{groupFingerprint}}<br /><span id="multiPartyFingerprint"></span>'
 		+ '</div>'
 		+ '<div id="authInfo"><h2>Authenticate</h2>'
-		+ '<p>Verify this user\'s identity by asking a secret question. Answers are case sensitive and must match exactly.</p>'
-		+ '<input type="text" id="authQuestion" placeholder="Secret question" />'
-		+ '<input type="text" id="authAnswer" placeholder="Secret answer" />'
-		+ '<input id="authSubmit" type="button" value="Ask" />',
-
-	authWrap: '<div id="smpAuth">'
-		+ '<div class="title">{{authWrapTitle}}</div>{{&html}}</div>',
-
-	authDialog: '<p>Trust? <span id="smpTrust">{{trust}}</span></p>'
-		+ '<div><p>(optional) Question?</p>'
-		+ '<input type="text" name="smpQuestion" /></div>'
-		+ '<div><p>Secret:</p> <input type="password" name="smpSecret" /></div>'
-		+ '<div><input type="submit" name="submit" value="Send" /></div>',
+		+ '<p>Verify this user\'s identity by asking a secret question. Answers must match exactly!</p>'
+		+ '<form><input type="text" id="authQuestion" placeholder="Secret question" maxlength="64" />'
+		+ '<input type="text" id="authAnswer" placeholder="Secret answer" maxlength="64" />'
+		+ '<input id="authSubmit" type="submit" value="Ask" /></form>'
+		+ '<p id="authVerified">Identity verified.</p>',
+		
+	authRequest: '<div class="title">Authenticate</div>'
+		+ '<p>{{nickname}} wants to verify your identity.'
+		+ ' Please answer the below secret question to authenticate yourself:<br />'
+		+ '<strong>{{question}}</strong><br /><br />'
+		+ '<form id="authReplyForm"><input id="authReply" type="text" placeholder="Secret answer" maxlength="64" />'
+		+ '<input id="authReplySubmit" type="submit" value="Answer" /></form></p>'
+		+ '<p>Your answer must exactly match the one given by {{nickname}}.</p>',
 
 	sendFile: '<div class="title">{{sendEncryptedFile}}</div>'
 		+ '<input type="file" id="fileSelector" name="file[]" />'

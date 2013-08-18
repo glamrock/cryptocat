@@ -7,6 +7,7 @@ Cryptocat.chunkSize = 64511 // Size in which file chunks are split, in bytes.
 
 Cryptocat.fileKeys = {}
 Cryptocat.blockedUsers = []
+Cryptocat.authenticatedUsers = []
 Cryptocat.connection = null
 Cryptocat.domain = null
 Cryptocat.conferenceServer = null
@@ -112,25 +113,44 @@ var iocb = function(buddy) {
 	}
 }
 
+// Modify the "Display Info" dialog to show that a user is authenticated.
+// `speed` is animation speed.
+function showAuthenticated(nickname, speed) {
+	$('#authInfo').children().not('#authVerified')
+		.fadeOut(speed, function() { $(this).remove() })
+	window.setTimeout(function() {
+		$('#authInfo').animate({
+			'height': 44,
+			'background-color': '#97CEEC',
+			'margin-top': '15px'
+		}, speed, function() {
+			$('#authVerified').fadeIn(speed)
+		})
+	}, speed)
+}
+
 // Handle SMP callback
 var smcb = function(nickname) {
 	return function(type, data) {
-		var html
 		switch(type) {
 			case 'question':
 				smpQuestion(nickname, data)
 				break
 			case 'trust':
-				// smp completed
-				html = otrKeys[nickname].trust
-					? 'Successfully authenticated '
-					: 'Failed to authenticate '
-				html = Mustache.render(
-					Cryptocat.templates.authWrap, {
-						authWrapTitle: 'Authenticate ' + nickname,
-						html: '<p>' + html + nickname + '.</p>'
-					})
-				dialogBox(html, 340, 1)
+				if (otrKeys[nickname].trust) {
+					Cryptocat.authenticatedUsers.push(nickname)
+					if ($('#authInfo').length) {
+						showAuthenticated(nickname, 200)
+						$('#dialogBox').animate({'height': 250})
+					}
+				}
+				else {
+					if ($('#authInfo').length) {
+						$('#authSubmit').val('Failed').animate({
+							'background-color': '#F00'
+						})
+					}
+				}
 				break
 		}
 	}
@@ -150,7 +170,7 @@ function buildConversationInfo(conversation) {
 // Switches the currently active conversation to `buddy'
 function switchConversation(buddy) {
 	if ($('#buddy-' + buddy).attr('status') !== 'offline') {
-		$('#' + buddy).animate({'backgroundColor': '#151520'})
+		$('#' + buddy).animate({'background-color': '#151520'})
 	}
 	if (buddy !== 'main-Conversation') {
 		$('#buddy-' + buddy).css('background-image', 'none')
@@ -179,7 +199,7 @@ function loginFail(message) {
 	$('#bubble').animate({'left': '+=5px'}, 130)
 		.animate({'left': '-=10px'}, 130)
 		.animate({'left': '+=5px'}, 130)
-	$('#loginInfo').animate({'backgroundColor': '#E93028'}, 200)
+	$('#loginInfo').animate({'background-color': '#E93028'}, 200)
 }
 
 // Simply shortens a string `string` to length `length.
@@ -317,7 +337,7 @@ Cryptocat.fileTransferError = function(sid) {
 		'borderColor': '#F00'
 	})
 	$('[file=' + sid + ']').find('.fileProgressBarFill').animate({
-		'backgroundColor': '#F00'
+		'background-color': '#F00'
 	})
 }
 
@@ -402,11 +422,8 @@ function bindTimestamps() {
 }
 
 function iconNotify(conversation) {
-	var backgroundColor = $('#buddy-' + conversation).css('backgroundColor')
 	$('#buddy-' + conversation).css('background-image', 'url("img/newMessage.png")')
-	$('#buddy-' + conversation)
-		.animate({'backgroundColor': '#A7D8F7'})
-		.animate({'backgroundColor': backgroundColor})
+	$('#buddy-' + conversation).addClass('newMessage')
 }
 
 function desktopNotification(image, title, body, timeout) {
@@ -485,6 +502,7 @@ function removeBuddy(nickname) {
 	// Delete their encryption keys.
 	delete otrKeys[nickname]
 	multiParty.removeKeys(nickname)
+	Cryptocat.authenticatedUsers.splice(Cryptocat.authenticatedUsers.indexOf(nickname), 1)
 	if (($('#buddy-' + nickname).length !== 0)
 		&& ($('#buddy-' + nickname).attr('status') !== 'offline')) {
 		if ((currentConversation !== nickname)
@@ -497,7 +515,7 @@ function removeBuddy(nickname) {
 			$('#buddy-' + nickname).attr('status', 'offline')
 			$('#buddy-' + nickname).animate({
 				'color': '#BBB',
-				'backgroundColor': '#222',
+				'background-color': '#222',
 				'borderBottom': 'none'
 			})
 		}
@@ -667,6 +685,7 @@ function handlePresence(presence) {
 // Bind buddy click actions. Used internally.
 function bindBuddyClick(nickname) {
 	$('#buddy-' + nickname).click(function() {
+		$(this).removeClass('pulsing')
 		if ($(this).prev().attr('id') === 'currentConversation') {
 			$('#userInputText').focus()
 			return true
@@ -680,11 +699,11 @@ function bindBuddyClick(nickname) {
 		if (currentConversation) {
 			var previousConversation = currentConversation
 			if ($('#buddy-' + previousConversation).attr('status') === 'online') {
-				$('#buddy-' + previousConversation).animate({'backgroundColor': '#151520'})
+				$('#buddy-' + previousConversation).animate({'background-color': '#151520'})
 				$('#buddy-' + previousConversation).insertAfter('#buddiesOnline').slideDown(100)
 			}
 			else if ($('#buddy-' + previousConversation).attr('status') === 'away') {
-				$('#buddy-' + previousConversation).animate({'backgroundColor': '#222'})
+				$('#buddy-' + previousConversation).animate({'background-color': '#222'})
 				$('#buddy-' + previousConversation).insertAfter('#buddiesAway').slideDown(100)
 			}
 		}
@@ -692,7 +711,7 @@ function bindBuddyClick(nickname) {
 		initiateConversation(currentConversation)
 		switchConversation(currentConversation)
 		$('.line1, .line2, .line3').addClass('visibleLine')
-		$(this).animate({'backgroundColor': '#97CEEC'})
+		$(this).animate({'background-color': '#97CEEC'})
 		if (($(this).prev().attr('id') === 'buddiesOnline')
 			|| (($(this).prev().attr('id') === 'buddiesAway')
 			&& $('#buddiesOnline').next().attr('id') === 'buddiesAway')) {
@@ -711,7 +730,7 @@ function sendFile(nickname) {
 		fileTransferInfo: Cryptocat.language['chatWindow']['fileTransferInfo']
 	})
 	ensureOTRdialog(nickname, false, function() {
-		dialogBox(sendFileDialog, 240, 1)
+		dialogBox(sendFileDialog, 240, true)
 		$('#fileSelector').change(function(e) {
 			e.stopPropagation()
 			if (this.files) {
@@ -769,7 +788,7 @@ function ensureOTRdialog(nickname, close, cb) {
 		return cb()
 	}
 	var progressDialog = '<div id="progressBar"><div id="fill"></div></div>'
-	dialogBox(progressDialog, 240, 1)
+	dialogBox(progressDialog, 240, true)
 	$('#progressBar').css('margin', '70px auto 0 auto')
 	$('#fill').animate({'width': '100%', 'opacity': '1'}, 10000, 'linear')
 	// add some state for status callback
@@ -777,7 +796,7 @@ function ensureOTRdialog(nickname, close, cb) {
 	otrKeys[nickname].sendQueryMsg()
 }
 
-// Display buddy information, including fingerprints etc.
+// Display buddy information, including fingerprints and authentication.
 function displayInfo(nickname) {
 	nickname = Strophe.xmlescape(nickname)
 	var infoDialog = Mustache.render(Cryptocat.templates.infoDialog, {
@@ -786,45 +805,43 @@ function displayInfo(nickname) {
 		groupFingerprint: Cryptocat.language['chatWindow']['groupFingerprint']
 	})
 	ensureOTRdialog(nickname, false, function() {
-		dialogBox(infoDialog, 340, 1)
+		if (Cryptocat.authenticatedUsers.indexOf(nickname) >= 0) {
+			dialogBox(infoDialog, 250, true)
+			showAuthenticated(nickname, 0)
+		}
+		else {
+			dialogBox(infoDialog, 340, true)
+		}
 		$('#otrFingerprint').text(getFingerprint(nickname, 1))
 		$('#multiPartyFingerprint').text(getFingerprint(nickname, 0))
+		$('#authSubmit').unbind('click').bind('click', function(e) {
+			e.preventDefault()
+			var question = $('#authQuestion').val()
+			var answer = $('#authAnswer').val().toLowerCase().replace(/(\s|\.|\,|\'|\"|\;|\?|\!)/, '')
+			$('#authSubmit').val('Asking...')
+			$('#authSubmit').unbind('click').bind('click', function(e) {
+				e.preventDefault()
+			})
+			otrKeys[nickname].smpSecret(answer, question)
+		})
 	})
 }
 
 // Receive an SMP question
 function smpQuestion(nickname, question) {
-	var msg = nickname + ' requests your authentication secret.'
-	if (question) {
-		msg += ' They provided a question: ' + question
-	}
-	var secret = window.prompt(msg)
-	otrKeys[nickname].smpSecret(secret)
-}
-
-// Display SMP authentication
-/* function displayAuth(nickname) {
-	ensureOTRdialog(nickname, false, function() {
-		var authDialog = Mustache.render(
-			Cryptocat.templates.authDialog,
-			{ trust: otrKeys[nickname].trust })
-		authDialog = Mustache.render(
-			Cryptocat.templates.authWrap, {
-				authWrapTitle: 'Authenticate ' + nickname,
-				html: authDialog
-			})
-		dialogBox(authDialog, 240, 1)
-		$('#smpAuth input[name=submit]')
-			.unbind('click')
-			.bind('click', function(e) {
-				e.preventDefault()
-				var question = $('#smpAuth input[name=smpQuestion]').val()
-				var secret = $('#smpAuth input[name=smpSecret]').val()
-				$('#dialogBoxClose').click()
-				otrKeys[nickname].smpSecret(secret, question)
-			})
+	$('#dialogBoxClose').click()
+	dialogBox(Mustache.render(Cryptocat.templates.authRequest, {
+		nickname: nickname,
+		question: question
+	}), 240, true, function() {
+		$('#authReplySubmit').unbind('click').bind('click', function(e) {
+			e.preventDefault()
+			var answer = $('#authReply').val().toLowerCase().replace(/(\s|\.|\,|\'|\"|\;|\?|\!)/, '')
+			otrKeys[nickname].smpSecret(answer)
+			$('#dialogBoxClose').click()
+		})
 	})
-} */
+}
 
 // Bind buddy menus for new buddies. Used internally.
 function bindBuddyMenu(nickname) {
@@ -1186,7 +1203,7 @@ $('#loginForm').submit(function() {
 		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" '
 			+ 'alt="" /><p id="progressInfo"><span>'
 			+ Cryptocat.language['loginMessage']['generatingKeys'] + '</span></p>'
-		dialogBox(progressForm, 240, 0, function() {
+		dialogBox(progressForm, 240, false, function() {
 			// We need to pass the web worker a pre-generated seed.
 			keyGenerator.postMessage(Cryptocat.generateSeed())
 			// Key storage currently disabled as we are not yet sure if this is safe to do.
@@ -1237,7 +1254,7 @@ function connectXMPP(username, password) {
 			Cryptocat.connection = new Strophe.Connection(Cryptocat.bosh)
 			Cryptocat.connection.connect(username + '@' + Cryptocat.domain, password, function(status) {
 				if (status === Strophe.Status.CONNECTING) {
-					$('#loginInfo').animate({'backgroundColor': '#97CEEC'}, 200)
+					$('#loginInfo').animate({'background-color': '#97CEEC'}, 200)
 					$('#loginInfo').text(Cryptocat.language['loginMessage']['connecting'])
 				}
 				else if (status === Strophe.Status.CONNECTED) {
@@ -1264,7 +1281,7 @@ function connectXMPP(username, password) {
 				else if (status === Strophe.Status.CONNFAIL) {
 					if (loginError) {
 						$('#loginInfo').text(Cryptocat.language['loginMessage']['connectionFailed'])
-						$('#loginInfo').animate({'backgroundColor': '#E93028'}, 200)
+						$('#loginInfo').animate({'background-color': '#E93028'}, 200)
 					}
 					logout()
 				}
@@ -1295,7 +1312,7 @@ function connected() {
 	$('#loginInfo').text('✓')
 	$('#info').fadeOut(200)
 	$('#loginOptions,#languages,#customServerDialog,#version,#logoText,#loginInfo').fadeOut(200)
-	$('#header').animate({'backgroundColor': '#151520'})
+	$('#header').animate({'background-color': '#151520'})
 	$('.logo').animate({'margin': '-11px 5px 0 0'})
 	$('#loginForm').fadeOut(200, function() {
 		$('#conversationInfo').fadeIn()
@@ -1322,7 +1339,7 @@ function logout() {
 	Cryptocat.connection.muc.leave(Cryptocat.conversationName + '@' + Cryptocat.conferenceServer)
 	Cryptocat.connection.disconnect()
 	$('#conversationInfo,#optionButtons').fadeOut()
-	$('#header').animate({'backgroundColor': 'transparent'})
+	$('#header').animate({'background-color': 'transparent'})
 	$('.logo').animate({'margin': '-5px 5px 0 5px'})
 	$('#buddyWrapper').slideUp()
 	$('.buddy').unbind('click')
@@ -1334,7 +1351,7 @@ function logout() {
 		$('#conversationWrapper').fadeOut(function() {
 			$('#dialogBoxClose').click()
 			if (!loginError) {
-				$('#loginInfo').animate({'backgroundColor': '#97CEEC'}, 200)
+				$('#loginInfo').animate({'background-color': '#97CEEC'}, 200)
 				$('#loginInfo').text(Cryptocat.language['loginMessage']['thankYouUsing'])
 			}
 			$('#buddyList div').each(function() {

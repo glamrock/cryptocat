@@ -9,7 +9,7 @@ Origin: http://code.google.com/p/crypto-js/
 License: BSD-2-Clause  
 
 ##EventEmitter
-Origin: https://github.com/Wolfy87/EventEmitter/
+Origin: https://github.com/Wolfy87/EventEmitter/  
 License: MIT  
 
 ##jQuery
@@ -21,7 +21,7 @@ Origin: https://github.com/jquery/jquery-color/
 License: MIT  
 
 ##jQuery.qTip2
-Origin: https://github.com/craga89/qtip2/
+Origin: https://github.com/craga89/qtip2/  
 License: MIT, GPL  
 
 ##Mustache.js
