@@ -423,7 +423,7 @@ function bindTimestamps() {
 
 function iconNotify(conversation) {
 	$('#buddy-' + conversation).css('background-image', 'url("img/newMessage.png")')
-	$('#buddy-' + conversation).addClass('pulsing')
+	$('#buddy-' + conversation).addClass('newMessage')
 }
 
 function desktopNotification(image, title, body, timeout) {

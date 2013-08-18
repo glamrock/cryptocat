@@ -434,7 +434,7 @@ BUDDY LIST
 	100% {background-color: #000000;}
 }
 
-.pulsing {
+.newMessage {
 	-webkit-animation: pulse 2s infinite;
 	-moz-animation: pulse 2s infinite;
 	-o-animation: pulse 2s infinite;
