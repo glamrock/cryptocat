@@ -6,7 +6,7 @@ Cryptocat is an experimental browser-based chat client for easy to use, encrypte
 [![Build Status](https://secure.travis-ci.org/cryptocat/cryptocat.png?branch=master)](http://travis-ci.org/cryptocat/cryptocat)  
 **Git repository branches are in-development, nightly builds!** They may not work at all. For stable usable builds, check the [releases](https://github.com/cryptocat/cryptocat/releases) section.  
 
-Cryptocat is still under development. Only use it for experimentation! We've had quite a few serious bugs in the past couple of years. [Reports are available on our blog](https://blog.crypto.cat/category/security/). 
+Cryptocat is still under development. Only use it for experimentation! We've had quite a few serious bugs in the past couple of years. [Reports are available on our blog](https://blog.crypto.cat/category/security/).
 
 ##Platforms
 
@@ -17,9 +17,6 @@ Also available from the [Chrome Web Store](https://chrome.google.com/webstore/de
 ###Mozilla Firefox
 Run `make firefox` to build a Mozilla Firefox-loadable .xpi extension (or just .zip the directory and change the extension to .xpi.)  
 Also available from [Mozilla Firefox Addons](https://addons.mozilla.org/en-US/firefox/addon/cryptocat/).  
-
-###Opera
-Run `make opera` to build an Opera-compatible .nex extension (or just .zip the directory and change the extension to .nex)
 
 ###Apple Safari
 Apple's model makes an automated build process difficult.  
