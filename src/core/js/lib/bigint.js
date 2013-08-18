@@ -1555,7 +1555,7 @@
     var k=s.length;
     var base=256;
 
-    x=int2bigInt(0,base*k,0);
+    x=int2bigInt(0,8*k,0);
     for (i=0;i<k;i++) {
       d=s.charCodeAt(k-1-i);
       multInt_(x,base);
