@@ -360,7 +360,21 @@ BUDDY LIST
 	text-align: left;
 	cursor: default;
 	z-index: 15;
+	transition: background-color 0.5s;
 }
+.buddy[status=away] {
+	color: #778;
+}
+.buddy[status=offline] {
+	background-color: #222;
+	color: #BBB;
+	borderBottom: none;
+}
+
+.buddy.currentConversation {
+	background-color: #97CEEC;
+}
+
 
 .buddyMenu {
 	position: relative;
