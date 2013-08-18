@@ -6,7 +6,7 @@ Cryptocat.fileSize = 5120 // Maximum encrypted file sharing size, in kilobytes.
 Cryptocat.chunkSize = 64511 // Size in which file chunks are split, in bytes.
 
 Cryptocat.fileKeys = {}
-Cryptocat.blockedUsers = []
+Cryptocat.ignoredUsers = []
 Cryptocat.authenticatedUsers = []
 Cryptocat.connection = null
 Cryptocat.domain = null
@@ -357,7 +357,7 @@ Cryptocat.fileTransferError = function(sid) {
 // `type` can be 'file', 'composing' or 'message'.
 Cryptocat.addToConversation = function(message, sender, conversation, type) {
 	if (!message.length && (type !== 'composing')) { return false }
-	if (Cryptocat.blockedUsers.indexOf(sender) >= 0) { return false }
+	if (Cryptocat.ignoredUsers.indexOf(sender) >= 0) { return false }
 	initiateConversation(conversation)
 	var lineDecoration
 	if (sender === Cryptocat.myNickname) {
@@ -847,12 +847,12 @@ function bindBuddyMenu(nickname) {
 			$('#menu-' + nickname).attr('status', 'active')
 			var buddyMenuContents = '<div class="buddyMenuContents" id="' + nickname + '-contents">'
 			$(this).css('background-image', 'url("img/up.png")')
-			var blockAction
-			if (Cryptocat.blockedUsers.indexOf(nickname) >= 0) {
-				blockAction = 'Unblock'
+			var ignoreAction
+			if (Cryptocat.ignoredUsers.indexOf(nickname) >= 0) {
+				ignoreAction = 'Unigonre'
 			}
 			else {
-				blockAction = 'Block'
+				ignoreAction = 'Ignore'
 			}
 			$('#buddy-' + nickname).delay(10).animate({'height': '75px'}, 180, function() {
 				$(this).append(buddyMenuContents)
@@ -860,7 +860,7 @@ function bindBuddyMenu(nickname) {
 					Mustache.render(Cryptocat.templates.buddyMenu, {
 						sendEncryptedFile: Cryptocat.language['chatWindow']['sendEncryptedFile'],
 						displayInfo: Cryptocat.language['chatWindow']['displayInfo'],
-						block: blockAction
+						ignore: ignoreAction
 					})
 				)
 				$('#' + nickname + '-contents').fadeIn(200, function() {
@@ -876,11 +876,11 @@ function bindBuddyMenu(nickname) {
 					})
 					$('.option3').click(function(e) {
 						e.stopPropagation()
-						if (blockAction === 'Block') {
-							Cryptocat.blockedUsers.push(nickname)
+						if (ignoreAction === 'Ignore') {
+							Cryptocat.ignoredUsers.push(nickname)
 						}
 						else {
-							Cryptocat.blockedUsers.splice(Cryptocat.blockedUsers.indexOf(nickname), 1)
+							Cryptocat.ignoredUsers.splice(Cryptocat.ignoredUsers.indexOf(nickname), 1)
 						}
 						$('#menu-' + nickname).click()
 					})

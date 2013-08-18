@@ -195,13 +195,6 @@ multiParty.sendMessage = function(message) {
 
 	//Sort recipients
 	var sortedRecipients = Object.keys(sharedSecrets).sort()
-	// Do not send messages to blocked users.
-	for (var b in Cryptocat.blockedUsers) {
-		if (sortedRecipients.indexOf(Cryptocat.blockedUsers[b]) >= 0) {
-			sortedRecipients.splice(sortedRecipients.indexOf(Cryptocat.blockedUsers[b]), 1)
-		}
-	}
-
 	var hmac = CryptoJS.lib.WordArray.create()
 
 	//For each recipient
