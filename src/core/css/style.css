@@ -909,3 +909,43 @@ EMOTICONS
 .eWinkTongue { background-image: url('../img/emoticon/winkTongue.png') }
 .eHappy { background-image: url('../img/emoticon/happy.png') }
 .eShut { background-image: url('../img/emoticon/shut.png') }
+
+
+/*
+-------------------
+Scroll Button UI
+-------------------
+*/
+
+#scrollButtons
+{
+	position: absolute;
+	top: 6px;
+	right: 18px;
+	height: 32px;
+	width: 14px;
+	cursor: pointer;
+	z-index: 999;
+}
+
+div.scollButtonContainer
+{
+	background-color: #76BDE5;
+	opacity:0.5;
+	margin: 2.5px 0 0 2px;
+}
+
+.scollButtonContainer:hover
+{
+	opacity:1.0;
+}
+
+#scrollButtonUp
+{
+	background-image: url("../img/up.png");
+}
+
+#scrollButtonDown
+{
+	
+}

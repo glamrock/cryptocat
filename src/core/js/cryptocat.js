@@ -1300,6 +1300,20 @@ function connectXMPP(username, password) {
 	})
 }
 
+function injectScrollButtons() {
+var scrollbuttons = Mustache.render(Cryptocat.templates.scrollbuttons);
+if($('#scrollButtons').length === 0){$('#conversationWrapper').append(scrollbuttons)}
+	
+$('#scrollButtonUp').click(function(){
+			
+			$('#conversationWindow').animate({scrollTop: $("#conversationWindow").scrollTop()-500}, 500);
+			
+		});
+$('#scrollButtonDown').click(function(){
+			$('#conversationWindow').animate({scrollTop: $("#conversationWindow").scrollTop()+500}, 500);
+		});
+}
+
 // Executes on successfully completed XMPP connection.
 function connected() {
 	clearInterval(catFactInterval)
@@ -1313,6 +1327,8 @@ function connected() {
 	$('#loginForm').fadeOut(200, function() {
 		$('#conversationInfo').fadeIn()
 		Cryptocat.titleBarUpdate(null, true);
+		injectScrollButtons();
+		
 		bindBuddyClick('main-Conversation')
 		$('#buddy-main-Conversation').click()
 		$('#conversationWrapper').fadeIn()
