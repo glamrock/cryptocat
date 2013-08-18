@@ -19,6 +19,13 @@ safari:
 	@cp -R src/safari/* src/cryptocat.safariextension
 	@/bin/echo "[Cryptocat] Safari extension packaged for testing."
 
+opera:
+	@mkdir -p release
+	@rm -f release/cryptocat_opera.nex
+	@cp -r src/core/* src/opera
+	@cd src/opera/ && zip -q -r9 ../../release/cryptocat_opera.nex * -x "*/\.*" -x "\.*"
+	@/bin/echo "[Cryptocat] Opera build available in release/"
+
 mac:
 	@rm -rf release/Cryptocat.app
 	@rm -rf release/cryptocat.mac.zip
