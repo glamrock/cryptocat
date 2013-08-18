@@ -1,0 +1,32 @@
+<<<<<<< HEAD
+.DS_Store
+src/cryptocat.safariextension/*
+src/mac/htdocs/*
+release/
+
+# npm
+node_modules/
+
+# IDE files
+.idea/
+*.iml
+
+src/mac/Cryptocat.xcodeproj/project.xcworkspace/xcuserdata/*
+
+*.xcbkptlist
+=======
+-.DS_Store
+-stz/*
+-src/cryptocat.safariextension/*
+-
+-# npm
+-node_modules/
+-
+-# IDE files
+-.idea/
+-*.iml
+
+.hypnotoad
+.c9revisions
+.top-secret-cat-facts
+>>>>>>> d655aa7cd0218c59f9f5451a713a67124a856db8
