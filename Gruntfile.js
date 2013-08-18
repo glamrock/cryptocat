@@ -56,7 +56,15 @@ module.exports = function (grunt) {
 				jshintrc: '.jshintrc'
 			},
 			files:[
-				'Gruntfile.js'
+				'Gruntfile.js',
+				'src/core/js/cryptocat.js',
+				'src/core/js/lib/multiParty.js',
+				'src/core/js/lib/elliptic.js',
+				'src/core/js/lib/salsa20.js',
+				'src/core/js/etc/*.js',
+				'src/standaloneServer.js',
+				'test/testBase.js',
+				'test/core/js/*.js'
 			]
 		}
 	});
