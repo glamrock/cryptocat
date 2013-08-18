@@ -51,7 +51,7 @@ lint:
 		src/core/js/etc/*.js \
 		src/standaloneServer.js \
 		test/testBase.js \
-		test/core/js/*.js
+		test/core/js/*.js \
 		Gruntfile.js
 
 all: lint tests
