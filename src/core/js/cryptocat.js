@@ -422,7 +422,6 @@ function bindTimestamps() {
 }
 
 function iconNotify(conversation) {
-	var backgroundColor = $('#buddy-' + conversation).css('background-color')
 	$('#buddy-' + conversation).css('background-image', 'url("img/newMessage.png")')
 	$('#buddy-' + conversation).addClass('pulsing')
 }
