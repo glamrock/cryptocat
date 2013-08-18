@@ -424,9 +424,7 @@ function bindTimestamps() {
 function iconNotify(conversation) {
 	var backgroundColor = $('#buddy-' + conversation).css('background-color')
 	$('#buddy-' + conversation).css('background-image', 'url("img/newMessage.png")')
-	$('#buddy-' + conversation)
-		.animate({'background-color': '#A7D8F7'})
-		.animate({'background-color': backgroundColor})
+	$('#buddy-' + conversation).addClass('pulsing')
 }
 
 function desktopNotification(image, title, body, timeout) {
@@ -688,6 +686,7 @@ function handlePresence(presence) {
 // Bind buddy click actions. Used internally.
 function bindBuddyClick(nickname) {
 	$('#buddy-' + nickname).click(function() {
+		$(this).removeClass('pulsing')
 		if ($(this).prev().attr('id') === 'currentConversation') {
 			$('#userInputText').focus()
 			return true

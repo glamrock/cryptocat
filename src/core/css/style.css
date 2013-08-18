@@ -409,6 +409,38 @@ BUDDY LIST
 	background-position: 97% 3px;
 }
 
+/* New message notification stuff */
+@-webkit-keyframes pulse {
+	0% {background-color: #000000;}
+	50% {background-color: #A7D8F7;}
+	100% {background-color: #000000;}
+}
+
+@-moz-keyframes pulse {
+	0% {background-color: #000000;}
+	50% {background-color: #A7D8F7;}
+	100% {background-color: #000000;}
+}
+
+@-o-keyframes pulse {
+	0% {background-color: #000000;}
+	50% {background-color: #A7D8F7;}
+	100% {background-color: #000000;}
+}
+
+@keyframes pulse {
+	0% {background-color: #000000;}
+	50% {background-color: #A7D8F7;}
+	100% {background-color: #000000;}
+}
+
+.pulsing {
+	-webkit-animation: pulse 2s infinite;
+	-moz-animation: pulse 2s infinite;
+	-o-animation: pulse 2s infinite;
+	animation: pulse 2s infinite;
+}
+
 /*
 -------------------
 DIALOG BOX
