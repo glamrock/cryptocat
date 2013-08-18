@@ -864,17 +864,18 @@ function bindBuddyMenu(nickname) {
 					})
 				)
 				$('#' + nickname + '-contents').fadeIn(200, function() {
-					$('.option1').click(function(e) {
+					$('#' + nickname + '-contents').find('.option1').click(function(e) {
 						e.stopPropagation()
 						displayInfo(nickname)
 						$('#menu-' + nickname).click()
+						console.log(nickname)
 					})
-					$('.option2').click(function(e) {
+					$('#' + nickname + '-contents').find('.option2').click(function(e) {
 						e.stopPropagation()
 						sendFile(nickname)
 						$('#menu-' + nickname).click()
 					})
-					$('.option3').click(function(e) {
+					$('#' + nickname + '-contents').find('.option3').click(function(e) {
 						e.stopPropagation()
 						if (ignoreAction === 'Ignore') {
 							Cryptocat.ignoredUsers.push(nickname)
