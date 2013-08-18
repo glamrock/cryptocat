@@ -435,6 +435,13 @@ DIALOG BOX
 	font-family: 'Monda';
 }
 
+#dialogBox [type=text], #dialogBox [type=password], #dialogBox [type=submit] {
+	color: #FFF;
+	float: left;
+	margin: 0 5px 10px 5px;
+	font-size: 1em;
+}
+
 #dialogBoxClose {
 	height: 18px;
 	width: 0;
@@ -510,9 +517,27 @@ DIALOG BOX
     text-align: center;
     font-size: 1.6em;
     color: #FFF;
-    vertical-align: 40px;
     text-shadow: #FFF;
 	display: none;
+}
+
+#authReplyForm {
+    margin: -20px 0 5px 55px;
+}
+
+#authReply {
+    background: #97CEEC;
+    border: none;
+    border-radius: 5px 0 5px 5px;
+    padding: 4px;
+    box-shadow: none;
+    width: 220px;
+}
+
+#authReplySubmit {
+    width: 100px;
+    border-radius: 5px 0 5px 5px;
+    box-shadow: 2px 2px #76BDE5;
 }
 
 #dialogBox #fileInfoField {
@@ -601,16 +626,6 @@ DIALOG BOX
 #dialogBox #fileInfoField {
 	color: #444;
 	font-family: 'Monda'
-}
-
-#dialogBox [type=text], #dialogBox [type=password], #dialogBox [type=submit] {
-	background: #151520;
-	border: 1px solid #222;
-	color: #FFF;
-	float: left;
-	margin: 0 5px 10px 5px;
-	width: 255px;
-	font-size: 1em;
 }
 
 #dialogBox #resetKeysOK {

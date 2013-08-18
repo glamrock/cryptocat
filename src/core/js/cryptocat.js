@@ -120,7 +120,7 @@ function showAuthenticated(nickname, speed) {
 		.fadeOut(speed, function() { $(this).remove() })
 	window.setTimeout(function() {
 		$('#authInfo').animate({
-			'height': 50,
+			'height': 44,
 			'background-color': '#97CEEC',
 			'margin-top': '15px'
 		}, speed, function() {
