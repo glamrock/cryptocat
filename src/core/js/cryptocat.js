@@ -169,9 +169,10 @@ function buildConversationInfo(conversation) {
 
 // Switches the currently active conversation to `buddy'
 function switchConversation(buddy) {
-	if ($('#buddy-' + buddy).attr('status') !== 'offline') {
-		$('#' + buddy).animate({'background-color': '#151520'})
-	}
+	setTimeout(function () {
+		$('#buddy-' + buddy).addClass('currentConversation')
+	}, 1)
+
 	if (buddy !== 'main-Conversation') {
 		$('#buddy-' + buddy).css('background-image', 'none')
 	}
@@ -180,7 +181,6 @@ function switchConversation(buddy) {
 	bindTimestamps()
 	scrollDownConversation(0, false)
 	$('#userInputText').focus()
-	$('#buddy-' + buddy).animate({'background-color': '#97CEEC'})
 	if (($('#buddy-' + buddy).prev().attr('id') === 'buddiesOnline')
 		|| (($('#buddy-' + buddy).prev().attr('id') === 'buddiesAway')
 		&& $('#buddiesOnline').next().attr('id') === 'buddiesAway')) {
@@ -191,10 +191,15 @@ function switchConversation(buddy) {
 	}
 	// Clean up finished conversations.
 	$('#buddyList div').each(function() {
-		if (($(this).attr('id') !== ('buddy-' + currentConversation))
-			&& ($(this).css('background-image') === 'none')
-			&& ($(this).attr('status') === 'offline')) {
-			$(this).slideUp(500, function() { $('#' + buddy).remove() })
+		if ($(this).attr('id') !== ('buddy-' + currentConversation)) {
+			var thisBuddy = $(this)
+			setTimeout(function () {
+				thisBuddy.removeClass('currentConversation')
+			}, 1)
+			if (($(this).css('background-image') === 'none')
+				&& ($(this).attr('status') === 'offline')) {
+				$(this).slideUp(500, function() { $('#' + buddy).remove() })
+			}
 		}
 	})
 }
@@ -520,11 +525,6 @@ function removeBuddy(nickname) {
 		}
 		else {
 			$('#buddy-' + nickname).attr('status', 'offline')
-			$('#buddy-' + nickname).animate({
-				'color': '#BBB',
-				'background-color': '#222',
-				'borderBottom': 'none'
-			})
 		}
 	}
 	buddyNotification(nickname, false)
@@ -667,14 +667,12 @@ function handlePresence(presence) {
 	else if ($(presence).find('show').text() === '' || $(presence).find('show').text() === 'chat') {
 		if ($('#buddy-' + nickname).attr('status') !== 'online') {
 			status = 'online'
-			color = '#FFF'
 			placement = '#buddiesOnline'
 		}
 	}
 	// Handle buddy status change to 'away'.
 	else if ($('#buddy-' + nickname).attr('status') !== 'away') {
 			status = 'away'
-			color = '#778'
 			placement = '#buddiesAway'
 	}
 	// Perform status change.
@@ -706,11 +704,9 @@ function bindBuddyClick(nickname) {
 		if (currentConversation) {
 			var previousConversation = currentConversation
 			if ($('#buddy-' + previousConversation).attr('status') === 'online') {
-				$('#buddy-' + previousConversation).animate({'background-color': '#151520'})
 				$('#buddy-' + previousConversation).insertAfter('#buddiesOnline').slideDown(100)
 			}
 			else if ($('#buddy-' + previousConversation).attr('status') === 'away') {
-				$('#buddy-' + previousConversation).animate({'background-color': '#222'})
 				$('#buddy-' + previousConversation).insertAfter('#buddiesAway').slideDown(100)
 			}
 		}
