@@ -849,7 +849,7 @@ function bindBuddyMenu(nickname) {
 			$(this).css('background-image', 'url("img/up.png")')
 			var ignoreAction
 			if (Cryptocat.ignoredUsers.indexOf(nickname) >= 0) {
-				ignoreAction = 'Unigonre'
+				ignoreAction = 'Unignore'
 			}
 			else {
 				ignoreAction = 'Ignore'
