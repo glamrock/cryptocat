@@ -575,6 +575,7 @@ function handleMessage(message) {
 			$('#composing-' + nickname).parent().fadeOut(100).remove()
 		}
 	}
+	// Check if message is a group chat message.
 	if (type === 'groupchat') {
 		if (!body.length) { return true }
 		body = multiParty.receiveMessage(nickname, Cryptocat.myNickname, body)
@@ -582,6 +583,7 @@ function handleMessage(message) {
 			Cryptocat.addToConversation(body, nickname, 'main-Conversation', 'message')
 		}
 	}
+	// Check if this is a private OTR message.
 	else if (type === 'chat') {
 		otrKeys[nickname].receiveMsg(body)
 	}

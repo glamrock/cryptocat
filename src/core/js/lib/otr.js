@@ -2503,7 +2503,10 @@
         // check for encrypted
         if ( this.REQUIRE_ENCRYPTION ||
              this.msgstate !== CONST.MSGSTATE_PLAINTEXT
-        ) this.error('Received an unencrypted message.')
+        ) {
+			this.error('Received an unencrypted message.')
+			return false
+		  }
 
         // received a plaintext message
         // stop sending the whitespace tag
