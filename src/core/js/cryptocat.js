@@ -841,6 +841,9 @@ function smpQuestion(nickname, question) {
 function bindBuddyMenu(nickname) {
 	nickname = Strophe.xmlescape(nickname)
 	$('#menu-' + nickname).attr('status', 'inactive')
+	if (Cryptocat.ignoredUsers.indexOf(nickname) >= 0) {
+		$('#buddy-' + nickname).addClass('ignored')
+	}
 	$('#menu-' + nickname).click(function(e) {
 		e.stopPropagation()
 		if ($('#menu-' + nickname).attr('status') === 'inactive') {
@@ -879,9 +882,11 @@ function bindBuddyMenu(nickname) {
 						e.stopPropagation()
 						if (ignoreAction === 'Ignore') {
 							Cryptocat.ignoredUsers.push(nickname)
+							$('#buddy-' + nickname).addClass('ignored')
 						}
 						else {
 							Cryptocat.ignoredUsers.splice(Cryptocat.ignoredUsers.indexOf(nickname), 1)
+							$('#buddy-' + nickname).removeClass('ignored')
 						}
 						$('#menu-' + nickname).click()
 					})

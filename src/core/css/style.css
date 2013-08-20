@@ -376,6 +376,10 @@ BUDDY LIST
 }
 
 
+.buddy.ignored span {
+	text-decoration: line-through;
+}
+
 .buddyMenu {
 	position: relative;
 	z-index: 2;
