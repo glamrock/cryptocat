@@ -101,8 +101,9 @@ function initiateConversation(conversation) {
 var uicb = function(buddy) {
 	return function(msg, encrypted) {
 		// drop unencrypted messages
-		if (!encrypted) return
-		Cryptocat.addToConversation(msg, buddy, buddy, 'message')
+		if (encrypted) {
+			Cryptocat.addToConversation(msg, buddy, buddy, 'message')
+		}
 	}
 }
 // Handle outgoing messages.
