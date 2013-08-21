@@ -64,3 +64,5 @@ Identity verified.
 (NICKNAME) wants to verify your identity. Please answer the below secret question to authenticate yourself:
 Your answer must exactly match the one given by (NICKNAME).
 Answer
+Warning: You have received an unreadable message from (NICKNAME). This may indicate an untrustworthy user or messages that failed to be received.
+Warning: Your version of Cryptocat is outdated. Updating to the latest version is strongly recommended! Do not proceed without updating to the latest version.
