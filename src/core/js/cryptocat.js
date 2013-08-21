@@ -99,8 +99,11 @@ function initiateConversation(conversation) {
 // OTR functions:
 // Handle incoming messages.
 var uicb = function(buddy) {
-	return function(msg) {
-		Cryptocat.addToConversation(msg, buddy, buddy, 'message')
+	return function(msg, encrypted) {
+		// drop unencrypted messages
+		if (encrypted) {
+			Cryptocat.addToConversation(msg, buddy, buddy, 'message')
+		}
 	}
 }
 // Handle outgoing messages.
