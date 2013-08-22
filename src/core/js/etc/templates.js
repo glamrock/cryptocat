@@ -42,5 +42,11 @@ Cryptocat.templates = {
 	message: '<div class="line{{lineDecoration}}"><span class="sender" sender="{{sender}}"'
 		+ ' timestamp="{{currentTime}}">{{sender}}</span>{{&message}}</div>',
 
-	composing: '<img src="img/typing.gif" class="typing" id="{{id}}" alt="" />'
+	composing: '<img src="img/typing.gif" class="typing" id="{{id}}" alt="" />',
+	
+	userJoin: '<div class="userJoin"><span class="timestamp">{{currentTime}}</span>'
+		+ '<strong>+</strong>{{nickname}}</div>',
+	
+	userLeave: '<div class="userLeave"><span class="timestamp">{{currentTime}}</span>'
+		+ '<strong>-</strong>{{nickname}}</div>'
 }

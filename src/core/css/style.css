@@ -924,23 +924,26 @@ CONVERSATION WINDOW
 
 .userJoin, .userLeave {
 	background: #97CEEC;
-	max-width: 120px;
-	box-shadow: 1px 1px #87B9D4;
+	max-width: 130px;
 	display: block;
 	margin: 0 0 15px 0;
-	text-align: center;
+	padding: 0 5px;
 	color: #FFF;
-	border-radius: 5px 0 5px 5px;
+	border-radius: 3px 0 3px 3px;
 	font-size: 0.9em;
 }
 
 .userLeave {
 	background: #F00;
-	box-shadow: 1px 1px #F00;
+}
+
+.userJoin .timestamp, .userLeave .timestamp {
+	background: rgba(0, 0, 0, 0.2);
+	padding: 3px 4px 2px 4px;
 }
 
 .userJoin strong, .userLeave strong {
-	padding-right: 10px;
+	margin: 0 5px 0 7px;
 	font-size: 1.4em;
 	vertical-align: -1px;
 }

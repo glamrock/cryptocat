@@ -463,16 +463,21 @@ function desktopNotification(image, title, body, timeout) {
 
 // Add a join/part notification to the main conversation window.
 // If 'join === true', shows join notification, otherwise shows part.
-function buddyNotification(buddy, join) {
+function buddyNotification(nickname, join) {
 	if (!showNotifications) { return false }
 	var status, audioNotification
-	buddy = Strophe.xmlescape(buddy)
 	if (join) {
-		status = '<div class="userJoin"><strong>+</strong>' + buddy + '</div>'
+		status = Mustache.render(Cryptocat.templates.userJoin, {
+			nickname: Strophe.xmlescape(nickname),
+			currentTime: currentTime(false)
+		})
 		audioNotification = 'userOnline'
 	}
 	else {
-		status = '<div class="userLeave"><strong>-</strong>' + buddy + '</div>'
+		status = Mustache.render(Cryptocat.templates.userLeave, {
+			nickname: Strophe.xmlescape(nickname),
+			currentTime: currentTime(false)
+		})
 		audioNotification = 'userOffline'
 	}
 	conversations['main-Conversation'] += status
