@@ -486,7 +486,7 @@ function buddyNotification(nickname, join) {
 	}
 	scrollDownConversation(400, true)
 	if (!isFocused && desktopNotifications) {
-		desktopNotification('img/keygen.gif', buddy, '', 0x1337)
+		desktopNotification('img/keygen.gif', nickname, '', 0x1337)
 	}
 	if (audioNotifications) {
 		playSound(audioNotification)
