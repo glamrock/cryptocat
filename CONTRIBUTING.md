@@ -14,7 +14,10 @@ All contributed code, written in JavaScript, must adhere to the following coding
 
 
 ##Contributing or improving translations
-Please **do not send pull requests for translations**. Instead, use [Transifex](https://www.transifex.com/projects/p/Cryptocat/resource/cryptocat/). Notify a project manager for Cryptocat on Transifex in case you need assistance.
+Please **do not send pull requests for translations**. Instead, use [Transifex](https://www.transifex.com/projects/p/Cryptocat/resource/cryptocat/). Notify a project manager for Cryptocat on Transifex in case you need assistance.  
+**Note**: In translations, please do **not**:
+* Insert newlines in strings you are translating.  
+* Translate wildcard strings such as `(NICKNAME)` or `(SIZE)`. Leave those as they are.  
 
 ##Tests
 * Run tests using `make tests`.

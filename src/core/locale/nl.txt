@@ -1,7 +1,7 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Privégesprekken voor iedereen.
-Welkom bij Cryptocat. Hier zijn wat tips: <ul><li>Cryptocat biedt geen magische oplossing. Je moet software nooit jouw leven toevertrouwen.</li><li class="key">Cryptocat kan je niet beschermen tegen onbetrouwbare personen en key loggers, en anonimiseert je verbinding niet.</li></ul>
+Welkom bij Cryptocat. Hier volgen een paar handige tips: <ul><li>Cryptocat is geen wondermiddel. Vertrouw nooit je leven toe aan een stukje software.</li><li class="key">Cryptocat kan u niet beschermen tegen onbetrouwbare mensen of keyloggers en houdt uw verbinding niet anoniem.</li></ul>
 Blog
 Andere server
 Reset
@@ -12,7 +12,7 @@ Geef je gesprek een naam en deel die met mensen waarmee je wil praten, of vervoe
 Geef de naam op van het gesprek waar je aan wil deelnemen.
 Voer alstublieft een gespreksnaam in.
 Gespreksnaam mag enkel uit cijfers en/of letters bestaan.
-Geef een roepnaam op.
+Voer een gebruikersnaam in.
 Roepnaam mag enkel uit cijfers en/of letters bestaan.
 Roepnaam is reeds in gebruik.
 Authenticatie mislukt.
@@ -49,7 +49,20 @@ Fout: Vergewis je ervan dat je bestand een ZIP-bestand of afbeelding is.
 Fout: Bestand mag niet groter zijn dan (SIZE) MB.
 Begin beeldgesprek
 Beëindig beeldgesprek
-(NICKNAME) wil een beeldgesprek met je beginnen.
+(NICKNAME) wil graag een videochat met u beginnen.
 Annuleren
-Blokkeren
-Deblokkeren
+Negeren
+Stop negeren
+Bevestigen
+Controleer de identiteit van deze gebruiker door een geheime vraag te stellen. Antwoorden moeten precies overeenkomen!
+Geheime vraag
+Geheime antwoord
+Vraag
+Aan het vragen...
+Mislukt
+Identiteit gecontroleerd.
+(NICKNAME) wil uw identiteit verifieren. Antwoord de geheime vraag hieronder om uw identiteit te bevestigen.
+Uw antwoord moet precies overeenkomen met het antwoord gegeven door (NICKNAME).
+Antwoord
+Waarschuwing: U heeft een onleesbaar bericht van (NICKNAME) ontvangen. Dit kan duiden op een onbetrouwbare gebruiker of op berichten die niet ontvangen konden worden.
+Waarschuwing: Uw versie van Cryptocat is verlopen. Bijwerken naar de laatste versie wordt sterk aanbevolen! Ga niet verder zonder bijgewerkt te hebben tot de laatste versie.

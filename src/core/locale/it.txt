@@ -1,7 +1,7 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Conversazioni Private per Tutti.
-Benvenuto su Cryptocat. Ecco alcuni consigli:<ul><li> Cryptocat non è una cosa magica. Non affidare mai la tua vita ad un software.</li><li class="key"> Cryptocat non in grado di proteggerti contro le persone inaffidabili, keyloggers e non ti offre l'anonimato durante la navigazione. </li></ ul>
+Benvenuto su Cryptocat. Ecco alcuni consigli: <ul><li>Cryptocat non è un giubotto antiproiettile. Non dovresti mai fidarti di un programma quando è in gioco la tua vita.</li><li class="key">Cryptocat non può proteggerti da persone inaffidabili o keylogger, e non ti rende anonimo.</li></ul>
 Blog
 Server di tua scelta
 Cancella tutto
@@ -27,7 +27,7 @@ Conversazione di gruppo. Clicca su un utente per iniziare una chat privata.
 Fingerprint OTR (per conversazioni private):
 Fingerprint della conversazione di gruppo:
 Rigenera le mie chiavi di cifratura
-La rigenerazione delle tue chiavi di cifratura ti faranno disconnettere. Inoltre anche le tue fingerprint cambieranno.
+La rigenerazione delle tue chiavi di cifratura comporterà la tua disconnessione. Inoltre anche le tue fingerprint cambieranno.
 Continua
 Stato: Disponibile
 Stato: Non al computer
@@ -45,11 +45,24 @@ vedi immagine
 scarica file
 Conversazione
 Si accettano solo file ZIP e immagini. Dimensione massima accettabile: (SIZE) MB.
-Errore : per favore assicurati che il fila sia ZIP o un'immagine.
-Errore : Il file non può essere più grande di (SIZE) MB.
+Errore: per favore assicurati che sia un file ZIP o un'immagine.
+Errore: Il file non può essere più grande di (SIZE) MB.
 Inizia una videoconferenza
 Termina la videoconferenza
-(NICKNAME) vuole iniziare una videoconferenza con te.
+(NICKNAME) vorrebbe fare una videochiamata con te.
 Annulla
-Blocca
-Sblocca
+Ignora
+Non ignorare
+Autenticati
+Verifica l'identità di questo utente con una domanda segreta. Le risposte devono corrispondere esattamente.
+Domanda segreta
+Risposta segreta
+Chiedi
+Richiesta in corso...
+Operazione non riuscita
+Identità verificata.
+(NICKNAME) vuole verificare la tua identità. Rispondi alla domanda segreta qui sotto per autenticarti:
+La tua risposta deve corrispondere esattamente a quella fornita da (NICKNAME).
+Rispondi
+Attenzione: Hai ricevuto un messaggio illeggibile da (NICKNAME). Ciò può indicare un utente inaffidabile o messaggi che non sono stati ricevuti correttamente.
+Attenzione: La tua versione di Cryptocat non è aggiornata. L'aggiornamento alla versione più recente è fortemente consigliato! Non procedere senza aggiornare alla versione più recente.

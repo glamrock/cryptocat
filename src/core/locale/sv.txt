@@ -1,7 +1,7 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Privata konversationer för alla.
-Välkommen till Cryptocat. Här följer några användbara tips: <ul><li>Cryptocat är ingen universallösning. Du bör inte anförtro ditt liv åt någon mjukvara.</li><li class="key">Cryptocat kan inte skydda dig mot otillförlitliga människor eller key loggers och anonymiserar inte din anslutning.</li></ul>
+Välkommen till Cryptocat. Här är några hjälpfulla tips: <ul><li>Cryptocat är ingen mirakelkur. Du ska aldrig lita helt på någon typ av mjukvara.</li><li class="key">Cryptocat kan inte skydda dig mot opålitliga människor eller keyloggers och anonymiserar inte din uppkoppling.</li></ul>
 Blogg
 Egen server
 Återställ
@@ -49,7 +49,20 @@ Fel: Kontrollera att din fil är en zip-fil eller en bild.
 Fel: Filen kan inte vara större än (SIZE) MB.
 Starta videochat
 Avsluta videochat
-(NICKNAME) vill starta en videochat med dig.
+(NICKNAME) vill starta en videochatt med dig.
 Avbryt
-Blockera
-Avblockera
+Ignorera
+Sluta ignorera
+Autentisera
+Verifiera den här användarens identitet genom att ställa en hemlig fråga. Svaren måste matcha exakt!
+Hemlig fråga
+Hemligt svar
+Fråga
+Frågar...
+Misslyckades
+Identitet verifierad.
+(NICKNAME) vill verifiera din identitet. Var vänlig och svara på den hemliga frågan nedan för att autentisera dig själv:
+Ditt svar måste exakt matcha svaret angivet av (NICKNAME).
+Svar
+Varning: Du har mottagit ett oläsbart meddelande från (NICKNAME). Det kan tyda på en opålitlig användare eller meddelanden som inte har kunnat mottas.
+Varning: Din version av Cryptocat är gammal. Det är bestämt rekommenderat att uppdatera till den senaste versionen! Fortsätt inte utan att uppdatera till den senaste versionen.
