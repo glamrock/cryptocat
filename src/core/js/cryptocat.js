@@ -606,7 +606,7 @@ function handlePresence(presence) {
 		if ($(presence).find('error').attr('code') === '409') {
 			// Delay logout in order to avoid race condition with window animation
 			window.setTimeout(function() {
-				loginError = true
+				loginError = false
 				logout()
 				loginFail(Cryptocat.language['loginMessage']['nicknameInUse'])
 			}, 3000)
@@ -1046,6 +1046,7 @@ else {
 
 // Logout button.
 $('#logout').click(function() {
+	loginError = false
 	logout()
 })
 
@@ -1288,19 +1289,15 @@ function connectXMPP(username, password) {
 						connected()
 					}, 400)
 				}
-				else if (status === Strophe.Status.CONNFAIL) {
+				else if ((status === Strophe.Status.CONNFAIL) || (status === Strophe.Status.DISCONNECTED)) {
 					if (loginError) {
-						$('#loginInfo').text(Cryptocat.language['loginMessage']['connectionFailed'])
-						$('#loginInfo').animate({'background-color': '#E93028'}, 200)
+						loginFail(Cryptocat.language['loginMessage']['connectionFailed'])
+						logout()
 					}
-					logout()
-				}
-				else if (status === Strophe.Status.DISCONNECTED) {
-					if (!loginError) {
-						$('#loginInfo').text(Cryptocat.language['loginMessage']['connectionFailed'])
-						$('#loginInfo').animate({'bakgroundColor': '#E93028'}, 200)
+					else {
+						$('#loginInfo').text(Cryptocat.language['loginMessage']['thankYouUsing'])
+						$('#loginInfo').animate({'background-color': '#97CEEC'}, 200)
 					}
-					logout()
 				}
 			})
 		}
@@ -1340,7 +1337,7 @@ function connected() {
 			showNotifications = true
 		}, 6000)
 	})
-	loginError = false
+	loginError = true
 }
 
 // Executes on user logout.
@@ -1360,10 +1357,6 @@ function logout() {
 		$('#footer').animate({'height': '14px'})
 		$('#conversationWrapper').fadeOut(function() {
 			$('#dialogBoxClose').click()
-			if (!loginError) {
-				$('#loginInfo').animate({'background-color': '#97CEEC'}, 200)
-				$('#loginInfo').text(Cryptocat.language['loginMessage']['thankYouUsing'])
-			}
 			$('#buddyList div').each(function() {
 				if ($(this).attr('id') !== 'buddy-main-Conversation') {
 					$(this).remove()
@@ -1375,9 +1368,6 @@ function logout() {
 			conversations = {}
 			currentConversation = null
 			Cryptocat.connection = null
-			if (!loginError) {
-				$('#conversationName').val('')
-			}
 			$('#info,#loginOptions,#version,#loginInfo').fadeIn()
 			$('#loginForm').fadeIn(200, function() {
 				$('#conversationName').select()
@@ -1412,6 +1402,7 @@ $(window).bind('beforeunload', function() {
 // Logout on browser close.
 $(window).unload(function() {
 	if (Cryptocat.connection !== null) {
+		loginError = false
 		logout()
 	}
 })
