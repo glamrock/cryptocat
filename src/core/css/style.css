@@ -498,7 +498,7 @@ DIALOG BOX
 	font-size: 0;
 	text-align: center;
 	color: #FFF;
-	background: #97CeeC;
+	background: #97CEEC;
 	float: right;
 	margin-top: 4px;
 	padding-bottom: 4px;
@@ -814,7 +814,7 @@ CONVERSATION WINDOW
 	opacity: 0;
 	margin-bottom: 15px;
 	font-size: 1em;
-	max-width: 92.0%;
+	max-width: 92%;
 	white-space: pre-wrap;
 }
 
@@ -841,7 +841,7 @@ CONVERSATION WINDOW
 }
 
 .line1:after, .line2:after, .line3:after {
-	content: ' ';
+	content: '';
 	position: absolute;
 	top: 100%;
 	border: 10px solid;
