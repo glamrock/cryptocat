@@ -929,7 +929,7 @@ CONVERSATION WINDOW
 }
 
 .userLeave {
-	background: #F00;
+	background: #DADADA;
 }
 
 .userJoin .timestamp, .userLeave .timestamp {
