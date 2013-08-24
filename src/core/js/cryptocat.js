@@ -132,7 +132,7 @@ function messagePreview(message, nickname) {
 				at: 'bottom right',
 				adjust: {
 					x: -25,
-					y: -5
+					y: -11
 				}
 			},
 			content: Strophe.xmlescape(message)
@@ -862,17 +862,19 @@ function displayInfo(nickname) {
 // Receive an SMP question
 function smpQuestion(nickname, question) {
 	$('#dialogBoxClose').click()
-	dialogBox(Mustache.render(Cryptocat.templates.authRequest, {
-		nickname: nickname,
-		question: question
-	}), 240, true, function() {
-		$('#authReplySubmit').unbind('click').bind('click', function(e) {
-			e.preventDefault()
-			var answer = $('#authReply').val().toLowerCase().replace(/(\s|\.|\,|\'|\"|\;|\?|\!)/, '')
-			otrKeys[nickname].smpSecret(answer)
-			$('#dialogBoxClose').click()
+	window.setTimeout(function() {
+		dialogBox(Mustache.render(Cryptocat.templates.authRequest, {
+			nickname: nickname,
+			question: question
+		}), 240, true, function() {
+			$('#authReplySubmit').unbind('click').bind('click', function(e) {
+				e.preventDefault()
+				var answer = $('#authReply').val().toLowerCase().replace(/(\s|\.|\,|\'|\"|\;|\?|\!)/, '')
+				otrKeys[nickname].smpSecret(answer)
+				$('#dialogBoxClose').click()
+			})
 		})
-	})
+	}, 500)
 }
 
 // Bind buddy menus for new buddies. Used internally.
@@ -909,7 +911,6 @@ function bindBuddyMenu(nickname) {
 						e.stopPropagation()
 						displayInfo(nickname)
 						$('#menu-' + nickname).click()
-						console.log(nickname)
 					})
 					$('#' + nickname + '-contents').find('.option2').click(function(e) {
 						e.stopPropagation()
