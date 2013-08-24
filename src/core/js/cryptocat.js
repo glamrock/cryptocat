@@ -1076,6 +1076,8 @@ else {
 // Logout button.
 $('#logout').click(function() {
 	loginError = false
+	$('#loginInfo').text(Cryptocat.language['loginMessage']['thankYouUsing'])
+	$('#loginInfo').animate({'background-color': '#97CEEC'}, 200)
 	logout()
 })
 
@@ -1322,10 +1324,6 @@ function connectXMPP(username, password) {
 					if (loginError) {
 						loginFail(Cryptocat.language['loginMessage']['connectionFailed'])
 						logout()
-					}
-					else {
-						$('#loginInfo').text(Cryptocat.language['loginMessage']['thankYouUsing'])
-						$('#loginInfo').animate({'background-color': '#97CEEC'}, 200)
 					}
 				}
 			})
