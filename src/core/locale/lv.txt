@@ -1,19 +1,19 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Privātas sarunas ikvienam.
-Esi sveicināts Cryptocat. Šeit būs daži noderīgi padomi: <ul><li>Cryptocat nav maģiska lode. Tev nekad nevajadzētu uzticēt savu dzīvi nevienai programmatūrai.</li><li class="key">Cryptocat nevar tevi aizsargāt pret neuzticamiem cilvēkiem, taustiņspiedienu pierakstītājiem, kā arī tas nepadara tavu pieslēgumu anonīmu.</li></ul>
+Esi sveicināts Cryptocat. Daži noderīgi padomi: <ul><li>Cryptocat nav maģiska lode. Tev nekad nevajadzētu uzticēt savu dzīvi nevienai programmatūrai.</li><li class="key">Cryptocat nevar tevi aizsargāt pret neuzticamiem cilvēkiem, taustiņspiedienu pierakstītājiem, kā arī tas nepadara tavu pieslēgumu anonīmu.</li></ul>
 Blogs
 Cits serveris
 Anulēt
 sarunas nosaukums
 pseidonīms
 savienoties
-Ievadat jūsu sarunas nosaukumu un dalaties ar cilvēkiem ar kuriem jūs vēlaties sarunāties, vai pievienojaties <strong> forumam </strong>, lai iepazītos ar jauniem cilvēkiem!
+Ievadi nosaukumu tavai sarunai un dalies ar to ar cilvēkiem, ar kuriem vēlies sarunāties, vai pievienojies <strong>forumam</strong>, lai iepazītos ar jauniem cilvēkiem!
 Ievadi sarunas nosaukumu, kuram pievienoties.
 Lūdzu, ievadi sarunas nosaukumu.
 Sarunas nosaukumā var būt tikai burti un cipari.
 Lūdzu, ievadi pseidonīmu.
-Pseidonīms var būt tikai no burtiem un cipariem.
+Pseidonīmā var būt tikai burti un cipari.
 Pseidonīms jau tiek lietots.
 Autentificēšanās kļūda.
 Savienojums neizdevās.
@@ -21,7 +21,7 @@ Paldies, ka lieto Cryptocat.
 Rēģistrējas...
 Savienojas...
 Savienojums nodibināts.
-Lūdzu raksti ar klaviatūru pēc iespējas neprognozējamāk turpmākās dažas sekundes.
+Lūdzu, raksti ar klaviatūru pēc iespējas neprognozējamāk turpmākās dažas sekundes.
 Ģenerē šifrēšanas atslēgas...
 Grupas saruna. Noklikšķini uz lietotāja, lai sāktu privātu sarunu.
 OTR kontrolsumma (privātai sarunai):
@@ -44,10 +44,25 @@ Sūtīt šifrētu failu
 apskatīt attēlu
 lejupielādēt failu
 Saruna
-Pieņemti tiek vienīgi faili ZIP formātā. Maksimālais faila izmērs: (SIZE) MB. 
-Kļūda: Lūdzu pārliecinaties, ka jūsu fails ir ZIP formātā vai kā atēls.
-Kļūda: Fails nevar būt lielāks par (SIZE) MB.
+Pieņemti tiek vienīgi ZIP faili vai attēli. Maksimālais faila izmērs: (SIZE) MB. 
+Kļūda: Lūdzu pārliecinies, ka fails ir ZIP fails vai attēls.
+Kļūda: Fails nedrīkst būt lielāks par (SIZE) MB.
 Sākt video sarunu
 Beigt video sarunu
-(NICKNAME) vēlas sākt video sarunu ar tevi.
-Pārtraukt
+(NICKNAME) vēlas uzsākt video sarunu ar tevi.
+Atcelt
+Ignorēt
+Neignorēt
+Autentificēt
+Pārbaudi šī lietotāja identitāti, uzdodot slepeno jautājumu. Atbildei jāsakrīt pilnībā!
+Slepenais jautājums
+Slepenā atbilde
+Jautāt
+Tiek jautāts...
+Neizdevās
+Identitāte pārbaudīta.
+(NICKNAME) vēlas pārbaudīt tavu identitāti. Lūdzu, atbildi uz slepeno jautājumu zemāk un autentificē sevi:
+Tavai atbildei jāsakrīt pilnībā ar atbildi, ko sniedza (NICKNAME).
+Atbilde
+Brīdinājums: Tu esi saņēmis neizlasāmu ziņu no (NICKNAME). Tas var liecināt par neuzticamu lietotāju vai kļūdu ziņas saņemšanā.
+Brīdinājums: Tava Cryptocat versija ir novecojusi. Atjaunināšana uz jaunāko versiju ir ļoti ieteicama! Neturpini pirms neesi veicis atjaunināšanu uz jaunāko versiju.
