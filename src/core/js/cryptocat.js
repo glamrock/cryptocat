@@ -172,7 +172,9 @@ var smcb = function(nickname) {
 					Cryptocat.authenticatedUsers.push(nickname)
 					if ($('#authInfo').length) {
 						showAuthenticated(nickname, 200)
-						$('#dialogBox').animate({'height': 250})
+						window.setTimeout(function() {
+							$('#dialogBox').animate({'height': 250})
+						}, 200)
 					}
 				}
 				else {
@@ -866,7 +868,7 @@ function smpQuestion(nickname, question) {
 		dialogBox(Mustache.render(Cryptocat.templates.authRequest, {
 			nickname: nickname,
 			question: question
-		}), 240, true, function() {
+		}), 240, false, function() {
 			$('#authReplySubmit').unbind('click').bind('click', function(e) {
 				e.preventDefault()
 				var answer = $('#authReply').val().toLowerCase().replace(/(\s|\.|\,|\'|\"|\;|\?|\!)/, '')
