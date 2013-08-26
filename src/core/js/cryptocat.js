@@ -409,7 +409,8 @@ Cryptocat.addToConversation = function(message, sender, conversation, type) {
 			playSound('msgGet')
 		}
 		if (!isFocused && (type !== 'composing')) {
-			Tinycon.setBubble(++newMessages)
+			newMessages++
+			Tinycon.setBubble(newMessages)
 			desktopNotification('img/keygen.gif', sender, message, 0x1337)
 		}
 		message = Strophe.xmlescape(message)
@@ -1438,7 +1439,7 @@ $(window).blur(function() {
 $(window).focus(function() {
 	isFocused = true
 	newMessages = 0
-	Tinycon.reset()
+	Tinycon.setBubble()
 	if ($('#buddy-main-Conversation').attr('status') === 'online') {
 		$('#userInputText').focus()
 	}
