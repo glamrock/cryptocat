@@ -1,5 +1,28 @@
 #Changelog
 
+##Cryptocat 2.1.13
+**Aug. 26 2013 (pending release to public, early September)**
+- Group chat in this version of Cryptocat is not compatible with previous versions. In order to be able to use group chat, all participants must update to Cryptocat 2.1.13 or higher. Due to this, this release will be delayed until it can be rolled out simultaneously across all platforms. Updating is highly recommended.  
+- Important change: the "Block" feature has been changed to an "Ignore" feature. You may ignore messages from users, but you can no longer prevent them from receiving your messages. Ignored users will have a strikethrough through their nickname, displayed in the buddy list.  
+- New feature: SMP authentication. You can now authenticate a buddy's identity by asking them a secret question.  
+- New feature: Message previews! Private messages for conversations not in focus are now previewed via small speech bubbles that appear next to the buddy list.  
+- New feature: Cryptocat for Chrome, Firefox and Safari now displays new message notifications inside the favicon, in the browser tab.  
+- Fixed an issue where users may be able to send group chat messages to certain participants, but not to others.  
+- Fixed a bug where Cryptocat would not allow the file transfer of certain types of ZIP files.  
+- Fixed an issue where Cryptocat would display private messages if they were received without encryption. Now, all unencrypted messages are dropped.  
+- Cryptocat's user interface has been improved in numerous areas.  
+- Add warnings for decryption failures and for situations where Cryptocat thinks a user in the conversation is sending cryptographically suspicious messages.  
+- Fixed a bug that would prevent buddy submenus from working if more than one was open at the same time.  
+- Some work was done to resolve some potential openings for cryptographic timing attacks.  
+- Fixed a bug that would prevent disconnection and logout messages from displaying properly to the user disconnecting or logging out.  
+- Fixed a bug in Cryptocat for Firefox that would cause Cryptocat to freeze for around one second when switching tabs.  
+- User join and part notifications and messages now include timestamps.  
+- Fixed a bug in Cryptocat for Mac that would add an unnecessary scroll bar to the application window.  
+- Fixed a bug that would prevent more than two cat facts from being displayed in one session.  
+- Cryptocat for Mac now bounces the dock when new messages are received.  
+- Many translation mistakes and typos have been fixed.  
+- Many other small improvements and bug fixes.  
+
 ##Cryptocat 2.1.12
 **Jul. 12 2013**
 - Fixed some non-critical security issues reported by Steve Thomas that slightly reduce the bits of entropy in OTR authentication. Updating is recommended.  
