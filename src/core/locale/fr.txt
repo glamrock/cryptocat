@@ -18,19 +18,19 @@ Ce pseudonyme est déjà utilisé.
 Erreur d'authentification.
 La connexion a échouée.
 Merci d'avoir utilisé Cryptocat.
-Enregistrement ...
-Connexion ...
+Enregistrement...
+Connexion...
 Connecté.
 Veuillez taper sur votre clavier d'une manière aléatoire pendant quelques secondes.
 Génération des clés de chiffrement...
 Conversation de groupe. Cliquez sur un utilisateur pour commencer une conversation privée.
-Signature OTR (pour les conversations privées) :
-Signature de la conversation de groupe :
+Signature OTR (pour les conversations privées):
+Signature de la conversation de groupe:
 Réinitialiser mes clés de chiffrement
 Réinitialiser vos clés de chiffrement va vous déconnecter. Vos signatures seront également modifiées.
 Continuer
-Statut : Disponible
-Statut : Absent
+Statut: Disponible
+Statut: Absent
 Mes Informations
 Notifications Activées
 Notifications Désactivées
@@ -44,9 +44,9 @@ Envoyer un fichier chiffré
 afficher l'image
 télécharger le fichier
 Conversation
-Seuls les fichiers ZIP et les images sont acceptées. Taille maximale:  (SIZE) MB.
-Erreur : Veuillez vérifier que le fichier soit bien un ZIP ou une image.
-Erreur : Le fichier ne peut pas dépasser (SIZE) MB.
+Seuls les fichiers ZIP et les images sont acceptées. Taille maximale: (SIZE) MB.
+Erreur: Veuillez vérifier que le fichier soit bien un ZIP ou une image.
+Erreur: Le fichier ne peut pas dépasser (SIZE) MB.
 Démarrer la visioconférence
 Terminer la visioconférence
 (NICKNAME) voudrait démarrer une conversation vidéo avec vous.
@@ -54,15 +54,15 @@ Annuler
 Ignorer
 Ne pas ignorer
 Authentifier
-Vérifiez l'identité de l'utilisateur en posant une question secrète. Les réponses doivent correspondre exactement !
+Vérifiez l'identité de l'utilisateur en posant une question secrète. Les réponses doivent correspondre exactement!
 Question secrète
 Réponse secrète
 Demander
 Demande...
 Échec
 Identité vérifiée.
-(NICKNAME) veut vérifier votre identité.Veuillez répondre à la question secrète ci-dessous pour vous authentifier:
+(NICKNAME) veut vérifier votre identité. Veuillez répondre à la question secrète ci-dessous pour vous authentifier:
 Votre réponse doit correspondre exactement à celle donnée par (NICKNAME).
 Réponse
 Attention: Vous avez reçu un message illisible de (NICKNAME). Cela peut indiquer un utilisateur qui n'est pas fiable ou des messages qui n'ont pas été correctement reçus.
-Attention: Votre version de Cryptocat n'est plus à jour. Une mise à jour vers la dernière version est fortement recommandée ! N'allez pas plus loin sans la mise à jour vers la dernière version.
+Attention: Votre version de Cryptocat n'est plus à jour. Une mise à jour vers la dernière version est fortement recommandée! N'allez pas plus loin sans la mise à jour vers la dernière version.
