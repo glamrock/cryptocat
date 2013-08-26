@@ -186,7 +186,7 @@ var smcb = function(nickname) {
 				}
 				else {
 					if ($('#authInfo').length) {
-						$('#authSubmit').val('Failed').animate({
+						$('#authSubmit').val(Cryptocat.language['chatWindow']['failed']).animate({
 							'background-color': '#F00'
 						})
 					}
@@ -246,7 +246,6 @@ function switchConversation(buddy) {
 
 // Handles login failures.
 function loginFail(message) {
-	showNotifications = false
 	$('#loginInfo').text(message)
 	$('#bubble').animate({'left': '+=5px'}, 130)
 		.animate({'left': '-=10px'}, 130)
@@ -845,7 +844,13 @@ function displayInfo(nickname) {
 	var infoDialog = Mustache.render(Cryptocat.templates.infoDialog, {
 		nickname: nickname,
 		otrFingerprint: Cryptocat.language['chatWindow']['otrFingerprint'],
-		groupFingerprint: Cryptocat.language['chatWindow']['groupFingerprint']
+		groupFingerprint: Cryptocat.language['chatWindow']['groupFingerprint'],
+		authenticate: Cryptocat.language['chatWindow']['authenticate'],
+		verifyUserIdentity: Cryptocat.language['chatWindow']['verifyUserIdentity'],
+		secretQuestion: Cryptocat.language['chatWindow']['secretQuestion'],
+		secretAnswer: Cryptocat.language['chatWindow']['secretAnswer'],
+		ask: Cryptocat.language['chatWindow']['ask'],
+		identityVerified: Cryptocat.language['chatWindow']['identityVerified']
 	})
 	ensureOTRdialog(nickname, false, function() {
 		if (Cryptocat.authenticatedUsers.indexOf(nickname) >= 0) {
@@ -861,7 +866,7 @@ function displayInfo(nickname) {
 			e.preventDefault()
 			var question = $('#authQuestion').val()
 			var answer = $('#authAnswer').val().toLowerCase().replace(/(\s|\.|\,|\'|\"|\;|\?|\!)/, '')
-			$('#authSubmit').val('Asking...')
+			$('#authSubmit').val(Cryptocat.language['chatWindow']['asking'])
 			$('#authSubmit').unbind('click').bind('click', function(e) {
 				e.preventDefault()
 			})
@@ -873,10 +878,17 @@ function displayInfo(nickname) {
 // Receive an SMP question
 function smpQuestion(nickname, question) {
 	$('#dialogBoxClose').click()
+	var authRequest = Cryptocat.language['chatWindow']['authRequest']
+		.replace('(NICKNAME)', nickname)
+	var answerMustMatch = Cryptocat.language['chatWindow']['answerMustMatch']
+		.replace('(NICKNAME)', nickname)
 	window.setTimeout(function() {
 		dialogBox(Mustache.render(Cryptocat.templates.authRequest, {
-			nickname: nickname,
-			question: question
+			authenticate: Cryptocat.language['chatWindow']['authenticate'],
+			authRequest: authRequest,
+			answerMustMatch: answerMustMatch,
+			question: question,
+			answer: Cryptocat.language['chatWindow']['answer']
 		}), 240, false, function() {
 			$('#authReplySubmit').unbind('click').bind('click', function(e) {
 				e.preventDefault()
@@ -903,12 +915,12 @@ function bindBuddyMenu(nickname) {
 			$(this).css('background-image', 'url("img/up.png")')
 			var ignoreAction
 			if (Cryptocat.ignoredUsers.indexOf(nickname) >= 0) {
-				ignoreAction = 'Unignore'
+				ignoreAction = Cryptocat.language['chatWindow']['unignore']
 			}
 			else {
-				ignoreAction = 'Ignore'
+				ignoreAction = Cryptocat.language['chatWindow']['ignore']
 			}
-			$('#buddy-' + nickname).delay(10).animate({'height': '75px'}, 180, function() {
+			$('#buddy-' + nickname).delay(10).animate({'height': 90}, 180, function() {
 				$(this).append(buddyMenuContents)
 				$('#' + nickname + '-contents').append(
 					Mustache.render(Cryptocat.templates.buddyMenu, {
@@ -930,7 +942,7 @@ function bindBuddyMenu(nickname) {
 					})
 					$('#' + nickname + '-contents').find('.option3').click(function(e) {
 						e.stopPropagation()
-						if (ignoreAction === 'Ignore') {
+						if (ignoreAction === Cryptocat.language['chatWindow']['ignore']) {
 							Cryptocat.ignoredUsers.push(nickname)
 							$('#buddy-' + nickname).addClass('ignored')
 						}
@@ -946,7 +958,7 @@ function bindBuddyMenu(nickname) {
 		else {
 			$('#menu-' + nickname).attr('status', 'inactive')
 			$(this).css('background-image', 'url("img/down.png")')
-			$('#buddy-' + nickname).animate({'height': '15px'}, 190)
+			$('#buddy-' + nickname).animate({'height': 15}, 190)
 			$('#' + nickname + '-contents').fadeOut(200, function() {
 				$('#' + nickname + '-contents').remove()
 			})
@@ -973,8 +985,8 @@ function sendStatus() {
 // onClose may be defined as a callback function to execute on dialog box close.
 function dialogBox(data, height, closeable, onAppear, onClose) {
 	if (closeable) {
-		$('#dialogBoxClose').css('width', '18px')
-		$('#dialogBoxClose').css('font-size', '12px')
+		$('#dialogBoxClose').css('width', 18)
+		$('#dialogBoxClose').css('font-size', 12)
 	}
 	$('#dialogBoxContent').html(data)
 	$('#dialogBox').css('height', height)
@@ -1171,7 +1183,7 @@ $('#customServer').click(function() {
 	Cryptocat.conferenceServer = Strophe.xmlescape(Cryptocat.conferenceServer)
 	Cryptocat.domain = Strophe.xmlescape(Cryptocat.domain)
 	$('#languages').hide()
-	$('#footer').animate({'height': '180px'}, function() {
+	$('#footer').animate({'height': 180}, function() {
 		$('#customServerDialog').fadeIn()
 		$('#customDomain').val(Cryptocat.domain)
 			.click(function() {$(this).select()})
@@ -1189,7 +1201,7 @@ $('#customServer').click(function() {
 		})
 		$('#customServerSubmit').val(Cryptocat.language['chatWindow']['continue']).click(function() {
 			$('#customServerDialog').fadeOut(200, function() {
-				$('#footer').animate({'height': '14px'})
+				$('#footer').animate({'height': 14})
 			})
 			Cryptocat.domain = $('#customDomain').val()
 			Cryptocat.conferenceServer = $('#customConferenceServer').val()
@@ -1207,14 +1219,14 @@ $('#languageSelect').click(function() {
 	$('#customServerDialog').hide()
 	$('#languages li').css({'color': '#FFF', 'font-weight': 'normal'})
 	$('#' + Cryptocat.language['language']).css({'color': '#97CEEC', 'font-weight': 'bold'})
-	$('#footer').animate({'height': '180px'}, function() {
+	$('#footer').animate({'height': 180}, function() {
 		$('#languages').fadeIn()
 		$('#languages li').click(function() {
 			var lang = $(this).attr('id')
 			$('#languages').fadeOut(200, function() {
 				Cryptocat.Language.set(lang)
 				Cryptocat.Storage.setItem('language', lang)
-				$('#footer').animate({'height': '14px'})
+				$('#footer').animate({'height': 14})
 			})
 		})
 	})
@@ -1332,6 +1344,7 @@ function connectXMPP(username, password) {
 					}, 400)
 				}
 				else if ((status === Strophe.Status.CONNFAIL) || (status === Strophe.Status.DISCONNECTED)) {
+					showNotifications = false
 					if (loginError) {
 						loginFail(Cryptocat.language['loginMessage']['connectionFailed'])
 						logout()
@@ -1365,7 +1378,7 @@ function connected() {
 		$('#buddy-main-Conversation').click()
 		$('#conversationWrapper').fadeIn()
 		$('#optionButtons').fadeIn()
-		$('#footer').delay(200).animate({'height': '60px'}, function() {
+		$('#footer').delay(200).animate({'height': 60}, function() {
 			$('#userInput').fadeIn(200, function() {
 				$('#userInputText').focus()
 			})
@@ -1380,7 +1393,6 @@ function connected() {
 
 // Executes on user logout.
 function logout() {
-	showNotifications = false
 	Cryptocat.connection.muc.leave(Cryptocat.conversationName + '@' + Cryptocat.conferenceServer)
 	Cryptocat.connection.disconnect()
 	$('#conversationInfo,#optionButtons').fadeOut()
@@ -1392,7 +1404,7 @@ function logout() {
 	$('#buddy-main-Conversation').insertAfter('#buddiesOnline')
 	$('#userInput').fadeOut(function() {
 		$('#logoText').fadeIn()
-		$('#footer').animate({'height': '14px'})
+		$('#footer').animate({'height': 14})
 		$('#conversationWrapper').fadeOut(function() {
 			$('#dialogBoxClose').click()
 			$('#buddyList div').each(function() {
