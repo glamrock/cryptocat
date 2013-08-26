@@ -38,6 +38,7 @@ var conversations = {}
 var composingTimeouts = {}
 var currentStatus = 'online'
 var isFocused = true
+var newMessages = 0
 var currentConversation
 var audioNotifications
 var desktopNotifications
@@ -54,6 +55,12 @@ Cryptocat.bosh = defaultBOSH
 
 // Set version number in UI.
 $('#version').text(Cryptocat.version)
+
+// Load favicon notification settings.
+Tinycon.setOptions({
+	colour: '#FFFFFF',
+	background: '#76BDE5'
+})
 
 // Seed RNG.
 Cryptocat.setSeed(Cryptocat.generateSeed())
@@ -402,7 +409,8 @@ Cryptocat.addToConversation = function(message, sender, conversation, type) {
 		if (audioNotifications && (type !== 'composing')) {
 			playSound('msgGet')
 		}
-		if (!isFocused && (type !== 'composing') && desktopNotifications) {
+		if (!isFocused && (type !== 'composing')) {
+			Tinycon.setBubble(++newMessages)
 			desktopNotification('img/keygen.gif', sender, message, 0x1337)
 		}
 		message = Strophe.xmlescape(message)
@@ -472,6 +480,7 @@ function iconNotify(conversation) {
 }
 
 function desktopNotification(image, title, body, timeout) {
+	if (!desktopNotifications) { return false }
 	// Mac
 	if (navigator.userAgent === 'Chrome (Mac app)') {
 		var iframe = document.createElement('IFRAME')
@@ -515,7 +524,7 @@ function buddyNotification(nickname, join) {
 		$('#conversationWindow').append(status)
 	}
 	scrollDownConversation(400, true)
-	if (!isFocused && desktopNotifications) {
+	if (!isFocused) {
 		desktopNotification('img/keygen.gif', nickname, '', 0x1337)
 	}
 	if (audioNotifications) {
@@ -1416,6 +1425,8 @@ $(window).blur(function() {
 // Also set `isFocused` to true.
 $(window).focus(function() {
 	isFocused = true
+	newMessages = 0
+	Tinycon.reset()
 	if ($('#buddy-main-Conversation').attr('status') === 'online') {
 		$('#userInputText').focus()
 	}
