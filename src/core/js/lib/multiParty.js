@@ -106,9 +106,7 @@ multiParty.genPublicKey = function() {
 // First 256 bytes are for encryption, last 256 bytes are for HMAC.
 // Represented as WordArrays
 multiParty.genSharedSecret = function(user) {
-
 	//I need to convert the BigInt to WordArray here. I do it using the Base64 representation.
-	
 	var sharedSecret = CryptoJS.SHA512(
 		CryptoJS.enc.Base64.parse(
 			BigInt.bigInt2base64(
@@ -171,6 +169,13 @@ multiParty.userCount = function() {
 	return Object.keys(sharedSecrets).length
 }
 
+// Return nicknames of all users
+multiParty.users = function() {
+	var users = Object.keys(sharedSecrets)
+	users.push(Cryptocat.myNickname)
+	return users
+}
+
 // Generate message tag. 8 rounds of SHA512
 // Input: WordArray
 // Output: Base64
@@ -185,22 +190,17 @@ multiParty.messageTag = function(message) {
 multiParty.sendMessage = function(message) {
 	//Convert from UTF8
 	message = CryptoJS.enc.Utf8.parse(message)
-	
 	// Add 64 bytes of padding
 	message.concat(Cryptocat.rawBytes(64))
-
 	var encrypted = {}
 	encrypted['text'] = {}
 	encrypted['type'] = 'message'
-
 	//Sort recipients
 	var sortedRecipients = Object.keys(sharedSecrets).sort()
 	var hmac = CryptoJS.lib.WordArray.create()
-
 	//For each recipient
 	var i, iv
 	for (i = 0; i !== sortedRecipients.length; i++) {
-
 		//Generate a random IV	
 		iv = Cryptocat.encodedBytes(12, CryptoJS.enc.Base64)
 		// Do not reuse IVs
@@ -208,19 +208,15 @@ multiParty.sendMessage = function(message) {
 			iv = Cryptocat.encodedBytes(12, CryptoJS.enc.Base64)
 		}
 		usedIVs.push(iv)
-
 		//Encrypt the message
 		encrypted['text'][sortedRecipients[i]] = {}
 		encrypted['text'][sortedRecipients[i]]['message'] = encryptAES(message, sharedSecrets[sortedRecipients[i]]['message'], iv)
 		encrypted['text'][sortedRecipients[i]]['iv'] = iv
-		
 		//Append to HMAC
 		hmac.concat(CryptoJS.enc.Base64.parse(encrypted['text'][sortedRecipients[i]]['message']))
 		hmac.concat(CryptoJS.enc.Base64.parse(encrypted['text'][sortedRecipients[i]]['iv']))
 	}
-	
 	encrypted['tag'] = message.clone()
-
 	//For each recipient again
 	for (i = 0; i !== sortedRecipients.length; i++) {
 		//Compute the HMAC
@@ -228,10 +224,8 @@ multiParty.sendMessage = function(message) {
 		//Append to tag
 		encrypted['tag'].concat(CryptoJS.enc.Base64.parse(encrypted['text'][sortedRecipients[i]]['hmac']))
 	}
-	
 	//Compute tag
 	encrypted['tag'] = multiParty.messageTag(encrypted['tag'])
-
 	return JSON.stringify(encrypted)
 }
 
@@ -247,12 +241,10 @@ multiParty.receiveMessage = function(sender, myName, message) {
 	if (typeof(message['text'][myName]) === 'object') {
 		// Detect public key reception, store public key and generate shared secret
 		if (message['type'] === 'publicKey') {
-		
-			if(typeof(message['text'][myName]['message']) !== 'string') {
+			if (typeof(message['text'][myName]['message']) !== 'string') {
 				console.log('multiParty: publicKey without message field')
 				return false
 			}
-			
 			if (!publicKeys.hasOwnProperty(sender)) {
 				var publicKey = BigInt.base642bigInt(message['text'][myName]['message'])
 				if (checkSize(publicKey)) {
@@ -268,45 +260,42 @@ multiParty.receiveMessage = function(sender, myName, message) {
 			multiParty.sendPublicKey(sender)
 		}
 		else if (message['type'] === 'message') {
-			if(typeof(message['text'][myName]['message']) !== 'string'
-					|| typeof(message['text'][myName]['iv']) !== 'string'
-					|| typeof(message['text'][myName]['hmac']) !== 'string') {
-				console.log('multiParty: message without message, iv, hmac fields')
-				return false
+			// Make sure message is being sent to all chat room participants
+			var recipients = multiParty.users()
+			recipients.splice(recipients.indexOf(sender), 1)
+			for (var r = 0; r !== recipients.length; r++) {
+				if (typeof(message['text'][recipients[r]]['message']) !== 'string'
+					|| typeof(message['text'][recipients[r]]['iv']) !== 'string'
+					|| typeof(message['text'][recipients[r]]['hmac']) !== 'string') {
+						console.log('multiParty: at least one message, IV or HMAC field missing')
+						return false
+				}
 			}
-			
 			// Decrypt message
 			if (!sharedSecrets.hasOwnProperty(sender)) {
 				return false
 			}
-			
 			//Sort recipients
 			var sortedRecipients = Object.keys(message['text']).sort()
-
 			//Check HMAC
 			var hmac = CryptoJS.lib.WordArray.create()
-			
 			var i
 			for (i = 0; i !== sortedRecipients.length; i++) {
 				hmac.concat(CryptoJS.enc.Base64.parse(message['text'][sortedRecipients[i]]['message']))
 				hmac.concat(CryptoJS.enc.Base64.parse(message['text'][sortedRecipients[i]]['iv']))
 			}
-
 			if (message['text'][myName]['hmac'] !== HMAC(hmac, sharedSecrets[sender]['hmac']))	{
 				console.log('multiParty: HMAC failure')
 				return false
 			}
-			
 			//Check IV reuse
 			if (usedIVs.indexOf(message['text'][myName]['iv']) >= 0) {
 				console.log('multiParty: IV reuse detected, possible replay attack')
 				return false
 			}
 			usedIVs.push(message['text'][myName]['iv'])
-
 			//Decrypt
 			var plaintext = decryptAES(message['text'][myName]['message'], sharedSecrets[sender]['message'], message['text'][myName]['iv'])
-			
 			//Check tag
 			var messageTag = plaintext.clone()
 			for (i = 0; i !== sortedRecipients.length; i++) {
@@ -316,14 +305,12 @@ multiParty.receiveMessage = function(sender, myName, message) {
 				console.log('multiParty: message tag failure')
 				return false
 			}
-			
 			//Remove padding
 			if (plaintext.sigBytes < 64) {
 				console.log('multiParty: invalid plaintext size')
 				return false
 			}
 			plaintext = CryptoJS.lib.WordArray.create(plaintext.words, plaintext.sigBytes-64)
-			
 			//Convert to UTF8
 			return plaintext.toString(CryptoJS.enc.Utf8)
 		}
