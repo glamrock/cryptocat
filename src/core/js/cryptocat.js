@@ -393,7 +393,7 @@ Cryptocat.fileTransferError = function(sid) {
 }
 
 // Add a `message` from `sender` to the `conversation` display and log.
-// `type` can be 'file', 'composing' or 'message'.
+// `type` can be 'file', 'composing', 'message' or 'warning'.
 Cryptocat.addToConversation = function(message, sender, conversation, type) {
 	if (!message.length && (type !== 'composing')) { return false }
 	if (Cryptocat.ignoredUsers.indexOf(sender) >= 0) { return false }
@@ -441,6 +441,9 @@ Cryptocat.addToConversation = function(message, sender, conversation, type) {
 	else if (type === 'message') {
 		message = addLinks(message)
 		message = addEmoticons(message)
+	}
+	else if (type === 'warning') {
+		lineDecoration = 4
 	}
 	message = message.replace(/:/g, '&#58;')
 	message = Mustache.render(Cryptocat.templates.message, {

@@ -176,6 +176,13 @@ multiParty.users = function() {
 	return users
 }
 
+// Issue a warning for decryption failure to the main conversation window
+multiParty.messageWarning = function(sender) {
+	var messageWarning = Cryptocat.language['chatWindow']['messageWarning']
+		.replace('(NICKNAME)', sender)
+	Cryptocat.addToConversation(messageWarning, sender, 'main-Conversation', 'warning')
+}
+
 // Generate message tag. 8 rounds of SHA512
 // Input: WordArray
 // Output: Base64
@@ -268,6 +275,7 @@ multiParty.receiveMessage = function(sender, myName, message) {
 					|| typeof(message['text'][recipients[r]]['iv']) !== 'string'
 					|| typeof(message['text'][recipients[r]]['hmac']) !== 'string') {
 						console.log('multiParty: at least one message, IV or HMAC field missing')
+						multiParty.messageWarning(sender)
 						return false
 				}
 			}
@@ -286,11 +294,13 @@ multiParty.receiveMessage = function(sender, myName, message) {
 			}
 			if (message['text'][myName]['hmac'] !== HMAC(hmac, sharedSecrets[sender]['hmac']))	{
 				console.log('multiParty: HMAC failure')
+				multiParty.messageWarning(sender)
 				return false
 			}
 			//Check IV reuse
 			if (usedIVs.indexOf(message['text'][myName]['iv']) >= 0) {
 				console.log('multiParty: IV reuse detected, possible replay attack')
+				multiParty.messageWarning(sender)
 				return false
 			}
 			usedIVs.push(message['text'][myName]['iv'])
@@ -303,11 +313,13 @@ multiParty.receiveMessage = function(sender, myName, message) {
 			}
 			if (multiParty.messageTag(messageTag) !== message['tag']) {
 				console.log('multiParty: message tag failure')
+				multiParty.messageWarning(sender)
 				return false
 			}
 			//Remove padding
 			if (plaintext.sigBytes < 64) {
 				console.log('multiParty: invalid plaintext size')
+				multiParty.messageWarning(sender)
 				return false
 			}
 			plaintext = CryptoJS.lib.WordArray.create(plaintext.words, plaintext.sigBytes-64)
@@ -316,6 +328,7 @@ multiParty.receiveMessage = function(sender, myName, message) {
 		}
 		else {
 			console.log('multiParty: Unknown message type: ' + message['type'])
+			multiParty.messageWarning(sender)
 		}
 	}
 	return false
