@@ -1,7 +1,8 @@
 #Changelog
 
 ##Cryptocat 2.1.13
-**Aug. 26 2013 (pending release to public, early September)**
+**Aug. 26 2013**  
+**Pending public release in early September.**  
 Group chat in this version of Cryptocat is not compatible with previous versions. In order to be able to use group chat, all participants must update to Cryptocat 2.1.13 or higher. Due to this, this release will be delayed until it can be rolled out simultaneously across all platforms. Updating is highly recommended.  
 
 - Important change: the "Block" feature has been changed to an "Ignore" feature. You may ignore messages from users, but you can no longer prevent them from receiving your messages. Ignored users will have a strikethrough through their nickname, displayed in the buddy list.  
