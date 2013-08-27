@@ -889,7 +889,7 @@ CONVERSATION WINDOW
 	border-radius: 7px 0 0 7px;
 	padding: 8px 10px;
 	height: 32px;
-	width: 578px;
+	width: 582px;
 	margin: 10px 0 7px 0;
 	display: inline;
 	box-shadow: none;
@@ -902,11 +902,11 @@ CONVERSATION WINDOW
 }
 
 #userInputSend {
-	width: 102px;
+	width: 100px;
 	height: 48px;
 	position: relative;
 	bottom: 25px;
-	margin: 0 5px 0 3px;
+	margin: 0 4px 0 4px;
 	border-radius: 0px 0 7px 0px;
 	font-size: 1.8em;
 	text-shadow: 3px 2px #76BDE5;
