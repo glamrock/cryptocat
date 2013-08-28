@@ -1,3 +1,9 @@
+/*
+-------------------
+GLOBAL VARIABLES
+-------------------
+*/
+
 if (typeof Cryptocat === 'undefined') {
 	Cryptocat = function() {}
 }
@@ -14,6 +20,13 @@ Cryptocat.conferenceServer = null
 Cryptocat.bosh = null
 Cryptocat.conversationName = null
 Cryptocat.myNickname = null
+
+/*
+-------------------
+END GLOBAL VARIABLES
+-------------------
+*/
+
 
 if (typeof(window) !== 'undefined') {
 $(window).ready(function() {
