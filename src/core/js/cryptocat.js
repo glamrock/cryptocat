@@ -528,7 +528,7 @@ function buddyNotification(nickname, join) {
 	}
 	scrollDownConversation(400, true)
 	if (!isFocused) {
-		desktopNotification('img/keygen.gif', nickname, '', 0x1337)
+		desktopNotification('img/keygen.gif', buddy + ' has ' + (join ? 'joined ' : 'left ') + Cryptocat.conversationName, '', 0x1337)
 	}
 	if (audioNotifications) {
 		playSound(audioNotification)
