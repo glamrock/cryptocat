@@ -411,7 +411,7 @@ Cryptocat.addToConversation = function(message, sender, conversation, type) {
 		if (!isFocused && (type !== 'composing')) {
 			newMessages++
 			Tinycon.setBubble(newMessages)
-			desktopNotification('img/keygen.gif', sender, message, 0x1337)
+			desktopNotification('img/keygen.gif', sender + ' @ ' + Cryptocat.conversationName, message, 0x1337)
 		}
 		message = Strophe.xmlescape(message)
 		if (message.match(Cryptocat.myNickname)) {
