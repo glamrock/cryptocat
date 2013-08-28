@@ -15,7 +15,8 @@ Cryptocat.bosh = null
 Cryptocat.conversationName = null
 Cryptocat.myNickname = null
 
-if (typeof(window) !== 'undefined') { $(window).ready(function() {
+if (typeof(window) !== 'undefined') {
+$(window).ready(function() {
 
 // This provides backwards compatibility with CryptoJS 3.0.2
 // CryptoJS.enc.Base64.parse used to do this by default.
@@ -1400,6 +1401,7 @@ function connected() {
 function logout() {
 	Cryptocat.connection.muc.leave(Cryptocat.conversationName + '@' + Cryptocat.conferenceServer)
 	Cryptocat.connection.disconnect()
+	document.title = 'Cryptocat'
 	$('#conversationInfo,#optionButtons').fadeOut()
 	$('#header').animate({'background-color': 'transparent'})
 	$('.logo').animate({'margin': '-5px 5px 0 5px'})
