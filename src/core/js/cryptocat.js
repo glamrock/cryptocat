@@ -606,7 +606,7 @@ function handleMessage(message) {
 	if (!$('#buddy-' + nickname).length) {
 		return true
 	}
-	// Check if message has a "composing" notification.	
+	// Check if message has a "composing" notification.
 	if ($(message).find('composing').length && !body.length) {
 		var conversation
 		if (type === 'groupchat') {
