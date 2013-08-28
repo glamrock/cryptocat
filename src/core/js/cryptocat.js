@@ -1393,6 +1393,7 @@ function connected() {
 		}, 6000)
 	})
 	loginError = true
+	document.title = Cryptocat.myNickname + '@' + Cryptocat.conversationName
 }
 
 // Executes on user logout.
