@@ -411,7 +411,7 @@ Cryptocat.addToConversation = function(message, sender, conversation, type) {
 		if (!isFocused && (type !== 'composing')) {
 			newMessages++
 			Tinycon.setBubble(newMessages)
-			desktopNotification('img/keygen.gif', sender, message, 0x1337)
+			desktopNotification('img/keygen.gif', sender + ' @ ' + Cryptocat.conversationName, message, 0x1337)
 		}
 		message = Strophe.xmlescape(message)
 		if (message.match(Cryptocat.myNickname)) {
@@ -528,7 +528,7 @@ function buddyNotification(nickname, join) {
 	}
 	scrollDownConversation(400, true)
 	if (!isFocused) {
-		desktopNotification('img/keygen.gif', nickname, '', 0x1337)
+		desktopNotification('img/keygen.gif', nickname + ' has ' + (join ? 'joined ' : 'left ') + Cryptocat.conversationName, '', 0x1337)
 	}
 	if (audioNotifications) {
 		playSound(audioNotification)
@@ -1393,6 +1393,7 @@ function connected() {
 		}, 6000)
 	})
 	loginError = true
+	document.title = Cryptocat.myNickname + '@' + Cryptocat.conversationName
 }
 
 // Executes on user logout.
