@@ -1200,6 +1200,25 @@ $('#customServer').click(function() {
 	Cryptocat.bosh = Strophe.xmlescape(Cryptocat.bosh)
 	Cryptocat.conferenceServer = Strophe.xmlescape(Cryptocat.conferenceServer)
 	Cryptocat.domain = Strophe.xmlescape(Cryptocat.domain)
+	// Attempt to load the saved domains
+	// Initialise to the defaults
+	var savedDomains
+	try {
+		if (Cryptocat.Storage.getItem('savedDomains') != null) {
+			savedDomains = $.parseJSON(Cryptocat.Storage.getItem('savedDomains'))
+		}
+	} catch(err) {
+		// Error loading saved domain list, falling back to the original default
+		savedDomains = '{"' + defaultDomain
+		+ '":{"xmpp":"' + defaultConferenceServer
+		+ '","bosh":"' + defaultBOSH + '"}}' 
+	}
+	// Populate list with domains
+	$('#customServerSelector').empty()
+	$.each(savedDomains, function(dom, addresses) {
+		$('#customServerSelector').append('<option value="' + dom + '">' + dom + '</option>')
+	});
+	// End saved domain loading
 	$('#languages').hide()
 	$('#footer').animate({'height': 180}, function() {
 		$('#customServerDialog').fadeIn()
@@ -1227,6 +1246,51 @@ $('#customServer').click(function() {
 			Cryptocat.Storage.setItem('domain', Cryptocat.domain)
 			Cryptocat.Storage.setItem('conferenceServer', Cryptocat.conferenceServer)
 			Cryptocat.Storage.setItem('bosh', Cryptocat.bosh)
+		})
+		$('#customServerSave').click(function() {
+			var newDomain = $('#customDomain').val()
+			var newXMPP = $('#customConferenceServer').val()
+			var newBOSH = $('#customBOSH').val()
+			var exists = false
+			if (savedDomains.hasOwnProperty(newDomain)) {
+				exists = true
+				if (!confirm('An entry already exists under this domain. Would you like to overwrite it?')) {
+					return
+				}
+			}
+			var newServer = {}
+			newServer[newDomain] = {}
+			newServer[newDomain].xmpp = newXMPP
+			newServer[newDomain].bosh = newBOSH
+			savedDomains = $.extend(savedDomains, newServer)
+			if (!exists) {
+				$('#customServerSelector').append('<option value="' + newDomain + '">' + newDomain + '</option>')
+			}
+			Cryptocat.Storage.setItem('savedDomains',JSON.stringify(savedDomains))
+		})
+		$('#customServerDelete').click(function() {
+			var domain = $('#customServerSelector').val()
+			if ( domain === 'crypto.cat') {
+				alert('This is the default server, and you cannot remove it.')
+				return
+			}
+			if ( !confirm("Are you sure you would like to delete this server?") ) {
+				return
+			}
+			$('#customServerSelector option[value="' + domain + '"]').remove()
+			delete savedDomains[domain]
+			Cryptocat.Storage.setItem('savedDomains',JSON.stringify(savedDomains))
+		})
+		$('#customServerSelector').change(function() {
+			var domain = $(this).val()
+			$.each(savedDomains, function(dom, addresses) {
+				if ( dom === domain ) {
+					$('#customDomain').val(domain)
+					$('#customConferenceServer').val(addresses.xmpp)
+					$('#customBOSH').val(addresses.bosh)
+					return
+				}
+			});
 		})
 		$('#customDomain').select()
 	})
