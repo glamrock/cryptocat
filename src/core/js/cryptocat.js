@@ -1215,7 +1215,7 @@ $('#customServer').click(function() {
 	}
 	// Populate list with domains
 	$('#customServerSelector').empty()
-	$.each(savedDomains, function(dom, addresses) {
+	$.each(savedDomains, function(dom) {
 		$('#customServerSelector').append('<option value="' + dom + '">' + dom + '</option>')
 	});
 	// End saved domain loading
