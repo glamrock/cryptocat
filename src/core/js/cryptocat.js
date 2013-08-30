@@ -1272,10 +1272,6 @@ $('#customServer').click(function() {
 		$('#customServerDelete').unbind('click')
 		$('#customServerDelete').click(function() {
 			var domain = $('#customServerSelector').val()
-			if ( domain === 'crypto.cat') {
-				alert('This is the default server, and you cannot remove it.')
-				return
-			}
 			if ( !confirm('Are you sure you would like to delete this server?') ) {
 				return
 			}
@@ -1286,6 +1282,10 @@ $('#customServer').click(function() {
 		$('#customServerSelector').unbind('change')
 		$('#customServerSelector').change(function() {
 			var domain = $(this).val()
+			$('#customServerDelete, #customServerSave').removeAttr('disabled').removeClass('disabled')
+			if (domain == defaultDomain) {
+				$('#customServerDelete, #customServerSave').attr('disabled','disabled').addClass('disabled')
+			}
 			$.each(savedDomains, function(dom, addresses) {
 				if ( dom === domain ) {
 					$('#customDomain').val(domain)
