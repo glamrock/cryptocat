@@ -4,62 +4,101 @@ if (typeof Cryptocat === 'undefined') {
 
 $(window).ready(function() {
 
-Cryptocat.Storage =  (function () {
-	if (!navigator.userAgent.match('Firefox')) {
-		return localStorage
+// Define the wrapper, depending on our browser or enivronment.
+Cryptocat.Storage = (function() {
+	if (typeof(chrome) === 'object') {
+		return {
+			setItem: function(key, val) {
+				var keyValuePair = {}
+				keyValuePair[key] = val
+				chrome.storage.local.set(keyValuePair)
+			},
+			getItem: function(key, callback) {
+				chrome.storage.local.get(key, function(r) {
+					callback(r[key])
+				})
+			},
+			removeItem: function(key) {
+				chrome.storage.local.remove(key)
+			}
+		}
 	}
-	// in-memory storage implementation
-	var items = {}
-	return {
-		getItem: function (key) { return items[key] },
-		setItem: function (key, val) { items[key] = val },
-		removeItem: function (key) { delete items[key] },
-		initLocalStorage: function () { Cryptocat.Storage = localStorage }
+	else if (!navigator.userAgent.match('Firefox')) {
+		return {
+			setItem: function(key, value) {
+				localStorage.setItem(key, value)
+			},
+			getItem: function(key, callback) {
+				callback(localStorage.getItem(key))
+			},
+			removeItem: function(key) {
+				localStorage.removeItem(key)
+			}
+		}
+	}
+	else {
+		var items = {}
+		return {
+			setItem: function(key, val) { items[key] = val },
+			getItem: function(key, callback) { callback(items[key]) },
+			removeItem: function(key) { delete items[key] }
+		}
 	}
 })()
 
 // Initialize language settings.
-if (Cryptocat.Storage.getItem('language')) {
-	Cryptocat.Language.set(Cryptocat.Storage.getItem('language'))
-}
-else {
-	Cryptocat.Language.set(window.navigator.language.toLowerCase())
-}
+Cryptocat.Storage.getItem('language', function(key) {
+	if (key) {
+		Cryptocat.Language.set(key)
+	}
+	else {
+		Cryptocat.Language.set(window.navigator.language.toLowerCase())
+	}
+})
 
 // Load custom server settings
-if (Cryptocat.Storage.getItem('domain')) {
-	Cryptocat.domain = Cryptocat.Storage.getItem('domain')
-}
-if (Cryptocat.Storage.getItem('conferenceServer')) {
-	Cryptocat.conferenceServer = Cryptocat.Storage.getItem('conferenceServer')
-}
-if (Cryptocat.Storage.getItem('bosh')) {
-	Cryptocat.bosh = Cryptocat.Storage.getItem('bosh')
-}
+Cryptocat.Storage.getItem('domain', function(key) {
+	if (key) { Cryptocat.domain = key }
+})
+Cryptocat.Storage.getItem('conferenceServer', function(key) {
+	if (key) { Cryptocat.conferenceServer = key }
+})
+Cryptocat.Storage.getItem('bosh', function(key) {
+	if (key) { Cryptocat.bosh = key }
+})
+
+// Load nickname settings.
+Cryptocat.Storage.getItem('myNickname', function(key) {
+	if (key) {
+		$('#nickname').animate({'color': 'transparent'}, function() {
+			$(this).val(key)
+			$(this).animate({'color': '#FFF'})
+		})
+	}
+})
+
+// Load notification settings.
+window.setTimeout(function() {
+	Cryptocat.Storage.getItem('desktopNotifications', function(key) {
+		if (key === 'true') { $('#notifications').click() }
+	})
+	Cryptocat.Storage.getItem('audioNotifications', function(key) {
+		if (key === 'true') { $('#audio').click() }
+	})
+}, 3000)
 
 // Load pre-existing encryption keys
 // Key storage currently disabled as we are not yet sure if this is safe to do.
-/* if (Cryptocat.Storage.getItem('myKey') !== null) {
- myKey = new DSA(JSON.parse(Cryptocat.Storage.getItem('myKey')))
- multiParty.setPrivateKey(Cryptocat.Storage.getItem('multiPartyKey'))
- multiParty.genPublicKey()
- } */
-
-// Load nickname settings.
-if (Cryptocat.Storage.getItem('myNickname')) {
-	$('#nickname').animate({'color': 'transparent'}, function() {
-		$(this).val(Cryptocat.Storage.getItem('myNickname'))
-		$(this).animate({'color': '#FFF'})
-	})
-}
-// Load notification settings.
-window.setTimeout(function() {
-	if (Cryptocat.Storage.getItem('desktopNotifications') === 'true') {
-		$('#notifications').click()
+/*
+Cryptocat.Storage.getItem('myKey', function(key) {
+	if (key) {
+		var myKey = new DSA(JSON.parse(key))
+		Cryptocat.Storage.getItem('multiPartyKey', function(mpKey) {
+			multiParty.setPrivateKey(mpKey)
+			multiParty.getPublicKey()
+		})
 	}
-	if (Cryptocat.Storage.getItem('audioNotifications') === 'true') {
-		$('#audio').click()
-	}
-}, 3000)
+})
+*/
 
 })

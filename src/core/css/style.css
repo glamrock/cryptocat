@@ -91,7 +91,7 @@ div#bubble {
 	z-index: 1;
 	width: 716px;
 	height: 500px;
-	margin: 1% auto 0 auto;
+	margin: 0 auto;
 	background: #FFF;
 	border-radius: 15px 0 15px 15px;
 	box-shadow: 5px 5px #76BDE5;
@@ -313,6 +313,7 @@ div#footer #languages li {
 	border-radius: 3px;
 	padding: 1px 0 1px 4px;
 	margin: 4px auto;
+	list-style-type: none;
 }
 
 /*

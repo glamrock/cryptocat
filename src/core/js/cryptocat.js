@@ -1464,20 +1464,28 @@ $(window).focus(function() {
 	}
 })
 
-// Prevent accidental window close.
-$(window).bind('beforeunload', function() {
-	if (showNotifications) {
-		return Cryptocat.language['loginMessage']['thankYouUsing']
-	}
-})
+if (typeof(chrome) === 'undefined') {
+	// Prevent accidental window close.
+	$(window).bind('beforeunload', function() {
+		if (showNotifications) {
+			return Cryptocat.language['loginMessage']['thankYouUsing']
+		}
+	})
+	
+	// Logout on browser close.
+	$(window).unload(function() {
+		if (Cryptocat.connection !== null) {
+			loginError = false
+			logout()
+		}
+	})
+}
 
-// Logout on browser close.
-$(window).unload(function() {
-	if (Cryptocat.connection !== null) {
-		loginError = false
-		logout()
-	}
-})
+// Determine whether we are showing a top margin
+// Depending on window size
+if ($(window).height() > 585) {
+	$('#bubble').css('margin-top', '1.5%')
+}
 
 // Show main window.
 $('#bubble').show()
