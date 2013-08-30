@@ -1276,7 +1276,7 @@ $('#customServer').click(function() {
 				alert('This is the default server, and you cannot remove it.')
 				return
 			}
-			if ( !confirm("Are you sure you would like to delete this server?") ) {
+			if ( !confirm('Are you sure you would like to delete this server?') ) {
 				return
 			}
 			$('#customServerSelector option[value="' + domain + '"]').remove()
