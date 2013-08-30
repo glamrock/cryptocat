@@ -1202,10 +1202,10 @@ $('#customServer').click(function() {
 	Cryptocat.domain = Strophe.xmlescape(Cryptocat.domain)
 	// Attempt to load the saved domains
 	// Initialise to the defaults
-	var savedDomains = '{"' + defaultDomain
-		+ '":{"xmpp":"' + defaultConferenceServer
-		+ '","bosh":"' + defaultBOSH + '"}}'
-	savedDomains = $.parseJSON(savedDomains)
+	var savedDomains = {}
+	savedDomains[defaultDomain] = {}
+	savedDomains[defaultDomain].xmpp = defaultConferenceServer
+	savedDomains[defaultDomain].bosh = defaultBOSH
 	try {
 		if (Cryptocat.Storage.getItem('savedDomains') !== null && Cryptocat.Storage.getItem('savedDomains') !== undefined) {
 			savedDomains = $.parseJSON(Cryptocat.Storage.getItem('savedDomains'))
