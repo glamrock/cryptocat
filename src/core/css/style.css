@@ -290,6 +290,10 @@ div#customServerDialog input.disabled {
 	background: rgba(255, 255, 255, 0.2);
 }
 
+div#customServerDialog input.confirm {
+	color: #97CEEC;
+}
+
 div#customServerDialog [type=button] {
 	display: inline;
 	width: 96px;
