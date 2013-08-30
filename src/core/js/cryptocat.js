@@ -1280,7 +1280,7 @@ $('#customServer').click(function() {
 				return
 			}
 			$('#customServerSelector option[value="' + domain + '"]').remove()
-			delete savedDomains[domain]
+			;delete savedDomains[domain]
 			Cryptocat.Storage.setItem('savedDomains',JSON.stringify(savedDomains))
 		})
 		$('#customServerSelector').unbind('change')
