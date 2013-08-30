@@ -1247,6 +1247,7 @@ $('#customServer').click(function() {
 			Cryptocat.Storage.setItem('conferenceServer', Cryptocat.conferenceServer)
 			Cryptocat.Storage.setItem('bosh', Cryptocat.bosh)
 		})
+		$('#customServerSave').unbind('click')
 		$('#customServerSave').click(function() {
 			var newDomain = $('#customDomain').val()
 			var newXMPP = $('#customConferenceServer').val()
@@ -1268,6 +1269,7 @@ $('#customServer').click(function() {
 			}
 			Cryptocat.Storage.setItem('savedDomains',JSON.stringify(savedDomains))
 		})
+		$('#customServerDelete').unbind('click')
 		$('#customServerDelete').click(function() {
 			var domain = $('#customServerSelector').val()
 			if ( domain === 'crypto.cat') {
@@ -1281,6 +1283,7 @@ $('#customServer').click(function() {
 			delete savedDomains[domain]
 			Cryptocat.Storage.setItem('savedDomains',JSON.stringify(savedDomains))
 		})
+		$('#customServerSelector').unbind('change')
 		$('#customServerSelector').change(function() {
 			var domain = $(this).val()
 			$.each(savedDomains, function(dom, addresses) {
