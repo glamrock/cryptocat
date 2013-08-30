@@ -1217,7 +1217,7 @@ $('#customServer').click(function() {
 	$('#customServerSelector').empty()
 	$.each(savedDomains, function(dom) {
 		$('#customServerSelector').append('<option value="' + dom + '">' + dom + '</option>')
-	});
+	})
 	// End saved domain loading
 	$('#languages').hide()
 	$('#footer').animate({'height': 180}, function() {
@@ -1249,14 +1249,21 @@ $('#customServer').click(function() {
 		})
 		$('#customServerSave').unbind('click')
 		$('#customServerSave').click(function() {
+			$('#customServerDelete').val('Delete').attr('data-deletecomfirm','0').removeClass('confirm')
 			var newDomain = $('#customDomain').val()
 			var newXMPP = $('#customConferenceServer').val()
 			var newBOSH = $('#customBOSH').val()
+			if ( newDomain === defaultDomain ) {
+				return // Cannot overwrite the default domain
+			}
 			var exists = false
 			if (savedDomains.hasOwnProperty(newDomain)) {
 				exists = true
-				if (!confirm('An entry already exists under this domain. Would you like to overwrite it?')) {
+				if ($('#customServerSave').attr('data-savecomfirm') !== '1') {
+					$('#customServerSave').val('Overwrite?').attr('data-savecomfirm','1').addClass('confirm')
 					return
+				} else {
+					$('#customServerSave').val('Save').attr('data-savecomfirm','0').removeClass('confirm')
 				}
 			}
 			var newServer = {}
@@ -1271,20 +1278,25 @@ $('#customServer').click(function() {
 		})
 		$('#customServerDelete').unbind('click')
 		$('#customServerDelete').click(function() {
+			$('#customServerSave').val('Save').attr('data-savecomfirm','0').removeClass('confirm')
 			var domain = $('#customServerSelector').val()
-			if ( !confirm('Are you sure you would like to delete this server?') ) {
-				return
+			if ( $('#customServerDelete').attr('data-deletecomfirm') === '1' ) {
+				$('#customServerSelector option[value="' + domain + '"]').remove()
+				;delete savedDomains[domain]
+				Cryptocat.Storage.setItem('savedDomains',JSON.stringify(savedDomains))
+				$('#customServerDelete').val('Delete').attr('data-deletecomfirm','0').removeClass('confirm')
+			} else {
+				$('#customServerDelete').val('Are you sure?').attr('data-deletecomfirm','1').addClass('confirm')
 			}
-			$('#customServerSelector option[value="' + domain + '"]').remove()
-			;delete savedDomains[domain]
-			Cryptocat.Storage.setItem('savedDomains',JSON.stringify(savedDomains))
 		})
 		$('#customServerSelector').unbind('change')
 		$('#customServerSelector').change(function() {
+			$('#customServerDelete').val('Delete').attr('data-deletecomfirm','0').removeClass('confirm')
+			$('#customServerSave').val('Save').attr('data-savecomfirm','0').removeClass('confirm')
 			var domain = $(this).val()
-			$('#customServerDelete, #customServerSave').removeAttr('disabled').removeClass('disabled')
+			$('#customServerDelete').removeAttr('disabled').removeClass('disabled')
 			if (domain === defaultDomain) {
-				$('#customServerDelete, #customServerSave').attr('disabled','disabled').addClass('disabled')
+				$('#customServerDelete').attr('disabled','disabled').addClass('disabled')
 			}
 			$.each(savedDomains, function(dom, addresses) {
 				if ( dom === domain ) {
@@ -1293,7 +1305,7 @@ $('#customServer').click(function() {
 					$('#customBOSH').val(addresses.bosh)
 					return
 				}
-			});
+			})
 		})
 		$('#customDomain').select()
 	})
