@@ -67,7 +67,8 @@
 		"CatFacts": true,
 		"describe": true,
 		"it": true,
-		"Tinycon": true
+		"Tinycon": true,
+		"chrome": true
 	}
 
 }
