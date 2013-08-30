@@ -1,8 +1,8 @@
 if (typeof Cryptocat === 'undefined') {
 	Cryptocat = function() {}
 }
-if (typeof Cryptocat.Language === 'undefined') {
-	Cryptocat.Language = function() {}
+if (typeof Cryptocat.Locale === 'undefined') {
+	Cryptocat.Locale = function() {}
 }
 
 (function(){
@@ -22,7 +22,7 @@ function handleAliases(locale) {
 }
 
 // Get locale file, call other functions
-Cryptocat.Language.set = function(locale) {
+Cryptocat.Locale.set = function(locale) {
 	locale = handleAliases(locale.toLowerCase())
 	$.ajax({
 		url : 'locale/' + locale + '.txt',
@@ -32,7 +32,7 @@ Cryptocat.Language.set = function(locale) {
 		complete: function(data) {
 			var language = data.responseText.split('\n')
 			if (language.length < 5) { // data too small, dismiss
-				Cryptocat.Language.set('en')
+				Cryptocat.Locale.set('en')
 				return false
 			}
 			for (var i in language) {
@@ -40,17 +40,17 @@ Cryptocat.Language.set = function(locale) {
 					language[i] = $.trim(language[i])
 				}
 			}
-			var languageObject = Cryptocat.Language.buildObject(locale, language)
-			Cryptocat.Language.refresh(languageObject)
+			var languageObject = Cryptocat.Locale.buildObject(locale, language)
+			Cryptocat.Locale.refresh(languageObject)
 		},
 		error: function() {
-			Cryptocat.Language.set('en')
+			Cryptocat.Locale.set('en')
 		}
 	})
 }
 
 // Build and deliver language object
-Cryptocat.Language.buildObject = function(locale, language) {
+Cryptocat.Locale.buildObject = function(locale, language) {
 	var i = 0
 	var languageObject = {
 		'language': locale,
@@ -136,8 +136,8 @@ Cryptocat.Language.buildObject = function(locale, language) {
 }
 
 // Deliver new strings and refresh login page
-Cryptocat.Language.refresh = function(languageObject) {
-	Cryptocat.language = languageObject
+Cryptocat.Locale.refresh = function(languageObject) {
+	Cryptocat.Locale = languageObject
 	var smallType = ['bo', 'ar', 'in']
 	if (smallType.indexOf(languageObject['language']) >= 0) {
 		$('body').css({'font-size': '12px'})
@@ -164,7 +164,7 @@ Cryptocat.Language.refresh = function(languageObject) {
 	$('#status').attr('title', languageObject['chatWindow']['statusAvailable'])
 	$('#status').attr('alt', languageObject['chatWindow']['statusAvailable'])
 	$('#conversationTag').text(languageObject['chatWindow']['conversation'])
-	$('#languageSelect').text($('#' + Cryptocat.language['language']).text())
+	$('#languageSelect').text($('#' + Cryptocat.Locale['language']).text())
 	$('.qtip').remove()
 	$('[title]').qtip({
 		position: {

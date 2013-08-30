@@ -85,7 +85,7 @@ keyGenerator.onmessage = function(e) {
 	myKey = new DSA(e.data)
 	// Key storage currently disabled as we are not yet sure if this is safe to do.
 	//	Cryptocat.Storage.setItem('myKey', JSON.stringify(myKey))
-	$('#loginInfo').text(Cryptocat.language['loginMessage']['connecting'])
+	$('#loginInfo').text(Cryptocat.Locale['loginMessage']['connecting'])
 	connectXMPP(Cryptocat.encodedBytes(16, CryptoJS.enc.Hex), Cryptocat.encodedBytes(16, CryptoJS.enc.Hex))
 }
 
@@ -200,7 +200,7 @@ var smcb = function(nickname) {
 				}
 				else {
 					if ($('#authInfo').length) {
-						$('#authSubmit').val(Cryptocat.language['chatWindow']['failed']).animate({
+						$('#authSubmit').val(Cryptocat.Locale['chatWindow']['failed']).animate({
 							'background-color': '#F00'
 						})
 					}
@@ -214,7 +214,7 @@ var smcb = function(nickname) {
 function buildConversationInfo(conversation) {
 	$('.conversationName').text(Cryptocat.myNickname + '@' + Cryptocat.conversationName)
 	if (conversation === 'main-Conversation') {
-		$('#groupConversation').text(Cryptocat.language['chatWindow']['groupConversation'])
+		$('#groupConversation').text(Cryptocat.Locale['chatWindow']['groupConversation'])
 	}
 	else {
 		$('#groupConversation').text('')
@@ -389,7 +389,7 @@ Cryptocat.addFile = function(url, file, conversation, filename) {
 	var fileLink = Mustache.render(Cryptocat.templates[fileLinkString], {
 		url: url,
 		filename: filename,
-		downloadFile: Cryptocat.language['chatWindow']['downloadFile']
+		downloadFile: Cryptocat.Locale['chatWindow']['downloadFile']
 	})
 	$('[file=' + file + ']').replaceWith(fileLink)
 	conversationBuffer.find('[file=' + file + ']').replaceWith(fileLink)
@@ -664,7 +664,7 @@ function handlePresence(presence) {
 			window.setTimeout(function() {
 				loginError = false
 				logout()
-				loginFail(Cryptocat.language['loginMessage']['nicknameInUse'])
+				loginFail(Cryptocat.Locale['loginMessage']['nicknameInUse'])
 			}, 3000)
 			return false
 		}
@@ -786,8 +786,8 @@ function bindBuddyClick(nickname) {
 // Send encrypted file.
 function sendFile(nickname) {
 	var sendFileDialog = Mustache.render(Cryptocat.templates.sendFile, {
-		sendEncryptedFile: Cryptocat.language['chatWindow']['sendEncryptedFile'],
-		fileTransferInfo: Cryptocat.language['chatWindow']['fileTransferInfo']
+		sendEncryptedFile: Cryptocat.Locale['chatWindow']['sendEncryptedFile'],
+		fileTransferInfo: Cryptocat.Locale['chatWindow']['fileTransferInfo']
 	})
 	ensureOTRdialog(nickname, false, function() {
 		dialogBox(sendFileDialog, 240, true)
@@ -861,14 +861,14 @@ function displayInfo(nickname) {
 	nickname = Strophe.xmlescape(nickname)
 	var infoDialog = Mustache.render(Cryptocat.templates.infoDialog, {
 		nickname: nickname,
-		otrFingerprint: Cryptocat.language['chatWindow']['otrFingerprint'],
-		groupFingerprint: Cryptocat.language['chatWindow']['groupFingerprint'],
-		authenticate: Cryptocat.language['chatWindow']['authenticate'],
-		verifyUserIdentity: Cryptocat.language['chatWindow']['verifyUserIdentity'],
-		secretQuestion: Cryptocat.language['chatWindow']['secretQuestion'],
-		secretAnswer: Cryptocat.language['chatWindow']['secretAnswer'],
-		ask: Cryptocat.language['chatWindow']['ask'],
-		identityVerified: Cryptocat.language['chatWindow']['identityVerified']
+		otrFingerprint: Cryptocat.Locale['chatWindow']['otrFingerprint'],
+		groupFingerprint: Cryptocat.Locale['chatWindow']['groupFingerprint'],
+		authenticate: Cryptocat.Locale['chatWindow']['authenticate'],
+		verifyUserIdentity: Cryptocat.Locale['chatWindow']['verifyUserIdentity'],
+		secretQuestion: Cryptocat.Locale['chatWindow']['secretQuestion'],
+		secretAnswer: Cryptocat.Locale['chatWindow']['secretAnswer'],
+		ask: Cryptocat.Locale['chatWindow']['ask'],
+		identityVerified: Cryptocat.Locale['chatWindow']['identityVerified']
 	})
 	ensureOTRdialog(nickname, false, function() {
 		if (Cryptocat.authenticatedUsers.indexOf(nickname) >= 0) {
@@ -884,7 +884,7 @@ function displayInfo(nickname) {
 			e.preventDefault()
 			var question = $('#authQuestion').val()
 			var answer = $('#authAnswer').val().toLowerCase().replace(/(\s|\.|\,|\'|\"|\;|\?|\!)/, '')
-			$('#authSubmit').val(Cryptocat.language['chatWindow']['asking'])
+			$('#authSubmit').val(Cryptocat.Locale['chatWindow']['asking'])
 			$('#authSubmit').unbind('click').bind('click', function(e) {
 				e.preventDefault()
 			})
@@ -896,17 +896,17 @@ function displayInfo(nickname) {
 // Receive an SMP question
 function smpQuestion(nickname, question) {
 	$('#dialogBoxClose').click()
-	var authRequest = Cryptocat.language['chatWindow']['authRequest']
+	var authRequest = Cryptocat.Locale['chatWindow']['authRequest']
 		.replace('(NICKNAME)', nickname)
-	var answerMustMatch = Cryptocat.language['chatWindow']['answerMustMatch']
+	var answerMustMatch = Cryptocat.Locale['chatWindow']['answerMustMatch']
 		.replace('(NICKNAME)', nickname)
 	window.setTimeout(function() {
 		dialogBox(Mustache.render(Cryptocat.templates.authRequest, {
-			authenticate: Cryptocat.language['chatWindow']['authenticate'],
+			authenticate: Cryptocat.Locale['chatWindow']['authenticate'],
 			authRequest: authRequest,
 			answerMustMatch: answerMustMatch,
 			question: question,
-			answer: Cryptocat.language['chatWindow']['answer']
+			answer: Cryptocat.Locale['chatWindow']['answer']
 		}), 240, false, function() {
 			$('#authReplySubmit').unbind('click').bind('click', function(e) {
 				e.preventDefault()
@@ -933,17 +933,17 @@ function bindBuddyMenu(nickname) {
 			$(this).css('background-image', 'url("img/up.png")')
 			var ignoreAction
 			if (Cryptocat.ignoredUsers.indexOf(nickname) >= 0) {
-				ignoreAction = Cryptocat.language['chatWindow']['unignore']
+				ignoreAction = Cryptocat.Locale['chatWindow']['unignore']
 			}
 			else {
-				ignoreAction = Cryptocat.language['chatWindow']['ignore']
+				ignoreAction = Cryptocat.Locale['chatWindow']['ignore']
 			}
 			$('#buddy-' + nickname).delay(10).animate({'height': 90}, 180, function() {
 				$(this).append(buddyMenuContents)
 				$('#' + nickname + '-contents').append(
 					Mustache.render(Cryptocat.templates.buddyMenu, {
-						sendEncryptedFile: Cryptocat.language['chatWindow']['sendEncryptedFile'],
-						displayInfo: Cryptocat.language['chatWindow']['displayInfo'],
+						sendEncryptedFile: Cryptocat.Locale['chatWindow']['sendEncryptedFile'],
+						displayInfo: Cryptocat.Locale['chatWindow']['displayInfo'],
 						ignore: ignoreAction
 					})
 				)
@@ -960,7 +960,7 @@ function bindBuddyMenu(nickname) {
 					})
 					$('#' + nickname + '-contents').find('.option3').click(function(e) {
 						e.stopPropagation()
-						if (ignoreAction === Cryptocat.language['chatWindow']['ignore']) {
+						if (ignoreAction === Cryptocat.Locale['chatWindow']['ignore']) {
 							Cryptocat.ignoredUsers.push(nickname)
 							$('#buddy-' + nickname).addClass('ignored')
 						}
@@ -1041,15 +1041,15 @@ function dialogBox(data, height, closeable, onAppear, onClose) {
 $('#status').click(function() {
 	if ($(this).attr('src') === 'img/available.png') {
 		$(this).attr('src', 'img/away.png')
-		$(this).attr('alt', Cryptocat.language['chatWindow']['statusAway'])
-		$(this).attr('title', Cryptocat.language['chatWindow']['statusAway'])
+		$(this).attr('alt', Cryptocat.Locale['chatWindow']['statusAway'])
+		$(this).attr('title', Cryptocat.Locale['chatWindow']['statusAway'])
 		currentStatus = 'away'
 		sendStatus()
 	}
 	else {
 		$(this).attr('src', 'img/available.png')
-		$(this).attr('alt', Cryptocat.language['chatWindow']['statusAvailable'])
-		$(this).attr('title', Cryptocat.language['chatWindow']['statusAvailable'])
+		$(this).attr('alt', Cryptocat.Locale['chatWindow']['statusAvailable'])
+		$(this).attr('title', Cryptocat.Locale['chatWindow']['statusAvailable'])
 		currentStatus = 'online'
 		sendStatus()
 	}
@@ -1069,8 +1069,8 @@ else {
 	$('#notifications').click(function() {
 		if ($(this).attr('src') === 'img/noNotifications.png') {
 			$(this).attr('src', 'img/notifications.png')
-			$(this).attr('alt', Cryptocat.language['chatWindow']['desktopNotificationsOn'])
-			$(this).attr('title', Cryptocat.language['chatWindow']['desktopNotificationsOn'])
+			$(this).attr('alt', Cryptocat.Locale['chatWindow']['desktopNotificationsOn'])
+			$(this).attr('title', Cryptocat.Locale['chatWindow']['desktopNotificationsOn'])
 			desktopNotifications = true
 			Cryptocat.Storage.setItem('desktopNotifications', 'true')
 			if (window.webkitNotifications) {
@@ -1081,8 +1081,8 @@ else {
 		}
 		else {
 			$(this).attr('src', 'img/noNotifications.png')
-			$(this).attr('alt', Cryptocat.language['chatWindow']['desktopNotificationsOff'])
-			$(this).attr('title', Cryptocat.language['chatWindow']['desktopNotificationsOff'])
+			$(this).attr('alt', Cryptocat.Locale['chatWindow']['desktopNotificationsOff'])
+			$(this).attr('title', Cryptocat.Locale['chatWindow']['desktopNotificationsOff'])
 			desktopNotifications = false
 			Cryptocat.Storage.setItem('desktopNotifications', 'false')
 		}
@@ -1099,15 +1099,15 @@ else {
 	$('#audio').click(function() {
 		if ($(this).attr('src') === 'img/noSound.png') {
 			$(this).attr('src', 'img/sound.png')
-			$(this).attr('alt', Cryptocat.language['chatWindow']['audioNotificationsOn'])
-			$(this).attr('title', Cryptocat.language['chatWindow']['audioNotificationsOn'])
+			$(this).attr('alt', Cryptocat.Locale['chatWindow']['audioNotificationsOn'])
+			$(this).attr('title', Cryptocat.Locale['chatWindow']['audioNotificationsOn'])
 			audioNotifications = true
 			Cryptocat.Storage.setItem('audioNotifications', 'true')
 		}
 		else {
 			$(this).attr('src', 'img/noSound.png')
-			$(this).attr('alt', Cryptocat.language['chatWindow']['audioNotificationsOff'])
-			$(this).attr('title', Cryptocat.language['chatWindow']['audioNotificationsOff'])
+			$(this).attr('alt', Cryptocat.Locale['chatWindow']['audioNotificationsOff'])
+			$(this).attr('title', Cryptocat.Locale['chatWindow']['audioNotificationsOff'])
 			audioNotifications = false
 			Cryptocat.Storage.setItem('audioNotifications', 'false')
 		}
@@ -1117,7 +1117,7 @@ else {
 // Logout button.
 $('#logout').click(function() {
 	loginError = false
-	$('#loginInfo').text(Cryptocat.language['loginMessage']['thankYouUsing'])
+	$('#loginInfo').text(Cryptocat.Locale['loginMessage']['thankYouUsing'])
 	$('#loginInfo').animate({'background-color': '#97CEEC'}, 200)
 	logout()
 })
@@ -1209,7 +1209,7 @@ $('#customServer').click(function() {
 			.click(function() {$(this).select()})
 		$('#customBOSH').val(Cryptocat.bosh)
 			.click(function() {$(this).select()})
-		$('#customServerReset').val(Cryptocat.language['loginWindow']['reset']).click(function() {
+		$('#customServerReset').val(Cryptocat.Locale['loginWindow']['reset']).click(function() {
 			$('#customDomain').val(defaultDomain)
 			$('#customConferenceServer').val(defaultConferenceServer)
 			$('#customBOSH').val(defaultBOSH)
@@ -1217,7 +1217,7 @@ $('#customServer').click(function() {
 			Cryptocat.Storage.removeItem('conferenceServer')
 			Cryptocat.Storage.removeItem('bosh')
 		})
-		$('#customServerSubmit').val(Cryptocat.language['chatWindow']['continue']).click(function() {
+		$('#customServerSubmit').val(Cryptocat.Locale['chatWindow']['continue']).click(function() {
 			$('#customServerDialog').fadeOut(200, function() {
 				$('#footer').animate({'height': 14})
 			})
@@ -1236,13 +1236,13 @@ $('#customServer').click(function() {
 $('#languageSelect').click(function() {
 	$('#customServerDialog').hide()
 	$('#languages li').css({'color': '#FFF', 'font-weight': 'normal'})
-	$('#' + Cryptocat.language['language']).css({'color': '#97CEEC', 'font-weight': 'bold'})
+	$('#' + Cryptocat.Locale['language']).css({'color': '#97CEEC', 'font-weight': 'bold'})
 	$('#footer').animate({'height': 180}, function() {
 		$('#languages').fadeIn()
 		$('#languages li').click(function() {
 			var lang = $(this).attr('id')
 			$('#languages').fadeOut(200, function() {
-				Cryptocat.Language.set(lang)
+				Cryptocat.Locale.set(lang)
 				Cryptocat.Storage.setItem('language', lang)
 				$('#footer').animate({'height': 14})
 			})
@@ -1266,26 +1266,26 @@ $('#loginForm').submit(function() {
 	$('#conversationName').val($.trim($('#conversationName').val().toLowerCase()))
 	$('#nickname').val($.trim($('#nickname').val().toLowerCase()))
 	if ($('#conversationName').val() === '') {
-		loginFail(Cryptocat.language['loginMessage']['enterConversation'])
+		loginFail(Cryptocat.Locale['loginMessage']['enterConversation'])
 		$('#conversationName').select()
 	}
 	else if (!$('#conversationName').val().match(/^\w{1,20}$/)) {
-		loginFail(Cryptocat.language['loginMessage']['conversationAlphanumeric'])
+		loginFail(Cryptocat.Locale['loginMessage']['conversationAlphanumeric'])
 		$('#conversationName').select()
 	}
 	else if ($('#nickname').val() === '') {
-		loginFail(Cryptocat.language['loginMessage']['enterNickname'])
+		loginFail(Cryptocat.Locale['loginMessage']['enterNickname'])
 		$('#nickname').select()
 	}
 	else if (!$('#nickname').val().match(/^\w{1,16}$/)) {
-		loginFail(Cryptocat.language['loginMessage']['nicknameAlphanumeric'])
+		loginFail(Cryptocat.Locale['loginMessage']['nicknameAlphanumeric'])
 		$('#nickname').select()
 	}
 	// If no encryption keys, generate.
 	else if (!myKey) {
 		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" '
 			+ 'alt="" /><p id="progressInfo"><span>'
-			+ Cryptocat.language['loginMessage']['generatingKeys'] + '</span></p>'
+			+ Cryptocat.Locale['loginMessage']['generatingKeys'] + '</span></p>'
 		dialogBox(progressForm, 240, false, function() {
 			// We need to pass the web worker a pre-generated seed.
 			keyGenerator.postMessage(Cryptocat.generateSeed())
@@ -1296,7 +1296,7 @@ $('#loginForm').submit(function() {
 			//}
 			multiParty.genPublicKey()
 		})
-		if (Cryptocat.language['language'] === 'en') {
+		if (Cryptocat.Locale['language'] === 'en') {
 			$('#progressInfo').append(
 				'<br />Here is an interesting fact while you wait:'
 				+ '<br /><div id="interestingFact">'
@@ -1328,7 +1328,7 @@ function connectXMPP(username, password) {
 	$('#loginSubmit').attr('readonly', 'readonly')
 	Cryptocat.connection.register.connect(Cryptocat.domain, function(status) {
 		if (status === Strophe.Status.REGISTER) {
-			$('#loginInfo').text(Cryptocat.language['loginMessage']['registering'])
+			$('#loginInfo').text(Cryptocat.Locale['loginMessage']['registering'])
 			Cryptocat.connection.register.fields.username = username
 			Cryptocat.connection.register.fields.password = password
 			Cryptocat.connection.register.submit()
@@ -1338,7 +1338,7 @@ function connectXMPP(username, password) {
 			Cryptocat.connection.connect(username + '@' + Cryptocat.domain, password, function(status) {
 				if (status === Strophe.Status.CONNECTING) {
 					$('#loginInfo').animate({'background-color': '#97CEEC'}, 200)
-					$('#loginInfo').text(Cryptocat.language['loginMessage']['connecting'])
+					$('#loginInfo').text(Cryptocat.Locale['loginMessage']['connecting'])
 				}
 				else if (status === Strophe.Status.CONNECTED) {
 					Cryptocat.connection.ibb.addIBBHandler(Cryptocat.ibbHandler)
@@ -1364,14 +1364,14 @@ function connectXMPP(username, password) {
 				else if ((status === Strophe.Status.CONNFAIL) || (status === Strophe.Status.DISCONNECTED)) {
 					showNotifications = false
 					if (loginError) {
-						loginFail(Cryptocat.language['loginMessage']['connectionFailed'])
+						loginFail(Cryptocat.Locale['loginMessage']['connectionFailed'])
 						logout()
 					}
 				}
 			})
 		}
 		else if (status === Strophe.Status.SBMTFAIL) {
-			loginFail(Cryptocat.language['loginMessage']['authenticationFailure'])
+			loginFail(Cryptocat.Locale['loginMessage']['authenticationFailure'])
 			$('#conversationName').select()
 			$('#loginSubmit').removeAttr('readonly')
 			Cryptocat.connection = null
@@ -1468,7 +1468,7 @@ if (typeof(chrome) === 'undefined') {
 	// Prevent accidental window close.
 	$(window).bind('beforeunload', function() {
 		if (showNotifications) {
-			return Cryptocat.language['loginMessage']['thankYouUsing']
+			return Cryptocat.Locale['loginMessage']['thankYouUsing']
 		}
 	})
 	

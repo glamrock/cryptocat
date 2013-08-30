@@ -1,9 +1,9 @@
 ;(function (root, factory) {
 
   if (typeof define === 'function' && define.amd) {
-    define(['../etc/cryptocatRandom'], factory)
+    define(['../etc/random'], factory)
   } else if (typeof module !== 'undefined' && module.exports) {
-    module.exports = factory(require('../etc/cryptocatRandom.js'))
+    module.exports = factory(require('../etc/random.js'))
   } else {
     root.BigInt = factory(root.Cryptocat)
   }

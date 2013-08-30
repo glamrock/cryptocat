@@ -17,7 +17,7 @@
 		'../lib/crypto-js/pad-nopadding.js',
 		'../lib/crypto-js/mode-ctr.js',
 		'../lib/salsa20.js',
-		'../etc/cryptocatRandom.js',
+		'../etc/random.js',
 		'../lib/bigint.js',
 		'../lib/eventemitter.js',
 		'../lib/otr.js'

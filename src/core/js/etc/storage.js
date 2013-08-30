@@ -49,10 +49,10 @@ Cryptocat.Storage = (function() {
 // Initialize language settings.
 Cryptocat.Storage.getItem('language', function(key) {
 	if (key) {
-		Cryptocat.Language.set(key)
+		Cryptocat.Locale.set(key)
 	}
 	else {
-		Cryptocat.Language.set(window.navigator.language.toLowerCase())
+		Cryptocat.Locale.set(window.navigator.language.toLowerCase())
 	}
 })
 

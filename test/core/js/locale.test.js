@@ -1,6 +1,6 @@
 Cryptocat = function () {}
 
-require('../../../src/core/js/etc/cryptocatLocalization')
+require('../../../src/core/js/etc/locale')
 
 var assert = require('assert')
 describe('Localization module', function() {
@@ -9,7 +9,7 @@ describe('Localization module', function() {
 			var lang = new Array(101).join('ss').split('') // 100 elements array
 			lang[2] = testStr
 
-			var langObj = Cryptocat.Language.buildObject('ru', lang)
+			var langObj = Cryptocat.Locale.buildObject('ru', lang)
 
 			assert.equal(langObj.loginWindow.introHeader, testStr)
 		})
@@ -80,13 +80,13 @@ describe('Localization module', function() {
 	})()
 
 	it('Should fill all keys on valid server response', function() {
-		var langObj = Cryptocat.Language.buildObject('en', parsedResponse)
+		var langObj = Cryptocat.Locale.buildObject('en', parsedResponse)
 		assert.equal(langObj.chatWindow.cancel, 'Cancel')
 	})
 
 	it('Should decode cryptocat filesize units', function() {
 		Cryptocat.fileSize = 10
-		var langObj = Cryptocat.Language.buildObject('en', parsedResponse)
+		var langObj = Cryptocat.Locale.buildObject('en', parsedResponse)
 		assert.ok(langObj.chatWindow.fileTransferInfo.indexOf('0.009765625') > 0)
 	})
 

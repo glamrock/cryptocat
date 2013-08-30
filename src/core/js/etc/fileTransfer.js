@@ -15,11 +15,11 @@ function cn(to) {
 
 Cryptocat.beginSendFile = function(data) {
 	if (!data.file.type.match(fileMIME)) {
-		$('#fileInfoField').text(Cryptocat.language['chatWindow']['fileTypeError'])
+		$('#fileInfoField').text(Cryptocat.Locale['chatWindow']['fileTypeError'])
 		return
 	}
 	else if (data.file.size > (Cryptocat.fileSize * 1024)) {
-		$('#fileInfoField').text(Cryptocat.language['chatWindow']['fileSizeError'])
+		$('#fileInfoField').text(Cryptocat.Locale['chatWindow']['fileSizeError'])
 		return
 	}
 	else {

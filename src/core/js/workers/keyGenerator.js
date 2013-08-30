@@ -11,7 +11,7 @@
 	importScripts('../lib/crypto-js/pad-nopadding.js')
 	importScripts('../lib/crypto-js/mode-ctr.js')
 	importScripts('../lib/salsa20.js')
-	importScripts('../etc/cryptocatRandom.js')
+	importScripts('../etc/random.js')
 	importScripts('../lib/bigint.js')
 	importScripts('../lib/eventemitter.js')
 	importScripts('../lib/otr.js')
