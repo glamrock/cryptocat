@@ -1202,7 +1202,7 @@ $('#customServer').click(function() {
 	Cryptocat.domain = Strophe.xmlescape(Cryptocat.domain)
 	// Attempt to load the saved domains
 	// Initialise to the defaults
-	var savedDomains = savedDomains = '{"' + defaultDomain
+	var savedDomains = '{"' + defaultDomain
 		+ '":{"xmpp":"' + defaultConferenceServer
 		+ '","bosh":"' + defaultBOSH + '"}}'
 	savedDomains = $.parseJSON(savedDomains)
