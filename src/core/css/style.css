@@ -277,6 +277,17 @@ div#customServerDialog {
 	margin: 40px auto;
 }
 
+div#customServerList {
+	float: left;
+	width: 50%;
+	text-align: right;
+}
+
+div#customServerFields {
+	float: left;
+	text-align: left;
+}
+
 div#customServerDialog input, select#customServerSelector {
 	margin: 8px;
 	background: rgba(255, 255, 255, 0.08);
