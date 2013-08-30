@@ -1202,16 +1202,16 @@ $('#customServer').click(function() {
 	Cryptocat.domain = Strophe.xmlescape(Cryptocat.domain)
 	// Attempt to load the saved domains
 	// Initialise to the defaults
-	var savedDomains
+	var savedDomains = savedDomains = '{"' + defaultDomain
+		+ '":{"xmpp":"' + defaultConferenceServer
+		+ '","bosh":"' + defaultBOSH + '"}}'
+	savedDomains = $.parseJSON(savedDomains)
 	try {
-		if (Cryptocat.Storage.getItem('savedDomains') != null) {
+		if (Cryptocat.Storage.getItem('savedDomains') != undefined) {
 			savedDomains = $.parseJSON(Cryptocat.Storage.getItem('savedDomains'))
 		}
 	} catch(err) {
 		// Error loading saved domain list, falling back to the original default
-		savedDomains = '{"' + defaultDomain
-		+ '":{"xmpp":"' + defaultConferenceServer
-		+ '","bosh":"' + defaultBOSH + '"}}' 
 	}
 	// Populate list with domains
 	$('#customServerSelector').empty()
