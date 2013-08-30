@@ -1207,7 +1207,7 @@ $('#customServer').click(function() {
 		+ '","bosh":"' + defaultBOSH + '"}}'
 	savedDomains = $.parseJSON(savedDomains)
 	try {
-		if (Cryptocat.Storage.getItem('savedDomains') != undefined) {
+		if (Cryptocat.Storage.getItem('savedDomains') !== null && Cryptocat.Storage.getItem('savedDomains') !== undefined) {
 			savedDomains = $.parseJSON(Cryptocat.Storage.getItem('savedDomains'))
 		}
 	} catch(err) {
