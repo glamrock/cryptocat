@@ -1283,7 +1283,7 @@ $('#customServer').click(function() {
 		$('#customServerSelector').change(function() {
 			var domain = $(this).val()
 			$('#customServerDelete, #customServerSave').removeAttr('disabled').removeClass('disabled')
-			if (domain == defaultDomain) {
+			if (domain === defaultDomain) {
 				$('#customServerDelete, #customServerSave').attr('disabled','disabled').addClass('disabled')
 			}
 			$.each(savedDomains, function(dom, addresses) {
