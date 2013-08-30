@@ -285,6 +285,11 @@ div#customServerDialog input, select#customServerSelector {
 	padding: 4px;
 }
 
+div#customServerDialog input.disabled {
+	cursor: auto;
+	background: rgba(255, 255, 255, 0.2);
+}
+
 div#customServerDialog [type=button] {
 	display: inline;
 	width: 96px;
