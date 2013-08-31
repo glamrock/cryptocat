@@ -138,7 +138,9 @@ Cryptocat.Locale.buildObject = function(locale, language) {
 // Deliver new strings and refresh login page
 Cryptocat.Locale.refresh = function(languageObject) {
 	for (var o in languageObject) {
-		Cryptocat.Locale[o] = languageObject[o]
+		if (languageObject.hasOwnProperty(o)) {
+			Cryptocat.Locale[o] = languageObject[o]
+		}
 	}
 	var smallType = ['bo', 'ar', 'in']
 	if (smallType.indexOf(languageObject['language']) >= 0) {
