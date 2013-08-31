@@ -137,7 +137,9 @@ Cryptocat.Locale.buildObject = function(locale, language) {
 
 // Deliver new strings and refresh login page
 Cryptocat.Locale.refresh = function(languageObject) {
-	Cryptocat.Locale = languageObject
+	for (var o in languageObject) {
+		Cryptocat.Locale[o] = languageObject[o]
+	}
 	var smallType = ['bo', 'ar', 'in']
 	if (smallType.indexOf(languageObject['language']) >= 0) {
 		$('body').css({'font-size': '12px'})
@@ -164,7 +166,7 @@ Cryptocat.Locale.refresh = function(languageObject) {
 	$('#status').attr('title', languageObject['chatWindow']['statusAvailable'])
 	$('#status').attr('alt', languageObject['chatWindow']['statusAvailable'])
 	$('#conversationTag').text(languageObject['chatWindow']['conversation'])
-	$('#languageSelect').text($('#' + Cryptocat.Locale['language']).text())
+	$('#languageSelect').text($('#' + languageObject['language']).text())
 	$('.qtip').remove()
 	$('[title]').qtip({
 		position: {
