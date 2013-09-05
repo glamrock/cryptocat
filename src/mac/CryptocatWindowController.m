@@ -19,7 +19,9 @@
 
 - (id)init {
 	self = [self initWithWindowNibName:@"CryptocatWindowController" owner:self];
-	if (self) { }
+	if (self) {
+		[self showWindow:nil];
+	}
 	return self;
 }
 
@@ -44,7 +46,6 @@
 // Show Cryptocat window once everything is ready.
 - (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame {
 	[self.window makeKeyAndOrderFront:nil];
-	[self.window center];
 }
 
 // Bind file dialog for file transfers.
@@ -65,6 +66,8 @@
 	return defaultMenuItemsFixed;
 }
 
+
+
 // Handle links.
 - (void)webView:(WebView *)webView decidePolicyForNavigationAction:(NSDictionary *)actionInformation
 	request:(NSURLRequest *)request frame:(WebFrame *)frame
@@ -77,8 +80,11 @@
 		userNotification.subtitle = [components[2] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 		userNotification.hasActionButton = FALSE;
 		[[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:userNotification];
+		
 		// If the window is not in the foreground we want to bounce the dock icon. Nothing happens if the window is in focus.
+		
 		[NSApp requestUserAttention:NSCriticalRequest];
+		
     }
 	// Open links in default browser.
 	else if ([[[request URL] absoluteString] hasPrefix:@"http"]) {
