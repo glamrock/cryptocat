@@ -1296,7 +1296,7 @@ $('#loginForm').submit(function() {
 				window.setTimeout(function() {
 					sounds.keygenLoop.loop = true
 					sounds.keygenLoop.play()
-				}, 1000)
+				}, 900)
 			}
 			// We need to pass the web worker a pre-generated seed.
 			keyGenerator.postMessage(Cryptocat.generateSeed())
@@ -1369,8 +1369,10 @@ function connectXMPP(username, password) {
 						sounds.keygenLoop.pause()
 						sounds.keygenEnd.play()
 					}
-					$('#fill').stop().animate({'width': '100%', 'opacity': '1'}, 400, 'linear', function() {
-						$('#dialogBoxClose').click()
+					$('#fill').stop().animate({'width': '100%', 'opacity': '1'}, 250, 'linear', function() {
+						window.setTimeout(function() {
+							$('#dialogBoxClose').click()
+						}, 200)
 					})
 					window.setTimeout(function() {
 						connected()
