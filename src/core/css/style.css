@@ -91,7 +91,7 @@ div#bubble {
 	z-index: 1;
 	width: 716px;
 	height: 500px;
-	margin: 0 auto;
+	margin: 1% auto 0 auto;
 	background: #FFF;
 	border-radius: 15px 0 15px 15px;
 	box-shadow: 5px 5px #76BDE5;
