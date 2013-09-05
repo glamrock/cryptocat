@@ -62,6 +62,15 @@ var myKey
 var composing
 var catFactInterval
 
+var sounds = {
+	'keygenStart': (new Audio('snd/keygenStart.wav')),
+	'keygenLoop' : (new Audio('snd/keygenLoop.wav')),
+	'keygenEnd'  : (new Audio('snd/keygenEnd.wav')),
+	'userOnline' : (new Audio('snd/userOnline.wav')),
+	'userOffline': (new Audio('snd/userOffline.wav')),
+	'msgGet'     : (new Audio('snd/msgGet.wav'))
+}
+
 // Set server information to defaults.
 Cryptocat.domain = defaultDomain
 Cryptocat.conferenceServer = defaultConferenceServer
@@ -103,11 +112,6 @@ function currentTime(seconds) {
 		}
 	}
 	return time.join(':')
-}
-
-// Plays the audio file defined by the `audio` variable.
-function playSound(audio) {
-	(new Audio('snd/' + audio + '.wav')).play()
 }
 
 // Initiates a conversation. Internal use.
@@ -420,7 +424,7 @@ Cryptocat.addToConversation = function(message, sender, conversation, type) {
 	else {
 		lineDecoration = 2
 		if (audioNotifications && (type !== 'composing')) {
-			playSound('msgGet')
+			sounds.msgGet.play()
 		}
 		if (!isFocused && (type !== 'composing')) {
 			newMessages++
@@ -545,7 +549,7 @@ function buddyNotification(nickname, join) {
 		desktopNotification('img/keygen.gif', nickname + ' has ' + (join ? 'joined ' : 'left ') + Cryptocat.conversationName, '', 0x1337)
 	}
 	if (audioNotifications) {
-		playSound(audioNotification)
+		sounds[audioNotification].play()
 	}
 }
 
@@ -1286,7 +1290,14 @@ $('#loginForm').submit(function() {
 		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" '
 			+ 'alt="" /><p id="progressInfo"><span>'
 			+ Cryptocat.Locale['loginMessage']['generatingKeys'] + '</span></p>'
+		if (audioNotifications) { sounds.keygenStart.play() }
 		dialogBox(progressForm, 240, false, function() {
+			if (audioNotifications) {
+				window.setTimeout(function() {
+					sounds.keygenLoop.loop = true
+					sounds.keygenLoop.play()
+				}, 1000)
+			}
 			// We need to pass the web worker a pre-generated seed.
 			keyGenerator.postMessage(Cryptocat.generateSeed())
 			// Key storage currently disabled as we are not yet sure if this is safe to do.
@@ -1354,6 +1365,10 @@ function connectXMPP(username, password) {
 							if (handlePresence(presence)) { return true }
 						}
 					)
+					if (audioNotifications) {
+						sounds.keygenLoop.pause()
+						sounds.keygenEnd.play()
+					}
 					$('#fill').stop().animate({'width': '100%', 'opacity': '1'}, 400, 'linear', function() {
 						$('#dialogBoxClose').click()
 					})
