@@ -66,8 +66,8 @@ var sounds = {
 	'keygenStart': (new Audio('snd/keygenStart.wav')),
 	'keygenLoop' : (new Audio('snd/keygenLoop.wav')),
 	'keygenEnd'  : (new Audio('snd/keygenEnd.wav')),
-	'userOnline' : (new Audio('snd/userOnline.wav')),
-	'userOffline': (new Audio('snd/userOffline.wav')),
+	'userJoin' : (new Audio('snd/userJoin.wav')),
+	'userLeave': (new Audio('snd/userLeave.wav')),
 	'msgGet'     : (new Audio('snd/msgGet.wav'))
 }
 
@@ -531,14 +531,14 @@ function buddyNotification(nickname, join) {
 			nickname: Strophe.xmlescape(nickname),
 			currentTime: currentTime(false)
 		})
-		audioNotification = 'userOnline'
+		audioNotification = 'userJoin'
 	}
 	else {
 		status = Mustache.render(Cryptocat.templates.userLeave, {
 			nickname: Strophe.xmlescape(nickname),
 			currentTime: currentTime(false)
 		})
-		audioNotification = 'userOffline'
+		audioNotification = 'userLeave'
 	}
 	conversations['main-Conversation'] += status
 	if (currentConversation === 'main-Conversation') {
@@ -1296,7 +1296,7 @@ $('#loginForm').submit(function() {
 				window.setTimeout(function() {
 					sounds.keygenLoop.loop = true
 					sounds.keygenLoop.play()
-				}, 900)
+				}, 800)
 			}
 			// We need to pass the web worker a pre-generated seed.
 			keyGenerator.postMessage(Cryptocat.generateSeed())
