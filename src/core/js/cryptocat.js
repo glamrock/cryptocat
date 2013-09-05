@@ -1500,7 +1500,7 @@ if (typeof(chrome) === 'undefined') {
 
 // Determine whether we are showing a top margin
 // Depending on window size
-if ($(window).height() > 585) {
+if ($(window).height() > 595) {
 	$('#bubble').css('margin-top', '1.5%')
 }
 
