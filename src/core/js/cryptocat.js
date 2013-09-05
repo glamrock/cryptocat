@@ -66,8 +66,8 @@ var sounds = {
 	'keygenStart': (new Audio('snd/keygenStart.wav')),
 	'keygenLoop' : (new Audio('snd/keygenLoop.wav')),
 	'keygenEnd'  : (new Audio('snd/keygenEnd.wav')),
-	'userJoin' : (new Audio('snd/userJoin.wav')),
-	'userLeave': (new Audio('snd/userLeave.wav')),
+	'userJoin'   : (new Audio('snd/userJoin.wav')),
+	'userLeave'  : (new Audio('snd/userLeave.wav')),
 	'msgGet'     : (new Audio('snd/msgGet.wav'))
 }
 
