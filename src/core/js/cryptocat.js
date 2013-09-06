@@ -883,7 +883,7 @@ function displayInfo(nickname) {
 			}
 			else {
 				showAuthenticated(nickname, 0)
-			}	
+			}
 		}
 		else {
 			dialogBox(infoDialog, 340, true)
