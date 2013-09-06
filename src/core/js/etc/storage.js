@@ -4,6 +4,26 @@ if (typeof Cryptocat === 'undefined') {
 
 $(window).ready(function() {
 
+// Cryptocat Storage API
+// This API uses different local storage solutions,
+// depending on the browser engine, to offer a uniform
+// storage interface for Cryptocat user preferences and settings.
+// Currently, this provides a functional interface for:
+// Cryptocat for Chrome: YES
+// Cryptocat for Safari: YES
+// Cryptocat for Firefox: NO
+
+// How to use:
+// Cryptocat.Storage.setItem(itemName, itemValue)
+// Sets itemName's value to itemValue.
+
+// Cryptocat.Storage.getItem(itemName, callbackFunction(result))
+// Gets itemName's value from local storage, and passes it to
+// the callback function as result.
+
+// Cryptocat.Storage.removeItem(itemName)
+// Removes itemName and its value from local storage.
+
 // Define the wrapper, depending on our browser or enivronment.
 Cryptocat.Storage = (function() {
 	if (typeof(chrome) === 'object') {
