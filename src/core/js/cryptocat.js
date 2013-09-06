@@ -875,9 +875,15 @@ function displayInfo(nickname) {
 		identityVerified: Cryptocat.Locale['chatWindow']['identityVerified']
 	})
 	ensureOTRdialog(nickname, false, function() {
-		if (Cryptocat.authenticatedUsers.indexOf(nickname) >= 0) {
+		if ((Cryptocat.authenticatedUsers.indexOf(nickname) >= 0)
+		|| (nickname === Cryptocat.myNickname)) {
 			dialogBox(infoDialog, 250, true)
-			showAuthenticated(nickname, 0)
+			if (nickname === Cryptocat.myNickname) {
+				$('#authInfo').hide()
+			}
+			else {
+				showAuthenticated(nickname, 0)
+			}	
 		}
 		else {
 			dialogBox(infoDialog, 340, true)

@@ -85,7 +85,7 @@ window.setTimeout(function() {
 	Cryptocat.Storage.getItem('audioNotifications', function(key) {
 		if ((key === 'true') || !key) { $('#audio').click() }
 	})
-}, 1000)
+}, 800)
 
 // Load pre-existing encryption keys
 // Key storage currently disabled as we are not yet sure if this is safe to do.
