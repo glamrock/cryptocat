@@ -1373,7 +1373,8 @@ function connectXMPP(username, password) {
 					Cryptocat.connection.si_filetransfer.addFileHandler(Cryptocat.fileHandler)
 					/* jshint +W106 */
 					Cryptocat.connection.muc.join(
-						Cryptocat.conversationName + '@' + Cryptocat.conferenceServer, Cryptocat.myNickname,
+						Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
+						Cryptocat.myNickname,
 						function(message) {
 							if (handleMessage(message)) { return true }
 						},
