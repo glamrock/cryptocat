@@ -95,7 +95,10 @@ keyGenerator.onmessage = function(e) {
 	// Key storage currently disabled as we are not yet sure if this is safe to do.
 	//	Cryptocat.Storage.setItem('myKey', JSON.stringify(myKey))
 	$('#loginInfo').text(Cryptocat.Locale['loginMessage']['connecting'])
-	connectXMPP(Cryptocat.encodedBytes(16, CryptoJS.enc.Hex), Cryptocat.encodedBytes(16, CryptoJS.enc.Hex))
+	connectXMPP(
+		Cryptocat.encodedBytes(16, CryptoJS.enc.Hex),
+		Cryptocat.encodedBytes(16, CryptoJS.enc.Hex)
+	)
 }
 
 // Outputs the current hh:mm.
@@ -204,9 +207,8 @@ var smcb = function(nickname) {
 				}
 				else {
 					if ($('#authInfo').length) {
-						$('#authSubmit').val(Cryptocat.Locale['chatWindow']['failed']).animate({
-							'background-color': '#F00'
-						})
+						$('#authSubmit').val(Cryptocat.Locale['chatWindow']['failed'])
+							.animate({'background-color': '#F00'})
 					}
 				}
 				break
@@ -546,7 +548,11 @@ function buddyNotification(nickname, join) {
 	}
 	scrollDownConversation(400, true)
 	if (!isFocused) {
-		desktopNotification('img/keygen.gif', nickname + ' has ' + (join ? 'joined ' : 'left ') + Cryptocat.conversationName, '', 0x1337)
+		desktopNotification(
+			'img/keygen.gif',
+			nickname + ' has ' + (join ? 'joined ' : 'left ') + Cryptocat.conversationName,
+			'', 0x1337
+		)
 	}
 	if (audioNotifications) {
 		sounds[audioNotification].play()
