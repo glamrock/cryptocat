@@ -339,16 +339,16 @@ function addLinks(message) {
 					}
 				}
 				sanitize = sanitize.join('')
-				var processed = sanitize.replace(':','&colon;')
+				var url = sanitize.replace(':','&colon;')
 				if (navigator.userAgent === 'Chrome (Mac app)') {
-					message = message.replace(
-						sanitize, '<a href="' + processed + '">' + processed + '</a>'
-					)
+					message = Mustache.render(Cryptocat.templates.linkMac, {
+						url: url
+					})
 				}
 				else {
-					message = message.replace(
-						sanitize, '<a href="' + processed + '" target="_blank">' + processed + '</a>'
-					)
+					message = Mustache.render(Cryptocat.templates.link, {
+						url: url
+					})
 				}
 			}
 		}
