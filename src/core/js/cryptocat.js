@@ -126,7 +126,7 @@ function initiateConversation(conversation) {
 
 // OTR functions:
 // Handle incoming messages.
-var uicb = function(buddy) {
+var otrIncomingCallback = function(buddy) {
 	return function(msg, encrypted) {
 		// drop unencrypted messages
 		if (encrypted) {
@@ -138,7 +138,7 @@ var uicb = function(buddy) {
 	}
 }
 // Handle outgoing messages.
-var iocb = function(buddy) {
+var otrOutgoingCallback = function(buddy) {
 	return function(message) {
 		Cryptocat.connection.muc.message(
 			Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
@@ -189,7 +189,7 @@ function showAuthenticated(nickname, speed) {
 }
 
 // Handle SMP callback
-var smcb = function(nickname) {
+var smpCallback = function(nickname) {
 	return function(type, data) {
 		switch(type) {
 			case 'question':
@@ -705,9 +705,9 @@ function handlePresence(presence) {
 		}
 		otrKeys[nickname] = new OTR(options)
 		otrKeys[nickname].REQUIRE_ENCRYPTION = true
-		otrKeys[nickname].on('ui', uicb(nickname))
-		otrKeys[nickname].on('io', iocb(nickname))
-		otrKeys[nickname].on('smp', smcb(nickname))
+		otrKeys[nickname].on('ui', otrIncomingCallback(nickname))
+		otrKeys[nickname].on('io', otrOutgoingCallback(nickname))
+		otrKeys[nickname].on('smp', smpCallback(nickname))
 		otrKeys[nickname].on('status', (function(nickname) {
 			return function(state) {
 				// Close generating fingerprint dialog after AKE.
