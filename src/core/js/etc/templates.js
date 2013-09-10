@@ -10,10 +10,10 @@ Cryptocat.templates = {
 		+ '<li class="option3">{{ignore}}</li>',
 
 	infoDialog: '<div class="title">{{nickname}}</div>'
-		+ '<div id="displayInfo">{{otrFingerprint}}<br /><span id="otrFingerprint"></span>'
-		+ '<br />{{groupFingerprint}}<br /><span id="multiPartyFingerprint"></span>'
-		+ '</div>'
-		+ '<div id="authInfo"><h2>{{authenticate}}</h2>'
+		+ '<div id="displayInfo">'
+		+ '{{groupFingerprint}}<br /><span id="multiPartyFingerprint"></span>'
+		+ '</div><div id="authInfo"><h2>{{authenticate}}</h2>'
+		+ '<p>{{otrFingerprint}}<br /><span id="otrFingerprint"></span></p>'
 		+ '<p>{{verifyUserIdentity}}</p>'
 		+ '<form><input type="text" id="authQuestion" placeholder="{{secretQuestion}}" maxlength="64" />'
 		+ '<input type="text" id="authAnswer" placeholder="{{secretAnswer}}" maxlength="64" />'

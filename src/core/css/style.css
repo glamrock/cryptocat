@@ -528,20 +528,21 @@ DIALOG BOX
 #authInfo {
     background: rgba(151, 206, 236, 0.4);
     width: 90%;
-    height: 150px;
+    height: 205px;
     padding: 0 5px;
-    margin: 8px auto 0 auto;
+    margin: -35px auto 0 auto;
     border-radius: 8px 0 8px 8px;
 }
 
 #authInfo h2 {
     font-size: 16px;
     padding: 3px;
-    margin: 0 0 -5px 0;
+    margin: 0 0 5px 0;
 }
 
 #authInfo p {
 	max-width: 500px;
+    margin-top: -10px;
 }
 
 #authInfo #authQuestion, #authInfo #authAnswer {
@@ -699,17 +700,6 @@ DIALOG BOX
 	font-weight: bold;
 	font-size: 14px;
 	font-family: monospace;
-}
-
-#otrColorprint, #multiPartyColorprint {
-	height: 20px;
-	margin: 2px 0 10px 0;
-}
-
-.colorprint {
-	width: 71px;
-	height: 12px;
-	display: inline-block;
 }
 
 #fileSelector {
