@@ -73,11 +73,11 @@ img {
 }
 
 ::-webkit-input-placeholder {
-	color: rgba(255, 255, 255, 0.7);
+	color: rgba(255, 255, 255, 0.85);
 }
 
 ::-moz-placeholder {
-	color: rgba(255, 255, 255, 0.7);
+	color: rgba(255, 255, 255, 0.85);
 }
 
 /*
@@ -528,9 +528,9 @@ DIALOG BOX
 #authInfo {
     background: rgba(151, 206, 236, 0.4);
     width: 90%;
-    height: 205px;
+    height: 208px;
     padding: 0 5px;
-    margin: -35px auto 0 auto;
+    margin: -38px auto 0 auto;
     border-radius: 8px 0 8px 8px;
 }
 
@@ -551,14 +551,15 @@ DIALOG BOX
     padding: 4px;
     width: 260px;
     border: none;
+    font-size: 1.05em;
     border-radius: 5px 0 5px 5px;
 }
 
 #authInfo #authSubmit {
     float: right;
     width: 100px;
-    height: 53px;
-    margin: -33px 20px 0px 0;
+    height: 57px;
+    margin: -35px 20px 0px 0;
     border-radius: 5px 0 5px 5px;
     font-size: 1.2em;
 	background: #97CEEC;
