@@ -8,8 +8,13 @@ Cryptocat.templates = {
 	buddyMenu: '<li class="option1">{{displayInfo}}</li>'
 		+ '<li class="option2">{{sendEncryptedFile}}</li>'
 		+ '<li class="option3">{{ignore}}</li>',
+		
+	myInfo: '<div class="title">{{nickname}}</div>'
+		+ '<div id="displayInfo">'
+		+ '{{groupFingerprint}}<br /><span id="multiPartyFingerprint"></span><br />'
+		+ '{{otrFingerprint}}<br /><span id="otrFingerprint"></span></div>',
 
-	infoDialog: '<div class="title">{{nickname}}</div>'
+	buddyInfo: '<div class="title">{{nickname}}</div>'
 		+ '<div id="displayInfo">'
 		+ '{{groupFingerprint}}<br /><span id="multiPartyFingerprint"></span>'
 		+ '</div><div id="authInfo"><h2>{{authenticate}}</h2>'

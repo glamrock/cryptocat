@@ -872,8 +872,15 @@ function ensureOTRdialog(nickname, close, cb) {
 
 // Display buddy information, including fingerprints and authentication.
 function displayInfo(nickname) {
+	var infoDialog
 	nickname = Strophe.xmlescape(nickname)
-	var infoDialog = Mustache.render(Cryptocat.templates.infoDialog, {
+	if (nickname === Cryptocat.myNickname) {
+		infoDialog = 'myInfo'
+	}
+	else {
+		infoDialog = 'buddyInfo'
+	}
+	infoDialog = Mustache.render(Cryptocat.templates[infoDialog], {
 		nickname: nickname,
 		otrFingerprint: Cryptocat.Locale['chatWindow']['otrFingerprint'],
 		groupFingerprint: Cryptocat.Locale['chatWindow']['groupFingerprint'],
@@ -888,28 +895,26 @@ function displayInfo(nickname) {
 		if ((Cryptocat.authenticatedUsers.indexOf(nickname) >= 0)
 		|| (nickname === Cryptocat.myNickname)) {
 			dialogBox(infoDialog, 250, true)
-			if (nickname === Cryptocat.myNickname) {
-				$('#authInfo').hide()
-			}
-			else {
+			if (nickname !== Cryptocat.myNickname) {
 				showAuthenticated(nickname, 0)
 			}
 		}
 		else {
 			dialogBox(infoDialog, 340, true)
+			$('#authSubmit').unbind('click').bind('click', function(e) {
+				e.preventDefault()
+				var question = $('#authQuestion').val()
+				var answer = $('#authAnswer').val().toLowerCase()
+					.replace(/(\s|\.|\,|\'|\"|\;|\?|\!)/, '')
+				$('#authSubmit').val(Cryptocat.Locale['chatWindow']['asking'])
+				$('#authSubmit').unbind('click').bind('click', function(e) {
+					e.preventDefault()
+				})
+				otrKeys[nickname].smpSecret(answer, question)
+			})
 		}
 		$('#otrFingerprint').text(getFingerprint(nickname, 1))
 		$('#multiPartyFingerprint').text(getFingerprint(nickname, 0))
-		$('#authSubmit').unbind('click').bind('click', function(e) {
-			e.preventDefault()
-			var question = $('#authQuestion').val()
-			var answer = $('#authAnswer').val().toLowerCase().replace(/(\s|\.|\,|\'|\"|\;|\?|\!)/, '')
-			$('#authSubmit').val(Cryptocat.Locale['chatWindow']['asking'])
-			$('#authSubmit').unbind('click').bind('click', function(e) {
-				e.preventDefault()
-			})
-			otrKeys[nickname].smpSecret(answer, question)
-		})
 	})
 }
 
@@ -1395,7 +1400,15 @@ function connectXMPP(username, password) {
 						connected()
 					}, 400)
 				}
-				else if ((status === Strophe.Status.CONNFAIL) || (status === Strophe.Status.DISCONNECTED)) {
+				else if (status === Strophe.Status.CONNFAIL) {
+					showNotifications = false
+					if (loginError) {
+						loginFail(Cryptocat.Locale['loginMessage']['connectionFailed'])
+						logout()
+					}
+				}
+				else if (status === Strophe.Status.DISCONNECTED) {
+					// This is to be changed to solve issue #460
 					showNotifications = false
 					if (loginError) {
 						loginFail(Cryptocat.Locale['loginMessage']['connectionFailed'])
