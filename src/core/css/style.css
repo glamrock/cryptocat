@@ -929,7 +929,7 @@ CONVERSATION WINDOW
 
 .userJoin, .userLeave {
 	background: #97CEEC;
-	max-width: 130px;
+	max-width: 150px;
 	display: block;
 	margin: 0 0 15px 0;
 	padding: 0 5px;
