@@ -30,11 +30,11 @@ opera:
 mac:
 	@rm -rf release/Cryptocat.app
 	@rm -rf release/cryptocat.mac.zip
-	@rm -rf src/mac/htdocs
 	@cp -R src/core src/mac/htdocs
 	@xcodebuild -project src/mac/Cryptocat.xcodeproj -configuration 'Release' -alltargets clean
 	@xcodebuild CONFIGURATION_BUILD_DIR="${PWD}/release" -project src/mac/Cryptocat.xcodeproj -configuration 'Release' build
 	@rm -rf release/Cryptocat.app.dSYM
+	@rm -rf src/mac/htdocs
 	@cd release && zip -q -r9 cryptocat.mac.zip Cryptocat.app
 	@/bin/echo "[Cryptocat] Mac app available in release/"
 
