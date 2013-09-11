@@ -1330,9 +1330,9 @@ $('#loginForm').submit(function() {
 		})
 		if (Cryptocat.Locale['language'] === 'en') {
 			$('#progressInfo').append(
-				'<br />Here is an interesting fact while you wait:'
-				+ '<br /><div id="interestingFact">'
-				+ CatFacts.getFact() + '</div>'
+				Mustache.render(Cryptocat.templates.catFact, {
+					catFact: CatFacts.getFact()
+				})
 			)
 		}
 		$('#progressInfo').append(
