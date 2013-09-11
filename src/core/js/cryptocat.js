@@ -375,6 +375,14 @@ function addEmoticons(message) {
 		.replace(/(\s|^)\&lt\;3\b(?=(\s|$))/g, ' <span class="monospace">&#9829;</span> ')
 }
 
+// Send your own multiparty public key to `nickname`, via XMPP-MUC.
+Cryptocat.sendPublicKey = function(nickname) {
+	Cryptocat.connection.muc.message(
+		Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
+		null, multiParty.sendPublicKey(nickname), null, 'groupchat', 'active'
+	)
+}
+
 // Update a file transfer progress bar.
 Cryptocat.updateFileProgressBar = function(file, chunk, size, recipient) {
 	var progress = (chunk * 100) / (Math.ceil(size / Cryptocat.chunkSize))
@@ -575,13 +583,8 @@ function addBuddy(nickname) {
 			$('#menu-' + nickname).unbind('click')
 			bindBuddyMenu(nickname)
 			bindBuddyClick(nickname)
-			for (var i = 0; i < 6000; i += 2000) {
-				window.setTimeout(function(nickname) {
-					Cryptocat.connection.muc.message(
-						Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
-						null, multiParty.sendPublicKey(nickname), null, 'groupchat', 'active'
-					)
-				}, i, nickname)
+			for (var u = 0; u < 6000; u += 2000) {
+				window.setTimeout(Cryptocat.sendPublicKey, u, nickname)
 			}
 			buddyNotification(nickname, true)
 		})
@@ -1481,21 +1484,19 @@ function reconnectXMPP(username, password) {
 				sounds.keygenEnd.play()
 			}
 		}
-		else if (status === Strophe.Status.CONNFAIL) {
-			window.setTimeout(function() {
+		else if ((status === Strophe.Status.CONNFAIL) || (status === Strophe.Status.DISCONNECTED)) {
+			if (loginError) {
+				window.setTimeout(function() {
 				reconnectXMPP(username, password)
-			}, 5000)
-		}
-		else if (status === Strophe.Status.DISCONNECTED) {
-			window.setTimeout(function() {
-				reconnectXMPP(username, password)
-			}, 5000)
+				}, 5000)
+			}
 		}
 	})
 }
 
 // Executes on user logout.
 function logout() {
+	loginError = false
 	Cryptocat.connection.muc.leave(Cryptocat.conversationName + '@' + Cryptocat.conferenceServer)
 	Cryptocat.connection.disconnect()
 	document.title = 'Cryptocat'
@@ -1522,7 +1523,6 @@ function logout() {
 			conversations = {}
 			currentConversation = null
 			Cryptocat.connection = null
-			loginError = false
 			$('#info,#loginOptions,#version,#loginInfo').fadeIn()
 			$('#loginForm').fadeIn(200, function() {
 				$('#conversationName').select()

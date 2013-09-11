@@ -259,13 +259,8 @@ multiParty.receiveMessage = function(sender, myName, message) {
 					multiParty.genFingerprint(sender)
 					multiParty.genSharedSecret(sender)
 					// Begin Cryptocat-specific tweak
-					for (var i = 0; i < 6000; i += 2000) {
-						window.setTimeout(function(nickname) {
-							Cryptocat.connection.muc.message(
-								Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
-								null, multiParty.sendPublicKey(sender), null, 'groupchat', 'active'
-							)
-						}, i, nickname)
+					for (var u = 0; u < 6000; u += 2000) {
+						window.setTimeout(Cryptocat.sendPublicKey, u, sender)
 					}
 					// End Cryptocat-specific tweak
 				}
