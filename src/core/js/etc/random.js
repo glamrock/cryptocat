@@ -66,7 +66,7 @@ Cryptocat.setSeed = function(s) {
 
 Cryptocat.getBytes = function(i) {
 	if (i.constructor !== Number || i < 1) {
-		throw new Error('Expecting a number greater than or equal to 0.')
+		throw new Error('Expecting a number greater than 0.')
 	}
 	var bytes = state.getBytes(i)
 	return (i === 1) ? bytes[0] : bytes
