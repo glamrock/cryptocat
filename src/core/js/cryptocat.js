@@ -575,11 +575,13 @@ function addBuddy(nickname) {
 			$('#menu-' + nickname).unbind('click')
 			bindBuddyMenu(nickname)
 			bindBuddyClick(nickname)
-			for (var i = 0; i < 2; i++) {
-				Cryptocat.connection.muc.message(
-					Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
-					null, multiParty.sendPublicKey(nickname), null, 'groupchat', 'active'
-				)
+			for (var i = 0; i < 6000; i += 2000) {
+				window.setTimeout(function(nickname) {
+					Cryptocat.connection.muc.message(
+						Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
+						null, multiParty.sendPublicKey(nickname), null, 'groupchat', 'active'
+					)
+				}, i, nickname)
 			}
 			buddyNotification(nickname, true)
 		})
@@ -676,7 +678,6 @@ function handlePresence(presence) {
 		if ($(presence).find('error').attr('code') === '409') {
 			// Delay logout in order to avoid race condition with window animation
 			window.setTimeout(function() {
-				loginError = false
 				logout()
 				loginFail(Cryptocat.Locale['loginMessage']['nicknameInUse'])
 			}, 3000)
@@ -1141,7 +1142,6 @@ else {
 
 // Logout button.
 $('#logout').click(function() {
-	loginError = false
 	$('#loginInfo').text(Cryptocat.Locale['loginMessage']['thankYouUsing'])
 	$('#loginInfo').animate({'background-color': '#97CEEC'}, 200)
 	logout()
@@ -1366,8 +1366,9 @@ function connectXMPP(username, password) {
 			Cryptocat.connection.register.submit()
 		}
 		else if (status === Strophe.Status.REGISTERED) {
+			Cryptocat.connection.reset()
 			Cryptocat.connection = new Strophe.Connection(Cryptocat.bosh)
-			Cryptocat.connection.connect(username + '@' + Cryptocat.domain, password, function(status) {
+			Cryptocat.connection.connect(username + '@' + Cryptocat.domain, password,function(status) {
 				if (status === Strophe.Status.CONNECTING) {
 					$('#loginInfo').animate({'background-color': '#97CEEC'}, 200)
 					$('#loginInfo').text(Cryptocat.Locale['loginMessage']['connecting'])
@@ -1391,7 +1392,9 @@ function connectXMPP(username, password) {
 						sounds.keygenLoop.pause()
 						sounds.keygenEnd.play()
 					}
-					$('#fill').stop().animate({'width': '100%', 'opacity': '1'}, 250, 'linear', function() {
+					$('#fill').stop().animate({
+						'width': '100%', 'opacity': '1'
+					}, 250, 'linear', function() {
 						window.setTimeout(function() {
 							$('#dialogBoxClose').click()
 						}, 200)
@@ -1408,11 +1411,8 @@ function connectXMPP(username, password) {
 					}
 				}
 				else if (status === Strophe.Status.DISCONNECTED) {
-					// This is to be changed to solve issue #460
-					showNotifications = false
 					if (loginError) {
-						loginFail(Cryptocat.Locale['loginMessage']['connectionFailed'])
-						logout()
+						reconnectXMPP(username, password)
 					}
 				}
 			})
@@ -1457,6 +1457,43 @@ function connected() {
 	document.title = Cryptocat.myNickname + '@' + Cryptocat.conversationName
 }
 
+// Reconnect to the same chatroom, on accidental connection loss.
+function reconnectXMPP(username, password) {
+	multiParty.reset()
+	Cryptocat.connection.reset()
+	Cryptocat.connection = new Strophe.Connection(Cryptocat.bosh)
+	Cryptocat.connection.connect(username + '@' + Cryptocat.domain, password, function(status) {
+		if (status === Strophe.Status.CONNECTING) {
+			$('.conversationName').animate({'background-color': '#F00'})
+		}
+		else if (status === Strophe.Status.CONNECTED) {
+			$('.conversationName').animate({'background-color': '#97CEEC'})
+			Cryptocat.connection.ibb.addIBBHandler(Cryptocat.ibbHandler)
+			/* jshint -W106 */
+			Cryptocat.connection.si_filetransfer.addFileHandler(Cryptocat.fileHandler)
+			/* jshint +W106 */
+			Cryptocat.connection.muc.join(
+				Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
+				Cryptocat.myNickname
+			)
+			if (audioNotifications) {
+				sounds.keygenLoop.pause()
+				sounds.keygenEnd.play()
+			}
+		}
+		else if (status === Strophe.Status.CONNFAIL) {
+			window.setTimeout(function() {
+				reconnectXMPP(username, password)
+			}, 5000)
+		}
+		else if (status === Strophe.Status.DISCONNECTED) {
+			window.setTimeout(function() {
+				reconnectXMPP(username, password)
+			}, 5000)
+		}
+	})
+}
+
 // Executes on user logout.
 function logout() {
 	Cryptocat.connection.muc.leave(Cryptocat.conversationName + '@' + Cryptocat.conferenceServer)
@@ -1485,6 +1522,7 @@ function logout() {
 			conversations = {}
 			currentConversation = null
 			Cryptocat.connection = null
+			loginError = false
 			$('#info,#loginOptions,#version,#loginInfo').fadeIn()
 			$('#loginForm').fadeIn(200, function() {
 				$('#conversationName').select()
@@ -1522,8 +1560,7 @@ if (typeof(chrome) === 'undefined') {
 	// Logout on browser close.
 	$(window).unload(function() {
 		if (Cryptocat.connection !== null) {
-			loginError = false
-			logout()
+			Cryptocat.connection.disconnect()
 		}
 	})
 }
