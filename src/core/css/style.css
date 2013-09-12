@@ -894,16 +894,14 @@ CONVERSATION WINDOW
 }
 
 #userInputSend {
-	width: 100px;
+	width: 105px;
 	height: 48px;
-	position: relative;
-	bottom: 25px;
-	margin: 0 4px 0 4px;
+	float: right;
+	margin: 10px 3px 0 0;
 	border-radius: 0px 0 7px 0px;
 	font-size: 1.8em;
 	text-shadow: 3px 2px #76BDE5;
 	box-shadow: 2px 2px #76BDE5;
-	display: inline;
 }
 
 #userInputSend:hover {
