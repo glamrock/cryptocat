@@ -62,6 +62,15 @@ var myKey
 var composing
 var catFactInterval
 
+var sounds = {
+	'keygenStart': (new Audio('snd/keygenStart.wav')),
+	'keygenLoop' : (new Audio('snd/keygenLoop.wav')),
+	'keygenEnd'  : (new Audio('snd/keygenEnd.wav')),
+	'userJoin'   : (new Audio('snd/userJoin.wav')),
+	'userLeave'  : (new Audio('snd/userLeave.wav')),
+	'msgGet'     : (new Audio('snd/msgGet.wav'))
+}
+
 // Set server information to defaults.
 Cryptocat.domain = defaultDomain
 Cryptocat.conferenceServer = defaultConferenceServer
@@ -86,7 +95,10 @@ keyGenerator.onmessage = function(e) {
 	// Key storage currently disabled as we are not yet sure if this is safe to do.
 	//	Cryptocat.Storage.setItem('myKey', JSON.stringify(myKey))
 	$('#loginInfo').text(Cryptocat.Locale['loginMessage']['connecting'])
-	connectXMPP(Cryptocat.encodedBytes(16, CryptoJS.enc.Hex), Cryptocat.encodedBytes(16, CryptoJS.enc.Hex))
+	connectXMPP(
+		Cryptocat.encodedBytes(16, CryptoJS.enc.Hex),
+		Cryptocat.encodedBytes(16, CryptoJS.enc.Hex)
+	)
 }
 
 // Outputs the current hh:mm.
@@ -105,11 +117,6 @@ function currentTime(seconds) {
 	return time.join(':')
 }
 
-// Plays the audio file defined by the `audio` variable.
-function playSound(audio) {
-	(new Audio('snd/' + audio + '.wav')).play()
-}
-
 // Initiates a conversation. Internal use.
 function initiateConversation(conversation) {
 	if (!conversations.hasOwnProperty(conversation)) {
@@ -119,7 +126,7 @@ function initiateConversation(conversation) {
 
 // OTR functions:
 // Handle incoming messages.
-var uicb = function(buddy) {
+var otrIncomingCallback = function(buddy) {
 	return function(msg, encrypted) {
 		// drop unencrypted messages
 		if (encrypted) {
@@ -131,7 +138,7 @@ var uicb = function(buddy) {
 	}
 }
 // Handle outgoing messages.
-var iocb = function(buddy) {
+var otrOutgoingCallback = function(buddy) {
 	return function(message) {
 		Cryptocat.connection.muc.message(
 			Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
@@ -182,7 +189,7 @@ function showAuthenticated(nickname, speed) {
 }
 
 // Handle SMP callback
-var smcb = function(nickname) {
+var smpCallback = function(nickname) {
 	return function(type, data) {
 		switch(type) {
 			case 'question':
@@ -200,9 +207,8 @@ var smcb = function(nickname) {
 				}
 				else {
 					if ($('#authInfo').length) {
-						$('#authSubmit').val(Cryptocat.Locale['chatWindow']['failed']).animate({
-							'background-color': '#F00'
-						})
+						$('#authSubmit').val(Cryptocat.Locale['chatWindow']['failed'])
+							.animate({'background-color': '#F00'})
 					}
 				}
 				break
@@ -333,16 +339,16 @@ function addLinks(message) {
 					}
 				}
 				sanitize = sanitize.join('')
-				var processed = sanitize.replace(':','&colon;')
+				var url = sanitize.replace(':','&colon;')
 				if (navigator.userAgent === 'Chrome (Mac app)') {
-					message = message.replace(
-						sanitize, '<a href="' + processed + '">' + processed + '</a>'
-					)
+					message = Mustache.render(Cryptocat.templates.linkMac, {
+						url: url
+					})
 				}
 				else {
-					message = message.replace(
-						sanitize, '<a href="' + processed + '" target="_blank">' + processed + '</a>'
-					)
+					message = Mustache.render(Cryptocat.templates.link, {
+						url: url
+					})
 				}
 			}
 		}
@@ -367,6 +373,14 @@ function addEmoticons(message) {
 		.replace(/(\s|^)\^(_|\.)?\^(?=(\s|$))/gi, ' <div class="emoticon eHappy">$&</div> ')
 		.replace(/(\s|^)(:|(=))-?x\b(?=(\s|$))/gi, ' <div class="emoticon eShut">$&</div> ')
 		.replace(/(\s|^)\&lt\;3\b(?=(\s|$))/g, ' <span class="monospace">&#9829;</span> ')
+}
+
+// Send your own multiparty public key to `nickname`, via XMPP-MUC.
+Cryptocat.sendPublicKey = function(nickname) {
+	Cryptocat.connection.muc.message(
+		Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
+		null, multiParty.sendPublicKey(nickname), null, 'groupchat', 'active'
+	)
 }
 
 // Update a file transfer progress bar.
@@ -420,12 +434,16 @@ Cryptocat.addToConversation = function(message, sender, conversation, type) {
 	else {
 		lineDecoration = 2
 		if (audioNotifications && (type !== 'composing')) {
-			playSound('msgGet')
+			sounds.msgGet.play()
 		}
 		if (!isFocused && (type !== 'composing')) {
 			newMessages++
 			Tinycon.setBubble(newMessages)
-			desktopNotification('img/keygen.gif', sender + ' @ ' + Cryptocat.conversationName, message, 0x1337)
+			desktopNotification(
+				'img/keygen.gif',
+				sender + ' @ ' + Cryptocat.conversationName,
+				message, 0x1337
+			)
 		}
 		message = Strophe.xmlescape(message)
 		if (message.match(Cryptocat.myNickname)) {
@@ -527,14 +545,14 @@ function buddyNotification(nickname, join) {
 			nickname: Strophe.xmlescape(nickname),
 			currentTime: currentTime(false)
 		})
-		audioNotification = 'userOnline'
+		audioNotification = 'userJoin'
 	}
 	else {
 		status = Mustache.render(Cryptocat.templates.userLeave, {
 			nickname: Strophe.xmlescape(nickname),
 			currentTime: currentTime(false)
 		})
-		audioNotification = 'userOffline'
+		audioNotification = 'userLeave'
 	}
 	conversations['main-Conversation'] += status
 	if (currentConversation === 'main-Conversation') {
@@ -542,10 +560,14 @@ function buddyNotification(nickname, join) {
 	}
 	scrollDownConversation(400, true)
 	if (!isFocused) {
-		desktopNotification('img/keygen.gif', nickname + ' has ' + (join ? 'joined ' : 'left ') + Cryptocat.conversationName, '', 0x1337)
+		desktopNotification(
+			'img/keygen.gif',
+			nickname + ' has ' + (join ? 'joined ' : 'left ') + Cryptocat.conversationName,
+			'', 0x1337
+		)
 	}
 	if (audioNotifications) {
-		playSound(audioNotification)
+		sounds[audioNotification].play()
 	}
 }
 
@@ -561,11 +583,8 @@ function addBuddy(nickname) {
 			$('#menu-' + nickname).unbind('click')
 			bindBuddyMenu(nickname)
 			bindBuddyClick(nickname)
-			for (var i = 0; i < 2; i++) {
-				Cryptocat.connection.muc.message(
-					Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
-					null, multiParty.sendPublicKey(nickname), null, 'groupchat', 'active'
-				)
+			for (var u = 0; u < 6000; u += 2000) {
+				window.setTimeout(Cryptocat.sendPublicKey, u, nickname)
 			}
 			buddyNotification(nickname, true)
 		})
@@ -662,7 +681,6 @@ function handlePresence(presence) {
 		if ($(presence).find('error').attr('code') === '409') {
 			// Delay logout in order to avoid race condition with window animation
 			window.setTimeout(function() {
-				loginError = false
 				logout()
 				loginFail(Cryptocat.Locale['loginMessage']['nicknameInUse'])
 			}, 3000)
@@ -691,9 +709,9 @@ function handlePresence(presence) {
 		}
 		otrKeys[nickname] = new OTR(options)
 		otrKeys[nickname].REQUIRE_ENCRYPTION = true
-		otrKeys[nickname].on('ui', uicb(nickname))
-		otrKeys[nickname].on('io', iocb(nickname))
-		otrKeys[nickname].on('smp', smcb(nickname))
+		otrKeys[nickname].on('ui', otrIncomingCallback(nickname))
+		otrKeys[nickname].on('io', otrOutgoingCallback(nickname))
+		otrKeys[nickname].on('smp', smpCallback(nickname))
 		otrKeys[nickname].on('status', (function(nickname) {
 			return function(state) {
 				// Close generating fingerprint dialog after AKE.
@@ -858,8 +876,15 @@ function ensureOTRdialog(nickname, close, cb) {
 
 // Display buddy information, including fingerprints and authentication.
 function displayInfo(nickname) {
+	var infoDialog
 	nickname = Strophe.xmlescape(nickname)
-	var infoDialog = Mustache.render(Cryptocat.templates.infoDialog, {
+	if (nickname === Cryptocat.myNickname) {
+		infoDialog = 'myInfo'
+	}
+	else {
+		infoDialog = 'buddyInfo'
+	}
+	infoDialog = Mustache.render(Cryptocat.templates[infoDialog], {
 		nickname: nickname,
 		otrFingerprint: Cryptocat.Locale['chatWindow']['otrFingerprint'],
 		groupFingerprint: Cryptocat.Locale['chatWindow']['groupFingerprint'],
@@ -871,25 +896,29 @@ function displayInfo(nickname) {
 		identityVerified: Cryptocat.Locale['chatWindow']['identityVerified']
 	})
 	ensureOTRdialog(nickname, false, function() {
-		if (Cryptocat.authenticatedUsers.indexOf(nickname) >= 0) {
+		if ((Cryptocat.authenticatedUsers.indexOf(nickname) >= 0)
+		|| (nickname === Cryptocat.myNickname)) {
 			dialogBox(infoDialog, 250, true)
-			showAuthenticated(nickname, 0)
+			if (nickname !== Cryptocat.myNickname) {
+				showAuthenticated(nickname, 0)
+			}
 		}
 		else {
 			dialogBox(infoDialog, 340, true)
+			$('#authSubmit').unbind('click').bind('click', function(e) {
+				e.preventDefault()
+				var question = $('#authQuestion').val()
+				var answer = $('#authAnswer').val().toLowerCase()
+					.replace(/(\s|\.|\,|\'|\"|\;|\?|\!)/, '')
+				$('#authSubmit').val(Cryptocat.Locale['chatWindow']['asking'])
+				$('#authSubmit').unbind('click').bind('click', function(e) {
+					e.preventDefault()
+				})
+				otrKeys[nickname].smpSecret(answer, question)
+			})
 		}
 		$('#otrFingerprint').text(getFingerprint(nickname, 1))
 		$('#multiPartyFingerprint').text(getFingerprint(nickname, 0))
-		$('#authSubmit').unbind('click').bind('click', function(e) {
-			e.preventDefault()
-			var question = $('#authQuestion').val()
-			var answer = $('#authAnswer').val().toLowerCase().replace(/(\s|\.|\,|\'|\"|\;|\?|\!)/, '')
-			$('#authSubmit').val(Cryptocat.Locale['chatWindow']['asking'])
-			$('#authSubmit').unbind('click').bind('click', function(e) {
-				e.preventDefault()
-			})
-			otrKeys[nickname].smpSecret(answer, question)
-		})
 	})
 }
 
@@ -1116,7 +1145,6 @@ else {
 
 // Logout button.
 $('#logout').click(function() {
-	loginError = false
 	$('#loginInfo').text(Cryptocat.Locale['loginMessage']['thankYouUsing'])
 	$('#loginInfo').animate({'background-color': '#97CEEC'}, 200)
 	logout()
@@ -1286,7 +1314,14 @@ $('#loginForm').submit(function() {
 		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" '
 			+ 'alt="" /><p id="progressInfo"><span>'
 			+ Cryptocat.Locale['loginMessage']['generatingKeys'] + '</span></p>'
+		if (audioNotifications) { sounds.keygenStart.play() }
 		dialogBox(progressForm, 240, false, function() {
+			if (audioNotifications) {
+				window.setTimeout(function() {
+					sounds.keygenLoop.loop = true
+					sounds.keygenLoop.play()
+				}, 800)
+			}
 			// We need to pass the web worker a pre-generated seed.
 			keyGenerator.postMessage(Cryptocat.generateSeed())
 			// Key storage currently disabled as we are not yet sure if this is safe to do.
@@ -1298,9 +1333,9 @@ $('#loginForm').submit(function() {
 		})
 		if (Cryptocat.Locale['language'] === 'en') {
 			$('#progressInfo').append(
-				'<br />Here is an interesting fact while you wait:'
-				+ '<br /><div id="interestingFact">'
-				+ CatFacts.getFact() + '</div>'
+				Mustache.render(Cryptocat.templates.catFact, {
+					catFact: CatFacts.getFact()
+				})
 			)
 		}
 		$('#progressInfo').append(
@@ -1334,8 +1369,9 @@ function connectXMPP(username, password) {
 			Cryptocat.connection.register.submit()
 		}
 		else if (status === Strophe.Status.REGISTERED) {
+			Cryptocat.connection.reset()
 			Cryptocat.connection = new Strophe.Connection(Cryptocat.bosh)
-			Cryptocat.connection.connect(username + '@' + Cryptocat.domain, password, function(status) {
+			Cryptocat.connection.connect(username + '@' + Cryptocat.domain, password,function(status) {
 				if (status === Strophe.Status.CONNECTING) {
 					$('#loginInfo').animate({'background-color': '#97CEEC'}, 200)
 					$('#loginInfo').text(Cryptocat.Locale['loginMessage']['connecting'])
@@ -1346,7 +1382,8 @@ function connectXMPP(username, password) {
 					Cryptocat.connection.si_filetransfer.addFileHandler(Cryptocat.fileHandler)
 					/* jshint +W106 */
 					Cryptocat.connection.muc.join(
-						Cryptocat.conversationName + '@' + Cryptocat.conferenceServer, Cryptocat.myNickname,
+						Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
+						Cryptocat.myNickname,
 						function(message) {
 							if (handleMessage(message)) { return true }
 						},
@@ -1354,18 +1391,31 @@ function connectXMPP(username, password) {
 							if (handlePresence(presence)) { return true }
 						}
 					)
-					$('#fill').stop().animate({'width': '100%', 'opacity': '1'}, 400, 'linear', function() {
-						$('#dialogBoxClose').click()
+					if (audioNotifications) {
+						sounds.keygenLoop.pause()
+						sounds.keygenEnd.play()
+					}
+					$('#fill').stop().animate({
+						'width': '100%', 'opacity': '1'
+					}, 250, 'linear', function() {
+						window.setTimeout(function() {
+							$('#dialogBoxClose').click()
+						}, 200)
 					})
 					window.setTimeout(function() {
 						connected()
 					}, 400)
 				}
-				else if ((status === Strophe.Status.CONNFAIL) || (status === Strophe.Status.DISCONNECTED)) {
+				else if (status === Strophe.Status.CONNFAIL) {
 					showNotifications = false
 					if (loginError) {
 						loginFail(Cryptocat.Locale['loginMessage']['connectionFailed'])
 						logout()
+					}
+				}
+				else if (status === Strophe.Status.DISCONNECTED) {
+					if (loginError) {
+						reconnectXMPP(username, password)
 					}
 				}
 			})
@@ -1410,8 +1460,43 @@ function connected() {
 	document.title = Cryptocat.myNickname + '@' + Cryptocat.conversationName
 }
 
+// Reconnect to the same chatroom, on accidental connection loss.
+function reconnectXMPP(username, password) {
+	multiParty.reset()
+	Cryptocat.connection.reset()
+	Cryptocat.connection = new Strophe.Connection(Cryptocat.bosh)
+	Cryptocat.connection.connect(username + '@' + Cryptocat.domain, password, function(status) {
+		if (status === Strophe.Status.CONNECTING) {
+			$('.conversationName').animate({'background-color': '#F00'})
+		}
+		else if (status === Strophe.Status.CONNECTED) {
+			$('.conversationName').animate({'background-color': '#97CEEC'})
+			Cryptocat.connection.ibb.addIBBHandler(Cryptocat.ibbHandler)
+			/* jshint -W106 */
+			Cryptocat.connection.si_filetransfer.addFileHandler(Cryptocat.fileHandler)
+			/* jshint +W106 */
+			Cryptocat.connection.muc.join(
+				Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
+				Cryptocat.myNickname
+			)
+			if (audioNotifications) {
+				sounds.keygenLoop.pause()
+				sounds.keygenEnd.play()
+			}
+		}
+		else if ((status === Strophe.Status.CONNFAIL) || (status === Strophe.Status.DISCONNECTED)) {
+			if (loginError) {
+				window.setTimeout(function() {
+				reconnectXMPP(username, password)
+				}, 5000)
+			}
+		}
+	})
+}
+
 // Executes on user logout.
 function logout() {
+	loginError = false
 	Cryptocat.connection.muc.leave(Cryptocat.conversationName + '@' + Cryptocat.conferenceServer)
 	Cryptocat.connection.disconnect()
 	document.title = 'Cryptocat'
@@ -1475,15 +1560,14 @@ if (typeof(chrome) === 'undefined') {
 	// Logout on browser close.
 	$(window).unload(function() {
 		if (Cryptocat.connection !== null) {
-			loginError = false
-			logout()
+			Cryptocat.connection.disconnect()
 		}
 	})
 }
 
 // Determine whether we are showing a top margin
 // Depending on window size
-if ($(window).height() > 585) {
+if ($(window).height() > 595) {
 	$('#bubble').css('margin-top', '1.5%')
 }
 

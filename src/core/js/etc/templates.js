@@ -1,6 +1,10 @@
 // Cryptocat templates for use with mustache.js.
 
 Cryptocat.templates = {
+
+	catFact: '<br />Here is an interesting fact while you wait:'
+		+ '<br /><div id="interestingFact">{{catFact}}</div>',
+
 	buddy: '<div class="buddy" title="{{nickname}}" id="buddy-{{nickname}}" status="online">'
 		+ '<span>{{shortNickname}}</span>'
 		+ '<div class="buddyMenu" id="menu-{{nickname}}"></div></div>',
@@ -9,17 +13,22 @@ Cryptocat.templates = {
 		+ '<li class="option2">{{sendEncryptedFile}}</li>'
 		+ '<li class="option3">{{ignore}}</li>',
 
-	infoDialog: '<div class="title">{{nickname}}</div>'
-		+ '<div id="displayInfo">{{otrFingerprint}}<br /><span id="otrFingerprint"></span>'
-		+ '<br />{{groupFingerprint}}<br /><span id="multiPartyFingerprint"></span>'
-		+ '</div>'
-		+ '<div id="authInfo"><h2>{{authenticate}}</h2>'
+	myInfo: '<div class="title">{{nickname}}</div>'
+		+ '<div id="displayInfo">'
+		+ '{{groupFingerprint}}<br /><span id="multiPartyFingerprint"></span><br />'
+		+ '{{otrFingerprint}}<br /><span id="otrFingerprint"></span></div>',
+
+	buddyInfo: '<div class="title">{{nickname}}</div>'
+		+ '<div id="displayInfo">'
+		+ '{{groupFingerprint}}<br /><span id="multiPartyFingerprint"></span>'
+		+ '</div><div id="authInfo"><h2>{{authenticate}}</h2>'
+		+ '<p>{{otrFingerprint}}<br /><span id="otrFingerprint"></span></p>'
 		+ '<p>{{verifyUserIdentity}}</p>'
 		+ '<form><input type="text" id="authQuestion" placeholder="{{secretQuestion}}" maxlength="64" />'
 		+ '<input type="text" id="authAnswer" placeholder="{{secretAnswer}}" maxlength="64" />'
 		+ '<input id="authSubmit" type="submit" value="{{ask}}" /></form>'
 		+ '<p id="authVerified">{{identityVerified}}</p>',
-		
+
 	authRequest: '<div class="title">{{authenticate}}</div>'
 		+ '<p>{{authRequest}}<br />'
 		+ '<strong>{{question}}</strong><br /><br />'
@@ -31,6 +40,10 @@ Cryptocat.templates = {
 		+ '<input type="file" id="fileSelector" name="file[]" />'
 		+ '<input type="button" id="fileSelectButton" value="{{sendEncryptedFile}}" />'
 		+ '<div id="fileInfoField">{{fileTransferInfo}}</div>',
+
+	link: '<a href="{{&url}}" target="_blank">{{&url}}</a>',
+
+	linkMac: '<a href="{{&url}}">{{&url}}</a>',
 
 	file: '<div class="fileProgressBar" file="{{message}}"><div class="fileProgressBarFill"></div></div>',
 
@@ -48,4 +61,5 @@ Cryptocat.templates = {
 	
 	userLeave: '<div class="userLeave"><span class="timestamp">{{currentTime}}</span>'
 		+ '<strong>-</strong>{{nickname}}</div>'
+
 }

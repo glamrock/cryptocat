@@ -258,6 +258,11 @@ multiParty.receiveMessage = function(sender, myName, message) {
 					publicKeys[sender] = publicKey
 					multiParty.genFingerprint(sender)
 					multiParty.genSharedSecret(sender)
+					// Begin Cryptocat-specific tweak
+					for (var u = 0; u < 6000; u += 2000) {
+						window.setTimeout(Cryptocat.sendPublicKey, u, sender)
+					}
+					// End Cryptocat-specific tweak
 				}
 			}
 			return false

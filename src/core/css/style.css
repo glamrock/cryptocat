@@ -73,11 +73,11 @@ img {
 }
 
 ::-webkit-input-placeholder {
-	color: rgba(255, 255, 255, 0.7);
+	color: rgba(255, 255, 255, 0.85);
 }
 
 ::-moz-placeholder {
-	color: rgba(255, 255, 255, 0.7);
+	color: rgba(255, 255, 255, 0.85);
 }
 
 /*
@@ -91,7 +91,7 @@ div#bubble {
 	z-index: 1;
 	width: 716px;
 	height: 500px;
-	margin: 0 auto;
+	margin: 1% auto 0 auto;
 	background: #FFF;
 	border-radius: 15px 0 15px 15px;
 	box-shadow: 5px 5px #76BDE5;
@@ -528,20 +528,21 @@ DIALOG BOX
 #authInfo {
     background: rgba(151, 206, 236, 0.4);
     width: 90%;
-    height: 150px;
+    height: 208px;
     padding: 0 5px;
-    margin: 8px auto 0 auto;
+    margin: -38px auto 0 auto;
     border-radius: 8px 0 8px 8px;
 }
 
 #authInfo h2 {
     font-size: 16px;
     padding: 3px;
-    margin: 0 0 -5px 0;
+    margin: 0 0 5px 0;
 }
 
 #authInfo p {
 	max-width: 500px;
+    margin-top: -10px;
 }
 
 #authInfo #authQuestion, #authInfo #authAnswer {
@@ -550,14 +551,15 @@ DIALOG BOX
     padding: 4px;
     width: 260px;
     border: none;
+    font-size: 1.05em;
     border-radius: 5px 0 5px 5px;
 }
 
 #authInfo #authSubmit {
     float: right;
     width: 100px;
-    height: 53px;
-    margin: -33px 20px 0px 0;
+    height: 57px;
+    margin: -35px 20px 0px 0;
     border-radius: 5px 0 5px 5px;
     font-size: 1.2em;
 	background: #97CEEC;
@@ -638,7 +640,7 @@ DIALOG BOX
 	height: 100%;
 	width: 0%;
 	background: #97CEEC;
-	opacity: 0.8;
+	opacity: 0.3;
 }
 
 .fileProgressBar {
@@ -699,17 +701,6 @@ DIALOG BOX
 	font-weight: bold;
 	font-size: 14px;
 	font-family: monospace;
-}
-
-#otrColorprint, #multiPartyColorprint {
-	height: 20px;
-	margin: 2px 0 10px 0;
-}
-
-.colorprint {
-	width: 71px;
-	height: 12px;
-	display: inline-block;
 }
 
 #fileSelector {
@@ -814,7 +805,7 @@ CONVERSATION WINDOW
 	opacity: 0;
 	margin-bottom: 15px;
 	font-size: 1em;
-	max-width: 92%;
+	max-width: 94%;
 	white-space: pre-wrap;
 }
 
@@ -903,16 +894,14 @@ CONVERSATION WINDOW
 }
 
 #userInputSend {
-	width: 100px;
+	width: 105px;
 	height: 48px;
-	position: relative;
-	bottom: 25px;
-	margin: 0 4px 0 4px;
+	float: right;
+	margin: 10px 3px 0 0;
 	border-radius: 0px 0 7px 0px;
 	font-size: 1.8em;
 	text-shadow: 3px 2px #76BDE5;
 	box-shadow: 2px 2px #76BDE5;
-	display: inline;
 }
 
 #userInputSend:hover {
@@ -938,7 +927,7 @@ CONVERSATION WINDOW
 
 .userJoin, .userLeave {
 	background: #97CEEC;
-	max-width: 130px;
+	max-width: 165px;
 	display: block;
 	margin: 0 0 15px 0;
 	padding: 0 5px;
