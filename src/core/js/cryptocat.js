@@ -190,27 +190,35 @@ function showAuthenticated(nickname, speed) {
 
 // Handle SMP callback
 var smpCallback = function(nickname) {
-	return function(type, data) {
+	return function(type, data, act) {
 		switch(type) {
 			case 'question':
 				smpQuestion(nickname, data)
 				break
 			case 'trust':
-				if (otrKeys[nickname].trust) {
-					Cryptocat.authenticatedUsers.push(nickname)
-					if ($('#authInfo').length) {
-						showAuthenticated(nickname, 200)
-						window.setTimeout(function() {
-							$('#dialogBox').animate({'height': 250})
-						}, 200)
+				if (act === 'asked') {
+					if (data) {
+						Cryptocat.authenticatedUsers.push(nickname)
+						if ($('#authInfo').length) {
+							showAuthenticated(nickname, 200)
+							window.setTimeout(function() {
+								$('#dialogBox').animate({'height': 250})
+							}, 200)
+						}
 					}
-				}
-				else {
-					if ($('#authInfo').length) {
-						$('#authSubmit').val(Cryptocat.Locale['chatWindow']['failed'])
-							.animate({'background-color': '#F00'})
+					else {
+						if ($('#authInfo').length) {
+							$('#authSubmit').val(Cryptocat.Locale['chatWindow']['failed'])
+								.animate({'background-color': '#F00'})
+						}
 					}
+				} else if (act === 'answered') {
+					// maybe notify of the results?
+					/* jshint noempty: false */
 				}
+				break
+			case 'abort':
+				// abort! abort!
 				break
 		}
 	}
@@ -719,6 +727,8 @@ function handlePresence(presence) {
 				&& state === OTR.CONST.STATUS_AKE_SUCCESS) {
 					closeGenerateFingerprints(nickname, otrKeys[nickname].genFingerCb)
 					;delete otrKeys[nickname].genFingerCb
+					// Reset trust state
+					Cryptocat.authenticatedUsers.splice(Cryptocat.authenticatedUsers.indexOf(nickname), 1)
 				}
 			}
 		} (nickname)))
@@ -910,6 +920,10 @@ function displayInfo(nickname) {
 				var question = $('#authQuestion').val()
 				var answer = $('#authAnswer').val().toLowerCase()
 					.replace(/(\s|\.|\,|\'|\"|\;|\?|\!)/, '')
+				if (answer.length === 0) {
+					// a secret is required!
+					return
+				}
 				$('#authSubmit').val(Cryptocat.Locale['chatWindow']['asking'])
 				$('#authSubmit').unbind('click').bind('click', function(e) {
 					e.preventDefault()

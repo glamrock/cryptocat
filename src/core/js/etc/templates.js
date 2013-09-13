@@ -25,14 +25,14 @@ Cryptocat.templates = {
 		+ '<p>{{otrFingerprint}}<br /><span id="otrFingerprint"></span></p>'
 		+ '<p>{{verifyUserIdentity}}</p>'
 		+ '<form><input type="text" id="authQuestion" placeholder="{{secretQuestion}}" maxlength="64" />'
-		+ '<input type="text" id="authAnswer" placeholder="{{secretAnswer}}" maxlength="64" />'
+		+ '<input type="password" id="authAnswer" placeholder="{{secretAnswer}}" maxlength="64" />'
 		+ '<input id="authSubmit" type="submit" value="{{ask}}" /></form>'
 		+ '<p id="authVerified">{{identityVerified}}</p>',
 
 	authRequest: '<div class="title">{{authenticate}}</div>'
 		+ '<p>{{authRequest}}<br />'
 		+ '<strong>{{question}}</strong><br /><br />'
-		+ '<form id="authReplyForm"><input id="authReply" type="text" placeholder="{{secretAnswer}}" maxlength="64" />'
+		+ '<form id="authReplyForm"><input id="authReply" type="password" placeholder="{{secretAnswer}}" maxlength="64" />'
 		+ '<input id="authReplySubmit" type="submit" value="{{answer}}" /></form></p>'
 		+ '<p>{{answerMustMatch}}</p>',
 

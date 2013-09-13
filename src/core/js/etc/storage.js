@@ -26,7 +26,7 @@ $(window).ready(function() {
 
 // Define the wrapper, depending on our browser or enivronment.
 Cryptocat.Storage = (function() {
-	if (typeof(chrome) === 'object') {
+	if (typeof(chrome) === 'object' && chrome.storage) {
 		return {
 			setItem: function(key, val) {
 				var keyValuePair = {}
