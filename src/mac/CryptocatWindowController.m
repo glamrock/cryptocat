@@ -8,6 +8,7 @@
 
 #import "CryptocatWindowController.h"
 #import "CryptocatWindowManager.h"
+#import "CryptocatNetworkManager.h"
 #import "fileUtils.h"
 
 @interface WebPreferences (WebPreferencesPrivate)
@@ -16,6 +17,8 @@
 @end
 
 @implementation CryptocatWindowController
+
+#pragma mark Initialization
 
 - (id)init {
 	self = [self initWithWindowNibName:@"CryptocatWindowController" owner:self];
@@ -88,7 +91,15 @@
     }
 	// Open links in default browser.
 	else if ([[[request URL] absoluteString] hasPrefix:@"http"]) {
-        [[NSWorkspace sharedWorkspace] openURL:[request URL]];
+        if ([[CryptocatNetworkManager sharedManager] isTorRunning]) {
+            NSAlert *alert = [NSAlert alertWithMessageText:@"Warning: Opening this link may reveal your identity" defaultButton:@"Yes" alternateButton:@"No" otherButton:nil informativeTextWithFormat:@"Your connection will be no longer anonymized. Do you want to continue?"];
+            NSInteger proceed = [alert runModal];
+            if (proceed) {
+                [[NSWorkspace sharedWorkspace] openURL:[request URL]];
+            }
+        } else{
+             [[NSWorkspace sharedWorkspace] openURL:[request URL]];
+        }
     }
 	// Save files.
 	else if ([[[request URL] absoluteString] hasPrefix:@"data:"]) {
