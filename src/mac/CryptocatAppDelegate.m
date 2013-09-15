@@ -9,6 +9,7 @@
 #import "CryptocatAppDelegate.h"
 #import "CryptocatWindowManager.h"
 #import "CryptocatNetworkManager.h"
+#import "CryptocatDockIconController.h"
 
 @implementation CryptocatAppDelegate;
 
@@ -23,6 +24,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification{
 	[self refreshTorMenuIcon];
+    [CryptocatDockIconController sharedManager];
 	[self openChatWindow:nil];
 	_isReinitializing = FALSE;
 }
@@ -53,6 +55,7 @@
         if ([[CryptocatNetworkManager sharedManager] isTorRunning]) {
             [[CryptocatNetworkManager sharedManager] stopTor];
         }
+        [[CryptocatDockIconController sharedManager]setTorStatusIcon:kTorOff];
         [[CryptocatWindowManager sharedManager] initiateNewConversation];
 	}
 }

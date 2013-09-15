@@ -9,6 +9,7 @@
 #import "CryptocatNetworkManager.h"
 #import "CryptocatWindowManager.h"
 #import "CryptocatAppDelegate.h"
+#import "CryptocatDockIconController.h"
 #import <Tor/Tor.h>
 
 @implementation CryptocatNetworkManager
@@ -35,12 +36,14 @@
 - (void) startTor{
     [HITorManager defaultManager].torRouting = YES;
     if (![HITorManager defaultManager].isRunning) {
+        [[CryptocatDockIconController sharedManager]setTorStatusIcon:kTorYellow];
         [[HITorManager defaultManager] start];
+    }else{
+        [[CryptocatDockIconController sharedManager]setTorStatusIcon:kTorGreen];
     }
 }
 
 - (void) stopTor{
-    [[HITorManager defaultManager] stop];
     [HITorManager defaultManager].torRouting = NO;
 }
 
@@ -54,26 +57,33 @@
 }
 
 - (void) toggleTor{
-	[[NSUserDefaults standardUserDefaults] setBool:![CryptocatNetworkManager torShouldBeUsed] forKey:kKeyForTorPreferences];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
-	CryptocatAppDelegate *delegate = (CryptocatAppDelegate*)[[NSApplication sharedApplication] delegate];
-	[delegate reinitialize];
+    if (![CryptocatNetworkManager torShouldBeUsed]) {
+        NSAlert *alert = [NSAlert alertWithMessageText:@"Warning: Tor is an experimental feature." defaultButton:@"Continue" alternateButton:@"Cancel" otherButton:nil informativeTextWithFormat:@"Tor integration is an experimental feature of Cryptocat and bugs can be encountered while using this feature."];
+        NSInteger proceed = [alert runModal];
+        if (!proceed) {
+            return;
+        }
+    }
+    [[NSUserDefaults standardUserDefaults] setBool:![CryptocatNetworkManager torShouldBeUsed] forKey:kKeyForTorPreferences];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    CryptocatAppDelegate *delegate = (CryptocatAppDelegate*)[[NSApplication sharedApplication] delegate];
+    [delegate reinitialize];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if (object == [HITorManager defaultManager] && [HITorManager defaultManager].isRunning)
     {
-        //Tor did connect. Let's open a chat window.
+        // Tor did connect. Let's open a chat window.
         NSLog(@"Tor did start!");
+        [[CryptocatDockIconController sharedManager]setTorStatusIcon:kTorGreen];
         [[CryptocatWindowManager sharedManager] initiateNewConversation];
     } else{
-        //Tor did disconnect. Let's close all chat windows
-        //The proxy should still be enabled, so there should not be leaks.
+        // Tor did disconnect. Let's close all chat windows
+        // The proxy should still be enabled, so there should not be leaks and will reconnect as soon as a new tor circuits rebuilds
         NSLog(@"Tor did stop!");
-        CryptocatAppDelegate *appDelegate = (CryptocatAppDelegate*)[[NSApplication sharedApplication]delegate];
-        //[appDelegate reinitialize];
+        [[CryptocatDockIconController sharedManager]setTorStatusIcon:kTorRed];
     }
 }
 
