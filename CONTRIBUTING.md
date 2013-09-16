@@ -46,6 +46,7 @@ The full license text is included in `LICENSE.txt`.
 * **Fabio Pietrosanti**: Testing and feedback.  
 
 ###Multimedia
+* **Ingrid Burrington**: Some icons and graphics.  
 * **A.J. Korkidakis**: Promotional video.  
 * **P.J. Onori**: Some of the icons.  
 * **Rich Vreeland**: Audio notifications.  
