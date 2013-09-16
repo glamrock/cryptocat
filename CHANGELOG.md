@@ -3,14 +3,14 @@
 ##Cryptocat 2.1.14
 **Sep. 16 2013**
 - Major new feature: Cryptocat now automatically reconnects to conversations when disconnected, without troubling the user. Cryptocat will automatically detect accidental disconnections and wait for the Internet connection to be re-established before reconnecting.  
-- Major new feature: Cryptocat for Mac now inlcudes built-in Tor support. When enabled, Cryptocat for Mac will automatically route all connections through the Tor anonymity network. You do not need to have Tor installed.  
+- Major new feature: Cryptocat for Mac now includes built-in Tor support. When enabled, Cryptocat for Mac will automatically route all connections through the Tor anonymity network. You do not need to have Tor installed.  
 - Cryptocat for Chrome now uses the new "packaged app API."  
 - Authentication via questions has been greatly improved.  
 - Fixed a confusing user interface bug that would allow you to ask yourself an authentication question.  
 - New audio notifications have been added for key generation and user connection.  
 - The audio notifications for user join and leave have been replaced with new ones.  
 - Browser window title now displays conversation names, for increased usability when running multiple Cryptocat tabs.  
-- Many small user inteface fixes and improvements.  
+- Many small user interface fixes and improvements.  
 
 ##Cryptocat 2.1.13
 **Aug. 26 2013**  
