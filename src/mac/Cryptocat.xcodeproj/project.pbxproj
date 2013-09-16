@@ -24,6 +24,7 @@
 		B653C70B17E649AE00A208CF /* tor-red.png in Resources */ = {isa = PBXBuildFile; fileRef = B653C70817E649AE00A208CF /* tor-red.png */; };
 		B653C70C17E649AE00A208CF /* tor-yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = B653C70917E649AE00A208CF /* tor-yellow.png */; };
 		B6AF47FD17C2596500A66A7E /* Tor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6AF47F817C2593C00A66A7E /* Tor.framework */; };
+		B6F5427C17E79D70008E3309 /* Tor.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B6AF47F817C2593C00A66A7E /* Tor.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,19 @@
 			remoteInfo = Tor;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B6F5427A17E79D50008E3309 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				B6F5427C17E79D70008E3309 /* Tor.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		5F179560177395A100D286E0 /* Cryptocat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Cryptocat.entitlements; sourceTree = SOURCE_ROOT; };
@@ -203,6 +217,7 @@
 			buildPhases = (
 				5F4ADDBA17737FCF00309087 /* Resources */,
 				5F4ADDB817737FCF00309087 /* Sources */,
+				B6F5427A17E79D50008E3309 /* CopyFiles */,
 				5F4ADDB917737FCF00309087 /* Frameworks */,
 			);
 			buildRules = (
