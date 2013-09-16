@@ -26,7 +26,7 @@ Apple's model makes an automated build process difficult.
 Also available from [Cryptocat](https://crypto.cat/get/cryptocat.safariextz).
 
 ### Apple Mac OS X
-Run `make mac` to build as a standalone Mac application. (After running `make mac`, you can also `open src/mac/Cryptocat.xcodeproj` to edit & build the project in Xcode normally.)  
+Run `make mac` to build as a standalone Mac application. (After running `make mac`, you can also `open src/mac/Cryptocat.xcodeproj` to edit & build the project in Xcode normally.)  Building the Mac version requires [HomeBrew](http://brew.sh) to be installed to fetch a Tor dependency on `libevent` and `openssl`.
 Also available from the [Mac App Store](https://itunes.apple.com/app/cryptocat/id613116229?mt=12).
 
 ##Goals

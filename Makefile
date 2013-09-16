@@ -28,13 +28,18 @@ opera:
 	@/bin/echo "[Cryptocat] Opera build available in release/"
 
 mac:
+	@brew install openssl libevent
+	@brew link openssl --force
+	@git submodule update --init --recursive
 	@rm -rf release/Cryptocat.app
 	@rm -rf release/cryptocat.mac.zip
 	@cp -R src/core src/mac/htdocs
-	@xcodebuild -project src/mac/Cryptocat.xcodeproj -configuration 'Release' -alltargets clean
+	@xcodebuild -project src/mac/Cryptocat.xcodeproj -configuration 'Release' clean
 	@xcodebuild CONFIGURATION_BUILD_DIR="${PWD}/release" -project src/mac/Cryptocat.xcodeproj -configuration 'Release' build
 	@rm -rf release/Cryptocat.app.dSYM
 	@rm -rf src/mac/htdocs
+	@rm -rf release/Tor.framework
+	@rm -rf release/Tor.framework.dSYM
 	@cd release && zip -q -r9 cryptocat.mac.zip Cryptocat.app
 	@/bin/echo "[Cryptocat] Mac app available in release/"
 

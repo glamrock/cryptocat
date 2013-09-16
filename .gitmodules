@@ -1,0 +1,3 @@
+[submodule "src/mac/Libraries/Tor"]
+	path = src/mac/Libraries/Tor
+	url = https://github.com:grabhive/Tor.framework.git
