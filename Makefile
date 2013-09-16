@@ -38,6 +38,7 @@ mac:
 	@xcodebuild CONFIGURATION_BUILD_DIR="${PWD}/release" -project src/mac/Cryptocat.xcodeproj -configuration 'Release' build
 	@rm -rf release/Cryptocat.app.dSYM
 	@rm -rf src/mac/htdocs/*
+	@echo "." >> src/mac/htdocs/placeholder.txt
 	@rm -rf release/Tor.framework
 	@rm -rf release/Tor.framework.dSYM
 	@cd release && zip -q -r9 cryptocat.mac.zip Cryptocat.app
