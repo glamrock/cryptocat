@@ -28,6 +28,9 @@ opera:
 	@/bin/echo "[Cryptocat] Opera build available in release/"
 
 mac:
+	@brew install openssl libevent
+	@brew link openssl --force
+	@git submodule update --init --recursive
 	@rm -rf release/Cryptocat.app
 	@rm -rf release/cryptocat.mac.zip
 	@cp -R src/core src/mac/htdocs
