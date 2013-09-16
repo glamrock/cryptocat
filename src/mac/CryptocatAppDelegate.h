@@ -8,8 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface CryptocatAppDelegate : NSObject <NSApplicationDelegate, NSMenuDelegate>{
-	BOOL _isReinitializing;
-}
-- (void) reinitialize;
+@interface CryptocatAppDelegate : NSObject <NSApplicationDelegate, NSMenuDelegate>
+
 @end

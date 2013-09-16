@@ -20,6 +20,5 @@
 
 - (void)initiateNewConversation;
 - (void)removeConversationWindow:(NSWindow*) conversation;
-- (void)removeAllConversationWindows;
 
 @end

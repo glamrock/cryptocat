@@ -10,6 +10,7 @@
 #import <WebKit/WebKit.h>
 
 @interface CryptocatWindowController : NSWindowController <NSWindowDelegate>
+
 @property IBOutlet WebView *webView;
 
 @end

@@ -18,37 +18,7 @@
 		B608451217756705004DFFD0 /* CryptocatWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B608451117756705004DFFD0 /* CryptocatWindowController.m */; };
 		B608451417756B58004DFFD0 /* CryptocatWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B608451317756B58004DFFD0 /* CryptocatWindowController.xib */; };
 		B633A4D3177642F800BC20ED /* CryptocatWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B633A4D2177642F800BC20ED /* CryptocatWindowManager.m */; };
-		B63B06EC17C804FB00AE0F00 /* CryptocatNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B63B06EB17C804FB00AE0F00 /* CryptocatNetworkManager.m */; };
-		B653C70417E6466D00A208CF /* CryptocatDockIconController.m in Sources */ = {isa = PBXBuildFile; fileRef = B653C70317E6466D00A208CF /* CryptocatDockIconController.m */; };
-		B653C70A17E649AE00A208CF /* tor-green.png in Resources */ = {isa = PBXBuildFile; fileRef = B653C70717E649AE00A208CF /* tor-green.png */; };
-		B653C70B17E649AE00A208CF /* tor-red.png in Resources */ = {isa = PBXBuildFile; fileRef = B653C70817E649AE00A208CF /* tor-red.png */; };
-		B653C70C17E649AE00A208CF /* tor-yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = B653C70917E649AE00A208CF /* tor-yellow.png */; };
-		B6AF47FD17C2596500A66A7E /* Tor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6AF47F817C2593C00A66A7E /* Tor.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		B6AF47F717C2593C00A66A7E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B6AF47F217C2593C00A66A7E /* Tor.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D9CEAE4A1786E5E4005F8DF0;
-			remoteInfo = Tor;
-		};
-		B6AF47F917C2593C00A66A7E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B6AF47F217C2593C00A66A7E /* Tor.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D9CEAE621786E5E4005F8DF0;
-			remoteInfo = TorTests;
-		};
-		B6AF47FB17C2594200A66A7E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B6AF47F217C2593C00A66A7E /* Tor.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D9CEAE491786E5E4005F8DF0;
-			remoteInfo = Tor;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		5F179560177395A100D286E0 /* Cryptocat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Cryptocat.entitlements; sourceTree = SOURCE_ROOT; };
@@ -74,15 +44,7 @@
 		B608451317756B58004DFFD0 /* CryptocatWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CryptocatWindowController.xib; sourceTree = SOURCE_ROOT; };
 		B633A4D1177642F800BC20ED /* CryptocatWindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptocatWindowManager.h; sourceTree = SOURCE_ROOT; };
 		B633A4D2177642F800BC20ED /* CryptocatWindowManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CryptocatWindowManager.m; sourceTree = SOURCE_ROOT; };
-		B63B06EA17C804FB00AE0F00 /* CryptocatNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptocatNetworkManager.h; sourceTree = SOURCE_ROOT; };
-		B63B06EB17C804FB00AE0F00 /* CryptocatNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CryptocatNetworkManager.m; sourceTree = SOURCE_ROOT; };
-		B653C70217E6466D00A208CF /* CryptocatDockIconController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptocatDockIconController.h; sourceTree = SOURCE_ROOT; };
-		B653C70317E6466D00A208CF /* CryptocatDockIconController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CryptocatDockIconController.m; sourceTree = SOURCE_ROOT; };
-		B653C70717E649AE00A208CF /* tor-green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tor-green.png"; sourceTree = "<group>"; };
-		B653C70817E649AE00A208CF /* tor-red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tor-red.png"; sourceTree = "<group>"; };
-		B653C70917E649AE00A208CF /* tor-yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tor-yellow.png"; sourceTree = "<group>"; };
 		B66BDA521775A038007BDB39 /* kConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kConstants.h; sourceTree = SOURCE_ROOT; };
-		B6AF47F217C2593C00A66A7E /* Tor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Tor.xcodeproj; path = Libraries/Tor/Tor.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,7 +52,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B6AF47FD17C2596500A66A7E /* Tor.framework in Frameworks */,
 				5F7EA8E11773820400D619BB /* WebKit.framework in Frameworks */,
 				5F4ADDC017737FCF00309087 /* Cocoa.framework in Frameworks */,
 			);
@@ -102,7 +63,6 @@
 		5F4ADDB317737FCF00309087 = {
 			isa = PBXGroup;
 			children = (
-				B6AF47F217C2593C00A66A7E /* Tor.xcodeproj */,
 				5F7EA8F4177390FC00D619BB /* Cryptocat.icns */,
 				5F4ADDC517737FCF00309087 /* Cryptocat */,
 				5F4ADDBE17737FCF00309087 /* Frameworks */,
@@ -141,10 +101,7 @@
 		5F4ADDC517737FCF00309087 /* Cryptocat */ = {
 			isa = PBXGroup;
 			children = (
-				B653C70617E649AE00A208CF /* Assets */,
 				5F179560177395A100D286E0 /* Cryptocat.entitlements */,
-				B63B06EA17C804FB00AE0F00 /* CryptocatNetworkManager.h */,
-				B63B06EB17C804FB00AE0F00 /* CryptocatNetworkManager.m */,
 				5F7EA8E417738FF500D619BB /* CryptocatAppDelegate.h */,
 				5F7EA8E517738FF500D619BB /* CryptocatAppDelegate.m */,
 				B633A4D1177642F800BC20ED /* CryptocatWindowManager.h */,
@@ -152,8 +109,6 @@
 				B608451017756705004DFFD0 /* CryptocatWindowController.h */,
 				B608451117756705004DFFD0 /* CryptocatWindowController.m */,
 				B608451317756B58004DFFD0 /* CryptocatWindowController.xib */,
-				B653C70217E6466D00A208CF /* CryptocatDockIconController.h */,
-				B653C70317E6466D00A208CF /* CryptocatDockIconController.m */,
 				5F198EFC1778C7CC005CAFBF /* fileUtils.h */,
 				B66BDA521775A038007BDB39 /* kConstants.h */,
 				5F7EA8E61773903400D619BB /* MainMenu.xib */,
@@ -175,25 +130,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		B653C70617E649AE00A208CF /* Assets */ = {
-			isa = PBXGroup;
-			children = (
-				B653C70717E649AE00A208CF /* tor-green.png */,
-				B653C70817E649AE00A208CF /* tor-red.png */,
-				B653C70917E649AE00A208CF /* tor-yellow.png */,
-			);
-			path = Assets;
-			sourceTree = SOURCE_ROOT;
-		};
-		B6AF47F317C2593C00A66A7E /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				B6AF47F817C2593C00A66A7E /* Tor.framework */,
-				B6AF47FA17C2593C00A66A7E /* TorTests.octest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -208,7 +144,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				B6AF47FC17C2594200A66A7E /* PBXTargetDependency */,
 			);
 			name = Cryptocat;
 			productName = Cryptocat;
@@ -222,7 +157,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = Cryptocat;
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = Cryptocat;
 			};
 			buildConfigurationList = 5F4ADDB717737FCF00309087 /* Build configuration list for PBXProject "Cryptocat" */;
@@ -235,35 +170,12 @@
 			mainGroup = 5F4ADDB317737FCF00309087;
 			productRefGroup = 5F4ADDBD17737FCF00309087 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = B6AF47F317C2593C00A66A7E /* Products */;
-					ProjectRef = B6AF47F217C2593C00A66A7E /* Tor.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				5F4ADDBB17737FCF00309087 /* Cryptocat */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		B6AF47F817C2593C00A66A7E /* Tor.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Tor.framework;
-			remoteRef = B6AF47F717C2593C00A66A7E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		B6AF47FA17C2593C00A66A7E /* TorTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = TorTests.octest;
-			remoteRef = B6AF47F917C2593C00A66A7E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		5F4ADDBA17737FCF00309087 /* Resources */ = {
@@ -275,9 +187,6 @@
 				5F1795631773A92400D286E0 /* Credits.rtf in Resources */,
 				5F7EA8F71773914D00D619BB /* htdocs in Resources */,
 				B608451417756B58004DFFD0 /* CryptocatWindowController.xib in Resources */,
-				B653C70A17E649AE00A208CF /* tor-green.png in Resources */,
-				B653C70B17E649AE00A208CF /* tor-red.png in Resources */,
-				B653C70C17E649AE00A208CF /* tor-yellow.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,20 +201,10 @@
 				5F179561177395E600D286E0 /* CryptocatAppDelegate.m in Sources */,
 				B608451217756705004DFFD0 /* CryptocatWindowController.m in Sources */,
 				B633A4D3177642F800BC20ED /* CryptocatWindowManager.m in Sources */,
-				B63B06EC17C804FB00AE0F00 /* CryptocatNetworkManager.m in Sources */,
-				B653C70417E6466D00A208CF /* CryptocatDockIconController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		B6AF47FC17C2594200A66A7E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Tor;
-			targetProxy = B6AF47FB17C2594200A66A7E /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		5F7EA8E61773903400D619BB /* MainMenu.xib */ = {
@@ -339,6 +238,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -371,6 +271,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -395,7 +296,6 @@
 		5F4ADDDA17737FCF00309087 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				CODE_SIGN_ENTITLEMENTS = Cryptocat.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -403,6 +303,7 @@
 				INFOPLIST_FILE = "Cryptocat-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
@@ -411,7 +312,6 @@
 		5F4ADDDB17737FCF00309087 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				CODE_SIGN_ENTITLEMENTS = Cryptocat.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -419,6 +319,7 @@
 				INFOPLIST_FILE = "Cryptocat-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};

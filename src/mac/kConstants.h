@@ -12,8 +12,4 @@
 #define kApplicationName @"Cryptocat"
 #define kConversationMenuItemName @"Conversations"
 
-#define kKeyForTorPreferences @"torIsEnabled"
-
-#define kTorMenuItemTag 100
-
 #endif
