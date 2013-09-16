@@ -13,3 +13,5 @@ node_modules/
 src/mac/Cryptocat.xcodeproj/project.xcworkspace/xcuserdata/*
 
 *.xcbkptlist
+
+npm-debug.log
