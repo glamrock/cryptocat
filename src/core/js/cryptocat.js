@@ -349,14 +349,14 @@ function addLinks(message) {
 				sanitize = sanitize.join('')
 				var url = sanitize.replace(':','&colon;')
 				if (navigator.userAgent === 'Chrome (Mac app)') {
-					message = Mustache.render(Cryptocat.templates.linkMac, {
-						url: url
-					})
+					message = message.replace(
+						sanitize, '<a href="' + url + '">' + url + '</a>'
+					)
 				}
 				else {
-					message = Mustache.render(Cryptocat.templates.link, {
-						url: url
-					})
+					message = message.replace(
+						sanitize, '<a href="' + url + '" target="_blank">' + url + '</a>'
+					)
 				}
 			}
 		}
@@ -454,11 +454,6 @@ Cryptocat.addToConversation = function(message, sender, conversation, type) {
 			)
 		}
 		message = Strophe.xmlescape(message)
-		if (message.match(Cryptocat.myNickname)) {
-			var nickRegEx = new RegExp('(((?!&).{1})|^)' + Cryptocat.myNickname + '(((?!;).{1})|$)', 'g')
-			message = message.replace(nickRegEx, '<span class="nickHighlight">$&</span>')
-			lineDecoration = 3
-		}
 	}
 	if (type === 'file') {
 		message = Mustache.render(Cryptocat.templates.file, { message: message })
@@ -481,6 +476,9 @@ Cryptocat.addToConversation = function(message, sender, conversation, type) {
 	else if (type === 'message') {
 		message = addLinks(message)
 		message = addEmoticons(message)
+		if (message.match(Cryptocat.myNickname)) {
+			lineDecoration = 3
+		}
 	}
 	else if (type === 'warning') {
 		lineDecoration = 4

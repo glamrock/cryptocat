@@ -41,10 +41,6 @@ Cryptocat.templates = {
 		+ '<input type="button" id="fileSelectButton" value="{{sendEncryptedFile}}" />'
 		+ '<div id="fileInfoField">{{fileTransferInfo}}</div>',
 
-	link: '<a href="{{&url}}" target="_blank">{{&url}}</a>',
-
-	linkMac: '<a href="{{&url}}">{{&url}}</a>',
-
 	file: '<div class="fileProgressBar" file="{{message}}"><div class="fileProgressBarFill"></div></div>',
 
 	fileLink: '<a href="{{url}}" class="fileView" target="_blank" download="{{filename}}">{{downloadFile}}</a>',
