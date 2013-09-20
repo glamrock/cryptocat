@@ -5,39 +5,39 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>0DF5C64E-BD25-4F8B-AB59-3DEC00F7B3C9</string>
+	<string>DAE29419-27DD-4C9E-88EB-06EC4552F3E2</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Cryptocat</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>06014FCE-5928-47C6-B292-5BEF829DCAEF</key>
+		<string>https://github.com/grabhive/Tor.framework.git</string>
 		<key>0A9A43B2-6286-45B2-8BDE-CBB11C124E04</key>
 		<string>https://git.torproject.org/git/tor</string>
+		<key>0ED76105-743B-4F70-96C9-EFA59278C725</key>
+		<string>https://github.com/cryptocat/cryptocat.git</string>
 		<key>89E82F23-2513-4046-9653-2C3E80E9CD84</key>
 		<string>https://github.com/pokeb/asi-http-request.git</string>
-		<key>A6EC0070-DEF4-4CCF-B857-0F3EEDE97E7F</key>
-		<string>ssh://github.com/FredericJacobs/cryptocat.git</string>
-		<key>D5DC3B86-2A58-413E-9D97-97B956C43A02</key>
-		<string>ssh://github.com/grabhive/Tor.framework.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>src/mac/Cryptocat.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>06014FCE-5928-47C6-B292-5BEF829DCAEF</key>
+		<string>../../Libraries/Tor</string>
 		<key>0A9A43B2-6286-45B2-8BDE-CBB11C124E04</key>
 		<string>../../Libraries/Tor/libtor</string>
+		<key>0ED76105-743B-4F70-96C9-EFA59278C725</key>
+		<string>../../../..</string>
 		<key>89E82F23-2513-4046-9653-2C3E80E9CD84</key>
 		<string>../../Libraries/Tor/ASIHTTPRequest</string>
-		<key>A6EC0070-DEF4-4CCF-B857-0F3EEDE97E7F</key>
-		<string>../../../..</string>
-		<key>D5DC3B86-2A58-413E-9D97-97B956C43A02</key>
-		<string>../../Libraries/Tor</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://github.com/FredericJacobs/cryptocat.git</string>
+	<string>https://github.com/cryptocat/cryptocat.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>A6EC0070-DEF4-4CCF-B857-0F3EEDE97E7F</string>
+	<string>0ED76105-743B-4F70-96C9-EFA59278C725</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
@@ -52,7 +52,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>A6EC0070-DEF4-4CCF-B857-0F3EEDE97E7F</string>
+			<string>0ED76105-743B-4F70-96C9-EFA59278C725</string>
 			<key>IDESourceControlWCCName</key>
 			<string>cryptocat</string>
 		</dict>
@@ -68,7 +68,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>D5DC3B86-2A58-413E-9D97-97B956C43A02</string>
+			<string>06014FCE-5928-47C6-B292-5BEF829DCAEF</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Tor</string>
 		</dict>
