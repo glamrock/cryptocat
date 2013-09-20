@@ -1563,21 +1563,19 @@ $(window).focus(function() {
 	}
 })
 
-if (typeof(chrome) === 'undefined') {
-	// Prevent accidental window close.
-	$(window).bind('beforeunload', function() {
-		if (showNotifications) {
-			return Cryptocat.Locale['loginMessage']['thankYouUsing']
-		}
-	})
-	
-	// Logout on browser close.
-	$(window).unload(function() {
-		if (Cryptocat.connection !== null) {
-			Cryptocat.connection.disconnect()
-		}
-	})
-}
+// Prevent accidental window close.
+$(window).bind('beforeunload', function() {
+	if (showNotifications) {
+		return Cryptocat.Locale['loginMessage']['thankYouUsing']
+	}
+})
+
+// Logout on browser close.
+$(window).unload(function() {
+	if (Cryptocat.connection !== null) {
+		Cryptocat.connection.disconnect()
+	}
+})
 
 // Determine whether we are showing a top margin
 // Depending on window size
