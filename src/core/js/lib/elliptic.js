@@ -325,7 +325,7 @@ function scalarMultP256(bx, by, inK) {
 
 // --------------------------------------------------------
 // THIS FUNCTION POTENTIALLY SUFFERS FROM SECURITY ISSUES
-// AND MUST NOT BE USED UNTIL FORTHER NOTICE
+// AND MUST NOT BE USED UNTIL FURTHER NOTICE
 // https://github.com/cryptocat/cryptocat/issues/491
 // --------------------------------------------------------
 // ecdsaSign returns a signature of message as an array [r,s]. message is a
