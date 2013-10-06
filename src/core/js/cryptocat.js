@@ -231,7 +231,7 @@ function buildConversationInfo(conversation) {
 		$('#groupConversation').text(Cryptocat.Locale['chatWindow']['groupConversation'])
 	}
 	else {
-		$('#groupConversation').text('')
+		$('#groupConversation').text(conversation)
 	}
 }
 
