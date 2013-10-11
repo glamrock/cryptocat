@@ -1421,8 +1421,7 @@ function connectXMPP(username, password) {
 				else if (status === Strophe.Status.CONNFAIL) {
 					showNotifications = false
 					if (loginError) {
-						loginFail(Cryptocat.Locale['loginMessage']['connectionFailed'])
-						logout()
+						reconnectXMPP(username, password)
 					}
 				}
 				else if (status === Strophe.Status.DISCONNECTED) {
