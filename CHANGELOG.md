@@ -1,5 +1,11 @@
 #Changelog
 
+##Cryptocat 2.1.15
+**Oct. 13 2013**  
+- Improve connection stability.  
+- Fixed a bug where messages with URLs would only appear as URL and without accompanying message text.  
+- Small bug fixes and tweaks.  
+
 ##Cryptocat 2.1.14
 **Sep. 16 2013**
 - Major new feature: Cryptocat now automatically reconnects to conversations when disconnected, without troubling the user. Cryptocat will automatically detect accidental disconnections and wait for the Internet connection to be re-established before reconnecting.  

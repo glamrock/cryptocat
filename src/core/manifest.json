@@ -1,8 +1,9 @@
 {
 	"manifest_version": 2,
 	"name": "Cryptocat",
+	"short_name": "Cryptocat",
 	"description": "Have encrypted, private conversations. Cryptocat is an open source encrypted instant messaging platform.",
-	"version": "2.1.14",
+	"version": "2.1.15",
 	"offline_enabled": true,
 	"minimum_chrome_version": "23",
 	"app": {
