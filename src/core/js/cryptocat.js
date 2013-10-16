@@ -979,7 +979,7 @@ function bindBuddyMenu(nickname) {
 			else {
 				ignoreAction = Cryptocat.Locale['chatWindow']['ignore']
 			}
-			$('#buddy-' + nickname).delay(10).animate({'height': 90}, 180, function() {
+			$('#buddy-' + nickname).delay(10).animate({'height': 130}, 180, function() {
 				$(this).append(buddyMenuContents)
 				$('#' + nickname + '-contents').append(
 					Mustache.render(Cryptocat.templates.buddyMenu, {

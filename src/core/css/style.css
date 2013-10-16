@@ -405,18 +405,19 @@ BUDDY LIST
 
 .buddyMenuContents {
 	display: none;
-	margin: 5px 0 0 -7px;
+	margin: 5px 0 0 -2px;
 	font-size: 0.8em;
-	width: 107px;
+	width: 100px;
 }
 
 .buddyMenuContents li {
 	list-style-type: none;
-	background: rgba(255, 255, 255, 0.15);
-	padding: 1px 0 1px 10px;
+	background: rgba(255, 255, 255, 0.3);
+	padding: 3px;
 	font-size: 0.9em;
 	cursor: pointer;
-	text-align: right;
+	margin: 5px 0;
+	border-radius: 3px 0 3px 4px;
 }
 
 .buddyMenuContents li:hover {
