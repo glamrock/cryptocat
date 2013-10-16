@@ -239,6 +239,15 @@
 				CLASSPREFIX = Cryptocat;
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = Cryptocat;
+				TargetAttributes = {
+					5F4ADDBB17737FCF00309087 = {
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
+					};
+				};
 			};
 			buildConfigurationList = 5F4ADDB717737FCF00309087 /* Build configuration list for PBXProject "Cryptocat" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -411,6 +420,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Cryptocat.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cryptocat-Prefix.pch";
@@ -426,6 +436,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Cryptocat.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cryptocat-Prefix.pch";
