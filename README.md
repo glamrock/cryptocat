@@ -1,4 +1,5 @@
-#[Cryptocat](https://crypto.cat)
+![Cryptocat](https://raw.github.com/cryptocat/cryptocat/master/src/core/img/icon-128.png)  
+
 ###Browser-based app for easy to use, accessible encrypted chat.
 Cryptocat is an experimental browser-based chat client for easy to use, encrypted conversations. It aims to make encrypted, private chat easy to use and accessible. We want to break down the barrier that prevents the general public from having an accessible privacy alternative that they already know how to use. Cryptocat is currently available for Chrome, Firefox and Safari. It uses the [OTR](http://www.cypherpunks.ca/otr/) protocol over XMPP for encrypted two-party chat and the (upcoming) mpOTR protocol for encrypted multi-party chat.
 
