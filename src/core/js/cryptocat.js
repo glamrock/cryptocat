@@ -1389,6 +1389,7 @@ function connectXMPP(username, password) {
 					$('#loginInfo').text(Cryptocat.Locale['loginMessage']['connecting'])
 				}
 				else if (status === Strophe.Status.CONNECTED) {
+					$('.conversationName').animate({'background-color': '#97CEEC'})
 					Cryptocat.connection.ibb.addIBBHandler(Cryptocat.ibbHandler)
 					/* jshint -W106 */
 					Cryptocat.connection.si_filetransfer.addFileHandler(Cryptocat.fileHandler)
