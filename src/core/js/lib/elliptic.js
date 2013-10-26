@@ -29,12 +29,7 @@ var a = BigInt.str2bigInt('486662', 10)
 var basePoint = BigInt.str2bigInt('9', 10)
 
 // These variables are names for small, bigint constants.
-var eight = BigInt.str2bigInt('8', 10)
 var four = BigInt.str2bigInt('4', 10)
-var three = BigInt.str2bigInt('3', 10)
-var two = BigInt.str2bigInt('2', 10)
-var one = BigInt.str2bigInt('1', 10)
-var zero = BigInt.str2bigInt('0', 10)
 
 // groupAdd adds two elements of the elliptic curve group in Montgomery form.
 function groupAdd(x1, xn, zn, xm, zm) {
@@ -141,14 +136,14 @@ Curve25519.scalarMult = function(i, base) {
 // var message = BigInt.str2bigInt('2349623424239482634', 10)
 
 // p256 is the p256 prime
-var p256 = BigInt.str2bigInt('115792089210356248762697446949407573530086143415290314195533631308867097853951', 10)
+// var p256 = BigInt.str2bigInt('115792089210356248762697446949407573530086143415290314195533631308867097853951', 10)
 // n256 is the number of points in the group
-var n256 = BigInt.str2bigInt('115792089210356248762697446949407573529996955224135760342422259061068512044369', 10)
+// var n256 = BigInt.str2bigInt('115792089210356248762697446949407573529996955224135760342422259061068512044369', 10)
 // b256 is a parameter of the curve
 // var b256 = BigInt.str2bigInt('5ac635d8aa3a93e7b3ebbd55769886bc651d06b0cc53b0f63bce3c3e27d2604b', 16)
 // p256Gx and p256Gy is the generator of the group
-var p256Gx = BigInt.str2bigInt('6b17d1f2e12c4247f8bce6e563a440f277037d812deb33a0f4a13945d898c296', 16)
-var p256Gy = BigInt.str2bigInt('4fe342e2fe1a7f9b8ee7eb4a7c0f9e162bce33576b315ececbb6406837bf51f5', 16)
+// var p256Gx = BigInt.str2bigInt('6b17d1f2e12c4247f8bce6e563a440f277037d812deb33a0f4a13945d898c296', 16)
+// var p256Gy = BigInt.str2bigInt('4fe342e2fe1a7f9b8ee7eb4a7c0f9e162bce33576b315ececbb6406837bf51f5', 16)
 
 Curve25519.privateKeyToString = function(p){
 	return BigInt.bigInt2str(p, 64)
@@ -194,124 +189,6 @@ Curve25519.publicKeyFromString = function(s){
 // 	return BigInt.equals(s, yy)
 // }
 
-// subMod returns a-b mod m
-function subMod(a, b, m) {
-	if (BigInt.greater(a, b)) {
-		return BigInt.mod(BigInt.sub(a, b), m)
-	}
-	var tmp = BigInt.mod(BigInt.sub(b, a), m)
-	return BigInt.sub(m, tmp)
-
-}
-
-// addJacobian adds two elliptic curve points in Jacobian form.
-function addJacobian(x1, y1, z1, x2, y2, z2) {
-	if (BigInt.isZero(z1)) {
-		return [x2, y2, z2]
-	}
-	if (BigInt.isZero(z2)) {
-		return [x1, y1, z1]
-	}
-	var z1z1 = BigInt.multMod(z1, z1, p256)
-	var z2z2 = BigInt.multMod(z2, z2, p256)
-	var u1 = BigInt.multMod(x1, z2z2, p256)
-	var u2 = BigInt.multMod(x2, z1z1, p256)
-	var s1 = BigInt.multMod(y1, BigInt.multMod(z2, z2z2, p256), p256)
-	var s2 = BigInt.multMod(y2, BigInt.multMod(z1, z1z1, p256), p256)
-	var h = subMod(u2, u1, p256)
-	var xEqual = BigInt.isZero(h)
-	var i = BigInt.mult(h, two)
-	i = BigInt.multMod(i, i, p256)
-	var j = BigInt.multMod(h, i, p256)
-
-	var r = subMod(s2, s1, p256)
-	var yEqual = BigInt.isZero(r)
-	if (xEqual && yEqual) {
-		return doubleJacobian(x1, y1, z1)
-	}
-	r = BigInt.mult(r, two)
-
-	var v = BigInt.multMod(u1, i, p256)
-	var x3 = BigInt.mult(r, r)
-	x3 = subMod(x3, j, p256)
-	var twoV = BigInt.mult(v, two)
-	x3 = subMod(x3, twoV, p256)
-
-	var tmp = subMod(v, x3, p256)
-	tmp = BigInt.mult(r, tmp)
-	var y3 = BigInt.mult(s1, j)
-	y3 = BigInt.mult(y3, two)
-	y3 = subMod(tmp, y3, p256)
-
-	tmp = BigInt.add(z1, z2)
-	tmp = BigInt.multMod(tmp, tmp, p256)
-	tmp = subMod(tmp, z1z1, p256)
-	tmp = subMod(tmp, z2z2, p256)
-	var z3 = BigInt.multMod(tmp, h, p256)
-
-	return [x3, y3, z3]
-}
-
-// doubleJacobian doubles an elliptic curve point in Jacobian form.
-function doubleJacobian(x, y, z) {
-	var delta = BigInt.multMod(z, z, p256)
-	var gamma = BigInt.multMod(y, y, p256)
-	var beta = BigInt.multMod(x, gamma, p256)
-	var alpha = BigInt.mult(three, BigInt.mult(subMod(x, delta, p256), BigInt.add(x, delta)))
-	var x3 = subMod(BigInt.multMod(alpha, alpha, p256), BigInt.mult(eight, beta), p256)
-	var tmp = BigInt.add(y, z)
-	tmp = BigInt.mult(tmp, tmp)
-	var z3 = subMod(subMod(tmp, gamma, p256), delta, p256)
-	tmp = BigInt.mult(eight, BigInt.mult(gamma, gamma))
-	var y3 = subMod(BigInt.multMod(alpha, subMod(BigInt.mult(four, beta), x3, p256), p256), tmp, p256)
-
-	return [x3, y3, z3]
-}
-
-// affineFromJacobian returns the affine point corresponding to the given
-// Jacobian point.
-function affineFromJacobian(x, y, z) {
-	if (BigInt.isZero(z)) {
-		return [null, null]
-	}
-	var zinv = BigInt.inverseMod(z, p256)
-	var zinvsq = BigInt.multMod(zinv, zinv, p256)
-
-	var outx = BigInt.multMod(x, zinvsq, p256)
-	var zinv3 = BigInt.multMod(zinvsq, zinv, p256)
-	var outy = BigInt.multMod(y, zinv3, p256)
-
-	return [outx, outy]
-}
-
-// scalarMultP256 returns in_k*(bx,by)
-function scalarMultP256(bx, by, inK) {
-	var bz = [1, 0]
-	var k = BigInt.dup(inK)
-
-	var x = zero
-	var y = one
-	var z = zero
-
-	var i, j, point
-	for (i = k.length-1; i >= 0; i--) {
-		for (j = 14; j >= 0; j--) {
-			point = doubleJacobian(x, y, z)
-			x = point[0]
-			y = point[1]
-			z = point[2]
-			if (k[i]&0x4000) {
-				point = addJacobian(bx, by, bz, x, y, z)
-				x = point[0]
-				y = point[1]
-				z = point[2]
-			}
-			k[i] <<= 1
-		}
-	}
-
-	return affineFromJacobian(x, y, z)
-}
 
 Curve25519.ecDH = function(priv, pub) {
 	if (typeof pub === 'undefined') {
