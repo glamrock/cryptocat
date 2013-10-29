@@ -35,7 +35,7 @@ var interestingFacts = [
 'A group of kittens is called a kindle.',
 'The British Government owns thousands of cats, deployed in government buildings to get rid of mice.',
 'Cats are more active during the evening hours.',
-'Cats have a field of vision of about 185 degrees.',
+'Cats have a field of vision of about 200 degrees.',
 'Cats have the AB blood type, which is also found in humans.',
 'Cats have a homing ability that uses their biological clock, the sun\'s angle and the Earth\'s magnetic field.',
 'Cats taken far from their home can return to it thanks to remarkable homing instincts.',
