@@ -66,22 +66,6 @@ function HMAC(msg, key) {
 	).toString(CryptoJS.enc.Base64)
 }
 
-// Check if received public key is within safe size parameters
-// publicKey represented as BigInt
-function checkSize(publicKey) {
-	var z = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4096, 0]
-
-	if ((BigInt.equals(publicKey, Curve25519.p25519)
-		|| BigInt.greater(publicKey, Curve25519.p25519)
-		|| BigInt.greater(z, publicKey))) {
-		console.log('multiParty: unsafe key size')
-		return false
-	}
-	else {
-		return true
-	}
-}
-
 // Generate private key (32 random bytes)
 // Represented as BigInt
 multiParty.genPrivateKey = function() {
@@ -254,16 +238,14 @@ multiParty.receiveMessage = function(sender, myName, message) {
 			}
 			if (!publicKeys.hasOwnProperty(sender)) {
 				var publicKey = BigInt.base642bigInt(message['text'][myName]['message'])
-				if (checkSize(publicKey)) {
-					publicKeys[sender] = publicKey
-					multiParty.genFingerprint(sender)
-					multiParty.genSharedSecret(sender)
-					// Begin Cryptocat-specific tweak
-					for (var u = 0; u < 6000; u += 2000) {
-						window.setTimeout(Cryptocat.sendPublicKey, u, sender)
-					}
-					// End Cryptocat-specific tweak
+				publicKeys[sender] = publicKey
+				multiParty.genFingerprint(sender)
+				multiParty.genSharedSecret(sender)
+				// Begin Cryptocat-specific tweak
+				for (var u = 0; u < 6000; u += 2000) {
+					window.setTimeout(Cryptocat.sendPublicKey, u, sender)
 				}
+				// End Cryptocat-specific tweak
 			}
 			return false
 		}
