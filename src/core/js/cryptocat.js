@@ -49,9 +49,9 @@ var defaultBOSH = 'https://crypto.cat/http-bind'
 /* Initialization */
 var otrKeys = {}
 var conversations = {}
-var composingTimeouts = {}
 var currentStatus = 'online'
 var isFocused = true
+var paused = false
 var newMessages = 0
 var currentConversation
 var audioNotifications
@@ -59,7 +59,6 @@ var desktopNotifications
 var showNotifications
 var loginError
 var myKey
-var composing
 var catFactInterval
 
 var sounds = {
@@ -431,8 +430,16 @@ Cryptocat.fileTransferError = function(sid) {
 // Add a `message` from `sender` to the `conversation` display and log.
 // `type` can be 'file', 'composing', 'message' or 'warning'.
 Cryptocat.addToConversation = function(message, sender, conversation, type) {
-	if (!message.length && (type !== 'composing')) { return false }
-	if (Cryptocat.ignoredUsers.indexOf(sender) >= 0) { return false }
+	var active = false
+	if ((type === 'file') || (type === 'message') || (type === 'warning')) {
+		active = true
+	}
+	if (!message.length && active) {
+		return false
+	}
+	if (Cryptocat.ignoredUsers.indexOf(sender) >= 0) {
+		return false
+	}
 	initiateConversation(conversation)
 	var lineDecoration
 	if (sender === Cryptocat.myNickname) {
@@ -441,10 +448,10 @@ Cryptocat.addToConversation = function(message, sender, conversation, type) {
 	}
 	else {
 		lineDecoration = 2
-		if (audioNotifications && (type !== 'composing')) {
+		if (audioNotifications && active) {
 			sounds.msgGet.play()
 		}
-		if (!isFocused && (type !== 'composing')) {
+		if (!isFocused && active) {
 			newMessages++
 			Tinycon.setBubble(newMessages)
 			desktopNotification(
@@ -458,22 +465,13 @@ Cryptocat.addToConversation = function(message, sender, conversation, type) {
 	if (type === 'file') {
 		message = Mustache.render(Cryptocat.templates.file, { message: message })
 	}
-	else if (type === 'composing' && !message.length) {
-		message = Mustache.render(Cryptocat.templates.composing, { id: 'composing-' + sender })
-		if (composingTimeouts[sender]) {
-			window.clearTimeout(composingTimeouts[sender])
-			composingTimeouts[sender] = null
-		}
-		composingTimeouts[sender] = window.setTimeout(function() {
-			if ($('#composing-' + sender).length) {
-				$('#composing-' + sender).parent().fadeOut(100).remove()
-			}
-		}, 5000)
+	else if (type === 'composing') {
 		if ($('#composing-' + sender).length) {
 			return true
 		}
+		message = Mustache.render(Cryptocat.templates.composing, { id: 'composing-' + sender })
 	}
-	else if (type === 'message') {
+	if (type === 'message' && message.length) {
 		message = addLinks(message)
 		message = addEmoticons(message)
 		if (message.match(Cryptocat.myNickname)) {
@@ -490,27 +488,30 @@ Cryptocat.addToConversation = function(message, sender, conversation, type) {
 		currentTime: currentTime(true),
 		message: message
 	})
-	if (type !== 'composing') {
+	if (active) {
 		conversations[conversation] += message
 	}
 	if (conversation === currentConversation) {
 		$('#conversationWindow').append(message)
 		$('.line' + lineDecoration).last().animate({'top': '0', 'opacity': '1'}, 100)
-		bindTimestamps()
+		bindTimestamps($('.line' + lineDecoration).last().find('.sender'))
 		scrollDownConversation(400, true)
 	}
-	else if (type !== 'composing') {
+	else if (active) {
 		iconNotify(conversation)
 	}
 }
 
 // Bind timestamps to show when message sender is hovered.
-function bindTimestamps() {
-	$('.sender').unbind('mouseenter,mouseleave')
-	$('.sender').mouseenter(function() {
+function bindTimestamps(senderElement) {
+	if (!senderElement) {
+		senderElement = $('.sender')
+	}
+	senderElement.unbind('mouseenter,mouseleave')
+	senderElement.mouseenter(function() {
 		$(this).text($(this).attr('timestamp'))
 	})
-	$('.sender').mouseleave(function() {
+	senderElement.mouseleave(function() {
 		$(this).text($(this).attr('sender'))
 	})
 }
@@ -644,7 +645,7 @@ function handleMessage(message) {
 	if (!$('#buddy-' + nickname).length) {
 		return true
 	}
-	// Check if message has a "composing" notification.
+	// Check if message has a 'composing' notification.
 	if ($(message).find('composing').length && !body.length) {
 		var conversation
 		if (type === 'groupchat') {
@@ -658,8 +659,8 @@ function handleMessage(message) {
 		}
 		return true
 	}
-	// Check if message has an "active" (stopped writing) notification.
-	if ($(message).find('active').length) {
+	// Check if message has an 'active' or 'paused' (stopped writing) notification.
+	if ($(message).find('active').length || $(message).find('paused').length) {
 		if ($('#composing-' + nickname).length) {
 			$('#composing-' + nickname).parent().fadeOut(100).remove()
 		}
@@ -1204,32 +1205,41 @@ $('#userInputText').keydown(function(e) {
 	else if (e.keyCode === 13) {
 		e.preventDefault()
 		$('#userInput').submit()
+		window.clearTimeout(paused)
+		paused = false
+		return true
 	}
-	else if (!composing) {
-		composing = true
-		window.setTimeout(function() {
-			composing = false
-		}, 2500)
-		var destination, type
-		if (currentConversation === 'main-Conversation') {
-			destination = null
-			type = 'groupchat'
-		}
-		else {
-			destination = currentConversation
-			type = 'chat'
-		}
+	var destination, type
+	if (currentConversation === 'main-Conversation') {
+		destination = null
+		type = 'groupchat'
+	}
+	else {
+		destination = currentConversation
+		type = 'chat'
+	}
+	if (paused === false) {
 		Cryptocat.connection.muc.message(
 			Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
 			destination, '', null, type, 'composing'
 		)
 	}
+	window.clearTimeout(paused)
+	paused = window.setTimeout(function(d, t) {
+		Cryptocat.connection.muc.message(
+			Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
+			d, '', null, t, 'paused'
+		)
+		paused = false
+	}, 5000, destination, type)
 })
+
 $('#userInputText').keyup(function(e) {
 	if (e.keyCode === 13) {
 		e.preventDefault()
 	}
 })
+
 $('#userInputSubmit').click(function() {
 	$('#userInput').submit()
 	$('#userInputText').select()
