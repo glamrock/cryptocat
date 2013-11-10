@@ -31,7 +31,7 @@ function encryptAES(msg, c, iv) {
 		iv: correctIvLength(iv),
 		padding: CryptoJS.pad.NoPadding
 	}
-	var aesctr = CryptoJS.AES.encrypt (
+	var aesctr = CryptoJS.AES.encrypt(
 		msg,
 		c,
 		opts

@@ -1,4 +1,4 @@
-Cryptocat = function () {}
+Cryptocat = function() {}
 
 require('../../../src/core/js/etc/locale')
 
