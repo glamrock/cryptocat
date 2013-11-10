@@ -50,6 +50,7 @@ tests:
 	@node_modules/.bin/mocha --ui exports --reporter spec test/core/js/*.test.js
 
 lint:
+	@/bin/echo -n "[Cryptocat] Linting code... "
 	@node_modules/.bin/jshint --verbose --config .jshintrc \
 		src/core/js/cryptocat.js \
 		src/core/js/lib/multiParty.js \
@@ -60,5 +61,6 @@ lint:
 		test/testBase.js \
 		test/core/js/*.js \
 		Gruntfile.js
+	@/bin/echo ""
 
 all: lint tests
