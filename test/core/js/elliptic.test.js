@@ -10,7 +10,7 @@ var basePoint = BigInt.str2bigInt('9', 10)
 test['Curve25519'] = {
 
 	'p25519': {
-		'this should print the same thing twice': function () {
+		'This should print the same thing twice': function () {
 			var priv1 = BigInt.randBigInt(256, 0)
 			var priv2 = BigInt.randBigInt(256, 0)
 			var pub1 = Curve25519.scalarMult(priv1, basePoint)
