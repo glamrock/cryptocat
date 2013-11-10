@@ -20,8 +20,8 @@ test['SHA1'] = {
 				'84983e441c3bd26ebaae4aa1f95129e5e54670f1'
 			)
 		},
-		'0000000000': function () {
-			var a = 0000000000
+		'0': function () {
+			var a = 0
 			test.assert.same(
 				CryptoJS.SHA1(a).toString(),
 				'da39a3ee5e6b4b0d3255bfef95601890afd80709'
