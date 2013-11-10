@@ -20,11 +20,14 @@ test['SHA1'] = {
 				'84983e441c3bd26ebaae4aa1f95129e5e54670f1'
 			)
 		},
-		'0': function () {
-			var a = 0
+		'a*1000000': function () {
+			var a = ''
+			for (var i = 0; i !== 100000; i++) {
+				a += 'aaaaaaaaaa'
+			}
 			test.assert.same(
 				CryptoJS.SHA1(a).toString(),
-				'da39a3ee5e6b4b0d3255bfef95601890afd80709'
+				'34aa973cd4c4daa4f61eeb2bdbad27316534016f'
 			)
 		}
 	}
