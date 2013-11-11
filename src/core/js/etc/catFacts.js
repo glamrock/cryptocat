@@ -1,5 +1,18 @@
-var CatFacts = function() {};
-(function(){
+(function (root, factory) {
+	if (typeof exports === "object" && exports) {
+		factory(exports); // CommonJS
+	} 
+	else {
+		var CatFacts = function() {}
+		factory(CatFacts)
+		if (typeof define === "function" && define.amd) {
+			define(CatFacts); // AMD
+		}
+		else {
+			root.CatFacts = CatFacts; // <script>
+		}
+	}
+} (this, function (CatFacts) {
 
 var lastCatFact
 var interestingFacts = [
@@ -104,4 +117,4 @@ CatFacts.getFact = function() {
 	return interestingFacts[catFact]
 }
 
-})()
+}))
