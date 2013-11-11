@@ -1,11 +1,11 @@
 (function (root, factory) {
 	if (typeof exports === 'object' && exports) {
-		factory(exports); // CommonJS
+		factory(exports) // CommonJS
 	}
 	else {
 		var CatFacts = function() {}
 		factory(CatFacts)
-		root.CatFacts = CatFacts; // <script>
+		root.CatFacts = CatFacts // <script>
 	}
 } (this, function (CatFacts) {
 
