@@ -77,6 +77,14 @@ test['Encoding'] = {
 				CryptoJS.enc.Utf8.parse('abcdefghijklmnopqrstuvwxyz0123456789').toString(CryptoJS.enc.Base64),
 				'YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXowMTIzNDU2Nzg5'
 			)
+			test.assert.same(
+				CryptoJS.enc.Utf8.parse('التشفير القط').toString(CryptoJS.enc.Utf8),
+				'التشفير القط'
+			)
+			test.assert.same(
+				CryptoJS.enc.Utf8.parse('加密貓').toString(CryptoJS.enc.Utf8),
+				'加密貓'
+			)
 		},
 	},
 
