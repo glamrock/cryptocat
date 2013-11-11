@@ -1,16 +1,11 @@
 (function (root, factory) {
-	if (typeof exports === "object" && exports) {
+	if (typeof exports === 'object' && exports) {
 		factory(exports); // CommonJS
-	} 
+	}
 	else {
 		var CatFacts = function() {}
 		factory(CatFacts)
-		if (typeof define === "function" && define.amd) {
-			define(CatFacts); // AMD
-		}
-		else {
-			root.CatFacts = CatFacts; // <script>
-		}
+		root.CatFacts = CatFacts; // <script>
 	}
 } (this, function (CatFacts) {
 

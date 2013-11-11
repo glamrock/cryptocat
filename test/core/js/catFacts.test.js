@@ -21,7 +21,7 @@ test['Cat Facts'] = {
 			true
 		)
 		test.assert.same(
-			CatFacts.getFact() == CatFacts.getFact(),
+			CatFacts.getFact() === CatFacts.getFact(),
 			false
 		)
 	},
