@@ -7,18 +7,18 @@
 		"test": "test"
 	},
 	"dependencies": {
-		"express": "latest"
+		"express": "3.4.4"
 	},
 	"devDependencies": {
-		"lodash": "latest",
-		"mocha": "latest",
-		"chai": "latest",
-		"sinon": "latest",
-		"jshint": "latest",
-		"grunt": "latest",
-		"grunt-contrib-jshint": "latest",
-		"grunt-mocha-test": "latest",
-		"grunt-contrib-copy": "latest"
+		"lodash": "2.3.0",
+		"mocha": "1.14.0",
+		"chai": "1.8.1",
+		"sinon": "1.7.3",
+		"jshint": "2.3.0",
+		"grunt": "0.4.1",
+		"grunt-contrib-jshint": "0.7.1",
+		"grunt-mocha-test": "0.7.0",
+		"grunt-contrib-copy": "0.4.1"
 	},
 	"bin": {
 		"cryptocat": "src/standaloneServer.js"
