@@ -1,8 +1,6 @@
 var cryptocat = function() {
 	Components.utils.import('resource://gre/modules/Services.jsm')
 	Components.utils.import('resource://gre/modules/ctypes.jsm')
-	Components.classes['@mozilla.org/dom/indexeddb/manager;1']
-		.getService(Ci.nsIIndexedDatabaseManager).initWindowless(this);
 	var prefsService = Services.prefs
 	var cryptocatRandom = Components.utils.import('chrome://cryptocat/content/generateRandomBytes.jsm')
 	return {
@@ -18,6 +16,8 @@ var cryptocat = function() {
 			}
 		},
 		run: function() {
+			Components.classes['@mozilla.org/dom/indexeddb/manager;1']
+				.getService(Ci.nsIIndexedDatabaseManager).initWindowless(this)
 			gBrowser.selectedTab = gBrowser.addTab('chrome://cryptocat/content/data/index.html')
 			window.addEventListener('cryptocatGenerateRandomBytes', function(evt) {
 				cryptocat.generateRandomBytes(evt)
