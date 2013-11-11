@@ -1250,6 +1250,25 @@ $('#customServer').click(function() {
 	Cryptocat.bosh = Strophe.xmlescape(Cryptocat.bosh)
 	Cryptocat.conferenceServer = Strophe.xmlescape(Cryptocat.conferenceServer)
 	Cryptocat.domain = Strophe.xmlescape(Cryptocat.domain)
+	// Attempt to load the saved domains
+	// Initialise to the defaults
+	var savedDomains = {}
+	savedDomains[defaultDomain] = {}
+	savedDomains[defaultDomain].xmpp = defaultConferenceServer
+	savedDomains[defaultDomain].bosh = defaultBOSH
+	try {
+		if (Cryptocat.Storage.getItem('savedDomains') !== null && Cryptocat.Storage.getItem('savedDomains') !== undefined) {
+			savedDomains = $.parseJSON(Cryptocat.Storage.getItem('savedDomains'))
+		}
+	} catch(err) {
+		// Error loading saved domain list, falling back to the original default
+	}
+	// Populate list with domains
+	$('#customServerSelector').empty()
+	$.each(savedDomains, function(dom) {
+		$('#customServerSelector').append('<option value="' + dom + '">' + dom + '</option>')
+	})
+	// End saved domain loading
 	$('#languages').hide()
 	$('#footer').animate({'height': 180}, function() {
 		$('#customServerDialog').fadeIn()
@@ -1277,6 +1296,66 @@ $('#customServer').click(function() {
 			Cryptocat.Storage.setItem('domain', Cryptocat.domain)
 			Cryptocat.Storage.setItem('conferenceServer', Cryptocat.conferenceServer)
 			Cryptocat.Storage.setItem('bosh', Cryptocat.bosh)
+		})
+		$('#customServerSave').unbind('click')
+		$('#customServerSave').click(function() {
+			$('#customServerDelete').val('Delete').attr('data-deletecomfirm','0').removeClass('confirm')
+			var newDomain = $('#customDomain').val()
+			var newXMPP = $('#customConferenceServer').val()
+			var newBOSH = $('#customBOSH').val()
+			if ( newDomain === defaultDomain ) {
+				return // Cannot overwrite the default domain
+			}
+			var exists = false
+			if (savedDomains.hasOwnProperty(newDomain)) {
+				exists = true
+				if ($('#customServerSave').attr('data-savecomfirm') !== '1') {
+					$('#customServerSave').val('Overwrite?').attr('data-savecomfirm','1').addClass('confirm')
+					return
+				} else {
+					$('#customServerSave').val('Save').attr('data-savecomfirm','0').removeClass('confirm')
+				}
+			}
+			var newServer = {}
+			newServer[newDomain] = {}
+			newServer[newDomain].xmpp = newXMPP
+			newServer[newDomain].bosh = newBOSH
+			savedDomains = $.extend(savedDomains, newServer)
+			if (!exists) {
+				$('#customServerSelector').append('<option value="' + newDomain + '">' + newDomain + '</option>')
+			}
+			Cryptocat.Storage.setItem('savedDomains',JSON.stringify(savedDomains))
+		})
+		$('#customServerDelete').unbind('click')
+		$('#customServerDelete').click(function() {
+			$('#customServerSave').val('Save').attr('data-savecomfirm','0').removeClass('confirm')
+			var domain = $('#customServerSelector').val()
+			if ( $('#customServerDelete').attr('data-deletecomfirm') === '1' ) {
+				$('#customServerSelector option[value="' + domain + '"]').remove()
+				;delete savedDomains[domain]
+				Cryptocat.Storage.setItem('savedDomains',JSON.stringify(savedDomains))
+				$('#customServerDelete').val('Delete').attr('data-deletecomfirm','0').removeClass('confirm')
+			} else {
+				$('#customServerDelete').val('Are you sure?').attr('data-deletecomfirm','1').addClass('confirm')
+			}
+		})
+		$('#customServerSelector').unbind('change')
+		$('#customServerSelector').change(function() {
+			$('#customServerDelete').val('Delete').attr('data-deletecomfirm','0').removeClass('confirm')
+			$('#customServerSave').val('Save').attr('data-savecomfirm','0').removeClass('confirm')
+			var domain = $(this).val()
+			$('#customServerDelete').removeAttr('disabled').removeClass('disabled')
+			if (domain === defaultDomain) {
+				$('#customServerDelete').attr('disabled','disabled').addClass('disabled')
+			}
+			$.each(savedDomains, function(dom, addresses) {
+				if ( dom === domain ) {
+					$('#customDomain').val(domain)
+					$('#customConferenceServer').val(addresses.xmpp)
+					$('#customBOSH').val(addresses.bosh)
+					return
+				}
+			})
 		})
 		$('#customDomain').select()
 	})

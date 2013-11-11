@@ -117,11 +117,18 @@
 				<!--<li id="ug">Uighur</li>-->
 			</ul>
 			<div id="customServerDialog">
-				<input type="text" class="customServer" id="customDomain" title="Domain Name"></input>
-				<input type="text" class="customServer" id="customConferenceServer" title="XMPP Conference Server"></input>
-				<input type="text" class="customServer" id="customBOSH" title="BOSH Relay"></input>
-				<input type="button" id="customServerReset"></input>
-				<input type="button" id="customServerSubmit"></input>
+				<div id="customServerList">
+					<select id="customServerSelector" size="4" title="Server List"></select>
+					<input type="button" id="customServerSave" value="Save"></input>
+					<input type="button" id="customServerDelete" value="Delete"></input>
+				</div>
+				<div id="customServerFields">
+					<input type="text" class="customServer" id="customDomain" title="Domain Name"></input>
+					<input type="text" class="customServer" id="customConferenceServer" title="XMPP Conference Server"></input>
+					<input type="text" class="customServer" id="customBOSH" title="BOSH Relay"></input>
+					<input type="button" id="customServerSubmit"></input>
+				</div>
+				
 			</div>
 			<form id="userInput">
 				<textarea id="userInputText"></textarea>

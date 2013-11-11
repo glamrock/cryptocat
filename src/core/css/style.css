@@ -274,10 +274,21 @@ a#customServer {
 
 div#customServerDialog {
 	display: none;
-	margin: 40px 225px;
+	margin: 40px auto;
 }
 
-div#customServerDialog input {
+div#customServerList {
+	float: left;
+	width: 50%;
+	text-align: right;
+}
+
+div#customServerFields {
+	float: left;
+	text-align: left;
+}
+
+div#customServerDialog input, select#customServerSelector {
 	margin: 8px;
 	background: rgba(255, 255, 255, 0.08);
 	box-shadow: none;
@@ -285,10 +296,45 @@ div#customServerDialog input {
 	padding: 4px;
 }
 
+div#customServerDialog input.disabled {
+	cursor: auto;
+	background: rgba(255, 255, 255, 0.2);
+}
+
+div#customServerDialog input.confirm {
+	color: #97CEEC;
+}
+
 div#customServerDialog [type=button] {
 	display: inline;
 	width: 96px;
 	box-shadow: 2px 2px #97CEEC;
+}
+
+div #customServerDialog #customServerSubmit {
+	width: 215px;
+}
+
+select#customServerSelector {
+	width: 210px; 
+	color: white;
+	height: 91px;
+	margin: 8px 8px 8px auto;
+	display: block;
+}
+
+#customServerSelector::-webkit-scrollbar {
+    width: 15px;
+}
+ 
+#customServerSelector::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    border-radius: 10px;
+}
+ 
+#customServerSelector::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
 }
 
 div#footer #languageSelect {
