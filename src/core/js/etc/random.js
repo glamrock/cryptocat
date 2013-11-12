@@ -14,19 +14,6 @@
 var state
 
 Cryptocat.generateSeed = function() {
-	// The following incredibly ugly Firefox hack is completely the fault of 
-	// Firefox developers sucking and it taking them four years+ to implement
-	// window.crypto.getRandomValues().
-	function firefoxRandomBytes() {
-		var element = document.createElement('cryptocatFirefoxElement')
-		document.documentElement.appendChild(element)
-		var evt = document.createEvent('HTMLEvents')
-		evt.initEvent('cryptocatGenerateRandomBytes', true, false)
-		element.dispatchEvent(evt)
-		var output = element.getAttribute('randomValues').split(',')
-		element = null
-		return output
-	}
 	var buffer, crypto
 	// Node.js ... for tests
 	if (typeof window === 'undefined' && typeof require !== 'undefined') {
@@ -35,11 +22,17 @@ Cryptocat.generateSeed = function() {
 			buffer = crypto.randomBytes(40)
 		} catch (e) { throw e }
 	}
-	// Firefox
+	// Older versions of Firefox
 	else if (navigator.userAgent.match('Firefox') &&
 		(!window.crypto || !window.crypto.getRandomValues)
 	) {
-		buffer = firefoxRandomBytes()
+		var element = document.createElement('cryptocatFirefoxElement')
+		document.documentElement.appendChild(element)
+		var evt = document.createEvent('HTMLEvents')
+		evt.initEvent('cryptocatGenerateRandomBytes', true, false)
+		element.dispatchEvent(evt)
+		buffer = element.getAttribute('randomValues').split(',')
+		element = null
 	}
 	// Browsers that don't require shitty workarounds
 	else {
