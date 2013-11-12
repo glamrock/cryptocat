@@ -45,7 +45,7 @@ mac:
 	@/bin/echo "[Cryptocat] Mac app available in release/"
 
 tests:
-	@/bin/echo "[Cryptocat] Running tests... "
+	@/bin/echo -n "[Cryptocat] Running tests... "
 	@`/usr/bin/which npm` install
 	@node_modules/.bin/mocha --ui exports --reporter spec test/core/js/*.test.js
 
