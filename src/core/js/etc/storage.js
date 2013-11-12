@@ -26,6 +26,7 @@ $(window).ready(function() {
 
 // Define the wrapper, depending on our browser or enivronment.
 Cryptocat.Storage = (function() {
+	// Chrome
 	if (typeof(chrome) === 'object' && chrome.storage) {
 		return {
 			setItem: function(key, val) {
@@ -43,7 +44,36 @@ Cryptocat.Storage = (function() {
 			}
 		}
 	}
-	else if (!navigator.userAgent.match('Firefox')) {
+	// Firefox
+	else if (navigator.userAgent.match('Firefox')) {
+		return {
+			setItem: function(key, val) {
+				var element = document.createElement('cryptocatFirefoxElement')
+				document.documentElement.appendChild(element)
+				var evt = document.createEvent('HTMLEvents')
+				element.setAttribute('type', 'set')
+				element.setAttribute('key', key)
+				element.setAttribute('val', val)
+				evt.initEvent('cryptocatFirefoxStorage', true, false)
+				element.dispatchEvent(evt)
+			},
+			getItem: function(key, callback) {
+				var element = document.createElement('cryptocatFirefoxElement')
+				document.documentElement.appendChild(element)
+				var evt = document.createEvent('HTMLEvents')
+				element.setAttribute('type', 'get')
+				element.setAttribute('key', key)
+				evt.initEvent('cryptocatFirefoxStorage', true, false)
+				element.dispatchEvent(evt)
+				callback(element.getAttribute('firefoxStorageGet'))
+			},
+			removeItem: function() {
+				return false
+			}
+		}
+	}
+	// Everything else
+	else {
 		return {
 			setItem: function(key, value) {
 				localStorage.setItem(key, value)
@@ -54,14 +84,6 @@ Cryptocat.Storage = (function() {
 			removeItem: function(key) {
 				localStorage.removeItem(key)
 			}
-		}
-	}
-	else {
-		var items = {}
-		return {
-			setItem: function(key, val) { items[key] = val },
-			getItem: function(key, callback) { callback(items[key]) },
-			removeItem: function(key) { delete items[key] }
 		}
 	}
 })()

@@ -63,6 +63,7 @@ module.exports = function (grunt) {
 				'src/core/js/lib/salsa20.js',
 				'src/core/js/etc/*.js',
 				'src/standaloneServer.js',
+				'src/firefox/chrome/content/cryptocat.js',
 				'test/testBase.js',
 				'test/core/js/*.js'
 			]
