@@ -1,8 +1,11 @@
+/*global DSA */
 ;(function (root) {
-	'use strict';
+	"use strict";
 
 	root.OTR = {}
+	root.DSA = {}
 
+	// default imports
 	var imports = [
 		'../lib/crypto-js/core.js',
 		'../lib/crypto-js/enc-base64.js',
@@ -22,33 +25,20 @@
 		'../lib/otr.js'
 	]
 
-	function wrapPostMessage(method) {
-		return function () {
-			postMessage({
-				method: method,
-				args: Array.prototype.slice.call(arguments, 0)
-			})
-		}
+	function sendMsg(type, val) {
+		postMessage({ type: type, val: val })
 	}
 
-	var sm
 	onmessage = function (e) {
-		var data = e.data
-		switch (data.type) {
-			case 'seed':
-				importScripts.apply(root, imports)
-				Cryptocat.setSeed(data.seed)
-				break
-			case 'init':
-				sm = new root.OTR.SM(data.reqs)
-				;['trust','question', 'send', 'abort'].forEach(function (m) {
-					sm.on(m, wrapPostMessage(m));
-				})
-				break
-			case 'method':
-				sm[data.method].apply(sm, data.args)
-				break
-		}
+		var data = e.data;
+
+		importScripts.apply(root, imports);
+		Cryptocat.setSeed(data.seed)
+
+		if (data.debug) sendMsg('debug', 'DSA key creation started')
+		var dsa = new DSA()
+		if (data.debug) sendMsg('debug', 'DSA key creation finished')
+		sendMsg('data', dsa.packPrivate())
 	}
 
 }(this))

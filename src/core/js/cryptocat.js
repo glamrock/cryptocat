@@ -87,19 +87,6 @@ Tinycon.setOptions({
 // Seed RNG.
 Cryptocat.setSeed(Cryptocat.generateSeed())
 
-// Initialize workers
-var keyGenerator = new Worker('js/workers/keyGenerator.js')
-keyGenerator.onmessage = function(e) {
-	myKey = new DSA(e.data)
-	// Key storage currently disabled as we are not yet sure if this is safe to do.
-	//	Cryptocat.Storage.setItem('myKey', JSON.stringify(myKey))
-	$('#loginInfo').text(Cryptocat.Locale['loginMessage']['connecting'])
-	connectXMPP(
-		Cryptocat.encodedBytes(16, CryptoJS.enc.Hex),
-		Cryptocat.encodedBytes(16, CryptoJS.enc.Hex)
-	)
-}
-
 // Outputs the current hh:mm.
 // If `seconds = true`, outputs hh:mm:ss.
 function currentTime(seconds) {
@@ -1423,8 +1410,22 @@ $('#loginForm').submit(function() {
 					sounds.keygenLoop.play()
 				}, 800)
 			}
-			// We need to pass the web worker a pre-generated seed.
-			keyGenerator.postMessage(Cryptocat.generateSeed())
+
+			// Create DSA key for OTR.
+			DSA.createInWebWorker({
+				path: 'js/workers/dsa.js',
+				seed: Cryptocat.generateSeed
+			}, function (key) {
+				myKey = key
+				// Key storage currently disabled as we are not yet sure if this is safe to do.
+				//	Cryptocat.Storage.setItem('myKey', JSON.stringify(myKey))
+				$('#loginInfo').text(Cryptocat.Locale['loginMessage']['connecting'])
+				connectXMPP(
+					Cryptocat.encodedBytes(16, CryptoJS.enc.Hex),
+					Cryptocat.encodedBytes(16, CryptoJS.enc.Hex)
+				)
+			})
+
 			// Key storage currently disabled as we are not yet sure if this is safe to do.
 			// Cryptocat.Storage.setItem('multiPartyKey', multiParty.genPrivateKey())
 			//else {
