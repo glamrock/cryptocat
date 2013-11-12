@@ -148,7 +148,7 @@
   // void linCombShift_(x,y,b,ys) //do x=x+b*(y<<(ys*bpe)) for bigInts x and y, and integers b and ys
   // void mont_(x,y,n,np)         //Montgomery multiplication (see comments where the function is defined)
   // void multInt_(x,n)           //do x=x*n where x is a bigInt and n is an integer.
-  // void rightShift_(x,n)        //right shift bigInt x by n bits.  0 <= n < bpe. (This never overflows its array).
+  // void rightShift_(x,n)        //right shift bigInt x by n bits. (This never overflows its array).
   // void squareMod_(x,n)         //do x=x*x  mod n for bigInts x,n
   // void subShift_(x,y,ys)       //do x=x-(y<<(ys*bpe)). Negative answers will be 2s complement.
   //
@@ -192,18 +192,18 @@
   ////////////////////////////////////////////////////////////////////////////////////////
 
   //globals
-  var bpe = 0        // bits stored per array element
-  var mask=0;        //AND this with an array element to chop it down to bpe bits
-  var radix=mask+1;  //equals 2^bpe.  A single 1 bit to the left of the last bit of mask.
+
+  // The number of significant bits in the fraction of a JavaScript
+  // floating-point number is 52, independent of platform.
+  // See: https://github.com/arlolra/otr/issues/41
+
+  var bpe = 26;          // bits stored per array element
+  var radix = 1 << bpe;  // equals 2^bpe
+  var mask = radix - 1;  // AND this with an array element to chop it down to bpe bits
 
   //the digits for converting to different bases
   var digitsStr='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_=!@#$%^&*()[]{}|;:,.<>/?`~ \\\'\"+-';
 
-  //initialize the global variables
-  for (bpe = 0; (1<<(bpe+1)) > (1<<bpe); bpe++);  // bpe = number of bits in the mantissa on this platform
-  bpe>>=1;                   // bpe = number of bits in one element of the array representing the bigInt
-  mask=(1<<bpe)-1;           //AND the mask with an integer to get its bpe least significant bits
-  radix=mask+1;              //2^bpe.  a single 1 bit to the left of the first bit of mask
   var one=int2bigInt(1,1,1);     //constant used in powMod_()
 
   //the following global variables are scratchpad memory to 
@@ -937,11 +937,13 @@
       //    q[i-ky]--;    
       for (;;) {
         y2=(ky>1 ? y[ky-2] : 0)*q[i-ky];
-        c=y2>>bpe;
+        c=y2;
         y2=y2 & mask;
+        c = (c - y2) / radix;
         y1=c+q[i-ky]*y[ky-1];
-        c=y1>>bpe;
+        c=y1;
         y1=y1 & mask;
+        c = (c - y1) / radix;
 
         if (c==r[i] ? y1==r[i-1] ? y2>(i>1 ? r[i-2] : 0) : y1>r[i-1] : c>r[i]) 
           q[i-ky]--;
@@ -969,11 +971,12 @@
       c+=x[i];
       b=0;
       if (c<0) {
-        b=-(c>>bpe);
+        b = c & mask;
+        b = -((c - b) / radix);
         c+=b*radix;
       }
       x[i]=c & mask;
-      c=(c>>bpe)-b;
+      c = ((c - x[i]) / radix) - b;
     }
   }
 
@@ -1166,16 +1169,17 @@
       c+=x[i];
       b=0;
       if (c<0) {
-        b=-(c>>bpe);
+        b = c & mask;
+        b = -((c - b) / radix);
         c+=b*radix;
       }
       x[i]=c & mask;
-      c=(c>>bpe)-b;
+      c = ((c - x[i]) / radix) - b;
       if (!c) return; //stop carrying as soon as the carry is zero
     }
   }
 
-  //right shift bigInt x by n bits.  0 <= n < bpe.
+  //right shift bigInt x by n bits.
   function rightShift_(x,n) {
     var i;
     var k=Math.floor(n/bpe);
@@ -1232,11 +1236,12 @@
       c+=x[i]*n;
       b=0;
       if (c<0) {
-        b=-(c>>bpe);
+        b = c & mask;
+        b = -((c - b) / radix);
         c+=b*radix;
       }
       x[i]=c & mask;
-      c=(c>>bpe)-b;
+      c = ((c - x[i]) / radix) - b;
     }
   }
 
@@ -1260,12 +1265,12 @@
     for (c=0,i=0;i<k;i++) {
       c+=a*x[i]+b*y[i];
       x[i]=c & mask;
-      c>>=bpe;
+      c = (c - x[i]) / radix;
     }
     for (i=k;i<kk;i++) {
       c+=a*x[i];
       x[i]=c & mask;
-      c>>=bpe;
+      c = (c - x[i]) / radix;
     }
   }
 
@@ -1278,12 +1283,12 @@
     for (c=0,i=ys;i<k;i++) {
       c+=x[i]+b*y[i-ys];
       x[i]=c & mask;
-      c>>=bpe;
+      c = (c - x[i]) / radix;
     }
     for (i=k;c && i<kk;i++) {
       c+=x[i];
       x[i]=c & mask;
-      c>>=bpe;
+      c = (c - x[i]) / radix;
     }
   }
 
@@ -1296,12 +1301,12 @@
     for (c=0,i=ys;i<k;i++) {
       c+=x[i]+y[i-ys];
       x[i]=c & mask;
-      c>>=bpe;
+      c = (c - x[i]) / radix;
     }
     for (i=k;c && i<kk;i++) {
       c+=x[i];
       x[i]=c & mask;
-      c>>=bpe;
+      c = (c - x[i]) / radix;
     }
   }
 
@@ -1314,12 +1319,12 @@
     for (c=0,i=ys;i<k;i++) {
       c+=x[i]-y[i-ys];
       x[i]=c & mask;
-      c>>=bpe;
+      c = (c - x[i]) / radix;
     }
     for (i=k;c && i<kk;i++) {
       c+=x[i];
       x[i]=c & mask;
-      c>>=bpe;
+      c = (c - x[i]) / radix;
     }
   }
 
@@ -1332,12 +1337,12 @@
     for (c=0,i=0;i<k;i++) {
       c+=x[i]-y[i];
       x[i]=c & mask;
-      c>>=bpe;
+      c = (c - x[i]) / radix;
     }
     for (i=k;c && i<x.length;i++) {
       c+=x[i];
       x[i]=c & mask;
-      c>>=bpe;
+      c = (c - x[i]) / radix;
     }
   }
 
@@ -1349,12 +1354,12 @@
     for (c=0,i=0;i<k;i++) {
       c+=x[i]+y[i];
       x[i]=c & mask;
-      c>>=bpe;
+      c = (c - x[i]) / radix;
     }
     for (i=k;c && i<x.length;i++) {
       c+=x[i];
       x[i]=c & mask;
-      c>>=bpe;
+      c = (c - x[i]) / radix;
     }
   }
 
@@ -1406,11 +1411,11 @@
     for (i=0;i<kx;i++) {
       c=s0[2*i]+x[i]*x[i];
       s0[2*i]=c & mask;
-      c>>=bpe;
+      c = (c - s0[2*i]) / radix;
       for (j=i+1;j<kx;j++) {
         c=s0[i+j]+2*x[i]*x[j]+c;
         s0[i+j]=(c & mask);
-        c>>=bpe;
+        c = (c - s0[i+j]) / radix;
       }
       s0[i+kx]=c;
     }
@@ -1494,7 +1499,7 @@
   //  n is odd
   //  np = -(n^(-1)) mod radix
   function mont_(x,y,n,np) {
-    var i,j,c,ui,t,ks;
+    var i,j,c,ui,t,t2,ks;
     var kn=n.length;
     var ky=y.length;
 
@@ -1511,24 +1516,35 @@
     for (i=0; i<kn; i++) {
       t=sa[0]+x[i]*y[0];
       ui=((t & mask) * np) & mask;  //the inner "& mask" was needed on Safari (but not MSIE) at one time
-      c=(t+ui*n[0]) >> bpe;
+      c=(t+ui*n[0]);
+      c = (c - (c & mask)) / radix;
       t=x[i];
       
       //do sa=(sa+x[i]*y+ui*n)/b   where b=2**bpe.  Loop is unrolled 5-fold for speed
       j=1;
-      for (;j<ky-4;) { c+=sa[j]+ui*n[j]+t*y[j];   sa[j-1]=c & mask;   c>>=bpe;   j++;
-                       c+=sa[j]+ui*n[j]+t*y[j];   sa[j-1]=c & mask;   c>>=bpe;   j++;
-                       c+=sa[j]+ui*n[j]+t*y[j];   sa[j-1]=c & mask;   c>>=bpe;   j++;
-                       c+=sa[j]+ui*n[j]+t*y[j];   sa[j-1]=c & mask;   c>>=bpe;   j++;
-                       c+=sa[j]+ui*n[j]+t*y[j];   sa[j-1]=c & mask;   c>>=bpe;   j++; }    
-      for (;j<ky;)   { c+=sa[j]+ui*n[j]+t*y[j];   sa[j-1]=c & mask;   c>>=bpe;   j++; }
-      for (;j<kn-4;) { c+=sa[j]+ui*n[j];          sa[j-1]=c & mask;   c>>=bpe;   j++;
-                       c+=sa[j]+ui*n[j];          sa[j-1]=c & mask;   c>>=bpe;   j++;
-                       c+=sa[j]+ui*n[j];          sa[j-1]=c & mask;   c>>=bpe;   j++;
-                       c+=sa[j]+ui*n[j];          sa[j-1]=c & mask;   c>>=bpe;   j++;
-                       c+=sa[j]+ui*n[j];          sa[j-1]=c & mask;   c>>=bpe;   j++; }  
-      for (;j<kn;)   { c+=sa[j]+ui*n[j];          sa[j-1]=c & mask;   c>>=bpe;   j++; }   
-      for (;j<ks;)   { c+=sa[j];                  sa[j-1]=c & mask;   c>>=bpe;   j++; }  
+      for (;j<ky-4;) {
+        c+=sa[j]+ui*n[j]+t*y[j]; t2=sa[j-1]=c & mask; c=(c-t2)/radix; j++;
+        c+=sa[j]+ui*n[j]+t*y[j]; t2=sa[j-1]=c & mask; c=(c-t2)/radix; j++;
+        c+=sa[j]+ui*n[j]+t*y[j]; t2=sa[j-1]=c & mask; c=(c-t2)/radix; j++;
+        c+=sa[j]+ui*n[j]+t*y[j]; t2=sa[j-1]=c & mask; c=(c-t2)/radix; j++;
+        c+=sa[j]+ui*n[j]+t*y[j]; t2=sa[j-1]=c & mask; c=(c-t2)/radix; j++;
+      }
+      for (;j<ky;)   {
+        c+=sa[j]+ui*n[j]+t*y[j]; t2=sa[j-1]=c & mask; c=(c-t2)/radix; j++;
+      }
+      for (;j<kn-4;) {
+        c+=sa[j]+ui*n[j];        t2=sa[j-1]=c & mask; c=(c-t2)/radix; j++;
+        c+=sa[j]+ui*n[j];        t2=sa[j-1]=c & mask; c=(c-t2)/radix; j++;
+        c+=sa[j]+ui*n[j];        t2=sa[j-1]=c & mask; c=(c-t2)/radix; j++;
+        c+=sa[j]+ui*n[j];        t2=sa[j-1]=c & mask; c=(c-t2)/radix; j++;
+        c+=sa[j]+ui*n[j];        t2=sa[j-1]=c & mask; c=(c-t2)/radix; j++;
+      }
+      for (;j<kn;)   {
+        c+=sa[j]+ui*n[j];        t2=sa[j-1]=c & mask; c=(c-t2)/radix; j++;
+      }
+      for (;j<ks;)   {
+        c+=sa[j];                t2=sa[j-1]=c & mask; c=(c-t2)/radix; j++;
+      }
       sa[j-1]=c & mask;
     }
 
@@ -1538,8 +1554,8 @@
   }
 
 
+  // ADDITIONS to the BigInt library.
 
-//ADDITIONS to the BigInt library.  
   //converts a bigInt into a little endian byte array containing the specified amount of bytes which is then encoded into Base64.
   function bigInt2base64 (x, bytes) {
     if (s6.length!=x.length) 
@@ -1583,8 +1599,64 @@
     return y;
   }
 
+  // computes num / den mod n
+  function divMod(num, den, n) {
+    return multMod(num, inverseMod(den, n), n)
+  }
 
-  var BigInt = {
+  // computes one - two mod n
+  function subMod(one, two, n) {
+    one = mod(one, n)
+    two = mod(two, n)
+    if (greater(two, one)) one = add(one, n)
+    return sub(one, two)
+  }
+
+  // computes 2^m as a bigInt
+  function twoToThe(m) {
+    var b = Math.floor(m / bpe) + 2
+    var t = new Array(b)
+    for (var i = 0; i < b; i++) t[i] = 0
+    t[b - 2] = 1 << (m % bpe)
+    return t
+  }
+
+  // cache these results for faster lookup
+  var _num2bin = (function () {
+    var i = 0, _num2bin= {}
+    for (; i < 0x100; ++i) {
+      _num2bin[i] = String.fromCharCode(i)  // 0 -> "\00"
+    }
+    return _num2bin
+  }())
+
+  // serialize a bigInt to an ascii string
+  // padded up to pad length
+  function bigInt2bits(bi, pad) {
+    pad || (pad = 0)
+    bi = dup(bi)
+    var ba = ''
+    while (!isZero(bi)) {
+      ba = _num2bin[bi[0] & 0xff] + ba
+      rightShift_(bi, 8)
+    }
+    while (ba.length < pad) {
+      ba = '\x00' + ba
+    }
+    return ba
+  }
+
+  // converts a byte array to a bigInt
+  function ba2bigInt(data) {
+    var mpi = str2bigInt('0', 10, data.length)
+    data.forEach(function (d, i) {
+      if (i) leftShift_(mpi, 8)
+      mpi[0] |= d
+    })
+    return mpi
+  }
+
+  return {
       base642bigInt : base642bigInt
     , bigInt2base64 : bigInt2base64
     , str2bigInt    : str2bigInt
@@ -1620,8 +1692,11 @@
     , bpe           : bpe
     , primes        : primes
     , findPrimes    : findPrimes
+    , divMod        : divMod
+    , subMod        : subMod
+    , twoToThe      : twoToThe
+    , bigInt2bits   : bigInt2bits
+    , ba2bigInt     : ba2bigInt
   }
-
-  return BigInt
 
 }))
