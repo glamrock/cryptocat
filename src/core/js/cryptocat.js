@@ -523,7 +523,7 @@ function desktopNotification(image, title, body, timeout) {
 		var notice = new Notification(title, { tag: 'Cryptocat', body: body, icon: image })
 		if (timeout > 0) {
 			window.setTimeout(function() {
-				notice.cancel()
+				if (notice) { notice.cancel() }
 			}, timeout)
 		}
 	}
