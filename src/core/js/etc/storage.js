@@ -11,7 +11,7 @@ $(window).ready(function() {
 // Currently, this provides a functional interface for:
 // Cryptocat for Chrome: YES
 // Cryptocat for Safari: YES
-// Cryptocat for Firefox: NO
+// Cryptocat for Firefox: YES
 
 // How to use:
 // Cryptocat.Storage.setItem(itemName, itemValue)
