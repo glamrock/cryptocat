@@ -119,6 +119,21 @@ Cryptocat.Storage.getItem('myNickname', function(key) {
 	}
 })
 
+// Load server settings
+Cryptocat.Storage.getItem('savedDomains', function(key) {
+	if (key) {
+		$('#customServerSelector').empty()
+		var servers = $.parseJSON(key)
+		$.each(servers, function(server) {
+			var option = '<option value="' + server
+			option += '" data-bosh="' + servers[server]['bosh']
+			option += '" data-xmpp="' + servers[server]['xmpp']
+			option += '">' + server + '</option>'
+			$('#customServerSelector').append(option)
+		})
+	}
+})
+
 // Load notification settings.
 window.setTimeout(function() {
 	Cryptocat.Storage.getItem('desktopNotifications', function(key) {
