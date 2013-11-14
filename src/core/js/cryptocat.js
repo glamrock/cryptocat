@@ -1277,7 +1277,7 @@ $('#customServer').click(function() {
 		$('#customServerSave').unbind('click')
 		$('#customServerSave').click(function() {
 			$('#customServerDelete').val('Delete')
-				.attr('data-deletecomfirm','0')
+				.attr('data-deleteconfirm','0')
 				.removeClass('confirm')
 			
 			var newDomain = $('#customDomain').val()
@@ -1292,11 +1292,11 @@ $('#customServer').click(function() {
 			$('#customServerSelector').children().each(function() {
 				if (newDomain === $(this).val()) {
 					serverIsInList = true
-					if ($('#customServerSave').attr('data-savecomfirm') !== '1') {
-						$('#customServerSave').val('Overwrite?').attr('data-savecomfirm','1').addClass('confirm')
+					if ($('#customServerSave').attr('data-saveconfirm') !== '1') {
+						$('#customServerSave').val('Overwrite?').attr('data-saveconfirm','1').addClass('confirm')
 						return
 					} else {
-						$('#customServerSave').val('Save').attr('data-savecomfirm','0').removeClass('confirm')
+						$('#customServerSave').val('Save').attr('data-saveconfirm','0').removeClass('confirm')
 					}
 				}
 			})
@@ -1317,25 +1317,25 @@ $('#customServer').click(function() {
 		})
 		$('#customServerDelete').unbind('click')
 		$('#customServerDelete').click(function() {
-			$('#customServerSave').val('Save').attr('data-savecomfirm','0').removeClass('confirm')
+			$('#customServerSave').val('Save').attr('data-saveconfirm','0').removeClass('confirm')
 			var domain = $('#customServerSelector').val()
-			if ( $('#customServerDelete').attr('data-deletecomfirm') === '1' ) {
+			if ( $('#customServerDelete').attr('data-deleteconfirm') === '1' ) {
 				$('#customServerSelector option[value="' + domain + '"]').remove()
 				updateSavedDomains()
-				$('#customServerDelete').val('Delete').attr('data-deletecomfirm','0').removeClass('confirm')
+				$('#customServerDelete').val('Delete').attr('data-deleteconfirm','0').removeClass('confirm')
 			} else {
-				$('#customServerDelete').val('Are you sure?').attr('data-deletecomfirm','1').addClass('confirm')
+				$('#customServerDelete').val('Are you sure?').attr('data-deleteconfirm','1').addClass('confirm')
 			}
 		})
 		$('#customServerSelector').unbind('change')
 		$('#customServerSelector').change(function() {
 			$('#customServerDelete').val('Delete')
-				.attr('data-deletecomfirm','0')
+				.attr('data-deleteconfirm','0')
 				.removeClass('confirm')
 				.removeAttr('disabled')
 				.removeClass('disabled')
 			$('#customServerSave').val('Save')
-				.attr('data-savecomfirm','0')
+				.attr('data-saveconfirm','0')
 				.removeClass('confirm')
 
 			var selectedOption = $(this).find(':selected')
