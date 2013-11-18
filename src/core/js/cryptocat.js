@@ -1240,11 +1240,13 @@ $('#customServer').click(function() {
 	// Add default domain to list only if no other list was loaded, as loaded
 	// list will (should) always contain the default domain
 	if (!document.getElementById('customServerSelector').firstChild) {
-		var defaultOption = '<option value="' + defaultDomain
-		defaultOption += '" data-bosh="' + defaultBOSH
-		defaultOption += '" data-xmpp="' + defaultConferenceServer
-		defaultOption += '">' + defaultDomain + '</option>'
-		$('#customServerSelector').append(defaultOption)
+		$('#customServerSelector').append(
+			Mustache.render(Cryptocat.templates['customServer'], {
+				server: defaultDomain,
+				BOSH: defaultBOSH,
+				XMPP: defaultConferenceServer
+			})
+		)
 	}
 	$('#languages').hide()
 	$('#footer').animate({'height': 180}, function() {
@@ -1279,38 +1281,38 @@ $('#customServer').click(function() {
 			$('#customServerDelete').val('Delete')
 				.attr('data-deleteconfirm','0')
 				.removeClass('confirm')
-			
 			var newDomain = $('#customDomain').val()
 			var newXMPP = $('#customConferenceServer').val()
 			var newBOSH = $('#customBOSH').val()
-
-			if ( newDomain === defaultDomain ) {
+			if (newDomain === defaultDomain) {
 				return // Cannot overwrite the default domain
 			}
-
 			var serverIsInList = false
 			$('#customServerSelector').children().each(function() {
 				if (newDomain === $(this).val()) {
 					serverIsInList = true
 					if ($('#customServerSave').attr('data-saveconfirm') !== '1') {
-						$('#customServerSave').val('Overwrite?').attr('data-saveconfirm','1').addClass('confirm')
+						$('#customServerSave').val('Overwrite?').attr('data-saveconfirm', '1').addClass('confirm')
 						return
-					} else {
-						$('#customServerSave').val('Save').attr('data-saveconfirm','0').removeClass('confirm')
+					}
+					else {
+						$('#customServerSave').val('Save').attr('data-saveconfirm', '0').removeClass('confirm')
 					}
 				}
 			})
-
 			if (!serverIsInList) {
-				var newServer = '<option value="' + newDomain
-				newServer += '" data-bosh="' + newBOSH
-				newServer += '" data-xmpp="' + newXMPP
-				newServer += '">' + newDomain + '</option>'
-				$('#customServerSelector').append(newServer)
-			} else {
+				$('#customServerSelector').append(
+					Mustache.render(Cryptocat.templates['customServer'], {
+						server: newDomain,
+						BOSH: newBOSH,
+						XMPP: newXMPP
+					})
+				)
+			}
+			else {
 				var currentServer = $('#customServerSelector option[value="' + newDomain + '"]')
-				$(currentServer).attr('data-bosh',newBOSH)
-				$(currentServer).attr('data-xmpp',newXMPP)
+				$(currentServer).attr('data-bosh', newBOSH)
+				$(currentServer).attr('data-xmpp', newXMPP)
 			}
 
 			updateSavedDomains()
@@ -1323,7 +1325,8 @@ $('#customServer').click(function() {
 				$('#customServerSelector option[value="' + domain + '"]').remove()
 				updateSavedDomains()
 				$('#customServerDelete').val('Delete').attr('data-deleteconfirm','0').removeClass('confirm')
-			} else {
+			}
+			else {
 				$('#customServerDelete').val('Are you sure?').attr('data-deleteconfirm','1').addClass('confirm')
 			}
 		})
@@ -1337,16 +1340,13 @@ $('#customServer').click(function() {
 			$('#customServerSave').val('Save')
 				.attr('data-saveconfirm','0')
 				.removeClass('confirm')
-
 			var selectedOption = $(this).find(':selected')
 			var domain = $(selectedOption).text()
 			var xmpp = $(selectedOption).attr('data-xmpp')
 			var bosh = $(selectedOption).attr('data-bosh')
-
 			if (domain === defaultDomain) {
-				$('#customServerDelete').attr('disabled','disabled').addClass('disabled')
+				$('#customServerDelete').attr('disabled', 'disabled').addClass('disabled')
 			}
-
 			$('#customDomain').val(domain)
 			$('#customConferenceServer').val(xmpp)
 			$('#customBOSH').val(bosh)
@@ -1358,18 +1358,15 @@ $('#customServer').click(function() {
 function updateSavedDomains() {
 	// Ensure default domain is stored in custom server list
 	var savedDomains = {}
-
 	$('#customServerSelector option').each(function() {
 		var domain = $(this).val()
 		var bosh = $(this).attr('data-bosh')
 		var xmpp = $(this).attr('data-xmpp')
-
 		savedDomains[domain] = {}
 		savedDomains[domain].xmpp = xmpp
 		savedDomains[domain].bosh = bosh
 	})
-
-	Cryptocat.Storage.setItem('savedDomains',JSON.stringify(savedDomains))
+	Cryptocat.Storage.setItem('savedDomains', JSON.stringify(savedDomains))
 }
 
 // Language selector.

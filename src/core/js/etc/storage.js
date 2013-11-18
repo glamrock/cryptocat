@@ -125,11 +125,13 @@ Cryptocat.Storage.getItem('savedDomains', function(key) {
 		$('#customServerSelector').empty()
 		var servers = $.parseJSON(key)
 		$.each(servers, function(server) {
-			var option = '<option value="' + server
-			option += '" data-bosh="' + servers[server]['bosh']
-			option += '" data-xmpp="' + servers[server]['xmpp']
-			option += '">' + server + '</option>'
-			$('#customServerSelector').append(option)
+			$('#customServerSelector').append(
+				Mustache.render(Cryptocat.templates['customServer'], {
+					server: server,
+					BOSH: servers[server]['bosh'],
+					XMPP: servers[server]['xmpp']
+				})
+			)
 		})
 	}
 })

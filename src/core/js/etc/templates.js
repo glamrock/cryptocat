@@ -2,6 +2,9 @@
 
 Cryptocat.templates = {
 
+	customServer: '<option value="{{server}}" data-bosh="{{BOSH}}" data-xmpp="{{XMPP}}">'
+		+ '{{server}}</option>',
+
 	catFact: '<br />Here is an interesting fact while you wait:'
 		+ '<br /><div id="interestingFact">{{catFact}}</div>',
 
@@ -51,10 +54,10 @@ Cryptocat.templates = {
 		+ ' timestamp="{{currentTime}}">{{sender}}</span>{{&message}}</div>',
 
 	composing: '<img src="img/typing.gif" class="typing" id="{{id}}" alt="" />',
-	
+
 	userJoin: '<div class="userJoin"><span class="timestamp">{{currentTime}}</span>'
 		+ '<strong>+</strong>{{nickname}}</div>',
-	
+
 	userLeave: '<div class="userLeave"><span class="timestamp">{{currentTime}}</span>'
 		+ '<strong>-</strong>{{nickname}}</div>'
 
