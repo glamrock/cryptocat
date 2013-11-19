@@ -99,6 +99,9 @@ Cryptocat.Storage.getItem('language', function(key) {
 })
 
 // Load custom server settings
+Cryptocat.Storage.getItem('serverName', function(key) {
+	if (key) { Cryptocat.serverName = key }
+})
 Cryptocat.Storage.getItem('domain', function(key) {
 	if (key) { Cryptocat.domain = key }
 })
@@ -108,6 +111,22 @@ Cryptocat.Storage.getItem('conferenceServer', function(key) {
 Cryptocat.Storage.getItem('bosh', function(key) {
 	if (key) { Cryptocat.bosh = key }
 })
+Cryptocat.Storage.getItem('customServers', function(key) {
+	if (key) {
+		$('#customServerSelector').empty()
+		var servers = $.parseJSON(key)
+		$.each(servers, function(name) {
+			$('#customServerSelector').append(
+				Mustache.render(Cryptocat.templates['customServer'], {
+					name: name,
+					domain: servers[name]['domain'],
+					XMPP: servers[name]['xmpp'],
+					BOSH: servers[name]['bosh']
+				})
+			)
+		})
+	}
+})
 
 // Load nickname settings.
 Cryptocat.Storage.getItem('myNickname', function(key) {
@@ -115,23 +134,6 @@ Cryptocat.Storage.getItem('myNickname', function(key) {
 		$('#nickname').animate({'color': 'transparent'}, function() {
 			$(this).val(key)
 			$(this).animate({'color': '#FFF'})
-		})
-	}
-})
-
-// Load server settings
-Cryptocat.Storage.getItem('savedDomains', function(key) {
-	if (key) {
-		$('#customServerSelector').empty()
-		var servers = $.parseJSON(key)
-		$.each(servers, function(server) {
-			$('#customServerSelector').append(
-				Mustache.render(Cryptocat.templates['customServer'], {
-					server: server,
-					BOSH: servers[server]['bosh'],
-					XMPP: servers[server]['xmpp']
-				})
-			)
 		})
 	}
 })

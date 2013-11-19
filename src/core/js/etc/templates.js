@@ -2,8 +2,8 @@
 
 Cryptocat.templates = {
 
-	customServer: '<option value="{{server}}" data-bosh="{{BOSH}}" data-xmpp="{{XMPP}}">'
-		+ '{{server}}</option>',
+	customServer: '<option data-domain="{{domain}}" data-xmpp="{{XMPP}}" data-bosh="{{BOSH}}">'
+		+ '{{name}}</option>',
 
 	catFact: '<br />Here is an interesting fact while you wait:'
 		+ '<br /><div id="interestingFact">{{catFact}}</div>',

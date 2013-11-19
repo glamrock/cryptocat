@@ -36,7 +36,7 @@ a:hover {
 	text-decoration: underline;
 }
 
-img { 
+img {
 	image-rendering: optimizeSpeed;
 	image-rendering: -moz-crisp-edges;
 	image-rendering: -o-crisp-edges;
@@ -183,11 +183,11 @@ div#bubble #loginSubmit {
 	font-size: 1.6em;
 	border: 1px solid #76BDE5;
 	box-shadow: 2px 2px #76BDE5;
-	
+
 }
 
 div#bubble #loginSubmit:hover {
-    background: #76BDE5;
+	background: #76BDE5;
 }
 
 div#bubble #loginSubmit:active {
@@ -274,7 +274,7 @@ a#customServer {
 
 div#customServerDialog {
 	display: none;
-	margin: 40px auto;
+	margin: 30px auto;
 }
 
 div#customServerList {
@@ -316,25 +316,25 @@ div #customServerDialog #customServerSubmit {
 }
 
 select#customServerSelector {
-	width: 210px; 
+	width: 210px;
 	color: white;
-	height: 91px;
+	height: 124px;
 	margin: 8px 8px 8px auto;
 	display: block;
 }
 
 #customServerSelector::-webkit-scrollbar {
-    width: 15px;
+	width: 15px;
 }
- 
+
 #customServerSelector::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
-    border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
 }
- 
+
 #customServerSelector::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
 }
 
 div#footer #languageSelect {
@@ -573,71 +573,71 @@ DIALOG BOX
 }
 
 #authInfo {
-    background: rgba(151, 206, 236, 0.4);
-    width: 90%;
-    height: 208px;
-    padding: 0 5px;
-    margin: -38px auto 0 auto;
-    border-radius: 8px 0 8px 8px;
+	background: rgba(151, 206, 236, 0.4);
+	width: 90%;
+	height: 208px;
+	padding: 0 5px;
+	margin: -38px auto 0 auto;
+	border-radius: 8px 0 8px 8px;
 }
 
 #authInfo h2 {
-    font-size: 16px;
-    padding: 3px;
-    margin: 0 0 5px 0;
+	font-size: 16px;
+	padding: 3px;
+	margin: 0 0 5px 0;
 }
 
 #authInfo p {
 	max-width: 500px;
-    margin-top: -10px;
+	margin-top: -10px;
 }
 
 #authInfo #authQuestion, #authInfo #authAnswer {
-    box-shadow: none;
-    background: rgba(151, 206, 236, 0.7);
-    padding: 4px;
-    width: 260px;
-    border: none;
-    font-size: 1.05em;
-    border-radius: 5px 0 5px 5px;
+	box-shadow: none;
+	background: rgba(151, 206, 236, 0.7);
+	padding: 4px;
+	width: 260px;
+	border: none;
+	font-size: 1.05em;
+	border-radius: 5px 0 5px 5px;
 }
 
 #authInfo #authSubmit {
-    float: right;
-    width: 100px;
-    height: 57px;
-    margin: -35px 20px 0px 0;
-    border-radius: 5px 0 5px 5px;
-    font-size: 1.2em;
+	float: right;
+	width: 100px;
+	height: 57px;
+	margin: -35px 20px 0px 0;
+	border-radius: 5px 0 5px 5px;
+	font-size: 1.2em;
 	background: #97CEEC;
 	border: none;
 }
 
 #authVerified {
-    text-align: center;
-    font-size: 1.6em;
-    color: #FFF;
-    text-shadow: #FFF;
+	text-align: center;
+	font-size: 1.6em;
+	color: #FFF;
+	text-shadow: #FFF;
 	display: none;
 }
 
 #authReplyForm {
-    margin: -20px 0 5px 55px;
+	margin: -20px 0 5px 55px;
 }
 
 #authReply {
-    background: #97CEEC;
-    border: none;
-    border-radius: 5px 0 5px 5px;
-    padding: 4px;
-    box-shadow: none;
-    width: 220px;
+	background: #97CEEC;
+	border: none;
+	border-radius: 5px 0 5px 5px;
+	padding: 4px;
+	box-shadow: none;
+	width: 220px;
 }
 
 #authReplySubmit {
-    width: 100px;
-    border-radius: 5px 0 5px 5px;
-    box-shadow: 2px 2px #76BDE5;
+	width: 100px;
+	border-radius: 5px 0 5px 5px;
+	box-shadow: 2px 2px #76BDE5;
 }
 
 #dialogBox #fileInfoField {
@@ -860,31 +860,31 @@ CONVERSATION WINDOW
 	box-shadow: 2px 2px #97CEEC;
 	border: 2px solid #97CEEC;
 }
- 
+
 .line3 {
 	background-color: #EFF9FE;
 }
 
 .line4 {
-    box-shadow: 2px 2px #F00;
+	box-shadow: 2px 2px #F00;
 	border: 2px solid #F00;
-    background: #F00;
-    color: #FFF;
+	background: #F00;
+	color: #FFF;
 }
 
 .line1 .sender {
 	background: #76BDE5;
-    color: #FFF;
+	color: #FFF;
 }
 
 .line2 .sender, .line3 .sender {
 	background: #97CEEC;
-    color: #FFF;
+	color: #FFF;
 }
 
 .line4 .sender {
-    background: #FFF;
-    color: #F00;
+	background: #FFF;
+	color: #F00;
 }
 
 .line1:after, .line2:after, .line3:after, .line4:after {
@@ -1025,16 +1025,16 @@ EMOTICONS
 	color: transparent;
 }
 
-.eCat { background-image: url('../img/emoticon/cat.png') }
-.eCry { background-image: url('../img/emoticon/cry.png') }
-.eGasp { background-image: url('../img/emoticon/gasp.png') }
-.eGrin { background-image: url('../img/emoticon/grin.png') }
-.eSad { background-image: url('../img/emoticon/sad.png') }
-.eSmile { background-image: url('../img/emoticon/smile.png') }
-.eSquint { background-image: url('../img/emoticon/squint.png') }
-.eTongue { background-image: url('../img/emoticon/tongue.png') }
-.eUnsure { background-image: url('../img/emoticon/unsure.png') }
-.eWink { background-image: url('../img/emoticon/wink.png') }
-.eWinkTongue { background-image: url('../img/emoticon/winkTongue.png') }
-.eHappy { background-image: url('../img/emoticon/happy.png') }
-.eShut { background-image: url('../img/emoticon/shut.png') }
+.eCat { background-image: url('../img/emoticon/cat.png')}
+.eCry { background-image: url('../img/emoticon/cry.png')}
+.eGasp { background-image: url('../img/emoticon/gasp.png')}
+.eGrin { background-image: url('../img/emoticon/grin.png')}
+.eSad { background-image: url('../img/emoticon/sad.png')}
+.eSmile { background-image: url('../img/emoticon/smile.png')}
+.eSquint { background-image: url('../img/emoticon/squint.png')}
+.eTongue { background-image: url('../img/emoticon/tongue.png')}
+.eUnsure { background-image: url('../img/emoticon/unsure.png')}
+.eWink { background-image: url('../img/emoticon/wink.png')}
+.eWinkTongue { background-image: url('../img/emoticon/winkTongue.png')}
+.eHappy { background-image: url('../img/emoticon/happy.png')}
+.eShut { background-image: url('../img/emoticon/shut.png')}
