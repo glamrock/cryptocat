@@ -94,11 +94,11 @@
 
 /* Default tooltip style */
 .qtip-default{
-	background: #76BDE5;
+	background: #73BBE2;
 	color: #FFF;
-	box-shadow: 2px 2px #97CEEC;
-	border: 2px solid #97CEEC;
-	font-size: 11px;
+	border: 3px solid #97CEEC;
+	padding: 2px;
+	font-size: 12px;
 	line-height: 16px;
 	border-radius: 4px 0 4px 4px;
 	max-width: 225px;
@@ -123,7 +123,6 @@
 	margin: 0 auto;
 	overflow: hidden;
 	z-index: 10;
-	
 }
 
 /* Opera bug #357 - Incorrect tip position

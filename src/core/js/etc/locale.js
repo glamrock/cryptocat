@@ -183,6 +183,12 @@ Cryptocat.Locale.refresh = function(languageObject) {
 		},
 		content: languageObject['loginWindow']['conversationNameTooltip']
 	})
+	$('#customServerFields').children().qtip({
+		position: {
+			my: 'center left',
+			at: 'center right'
+		},
+	})
 	$('html').attr('dir', languageObject['direction'])
 	if (languageObject['direction'] === 'ltr') {
 		$('div#bubble #info li').css('background-position', 'top left')
