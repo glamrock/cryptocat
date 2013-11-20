@@ -187,7 +187,7 @@ Cryptocat.Locale.refresh = function(languageObject) {
 		position: {
 			my: 'center left',
 			at: 'center right'
-		},
+		}
 	})
 	$('html').attr('dir', languageObject['direction'])
 	if (languageObject['direction'] === 'ltr') {
