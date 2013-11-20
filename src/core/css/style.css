@@ -296,6 +296,10 @@ div#customServerDialog input, select#customServerSelector {
 	padding: 4px;
 }
 
+div#customServerDialog input#customName {
+	background: rgba(151, 206, 236, 0.8);
+}
+
 div#customServerDialog input.disabled {
 	cursor: auto;
 	background: rgba(255, 255, 255, 0.2);
