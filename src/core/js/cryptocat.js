@@ -54,12 +54,12 @@ var myKey
 var catFactInterval
 
 var sounds = {
-	'keygenStart': (new Audio('snd/keygenStart.wav')),
-	'keygenLoop': (new Audio('snd/keygenLoop.wav')),
-	'keygenEnd': (new Audio('snd/keygenEnd.wav')),
-	'userJoin': (new Audio('snd/userJoin.wav')),
-	'userLeave': (new Audio('snd/userLeave.wav')),
-	'msgGet'	: (new Audio('snd/msgGet.wav'))
+	'keygenStart': (new Audio('snd/keygenStart.mp3')),
+	'keygenLoop': (new Audio('snd/keygenLoop.mp3')),
+	'keygenEnd': (new Audio('snd/keygenEnd.mp3')),
+	'userJoin': (new Audio('snd/userJoin.mp3')),
+	'userLeave': (new Audio('snd/userLeave.mp3')),
+	'msgGet'	: (new Audio('snd/msgGet.mp3'))
 }
 
 // Set server information to defaults.
@@ -1111,29 +1111,22 @@ else {
 }
 
 // Audio notifications button.
-// If using Safari, remove this button.
-// (Since Safari does not support audio notifications)
-if (!navigator.userAgent.match(/(Chrome)|(Firefox)/)) {
-	$('#audio').remove()
-}
-else {
-	$('#audio').click(function() {
-		if ($(this).attr('src') === 'img/noSound.png') {
-			$(this).attr('src', 'img/sound.png')
-			$(this).attr('alt', Cryptocat.Locale['chatWindow']['audioNotificationsOn'])
-			$(this).attr('title', Cryptocat.Locale['chatWindow']['audioNotificationsOn'])
-			audioNotifications = true
-			Cryptocat.Storage.setItem('audioNotifications', 'true')
-		}
-		else {
-			$(this).attr('src', 'img/noSound.png')
-			$(this).attr('alt', Cryptocat.Locale['chatWindow']['audioNotificationsOff'])
-			$(this).attr('title', Cryptocat.Locale['chatWindow']['audioNotificationsOff'])
-			audioNotifications = false
-			Cryptocat.Storage.setItem('audioNotifications', 'false')
-		}
-	})
-}
+$('#audio').click(function() {
+	if ($(this).attr('src') === 'img/noSound.png') {
+		$(this).attr('src', 'img/sound.png')
+		$(this).attr('alt', Cryptocat.Locale['chatWindow']['audioNotificationsOn'])
+		$(this).attr('title', Cryptocat.Locale['chatWindow']['audioNotificationsOn'])
+		audioNotifications = true
+		Cryptocat.Storage.setItem('audioNotifications', 'true')
+	}
+	else {
+		$(this).attr('src', 'img/noSound.png')
+		$(this).attr('alt', Cryptocat.Locale['chatWindow']['audioNotificationsOff'])
+		$(this).attr('title', Cryptocat.Locale['chatWindow']['audioNotificationsOff'])
+		audioNotifications = false
+		Cryptocat.Storage.setItem('audioNotifications', 'false')
+	}
+})
 
 // Logout button.
 $('#logout').click(function() {
