@@ -8,14 +8,14 @@ PRE-DEFINED TAGS
 	font-family: 'Monda';
 	font-style: normal;
 	font-weight: 400;
-	src: url('monda.woff') format('woff');
+	src: url('../fonts/monda.woff') format('woff');
 }
 
 @font-face {
 	font-family: 'Logotype';
 	font-style: normal;
 	font-weight: 400;
-	src: url('logotype.woff') format('woff');
+	src: url('../fonts/logotype.woff') format('woff');
 }
 
 body {
