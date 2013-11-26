@@ -1,7 +1,7 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 ﻿I Can Haz Private Conversashuns?
-O hai. Herez som helpful tips fur usin Cryptocat: <ul><li>Cryptocat iz not ceiling cat. Dunt trust it with ur lief!.</li><li>Cryptocat can't protect u gainst evil pplz, keyloggarz and duz nut anonymize u (iz cat, not onion.)</li></ul>
+O hai. Herez som helpful tips fur usin Cryptocat: <ul><li>Cryptocat iz not ceiling cat. Dunt trust it with ur lief!.</li><li class="key">Cryptocat can't protect u gainst evil pplz, keyloggarz and duz nut anonymize u (iz cat, not onion.)</li></ul>
 Blog
 custom servr...
 Reset

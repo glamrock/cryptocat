@@ -1,7 +1,7 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Elkarrizketa pribatuak edonorentzat.
-Ongi etorri Cryptocat-era. Hemen zenbaitz aholku erabilgarri: <ul><li>Cryptocat ez da magikoa. Ez zenuke inoiz zure bizitza software baten pean jarri.</li><li class="key". Cryptocat-ek ezin zaitu konfiantza merezi ez duten pertsonetatik edo keyloggeretatik babestu, eta ez du zure konexioa anonimo bihurtzen.</li></ul>
+Ongi etorri Cryptocat-era. Hemen zenbaitz aholku erabilgarri: <ul><li>Cryptocat ez da magikoa. Ez zenuke inoiz zure bizitza software baten pean jarri.</li><li class="key">Cryptocat-ek ezin zaitu konfiantza merezi ez duten pertsonetatik edo keyloggeretatik babestu, eta ez du zure konexioa anonimo bihurtzen.</li></ul>
 Bloga
 Zerbitzari pertsonalizatua
 Berrezarri
@@ -9,7 +9,7 @@ elkarrizketa-izena
 goitizena
 konektatu
 Sar ezazu izen bat elkarrizketarako eta parteka ezazu berau hitz egin nahiko zenukeen jendearekin, edo <strong>lobby</strong>-ra joan jende berria ezagutzeko!
-Sartu elkarrizketa baten izena bertara sartzeko. 
+Sartu elkarrizketa baten izena bertara sartzeko.
 Sartu elkarrizketa-izena.
 Elkarrizketa-izena letraz eta zenbakiz bakarrik egon daiteke osatuta.
 Sartu goitizena.
