@@ -3,11 +3,11 @@
 	<meta charset="UTF-8" />
 	<title>Cryptocat</title>
 	<link rel="stylesheet" media="screen" href="css/style.css" type="text/css" />
-	<link rel="stylesheet" href="css/jquery.qtip.css" type="text/css" />
+	<link rel="stylesheet" href="css/jquery.utip.css" type="text/css" />
 	<link rel="icon" type="image/gif" href="img/favicon.gif" />
 	<script type="application/javascript" src="js/lib/jquery/jquery.js"></script>
 	<script type="application/javascript" src="js/lib/jquery/jquery.color.js"></script>
-	<script type="application/javascript" src="js/lib/jquery/jquery.qtip.js"></script>
+	<script type="application/javascript" src="js/lib/jquery/jquery.utip.js"></script>
 	<script type="application/javascript" src="js/lib/mustache.js"></script>
 	<script type="application/javascript" src="js/lib/strophe/strophe.js"></script>
 	<script type="application/javascript" src="js/lib/strophe/strophe.register.js"></script>
@@ -56,15 +56,15 @@
 				<span id="groupConversation"></span>
 			</span>
 			<div id="optionButtons" dir="ltr">
-				<img class="button" id="status" src="img/available.png" alt="" />
-				<img class="button" id="myInfo" src="img/key.png" alt="" />
-				<img class="button" id="notifications" src="img/noNotifications.png" alt="" />
-				<img class="button" id="audio" src="img/noSound.png" alt="" />
-				<img class="button" id="logout" src="img/logout.png" alt="" />
+				<img class="button" id="status" src="img/available.png" alt="" data-utip-gravity="sw" />
+				<img class="button" id="myInfo" src="img/key.png" alt="" data-utip-gravity="sw" />
+				<img class="button" id="notifications" src="img/noNotifications.png" alt="" data-utip-gravity="sw" />
+				<img class="button" id="audio" src="img/noSound.png" alt="" data-utip-gravity="sw" />
+				<img class="button" id="logout" src="img/logout.png" alt="" data-utip-gravity="sw" />
 			</div>
 		</div>
 		<form id="loginForm" dir="ltr">
-			<input type="text" id="conversationName" maxlength="20" autocomplete="off" dir="ltr" />
+			<input type="text" id="conversationName" maxlength="20" autocomplete="off" dir="ltr" data-utip-gravity="ne" />
 			<input type="text" id="nickname" maxlength="16" autocomplete="off" dir="ltr" />
 			<input type="submit" id="loginSubmit" dir="ltr" />
 		</form>
@@ -123,10 +123,10 @@
 					<input type="button" id="customServerDelete" value="Delete" />
 				</div>
 				<div id="customServerFields">
-					<input type="text" class="customServer" id="customName" title="Name" />
-					<input type="text" class="customServer" id="customDomain" title="Domain" />
-					<input type="text" class="customServer" id="customConferenceServer" title="XMPP Conference Server" />
-					<input type="text" class="customServer" id="customBOSH" title="BOSH Relay" />
+					<input type="text" class="customServer" id="customName" data-utip="Name" data-utip-gravity="e" />
+					<input type="text" class="customServer" id="customDomain" data-utip="Domain" data-utip-gravity="e" />
+					<input type="text" class="customServer" id="customConferenceServer" data-utip="XMPP Conference Server" data-utip-gravity="e" />
+					<input type="text" class="customServer" id="customBOSH" data-utip="BOSH Relay" data-utip-gravity="e" />
 					<input type="button" id="customServerSubmit" value="Continue" />
 				</div>
 			</div>

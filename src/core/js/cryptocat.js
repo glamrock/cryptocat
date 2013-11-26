@@ -128,24 +128,16 @@ var otrOutgoingCallback = function(buddy) {
 // Show a preview for a received message from a buddy.
 // Message previews will not overlap and are removed after 5 seconds.
 function messagePreview(message, nickname) {
-	if (!$('#buddy-' + nickname).attr('data-hasqtip')) {
+	if (!$('#buddy-' + nickname).attr('data-utip')) {
 		if (message.length > 15) {
 			message = message.substring(0, 15) + '..'
 		}
-		$('#buddy-' + nickname).qtip({
-			position: {
-				my: 'top right',
-				at: 'bottom right',
-				adjust: {
-					x: -25,
-					y: -11
-				}
-			},
-			content: Strophe.xmlescape(message)
-		})
-		$('#buddy-' + nickname).qtip('show')
+		$('#buddy-' + nickname).attr('data-utip', Strophe.xmlescape(message))
+		$('#buddy-' + nickname).attr('data-utip-gravity', 'sw')
+		$('#buddy-' + nickname).mouseenter()
 		window.setTimeout(function() {
-			$('#buddy-' + nickname).qtip('destroy').removeAttr('data-hasqtip')
+			$('#buddy-' + nickname).mouseleave()
+			$('#buddy-' + nickname).removeAttr('data-utip')
 		}, 0x1337)
 	}
 }

@@ -154,41 +154,23 @@ Cryptocat.Locale.refresh = function(languageObject) {
 	$('#introParagraph').html(languageObject['loginWindow']['introParagraph'])
 	$('#customServer').text(languageObject['loginWindow']['customServer'])
 	$('#conversationName').attr('placeholder', languageObject['loginWindow']['conversationName'])
+	$('#conversationName').attr('data-utip', languageObject['loginWindow']['conversationNameTooltip'])
 	$('#nickname').attr('placeholder', languageObject['loginWindow']['nickname'])
 	$('#loginSubmit').val(languageObject['loginWindow']['connect'])
 	$('#loginInfo').text(languageObject['loginWindow']['enterConversation'])
-	$('#logout').attr('title', languageObject['chatWindow']['logout'])
+	$('#logout').attr('data-utip', languageObject['chatWindow']['logout'])
 	$('#logout').attr('alt', languageObject['chatWindow']['logout'])
-	$('#audio').attr('title', languageObject['chatWindow']['audioNotificationsOff'])
+	$('#audio').attr('data-utip', languageObject['chatWindow']['audioNotificationsOff'])
 	$('#audio').attr('alt', languageObject['chatWindow']['audioNotificationsOff'])
-	$('#notifications').attr('title', languageObject['chatWindow']['desktopNotificationsOff'])
+	$('#notifications').attr('data-utip', languageObject['chatWindow']['desktopNotificationsOff'])
 	$('#notifications').attr('alt', languageObject['chatWindow']['desktopNotificationsOff'])
-	$('#myInfo').attr('title', languageObject['chatWindow']['myInfo'])
+	$('#myInfo').attr('data-utip', languageObject['chatWindow']['myInfo'])
 	$('#myInfo').attr('alt', languageObject['chatWindow']['myInfo'])
-	$('#status').attr('title', languageObject['chatWindow']['statusAvailable'])
+	$('#status').attr('data-utip', languageObject['chatWindow']['statusAvailable'])
 	$('#status').attr('alt', languageObject['chatWindow']['statusAvailable'])
 	$('#conversationTag').text(languageObject['chatWindow']['conversation'])
 	$('#languageSelect').text($('#' + languageObject['language']).text())
-	$('.qtip').remove()
-	$('[title]').qtip({
-		position: {
-			my: 'top right',
-			at: 'bottom left'
-		}
-	})
-	$('#conversationName').qtip({
-		position: {
-			my: 'bottom left',
-			at: 'top center'
-		},
-		content: languageObject['loginWindow']['conversationNameTooltip']
-	})
-	$('#customServerFields').children().qtip({
-		position: {
-			my: 'center left',
-			at: 'center right'
-		}
-	})
+	$('[data-utip]').utip()
 	$('html').attr('dir', languageObject['direction'])
 	if (languageObject['direction'] === 'ltr') {
 		$('div#bubble #info li').css('background-position', 'top left')
