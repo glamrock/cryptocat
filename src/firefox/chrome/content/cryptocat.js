@@ -10,11 +10,9 @@ CryptocatFirefox.init = function() {
 	var firstRun = prefsService.getBoolPref('extensions.cryptocat.firstRun')
 	if (firstRun) {
 		Application.prefs.setValue('extensions.cryptocat.firstRun', false)
-		var navBar = document.getElementById('nav-bar')
-		var newSet = navBar.currentSet + ',cryptocatToolbarButton'
-		navBar.currentSet = newSet
-		navBar.setAttribute('currentset', newSet)
-		document.persist('nav-bar', 'currentset')
+		window.setTimeout(function() {
+			gBrowser.selectedTab = gBrowser.addTab('chrome://cryptocat/content/data/firstRun.html')
+		}, 1500)
 	}
 }
 

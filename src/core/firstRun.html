@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="UTF-8" />
+	<title>Getting started with Cryptocat</title>
+	<style type="text/css">
+		@font-face {
+			font-family: 'Monda';
+			font-style: normal;
+			font-weight: 400;
+			src: url('css/monda.woff') format('woff');
+		}
+		body {
+			height: 100%;
+			background: #C7E5F5;
+			margin: 0;
+			font-family: 'Helvetica Neue', Helvetica, Arial, Verdana;
+			line-height: 1.75em;
+			font-size: 16px;
+			font-family: 'Monda';
+		}
+		div#main {
+			width: 700px;
+			height: 600px;
+			padding: 20px;
+			background: #FFF;
+			border-radius: 18px 0 18px 18px;
+			margin: 3% auto 0 auto;
+			box-shadow: 8px 8px #97CEEC;
+			border: 8px solid #76BDE5;
+		}
+		img#logo {
+			width: 64px;
+		}
+		h1 {
+			display: inline;
+			vertical-align: 20px;
+			font-family: 'Monda';
+			font-weight: normal;
+			margin-left: 20px;
+			color: #76BDE5;
+			font-size: 36px;
+		}
+		.browser {
+			font-weight: bold;
+		}
+		div.instructions {
+			margin: 25px auto 20px; auto;
+			padding: 10px;
+			background: #F1F1F1;
+			width: 600px;
+			border-radius: 10px 0 10px 10px;
+			display: none;
+		}
+		div.instructions img {
+			display: block;
+		}
+		img.emoticon {
+			width: 16px;
+		}
+	</style>
+	<link rel="icon" type="image/gif" href="img/favicon.gif" />
+	<script type="application/javascript" src="js/lib/jquery/jquery.js"></script>
+	<script type="application/javascript">
+		$(window).ready(function() {
+
+		function detectBrowser() {
+			if (navigator.userAgent.match('Chrome')) {
+				return 'Chrome'
+			}
+			if (navigator.userAgent.match('Firefox')) {
+				return 'Firefox'
+			}
+			if (navigator.userAgent.match('Opera')) {
+				return 'Opera'
+			}
+			if (navigator.userAgent.match('MSIE')) {
+				return 'Internet Explorer'
+			}
+			return 'Safari'
+		}
+
+		function showInstructions(browser) {
+			$('.browser').text(browser)
+			$('.instructions[data-browser=' + browser + ']').show()
+		}
+
+		showInstructions(detectBrowser())
+
+		})
+	</script>
+</head>
+<body>
+	<div id="main">
+		<img id="logo" src="img/cryptocat.png" alt="" />
+		<h1>Getting started with Cryptocat</h1>
+		<p>
+			Thanks for installing Cryptocat. Now, it's easier than ever to chat with friends without risking your privacy. Here's how you can open Cryptocat in <span class="browser"></span>:
+		</p>
+		<div class="instructions" data-browser="Chrome">
+			<ol>
+				<li>
+					Open a new tab and click the <strong>Apps</strong> icon in your Chrome bookmarks bar:
+					<img src="img/instructions/chrome.png" alt="" /><br />
+				</li>
+				<li>
+					Click the Cryptocat icon to launch Cryptocat.
+				</li>
+				<li>
+					Start chatting by typing in a <strong>name for your conversation</strong> and <strong>a nickname for yourself</strong>!
+				</li>
+			</ol>
+		</div>
+		<div class="instructions" data-browser="Firefox">
+			<ol>
+				<li>
+					Click the <strong>Cryptocat</strong> icon in your Firefox toolbar to launch Cryptocat:
+					<img src="img/instructions/firefox.png" alt="" /><br />
+				</li>
+				<li>
+					Start chatting by typing in a <strong>name for your conversation</strong> and <strong>a nickname for yourself</strong>!
+				</li>
+			</ol>
+		</div>
+		<div class="instructions" data-browser="Safari">
+			<ol>
+				<li>
+					Click the <strong>chat bubble</strong> icon in your Safari toolbar to launch Cryptocat:
+					<img src="img/instructions/safari.png" alt="" /><br />
+				</li>
+				<li>
+					Start chatting by typing in a <strong>name for your conversation</strong> and <strong>a nickname for yourself</strong>!
+				</li>
+			</ol>
+		</div>
+		<p>Please remember that Cryptocat is not a magic bullet. While we are trying our best to make encrypted chat easy to use and accessible, remember to never trust any software with your life. Cryptocat is still under continuous research and improvement.</p>
+		<p>
+			<strong>We hope you enjoy safe, private chats with Cryptocat!</strong> <img src="img/emoticon/cat.png" alt="" class="emoticon" />
+		</p>
+	</div>
+</body>
+</html>
