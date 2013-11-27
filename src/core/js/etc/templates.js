@@ -13,7 +13,6 @@ Cryptocat.templates = {
 		+ '<div class="buddyMenu" id="menu-{{nickname}}"></div></div>',
 
 	buddyMenu: '<li class="option1">{{displayInfo}}</li>'
-		+ '<li class="option2">{{sendEncryptedFile}}</li>'
 		+ '<li class="option3">{{ignore}}</li>',
 
 	myInfo: '<div class="title">{{nickname}}</div>'
