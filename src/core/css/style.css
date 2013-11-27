@@ -859,7 +859,7 @@ CONVERSATION WINDOW
 	white-space: pre-wrap;
 }
 
-.line1, .line3 {
+.line1 {
 	box-shadow: 2px 2px #97CEEC;
 	border: 2px solid #97CEEC;
 }
@@ -875,12 +875,12 @@ CONVERSATION WINDOW
 	color: #FFF;
 }
 
-.line1 .sender, .line3 .sender {
+.line1 .sender {
 	background: #97CEEC;
 	color: #FFF;
 }
 
-.line2 .sender {
+.line2 .sender, .line3 .sender {
 	background: #76BDE5;
 	color: #FFF;
 }
@@ -908,12 +908,12 @@ CONVERSATION WINDOW
 }
 
 .line3:after {
-	right: 30px;
-	border-color: #97CEEC transparent transparent;
+	left: 30px;
+	border-color: #76BDE5 transparent transparent;
 }
 
 .line4:after {
-	right: 30px;
+	left: 30px;
 	border-color: #F00 transparent transparent;
 }
 
