@@ -49,8 +49,8 @@ Cryptocat.templates = {
 
 	fileLinkMac: '<a href="{{url}}" class="fileView" download="{{filename}}">{{downloadFile}}</a>',
 
-	message: '<div class="line{{lineDecoration}}"><span class="sender" sender="{{sender}}"'
-		+ ' timestamp="{{currentTime}}">{{sender}}</span>{{&message}}</div>',
+	message: '<div class="line{{lineDecoration}}"><span class="sender" sender="{{nickname}}"'
+		+ ' timestamp="{{currentTime}}">{{nickname}}</span>{{&message}}</div>',
 
 	composing: '<img src="img/typing.gif" class="typing" id="{{id}}" alt="" />',
 

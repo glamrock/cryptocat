@@ -11,6 +11,15 @@ Cryptocat.version = '2.1.15' // Version number
 Cryptocat.fileSize = 5120 // Maximum encrypted file sharing size, in kilobytes.
 Cryptocat.chunkSize = 64511 // Size in which file chunks are split, in bytes.
 
+// Default connection settings.
+Cryptocat.defaultDomain = 'crypto.cat'
+Cryptocat.defaultConferenceServer = 'conference.crypto.cat'
+Cryptocat.defaultBOSH = 'https://crypto.cat/http-bind'
+
+Cryptocat.domain = Cryptocat.defaultDomain
+Cryptocat.conferenceServer = Cryptocat.defaultConferenceServer
+Cryptocat.bosh = Cryptocat.defaultBOSH
+
 Cryptocat.fileKeys = {}
 Cryptocat.ignoredUsers = []
 Cryptocat.authenticatedUsers = []
@@ -23,20 +32,12 @@ Cryptocat.myNickname = null
 
 /*
 -------------------
-END GLOBAL VARIABLES
+END GLOBAL SCOPE
 -------------------
 */
 
 if (typeof(window) !== 'undefined') {
 $(window).ready(function() {
-
-/* Configuration */
-// Domain name to connect to for XMPP.
-var defaultDomain = 'crypto.cat'
-// Address of the XMPP MUC server.
-var defaultConferenceServer = 'conference.crypto.cat'
-// BOSH is served over an HTTPS proxy for better security and availability.
-var defaultBOSH = 'https://crypto.cat/http-bind'
 
 /* Initialization */
 var otrKeys = {}
@@ -61,11 +62,6 @@ var sounds = {
 	'userLeave': (new Audio('snd/userLeave.mp3')),
 	'msgGet'	: (new Audio('snd/msgGet.mp3'))
 }
-
-// Set server information to defaults.
-Cryptocat.domain = defaultDomain
-Cryptocat.conferenceServer = defaultConferenceServer
-Cryptocat.bosh = defaultBOSH
 
 // Set version number in UI.
 $('#version').text(Cryptocat.version)
@@ -398,68 +394,62 @@ Cryptocat.fileTransferError = function(sid) {
 	})
 }
 
-// Add a `message` from `sender` to the `conversation` display and log.
-// `type` can be 'file', 'composing', 'message' or 'warning'.
-Cryptocat.addToConversation = function(message, sender, conversation, type) {
-	var active = false
-	if ((type === 'file') || (type === 'message') || (type === 'warning')) {
-		active = true
-	}
-	if (!message.length && active) {
-		return false
-	}
-	if (Cryptocat.ignoredUsers.indexOf(sender) >= 0) {
-		return false
-	}
+// Add a `message` from `nickname` to the `conversation` display and log.
+// `type` can be 'file', 'composing', 'message', 'warning' or 'missingRecipients'.
+// In case `type` === 'missingRecipients', `nickname` becomes list of missing recipients.
+Cryptocat.addToConversation = function(message, nickname, conversation, type) {
+	if (Cryptocat.ignoredUsers.indexOf(nickname) >= 0) { return false }
 	initiateConversation(conversation)
-	var lineDecoration
-	if (sender === Cryptocat.myNickname) {
-		lineDecoration = 1
-		message = Strophe.xmlescape(message)
-	}
-	else {
-		lineDecoration = 2
-		if (audioNotifications && active) {
-			sounds.msgGet.play()
-		}
-		if (!isFocused && active) {
-			newMessages++
-			Tinycon.setBubble(newMessages)
+	var lineDecoration = 2
+	if (nickname === Cryptocat.myNickname) { lineDecoration = 1 }
+	message = Strophe.xmlescape(message)
+	if (type === 'file') {
+		if (!message.length) { return false }
+		message = Mustache.render(Cryptocat.templates.file, { message: message })
+		if (nickname !== Cryptocat.myNickname) {
+			if (audioNotifications) { sounds.msgGet.play() }
 			desktopNotification(
-				'img/keygen.gif',
-				sender + ' @ ' + Cryptocat.conversationName,
-				message, 0x1337
+				'img/keygen.gif', nickname + ' @ ' + Cryptocat.conversationName, '', 0x1337
 			)
 		}
-		message = Strophe.xmlescape(message)
-	}
-	if (type === 'file') {
-		message = Mustache.render(Cryptocat.templates.file, { message: message })
 	}
 	else if (type === 'composing') {
-		if ($('#composing-' + sender).length) {
-			return true
-		}
-		message = Mustache.render(Cryptocat.templates.composing, { id: 'composing-' + sender })
+		if ($('#composing-' + nickname).length) { return true }
+		message = Mustache.render(Cryptocat.templates.composing, { id: 'composing-' + nickname })
 	}
-	if (type === 'message' && message.length) {
+	else if (type === 'message') {
+		if (!message.length) { return false }
 		message = addLinks(message)
 		message = addEmoticons(message)
-		if (message.match(Cryptocat.myNickname)) {
-			lineDecoration = 3
+		if (message.match(Cryptocat.myNickname)) { lineDecoration = 3 }
+		if (nickname !== Cryptocat.myNickname) {
+			if (audioNotifications) { sounds.msgGet.play() }
+			desktopNotification(
+				'img/keygen.gif', nickname + ' @ ' + Cryptocat.conversationName, '', 0x1337
+			)
 		}
 	}
 	else if (type === 'warning') {
+		if (!message.length) { return false }
 		lineDecoration = 4
+		if (nickname !== Cryptocat.myNickname) {
+			if (audioNotifications) { sounds.msgGet.play() }
+			desktopNotification(
+				'img/keygen.gif', nickname + ' @ ' + Cryptocat.conversationName, '', 0x1337
+			)
+		}
+	}
+	else if (type === 'missingRecipients') {
+		if (!message.length) { return false }
 	}
 	message = message.replace(/:/g, '&#58;')
 	message = Mustache.render(Cryptocat.templates.message, {
 		lineDecoration: lineDecoration,
-		sender: shortenString(sender, 16),
+		nickname: shortenString(nickname, 16),
 		currentTime: currentTime(true),
 		message: message
 	})
-	if (active) {
+	if (type !== 'composing') {
 		conversations[conversation] += message
 	}
 	if (conversation === currentConversation) {
@@ -468,8 +458,9 @@ Cryptocat.addToConversation = function(message, sender, conversation, type) {
 		bindTimestamps($('.line' + lineDecoration).last().find('.sender'))
 		scrollDownConversation(400, true)
 	}
-	else if (active) {
-		iconNotify(conversation)
+	else if (type !== 'composing') {
+		$('#buddy-' + conversation).css('background-image', 'url("img/newMessage.png")')
+		$('#buddy-' + conversation).addClass('newMessage')
 	}
 }
 
@@ -487,17 +478,14 @@ function bindTimestamps(senderElement) {
 	})
 }
 
-function iconNotify(conversation) {
-	$('#buddy-' + conversation).css('background-image', 'url("img/newMessage.png")')
-	$('#buddy-' + conversation).addClass('newMessage')
-}
-
 function desktopNotification(image, title, body, timeout) {
-	if (!desktopNotifications) { return false }
+	newMessages++
+	Tinycon.setBubble(newMessages)
+	if (!desktopNotifications || isFocused) { return false }
 	// Mac
 	if (navigator.userAgent === 'Chrome (Mac app)') {
 		var iframe = document.createElement('IFRAME')
-		iframe.setAttribute('src', 'js-call:'+title+':'+body)
+		iframe.setAttribute('src', 'js-call:' + title + ':' + body)
 		document.documentElement.appendChild(iframe)
 		iframe.parentNode.removeChild(iframe)
 		iframe = null
@@ -537,13 +525,8 @@ function buddyNotification(nickname, join) {
 		$('#conversationWindow').append(status)
 	}
 	scrollDownConversation(400, true)
-	if (!isFocused) {
-		desktopNotification(
-			'img/keygen.gif',
-			nickname + ' has ' + (join ? 'joined ' : 'left ') + Cryptocat.conversationName,
-			'', 0x1337
-		)
-	}
+	desktopNotification('img/keygen.gif',
+		nickname + ' has ' + (join ? 'joined ' : 'left ') + Cryptocat.conversationName, '', 0x1337)
 	if (audioNotifications) {
 		sounds[audioNotification].play()
 	}
@@ -736,8 +719,8 @@ function handlePresence(presence) {
 	}
 	// Handle buddy status change to 'away'.
 	else if ($('#buddy-' + nickname).attr('status') !== 'away') {
-			status = 'away'
-			placement = '#buddiesAway'
+		status = 'away'
+		placement = '#buddiesAway'
 	}
 	// Perform status change.
 	$('#buddy-' + nickname).attr('status', status)
@@ -1208,152 +1191,6 @@ $('#userInputSubmit').click(function() {
 	$('#userInput').submit()
 	$('#userInputText').select()
 })
-
-// Custom server dialog.
-$('#customServer').click(function() {
-	Cryptocat.bosh = Strophe.xmlescape(Cryptocat.bosh)
-	Cryptocat.conferenceServer = Strophe.xmlescape(Cryptocat.conferenceServer)
-	Cryptocat.domain = Strophe.xmlescape(Cryptocat.domain)
-	if (!document.getElementById('customServerSelector').firstChild) {
-		$('#customServerSelector').append(
-			Mustache.render(Cryptocat.templates['customServer'], {
-				name: 'Cryptocat',
-				domain: defaultDomain,
-				XMPP: defaultConferenceServer,
-				BOSH: defaultBOSH
-			})
-		)
-		$('#customServerSelector').append(
-			Mustache.render(Cryptocat.templates['customServer'], {
-				name: 'Cryptocat (Tor Hidden Service)',
-				domain: defaultDomain,
-				XMPP: defaultConferenceServer,
-				BOSH: 'http://catmeow2zuqpkpyw.onion/http-bind'
-			})
-		)
-	}
-	$('#languages').hide()
-	$('#footer').animate({'height': 220}, function() {
-		$('#customServerDialog').fadeIn()
-		$('#customName').val(Cryptocat.serverName)
-		$('#customDomain').val(Cryptocat.domain)
-		$('#customConferenceServer').val(Cryptocat.conferenceServer)
-		$('#customBOSH').val(Cryptocat.bosh)
-		$('#customServerReset').val(Cryptocat.Locale['loginWindow']['reset']).click(function() {
-			$('#customName').val('Cryptocat')
-			$('#customDomain').val(defaultDomain)
-			$('#customConferenceServer').val(defaultConferenceServer)
-			$('#customBOSH').val(defaultBOSH)
-			Cryptocat.Storage.removeItem('serverName')
-			Cryptocat.Storage.removeItem('domain')
-			Cryptocat.Storage.removeItem('conferenceServer')
-			Cryptocat.Storage.removeItem('bosh')
-		})
-		$('#customServerSubmit').val(Cryptocat.Locale['chatWindow']['continue']).click(function() {
-			$('#customServerDialog').fadeOut(200, function() {
-				$('#footer').animate({'height': 14})
-			})
-			Cryptocat.serverName = $('#customName').val()
-			Cryptocat.domain = $('#customDomain').val()
-			Cryptocat.conferenceServer = $('#customConferenceServer').val()
-			Cryptocat.bosh = $('#customBOSH').val()
-			Cryptocat.Storage.setItem('serverName', Cryptocat.serverName)
-			Cryptocat.Storage.setItem('domain', Cryptocat.domain)
-			Cryptocat.Storage.setItem('conferenceServer', Cryptocat.conferenceServer)
-			Cryptocat.Storage.setItem('bosh', Cryptocat.bosh)
-		})
-		$('#customServerSave').unbind('click')
-		$('#customServerSave').click(function() {
-			$('#customServerDelete').val('Delete')
-				.attr('data-deleteconfirm', '0')
-				.removeClass('confirm')
-			if ($('#customDomain').val() === defaultDomain) {
-				return // Cannot overwrite the default domain
-			}
-			var serverIsInList = false
-			$('#customServerSelector').children().each(function() {
-				if ($('#customName').val() === $(this).val()) {
-					serverIsInList = true
-					if ($('#customServerSave').attr('data-saveconfirm') !== '1') {
-						$('#customServerSave').val('Overwrite?').attr('data-saveconfirm', '1').addClass('confirm')
-						return
-					}
-					else {
-						$('#customServerSave').val('Save').attr('data-saveconfirm', '0').removeClass('confirm')
-					}
-				}
-			})
-			if (!serverIsInList) {
-				$('#customServerSelector').append(
-					Mustache.render(Cryptocat.templates['customServer'], {
-						name: $('#customName').val(),
-						domain: $('#customDomain').val(),
-						XMPP: $('#customConferenceServer').val(),
-						BOSH: $('#customBOSH').val()
-					})
-				)
-			}
-			else {
-				$.each($('#customServerSelector option'), function(index, value) {
-					if ($(value).val() === $('#customName').val()) {
-						$(value).attr('data-domain', $('#customDomain').val())
-						$(value).attr('data-bosh', $('#customBOSH').val())
-						$(value).attr('data-xmpp', $('#customConferenceServer').val())
-					}
-				})
-			}
-			updateCustomServers()
-		})
-		$('#customServerDelete').unbind('click')
-		$('#customServerDelete').click(function() {
-			$('#customServerSave').val('Save').attr('data-saveconfirm', '0').removeClass('confirm')
-			if ($('#customServerDelete').attr('data-deleteconfirm') === '1') {
-				$.each($('#customServerSelector option'), function(index, value) {
-					if ($(value).val() === $('#customName').val()) {
-						$(value).remove()
-					}
-				})
-				updateCustomServers()
-				$('#customServerDelete').val('Delete').attr('data-deleteconfirm', '0').removeClass('confirm')
-			}
-			else {
-				$('#customServerDelete').val('Are you sure?').attr('data-deleteconfirm', '1').addClass('confirm')
-			}
-		})
-		$('#customServerSelector').unbind('change')
-		$('#customServerSelector').change(function() {
-			$('#customServerDelete').val('Delete')
-				.attr('data-deleteconfirm', '0')
-				.removeClass('confirm')
-				.removeAttr('disabled')
-				.removeClass('disabled')
-			$('#customServerSave').val('Save')
-				.attr('data-saveconfirm', '0')
-				.removeClass('confirm')
-			var selectedOption = $(this).find(':selected')
-			if ($(selectedOption).attr('data-domain') === defaultDomain) {
-				$('#customServerDelete').attr('disabled', 'disabled').addClass('disabled')
-			}
-			$('#customName').val($(selectedOption).val())
-			$('#customDomain').val($(selectedOption).attr('data-domain'))
-			$('#customConferenceServer').val($(selectedOption).attr('data-xmpp'))
-			$('#customBOSH').val($(selectedOption).attr('data-bosh'))
-		})
-		$('#customDomain').select()
-	})
-})
-
-function updateCustomServers() {
-	var customServers = {}
-	$('#customServerSelector option').each(function() {
-		var name = $(this).val()
-		customServers[name] = {}
-		customServers[name].domain = $(this).attr('data-domain')
-		customServers[name].xmpp = $(this).attr('data-xmpp')
-		customServers[name].bosh = $(this).attr('data-bosh')
-	})
-	Cryptocat.Storage.setItem('customServers', JSON.stringify(customServers))
-}
 
 // Language selector.
 $('#languageSelect').click(function() {

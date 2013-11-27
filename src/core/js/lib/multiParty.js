@@ -11,12 +11,12 @@ var myPublicKey
 function correctIvLength(iv){
 	var ivAsWordArray = CryptoJS.enc.Base64.parse(iv)
 	var ivAsArray = ivAsWordArray.words
-	ivAsArray.push(0)  // adds 0 as the 4th element, causing the equivalent 
-					   // bytestring to have a length of 16 bytes, with 
+	ivAsArray.push(0)  // adds 0 as the 4th element, causing the equivalent
+					   // bytestring to have a length of 16 bytes, with
 					   // \x00\x00\x00\x00 at the end.
-					   // without this, crypto-js will take in a counter of 
-					   // 12 bytes, and the first 2 counter iterations will 
-					   // use 0, instead of 0 and then 1. 
+					   // without this, crypto-js will take in a counter of
+					   // 12 bytes, and the first 2 counter iterations will
+					   // use 0, instead of 0 and then 1.
 					   // see https://github.com/cryptocat/cryptocat/issues/258
 	return CryptoJS.lib.WordArray.create(ivAsArray)
 }
@@ -192,7 +192,7 @@ multiParty.sendMessage = function(message) {
 	//For each recipient
 	var i, iv
 	for (i = 0; i !== sortedRecipients.length; i++) {
-		//Generate a random IV	
+		//Generate a random IV
 		iv = Cryptocat.encodedBytes(12, CryptoJS.enc.Base64)
 		// Do not reuse IVs
 		while (usedIVs.indexOf(iv) >= 0) {
@@ -258,12 +258,24 @@ multiParty.receiveMessage = function(sender, myName, message) {
 			var recipients = multiParty.users()
 			recipients.splice(recipients.indexOf(sender), 1)
 			for (var r = 0; r !== recipients.length; r++) {
-				if (typeof(message['text'][recipients[r]]['message']) !== 'string'
-					|| typeof(message['text'][recipients[r]]['iv']) !== 'string'
-					|| typeof(message['text'][recipients[r]]['hmac']) !== 'string') {
-						console.log('multiParty: at least one message, IV or HMAC field missing')
+				try {
+					if (typeof(message['text'][recipients[r]]) === 'object') {
+						var noMessage = typeof(message['text'][recipients[r]]['message']) !== 'string'
+						var noIV = typeof(message['text'][recipients[r]]['iv']) !== 'string'
+						var noHMAC = typeof(message['text'][recipients[r]]['hmac']) !== 'string'
+						if (noMessage || noIV || noHMAC) {
+							multiParty.messageWarning(sender)
+							return false
+						}
+					}
+					else {
 						multiParty.messageWarning(sender)
 						return false
+					}
+				}
+				catch(err) {
+					multiParty.messageWarning(sender)
+					return false
 				}
 			}
 			// Decrypt message
