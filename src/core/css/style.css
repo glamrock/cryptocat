@@ -842,6 +842,16 @@ CONVERSATION WINDOW
 	color: #76BDE5;
 }
 
+.missingRecipients {
+	background: #F00;
+	width: 560px;
+	border-radius: 3px 0 0 0;
+	margin-bottom: 1px;
+	color: #FFF;
+	padding: 2px 10px;
+	opacity: 0;
+}
+
 .line1, .line2, .line3, .line4 {
 	box-shadow: 2px 2px #76BDE5;
 	border: 2px solid #76BDE5;

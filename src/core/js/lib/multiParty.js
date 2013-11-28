@@ -256,6 +256,7 @@ multiParty.receiveMessage = function(sender, myName, message) {
 		else if (message['type'] === 'message') {
 			// Make sure message is being sent to all chat room participants
 			var recipients = multiParty.users()
+			var missingRecipients = []
 			recipients.splice(recipients.indexOf(sender), 1)
 			for (var r = 0; r !== recipients.length; r++) {
 				try {
@@ -264,19 +265,19 @@ multiParty.receiveMessage = function(sender, myName, message) {
 						var noIV = typeof(message['text'][recipients[r]]['iv']) !== 'string'
 						var noHMAC = typeof(message['text'][recipients[r]]['hmac']) !== 'string'
 						if (noMessage || noIV || noHMAC) {
-							multiParty.messageWarning(sender)
-							return false
+							missingRecipients.push(recipients[r])
 						}
 					}
 					else {
-						multiParty.messageWarning(sender)
-						return false
+						missingRecipients.push(recipients[r])
 					}
 				}
 				catch(err) {
-					multiParty.messageWarning(sender)
-					return false
+					missingRecipients.push(recipients[r])
 				}
+			}
+			if (missingRecipients.length) {
+				Cryptocat.addToConversation(missingRecipients, sender, 'main-Conversation', 'missingRecipients')
 			}
 			// Decrypt message
 			if (!sharedSecrets.hasOwnProperty(sender)) {

@@ -30,11 +30,12 @@ CryptocatFirefox.run = function() {
 			)
 		}
 		if (type === 'get') {
-			evt.target.setAttribute('firefoxStorageGet',
-				prefsService.getCharPref(
-					'extensions.cryptocat.' + evt.target.getAttribute('key')
-				)
+			var get = prefsService.getCharPref(
+				'extensions.cryptocat.' + evt.target.getAttribute('key')
 			)
+			if (get.length) {
+				evt.target.setAttribute('firefoxStorageGet', get)
+			}
 		}
 	}, false, true)
 }

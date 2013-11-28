@@ -24,9 +24,6 @@ Cryptocat.fileKeys = {}
 Cryptocat.ignoredUsers = []
 Cryptocat.authenticatedUsers = []
 Cryptocat.connection = null
-Cryptocat.domain = null
-Cryptocat.conferenceServer = null
-Cryptocat.bosh = null
 Cryptocat.conversationName = null
 Cryptocat.myNickname = null
 
@@ -42,10 +39,11 @@ $(window).ready(function() {
 /* Initialization */
 var otrKeys = {}
 var conversations = {}
+var buddyList = []
 var currentStatus = 'online'
+var newMessages = 0
 var isFocused = true
 var paused = false
-var newMessages = 0
 var currentConversation
 var audioNotifications
 var desktopNotifications
@@ -396,13 +394,12 @@ Cryptocat.fileTransferError = function(sid) {
 
 // Add a `message` from `nickname` to the `conversation` display and log.
 // `type` can be 'file', 'composing', 'message', 'warning' or 'missingRecipients'.
-// In case `type` === 'missingRecipients', `nickname` becomes list of missing recipients.
+// In case `type` === 'missingRecipients', `message` becomes array of missing recipients.
 Cryptocat.addToConversation = function(message, nickname, conversation, type) {
 	if (Cryptocat.ignoredUsers.indexOf(nickname) >= 0) { return false }
 	initiateConversation(conversation)
 	var lineDecoration = 2
 	if (nickname === Cryptocat.myNickname) { lineDecoration = 1 }
-	message = Strophe.xmlescape(message)
 	if (type === 'file') {
 		if (!message.length) { return false }
 		message = Mustache.render(Cryptocat.templates.file, { message: message })
@@ -419,6 +416,7 @@ Cryptocat.addToConversation = function(message, nickname, conversation, type) {
 	}
 	else if (type === 'message') {
 		if (!message.length) { return false }
+		message = Strophe.xmlescape(message)
 		message = addLinks(message)
 		message = addEmoticons(message)
 		if (message.match(Cryptocat.myNickname)) { lineDecoration = 3 }
@@ -431,6 +429,7 @@ Cryptocat.addToConversation = function(message, nickname, conversation, type) {
 	}
 	else if (type === 'warning') {
 		if (!message.length) { return false }
+		message = Strophe.xmlescape(message)
 		lineDecoration = 4
 		if (nickname !== Cryptocat.myNickname) {
 			if (audioNotifications) { sounds.msgGet.play() }
@@ -441,6 +440,17 @@ Cryptocat.addToConversation = function(message, nickname, conversation, type) {
 	}
 	else if (type === 'missingRecipients') {
 		if (!message.length) { return false }
+		message = Strophe.xmlescape(message.join(', '))
+		message = Mustache.render(Cryptocat.templates.missingRecipients, {
+			text: 'Warning: this message was not sent to ' + message // Replace with localization string!
+		})
+		conversations[conversation] += message
+		if (conversation === currentConversation) {
+			$('#conversationWindow').append(message)
+			$('.missingRecipients').last().animate({'top': '0', 'opacity': '1'}, 100)
+			scrollDownConversation(400, true)
+		}
+		return true
 	}
 	message = message.replace(/:/g, '&#58;')
 	message = Mustache.render(Cryptocat.templates.message, {
@@ -544,6 +554,7 @@ function addBuddy(nickname) {
 			$('#menu-' + nickname).unbind('click')
 			bindBuddyMenu(nickname)
 			bindBuddyClick(nickname)
+			buddyList.push(nickname)
 			for (var u = 0; u < 6000; u += 2000) {
 				window.setTimeout(Cryptocat.sendPublicKey, u, nickname)
 			}
@@ -558,6 +569,7 @@ function removeBuddy(nickname) {
 	// Delete their encryption keys.
 	delete otrKeys[nickname]
 	multiParty.removeKeys(nickname)
+	buddyList.splice(buddyList.indexOf(nickname), 1)
 	Cryptocat.authenticatedUsers.splice(Cryptocat.authenticatedUsers.indexOf(nickname), 1)
 	if (($('#buddy-' + nickname).length !== 0)
 		&& ($('#buddy-' + nickname).attr('status') !== 'offline')) {
@@ -699,7 +711,6 @@ function handlePresence(presence) {
 			}
 		}) (nickname))
 	}
-
 	var status, color, placement
 	// Detect buddy going offline.
 	if ($(presence).attr('type') === 'unavailable') {
@@ -1116,9 +1127,19 @@ $('#userInput').submit(function() {
 	if (message !== '') {
 		if (currentConversation === 'main-Conversation') {
 			if (multiParty.userCount() >= 1) {
+				var ciphertext = JSON.parse(multiParty.sendMessage(message))
+				var missingRecipients = []
+				for (var i = 0; i !== buddyList.length; i++) {
+					if (typeof(ciphertext['text'][buddyList[i]]) !== 'object') {
+						missingRecipients.push(buddyList[i])
+					}
+				}
+				if (missingRecipients.length) {
+					Cryptocat.addToConversation(missingRecipients, Cryptocat.myNickname, 'main-Conversation', 'missingRecipients')
+				}
 				Cryptocat.connection.muc.message(
 					Cryptocat.conversationName + '@' + Cryptocat.conferenceServer,
-					null, multiParty.sendMessage(message), null, 'groupchat', 'active'
+					null, JSON.stringify(ciphertext), null, 'groupchat', 'active'
 				)
 			}
 		}

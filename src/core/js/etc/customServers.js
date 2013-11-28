@@ -2,16 +2,13 @@ $(window).ready(function() {
 
 // Custom server dialog.
 $('#customServer').click(function() {
-	Cryptocat.bosh = Strophe.xmlescape(Cryptocat.bosh)
-	Cryptocat.conferenceServer = Strophe.xmlescape(Cryptocat.conferenceServer)
-	Cryptocat.domain = Strophe.xmlescape(Cryptocat.domain)
 	if (!document.getElementById('customServerSelector').firstChild) {
 		$('#customServerSelector').append(
 			Mustache.render(Cryptocat.templates['customServer'], {
 				name: 'Cryptocat',
 				domain: Cryptocat.defaultDomain,
-				XMPP: Cryptocat.defaultDomaindefaultConferenceServer,
-				BOSH: Cryptocat.defaultDomaindefaultBOSH
+				XMPP: Cryptocat.defaultConferenceServer,
+				BOSH: Cryptocat.defaultBOSH
 			})
 		)
 		$('#customServerSelector').append(
