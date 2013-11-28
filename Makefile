@@ -53,7 +53,6 @@ lint:
 	@/bin/echo -n "[Cryptocat] Linting code... "
 	@node_modules/.bin/jshint --verbose --config .jshintrc \
 		src/core/js/cryptocat.js \
-		src/core/js/lib/multiParty.js \
 		src/core/js/lib/elliptic.js \
 		src/core/js/lib/salsa20.js \
 		src/core/js/etc/*.js \

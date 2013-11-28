@@ -1,24 +1,8 @@
-Cryptocat.locale = function() {}
-
-$(window).ready(function() {
-
-// Handle aliases
-function handleAliases(locale) {
-	if (locale === ('zh-hk' || 'zh-tw')) {
-		return 'zh-hk'
-	}
-	else if (locale === ('zh-cn' || 'zh-sg')) {
-		return 'zh-cn'
-	}
-	else if (locale.match('-')) {
-		return locale.match(/[a-z]+/)[0]
-	}
-	return locale
-}
+Cryptocat.locale = {}
 
 // Get locale file, call other functions
 Cryptocat.locale.set = function(locale) {
-	locale = handleAliases(locale.toLowerCase())
+	locale = Cryptocat.locale.handleAliases(locale.toLowerCase())
 	$.ajax({
 		url : 'locale/' + locale + '.txt',
 		dataType: 'text',
@@ -178,4 +162,16 @@ Cryptocat.locale.refresh = function(languageObject) {
 	$('#conversationName').select()
 }
 
-})
+// Handle aliases
+Cryptocat.locale.handleAliases = function(locale) {
+	if (locale === ('zh-hk' || 'zh-tw')) {
+		return 'zh-hk'
+	}
+	else if (locale === ('zh-cn' || 'zh-sg')) {
+		return 'zh-cn'
+	}
+	else if (locale.match('-')) {
+		return locale.match(/[a-z]+/)[0]
+	}
+	return locale
+}

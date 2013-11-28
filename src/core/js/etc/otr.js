@@ -6,7 +6,6 @@ Cryptocat.otr.fileSize = 5120 // Maximum encrypted file sharing size, in kilobyt
 Cryptocat.otr.chunkSize = 64511 // Size in which file chunks are split, in bytes.
 
 // Cryptocat OTR functions and callbacks.
-$(window).ready(function() {
 
 // OTR functions:
 // Handle incoming messages.
@@ -129,6 +128,3 @@ Cryptocat.otr.onSMPAnswer = function(nickname) {
 		}
 	}
 }
-
-
-})

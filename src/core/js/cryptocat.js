@@ -352,6 +352,14 @@ Cryptocat.dialogBox = function(data, height, closeable, onAppear, onClose) {
 	}
 }
 
+// Handle nickname change (which may be done by non-Cryptocat XMPP clients)
+Cryptocat.changeNickname = function(oldNickname, newNickname) {
+	Cryptocat.otr.keys[newNickname] = Cryptocat.otr.keys[oldNickname]
+	multiParty.renameKeys(oldNickname, newNickname)
+	conversations[newNickname] = conversations[oldNickname]
+	Cryptocat.removeBuddy(oldNickname)
+}
+
 // Executes on user logout.
 Cryptocat.logout = function() {
 	Cryptocat.loginError = false
@@ -628,14 +636,6 @@ function buddyNotification(nickname, join) {
 	}
 }
 
-// Handle nickname change (which may be done by non-Cryptocat XMPP clients)
-function changeNickname(oldNickname, newNickname) {
-	Cryptocat.otr.keys[newNickname] = Cryptocat.otr.keys[oldNickname]
-	multiParty.renameKeys(oldNickname, newNickname)
-	conversations[newNickname] = conversations[oldNickname]
-	Cryptocat.removeBuddy(oldNickname)
-}
-
 // Send encrypted file.
 function sendFile(nickname) {
 	var sendFileDialog = Mustache.render(Cryptocat.templates.sendFile, {
@@ -720,7 +720,7 @@ function displayInfo(nickname) {
 		|| (nickname === Cryptocat.myNickname)) {
 			Cryptocat.dialogBox(infoDialog, 250, true)
 			if (nickname !== Cryptocat.myNickname) {
-				showAuthenticated(nickname, 0)
+				Cryptocat.showAuthenticated(nickname, 0)
 			}
 		}
 		else {
@@ -833,7 +833,7 @@ $('#status').click(function() {
 		$(this).attr('alt', Cryptocat.locale['chatWindow']['statusAvailable'])
 		$(this).attr('title', Cryptocat.locale['chatWindow']['statusAvailable'])
 		Cryptocat.xmpp.currentStatus = 'online'
-		Cryptcat.xmpp.sendStatus()
+		Cryptocat.xmpp.sendStatus()
 	}
 })
 
@@ -1022,19 +1022,19 @@ $('#loginForm').submit(function() {
 	$('#conversationName').val($.trim($('#conversationName').val().toLowerCase()))
 	$('#nickname').val($.trim($('#nickname').val().toLowerCase()))
 	if ($('#conversationName').val() === '') {
-		loginFail(Cryptocat.locale['loginMessage']['enterConversation'])
+		Cryptocat.loginFail(Cryptocat.locale['loginMessage']['enterConversation'])
 		$('#conversationName').select()
 	}
 	else if (!$('#conversationName').val().match(/^\w{1,20}$/)) {
-		loginFail(Cryptocat.locale['loginMessage']['conversationAlphanumeric'])
+		Cryptocat.loginFail(Cryptocat.locale['loginMessage']['conversationAlphanumeric'])
 		$('#conversationName').select()
 	}
 	else if ($('#nickname').val() === '') {
-		loginFail(Cryptocat.locale['loginMessage']['enterNickname'])
+		Cryptocat.loginFail(Cryptocat.locale['loginMessage']['enterNickname'])
 		$('#nickname').select()
 	}
 	else if (!$('#nickname').val().match(/^\w{1,16}$/)) {
-		loginFail(Cryptocat.locale['loginMessage']['nicknameAlphanumeric'])
+		Cryptocat.loginFail(Cryptocat.locale['loginMessage']['nicknameAlphanumeric'])
 		$('#nickname').select()
 	}
 	// If no encryption keys, generate.

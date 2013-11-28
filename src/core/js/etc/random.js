@@ -1,7 +1,6 @@
 if (typeof Cryptocat === 'undefined') {
 	Cryptocat = function() {}
 }
-Cryptocat.random = {}
 
 ;(function (root, factory) {
 
@@ -15,6 +14,8 @@ Cryptocat.random = {}
 	}
 
 }(this, function (Cryptocat, Salsa20, node) {
+
+Cryptocat.random = {}
 
 var state
 

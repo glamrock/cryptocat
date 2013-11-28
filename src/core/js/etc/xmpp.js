@@ -32,7 +32,7 @@ Cryptocat.xmpp.connect = function(username, password) {
 			Cryptocat.xmpp.onRegistered(username, password)
 		}
 		else if (status=== Strophe.Status.SBMTFAIL) {
-			loginFail(Cryptocat.locale['loginMessage']['authenticationFailure'])
+			Cryptocat.loginFail(Cryptocat.locale['loginMessage']['authenticationFailure'])
 			$('#conversationName').select()
 			$('#loginSubmit').removeAttr('readonly')
 			Cryptocat.xmpp.connection = null
@@ -95,7 +95,7 @@ Cryptocat.xmpp.onRegistered = function(username, password) {
 }
 
 // Executes on successfully completed XMPP connection.
-Cryptocat.xmpp.onConnected = function(username, password) {
+Cryptocat.xmpp.onConnected = function() {
 	clearInterval(CatFacts.interval)
 	Cryptocat.storage.setItem('myNickname', Cryptocat.myNickname)
 	$('#buddy-main-Conversation').attr('status', 'online')
@@ -227,7 +227,7 @@ Cryptocat.xmpp.onPresence = function(presence) {
 	// Detect nickname change (which may be doneby non-Cryptocat XMPP clients)
 	if ($(presence).find('status').attr('code') === '303') {
 		var newNickname = cleanNickname('/' + $(presence).find('item').attr('nick'))
-		changeNickname(nickname, newNickname)
+		Cryptocat.changeNickname(nickname, newNickname)
 		return true
 	}
 	// Add to otr keys if necessary
