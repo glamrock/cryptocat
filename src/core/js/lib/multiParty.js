@@ -162,7 +162,7 @@ multiParty.users = function() {
 
 // Issue a warning for decryption failure to the main conversation window
 multiParty.messageWarning = function(sender) {
-	var messageWarning = Cryptocat.Locale['chatWindow']['messageWarning']
+	var messageWarning = Cryptocat.Locale['warnings']['messageWarning']
 		.replace('(NICKNAME)', sender)
 	Cryptocat.addToConversation(messageWarning, sender, 'main-Conversation', 'warning')
 }

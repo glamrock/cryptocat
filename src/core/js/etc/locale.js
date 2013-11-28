@@ -124,7 +124,9 @@ Cryptocat.Locale.buildObject = function(locale, language) {
 			'identityVerified': language[i++],
 			'authRequest': language[i++],
 			'answerMustMatch': language[i++],
-			'answer': language[i++],
+			'answer': language[i++]
+		},
+		'warnings': {
 			'messageWarning': language[i++],
 			'updateWarning': language[i++]
 		}
