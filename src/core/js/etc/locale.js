@@ -1,11 +1,6 @@
-if (typeof Cryptocat === 'undefined') {
-	Cryptocat = function() {}
-}
-if (typeof Cryptocat.Locale === 'undefined') {
-	Cryptocat.Locale = function() {}
-}
+Cryptocat.locale = function() {}
 
-(function(){
+$(window).ready(function() {
 
 // Handle aliases
 function handleAliases(locale) {
@@ -22,7 +17,7 @@ function handleAliases(locale) {
 }
 
 // Get locale file, call other functions
-Cryptocat.Locale.set = function(locale) {
+Cryptocat.locale.set = function(locale) {
 	locale = handleAliases(locale.toLowerCase())
 	$.ajax({
 		url : 'locale/' + locale + '.txt',
@@ -32,7 +27,7 @@ Cryptocat.Locale.set = function(locale) {
 		complete: function(data) {
 			var language = data.responseText.split('\n')
 			if (language.length < 5) { // data too small, dismiss
-				Cryptocat.Locale.set('en')
+				Cryptocat.locale.set('en')
 				return false
 			}
 			for (var i in language) {
@@ -40,17 +35,17 @@ Cryptocat.Locale.set = function(locale) {
 					language[i] = $.trim(language[i])
 				}
 			}
-			var languageObject = Cryptocat.Locale.buildObject(locale, language)
-			Cryptocat.Locale.refresh(languageObject)
+			var languageObject = Cryptocat.locale.buildObject(locale, language)
+			Cryptocat.locale.refresh(languageObject)
 		},
 		error: function() {
-			Cryptocat.Locale.set('en')
+			Cryptocat.locale.set('en')
 		}
 	})
 }
 
 // Build and deliver language object
-Cryptocat.Locale.buildObject = function(locale, language) {
+Cryptocat.locale.buildObject = function(locale, language) {
 	var i = 0
 	var languageObject = {
 		'language': locale,
@@ -131,17 +126,17 @@ Cryptocat.Locale.buildObject = function(locale, language) {
 			'updateWarning': language[i++]
 		}
 	}
-	var decodeFileSize = function (str) { return str.replace('(SIZE)', (Cryptocat.fileSize / 1024)) }
+	var decodeFileSize = function (str) { return str.replace('(SIZE)', (Cryptocat.otr.fileSize / 1024)) }
 	languageObject.chatWindow.fileTransferInfo = decodeFileSize(languageObject.chatWindow.fileTransferInfo)
 	languageObject.chatWindow.fileSizeError = decodeFileSize(languageObject.chatWindow.fileSizeError)
 	return languageObject
 }
 
 // Deliver new strings and refresh login page
-Cryptocat.Locale.refresh = function(languageObject) {
+Cryptocat.locale.refresh = function(languageObject) {
 	for (var o in languageObject) {
 		if (languageObject.hasOwnProperty(o)) {
-			Cryptocat.Locale[o] = languageObject[o]
+			Cryptocat.locale[o] = languageObject[o]
 		}
 	}
 	var smallType = ['bo', 'ar', 'in']
@@ -183,4 +178,4 @@ Cryptocat.Locale.refresh = function(languageObject) {
 	$('#conversationName').select()
 }
 
-})()
+})

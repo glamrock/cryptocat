@@ -1,21 +1,33 @@
 $(window).ready(function() {
 
+function updateCustomServers() {
+	var customServers = {}
+	$('#customServerSelector option').each(function() {
+		var name = $(this).val()
+		customServers[name] = {}
+		customServers[name].domain = $(this).attr('data-domain')
+		customServers[name].xmpp = $(this).attr('data-xmpp')
+		customServers[name].bosh = $(this).attr('data-bosh')
+	})
+	Cryptocat.storage.setItem('customServers', JSON.stringify(customServers))
+}
+
 // Custom server dialog.
 $('#customServer').click(function() {
 	if (!document.getElementById('customServerSelector').firstChild) {
 		$('#customServerSelector').append(
 			Mustache.render(Cryptocat.templates['customServer'], {
 				name: 'Cryptocat',
-				domain: Cryptocat.defaultDomain,
-				XMPP: Cryptocat.defaultConferenceServer,
-				BOSH: Cryptocat.defaultBOSH
+				domain: Cryptocat.xmpp.defaultDomain,
+				XMPP: Cryptocat.xmpp.defaultConferenceServer,
+				BOSH: Cryptocat.xmpp.defaultBOSH
 			})
 		)
 		$('#customServerSelector').append(
 			Mustache.render(Cryptocat.templates['customServer'], {
 				name: 'Cryptocat (Tor Hidden Service)',
-				domain: Cryptocat.defaultDomain,
-				XMPP: Cryptocat.defaultConferenceServer,
+				domain: Cryptocat.xmpp.defaultDomain,
+				XMPP: Cryptocat.xmpp.defaultConferenceServer,
 				BOSH: 'http://catmeow2zuqpkpyw.onion/http-bind'
 			})
 		)
@@ -24,38 +36,38 @@ $('#customServer').click(function() {
 	$('#footer').animate({'height': 220}, function() {
 		$('#customServerDialog').fadeIn()
 		$('#customName').val(Cryptocat.serverName)
-		$('#customDomain').val(Cryptocat.domain)
-		$('#customConferenceServer').val(Cryptocat.conferenceServer)
-		$('#customBOSH').val(Cryptocat.bosh)
-		$('#customServerReset').val(Cryptocat.Locale['loginWindow']['reset']).click(function() {
+		$('#customDomain').val(Cryptocat.xmpp.domain)
+		$('#customConferenceServer').val(Cryptocat.xmpp.conferenceServer)
+		$('#customBOSH').val(Cryptocat.xmpp.bosh)
+		$('#customServerReset').val(Cryptocat.locale['loginWindow']['reset']).click(function() {
 			$('#customName').val('Cryptocat')
-			$('#customDomain').val(Cryptocat.defaultDomain)
-			$('#customConferenceServer').val(Cryptocat.defaultConferenceServer)
-			$('#customBOSH').val(Cryptocat.defaultBOSH)
-			Cryptocat.Storage.removeItem('serverName')
-			Cryptocat.Storage.removeItem('domain')
-			Cryptocat.Storage.removeItem('conferenceServer')
-			Cryptocat.Storage.removeItem('bosh')
+			$('#customDomain').val(Cryptocat.xmpp.defaultDomain)
+			$('#customConferenceServer').val(Cryptocat.xmpp.defaultConferenceServer)
+			$('#customBOSH').val(Cryptocat.xmpp.defaultBOSH)
+			Cryptocat.storage.removeItem('serverName')
+			Cryptocat.storage.removeItem('domain')
+			Cryptocat.storage.removeItem('conferenceServer')
+			Cryptocat.storage.removeItem('bosh')
 		})
-		$('#customServerSubmit').val(Cryptocat.Locale['chatWindow']['continue']).click(function() {
+		$('#customServerSubmit').val(Cryptocat.locale['chatWindow']['continue']).click(function() {
 			$('#customServerDialog').fadeOut(200, function() {
 				$('#footer').animate({'height': 14})
 			})
 			Cryptocat.serverName = $('#customName').val()
-			Cryptocat.domain = $('#customDomain').val()
-			Cryptocat.conferenceServer = $('#customConferenceServer').val()
-			Cryptocat.bosh = $('#customBOSH').val()
-			Cryptocat.Storage.setItem('serverName', Cryptocat.serverName)
-			Cryptocat.Storage.setItem('domain', Cryptocat.domain)
-			Cryptocat.Storage.setItem('conferenceServer', Cryptocat.conferenceServer)
-			Cryptocat.Storage.setItem('bosh', Cryptocat.bosh)
+			Cryptocat.xmpp.domain = $('#customDomain').val()
+			Cryptocat.xmpp.conferenceServer = $('#customConferenceServer').val()
+			Cryptocat.xmpp.bosh = $('#customBOSH').val()
+			Cryptocat.storage.setItem('serverName', Cryptocat.serverName)
+			Cryptocat.storage.setItem('domain', Cryptocat.xmpp.domain)
+			Cryptocat.storage.setItem('conferenceServer', Cryptocat.xmpp.conferenceServer)
+			Cryptocat.storage.setItem('bosh', Cryptocat.xmpp.bosh)
 		})
 		$('#customServerSave').unbind('click')
 		$('#customServerSave').click(function() {
 			$('#customServerDelete').val('Delete')
 				.attr('data-deleteconfirm', '0')
 				.removeClass('confirm')
-			if ($('#customDomain').val() === Cryptocat.defaultDomain) {
+			if ($('#customDomain').val() === Cryptocat.xmpp.defaultDomain) {
 				return // Cannot overwrite the default domain
 			}
 			var serverIsInList = false
@@ -119,7 +131,7 @@ $('#customServer').click(function() {
 				.attr('data-saveconfirm', '0')
 				.removeClass('confirm')
 			var selectedOption = $(this).find(':selected')
-			if ($(selectedOption).attr('data-domain') === Cryptocat.defaultDomain) {
+			if ($(selectedOption).attr('data-domain') === Cryptocat.xmpp.defaultDomain) {
 				$('#customServerDelete').attr('disabled', 'disabled').addClass('disabled')
 			}
 			$('#customName').val($(selectedOption).val())
@@ -130,17 +142,5 @@ $('#customServer').click(function() {
 		$('#customDomain').select()
 	})
 })
-
-function updateCustomServers() {
-	var customServers = {}
-	$('#customServerSelector option').each(function() {
-		var name = $(this).val()
-		customServers[name] = {}
-		customServers[name].domain = $(this).attr('data-domain')
-		customServers[name].xmpp = $(this).attr('data-xmpp')
-		customServers[name].bosh = $(this).attr('data-bosh')
-	})
-	Cryptocat.Storage.setItem('customServers', JSON.stringify(customServers))
-}
 
 })

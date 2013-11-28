@@ -162,7 +162,7 @@ multiParty.users = function() {
 
 // Issue a warning for decryption failure to the main conversation window
 multiParty.messageWarning = function(sender) {
-	var messageWarning = Cryptocat.Locale['warnings']['messageWarning']
+	var messageWarning = Cryptocat.locale['warnings']['messageWarning']
 		.replace('(NICKNAME)', sender)
 	Cryptocat.addToConversation(messageWarning, sender, 'main-Conversation', 'warning')
 }
@@ -182,7 +182,7 @@ multiParty.sendMessage = function(message) {
 	//Convert from UTF8
 	message = CryptoJS.enc.Utf8.parse(message)
 	// Add 64 bytes of padding
-	message.concat(Cryptocat.rawBytes(64))
+	message.concat(Cryptocat.random.rawBytes(64))
 	var encrypted = {}
 	encrypted['text'] = {}
 	encrypted['type'] = 'message'
@@ -193,10 +193,10 @@ multiParty.sendMessage = function(message) {
 	var i, iv
 	for (i = 0; i !== sortedRecipients.length; i++) {
 		//Generate a random IV
-		iv = Cryptocat.encodedBytes(12, CryptoJS.enc.Base64)
+		iv = Cryptocat.random.encodedBytes(12, CryptoJS.enc.Base64)
 		// Do not reuse IVs
 		while (usedIVs.indexOf(iv) >= 0) {
-			iv = Cryptocat.encodedBytes(12, CryptoJS.enc.Base64)
+			iv = Cryptocat.random.encodedBytes(12, CryptoJS.enc.Base64)
 		}
 		usedIVs.push(iv)
 		//Encrypt the message
@@ -243,7 +243,7 @@ multiParty.receiveMessage = function(sender, myName, message) {
 				multiParty.genSharedSecret(sender)
 				// Begin Cryptocat-specific tweak
 				for (var u = 0; u < 6000; u += 2000) {
-					window.setTimeout(Cryptocat.sendPublicKey, u, sender)
+					window.setTimeout(Cryptocat.xmpp.sendPublicKey, u, sender)
 				}
 				// End Cryptocat-specific tweak
 			}

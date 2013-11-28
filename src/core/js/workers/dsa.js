@@ -31,13 +31,11 @@
 
 	onmessage = function (e) {
 		var data = e.data;
-
-		importScripts.apply(root, imports);
-		Cryptocat.setSeed(data.seed)
-
-		if (data.debug) sendMsg('debug', 'DSA key creation started')
+		importScripts.apply(root, imports)
+		Cryptocat.random.setSeed(data.seed)
+		if (data.debug) { sendMsg('debug', 'DSA key creation started') }
 		var dsa = new DSA()
-		if (data.debug) sendMsg('debug', 'DSA key creation finished')
+		if (data.debug) { sendMsg('debug', 'DSA key creation finished') }
 		sendMsg('data', dsa.packPrivate())
 	}
 
