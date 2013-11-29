@@ -225,6 +225,7 @@ Cryptocat.loginFail = function(message) {
 
 // Build new buddy.
 Cryptocat.addBuddy = function(nickname) {
+	nickname = Strophe.xmlescape(nickname)
 	$('#buddyList').queue(function() {
 		var buddyTemplate = Mustache.render(Cryptocat.templates.buddy, {
 			nickname: nickname,
@@ -233,7 +234,14 @@ Cryptocat.addBuddy = function(nickname) {
 		$(buddyTemplate).insertAfter('#buddiesOnline').slideDown(100, function() {
 			$('#buddy-' + nickname).unbind('click')
 			$('#menu-' + nickname).unbind('click')
-			bindBuddyMenu(nickname)
+			$('#menu-' + nickname).attr('status', 'inactive')
+			if (Cryptocat.ignoredUsers.indexOf(nickname) >= 0) {
+				$('#buddy-' + nickname).addClass('ignored')
+			}
+			$('#menu-' + nickname).click(function(e) {
+				e.stopPropagation()
+				openBuddyMenu(nickname)
+			})
 			Cryptocat.bindBuddyClick(nickname)
 			buddyList.push(nickname)
 			for (var u = 0; u < 6000; u += 2000) {
@@ -746,70 +754,59 @@ function displayInfo(nickname) {
 	})
 }
 
-// Bind buddy menus for new buddies. Used internally.
-function bindBuddyMenu(nickname) {
-	nickname = Strophe.xmlescape(nickname)
-	$('#menu-' + nickname).attr('status', 'inactive')
-	if (Cryptocat.ignoredUsers.indexOf(nickname) >= 0) {
-		$('#buddy-' + nickname).addClass('ignored')
-	}
-	$('#menu-' + nickname).click(function(e) {
-		e.stopPropagation()
-		if ($('#menu-' + nickname).attr('status') === 'inactive') {
-			$('#menu-' + nickname).attr('status', 'active')
-			var buddyMenuContents = '<div class="buddyMenuContents" id="' + nickname + '-contents">'
-			$(this).css('background-image', 'url("img/up.png")')
-			var ignoreAction
-			if (Cryptocat.ignoredUsers.indexOf(nickname) >= 0) {
-				ignoreAction = Cryptocat.locale['chatWindow']['unignore']
-			}
-			else {
-				ignoreAction = Cryptocat.locale['chatWindow']['ignore']
-			}
-			$('#buddy-' + nickname).delay(10).animate({'height': 130}, 180, function() {
-				$(this).append(buddyMenuContents)
-				$('#' + nickname + '-contents').append(
-					Mustache.render(Cryptocat.templates.buddyMenu, {
-						sendEncryptedFile: Cryptocat.locale['chatWindow']['sendEncryptedFile'],
-						displayInfo: Cryptocat.locale['chatWindow']['displayInfo'],
-						ignore: ignoreAction
-					})
-				)
-				$('#' + nickname + '-contents').fadeIn(200, function() {
-					$('#' + nickname + '-contents').find('.option1').click(function(e) {
-						e.stopPropagation()
-						displayInfo(nickname)
-						$('#menu-' + nickname).click()
-					})
-					$('#' + nickname + '-contents').find('.option2').click(function(e) {
-						e.stopPropagation()
-						sendFile(nickname)
-						$('#menu-' + nickname).click()
-					})
-					$('#' + nickname + '-contents').find('.option3').click(function(e) {
-						e.stopPropagation()
-						if (ignoreAction === Cryptocat.locale['chatWindow']['ignore']) {
-							Cryptocat.ignoredUsers.push(nickname)
-							$('#buddy-' + nickname).addClass('ignored')
-						}
-						else {
-							Cryptocat.ignoredUsers.splice(Cryptocat.ignoredUsers.indexOf(nickname), 1)
-							$('#buddy-' + nickname).removeClass('ignored')
-						}
-						$('#menu-' + nickname).click()
-					})
+// Open a buddy's contact list context menu.
+function openBuddyMenu(nickname) {
+	if ($('#menu-' + nickname).attr('status') === 'inactive') {
+		var ignoreAction = Cryptocat.locale['chatWindow']['ignore']
+		var buddyMenuContents = '<div class="buddyMenuContents" id="' + nickname + '-contents">'
+		$('#menu-' + nickname).attr('status', 'active')
+		$(this).css('background-image', 'url("img/up.png")')
+		if (Cryptocat.ignoredUsers.indexOf(nickname) >= 0) {
+			ignoreAction = Cryptocat.locale['chatWindow']['unignore']
+		}
+		$('#buddy-' + nickname).delay(10).animate({'height': 130}, 180, function() {
+			$(this).append(buddyMenuContents)
+			$('#' + nickname + '-contents').append(
+				Mustache.render(Cryptocat.templates.buddyMenu, {
+					sendEncryptedFile: Cryptocat.locale['chatWindow']['sendEncryptedFile'],
+					displayInfo: Cryptocat.locale['chatWindow']['displayInfo'],
+					ignore: ignoreAction
+				})
+			)
+			$('#' + nickname + '-contents').fadeIn(200, function() {
+				$('#' + nickname + '-contents').find('.option1').click(function(e) {
+					e.stopPropagation()
+					displayInfo(nickname)
+					$('#menu-' + nickname).click()
+				})
+				$('#' + nickname + '-contents').find('.option2').click(function(e) {
+					e.stopPropagation()
+					sendFile(nickname)
+					$('#menu-' + nickname).click()
+				})
+				$('#' + nickname + '-contents').find('.option3').click(function(e) {
+					e.stopPropagation()
+					if (Cryptocat.ignoredUsers.indexOf(nickname) < 0) {
+						Cryptocat.ignoredUsers.push(nickname)
+						$('#buddy-' + nickname).addClass('ignored')
+					}
+					else {
+						Cryptocat.ignoredUsers.splice(Cryptocat.ignoredUsers.indexOf(nickname), 1)
+						$('#buddy-' + nickname).removeClass('ignored')
+					}
+					$('#menu-' + nickname).click()
 				})
 			})
-		}
-		else {
-			$('#menu-' + nickname).attr('status', 'inactive')
-			$(this).css('background-image', 'url("img/down.png")')
-			$('#buddy-' + nickname).animate({'height': 15}, 190)
-			$('#' + nickname + '-contents').fadeOut(200, function() {
-				$('#' + nickname + '-contents').remove()
-			})
-		}
-	})
+		})
+	}
+	else {
+		$('#menu-' + nickname).attr('status', 'inactive')
+		$(this).css('background-image', 'url("img/down.png")')
+		$('#buddy-' + nickname).animate({'height': 15}, 190)
+		$('#' + nickname + '-contents').fadeOut(200, function() {
+			$('#' + nickname + '-contents').remove()
+		})
+	}
 }
 
 /*
