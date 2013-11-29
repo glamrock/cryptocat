@@ -96,35 +96,25 @@ Cryptocat.otr.add = function(buddy) {
 // Handle SMP callback
 Cryptocat.otr.onSMPAnswer = function(nickname) {
 	return function(type, data, act) {
-		switch(type) {
-			case 'question':
-				Cryptocat.otr.onSMPQuestion(nickname, data)
-				break
-			case 'trust':
-				if (act === 'asked') {
-					if (data) {
-						Cryptocat.authenticatedUsers.push(nickname)
-						if ($('#authInfo').length) {
-							Cryptocat.showAuthenticated(nickname, 200)
-							window.setTimeout(function() {
-								$('#dialogBox').animate({'height': 250})
-							}, 200)
-						}
-					}
-					else {
-						if ($('#authInfo').length) {
-							$('#authSubmit').val(Cryptocat.locale['chatWindow']['failed'])
-								.animate({'background-color': '#F00'})
-						}
-					}
+		if (type === 'question') {
+			Cryptocat.otr.onSMPQuestion(nickname, data)
+		}
+		if ((type === 'trust') && (act === 'asked')) {
+			if (data) {
+				Cryptocat.authenticatedUsers.push(nickname)
+				if ($('#authInfo').length) {
+					Cryptocat.showAuthenticated(nickname, 200)
+					window.setTimeout(function() {
+						$('#dialogBox').animate({'height': 250})
+					}, 200)
 				}
-				else if (act === 'answered') {
-					// maybe notify of the results?
-					/* jshint noempty: false */
+			}
+			else {
+				if ($('#authInfo').length) {
+					$('#authSubmit').val(Cryptocat.locale['chatWindow']['failed'])
+						.animate({'background-color': '#F00'})
 				}
-				break
-			case 'abort':
-				break
+			}
 		}
 	}
 }
