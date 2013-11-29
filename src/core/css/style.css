@@ -789,8 +789,9 @@ CONVERSATION WINDOW
 
 #conversationInfo #groupConversation {
 	float: right;
-	margin: -5px 120px 0 0;
-	font-size: 0.8em;
+	margin: 0 120px 0 0;
+	line-height: 1em;
+	max-width: 400px;
 }
 
 #conversationWrapper {
