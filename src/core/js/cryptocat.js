@@ -1020,13 +1020,13 @@ $('#languageSelect').click(function() {
 	$('#' + Cryptocat.locale['language']).css({'color': '#97CEEC', 'font-weight': 'bold'})
 	$('#footer').animate({'height': 180}, function() {
 		$('#languages').fadeIn()
-		$('#languages li').click(function() {
-			var lang = $(this).attr('id')
-			$('#languages').fadeOut(200, function() {
-				Cryptocat.locale.set(lang)
-				Cryptocat.storage.setItem('language', lang)
-				$('#footer').animate({'height': 14})
-			})
+	})
+	$('#languages li').click(function() {
+		var lang = $(this).attr('id')
+		$('#languages').fadeOut(200, function() {
+			Cryptocat.locale.set(lang)
+			Cryptocat.storage.setItem('language', lang)
+			$('#footer').animate({'height': 14})
 		})
 	})
 })
