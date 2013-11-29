@@ -1,5 +1,23 @@
 #Changelog
 
+##Cryptocat 2.1.16
+**Nov. 29 2013**
+
+- Cryptocat is now available for Opera 15 and higher.  
+- Big improvements to group chat messaging reliability.  
+- Added a "Getting Started" guide that appears for first-time Cryptocat users.  
+- New feature: Save custom server configurations to quickly access later.  
+- Cryptocat for Firefox now also remembers settings and preferences.  
+- Key generation speed improved by up to 40%!  
+- Encrypted file sharing is temporarily disabled in order to investigate a potential issue.  
+- Implemented some preparations for compatibility with upcoming Cryptocat for iPhone and Android.  
+- Buddy context menus now have an improved look.  
+- Audio notifications now work in Safari (only versions 7 and higher).  
+- Highly substantial reduction in Cryptocat's file size due to code optimization and audio file encoding improvements.  
+- Add new Kannada translation.  
+- Fix inconsistencies in some translations.  
+- Many other bug fixes, improvements, optimizations and tweaks.  
+
 ##Cryptocat 2.1.15
 **Oct. 13 2013**  
 - Improve connection stability.  
