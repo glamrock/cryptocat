@@ -528,32 +528,27 @@ function getFingerprint(buddy, OTR) {
 
 // Convert message URLs to links. Used internally.
 function addLinks(message) {
-	var i, l, sanitize
+	var sanitize
 	var URLs = message.match(/((http(s?)\:\/\/){1}\S+)/gi)
-	if (URLs) {
-		for (i in URLs) {
-			if (URLs.hasOwnProperty(i)) {
-				sanitize = URLs[i].split('')
-				for (l in sanitize) {
-					if (sanitize.hasOwnProperty(l) &&
-						!sanitize[l].match(/\w|\d|\:|\/|\?|\=|\#|\+|\,|\.|\&|\;|\%/)) {
-						sanitize[l] = encodeURIComponent(sanitize[l])
-					}
-				}
-				sanitize = sanitize.join('')
-				var url = sanitize.replace(':', '&colon;')
-				if (navigator.userAgent === 'Chrome (Mac app)') {
-					message = message.replace(
-						sanitize, '<a href="' + url + '">' + url + '</a>'
-					)
-				}
-				else {
-					message = message.replace(
-						sanitize, '<a href="' + url + '" target="_blank">' + url + '</a>'
-					)
-				}
+	if (!URLs) { return }
+	for (var i = 0; i !== URLs.length; i++) {
+		sanitize = URLs[i].split('')
+		for (var l = 0; l !== sanitize.length; l++) {
+			if (!sanitize[l].match(/\w|\d|\:|\/|\?|\=|\#|\+|\,|\.|\&|\;|\%/)) {
+				sanitize[l] = encodeURIComponent(sanitize[l])
 			}
 		}
+		sanitize = sanitize.join('')
+		var url = sanitize.replace(':', '&colon;')
+		if (navigator.userAgent === 'Chrome (Mac app)') {
+			message = message.replace(
+				sanitize, '<a href="' + url + '">' + url + '</a>'
+			)
+			continue
+		}
+		message = message.replace(
+			sanitize, '<a href="' + url + '" target="_blank">' + url + '</a>'
+		)
 	}
 	return message
 }
@@ -937,7 +932,9 @@ $('#userInput').submit(function() {
 					}
 				}
 				if (missingRecipients.length) {
-					Cryptocat.addToConversation(missingRecipients, Cryptocat.myNickname, 'main-Conversation', 'missingRecipients')
+					Cryptocat.addToConversation(
+						missingRecipients, Cryptocat.myNickname, 'main-Conversation', 'missingRecipients'
+					)
 				}
 				Cryptocat.xmpp.connection.muc.message(
 					Cryptocat.conversationName + '@' + Cryptocat.xmpp.conferenceServer,
@@ -948,7 +945,9 @@ $('#userInput').submit(function() {
 		else {
 			Cryptocat.otr.keys[Cryptocat.currentConversation].sendMsg(message)
 		}
-		Cryptocat.addToConversation(message, Cryptocat.myNickname, Cryptocat.currentConversation, 'message')
+		Cryptocat.addToConversation(
+			message, Cryptocat.myNickname, Cryptocat.currentConversation, 'message'
+		)
 	}
 	$('#userInputText').val('')
 	return false
