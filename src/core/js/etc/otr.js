@@ -109,11 +109,9 @@ Cryptocat.otr.onSMPAnswer = function(nickname) {
 					}, 200)
 				}
 			}
-			else {
-				if ($('#authInfo').length) {
-					$('#authSubmit').val(Cryptocat.locale['chatWindow']['failed'])
-						.animate({'background-color': '#F00'})
-				}
+			else if ($('#authInfo').length) {
+				$('#authSubmit').val(Cryptocat.locale['chatWindow']['failed'])
+					.animate({'background-color': '#F00'})
 			}
 		}
 	}
