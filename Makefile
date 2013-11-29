@@ -22,9 +22,9 @@ safari:
 
 opera:
 	@mkdir -p release
-	@rm -f release/cryptocat_opera.nex
+	@rm -f release/cryptocat.opera.nex
 	@cp -R src/core/css src/core/firstRun.html src/core/fonts src/core/img src/core/index.html src/core/js src/core/locale src/core/snd src/opera
-	@cd src/opera/ && zip -q -r9 ../../release/cryptocat_opera.nex * -x "*/\.*" -x "\.*"
+	@cd src/opera/ && zip -q -r9 ../../release/cryptocat.opera.nex * -x "*/\.*" -x "\.*"
 	@rm -rf src/opera/css src/opera/firstRun.html src/opera/fonts src/opera/img src/opera/index.html src/opera/js src/opera/locale src/opera/snd
 	@/bin/echo "[Cryptocat] Opera build available in release/"
 
