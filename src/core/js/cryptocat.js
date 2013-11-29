@@ -279,14 +279,14 @@ Cryptocat.removeBuddy = function(nickname) {
 
 // Bind buddy click actions.
 Cryptocat.onBuddyClick = function(nickname) {
-	$(this).removeClass('newMessage')
-	if ($(this).prev().attr('id') === 'currentConversation') {
+	$('#buddy-' + nickname).removeClass('newMessage')
+	if ($('#buddy-' + nickname).prev().attr('id') === 'currentConversation') {
 		$('#userInputText').focus()
 		return true
 	}
-	$(this).css('background-image', 'none')
+	$('#buddy-' + nickname).css('background-image', 'none')
 	if (nickname === 'main-Conversation') {
-		$(this).css('background-image', 'url("img/groupChat.png")')
+		$('#buddy-' + nickname).css('background-image', 'url("img/groupChat.png")')
 	}
 	if (Cryptocat.currentConversation) {
 		var buddyStatus = $('#buddy-' + Cryptocat.currentConversation).attr('status')
@@ -755,12 +755,12 @@ function openBuddyMenu(nickname) {
 		var ignoreAction = Cryptocat.locale['chatWindow']['ignore']
 		var buddyMenuContents = '<div class="buddyMenuContents" id="' + nickname + '-contents">'
 		$('#menu-' + nickname).attr('status', 'active')
-		$(this).css('background-image', 'url("img/up.png")')
+		$('#menu-' + nickname).css('background-image', 'url("img/up.png")')
 		if (Cryptocat.ignoredUsers.indexOf(nickname) >= 0) {
 			ignoreAction = Cryptocat.locale['chatWindow']['unignore']
 		}
 		$('#buddy-' + nickname).delay(10).animate({'height': 130}, 180, function() {
-			$(this).append(buddyMenuContents)
+			$('#buddy-' + nickname).append(buddyMenuContents)
 			$('#' + nickname + '-contents').append(
 				Mustache.render(Cryptocat.templates.buddyMenu, {
 					sendEncryptedFile: Cryptocat.locale['chatWindow']['sendEncryptedFile'],
@@ -796,7 +796,7 @@ function openBuddyMenu(nickname) {
 	}
 	else {
 		$('#menu-' + nickname).attr('status', 'inactive')
-		$(this).css('background-image', 'url("img/down.png")')
+		$('#menu-' + nickname).css('background-image', 'url("img/down.png")')
 		$('#buddy-' + nickname).animate({'height': 15}, 190)
 		$('#' + nickname + '-contents').fadeOut(200, function() {
 			$('#' + nickname + '-contents').remove()
@@ -921,35 +921,34 @@ $('#logout').click(function() {
 // Submit user input.
 $('#userInput').submit(function() {
 	var message = $.trim($('#userInputText').val())
-	if (message !== '') {
-		if (Cryptocat.currentConversation === 'main-Conversation') {
-			if (multiParty.userCount() >= 1) {
-				var ciphertext = JSON.parse(multiParty.sendMessage(message))
-				var missingRecipients = []
-				for (var i = 0; i !== buddyList.length; i++) {
-					if (typeof(ciphertext['text'][buddyList[i]]) !== 'object') {
-						missingRecipients.push(buddyList[i])
-					}
-				}
-				if (missingRecipients.length) {
-					Cryptocat.addToConversation(
-						missingRecipients, Cryptocat.myNickname, 'main-Conversation', 'missingRecipients'
-					)
-				}
-				Cryptocat.xmpp.connection.muc.message(
-					Cryptocat.conversationName + '@' + Cryptocat.xmpp.conferenceServer,
-					null, JSON.stringify(ciphertext), null, 'groupchat', 'active'
-				)
-			}
+	$('#userInputText').val('')
+	if (!message.length) { return false }
+	Cryptocat.addToConversation(
+		message, Cryptocat.myNickname,
+		Cryptocat.currentConversation, 'message'
+	)
+	if (Cryptocat.currentConversation !== 'main-Conversation') {
+		Cryptocat.otr.keys[Cryptocat.currentConversation].sendMsg(message)
+		return false
+	}
+	if (multiParty.userCount() < 1) { return false }
+	var ciphertext = JSON.parse(multiParty.sendMessage(message))
+	var missingRecipients = []
+	for (var i = 0; i !== buddyList.length; i++) {
+		if (typeof(ciphertext['text'][buddyList[i]]) !== 'object') {
+			missingRecipients.push(buddyList[i])
 		}
-		else {
-			Cryptocat.otr.keys[Cryptocat.currentConversation].sendMsg(message)
-		}
+	}
+	if (missingRecipients.length) {
 		Cryptocat.addToConversation(
-			message, Cryptocat.myNickname, Cryptocat.currentConversation, 'message'
+			missingRecipients, Cryptocat.myNickname,
+			'main-Conversation', 'missingRecipients'
 		)
 	}
-	$('#userInputText').val('')
+	Cryptocat.xmpp.connection.muc.message(
+		Cryptocat.conversationName + '@' + Cryptocat.xmpp.conferenceServer,
+		null, JSON.stringify(ciphertext), null, 'groupchat', 'active'
+	)
 	return false
 })
 

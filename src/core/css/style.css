@@ -314,7 +314,7 @@ div#customServerDialog [type=button] {
 	box-shadow: 2px 2px #97CEEC;
 }
 
-div #customServerDialog #customServerSubmit {
+div#customServerDialog #customServerSubmit {
 	width: 215px;
 }
 
