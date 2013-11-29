@@ -242,7 +242,9 @@ Cryptocat.addBuddy = function(nickname) {
 				e.stopPropagation()
 				openBuddyMenu(nickname)
 			})
-			Cryptocat.bindBuddyClick(nickname)
+			$('#buddy-' + nickname).click(function() {
+				Cryptocat.onBuddyClick(nickname)
+			})
 			buddyList.push(nickname)
 			for (var u = 0; u < 6000; u += 2000) {
 				window.setTimeout(Cryptocat.xmpp.sendPublicKey, u, nickname)
@@ -276,33 +278,31 @@ Cryptocat.removeBuddy = function(nickname) {
 }
 
 // Bind buddy click actions.
-Cryptocat.bindBuddyClick = function(nickname) {
-	$('#buddy-' + nickname).click(function() {
-		$(this).removeClass('newMessage')
-		if ($(this).prev().attr('id') === 'currentConversation') {
-			$('#userInputText').focus()
-			return true
+Cryptocat.onBuddyClick = function(nickname) {
+	$(this).removeClass('newMessage')
+	if ($(this).prev().attr('id') === 'currentConversation') {
+		$('#userInputText').focus()
+		return true
+	}
+	$(this).css('background-image', 'none')
+	if (nickname === 'main-Conversation') {
+		$(this).css('background-image', 'url("img/groupChat.png")')
+	}
+	if (Cryptocat.currentConversation) {
+		var buddyStatus = $('#buddy-' + Cryptocat.currentConversation).attr('status')
+		if (buddyStatus === 'online') {
+			$('#buddy-' + Cryptocat.currentConversation)
+				.insertAfter('#buddiesOnline').slideDown(100)
 		}
-		if (nickname !== 'main-Conversation') {
-			$(this).css('background-image', 'none')
+		else if (buddyStatus === 'away') {
+			$('#buddy-' + Cryptocat.currentConversation)
+				.insertAfter('#buddiesAway').slideDown(100)
 		}
-		else {
-			$(this).css('background-image', 'url("img/groupChat.png")')
-		}
-		if (Cryptocat.currentConversation) {
-			var previousConversation = Cryptocat.currentConversation
-			if ($('#buddy-' + previousConversation).attr('status') === 'online') {
-				$('#buddy-' + previousConversation).insertAfter('#buddiesOnline').slideDown(100)
-			}
-			else if ($('#buddy-' + previousConversation).attr('status') === 'away') {
-				$('#buddy-' + previousConversation).insertAfter('#buddiesAway').slideDown(100)
-			}
-		}
-		Cryptocat.currentConversation = nickname
-		initiateConversation(Cryptocat.currentConversation)
-		switchConversation(Cryptocat.currentConversation)
-		$('.line1, .line2, .line3').addClass('visibleLine')
-	})
+	}
+	Cryptocat.currentConversation = nickname
+	initiateConversation(Cryptocat.currentConversation)
+	switchConversation(Cryptocat.currentConversation)
+	$('.line1, .line2, .line3, .line4').addClass('visibleLine')
 }
 
 // Close generating fingerprints dialog.

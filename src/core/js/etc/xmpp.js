@@ -106,7 +106,9 @@ Cryptocat.xmpp.onConnected = function() {
 	$('.logo').animate({'margin': '-11px 5px 0 0'})
 	$('#loginForm').fadeOut(200, function() {
 		$('#conversationInfo').fadeIn()
-		Cryptocat.bindBuddyClick('main-Conversation')
+		$('#buddy-main-Conversation').click(function() {
+			Cryptocat.onBuddyClick('main-Conversation')
+		})
 		$('#buddy-main-Conversation').click()
 		$('#conversationWrapper').fadeIn()
 		$('#optionButtons').fadeIn()
