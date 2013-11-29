@@ -530,7 +530,7 @@ function getFingerprint(buddy, OTR) {
 function addLinks(message) {
 	var sanitize
 	var URLs = message.match(/((http(s?)\:\/\/){1}\S+)/gi)
-	if (!URLs) { return }
+	if (!URLs) { return message }
 	for (var i = 0; i !== URLs.length; i++) {
 		sanitize = URLs[i].split('')
 		for (var l = 0; l !== sanitize.length; l++) {
