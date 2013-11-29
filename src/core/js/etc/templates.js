@@ -5,6 +5,9 @@ Cryptocat.templates = {
 	customServer: '<option data-domain="{{domain}}" data-xmpp="{{XMPP}}" data-bosh="{{BOSH}}">'
 		+ '{{name}}</option>',
 
+	generatingKeys: '<br /><p id="progressForm"><img src="img/keygen.gif" '
+		+ 'alt="" /><p id="progressInfo"><span>{{text}}</span></p>',
+
 	catFact: '<br />Here is an interesting fact while you wait:'
 		+ '<br /><div id="interestingFact">{{catFact}}</div>',
 

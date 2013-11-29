@@ -809,6 +809,36 @@ function openBuddyMenu(nickname) {
 	}
 }
 
+// Prepare our own encryption keys etc. before connecting for the first time.
+function prepareKeysAndConnect() {
+	if (Cryptocat.audioNotifications) {
+		window.setTimeout(function() {
+			Cryptocat.sounds.keygenLoop.loop = true
+			Cryptocat.sounds.keygenLoop.play()
+		}, 800)
+	}
+	// Create DSA key for OTR.
+	DSA.createInWebWorker({
+		path: 'js/workers/dsa.js',
+		seed: Cryptocat.random.generateSeed
+	}, function (key) {
+		Cryptocat.otr.myKey = key
+		// Key storage currently disabled as we are not yet sure if this is safe to do.
+		//	Cryptocat.storage.setItem('myKey', JSON.stringify(Cryptocat.otr.myKey))
+		$('#loginInfo').text(Cryptocat.locale['loginMessage']['connecting'])
+		Cryptocat.xmpp.connect(
+			Cryptocat.random.encodedBytes(16, CryptoJS.enc.Hex),
+			Cryptocat.random.encodedBytes(16, CryptoJS.enc.Hex)
+		)
+	})
+	// Key storage currently disabled as we are not yet sure if this is safe to do.
+	// Cryptocat.storage.setItem('multiPartyKey', multiParty.genPrivateKey())
+	//else {
+	multiParty.genPrivateKey()
+	//}
+	multiParty.genPublicKey()
+}
+
 /*
 -------------------
 USER INTERFACE BINDINGS
@@ -1034,41 +1064,13 @@ $('#loginForm').submit(function() {
 		Cryptocat.loginFail(Cryptocat.locale['loginMessage']['nicknameAlphanumeric'])
 		$('#nickname').select()
 	}
-	// If no encryption keys, generate.
+	// If no encryption keys, prepare keys before connecting.
 	else if (!Cryptocat.otr.myKey) {
-		var progressForm = '<br /><p id="progressForm"><img src="img/keygen.gif" '
-			+ 'alt="" /><p id="progressInfo"><span>'
-			+ Cryptocat.locale['loginMessage']['generatingKeys'] + '</span></p>'
-		if (Cryptocat.audioNotifications) { Cryptocat.sounds.keygenStart.play() }
-		Cryptocat.dialogBox(progressForm, 240, false, function() {
-			if (Cryptocat.audioNotifications) {
-				window.setTimeout(function() {
-					Cryptocat.sounds.keygenLoop.loop = true
-					Cryptocat.sounds.keygenLoop.play()
-				}, 800)
-			}
-			// Create DSA key for OTR.
-			DSA.createInWebWorker({
-				path: 'js/workers/dsa.js',
-				seed: Cryptocat.random.generateSeed
-			}, function (key) {
-				Cryptocat.otr.myKey = key
-				// Key storage currently disabled as we are not yet sure if this is safe to do.
-				//	Cryptocat.storage.setItem('myKey', JSON.stringify(Cryptocat.otr.myKey))
-				$('#loginInfo').text(Cryptocat.locale['loginMessage']['connecting'])
-				Cryptocat.xmpp.connect(
-					Cryptocat.random.encodedBytes(16, CryptoJS.enc.Hex),
-					Cryptocat.random.encodedBytes(16, CryptoJS.enc.Hex)
-				)
-			})
-
-			// Key storage currently disabled as we are not yet sure if this is safe to do.
-			// Cryptocat.storage.setItem('multiPartyKey', multiParty.genPrivateKey())
-			//else {
-				multiParty.genPrivateKey()
-			//}
-			multiParty.genPublicKey()
+		var progressForm = Mustache.render(Cryptocat.templates.generatingKeys, {
+			text: Cryptocat.locale['loginMessage']['generatingKeys']
 		})
+		if (Cryptocat.audioNotifications) { Cryptocat.sounds.keygenStart.play() }
+		Cryptocat.dialogBox(progressForm, 240, false, prepareKeysAndConnect())
 		if (Cryptocat.locale['language'] === 'en') {
 			$('#progressInfo').append(
 				Mustache.render(Cryptocat.templates.catFact, {
