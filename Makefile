@@ -15,6 +15,7 @@ firefox:
 
 safari:
 	@rm -rf src/cryptocat.safariextension
+	@mkdir src/cryptocat.safariextension
 	@cp -R src/core/css src/core/firstRun.html src/core/fonts src/core/img src/core/index.html src/core/js src/core/locale src/core/snd src/cryptocat.safariextension
 	@cp -R src/safari/* src/cryptocat.safariextension
 	@/bin/echo "[Cryptocat] Safari extension packaged for testing."
