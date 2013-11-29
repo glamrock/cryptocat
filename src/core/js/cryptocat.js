@@ -20,7 +20,7 @@ Cryptocat.sounds = {
 	'keygenEnd': (new Audio('snd/keygenEnd.mp3')),
 	'userJoin': (new Audio('snd/userJoin.mp3')),
 	'userLeave': (new Audio('snd/userLeave.mp3')),
-	'msgGet'	: (new Audio('snd/msgGet.mp3'))
+	'msgGet': (new Audio('snd/msgGet.mp3'))
 }
 
 /*
