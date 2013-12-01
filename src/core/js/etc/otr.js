@@ -34,26 +34,28 @@ Cryptocat.otr.onOutgoing = function(buddy) {
 // Receive an SMP question
 Cryptocat.otr.onSMPQuestion = function(nickname, question) {
 	$('#dialogBoxClose').click()
-	var authRequest = Cryptocat.locale['chatWindow']['authRequest']
-		.replace('(NICKNAME)', nickname)
-	var answerMustMatch = Cryptocat.locale['chatWindow']['answerMustMatch']
-		.replace('(NICKNAME)', nickname)
-	window.setTimeout(function() {
+	var answer = false
+	window.setTimeout(function(nickname) {
 		Cryptocat.dialogBox(Mustache.render(Cryptocat.templates.authRequest, {
 			authenticate: Cryptocat.locale['chatWindow']['authenticate'],
-			authRequest: authRequest,
-			answerMustMatch: answerMustMatch,
+			authRequest: Cryptocat.locale['chatWindow']['authRequest']
+				.replace('(NICKNAME)', nickname),
+			answerMustMatch: Cryptocat.locale['chatWindow']['answerMustMatch']
+				.replace('(NICKNAME)', nickname),
 			question: question,
 			answer: Cryptocat.locale['chatWindow']['answer']
-		}), 240, false, function() {
+		}), 240, true, function() {
 			$('#authReplySubmit').unbind('click').bind('click', function(e) {
 				e.preventDefault()
-				var answer = $('#authReply').val().toLowerCase().replace(/(\s|\.|\,|\'|\"|\;|\?|\!)/, '')
+				answer = $('#authReply').val().toLowerCase()
+					.replace(/(\s|\.|\,|\'|\"|\;|\?|\!)/, '')
 				Cryptocat.otr.keys[nickname].smpSecret(answer)
 				$('#dialogBoxClose').click()
 			})
+		}, function() {
+			if (!answer) { Cryptocat.otr.keys[nickname].smpSecret('noAnswer') }
 		})
-	}, 500)
+	}, 500, nickname)
 }
 
 // Add a new OTR key for a new conversation participant
