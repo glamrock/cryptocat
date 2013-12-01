@@ -120,5 +120,9 @@ Cryptocat.otr.onSMPAnswer = function(nickname) {
 					.animate({'background-color': '#F00'})
 			}
 		}
+		if (type === 'abort') {
+			$('#authSubmit').val(Cryptocat.locale['chatWindow']['failed'])
+				.animate({'background-color': '#F00'})
+		}
 	}
 }
