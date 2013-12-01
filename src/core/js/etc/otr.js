@@ -53,7 +53,11 @@ Cryptocat.otr.onSMPQuestion = function(nickname, question) {
 				$('#dialogBoxClose').click()
 			})
 		}, function() {
-			if (!answer) { Cryptocat.otr.keys[nickname].smpSecret('noAnswer') }
+			if (!answer) {
+				Cryptocat.otr.keys[nickname].smpSecret(
+					Cryptocat.random.encodedBytes(16, CryptoJS.enc.Hex)
+				)
+			}
 		})
 	}, 500, nickname)
 }
