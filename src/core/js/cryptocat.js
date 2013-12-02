@@ -921,31 +921,32 @@ $('#userInput').submit(function() {
 	var message = $.trim($('#userInputText').val())
 	$('#userInputText').val('')
 	if (!message.length) { return false }
+	if (Cryptocat.currentConversation !== 'main-Conversation') {
+		Cryptocat.otr.keys[Cryptocat.currentConversation].sendMsg(message)
+	}
+	else {
+		if (multiParty.userCount() < 1) { return false }
+		var ciphertext = JSON.parse(multiParty.sendMessage(message))
+		var missingRecipients = []
+		for (var i = 0; i !== buddyList.length; i++) {
+			if (typeof(ciphertext['text'][buddyList[i]]) !== 'object') {
+				missingRecipients.push(buddyList[i])
+			}
+		}
+		if (missingRecipients.length) {
+			Cryptocat.addToConversation(
+				missingRecipients, Cryptocat.myNickname,
+				'main-Conversation', 'missingRecipients'
+			)
+		}
+		Cryptocat.xmpp.connection.muc.message(
+			Cryptocat.conversationName + '@' + Cryptocat.xmpp.conferenceServer,
+			null, JSON.stringify(ciphertext), null, 'groupchat', 'active'
+		)
+	}
 	Cryptocat.addToConversation(
 		message, Cryptocat.myNickname,
 		Cryptocat.currentConversation, 'message'
-	)
-	if (Cryptocat.currentConversation !== 'main-Conversation') {
-		Cryptocat.otr.keys[Cryptocat.currentConversation].sendMsg(message)
-		return false
-	}
-	if (multiParty.userCount() < 1) { return false }
-	var ciphertext = JSON.parse(multiParty.sendMessage(message))
-	var missingRecipients = []
-	for (var i = 0; i !== buddyList.length; i++) {
-		if (typeof(ciphertext['text'][buddyList[i]]) !== 'object') {
-			missingRecipients.push(buddyList[i])
-		}
-	}
-	if (missingRecipients.length) {
-		Cryptocat.addToConversation(
-			missingRecipients, Cryptocat.myNickname,
-			'main-Conversation', 'missingRecipients'
-		)
-	}
-	Cryptocat.xmpp.connection.muc.message(
-		Cryptocat.conversationName + '@' + Cryptocat.xmpp.conferenceServer,
-		null, JSON.stringify(ciphertext), null, 'groupchat', 'active'
 	)
 	return false
 })
