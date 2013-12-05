@@ -87,7 +87,7 @@ function groupDouble(x, z) {
 // scalarMult calculates i*base in the elliptic curve.
 Curve25519.scalarMult = function(i, base) {
 	var size = Math.ceil(255 / BigInt.bpe)
-	var bit255 = 254 % BigInt.bpe;
+	var bit255 = 254 % BigInt.bpe
 	var scalar = BigInt.expand(i, size)
 	scalar[0] &= (1 << BigInt.bpe) - 8
 	scalar[size - 1] |= 1 << bit255
