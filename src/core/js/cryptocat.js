@@ -302,7 +302,7 @@ Cryptocat.onBuddyClick = function(nickname) {
 	Cryptocat.currentConversation = nickname
 	initiateConversation(Cryptocat.currentConversation)
 	switchConversation(Cryptocat.currentConversation)
-	$('.line1, .line2, .line3, .line4').addClass('visibleLine')
+	$('#conversationWindow').children().addClass('visibleLine')
 }
 
 // Close generating fingerprints dialog.
