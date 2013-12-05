@@ -1,6 +1,6 @@
 {
 	"name": "cryptocat",
-	"version": "2.1.16",
+	"version": "2.1.17",
 	"description": "Web Instant Messaging App With Accessible Encryption",
 	"main": "index.js",
 	"directories": {

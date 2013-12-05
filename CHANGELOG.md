@@ -1,5 +1,14 @@
 #Changelog
 
+##Cryptocat 2.1.17
+**Dec. 5 2013**
+
+- **Security fix**: A bug which moderately weakened the keys used for group chat was fixed. The reduction in security is not thought to be enough to allow for the easy brute-forcing of keys. The buggy update (2.1.16) was available for less than six days before this bug was detected, and was never released for Firefox. We thank security researcher Steve Thomas for his incredibly valuable contributions to Cryptocat.  
+- Fixed a sometimes-incorrect alignment of warning messages in the user interface.  
+- The "message received" audio notification sound was redone. The sound was composed by Rich Vreeland.  
+- Usability improvements were made to the Authentication Question (SMP) feature.  
+- Improvements were made to the German translation.  
+
 ##Cryptocat 2.1.16
 **Nov. 29 2013**
 
