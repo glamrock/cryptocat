@@ -86,10 +86,11 @@ function groupDouble(x, z) {
 
 // scalarMult calculates i*base in the elliptic curve.
 Curve25519.scalarMult = function(i, base) {
-	var scalar = BigInt.expand(i, 18)
-	scalar[0] &= (248 | 0x7f00)
-	scalar[17] = 0
-	scalar[16] |= 0x4000
+	var size = Math.ceil(255 / BigInt.bpe)
+	var bit255 = 254 % BigInt.bpe;
+	var scalar = BigInt.expand(i, size)
+	scalar[0] &= (1 << BigInt.bpe) - 8
+	scalar[size - 1] |= 1 << bit255
 
 	var x1 = BigInt.str2bigInt('1', 10)
 	var z1 = BigInt.str2bigInt('0', 10)
@@ -97,13 +98,13 @@ Curve25519.scalarMult = function(i, base) {
 	var z2 = BigInt.str2bigInt('1', 10)
 
 	var j, point
-	for (i = 17; i >= 0; i--) {
-		j = 14
-		if (i === 17) {
-			j = 0
+	for (i = size - 1; i >= 0; i--) {
+		j = BigInt.bpe - 1
+		if (i === size - 1) {
+			j = bit255
 		}
 		for (; j >= 0; j--) {
-			if (scalar[i]&0x4000) {
+			if (scalar[i]&(1 << j)) {
 				point = groupAdd(base, x1, z1, x2, z2)
 				x1 = point[0]
 				z1 = point[1]
@@ -118,10 +119,8 @@ Curve25519.scalarMult = function(i, base) {
 				x1 = point[0]
 				z1 = point[1]
 			}
-			scalar[i] <<= 1
 		}
 	}
-
 	var z1inv = BigInt.powMod(z1, p25519Minus2, Curve25519.p25519)
 	var x = BigInt.multMod(z1inv, x1, Curve25519.p25519)
 
