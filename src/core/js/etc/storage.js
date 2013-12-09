@@ -6,10 +6,6 @@ $(window).ready(function() {
 // This API uses different local storage solutions,
 // depending on the browser engine, to offer a uniform
 // storage interface for Cryptocat user preferences and settings.
-// Currently, this provides a functional interface for:
-// Cryptocat for Chrome: YES
-// Cryptocat for Safari: YES
-// Cryptocat for Firefox: YES
 
 // How to use:
 // Cryptocat.storage.setItem(itemName, itemValue)
