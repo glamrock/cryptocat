@@ -9,18 +9,23 @@ Cryptocat.locale.set = function(locale) {
 		accepts: 'text/html',
 		contentType: 'text/html',
 		complete: function(data) {
-			var language = data.responseText.split('\n')
-			if (language.length < 5) { // data too small, dismiss
-				Cryptocat.locale.set('en')
-				return false
-			}
-			for (var i in language) {
-				if (language.hasOwnProperty(i)) {
-					language[i] = $.trim(language[i])
+			try {
+				var language = data.responseText.split('\n')
+				if (language.length < 5) { // data too small, dismiss
+					Cryptocat.locale.set('en')
+					return false
 				}
+				for (var i in language) {
+					if (language.hasOwnProperty(i)) {
+						language[i] = $.trim(language[i])
+					}
+				}
+				var languageObject = Cryptocat.locale.buildObject(locale, language)
+				Cryptocat.locale.refresh(languageObject)
 			}
-			var languageObject = Cryptocat.locale.buildObject(locale, language)
-			Cryptocat.locale.refresh(languageObject)
+			catch(err) {
+				Cryptocat.locale.set('en')
+			}
 		},
 		error: function() {
 			Cryptocat.locale.set('en')
