@@ -58,7 +58,7 @@
 
 - (void) toggleTor{
     if (![CryptocatNetworkManager torShouldBeUsed]) {
-        NSAlert *alert = [NSAlert alertWithMessageText:@"Warning: Tor is an experimental feature." defaultButton:@"Continue" alternateButton:@"Cancel" otherButton:nil informativeTextWithFormat:@"Tor integration is an experimental feature of Cryptocat and bugs can be encountered while using this feature."];
+        NSAlert *alert = [NSAlert alertWithMessageText:@"Warning: Tor offers limited anonymity." defaultButton:@"Continue" alternateButton:@"Cancel" otherButton:nil informativeTextWithFormat:@"While Tor hides your IP address, please remember that you can still be identified by the information you may share in a Cryptocat conversation."];
         NSInteger proceed = [alert runModal];
         if (!proceed) {
             return;
@@ -66,7 +66,7 @@
     }
     [[NSUserDefaults standardUserDefaults] setBool:![CryptocatNetworkManager torShouldBeUsed] forKey:kKeyForTorPreferences];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
+
     CryptocatAppDelegate *delegate = (CryptocatAppDelegate*)[[NSApplication sharedApplication] delegate];
     [delegate reinitialize];
 }
