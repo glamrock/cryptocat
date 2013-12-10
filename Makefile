@@ -63,6 +63,8 @@ lint:
 		src/core/js/etc/*.js \
 		src/standaloneServer.js \
 		src/firefox/chrome/content/cryptocat.js \
+		src/opera/opera.js \
+		src/core/chrome.js \
 		test/testBase.js \
 		test/core/js/*.js \
 		Gruntfile.js
