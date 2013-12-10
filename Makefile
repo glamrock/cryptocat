@@ -1,7 +1,7 @@
 chrome:
 	@mkdir -p release
 	@rm -f release/cryptocat.chrome.zip
-	@cd src/core/ && zip -q -r9 ../../release/cryptocat.chrome.zip * -x "*/\.*" -x "\.*"
+	@cd src/core/ && zip -q -r9 ../../release/cryptocat.chrome.zip * -x "*/\.*" -x "\.*" -x "*.ogg"
 	@/bin/echo "[Cryptocat] Chrome build available in release/"
 
 firefox:
@@ -9,6 +9,7 @@ firefox:
 	@rm -f release/cryptocat.firefox.xpi
 	@mkdir src/firefox/chrome/content/data/
 	@cp -R src/core/css src/core/firstRun.html src/core/fonts src/core/img src/core/index.html src/core/js src/core/locale src/core/snd src/firefox/chrome/content/data/
+	@rm -f src/firefox/chrome/content/data/snd/*.ogg
 	@cd src/firefox/ && zip -q -r9 ../../release/cryptocat.firefox.xpi * -x "*/\.*" -x "\.*"
 	@rm -r src/firefox/chrome/content/data/
 	@/bin/echo "[Cryptocat] Firefox build available in release/"
@@ -17,6 +18,7 @@ safari:
 	@rm -rf src/cryptocat.safariextension
 	@mkdir src/cryptocat.safariextension
 	@cp -R src/core/css src/core/firstRun.html src/core/fonts src/core/img src/core/index.html src/core/js src/core/locale src/core/snd src/cryptocat.safariextension
+	@rm -f src/cryptocat.safariextension/snd/*.ogg
 	@cp -R src/safari/* src/cryptocat.safariextension
 	@/bin/echo "[Cryptocat] Safari extension packaged for testing."
 
@@ -24,6 +26,7 @@ opera:
 	@mkdir -p release
 	@rm -f release/cryptocat.opera.nex
 	@cp -R src/core/css src/core/firstRun.html src/core/fonts src/core/img src/core/index.html src/core/js src/core/locale src/core/snd src/opera
+	@rm -f src/opera/snd/*.mp3
 	@cd src/opera/ && zip -q -r9 ../../release/cryptocat.opera.nex * -x "*/\.*" -x "\.*"
 	@rm -rf src/opera/css src/opera/firstRun.html src/opera/fonts src/opera/img src/opera/index.html src/opera/js src/opera/locale src/opera/snd
 	@/bin/echo "[Cryptocat] Opera build available in release/"
@@ -35,6 +38,7 @@ mac:
 	@rm -rf release/Cryptocat.app
 	@rm -rf release/cryptocat.mac.zip
 	@cp -R src/core/css src/core/firstRun.html src/core/fonts src/core/img src/core/index.html src/core/js src/core/locale src/core/snd src/mac/htdocs
+	@rm -f src/mac/htdocs/snd/*.ogg
 	@xcodebuild -project src/mac/Cryptocat.xcodeproj -configuration 'Release' clean
 	@xcodebuild CONFIGURATION_BUILD_DIR="${PWD}/release" -project src/mac/Cryptocat.xcodeproj -configuration 'Release' build
 	@rm -rf release/Cryptocat.app.dSYM

@@ -14,13 +14,17 @@ Cryptocat.authenticatedUsers = []
 Cryptocat.conversationName = null
 Cryptocat.myNickname = null
 
+Cryptocat.audioExtension = '.mp3'
+if (navigator.userAgent.match('OPR')) {
+	Cryptocat.audioExt = '.ogg' // Opera doesn't support mp3 HTML5 audio
+}
 Cryptocat.sounds = {
-	'keygenStart': (new Audio('snd/keygenStart.mp3')),
-	'keygenLoop': (new Audio('snd/keygenLoop.mp3')),
-	'keygenEnd': (new Audio('snd/keygenEnd.mp3')),
-	'userJoin': (new Audio('snd/userJoin.mp3')),
-	'userLeave': (new Audio('snd/userLeave.mp3')),
-	'msgGet': (new Audio('snd/msgGet.mp3'))
+	'keygenStart': (new Audio('snd/keygenStart' + Cryptocat.audioExt)),
+	'keygenLoop': (new Audio('snd/keygenLoop' + Cryptocat.audioExt)),
+	'keygenEnd': (new Audio('snd/keygenEnd' + Cryptocat.audioExt)),
+	'userJoin': (new Audio('snd/userJoin' + Cryptocat.audioExt)),
+	'userLeave': (new Audio('snd/userLeave' + Cryptocat.audioExt)),
+	'msgGet': (new Audio('snd/msgGet' + Cryptocat.audioExt))
 }
 
 /*
