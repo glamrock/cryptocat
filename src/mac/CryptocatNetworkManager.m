@@ -58,7 +58,7 @@
 
 - (void) toggleTor{
     if (![CryptocatNetworkManager torShouldBeUsed]) {
-        NSAlert *alert = [NSAlert alertWithMessageText:@"Warning: Tor offers limited anonymity." defaultButton:@"Continue" alternateButton:@"Cancel" otherButton:nil informativeTextWithFormat:@"While Tor hides your IP address, please remember that you can still be identified by the information you may share in a Cryptocat conversation."];
+        NSAlert *alert = [NSAlert alertWithMessageText:@"Warning: Tor offers limited anonymity." defaultButton:@"Continue" alternateButton:@"Cancel" otherButton:nil informativeTextWithFormat:@"While Tor provides some anonymity, please remember that you can still be identified by the information you share in a Cryptocat conversation."];
         NSInteger proceed = [alert runModal];
         if (!proceed) {
             return;
