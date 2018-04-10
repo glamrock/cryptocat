@@ -1,14 +1,14 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
-Herkes için Güvenli İletişim
-Cryptocat’e hoşgeldiniz. Yararlı öneriler burada bulunur:<ul><li>Cryptocat sihirli bir değnek değildir. Körü körüne hiç bir zaman her hangi bir software’e güvenmeyin.</li><li class="key">Cryptocat sizi ne güvenilmez insanlardan nede tuş kaydedicilerinden koruyabilir, ve sizin bağlantınızı anonimleştirmez.</li></ul>
+Herkes İçin Güvenli İletişim
+Cryptocat'e hoşgeldiniz. İşte size birkaç faydalı ipucu: <ul><li>Cryptocat sihirli bir değnek değildir. Hayatınızda hiçbir yazılıma güvenmemelisiniz.</li><li class="key">Cryptocat sizi güvenilmez insanlar ya da tuş kaydedicilere karşı koruyamaz ve bağlantınızı anonimleştiremez.</li></ul>
 Blog
 Özel sunucu
 Yenile
 sohbet adı
 takma ad
 bağlan
-Konuşma için bir isim girin ve konuşmak istediğiniz insanlarla bu ismi paylaşın.
+Konuşma için bir isim girin ve konuşmak istediğiniz insanlarla bu ismi paylaşın, ya da yeni insanlarla tanışmak için <strong>lobiye</stron> girin!
 Katılmak için bir sohbet adı girin
 Lütfen bir sohbet adı girin
 Sohbet adı alfasayısal olmalıdır. 
@@ -16,20 +16,20 @@ Lütfen bir kullanıcı ismi girin.
 Takma ad alfasayısal olmalıdır.
 Kulanımda olan takma ad.
 Doğrulama hatası
-Bağlantı başarısız oldu
+Bağlantı başarısız.
 Cryptocat kullandığınız için teşekkür ederiz.
-Kayıt ediliyor
-Bağlantı...
+Kayıt ediliyor...
+Bağlanılıyor...
 Bağlandı.
 Lütfen bir kaç saniye mümkün olduğunca rastgele tuşlara basın.
 Şifreleme anahtarları oluşturuluyor...
 Grup sohbeti. Özel sohbet için bir kullanıcı üzerine tıklayınız.
 OTR parmak izi (özel konuşmalar için):
-Grup sohbeti parmak izi 
-Benim şifreleme anahtarlarımı yeniden kur.
-Şifreleme anahtarlarını yeniden kurmak için bağlantınız kesilecektir. Parmak izleriniz de değişecektir.
+Grup sohbeti parmak izi:
+Şifreleme anahtarımı yeniden oluştur.
+Şifreleme anahtarlarını yeniden oluşturmak bağlantınızı kopartacaktır. Parmak izleriniz de değişecektir.
 Devam et
-Durum: Mevcut
+Durum: Uygun
 Durup: Uzakta
 Bilgilerim
 Masaüstü bildirimleri açık
@@ -39,17 +39,30 @@ Ses bildirimleri kapalı
 Benim takma adımı hatırla.
 Takma adımı hatırlama
 Çıkış
-Bilgi ekranı
+Bilgileri Göster
 Şifrelenmiş dosya gönder
-Resmi görüntüle
-Dosya indir
+resmi görüntüle
+dosya indir
 Sohbet
-Sadece ZIP dosyaları ve görüntüler kabul edilmektedir. Azami dosya boyutu: (SIZE) MB.
-Hata: Lütfen dosyanızın ZIP dosyası ya da görüntüsü olduğundan emin olun.
-Hata: Dosya (SIZE) MB daha büyük olamaz.
+Sadece ZIP dosyaları ve görüntü dosyaları kabul edilmektedir. Azami dosya boyutu: (SIZE) MB.
+Hata: Lütfen dosyanızın bir ZIP dosyası ya da bir görüntü dosyası olduğuna emin olun.
+Hata: Dosya (SIZE) MB'tan daha büyük olamaz.
 Görüntülü sohbeti başlatın
 Görüntülü sohbeti sonlandır
 (NICKNAME) sizinle görüntülü bir sohbet başlatmak istiyor.
 İptal et
-Blokla
-Engellemeyi kaldır
+Yoksay
+Yoksaymaktan vazgeç
+Kimliği doğrulayın
+Gizli bir soru sorarak bu kullanıcının kimliğini onaylayın. Yanıtlar tam olarak eşleşmelidir!
+Gizli soru
+Gizli yanıt
+Sor
+Soruluyor...
+Başarısız
+Kimlik doğrulandı.
+(NICKNAME) kimliğinizi doğrulamak istiyor. Kendi kimliğinizi doğrulamak için lütfen aşağıdaki gizli soruya yanıt verin:
+Yanıtınız, (NICKNAME) tarafından verilen yanıtla birebir eşleşmelidir.
+Yanıt
+Uyarı: (NICKNAME) adlı kullanıcıdan okunamayan bir mesaj aldınız. Bu, mesajın güvenilmeyen bir kullanıcıdan geldiğini veya mesajın ulaşmada başarısız olduğunu gösterir.
+Uyarı: Cryptocat sürümünüz güncel değil. Son sürüme yükseltmeniz şiddetle önerilmektedir! Son sürüme yükseltmeden ilerlemeyin.

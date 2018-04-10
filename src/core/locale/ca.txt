@@ -1,7 +1,7 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Converses privades per a tothom.
-Benvingut a Cryptocat. Aquests són alguns consells útils: <ul> <li> Cryptocat no és una solució màgica. Vostè hauria never trust qualsevol peça de programari amb el seu vida. </li> <li class="key"> Cryptocat no pot protegir-se contra les persones dignes de confiança, loggers clau i no anonymize la connexió. </li> </ul>
+Benvingut a Cryptocat. Aquí van alguns consells útils:<ul><li>Cryptocat no és una solució màgica. Mai hauria de posar la seva vida en mans d'un programa.</li> <li class="key">Cryptocat no pot protegir-lo de persones amb males intencions ni keyloggers, així com tampoc anonimitza la seva conexió.</li></ul>
 Bloc
 Servidor personalitzat
 Reinicia
@@ -49,5 +49,20 @@ Error: Assegura't que l'arxiu sigui un ZIP o una imatge.
 Error: L'arxiu no pot superar (SIZE) MB.
 Iniciar xat amb video
 Finalitzar xat amb video
-(NICKNAME) vol iniciar un xat amb video amb tu.
+(NICKNAME) vol iniciar una videoconferència amb tu.
 Cancel·lar
+Ignorar
+Des-ignorar
+Autenticar-se
+Verifica la identitat d'aquest usuari fent una pregunta secreta. La resposta ha de coincidir exactament!
+Pregunta secreta
+Resposta secreta
+Pregunta
+Preguntant...
+Error
+Identitat verificada.
+(NICKNAME) vol verificar la teva identitat. Siusplau, contesta la pregunta secreta per a autenticar-te:
+La teva resposta ha de coincidir exactament amb la proporcionada per (NICKNAME).
+Resposta
+Alerta: Has rebut un missatge de (NICKNAME) que no s'ha pogut llegir. Això podria indicar un possible atac, o un error de comuncació.
+Alerta: La teva versió de Cryptocat és vella. És molt important que l'actualitzis abans de continuar.

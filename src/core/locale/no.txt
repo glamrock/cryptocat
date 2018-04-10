@@ -1,7 +1,7 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Private Samtaler For Alle. 
-Velkommen til Cryptocat. Her er noen greie huskeregler: <ul><li>Cryptocat er ikke en universalløsning. Du bør aldri legge livet ditt i hendene på noen programvare.</li><li class="key"> Cryptocat kan ikke beskytte deg mot upålitelige personer, keyloggere og anonymiserer ikke forbindelsen din. </li></ul>
+Velkommen til Cryptocat. Her er noen helpsomme tips: <ul><li>Cryptocat er ikke en magisk kule. Du bør aldri stole på noen programvarer fult og helt.</li><li class="key">Cryptocat kan ikke beskytte deg mot upålitelige personer eller tasteloggere og anonymiserer ikke din tilkobling.</li></ul>
 Blogg
 Egendefinert server
 Tilbakestill
@@ -49,7 +49,20 @@ Feil: Sikker på at filen din er en ZIP-fil eller et bilde?
 Feil: Filen kan ikke være større enn (SIZE) MB.
 Start videosamtale
 Avslutt videosamtale
-(NICKNAME) vil starte en videosamtale med deg.
+(NICKNAME) vil starte en video prat med deg.
 Avbryt
-Blokker
-Fjern blokkering
+Ignorer
+Ikke ignorer
+Autentifisere
+Verifiser denne brukerens identitet ved å spørre et hemmelig spørsmål. Svaret må samsvare nøyaktig!
+Hemmelig spørsmål
+Hemmelig svar
+Spør
+Spør...
+Mislyktes
+Identitet bekreftet.
+(NICKNAME) ønsker å bekrefte din identitet. Besvar det hemmelige spørsmålet nedenfor for å autentifisere deg selv.
+Ditt svar må være nøyaktig det samme som gitt av (NICKNAME)
+Svar
+Advarsel: Du har mottatt en uleselig melding fra (NICKNAME). Dette kan indikere en upålitelig bruker eller at mottak av meldingen feilet.
+Advarsel: Din versjon av Cryptocat er utdatert. Vi anbefaler sterkt at du oppdaterer til den nyeste versjonen. Ikke fortsett uten å oppdatere til den nyeste versjonen.

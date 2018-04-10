@@ -1,6 +1,6 @@
 /*!
 
-  otr.js v0.2.3 - 2013-08-17
+  otr.js v0.2.8 - 2013-11-11
   (c) 2013 - Arlo Breault <arlolra@gmail.com>
   Freely distributed under the MPL v2.0 license.
 
@@ -13,9 +13,9 @@
 
   if (typeof define === 'function' && define.amd) {
     define([
-        "./dep/bigint"
-      , "./dep/crypto"
-      , "./dep/eventemitter"
+        "bigint"
+      , "crypto"
+      , "eventemitter"
     ], function (BigInt, CryptoJS, EventEmitter) {
       var root = {
           BigInt: BigInt
@@ -120,6 +120,8 @@
   var WRAPPER_BEGIN = "?OTR"
     , WRAPPER_END   = "."
 
+  var TWO = BigInt.str2bigInt('2', 10)
+
   HLP.debug = function (msg) {
     // used as HLP.debug.call(ctx, msg)
     if ( this.debug &&
@@ -139,15 +141,14 @@
     child.__super__ = parent.prototype
   }
 
-  HLP.divMod = function (num, den, n) {
-    return BigInt.multMod(num, BigInt.inverseMod(den, n), n)
-  }
-
-  HLP.subMod = function (one, two, n) {
-    one = BigInt.mod(one, n)
-    two = BigInt.mod(two, n)
-    if (BigInt.greater(two, one)) one = BigInt.add(one, n)
-    return BigInt.sub(one, two)
+  // constant-time string comparison
+  HLP.compare = function (str1, str2) {
+    if (str1.length !== str2.length)
+      return false
+    var i = 0, result = 0
+    for (; i < str1.length; i++)
+      result |= str1[i].charCodeAt(0) ^ str2[i].charCodeAt(0)
+    return result === 0
   }
 
   HLP.randomExponent = function () {
@@ -221,28 +222,8 @@
     return (BigInt.greater(x, a) && BigInt.greater(b, x))
   }
 
-  HLP.checkGroup = function (g, N) {
-    var TWO = BigInt.str2bigInt('2', 10)
-    var N_MINUS_2 = BigInt.sub(N, TWO)
+  HLP.checkGroup = function (g, N_MINUS_2) {
     return HLP.GTOE(g, TWO) && HLP.GTOE(N_MINUS_2, g)
-  }
-
-  var OPS = {
-      'XOR': function (c, s) { return c ^ s }
-    , 'OR': function (c, s) { return c | s }
-    , 'AND': function (c, s) { return c & s }
-  }
-  HLP.bigBitWise = function (op, a, b) {
-    var tf = (a.length > b.length)
-      , short = tf ? b : a
-      , long  = tf ? a : b
-      , len = long.length
-      , c = BigInt.expand(short, len)
-      , i = 0
-    for (; i < len; i++) {
-      c[i] = OPS[op](c[i], long[i])
-    }
-    return c
   }
 
   HLP.h1 = function (b, secbytes) {
@@ -263,14 +244,7 @@
     return bytes.substr(start / 8, n / 8)
   }
 
-  HLP.twotothe = function (g) {
-    var ex = g % 4
-    g = Math.floor(g / 4)
-    var str = (Math.pow(2, ex)).toString()
-    for (var i = 0; i < g; i++) str += '0'
-    return BigInt.str2bigInt(str, 16)
-  }
-
+  var _toString = String.fromCharCode;
   HLP.packBytes = function (val, bytes) {
     val = val.toString(16)
     var nex, res = ''  // big-endian, unsigned long
@@ -300,10 +274,9 @@
   }
 
   HLP.unpack = function (arr) {
-    arr.reverse()
     var val = 0, i = 0, len = arr.length
     for (; i < len; i++) {
-      val += Math.pow(256, i) * arr[i]
+      val = (val * 256) + arr[i]
     }
     return val
   }
@@ -312,27 +285,13 @@
     return HLP.packINT(d.length) + d
   }
 
-  HLP.bigInt2bits = function (bi, pad) {
-    pad || (pad = 0)
-    bi = BigInt.dup(bi)
-    var ba = ''
-    while (!BigInt.isZero(bi)) {
-      ba = _num2bin[bi[0] & 0xff] + ba
-      BigInt.rightShift_(bi, 8)
-    }
-    while (ba.length < pad) {
-      ba = '\x00' + ba
-    }
-    return ba
-  }
-
   HLP.bits2bigInt = function (bits) {
     bits = HLP.toByteArray(bits)
-    return HLP.retMPI(bits)
+    return BigInt.ba2bigInt(bits)
   }
 
   HLP.packMPI = function (mpi) {
-    return HLP.packData(HLP.bigInt2bits(BigInt.trim(mpi, 0)))
+    return HLP.packData(BigInt.bigInt2bits(BigInt.trim(mpi, 0)))
   }
 
   HLP.packSHORT = function (short) {
@@ -358,19 +317,10 @@
     return [n, data]
   }
 
-  HLP.retMPI = function (data) {
-    var mpi = BigInt.str2bigInt('0', 10, data.length)
-    data.forEach(function (d, i) {
-      if (i) BigInt.leftShift_(mpi, 8)
-      mpi[0] |= d
-    })
-    return mpi
-  }
-
   HLP.readMPI = function (data) {
     data = HLP.toByteArray(data)
     data = HLP.readData(data)
-    return HLP.retMPI(data[1])
+    return BigInt.ba2bigInt(data[1])
   }
 
   HLP.packMPIs = function (arr) {
@@ -444,41 +394,34 @@
 
   // https://github.com/msgpack/msgpack-javascript/blob/master/msgpack.js
 
-  var _bin2num = {}
-    , _num2bin = {}
-    , _toString = String.fromCharCode
-
-  var i = 0, v
-
-  for (; i < 0x100; ++i) {
-    v = _toString(i)
-    _bin2num[v] = i  // "\00" -> 0x00
-    _num2bin[i] = v  //     0 -> "\00"
-  }
-
-  for (i = 0x80; i < 0x100; ++i) {  // [Webkit][Gecko]
-    _bin2num[_toString(0xf700 + i)] = i  // "\f780" -> 0x80
-  }
+  var _bin2num = (function () {
+    var i = 0, _bin2num = {}
+    for (; i < 0x100; ++i) {
+      _bin2num[String.fromCharCode(i)] = i  // "\00" -> 0x00
+    }
+    for (i = 0x80; i < 0x100; ++i) {  // [Webkit][Gecko]
+      _bin2num[String.fromCharCode(0xf700 + i)] = i  // "\f780" -> 0x80
+    }
+    return _bin2num
+  }())
 
   HLP.toByteArray = function (data) {
-    var rv = [], bin2num = _bin2num, remain
+    var rv = []
       , ary = data.split("")
       , i = -1
-      , iz
-
-    iz = ary.length
-    remain = iz % 8
+      , iz = ary.length
+      , remain = iz % 8
 
     while (remain--) {
       ++i
-      rv[i] = bin2num[ary[i]]
+      rv[i] = _bin2num[ary[i]]
     }
     remain = iz >> 3
     while (remain--) {
-      rv.push(bin2num[ary[++i]], bin2num[ary[++i]],
-              bin2num[ary[++i]], bin2num[ary[++i]],
-              bin2num[ary[++i]], bin2num[ary[++i]],
-              bin2num[ary[++i]], bin2num[ary[++i]])
+      rv.push(_bin2num[ary[++i]], _bin2num[ary[++i]],
+              _bin2num[ary[++i]], _bin2num[ary[++i]],
+              _bin2num[ary[++i]], _bin2num[ary[++i]],
+              _bin2num[ary[++i]], _bin2num[ary[++i]])
     }
     return rv
   }
@@ -489,11 +432,12 @@
 
   var root = this
 
-  var CryptoJS, BigInt, HLP
+  var CryptoJS, BigInt, Worker, WWPath, HLP
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = DSA
     CryptoJS = require('../vendor/crypto.js')
     BigInt = require('../vendor/bigint.js')
+    WWPath = require('path').join(__dirname, '/dsa-webworker.js')
     HLP = require('./helpers.js')
   } else {
     // copy over and expose internals
@@ -503,6 +447,8 @@
     root.DSA = DSA
     CryptoJS = root.CryptoJS
     BigInt = root.BigInt
+    Worker = root.Worker
+    WWPath = 'dsa-webworker.js'
     HLP = DSA.HLP
   }
 
@@ -576,7 +522,7 @@
 
     var N = bit_lengths[bit_length].N
 
-    var LM1 = HLP.twotothe(bit_length - 1)
+    var LM1 = BigInt.twoToThe(bit_length - 1)
     var bl4 = 4 * bit_length
     var brk = false
 
@@ -692,8 +638,8 @@
 
     // http://www.imperialviolet.org/2013/06/15/suddendeathentropy.html
     generateNonce: function (m) {
-      var priv = HLP.bigInt2bits(BigInt.trim(this.x, 0))
-      var rand = HLP.bigInt2bits(BigInt.randBigInt(256))
+      var priv = BigInt.bigInt2bits(BigInt.trim(this.x, 0))
+      var rand = BigInt.bigInt2bits(BigInt.randBigInt(256))
 
       var sha256 = CryptoJS.algo.SHA256.create()
       sha256.update(CryptoJS.enc.Latin1.parse(priv))
@@ -848,6 +794,43 @@
     return BigInt.equals(v, r)
   }
 
+  DSA.createInWebWorker = function (options, cb) {
+    var opts = {
+        path: WWPath
+      , seed: BigInt.getSeed
+    }
+    if (options && typeof options === 'object')
+      Object.keys(options).forEach(function (k) {
+        opts[k] = options[k]
+      })
+
+    // load optional dep. in node
+    if (typeof module !== 'undefined' && module.exports)
+      Worker = require('webworker-threads').Worker
+
+    var worker = new Worker(opts.path)
+    worker.onmessage = function (e) {
+      var data = e.data
+      switch (data.type) {
+        case "debug":
+          if (!DEBUG || typeof console === 'undefined') return
+          console.log(data.val)
+          break;
+        case "data":
+          worker.terminate()
+          cb(DSA.parsePrivate(data.val))
+          break;
+        default:
+          throw new Error("Unrecognized type.")
+      }
+    }
+    worker.postMessage({
+        seed: opts.seed()
+      , imports: opts.imports
+      , debug: DEBUG
+    })
+  }
+
 }).call(this)
 ;(function () {
   "use strict";
@@ -867,6 +850,11 @@
     HLP = root.OTR.HLP
   }
 
+  // whitespace tags
+  var tags = {}
+  tags[CONST.WHITESPACE_TAG_V2] = CONST.OTR_VERSION_2
+  tags[CONST.WHITESPACE_TAG_V3] = CONST.OTR_VERSION_3
+
   Parse.parseMsg = function (otr, msg) {
 
     var ver = []
@@ -885,10 +873,6 @@
 
         msg = msg.split('')
         msg.splice(ind, 16)
-
-        var tags = {}
-        tags[CONST.WHITESPACE_TAG_V2] = CONST.OTR_VERSION_2
-        tags[CONST.WHITESPACE_TAG_V3] = CONST.OTR_VERSION_3
 
         var tag, len = msg.length
         for (; ind < len;) {
@@ -1079,6 +1063,7 @@
   // diffie-hellman modulus
   // see group 5, RFC 3526
   var N = BigInt.str2bigInt(CONST.N, 16)
+  var N_MINUS_2 = BigInt.sub(N, BigInt.str2bigInt('2', 10))
 
   function hMac(gx, gy, pk, kid, m) {
     var pass = CryptoJS.enc.Latin1.parse(m)
@@ -1139,7 +1124,8 @@
     verifySignMac: function (mac, aesctr, m2, c, their_y, our_dh_pk, m1, ctr) {
       // verify mac
       var vmac = HLP.makeMac(aesctr, m2)
-      if (mac !== vmac) return ['MACs do not match.']
+      if (!HLP.compare(mac, vmac))
+        return ['MACs do not match.']
 
       // decrypt x
       var x = HLP.decryptAes(aesctr.substring(4), c, ctr)
@@ -1163,8 +1149,8 @@
       var m = hMac(this.our_dh.publicKey, their_y, pk, kid, m1)
       m = this.priv.sign(m)
       var msg = pk + kid
-      msg += HLP.bigInt2bits(m[0], 20)  // pad to 20 bytes
-      msg += HLP.bigInt2bits(m[1], 20)
+      msg += BigInt.bigInt2bits(m[0], 20)  // pad to 20 bytes
+      msg += BigInt.bigInt2bits(m[1], 20)
       msg = CryptoJS.enc.Latin1.parse(msg)
       var aesctr = HLP.packData(HLP.encryptAes(msg, c, HLP.packCtr(0)))
       var mac = HLP.makeMac(aesctr, m2)
@@ -1279,7 +1265,7 @@
           this.their_y = HLP.readMPI(msg[0])
 
           // verify gy is legal 2 <= gy <= N-2
-          if (!HLP.checkGroup(this.their_y, N))
+          if (!HLP.checkGroup(this.their_y, N_MINUS_2))
             return this.otr.error('Illegal g^y.', true)
 
           this.createKeys(this.their_y)
@@ -1315,11 +1301,11 @@
           // verify hash
           var hash = CryptoJS.SHA256(CryptoJS.enc.Latin1.parse(gxmpi))
 
-          if (this.hashed !== hash.toString(CryptoJS.enc.Latin1))
+          if (!HLP.compare(this.hashed, hash.toString(CryptoJS.enc.Latin1)))
             return this.otr.error('Hashed g^x does not match.', true)
 
           // verify gx is legal 2 <= g^x <= N-2
-          if (!HLP.checkGroup(this.their_y, N))
+          if (!HLP.checkGroup(this.their_y, N_MINUS_2))
             return this.otr.error('Illegal g^x.', true)
 
           this.createKeys(this.their_y)
@@ -1476,6 +1462,7 @@
   // see group 5, RFC 3526
   var G = BigInt.str2bigInt(CONST.G, 10)
   var N = BigInt.str2bigInt(CONST.N, 16)
+  var N_MINUS_2 = BigInt.sub(N, BigInt.str2bigInt('2', 10))
 
   // to calculate D's for zero-knowledge proofs
   var Q = BigInt.sub(N, BigInt.str2bigInt('1', 10))
@@ -1522,8 +1509,8 @@
     this.a3 = HLP.randomExponent()
     this.g2a = BigInt.powMod(G, this.a2, N)
     this.g3a = BigInt.powMod(G, this.a3, N)
-    if ( !HLP.checkGroup(this.g2a, N) ||
-         !HLP.checkGroup(this.g3a, N)
+    if ( !HLP.checkGroup(this.g2a, N_MINUS_2) ||
+         !HLP.checkGroup(this.g3a, N_MINUS_2)
     ) this.makeG2s()
   }
 
@@ -1550,12 +1537,12 @@
   }
 
   SM.prototype.computeD = function (r, a, c) {
-    return HLP.subMod(r, BigInt.multMod(a, c, Q), Q)
+    return BigInt.subMod(r, BigInt.multMod(a, c, Q), Q)
   }
 
   // the bulk of the work
   SM.prototype.handleSM = function (msg) {
-    var send, r2, r3, r7, t1, t2, t3, t4, rab, tmp2, cR, d7, ms
+    var send, r2, r3, r7, t1, t2, t3, t4, rab, tmp2, cR, d7, ms, trust
 
     var expectStates = {
         2: CONST.SMPSTATE_EXPECT1
@@ -1593,8 +1580,8 @@
         if (ms !== 6) return this.abort()
         msg = HLP.unpackMPIs(6, msg.msg.substring(4))
 
-        if ( !HLP.checkGroup(msg[0], N) ||
-             !HLP.checkGroup(msg[3], N)
+        if ( !HLP.checkGroup(msg[0], N_MINUS_2) ||
+             !HLP.checkGroup(msg[3], N_MINUS_2)
         ) return this.abort()
 
         // verify znp's
@@ -1633,10 +1620,10 @@
         if (ms !== 11) return this.abort()
         msg = HLP.unpackMPIs(11, msg.msg.substring(4))
 
-        if ( !HLP.checkGroup(msg[0], N) ||
-             !HLP.checkGroup(msg[3], N) ||
-             !HLP.checkGroup(msg[6], N) ||
-             !HLP.checkGroup(msg[7], N)
+        if ( !HLP.checkGroup(msg[0], N_MINUS_2) ||
+             !HLP.checkGroup(msg[3], N_MINUS_2) ||
+             !HLP.checkGroup(msg[6], N_MINUS_2) ||
+             !HLP.checkGroup(msg[7], N_MINUS_2)
         ) return this.abort()
 
         // verify znp of c3 / c3
@@ -1671,8 +1658,8 @@
         var d6 = this.computeD(r6, this.secret, cP)
 
         // store these
-        this.QoQ = HLP.divMod(this.q, msg[7], N)
-        this.PoP = HLP.divMod(this.p, msg[6], N)
+        this.QoQ = BigInt.divMod(this.q, msg[7], N)
+        this.PoP = BigInt.divMod(this.p, msg[6], N)
 
         this.computeR()
 
@@ -1708,9 +1695,9 @@
         if (ms !== 8) return this.abort()
         msg = HLP.unpackMPIs(8, msg.msg.substring(4))
 
-        if ( !HLP.checkGroup(msg[0], N) ||
-             !HLP.checkGroup(msg[1], N) ||
-             !HLP.checkGroup(msg[5], N)
+        if ( !HLP.checkGroup(msg[0], N_MINUS_2) ||
+             !HLP.checkGroup(msg[1], N_MINUS_2) ||
+             !HLP.checkGroup(msg[5], N_MINUS_2)
         ) return this.abort()
 
         // verify znp of cP
@@ -1723,7 +1710,7 @@
 
         // verify znp of cR
         t3 = HLP.multPowMod(G, msg[7], this.g3ao, msg[6], N)
-        this.QoQ = HLP.divMod(msg[1], this.q, N)  // save Q over Q
+        this.QoQ = BigInt.divMod(msg[1], this.q, N)  // save Q over Q
         t4 = HLP.multPowMod(this.QoQ, msg[7], msg[5], msg[6], N)
 
         if (!HLP.ZKP(7, msg[6], t3, t4))
@@ -1738,18 +1725,14 @@
         cR = HLP.smpHash(8, BigInt.powMod(G, r7, N), tmp2)
         d7 = this.computeD(r7, this.a3, cR)
 
-        rab = this.computeRab(msg[5])
-
-        if (!BigInt.equals(rab, HLP.divMod(msg[0], this.p, N)))
-          return this.abort()
-
         send = HLP.packINT(3) + HLP.packMPIs([ this.r, cR, d7 ])
-
-        // TLV
         send = HLP.packTLV(5, send)
 
+        rab = this.computeRab(msg[5])
+        trust = !!BigInt.equals(rab, BigInt.divMod(msg[0], this.p, N))
+
+        this.trigger('trust', [trust, 'answered'])
         this.init()
-        this.trigger('trust', [true])
         break
 
       case CONST.SMPSTATE_EXPECT4:
@@ -1760,7 +1743,7 @@
         if (ms !== 3) return this.abort()
         msg = HLP.unpackMPIs(3, msg.msg.substring(4))
 
-        if (!HLP.checkGroup(msg[0], N)) return this.abort()
+        if (!HLP.checkGroup(msg[0], N_MINUS_2)) return this.abort()
 
         // verify znp of cR
         t3 = HLP.multPowMod(G, msg[2], this.g3ao, msg[1], N)
@@ -1769,12 +1752,10 @@
           return this.abort()
 
         rab = this.computeRab(msg[0])
+        trust = !!BigInt.equals(rab, this.PoP)
 
-        if (!BigInt.equals(rab, this.PoP))
-          return this.abort()
-
+        this.trigger('trust', [trust, 'asked'])
         this.init()
-        this.trigger('trust', [true])
         return
 
     }
@@ -1880,7 +1861,7 @@
   SM.prototype.abort = function () {
     this.init()
     this.sendMsg(HLP.packTLV(6, ''))
-    this.trigger('trust', [false])
+    this.trigger('abort')
   }
 
 }).call(this)
@@ -1896,7 +1877,6 @@
     CryptoJS = require('../vendor/crypto.js')
     BigInt = require('../vendor/bigint.js')
     EventEmitter = require('../vendor/eventemitter.js')
-    Worker = require('webworker-threads').Worker
     SMWPath = require('path').join(__dirname, '/sm-webworker.js')
     CONST = require('./const.js')
     HLP = require('./helpers.js')
@@ -2019,7 +1999,6 @@
 
     // smp
     this.sm = null  // initialized after AKE
-    this.trust = false  // will be true after successful smp
 
     // when ake is complete
     // save their keys and the session
@@ -2048,6 +2027,11 @@
       Object.keys(otr.smw).forEach(function (k) {
         opts[k] = otr.smw[k]
       })
+
+    // load optional dep. in node
+    if (typeof module !== 'undefined' && module.exports)
+      Worker = require('webworker-threads').Worker
+
     this.worker = new Worker(opts.path)
     var self = this
     this.worker.onmessage = function (e) {
@@ -2094,12 +2078,10 @@
       this.sm = new SM(reqs)
     }
     var self = this
-    this.sm.on('trust', function (trust) {
-      self.trust = trust
-      self.trigger('smp', ['trust', trust])
-    })
-    this.sm.on('question', function (question) {
-      self.trigger('smp', ['question', question])
+    ;['trust', 'abort', 'question'].forEach(function (e) {
+      self.sm.on(e, function () {
+        self.trigger('smp', [e].concat(Array.prototype.slice.call(arguments)))
+      })
     })
     this.sm.on('send', function (ssid, send) {
       if (self.ssid === ssid)
@@ -2320,7 +2302,7 @@
     vt += msg.slice(0, 6).join('')
     var vmac = HLP.make1Mac(vt, sessKeys.rcvmac)
 
-    if (msg[6] !== vmac) {
+    if (!HLP.compare(msg[6], vmac)) {
       if (!ign) this.error('MACs do not match.')
       return
     }
@@ -2483,6 +2465,7 @@
           this.checkInstanceTags(msg.instance_tags)
         ) return  // ignore
         msg.msg = this.handleDataMsg(msg)
+        msg.encrypted = true
         break
       case 'query':
         if (this.msgstate === CONST.MSGSTATE_ENCRYPTED) this._akeInit()
@@ -2499,10 +2482,11 @@
         this.receivedPlaintext = true
 
         // received a whitespace tag
-        if (this.WHITESPACE_START_AKE) this.doAKE(msg)
+        if (this.WHITESPACE_START_AKE && msg.ver.length > 0)
+          this.doAKE(msg)
     }
 
-    if (msg.msg) this.trigger('ui', [msg.msg])
+    if (msg.msg) this.trigger('ui', [msg.msg, msg.encrypted])
   }
 
   OTR.prototype.checkInstanceTags = function (it) {

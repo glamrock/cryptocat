@@ -1,41 +1,41 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
-Privates Chatten für alle.
-Willkommen bei Cryptocat. Hier sind einige hilfreiche Tipps: <ul> <li> Cryptocat ist kein Wundermittel. Sie sollten nie Ihr Leben einem Stück Software anvertrauen. </li> <li class="key"> Cryptocat ist kein Schutz vor nicht vertrauenswürdigen Menschen oder key-loggern. Ihre Verbindung wir nicht anonymisiert.</li></ul>
+Private Unterhaltungen für alle.
+Willkommen bei Cryptocat. Ein paar hilfreiche Tipps: <ul><li>Cryptocat ist keine magische Glaskugel. Du solltest niemals einer Software Ihr Leben anvertrauen.</li><li class="key">Cryptocat kann dich nicht vor unvertrauenswürdige Menschen oder Keylogger schützen und anonymisiert deine Internetverbindung nicht.</li></ul>
 Blog
 Benutzerdefinierter Server
 Zurücksetzen
-Name der Konversation
+Name der Unterhaltung
 Nickname
 verbinden
-Gebe einen Namen für den Chatroom ein und teile ihn mit anderen, um dich mit ihnen zu unterhalten. Wenn du dich mit neuen Leuten treffen willst, gebe <strong>lobby</strong> als Chatnamen ein.
-Gebe den Namen des Chatsrooms an, dem du beitreten willst.
-Bitte gib einen Namen für den Chatroom ein.
-Der Name des Chatrooms muss alphanumerisch sein.
-Gebe bitte einen Nicknamen ein.
-Der Nickname muss alphanumerisch sein.
+Gib einen Namen für deine Unterhaltung ein und teile sie mit Leuten, mit denen du dich unterhalten möchtest, oder besuche die <strong>Lobby</strong>, um neue Leute zu treffen!
+Gib den Namen der Unterhaltung ein, der du beitreten möchtest.
+Bitte gib einen Namen für die Unterhaltung ein.
+Der Name der Unterhaltung darf nur aus Buchstaben und Zahlen bestehen. 
+Gebe bitte einen Nickname ein.
+Der Nickname darf nur aus Buchstaben und Zahlen bestehen.
 Dieser Nickname wird bereits verwendet.
 Authentifizierungsfehler.
 Verbindung fehlgeschlagen.
-Danke, dass Du Cryptocat verwendest.
-Registriere...
-Verbinde...
+Danke, dass du Cryptocat verwendest.
+Registrieren...
+Verbinden...
 Verbunden.
-Tippe bitte, einige Sekunden lang, so zufällig wie möglich auf der Tastatur herum.
+Tipp bitte für einige Sekunden so zufällig wie möglich auf der Tastatur.
 Generiere Verschlüsselungscodes...
-Gruppenchat. Klicke auf einen Teilnehmer, um eine private Unterhaltung zu beginnen.
-OTR Fingerabdruck (für private Unterhaltungen):
-Fingerabdruck des Gruppenchats:
+Gruppenunterhaltung. Klicke auf einen Teilnehmer, um eine private Unterhaltung zu beginnen.
+OTR-Fingerabdruck (für private Konversationen):
+Fingerabdruck der Gruppenunterhaltung:
 Meine Verschlüsselungscodes zurücksetzen
 Das Zurücksetzen deiner Verschlüsselungscodes wird die Verbindung beenden. Deine Fingerabdrücke werden sich dadurch auch ändern.
 Fortsetzen
 Status: Verfügbar
 Status: Abwesend
-Meine Infos
-Desktop-Benachrichtigungen: AN
-Desktop-Benachrichtigungen: AUS
-Audio-Benachrichtigungen: AN
-Audio-Benachrichtigungen: AUS
+Meine Info
+Desktop-Benachrichtigungen an
+Desktop-Benachrichtigungen aus
+Benachrichtigungstöne an
+Benachrichtigungstöne aus
 Meinen Nicknamen merken
 Meinen Nicknamen nicht merken
 Abmelden
@@ -43,13 +43,26 @@ Info anzeigen
 Verschlüsselte Datei senden
 Bild anzeigen
 Datei herunterladen
-Chat
+Unterhaltung
 Es werden nur ZIP-Dateien und Bilder akzeptiert. Maximale Dateigröße: (SIZE) MB.
-Fehler: Bitte stelle sicher, dass deine Datei eine ZIP-Datei oder ein Bild ist. 
+Fehler: Bitte stelle sicher, dass deine Datei eine ZIP-Datei oder ein Bild ist.
 Fehler: Datei darf nicht größer als (SIZE) MB sein.
 Video-Chat starten
 Video-Chat beenden
-(NICKNAME) möchte gerne einen Video-Chat mit dir beginnen. 
+(NICKNAME) möchte einen Video-Chat mit dir beginnen.
 Abbrechen
-Sperren
-Entsperren
+Ignorieren
+Ignorieren rückgängig machen
+Authentifizieren
+Prüfung der Identität dieses Benutzers durch eine Sicherheitsfrage. Antworten müssen exakt übereinstimmen!
+Sicherheitsfrage
+Geheime Antwort
+Fragen
+Frage...
+Fehlgeschlagen
+Identität bestätigt.
+(NICKNAME) möchte deine Identität prüfen. Bitte beantworte die unten stehende Sicherheitsfrage, um dich zu authentifizieren.
+Deine Antwort muss derjenigen von (NICKNAME) exakt übereinstimmen.
+Antwort
+Achtung: Du hast von (NICKNAME) eine nicht lesbare Nachricht erhalten. Dies kann auf einen nicht vertrauenswürdigen Nutzer hinweisen oder auf Nachrichten, welche nicht richtig empfangen wurden.
+Achtung: Deine Version von Cryptocat ist veraltet. Wir empfehlen dir dringend die neueste Version! Aktualisiere auf die neuste Version, bevor Du weitermachst.

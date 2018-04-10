@@ -1,7 +1,7 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Đối thoại Riêng tư cho Mọi người.
-Chào bạn đến với Cryptocat. Bạn lưu ý một số điểm sau đây:<ul><li>Cryptocat không phải là một liều thần dược. Đừng cậy nhờ sự an nguy của bạn vào bất cứ phần mềm nào.</li><li class="key">Cryptocat không thể bảo vệ bạn chống lại kẻ gian, keyloggers, và không giúp làm ẩn danh đường nối kết.</li></ul>
+Chào mừng đến với Cryptocat. Sau đây là vài mẹo hữu ích: <ul><li> Cryptocat không phải là một viên đạn bạc. Bạn không bao giờ nên tin trọn đời vào một phần mềm nào.</li><li class="key">Cryptocat không thể bảo vệ bạn khỏi những kẻ không đáng tin cậy hay là trình theo dõi bàn phím, và không vô danh hoá kết nối của bạn.</li></ul>
 Blog
 Máy chủ tuỳ chỉnh
 Đặt lại
@@ -49,7 +49,20 @@ Lỗi: Hãy đảm bảo rằng tập tin gửi đi có định dạng ZIP hay l
 Lỗi: Tập tin không thể lớn hơn (SIZE) MB.
 Bắt đầu cuộc gọi video
 Kết thúc cuộc gọi video
-(NICKNAME) muốn bắt đầu một cuộc gọi video với bạn.
+(NICKNAME) muốn bắt đầu tán gẫu hình với bạn.
 Hủy bỏ
-Khóa
-Mở Khóa
+Bỏ qua
+Huỷ bỏ qua
+Xác minh
+Xác thực nhân dạng người dùng này bằng cách hỏi câu hỏi bí mật. Câu trả lời phải so khớp chính xác !
+Câu hỏi bí mật
+Câu trả lời bí mật
+Hỏi
+Đang hỏi...
+Hỏng
+Nhân dạng đã được xác thực
+(NICKNAME) muốn xác thực nhân dạng của bạn. Vui lòng trả lời câu hỏi bí mật bên dưới để xác minh bạn:
+Câu trả lời của bạn phải khớp chính xác với (NICKNAME).
+Trả lời
+Cảnh báo: Bạn nhận được một tin nhắn không đọc được từ (NICKNAME). Điều này có thể biểu thị một người dùng không đáng tin cậy hoặc tin nhắn nhận hỏng
+Cảnh báo: Phiên bản Cryptocat của bạn đã hết hạn. Chúng tôi nghiêm túc đề nghị bạn cấp nhận phiên bản mới nhất ! Đừng tiếp tục nếu chưa cập nhật mới nhất.

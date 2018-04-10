@@ -1,7 +1,7 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Prywatne rozmowy dla każdego.
-Witamy w Cryptocat. Oto kilka pomocnych wskazówek:  <ul><li>Cryptocat nie jest receptą na wszystko. Nigdy nie ufaj żadnemu oprogramowaniu, jeśli stawką jest twoje życie.</li><li class="key">Cryptocat nie da rady ochronić cię przed ludźmi niegodnymi zaufania, oprogramowaniem szpiegującym i nie ukrywa twoich połączeń.</li></ul>
+Witamy w Cryptocat. Oto kilka przydatnych wskazówek: <ul><li>Cryptocat nie jest cudownym lekiem. Nigdy nie należy ufać żadnemu oprogramowaniu w stu procentach.</li><li class="key">Cryptocat nie oferuje ochrony przed oszustami i oprogramowaniu zbierającymi informacje o naciskanych klawiszach ani nie zapewnia anonimowości podczas korzystania z internetu.</li></ul>
 Blog
 Custom server
 Resetuj
@@ -49,7 +49,20 @@ Błąd: Upewnij się, że plik jest plikiem ZIP lub plikiem graficznym.
 Błąd: Plik nie może być większy niż (SIZE) MB.
 Rozpocznij czat wideo
 Zakończ czat wideo
-Użytkownik (NICKNAME) chciałby rozpocząć z tobą czat wideo.
+(NICKNAME) chce rozpocząć z Tobą rozmowę wideo.
 Anuluj
-Zablokuj
-Odblokuj
+Ignoruj
+Nie ignoruj
+Uwierzytelnij
+Zweryfikuj tożsamość tego użytkownika, zadając sekretne pytanie. Odpowiedzi muszą być zgodne!
+Sekretne pytanie
+Sekretna odpowiedź
+Zadaj pytanie
+Trwa zadawanie pytania...
+Nie powiodło się
+Tożsamość potwierdzona.
+(NICKNAME) chce zweryfikować Twoją tożsamość. Odpowiedz na poniższe sekretne pytanie, aby ją potwierdzić.
+Twoja odpowiedź musi być zgodna z odpowiedzią podaną przez (NICKNAME).
+Odpowiedz
+Ostrzeżenie: Otrzymano nieczytelną wiadomość od (NICKNAME). Może to wskazywać na niewiarygodnego użytkownika lub wiadomości, które nie mogły zostać odebrane.
+Ostrzeżenie: Twoja wersja Cryptocat jest nieaktualna. Zalecana jest aktualizacja do najnowszej wersji! Nie kontynuuj bez aktualizacji do najnowszej wersji.

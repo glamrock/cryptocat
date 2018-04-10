@@ -1,4 +1,5 @@
-#[Cryptocat](https://crypto.cat)
+![Cryptocat](https://raw.github.com/cryptocat/cryptocat/master/src/core/img/icon-128.png)  
+
 ###Browser-based app for easy to use, accessible encrypted chat.
 Cryptocat is an experimental browser-based chat client for easy to use, encrypted conversations. It aims to make encrypted, private chat easy to use and accessible. We want to break down the barrier that prevents the general public from having an accessible privacy alternative that they already know how to use. Cryptocat is currently available for Chrome, Firefox and Safari. It uses the [OTR](http://www.cypherpunks.ca/otr/) protocol over XMPP for encrypted two-party chat and the (upcoming) mpOTR protocol for encrypted multi-party chat.
 
@@ -19,14 +20,15 @@ Run `make firefox` to build a Mozilla Firefox-loadable .xpi extension (or just .
 Also available from [Mozilla Firefox Addons](https://addons.mozilla.org/en-US/firefox/addon/cryptocat/).  
 
 ###Opera
-Run `make opera` to build an Opera-compatible .nex extension (or just .zip the directory and change the extension to .nex)
+Run `make opera` to build an Opera-compatible .nex extension (or just .zip the directory and change the extension to .nex)  
+Also available from [Opera Addons](https://addons.opera.com/en/extensions/details/cryptocat/).
 
 ###Apple Safari
 Apple's model makes an automated build process difficult.  
 Also available from [Cryptocat](https://crypto.cat/get/cryptocat.safariextz).
 
 ### Apple Mac OS X
-Run `make mac` to build as a standalone Mac application. (After running `make mac`, you can also `open src/mac/Cryptocat.xcodeproj` to edit & build the project in Xcode normally.)  
+Run `make mac` to build as a standalone Mac application. (After running `make mac`, you can also `open src/mac/Cryptocat.xcodeproj` to edit & build the project in Xcode normally.)  Building the Mac version requires [HomeBrew](http://brew.sh) to be installed to fetch a Tor dependency on `libevent` and `openssl`.
 Also available from the [Mac App Store](https://itunes.apple.com/app/cryptocat/id613116229?mt=12).
 
 ##Goals

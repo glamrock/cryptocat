@@ -3,19 +3,21 @@
 	<meta charset="UTF-8" />
 	<title>Cryptocat</title>
 	<link rel="stylesheet" media="screen" href="css/style.css" type="text/css" />
-	<link rel="stylesheet" href="css/jquery.qtip.css" type="text/css" />
+	<link rel="stylesheet" href="css/jquery.utip.css" type="text/css" />
 	<link rel="icon" type="image/gif" href="img/favicon.gif" />
 	<script type="application/javascript" src="js/lib/jquery/jquery.js"></script>
 	<script type="application/javascript" src="js/lib/jquery/jquery.color.js"></script>
-	<script type="application/javascript" src="js/lib/jquery/jquery.qtip.js"></script>
+	<script type="application/javascript" src="js/lib/jquery/jquery.utip.js"></script>
 	<script type="application/javascript" src="js/lib/mustache.js"></script>
 	<script type="application/javascript" src="js/lib/strophe/strophe.js"></script>
 	<script type="application/javascript" src="js/lib/strophe/strophe.register.js"></script>
 	<script type="application/javascript" src="js/lib/strophe/strophe.ibb.js"></script>
 	<script type="application/javascript" src="js/lib/strophe/strophe.si-filetransfer.js"></script>
 	<script type="application/javascript" src="js/lib/strophe/strophe.muc.js"></script>
+	<!-- <script type="application/javascript" src="js/lib/strophe/strophe.ping.js"></script> -->
 	<script type="application/javascript" src="js/lib/crypto-js/core.js"></script>
 	<script type="application/javascript" src="js/lib/crypto-js/enc-base64.js"></script>
+	<script type="application/javascript" src="js/lib/crypto-js/enc-hex.js"></script>
 	<script type="application/javascript" src="js/lib/crypto-js/cipher-core.js"></script>
 	<script type="application/javascript" src="js/lib/crypto-js/x64-core.js"></script>
 	<script type="application/javascript" src="js/lib/crypto-js/aes.js"></script>
@@ -26,18 +28,22 @@
 	<script type="application/javascript" src="js/lib/crypto-js/pad-nopadding.js"></script>
 	<script type="application/javascript" src="js/lib/crypto-js/mode-ctr.js"></script>
 	<script type="application/javascript" src="js/lib/salsa20.js"></script>
+	<script type="application/javascript" src="js/lib/eventemitter.js"></script>
+	<script type="application/javascript" src="js/lib/tinycon.js"></script>
+	<script type="application/javascript" src="js/cryptocat.js"></script>
+	<script type="application/javascript" src="js/etc/xmpp.js"></script>
+	<script type="application/javascript" src="js/etc/otr.js"></script>
 	<script type="application/javascript" src="js/etc/catFacts.js"></script>
-	<script type="application/javascript" src="js/etc/cryptocatLocalization.js"></script>
 	<script type="application/javascript" src="js/etc/storage.js"></script>
 	<script type="application/javascript" src="js/etc/templates.js"></script>
-	<script type="application/javascript" src="js/etc/cryptocatRandom.js"></script>
-	<script type="application/javascript" src="js/lib/multiParty.js"></script>
+	<script type="application/javascript" src="js/etc/random.js"></script>
+	<script type="application/javascript" src="js/etc/multiParty.js"></script>
+	<script type="application/javascript" src="js/etc/fileTransfer.js"></script>
+	<script type="application/javascript" src="js/etc/customServers.js"></script>
 	<script type="application/javascript" src="js/lib/bigint.js"></script>
-	<script type="application/javascript" src="js/lib/eventemitter.js"></script>
 	<script type="application/javascript" src="js/lib/otr.js"></script>
 	<script type="application/javascript" src="js/lib/elliptic.js"></script>
-	<script type="application/javascript" src="js/etc/fileTransfer.js"></script>
-	<script type="application/javascript" src="js/cryptocat.js"></script>
+	<script type="application/javascript" src="js/etc/locale.js"></script>
 </head>
 <body>
 	<div id="dialogBox">
@@ -53,15 +59,15 @@
 				<span id="groupConversation"></span>
 			</span>
 			<div id="optionButtons" dir="ltr">
-				<img class="button" id="status" src="img/available.png" alt="" />
-				<img class="button" id="myInfo" src="img/key.png" alt="" />
-				<img class="button" id="notifications" src="img/noNotifications.png" alt="" />
-				<img class="button" id="audio" src="img/noSound.png" alt="" />
-				<img class="button" id="logout" src="img/logout.png" alt="" />
+				<img class="button" id="status" src="img/available.png" alt="" data-utip-gravity="sw" />
+				<img class="button" id="myInfo" src="img/key.png" alt="" data-utip-gravity="sw" />
+				<img class="button" id="notifications" src="img/noNotifications.png" alt="" data-utip-gravity="sw" />
+				<img class="button" id="audio" src="img/noSound.png" alt="" data-utip-gravity="sw" />
+				<img class="button" id="logout" src="img/logout.png" alt="" data-utip-gravity="sw" />
 			</div>
 		</div>
 		<form id="loginForm" dir="ltr">
-			<input type="text" id="conversationName" maxlength="20" autocomplete="off" dir="ltr" />
+			<input type="text" id="conversationName" maxlength="20" autocomplete="off" dir="ltr" data-utip-gravity="ne" />
 			<input type="text" id="nickname" maxlength="16" autocomplete="off" dir="ltr" />
 			<input type="submit" id="loginSubmit" dir="ltr" />
 		</form>
@@ -82,7 +88,7 @@
 				<li id="ar">عربي</li>
 				<li id="zh-cn">简体</li>
 				<li id="zh-hk">繁體</li>
-				<li id="ur">اُردُو</li>
+				<!--<li id="ur">اُردُو</li>-->
 				<li id="bo">བོད་སྐད།</li>
 				<li id="bg">Български</li>
 				<li id="et">Eesty</li>
@@ -99,6 +105,7 @@
 				<li id="in">বাংলা</li>
 				<li id="it">Italiano</li>
 				<li id="km">ភាសាខ្មែរ</li>
+				<li id="kn">ಕನ್ನಡ</li>
 				<li id="ko">한국어</li>
 				<li id="lv">Latviešu</li>
 				<li id="lol">Lolcat</li>
@@ -110,18 +117,25 @@
 				<li id="sv">Svenska</li>
 				<li id="tr">Türkçe</li>
 				<li id="vi">Tiếng Việt</li>
-				<li id="ug">Uighur</li>
+				<!--<li id="ug">Uighur</li>-->
 			</ul>
 			<div id="customServerDialog">
-				<input type="text" class="customServer" id="customDomain" title="Domain Name"></input>
-				<input type="text" class="customServer" id="customConferenceServer" title="XMPP Conference Server"></input>
-				<input type="text" class="customServer" id="customBOSH" title="BOSH Relay"></input>
-				<input type="button" id="customServerReset"></input>
-				<input type="button" id="customServerSubmit"></input>
+				<div id="customServerList">
+					<select id="customServerSelector" size="4"></select>
+					<input type="button" id="customServerSave" value="Save" />
+					<input type="button" id="customServerDelete" value="Delete" />
+				</div>
+				<div id="customServerFields">
+					<input type="text" class="customServer" id="customName" data-utip="Name" data-utip-gravity="e" />
+					<input type="text" class="customServer" id="customDomain" data-utip="Domain" data-utip-gravity="e" />
+					<input type="text" class="customServer" id="customConferenceServer" data-utip="XMPP Conference Server" data-utip-gravity="e" />
+					<input type="text" class="customServer" id="customBOSH" data-utip="BOSH Relay" data-utip-gravity="e" />
+					<input type="button" id="customServerSubmit" value="Continue" />
+				</div>
 			</div>
 			<form id="userInput">
 				<textarea id="userInputText"></textarea>
-				<input type="submit" value="►" id="userInputSend"></input>
+				<input type="submit" value="►" id="userInputSend" />
 			</form>
 		</div>
 		<div id="conversationWrapper">

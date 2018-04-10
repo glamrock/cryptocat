@@ -1,55 +1,68 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Conversaciones privadas para todos.
-Bienvenido a Cryptocat. Aqui tiene algunos consejos: <ul><li>Cryptocat no es un remedio magico. Usted nunca debería poner su vida entre las manos de algún software.</li><li class="key">Cryptocat no le puede protejer contra personnas indignas de confianza, key loggers, y no anonimiza su conexión.</li></ul>
+Bienvenido a Cryptocat. Algunos consejos útiles: <ul><li>Cryptocat no una panacea. No ponga su vida en las manos de un programa informático.</li><li class="key">Cryptocat no puede protegerle de personas poco fiables y key loggers. Tampoco anonimiza su conexión.</li></ul>
 Blog
 Servidor personalizado
 Reiniciar
 nombre de la conversación
 nombre de usuario
 conectar
-Introduce un nombre para tu conversación y compártelo con la gente con la que quieres hablar, o únete al <strong>lobby</strong> para conocer gente nueva.
-Introduce el nombre de una conversación para unirse.
-Por favor, introduce un nombre de conversación.
-El nombre de la conversación tiene que ser alfanumérico.
-Por favor, introduce un nombre de usuario.
-El nombre de usuario tiene que ser alfanumérico.
-El nombre de usuario esta en uso.
+Introduzca un nombre para su conversación y compártalo con las personas con las que desea hablar, o únase al <strong>lobby</strong> para conocer nuevas personas.
+Introduzca el nombre de una conversación para unirse.
+Por favor, introduzca un nombre de conversación.
+El nombre de la conversación debe ser alfanumérico.
+Por favor, introduzca un nombre de usuario.
+El nombre de usuario debe ser alfanumérico.
+El nombre de usuario se encuentra en uso.
 Error de autenticación.
-Conexión Fallida
-Gracias por usar Cryptocat
+Conexión fallida.
+Gracias por usar Cryptocat.
 Registrando...
 Conectando...
 Conectado.
 Por favor, escribe aleatoriamente en tu teclado durante unos segundos.
-Generando claves de encriptación...
-Conversación de grupo. Pincha en un usuario para una conversación privada.
+Generando claves de cifrado...
+Conversación de grupo. Haga clic sobre un usuario para iniciar una conversación privada.
 Huella OTR (para conversaciones privadas):
 Huella para conversaciones en grupo:
-Cambiar mis claves de cifrado
-Restablecimiento de las claves de encriptación se desconecta. Sus huellas digitales también cambiará.
-continuar
+Restablecer sus claves de cifrado
+Restablecer las claves de cifrado hará que se desconecte. Sus huellas digitales también cambiarán.
+Continuar
 Estado: Disponible
 Estado: Ausente
-Mi información
-Notificaciones de Escritorio activadas
-Notificaciones de Escritorio desactivadas
+Su información
+Notificaciones de escritorio activadas
+Notificaciones de escritorio desactivadas
 Notificaciones de audio activadas
 Notificaciones de audio desactivadas
-Recordar mi apodo
-"No recordar mi nombre de usuario"
+Recordar su nombre de usuario
+No recordar mi nombre de usuario
 Desconectarse
-Mostrar información
-Enviar archivo encriptado
+Mostrar Información
+Enviar archivo cifrado
 ver imagen
 descargar archivo
 Conversación
 Solo se aceptan archivos ZIP e imágenes. Tamaño máximo: (SIZE) MB.
-Error: Por favor asegura que tu archivo es un archivo comprimido, ZIP, o una imagen.
+Error: Por favor, asegúrese de que su archivo es ZIP o una imagen.
 Error: El archivo no puede ser más grande que (SIZE) MB.
-Comenzar chat de video
-Terminar chat de video
-(NICKNAME) quisiera comenzar un chat de video contigo.
+Comenzar conversación de video
+Terminar conversación de video
+A (NICKNAME) le gustaría iniciar una conversación de vídeo con usted.
 Cancelar
-Bloquear
-Desbloquear
+Ignorar
+No ignorar
+Autenticar
+Verificar la identidad de este usuario mediante una pregunta secreta. ¡Las respuestas tienen que coincidir exactamente!
+Pregunta secreta
+Respuesta secreta
+Preguntar
+Preguntando...
+Fallida
+Identidad verificada.
+(NICKNAME) quiere verificar su identidad. Por favor, conteste la siguiente pregunta para autenticarse:
+Su respuesta debe coincidir exactamente con la que ha escrito (NICKNAME).
+Respuesta
+Advertencia: Se ha recibido un mensaje ilegible de (NICKNAME). Esto puede indicar un usuario no fiable o mensajes que no se pudieron recibir.
+Advertencia: Tu versión de Cryptocat no está actualizada. ¡La actualización a la última versión es muy recomendable! No procedas sin actualizar a la última versión.

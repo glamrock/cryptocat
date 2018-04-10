@@ -10,16 +10,16 @@ var fileMIME = new RegExp('^(image\/(png|jpeg|gif))|(application\/((x-compressed
 )
 
 function cn(to) {
-	return Cryptocat.conversationName + '@' + Cryptocat.conferenceServer + '/' + to
+	return Cryptocat.conversationName + '@' + Cryptocat.xmpp.conferenceServer + '/' + to
 }
 
-Cryptocat.beginSendFile = function(data) {
+Cryptocat.otr.beginSendFile = function(data) {
 	if (!data.file.type.match(fileMIME)) {
-		$('#fileInfoField').text(Cryptocat.language['chatWindow']['fileTypeError'])
+		$('#fileInfoField').text(Cryptocat.locale['chatWindow']['fileTypeError'])
 		return
 	}
-	else if (data.file.size > (Cryptocat.fileSize * 1024)) {
-		$('#fileInfoField').text(Cryptocat.language['chatWindow']['fileSizeError'])
+	else if (data.file.size > (Cryptocat.otr.fileSize * 1024)) {
+		$('#fileInfoField').text(Cryptocat.locale['chatWindow']['fileSizeError'])
 		return
 	}
 	else {
@@ -27,17 +27,17 @@ Cryptocat.beginSendFile = function(data) {
 			$('#dialogBoxClose').click()
 		}, 500)
 	}
-	var sid = Cryptocat.connection.getUniqueId()
+	var sid = Cryptocat.xmpp.connection.getUniqueId()
 	files[sid] = {
 		to: data.to,
 		position: 0,
 		file: data.file,
 		key: data.key,
-		total: Math.ceil(data.file.size / Cryptocat.chunkSize),
+		total: Math.ceil(data.file.size / Cryptocat.otr.chunkSize),
 		ctr: -1
 	}
 	/* jshint -W106 */
-	Cryptocat.connection.si_filetransfer.send(
+	Cryptocat.xmpp.connection.si_filetransfer.send(
 	/* jshint +W106 */
 		cn(data.to),
 		sid,
@@ -48,12 +48,12 @@ Cryptocat.beginSendFile = function(data) {
 			if (err) {
 				return console.log(err)
 			}
-			Cryptocat.connection.ibb.open(cn(data.to), sid, Cryptocat.chunkSize, function(err) {
+			Cryptocat.xmpp.connection.ibb.open(cn(data.to), sid, Cryptocat.otr.chunkSize, function(err) {
 				if (err) {
 					return console.log(err)
 				}
 				Cryptocat.addToConversation(sid, Cryptocat.myNickname, data.to, 'file')
-				Cryptocat.sendFileData({
+				Cryptocat.otr.sendFileData({
 					start: true,
 					to: data.to,
 					sid: sid
@@ -63,14 +63,14 @@ Cryptocat.beginSendFile = function(data) {
 	)
 }
 
-Cryptocat.sendFileData = function(data) {
+Cryptocat.otr.sendFileData = function(data) {
 	var sid = data.sid
 	var seq = data.start ? 0 : parseInt(data.seq, 10) + 1
 	if (seq > 65535) {
 		seq = 0
 	}
 	if (files[sid].position > files[sid].file.size) {
-		Cryptocat.connection.ibb.close(cn(data.to), sid, function(err) {
+		Cryptocat.xmpp.connection.ibb.close(cn(data.to), sid, function(err) {
 			if (err) {
 				return console.log(err)
 			}
@@ -79,7 +79,7 @@ Cryptocat.sendFileData = function(data) {
 		return
 	}
 	// Split into chunk
-	var end = files[sid].position + Cryptocat.chunkSize
+	var end = files[sid].position + Cryptocat.otr.chunkSize
 	// Check for slice function on file
 	var sliceStr = files[sid].file.slice ? 'slice' : 'webkitSlice'
 	var chunk = files[sid].file[sliceStr](files[sid].position, end)
@@ -113,11 +113,11 @@ Cryptocat.sendFileData = function(data) {
 		)
 		// Combine ciphertext and mac, then transfer chunk
 		msg += mac.toString(CryptoJS.enc.Base64)
-		Cryptocat.connection.ibb.data(cn(data.to), sid, seq, msg, function(err) {
+		Cryptocat.xmpp.connection.ibb.data(cn(data.to), sid, seq, msg, function(err) {
 			if (err) {
 				return console.log(err)
 			}
-			Cryptocat.sendFileData({
+			Cryptocat.otr.sendFileData({
 				seq: seq,
 				to: data.to,
 				sid: sid
@@ -128,41 +128,16 @@ Cryptocat.sendFileData = function(data) {
 	reader.readAsDataURL(chunk)
 }
 
-// make sure current Safari is at least <version>
-function matchSafariVersion(version) {
-	var match = navigator.userAgent.match(/\bversion\/(\d+)\.(\d+)\.(\d+)/i)
-	if (match == null) {
-		return false
-	}
-	match = match.slice(1).map(function (i) {
-		return parseInt(i, 10)
-	})
-	function ver(arr, pos) {
-		if (arr[pos] > version[pos]) {
-			return true
-		}
-		if (arr[pos] === version[pos]) {
-			pos += 1
-			if (pos === version.length) {
-				return true
-			}
-			return ver(arr, pos)
-		}
-		return false
-	}
-	return ver(match, 0)
-}
-
-Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
+Cryptocat.otr.ibbHandler = function(type, from, sid, data, seq) {
 	var nick = from.split('/')[1]
 	switch (type) {
 		case 'open':
 			var file = rcvFile[from][sid].filename
-			rcvFile[from][sid].key = Cryptocat.fileKeys[nick][file]
+			rcvFile[from][sid].key = Cryptocat.otr.fileKeys[nick][file]
 			if (sid.match(/^\w{1,64}$/) && rcvFile[from][sid].mime.match(fileMIME)) {
 				Cryptocat.addToConversation(sid, nick, nick, 'file')
 			}
-			delete Cryptocat.fileKeys[nick][file]
+			delete Cryptocat.otr.fileKeys[nick][file]
 			break
 		case 'data':
 			if (rcvFile[from][sid].abort) {
@@ -243,7 +218,7 @@ Cryptocat.ibbHandler = function(type, from, sid, data, seq) {
 	}
 }
 
-Cryptocat.fileHandler = function(from, sid, filename, size, mime) {
+Cryptocat.otr.fileHandler = function(from, sid, filename, size, mime) {
 	if (!rcvFile[from]) {
 		rcvFile[from] = {}
 	}
@@ -253,10 +228,35 @@ Cryptocat.fileHandler = function(from, sid, filename, size, mime) {
 		mime: mime,
 		seq: 0,
 		ctr: 0,
-		total: Math.ceil(size / Cryptocat.chunkSize),
+		total: Math.ceil(size / Cryptocat.otr.chunkSize),
 		abort: false,
 		data: ''
 	}
+}
+
+// make sure current Safari is at least <version>
+function matchSafariVersion(version) {
+	var match = navigator.userAgent.match(/\bversion\/(\d+)\.(\d+)\.(\d+)/i)
+	if (match == null) {
+		return false
+	}
+	match = match.slice(1).map(function (i) {
+		return parseInt(i, 10)
+	})
+	function ver(arr, pos) {
+		if (arr[pos] > version[pos]) {
+			return true
+		}
+		if (arr[pos] === version[pos]) {
+			pos += 1
+			if (pos === version.length) {
+				return true
+			}
+			return ver(arr, pos)
+		}
+		return false
+	}
+	return ver(match, 0)
 }
 
 })

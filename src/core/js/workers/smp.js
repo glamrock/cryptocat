@@ -2,8 +2,7 @@
 	'use strict';
 
 	root.OTR = {}
-	root.crypto = {}
-	
+
 	var imports = [
 		'../lib/crypto-js/core.js',
 		'../lib/crypto-js/enc-base64.js',
@@ -17,39 +16,37 @@
 		'../lib/crypto-js/pad-nopadding.js',
 		'../lib/crypto-js/mode-ctr.js',
 		'../lib/salsa20.js',
-		'../etc/cryptocatRandom.js',
+		'../etc/random.js',
 		'../lib/bigint.js',
 		'../lib/eventemitter.js',
 		'../lib/otr.js'
 	]
-	
+
 	function wrapPostMessage(method) {
 		return function () {
 			postMessage({
-					method: method,
-			args: Array.prototype.slice.call(arguments, 0)
+				method: method,
+				args: Array.prototype.slice.call(arguments, 0)
 			})
 		}
 	}
 
 	var sm
-	onmessage = function (msg) {
-		var d = msg.data
-		switch (d.type) {
+	onmessage = function (e) {
+		var data = e.data
+		switch (data.type) {
 			case 'seed':
-				imports.forEach(function (i) {
-					importScripts(i)
-				})
-				Cryptocat.setSeed(d.seed)
+				importScripts.apply(root, imports)
+				Cryptocat.random.setSeed(data.seed)
 				break
 			case 'init':
-				sm = new root.OTR.SM(d.reqs)
-				sm.on('trust', wrapPostMessage('trust'))
-				sm.on('question', wrapPostMessage('question'))
-				sm.on('send', wrapPostMessage('send'))
+				sm = new root.OTR.SM(data.reqs)
+				;['trust','question', 'send', 'abort'].forEach(function (m) {
+					sm.on(m, wrapPostMessage(m));
+				})
 				break
 			case 'method':
-				sm[d.method].apply(sm, d.args)
+				sm[data.method].apply(sm, data.args)
 				break
 		}
 	}

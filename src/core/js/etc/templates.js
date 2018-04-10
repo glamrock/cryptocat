@@ -1,32 +1,45 @@
 // Cryptocat templates for use with mustache.js.
 
 Cryptocat.templates = {
+
+	customServer: '<option data-domain="{{domain}}" data-xmpp="{{XMPP}}" data-bosh="{{BOSH}}">'
+		+ '{{name}}</option>',
+
+	generatingKeys: '<br /><p id="progressForm"><img src="img/keygen.gif" '
+		+ 'alt="" /><p id="progressInfo"><span>{{text}}</span></p>',
+
+	catFact: '<br />Here is an interesting fact while you wait:'
+		+ '<br /><div id="interestingFact">{{catFact}}</div>',
+
 	buddy: '<div class="buddy" title="{{nickname}}" id="buddy-{{nickname}}" status="online">'
 		+ '<span>{{shortNickname}}</span>'
 		+ '<div class="buddyMenu" id="menu-{{nickname}}"></div></div>',
 
 	buddyMenu: '<li class="option1">{{displayInfo}}</li>'
-		+ '<li class="option2">{{sendEncryptedFile}}</li>'
 		+ '<li class="option3">{{ignore}}</li>',
 
-	infoDialog: '<div class="title">{{nickname}}</div>'
-		+ '<div id="displayInfo">{{otrFingerprint}}<br /><span id="otrFingerprint"></span>'
-		+ '<br />{{groupFingerprint}}<br /><span id="multiPartyFingerprint"></span>'
-		+ '</div>'
-		+ '<div id="authInfo"><h2>Authenticate</h2>'
-		+ '<p>Verify this user\'s identity by asking a secret question. Answers must match exactly!</p>'
-		+ '<form><input type="text" id="authQuestion" placeholder="Secret question" maxlength="64" />'
-		+ '<input type="text" id="authAnswer" placeholder="Secret answer" maxlength="64" />'
-		+ '<input id="authSubmit" type="submit" value="Ask" /></form>'
-		+ '<p id="authVerified">Identity verified.</p>',
-		
-	authRequest: '<div class="title">Authenticate</div>'
-		+ '<p>{{nickname}} wants to verify your identity.'
-		+ ' Please answer the below secret question to authenticate yourself:<br />'
+	myInfo: '<div class="title">{{nickname}}</div>'
+		+ '<div id="displayInfo">'
+		+ '{{groupFingerprint}}<br /><span id="multiPartyFingerprint"></span><br />'
+		+ '{{otrFingerprint}}<br /><span id="otrFingerprint"></span></div>',
+
+	buddyInfo: '<div class="title">{{nickname}}</div>'
+		+ '<div id="displayInfo">'
+		+ '{{groupFingerprint}}<br /><span id="multiPartyFingerprint"></span>'
+		+ '</div><div id="authInfo"><h2>{{authenticate}}</h2>'
+		+ '<p>{{otrFingerprint}}<br /><span id="otrFingerprint"></span></p>'
+		+ '<p>{{verifyUserIdentity}}</p>'
+		+ '<form><input type="text" id="authQuestion" placeholder="{{secretQuestion}}" maxlength="64" />'
+		+ '<input type="password" id="authAnswer" placeholder="{{secretAnswer}}" maxlength="64" />'
+		+ '<input id="authSubmit" type="submit" value="{{ask}}" /></form>'
+		+ '<p id="authVerified">{{identityVerified}}</p>',
+
+	authRequest: '<div class="title">{{authenticate}}</div>'
+		+ '<p>{{authRequest}}<br />'
 		+ '<strong>{{question}}</strong><br /><br />'
-		+ '<form id="authReplyForm"><input id="authReply" type="text" placeholder="Secret answer" maxlength="64" />'
-		+ '<input id="authReplySubmit" type="submit" value="Answer" /></form></p>'
-		+ '<p>Your answer must exactly match the one given by {{nickname}}.</p>',
+		+ '<form id="authReplyForm"><input id="authReply" type="password" placeholder="{{secretAnswer}}" maxlength="64" />'
+		+ '<input id="authReplySubmit" type="submit" value="{{answer}}" /></form></p>'
+		+ '<p>{{answerMustMatch}}</p>',
 
 	sendFile: '<div class="title">{{sendEncryptedFile}}</div>'
 		+ '<input type="file" id="fileSelector" name="file[]" />'
@@ -39,8 +52,17 @@ Cryptocat.templates = {
 
 	fileLinkMac: '<a href="{{url}}" class="fileView" download="{{filename}}">{{downloadFile}}</a>',
 
-	message: '<div class="line{{lineDecoration}}"><span class="sender" sender="{{sender}}"'
-		+ ' timestamp="{{currentTime}}">{{sender}}</span>{{&message}}</div>',
+	missingRecipients: '<div class="missingRecipients">{{text}}</div>',
 
-	composing: '<img src="img/typing.gif" class="typing" id="{{id}}" alt="" />'
+	message: '<div class="line{{lineDecoration}}"><span class="sender" sender="{{nickname}}"'
+		+ ' timestamp="{{currentTime}}">{{nickname}}</span>{{&message}}</div>',
+
+	composing: '<img src="img/typing.gif" class="typing" id="{{id}}" alt="" />',
+
+	userJoin: '<div class="userJoin"><span class="timestamp">{{currentTime}}</span>'
+		+ '<strong>+</strong>{{nickname}}</div>',
+
+	userLeave: '<div class="userLeave"><span class="timestamp">{{currentTime}}</span>'
+		+ '<strong>-</strong>{{nickname}}</div>'
+
 }

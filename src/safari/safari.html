@@ -1,10 +1,17 @@
-﻿<!DOCTYPE HTML>
+<!DOCTYPE HTML>
 <html>
 <head>
 	<script type="application/javascript">
+		var firstRun = (typeof localStorage['firstRun'] === 'undefined') || (!JSON.parse(localStorage['firstRun']))
+		
+		if (firstRun) {
+			localStorage['firstRun'] = JSON.stringify(true)
+			safari.application.activeBrowserWindow.openTab().url = safari.extension.baseURI + 'firstRun.html'
+		}
+
 		safari.application.addEventListener('command', function(event) {
-			safari.application.activeBrowserWindow.openTab().url = safari.extension.baseURI + 'index.html';
-		}, false);
+			safari.application.activeBrowserWindow.openTab().url = safari.extension.baseURI + 'index.html'
+		}, false)
 	</script>
 </head>
 <body>

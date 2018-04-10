@@ -11,10 +11,13 @@ All contributed code, written in JavaScript, must adhere to the following coding
 	5. As a rule, strict-type isEqual is preferred (1 **===** 1 instead of 1 **==** 1).  
 	6. Please comment your code sufficiently.  
 	7. Anonymous closures should be used wherever they are useful.  
-
+	8. Brackets are not on new lines.  
 
 ##Contributing or improving translations
-Please **do not send pull requests for translations**. Instead, use [Transifex](https://www.transifex.com/projects/p/Cryptocat/resource/cryptocat/). Notify a project manager for Cryptocat on Transifex in case you need assistance.
+Please **do not send pull requests for translations**. Instead, use [Transifex](https://www.transifex.com/projects/p/Cryptocat/resource/cryptocat/). Notify a project manager for Cryptocat on Transifex in case you need assistance.  
+**Note**: In translations, please do **not**:
+* Insert newlines in strings you are translating.  
+* Translate wildcard strings such as `(NICKNAME)` or `(SIZE)`. Leave those as they are.  
 
 ##Tests
 * Run tests using `make tests`.
@@ -43,6 +46,7 @@ The full license text is included in `LICENSE.txt`.
 * **Fabio Pietrosanti**: Testing and feedback.  
 
 ###Multimedia
+* **Ingrid Burrington**: Some icons and graphics.  
 * **A.J. Korkidakis**: Promotional video.  
 * **P.J. Onori**: Some of the icons.  
 * **Rich Vreeland**: Audio notifications.  

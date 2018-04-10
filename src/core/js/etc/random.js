@@ -1,3 +1,7 @@
+if (typeof Cryptocat === 'undefined') {
+	Cryptocat = function() {}
+}
+
 ;(function (root, factory) {
 
 	if (typeof module !== 'undefined' && module.exports) {
@@ -11,22 +15,11 @@
 
 }(this, function (Cryptocat, Salsa20, node) {
 
+Cryptocat.random = {}
+
 var state
 
-Cryptocat.generateSeed = function() {
-	// The following incredibly ugly Firefox hack is completely the fault of 
-	// Firefox developers sucking and it taking them four years+ to implement
-	// window.crypto.getRandomValues().
-	function firefoxRandomBytes() {
-		var element = document.createElement('cryptocatFirefoxElement')
-		document.documentElement.appendChild(element)
-		var evt = document.createEvent('HTMLEvents')
-		evt.initEvent('cryptocatGenerateRandomBytes', true, false)
-		element.dispatchEvent(evt)
-		var output = element.getAttribute('randomValues').split(',')
-		element = null
-		return output
-	}
+Cryptocat.random.generateSeed = function() {
 	var buffer, crypto
 	// Node.js ... for tests
 	if (typeof window === 'undefined' && typeof require !== 'undefined') {
@@ -35,13 +28,19 @@ Cryptocat.generateSeed = function() {
 			buffer = crypto.randomBytes(40)
 		} catch (e) { throw e }
 	}
-	// Firefox
+	// Older versions of Firefox
 	else if (navigator.userAgent.match('Firefox') &&
 		(!window.crypto || !window.crypto.getRandomValues)
 	) {
-		buffer = firefoxRandomBytes()
+		var element = document.createElement('cryptocatFirefoxElement')
+		document.documentElement.appendChild(element)
+		var evt = document.createEvent('HTMLEvents')
+		evt.initEvent('cryptocatGenerateRandomBytes', true, false)
+		element.dispatchEvent(evt)
+		buffer = element.getAttribute('randomValues').split(',')
+		element = null
 	}
-	// Browsers that don't require shitty workarounds
+	// Browsers that don't require workarounds
 	else {
 		buffer = new Uint8Array(40)
 		window.crypto.getRandomValues(buffer)
@@ -49,7 +48,7 @@ Cryptocat.generateSeed = function() {
 	return buffer
 }
 
-Cryptocat.setSeed = function(s) {
+Cryptocat.random.setSeed = function(s) {
 	if (!s) { return false }
 	state = new Salsa20(
 		[
@@ -64,7 +63,7 @@ Cryptocat.setSeed = function(s) {
 	)
 }
 
-Cryptocat.getBytes = function(i) {
+Cryptocat.random.getBytes = function(i) {
 	if (i.constructor !== Number || i < 1) {
 		throw new Error('Expecting a number greater than 0.')
 	}
@@ -72,7 +71,7 @@ Cryptocat.getBytes = function(i) {
 	return (i === 1) ? bytes[0] : bytes
 }
 
-Cryptocat.randomBitInt = function(k) {
+Cryptocat.random.bitInt = function(k) {
 	if (k > 31) {
 		throw new Error('That\'s more than JS can handle.')
 	}
@@ -80,26 +79,26 @@ Cryptocat.randomBitInt = function(k) {
 	var b = Math.floor(k / 8)
 	var mask = (1 << (k % 8)) - 1
 	if (mask) {
-		r = Cryptocat.getBytes(1) & mask
+		r = Cryptocat.random.getBytes(1) & mask
 	}
 	for (; i < b; i++) {
-		r = (256 * r) + Cryptocat.getBytes(1)
+		r = (256 * r) + Cryptocat.random.getBytes(1)
 	}
 	return r
 }
 
-Cryptocat.rawBytes = function(bytes) {
-	var sa = String.fromCharCode.apply(null, Cryptocat.getBytes(bytes))
+Cryptocat.random.rawBytes = function(bytes) {
+	var sa = String.fromCharCode.apply(null, Cryptocat.random.getBytes(bytes))
 	return CryptoJS.enc.Latin1.parse(sa)
 }
 
-Cryptocat.encodedBytes = function(bytes, encoding) {
-	return Cryptocat.rawBytes(bytes).toString(encoding)
+Cryptocat.random.encodedBytes = function(bytes, encoding) {
+	return Cryptocat.random.rawBytes(bytes).toString(encoding)
 }
 
 if (node) {
 	// Seed RNG in tests.
-	Cryptocat.setSeed(Cryptocat.generateSeed())
+	Cryptocat.random.setSeed(Cryptocat.random.generateSeed())
 }
 
 return Cryptocat

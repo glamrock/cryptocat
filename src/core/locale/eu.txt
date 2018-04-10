@@ -1,15 +1,15 @@
 ltr
 "Helvetica Neue", Helvetica, Arial, Verdana
 Elkarrizketa pribatuak edonorentzat.
-Ongi etorri Crytocat-era. Hona hemen aholku erabilgarri batzuk:<ul><li>Cryptocat ez da konponbide perfektua. Ez ezazu inoiz jarri zure bizitza software baten esku.</li><li class="key">Cryptocat-ek ezin zaitu babestu pertsona ez fidagarri edo key logger-en aurka eta ez du zure konexioa anonimo bihurtzen</li></ul>
+Ongi etorri Cryptocat-era. Hemen zenbaitz aholku erabilgarri: <ul><li>Cryptocat ez da magikoa. Ez zenuke inoiz zure bizitza software baten pean jarri.</li><li class="key">Cryptocat-ek ezin zaitu konfiantza merezi ez duten pertsonetatik edo keyloggeretatik babestu, eta ez du zure konexioa anonimo bihurtzen.</li></ul>
 Bloga
 Zerbitzari pertsonalizatua
 Berrezarri
 elkarrizketa-izena
 goitizena
 konektatu
-Sar ezazu izen bat elkarrizketarako eta parteka ezazu berau hitz egin nahiko zenukeen jendearekin
-Sartu elkarrizketa baten izena bertara sartzeko. 
+Sar ezazu izen bat elkarrizketarako eta parteka ezazu berau hitz egin nahiko zenukeen jendearekin, edo <strong>lobby</strong>-ra joan jende berria ezagutzeko!
+Sartu elkarrizketa baten izena bertara sartzeko.
 Sartu elkarrizketa-izena.
 Elkarrizketa-izena letraz eta zenbakiz bakarrik egon daiteke osatuta.
 Sartu goitizena.
@@ -42,12 +42,27 @@ Saioa itxi
 Erakutsi informazioa
 Bidali fitxategi zifratua
 ikusi irudia
-deskargatu fitxategia
+jaitsi fitxategia
 Elkarrizketa
-ZIP fitxategiak eta irudiak bakarrik onartzen dira. Fitxategi-tamaina maximoa:  (SIZE) MB.
+ZIP fitxategiak eta irudiak bakarrik onartzen dira. Fitxategi-tamaina maximoa: (SIZE) MB.
 Errorea: Egiazta ezazu fitxategia ZIP motakoa edo irudia dela.
 Errorea: Fitxategia ezin da izan (SIZE) MB baino handiagoa.
 Hasi bideo-elkarrizketa
 Amaitu bideo-elkarrizketa
-(NICKNAME)-(e)k zurekin bideo-elkarrizketa bat abiatu nahi du.
+(NICKNAME)-(e)k bideo-elkarrizketa bat hasi nahi du zurekin.
 Utzi
+Baztertu
+Ez baztertu
+Autentikatu
+Erabiltzaile honen nortasuna egiaztatu galdera sekretu baten bitartez. Erantzunek berdin-berdinak izan behar dute!
+Galdera sekretua
+Erantzun sekretua
+Galdetu
+Galdetzen...
+Huts egin du
+Nortasun egiaztatua
+(NICKNAME)-(e)k zure nortasuna egiaztatu nahi du. Mesedez ondorengo galdera sekretua erantzun zure nortasuna egiaztatzeko:
+Zure erantzunak (NICKNAME)-(e)k emandakoaren berdina izan behar du.
+Erantzun
+Adi: (NICKNAME)-(e)k irakurri ezin daitekeen mezu bat bidali dizu. Baliteke erabiltzaile fidagaitza izatea edo jasotzerakoan mezuak huts egin duela.
+Adi: ZUre Cryptocat bertsioa ez dago eguneratua. Oso gomendagarria da azken bertsiora eguneratzea! Ez jarraitu azken bertsiora eguneratu gabe.

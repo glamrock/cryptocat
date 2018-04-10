@@ -1,6 +1,5 @@
 .DS_Store
 src/cryptocat.safariextension/*
-src/mac/htdocs/*
 release/
 
 # npm
@@ -13,3 +12,5 @@ node_modules/
 src/mac/Cryptocat.xcodeproj/project.xcworkspace/xcuserdata/*
 
 *.xcbkptlist
+
+npm-debug.log

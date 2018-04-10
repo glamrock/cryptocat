@@ -20,9 +20,9 @@ License: MIT, GPL-2+
 Origin: https://github.com/jquery/jquery-color/  
 License: MIT  
 
-##jQuery.qTip2
-Origin: https://github.com/craga89/qtip2/  
-License: MIT, GPL  
+##jQuery.utip
+Origin: https://github.com/symeapp/utip
+License: MIT  
 
 ##Mustache.js
 Origin: https://github.com/janl/mustache.js/  
@@ -34,6 +34,10 @@ License: MPL 2.0
 
 ##Strophe.js
 Origin: http://strophe.im  
+License: MIT  
+
+##Tinycon
+Origin: https://github.com/tommoor/tinycon  
 License: MIT  
 
 ##WeaveCrypto
